@@ -1,0 +1,84 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="leafG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e7a52"/>
+      <stop offset=".55" stop-color="#2fbf8f"/>
+      <stop offset="1" stop-color="#145239"/>
+    </linearGradient>
+    <linearGradient id="leafG2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e7a52"/>
+      <stop offset=".55" stop-color="#2fbf8f"/>
+      <stop offset="1" stop-color="#145239"/>
+    </linearGradient>
+    <linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe9ae"/>
+      <stop offset=".5" stop-color="#f6b73c"/>
+      <stop offset="1" stop-color="#c98a1d"/>
+    </linearGradient>
+    <radialGradient id="glowG" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#7dffce" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#7dffce" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- توهج مركزي خافت خلف الأفاتار (مفتوح من الوسط) -->
+  <ellipse cx="600" cy="360" rx="300" ry="90" fill="url(#glowG)"/>
+
+  <!-- الجناح الأيسر: أوراق زمرديّة متصاعدة -->
+  <g>
+    <path d="M0 400 C 90 340, 150 300, 210 250 C 190 310, 140 360, 60 400 Z" fill="url(#leafG)" opacity=".95"/>
+    <path d="M0 400 C 120 360, 200 330, 300 300 C 250 350, 160 385, 40 400 Z" fill="url(#leafG)" opacity=".8"/>
+    <path d="M0 320 C 60 270, 110 230, 160 180 C 150 250, 100 300, 20 345 Z" fill="url(#leafG2)" opacity=".7"/>
+    <path d="M0 240 C 40 200, 70 160, 95 115 C 95 185, 60 240, 5 285 Z" fill="url(#leafG2)" opacity=".55"/>
+    <path d="M120 400 C 200 370, 270 350, 350 340 C 290 380, 210 398, 130 400 Z" fill="#2fbf8f" opacity=".45"/>
+    <!-- وريدات ذهبية -->
+    <circle cx="210" cy="250" r="7" fill="url(#goldG)"/>
+    <circle cx="300" cy="300" r="5" fill="url(#goldG)" opacity=".9"/>
+    <circle cx="160" cy="180" r="5" fill="url(#goldG)" opacity=".8"/>
+    <circle cx="95" cy="115" r="4" fill="url(#goldG)" opacity=".7"/>
+  </g>
+
+  <!-- الجناح الأيمن: مرآة الأيسر -->
+  <g transform="translate(1200,0) scale(-1,1)">
+    <path d="M0 400 C 90 340, 150 300, 210 250 C 190 310, 140 360, 60 400 Z" fill="url(#leafG2)" opacity=".95"/>
+    <path d="M0 400 C 120 360, 200 330, 300 300 C 250 350, 160 385, 40 400 Z" fill="url(#leafG2)" opacity=".8"/>
+    <path d="M0 320 C 60 270, 110 230, 160 180 C 150 250, 100 300, 20 345 Z" fill="url(#leafG)" opacity=".7"/>
+    <path d="M0 240 C 40 200, 70 160, 95 115 C 95 185, 60 240, 5 285 Z" fill="url(#leafG)" opacity=".55"/>
+    <path d="M120 400 C 200 370, 270 350, 350 340 C 290 380, 210 398, 130 400 Z" fill="#2fbf8f" opacity=".45"/>
+    <circle cx="210" cy="250" r="7" fill="url(#goldG)"/>
+    <circle cx="300" cy="300" r="5" fill="url(#goldG)" opacity=".9"/>
+    <circle cx="160" cy="180" r="5" fill="url(#goldG)" opacity=".8"/>
+    <circle cx="95" cy="115" r="4" fill="url(#goldG)" opacity=".7"/>
+  </g>
+
+  <!-- خط ذهبي أفقي خافت أسفل البطاقة (قاعدة البطاقة) -->
+  <path d="M120 396 C 400 386, 800 386, 1080 396" stroke="url(#goldG)" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"/>
+
+  <!-- زوايا ذهبية (فيليغري) -->
+  <g opacity=".9">
+    <path d="M28 66 C 28 44, 44 28, 66 28" stroke="url(#goldG)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M40 84 C 40 56, 56 40, 84 40" stroke="url(#goldG)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>
+    <circle cx="66" cy="66" r="4" fill="url(#goldG)"/>
+  </g>
+  <g opacity=".9">
+    <path d="M1172 66 C 1172 44, 1156 28, 1134 28" stroke="url(#goldG)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M1160 84 C 1160 56, 1144 40, 1116 40" stroke="url(#goldG)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>
+    <circle cx="1134" cy="66" r="4" fill="url(#goldG)"/>
+  </g>
+
+  <!-- جزيئات لامعة متناثرة (أعلى) -->
+  <g fill="#eafff5">
+    <circle cx="420" cy="70" r="3" opacity=".55"/>
+    <circle cx="520" cy="40" r="2.5" opacity=".4"/>
+    <circle cx="680" cy="45" r="3" opacity=".5"/>
+    <circle cx="790" cy="80" r="2.5" opacity=".4"/>
+    <circle cx="600" cy="95" r="2" opacity=".35"/>
+    <circle cx="352" cy="130" r="2" opacity=".3"/>
+    <circle cx="850" cy="130" r="2" opacity=".3"/>
+  </g>
+  <g fill="url(#goldG)">
+    <circle cx="470" cy="55" r="2.5" opacity=".8"/>
+    <circle cx="740" cy="60" r="2.5" opacity=".8"/>
+    <circle cx="615" cy="70" r="2" opacity=".6"/>
+  </g>
+</svg>

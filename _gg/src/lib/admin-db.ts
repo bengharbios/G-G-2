@@ -3588,13 +3588,15 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: '/yalla-games/baharharb.png', kind: 'theme', nameAr: 'بحر و حرب', imageUrl: '/yalla-games/baharharb.png', rarity: 'rare', price: 300, isFree: false },
   { id: '/yalla-games/shifarat.png', kind: 'theme', nameAr: 'الشيفرات', imageUrl: '/yalla-games/shifarat.png', rarity: 'rare', price: 300, isFree: false },
   // البطاقات (فنيات خلفية + بطاقات هوية) — المعرف = اسم الملف كما يُخزن في AppUser.card
+  // card_emerald_royal: البطاقة المرجعية للتصميم (عريضة، شفافة، زخرفة الأطراف والمركز مفتوح للأفاتار)
+  { id: 'card_emerald_royal', kind: 'card', nameAr: 'الزمرد الملكي', imageUrl: '/yalla-ornaments/card_emerald_royal.png', rarity: 'legendary', price: 600, isFree: false },
   { id: 'card_astronaut', kind: 'card', nameAr: 'حديقة الفضاء', imageUrl: '/yalla-ornaments/card_astronaut.png', rarity: 'epic', price: 500, isFree: false },
   { id: 'card_glow', kind: 'card', nameAr: 'هالة ضوئية', imageUrl: '/yalla-ornaments/card_glow.png', rarity: 'epic', price: 500, isFree: false },
   { id: 'room_profile_member_bg', kind: 'card', nameAr: 'بطاقة العضوية', imageUrl: '/yalla-ornaments/room_profile_member_bg.png', rarity: 'rare', price: 400, isFree: false },
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 1;
+const DECOR_SEED_VERSION = 2;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
