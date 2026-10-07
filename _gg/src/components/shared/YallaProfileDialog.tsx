@@ -69,16 +69,8 @@ interface YallaProfileDialogProps {
   onProfileUpdated?: (u: Partial<YallaAuthUser>) => void;
 }
 
-// ─── Yalla asset catalogs (extracted from APK 1.5.1.0) ────────────────
-
-// المعلقات والمواضيع والبطاقات — كلها الآن من كتالوج الزينة في قاعدة البيانات (DecorItem)
+// ─── Yalla asset catalogs (extracted from APK 1.5.1.0) ────────────────// المعلقات والمواضيع والبطاقات — كلها الآن من كتالوج الزينة في قاعدة البيانات (DecorItem)
 // مع ملكية وأسعار وأقفال بدل القوائم الثابتة
-// بطاقات الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل في جسم البروفايل لا خلفية
-const CARD_IDENTITY: Array<{ file: string; name: string; wide?: boolean }> = [
-  { file: 'room_profile_member_bg', name: 'بطاقة العضوية', wide: true },
-  { file: 'charge_reward_profile_card', name: 'بطاقة الشحن' },
-];
-const isIdentityCard = (f: string) => CARD_IDENTITY.some((c) => c.file === f);
 
 // تسميات وشارات الندرة (نفس لغة المتجر) لاستخدامها في نوافذ الزينة
 const RARITY_LABELHOLDER: Record<string, string> = {
