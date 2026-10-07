@@ -1222,6 +1222,16 @@ html, body {
   white-space: nowrap;
 }
 
+/* بطاقة الهوية (بطاقة الشحن/العضوية) — لوحة بمقاسها الطبيعي فوق الاسم */
+.yp-identity {
+  display: block;
+  width: 262px;
+  max-width: 82%;
+  height: auto;
+  margin: 2px auto 4px;
+  filter: drop-shadow(0 2px 6px rgba(23, 78, 60, .25));
+}
+
 /* Info row: level flag | pencils | country flag | ID */
 .yp-inforow {
   display: flex;
