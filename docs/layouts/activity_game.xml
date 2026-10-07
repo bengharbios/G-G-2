@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A024C" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+  <AbsoluteLayout android:id="@7F0A031D" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

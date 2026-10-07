@@ -1,0 +1,3 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0313" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08D0" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2" android:layout_marginStart="25.000000dip" android:layout_marginEnd="25.000000dip"/>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

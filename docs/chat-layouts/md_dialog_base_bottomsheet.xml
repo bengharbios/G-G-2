@@ -1,0 +1,6 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A06A9" android:focusable="true" android:clickable="true" android:layout_width="-1" android:layout_height="-2" app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <include android:layout_width="-1" android:layout_height="-2" layout="@7F0D0251"/>
+  </FrameLayout>
+  <include android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="-2" layout="@7F0D0252"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

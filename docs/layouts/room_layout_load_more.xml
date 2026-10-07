@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="50.000000dip">
+  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A0791" android:layout_width="40.000000dip" android:layout_height="40.000000dip" style="@7F130219"/>
+  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="@7F0601EF" android:layout_gravity="0x00000011" android:id="@7F0A0A1A" android:layout_width="-2" android:layout_height="-2" android:text="@7F120542"/>
+  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="@7F0601EF" android:layout_gravity="0x00000011" android:id="@7F0A0A1B" android:layout_width="-2" android:layout_height="-2" android:text="@7F120536"/>
+</FrameLayout>

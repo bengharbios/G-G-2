@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="ranking_others" android:layout_width="321.000000dip" android:layout_height="55.000000dip">
+  <FrameLayout android:id="ff_rank" android:layout_width="47.000000dip" android:layout_height="-1" android:layout_marginStart="0.500000dip">
+    <ImageView android:layout_gravity="0x00000001" android:id="iv_rank" android:layout_width="-2" android:layout_height="-2" android:src="rank_no_1"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="18.000000sp" android:textColor="white" android:gravity="0x00000011" android:id="tv_rank" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+    <ImageView android:layout_gravity="0x00000001" android:id="iv_flag" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="0.800000dip"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.HeadView android:id="iv_head" android:layout_width="48.000000dip" android:layout_height="48.000000dip" android:layout_toRightOf="ff_rank" android:layout_centerVertical="true" android:layout_marginStart="5.000000dip" android:layout_toEndOf="ff_rank"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="ll_coin" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="3.000000dip" android:layout_alignParentEnd="true">
+    <ImageView android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="coin"/>
+    <com.yalla.game.base.view.StrokeTextView android:textColor="#FFFFFFFF" android:ellipsize="3" android:id="tv_earning" android:layout_width="60.000000dip" android:layout_height="-2" android:lines="1" android:layout_marginStart="1.000000dip" app:stroke_color="#FF0E6349" app:stroke_width="1.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:layout_centerVertical="true" android:layout_marginStart="7.000000dip" android:layout_toStartOf="ll_coin" android:layout_toEndOf="iv_head">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="ll_name" android:layout_width="-2" android:layout_height="25.000000dip">
+      <ImageView android:id="iv_country" android:layout_width="16.000000dip" android:layout_height="10.000000dip" android:layout_marginTop="1.000000dip" android:scaleType="1"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:ellipsize="3" android:gravity="0x00800013" android:id="tv_name" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:includeFontPadding="false" android:layout_weight="1.000000" android:layout_marginStart="3.000000dip"/>
+      <com.yalla.games.common.view.PrivilegeFlagView android:id="vip_flag" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+    </LinearLayout>
+    <com.yalla.games.common.view.LeagueView android:id="iv_league_name" android:layout_width="-2" android:layout_height="-2" android:src="bronze_cup_name" android:scaleType="2"/>
+  </LinearLayout>
+</RelativeLayout>

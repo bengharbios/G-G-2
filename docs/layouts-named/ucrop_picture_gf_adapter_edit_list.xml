@@ -1,0 +1,6 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="60.000000dip" android:layout_height="-2">
+  <ImageView android:id="iv_dot" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:src="ucrop_oval_true" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_photo" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_margin="3.000000dip" android:scaleType="6" android:layout_below="iv_dot"/>
+  <ImageView android:id="iv_video" android:background="ucrop_color_ec" android:visibility="2" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_margin="3.000000dip" android:src="ucrop_ic_default_video" android:scaleType="7" android:layout_below="iv_dot"/>
+  <TextView android:textSize="9.000000sp" android:textColor="ucrop_color_widget_active" android:id="tv_gif" android:background="ucrop_gif_bg" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="ucrop_gif_tag" android:layout_alignRight="iv_photo" android:layout_alignBottom="iv_photo"/>
+</RelativeLayout>

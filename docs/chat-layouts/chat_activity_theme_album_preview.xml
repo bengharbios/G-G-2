@@ -1,0 +1,7 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <androidx.appcompat.widget.Toolbar android:id="@7F0A01F5" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="?7F040013" app:contentInsetStartWithNavigation="0.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:navigationIcon="@7F080343" app:popupTheme="@7F140154" app:title="@7F1302A6" style="?7F040568"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <include android:id="@7F0A0220" layout="@7F0D0105"/>
+    <include android:id="@7F0A01DC" layout="@7F0D0109"/>
+  </FrameLayout>
+</LinearLayout>

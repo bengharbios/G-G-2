@@ -1,0 +1,7 @@
+<com.yallatech.yallachat.libalbum.widget.ElasticDragDismissFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A05F7" android:background="@7F060038" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" app:dragDismissDistance="112.000000dip" app:dragDismissScale="0.950000">
+  <com.yallatech.yallachat.libalbum.widget.PreviewNestedScrollView android:layout_width="-1" android:layout_height="-1" android:fillViewport="true">
+    <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A0BB0" android:layout_width="-1" android:layout_height="-1"/>
+  </com.yallatech.yallachat.libalbum.widget.PreviewNestedScrollView>
+  <com.yallatech.yallachat.libalbum.widget.snap.GravitySnapRecyclerView android:layout_gravity="0x00000050" android:id="@7F0A00B6" android:background="@7F060038" android:paddingLeft="1.000000dip" android:paddingTop="1.000000dip" android:paddingRight="1.000000dip" android:paddingBottom="20.000000dip" android:clipToPadding="false" android:layout_width="-1" android:layout_height="80.000000dip" app:snapGravity="4" app:snapScrollMsPerInch="60.000000"/>
+  <include android:id="@7F0A007F" layout="@7F0D01D1"/>
+</com.yallatech.yallachat.libalbum.widget.ElasticDragDismissFrameLayout>

@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:id="rl_item_area_code" android:background="rounded_edittext" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginBottom="5.000000dip">
+    <ImageView android:id="iv_country" android:layout_width="24.000000dip" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="15.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="phone_area_code" android:id="tv_country_item" android:layout_width="-2" android:layout_height="-2" android:text="CH" android:layout_centerVertical="true" android:layout_marginStart="12.000000dip" android:layout_toEndOf="iv_country"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="phone_area_code" android:id="tv_area_code" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="+86" android:layout_centerVertical="true" android:layout_marginEnd="15.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:id="wrapper_controls" android:layout_width="-1" android:layout_height="@7F07018E" android:layout_marginBottom="0.000000dip" android:layout_alignParentTop="true">
+    <ImageView android:background="ucrop_wrapper_controls_shape" android:layout_width="-1" android:layout_height="-1"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="layout_aspect_ratio" android:layout_width="-1" android:layout_height="-1"/>
+    <include android:id="layout_rotate_wheel" layout="@7F0D02E7"/>
+    <include android:id="layout_scale_wheel" layout="@7F0D02E8"/>
+  </FrameLayout>
+  <ImageView android:id="controls_shadow" android:layout_width="-1" android:layout_height="8.000000dip" android:src="ucrop_shadow_upside" android:layout_alignBottom="wrapper_controls"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="wrapper_states" android:background="ucrop_color_widget_background" android:layout_width="-1" android:layout_height="@7F07018F" android:baselineAligned="false" android:layout_below="controls_shadow">
+    <LinearLayout android:id="state_aspect_ratio" style="ucrop_WrapperIconState">
+      <ImageView android:gravity="0x00000011" android:orientation="1" android:id="image_view_state_aspect_ratio" app:srcCompat="ucrop_crop" style="ucrop_ImageViewWidgetIcon"/>
+      <TextView android:id="text_view_crop" android:text="ucrop_crop" style="ucrop_TextViewWidget"/>
+    </LinearLayout>
+    <LinearLayout android:id="state_rotate" style="ucrop_WrapperIconState">
+      <ImageView android:id="image_view_state_rotate" app:srcCompat="ucrop_rotate" style="ucrop_ImageViewWidgetIcon"/>
+      <TextView android:id="text_view_rotate" android:text="ucrop_rotate" style="ucrop_TextViewWidget"/>
+    </LinearLayout>
+    <LinearLayout android:id="state_scale" style="ucrop_WrapperIconState">
+      <ImageView android:id="image_view_state_scale" app:srcCompat="ucrop_scale" style="ucrop_ImageViewWidgetIcon"/>
+      <TextView android:id="text_view_scale" android:text="ucrop_scale" style="ucrop_TextViewWidget"/>
+    </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>

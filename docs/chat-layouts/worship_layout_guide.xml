@@ -1,0 +1,21 @@
+<merge>
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+    <androidx.constraintlayout.widget.ConstraintLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+      <androidx.appcompat.widget.AppCompatImageView android:id="@7F0A050B" android:background="@7F08054A" android:padding="14.000000dip" android:focusable="true" android:clickable="true" android:layout_width="48.000000dip" android:layout_height="48.000000dip" android:layout_marginStart="2.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:srcCompat="@7F080343"/>
+      <TextView android:textSize="14.000000sp" android:textColor="@7F0601E7" android:gravity="0x00000010" android:layout_gravity="0x00800005" android:id="@7F0A0B16" android:layout_width="-2" android:layout_height="48.000000dip" android:text="@7F1308B1" android:paddingStart="16.000000dip" android:paddingEnd="16.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A0BAF" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="36.000000dip"/>
+    <LinearLayout android:gravity="0x00000011" android:id="@7F0A05DA" android:layout_width="-1" android:layout_height="32.000000dip" android:layout_marginTop="16.000000dip">
+      <ImageView android:id="@7F0A052B" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F080623" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+      <ProgressBar android:id="@7F0A07D5" android:layout_width="20.000000dip" android:layout_height="2.000000dip" android:progressDrawable="@7F0805FC" style="?android:01010078"/>
+      <ImageView android:id="@7F0A052C" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F080625" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+      <ProgressBar android:id="@7F0A07D6" android:layout_width="20.000000dip" android:layout_height="2.000000dip" style="?android:01010078"/>
+      <ImageView android:id="@7F0A052D" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F080626" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+      <ProgressBar android:id="@7F0A07D7" android:layout_width="20.000000dip" android:layout_height="2.000000dip" style="?android:01010078"/>
+      <ImageView android:id="@7F0A052E" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F080624" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+    </LinearLayout>
+    <View android:layout_width="0.000000dip" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+    <Button android:id="@7F0A0A4D" android:layout_width="300.000000dip" android:layout_height="48.000000dip" android:layout_marginTop="28.000000dip" android:text="@7F1308AD" style="@7F14035B"/>
+    <TextView android:textSize="16.000000sp" android:textColor="@7F0600F2" android:id="@7F0A0AB5" android:padding="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_marginBottom="70.000000dip" android:text="@7F1308AE"/>
+  </LinearLayout>
+</merge>

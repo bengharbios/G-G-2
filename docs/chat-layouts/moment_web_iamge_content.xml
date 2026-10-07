@@ -1,0 +1,3 @@
+<com.yallatech.yallachat.moment.ui.view.zoomable.ZoomableConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A024A" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:id="@7F0A0445" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+</com.yallatech.yallachat.moment.ui.view.zoomable.ZoomableConstraintLayout>

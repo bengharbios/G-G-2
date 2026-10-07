@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="50.000000dip">
+  <ProgressBar android:layout_gravity="0x00000011" android:id="pBarLoading" android:layout_width="40.000000dip" android:layout_height="40.000000dip" style="Widget.AppCompat.ProgressBar"/>
+  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="white" android:layout_gravity="0x00000011" android:id="tvLoadComplete" android:layout_width="-2" android:layout_height="-2" android:text="room_no_more_data"/>
+  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="white" android:layout_gravity="0x00000011" android:id="tvLoadFailed" android:layout_width="-2" android:layout_height="-2" android:text="room_network_request_failed"/>
+</FrameLayout>

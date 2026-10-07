@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:id="@7F0A0734" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D02C5"/>
+  <FrameLayout android:id="@7F0A072A" android:paddingLeft="@7F0701BE" android:paddingRight="@7F0701BE" android:layout_width="-1" android:layout_height="-2" android:paddingStart="@7F0701BE" android:paddingEnd="@7F0701BE"/>
+</LinearLayout>

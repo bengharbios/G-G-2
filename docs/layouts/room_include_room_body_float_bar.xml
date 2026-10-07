@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <ViewStub android:id="@7F0A0D0E" android:background="@7F0601EF" android:layout="@7F0D0225" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="-2">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+      <ViewStub android:id="@7F0A0D09" android:layout="@7F0D0226" android:layout_width="-2" android:layout_height="50.000000dip" android:layout_marginTop="10.000000dip"/>
+      <ViewStub android:id="@7F0A0D0A" android:layout="@7F0D0276" android:layout_width="-1" android:layout_height="-2"/>
+      <ViewStub android:id="@7F0A0D0B" android:layout="@7F0D0276" android:layout_width="-1" android:layout_height="-2"/>
+    </LinearLayout>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A021C" android:layout_width="-1" android:layout_height="245.000000dip" app:play_on_attach="true"/>
+  </FrameLayout>
+</LinearLayout>

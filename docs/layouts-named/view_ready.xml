@@ -1,0 +1,8 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.events.dialog.online.OnlineRewardBoxView android:layout_gravity="0x00000010" android:id="box_view" android:layout_width="-1" android:layout_height="500.000000dip" android:layout_marginBottom="20.000000dip"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+    <View android:id="id_dot" android:layout_width="1.000000px" android:layout_height="1.000000px" android:layout_marginBottom="20.000000dip" android:layout_centerInParent="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="27.000000sp" android:textColor="#FFFFED72" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="159.000000dip" android:text="tap_to_open_chest" android:layout_above="id_dot" android:layout_centerHorizontal="true" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+    <com.yalla.game.base.view.StrokeButton android:textSize="23.000000sp" android:gravity="0x00000011" android:id="btn_receive" android:background="bn_yes" android:layout_width="149.000000dip" android:layout_height="58.000000dip" android:layout_marginTop="109.000000dip" android:text="Open" android:includeFontPadding="false" android:layout_below="id_dot" android:layout_centerHorizontal="true" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  </RelativeLayout>
+</merge>

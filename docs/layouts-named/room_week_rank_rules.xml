@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:paddingStart="14.000000dip" android:paddingEnd="14.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="room_color_487" android:layout_width="-1" android:layout_height="-2" android:text="room__week_rank_rule_1"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="room_color_487" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:text="room__week_rank_rule_2"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="room_color_487" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:text="room__week_rank_rule_3"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="room_color_487" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:text="room__week_rank_rule_4"/>
+  <ImageView android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="room_icon_rank_rules_star" android:layout_marginStart="4.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="room_color_487" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:text="room__week_rank_rule_5"/>
+  <ImageView android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="room_icon_rank_rules_moon" android:layout_marginStart="4.000000dip"/>
+</LinearLayout>

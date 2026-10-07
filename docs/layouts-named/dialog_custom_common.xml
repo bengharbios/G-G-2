@@ -1,0 +1,6 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_base_dialog" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:background="bg_second_level" android:layout_width="-1" android:layout_height="-2">
+    <ViewStub android:id="dialog_detail_content" android:layout_width="-1" android:layout_height="-2"/>
+  </FrameLayout>
+  <ViewStub android:id="dialog_detail_content_extra" android:layout_width="-1" android:layout_height="-2"/>
+</LinearLayout>

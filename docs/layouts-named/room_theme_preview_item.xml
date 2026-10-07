@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.ludochat.view.RoundImageView android:id="ivPre" android:layout_width="246.000000dip" android:layout_height="434.000000dip" android:scaleType="7" app:cornerRadius="10.000000dip"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="ivPreviewThemeLabel" android:visibility="2" android:layout_width="40.000000dip" android:layout_height="30.000000dip" app:clearsAfterStop="false" app:play_on_attach="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="tvActivityThemeName" android:background="room_activity_name_bg_shape" android:visibility="2" android:layout_width="120.000000dip" android:layout_height="25.000000dip" android:layout_marginBottom="30.000000dip"/>
+</FrameLayout>

@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <WebView android:id="web_content" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="368.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+  </FrameLayout>
+</LinearLayout>

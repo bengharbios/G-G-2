@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="1" android:background="@7F08058F" android:layout_width="-1" android:layout_height="-2" android:layout_margin="40.000000dip" android:paddingStart="24.000000dip" android:paddingEnd="24.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textColor="@7F060028" android:gravity="0x00000010" android:id="@7F0A09FA" android:visibility="2" android:layout_width="-1" android:layout_height="56.000000dip" android:text="@7F12046A"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textColor="@7F060028" android:gravity="0x00000010" android:id="@7F0A0A33" android:layout_width="-1" android:layout_height="56.000000dip" android:text="@7F1203D2"/>
+</LinearLayout>

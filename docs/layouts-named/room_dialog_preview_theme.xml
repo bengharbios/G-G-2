@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_theme_dialog" android:layout_width="-1" android:layout_height="-1" android:paddingStart="13.000000dip" android:paddingEnd="13.000000dip">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="llLimitDaysBuy" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="11.000000dip" android:layout_above="fl_pre_theme" android:layout_centerHorizontal="true">
+    <ImageView android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="room_theme_logo_limit_time" android:layout_marginEnd="5.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textColor="white" android:id="tvLimitDaysBuy" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <ImageView android:id="iv_pre_left" android:visibility="2" android:layout_width="35.000000dip" android:layout_height="40.000000dip" android:src="room_theme_arrow_left" android:layout_centerVertical="true"/>
+  <FrameLayout android:id="fl_pre_theme" android:background="room_preview_theme_shape" android:padding="2.000000dip" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+    <com.yalla.ludochat.view.viewpager.YlViewPager android:id="vp_preview" android:layout_width="246.000000dip" android:layout_height="434.000000dip"/>
+  </FrameLayout>
+  <ImageView android:id="iv_pre_right" android:visibility="2" android:layout_width="35.000000dip" android:layout_height="40.000000dip" android:src="room_theme_arrow_right" android:layout_centerVertical="true" android:layout_alignParentEnd="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="white" android:gravity="0x00000011" android:id="tvBuyThemeTip" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="30.000000dip" android:includeFontPadding="false" android:layout_below="fl_pre_theme" android:layout_centerHorizontal="true" android:layout_marginStart="68.000000dip" android:layout_marginEnd="68.000000dip"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_preview_buy" android:background="room_btn_yellow_bg" android:padding="4.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="45.000000dip" android:layout_marginTop="30.000000dip" android:minWidth="144.000000dip" android:layout_below="fl_pre_theme" android:layout_centerHorizontal="true">
+    <ImageView android:id="iv_my_theme_diamond" android:layout_width="-2" android:layout_height="-2" android:src="diamonds_s"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="room_color_d91" android:id="tv_theme_price" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="4.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="color_a60" android:id="tv_theme_promotion_price" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="4.000000dip"/>
+  </LinearLayout>
+</RelativeLayout>

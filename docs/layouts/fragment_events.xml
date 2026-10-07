@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.bannerpager.BannerPager android:id="@7F0A00BD" android:visibility="0" android:layout_width="-1" android:layout_height="-2" app:aspectRate="0.241000" app:banner_empty_img="@7F080219" app:is_need_trun="true" app:place_holder_img="@7F080219" app:point_normal_color="#80FFFFFF" app:point_radius="3.000000dip" app:point_selected_color="@android:0106000B" app:points_marginBottom="10.000000dip" app:points_marginStart="7.000000dip" app:points_space_size="6.000000dip"/>
+  <ScrollView android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F0A066D" android:paddingTop="4.000000dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2"/>
+  </ScrollView>
+</LinearLayout>

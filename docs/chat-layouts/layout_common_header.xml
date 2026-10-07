@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A09BB" android:layout_width="-1" android:layout_height="-2">
+  <com.yallatech.yallachat.ui.view.PageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A09BC" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:subtitleTextAppearance="@7F140280" app:titleTextAppearance="@7F140282"/>
+</FrameLayout>

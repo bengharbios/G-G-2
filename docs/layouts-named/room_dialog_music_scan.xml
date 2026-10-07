@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:background="bg_dialog" android:layout_width="-1" android:layout_height="248.000000dip" android:layout_marginStart="40.000000dip" android:layout_marginEnd="40.000000dip">
+  <ImageView android:layout_gravity="0x00800005" android:id="iv_scan_closed" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:src="dialog_x"/>
+  <ImageView android:id="ivScan" android:layout_width="-2" android:layout_height="-2" android:src="room_music_scan_cycle"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="room_color_487" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:text="room_scanning" android:singleLine="true"/>
+</LinearLayout>

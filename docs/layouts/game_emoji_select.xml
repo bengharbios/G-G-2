@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A0CF3" android:layout_width="-1" android:layout_height="238.000000dip"/>
+  <View android:id="@7F0A0200" android:background="#FFD6D6D6" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_below="@7F0A0CF3"/>
+  <ImageView android:id="@7F0A0582" android:layout_width="63.000000dip" android:layout_height="38.000000dip" android:src="@7F0802ED" android:scaleType="7" android:layout_below="@7F0A0200"/>
+  <ImageView android:id="@7F0A0583" android:layout_width="63.000000dip" android:layout_height="38.000000dip" android:src="@7F08034D" android:scaleType="7" android:layout_below="@7F0A0200" android:layout_toEndOf="@7F0A0582"/>
+  <ImageView android:id="@7F0A0463" android:layout_width="50.000000dip" android:layout_height="38.000000dip" android:src="@7F08022F" android:scaleType="7" android:layout_below="@7F0A0200" android:layout_alignParentEnd="true"/>
+</merge>

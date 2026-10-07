@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2">
+  <include layout="@7F0D00B3"/>
+  <include android:visibility="2" layout="@7F0D0076"/>
+</FrameLayout>

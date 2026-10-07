@@ -1,0 +1,7 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:padding="1.000000dip" android:layout_width="106.000000dip" android:layout_height="106.000000dip">
+  <com.yalla.ludochat.view.RoundImageView android:layout_width="-1" android:layout_height="-1" android:src="#FF0F1E24" app:borderColor="#12FFFFFF" app:borderWidth="1.000000dip" app:cornerRadius="8.000000dip"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <ProgressBar android:layout_gravity="0x00000011" android:id="pb_load" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:indeterminateDrawable="room_gif_load_animal" android:indeterminateDuration="500" android:indeterminateBehavior="1" app:layout_constraintStart_toStartOf="0"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="ludoSVGAView" android:layout_width="77.000000dip" android:layout_height="77.000000dip" app:cornerRadius="8.000000dip"/>
+  </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <CheckedTextView android:textAppearance="TextAppearance.AppCompat.Body2" android:gravity="0x00800013" android:id="design_menu_item_text" android:layout_width="0.000000dip" android:layout_height="-1" android:maxLines="1" android:drawablePadding="@7F070081" android:layout_weight="1.000000"/>
+  <ViewStub android:id="design_menu_item_action_area_stub" android:layout="@7F0D0065" android:inflatedId="design_menu_item_action_area" android:layout_width="-2" android:layout_height="-1"/>
+</merge>

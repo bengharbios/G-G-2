@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CircleImageView android:layout_gravity="0x00000011" android:id="iv_h" android:layout_width="-1" android:layout_height="-1" android:layout_margin="6.000000dip" android:scaleType="6"/>
+  <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:layout_gravity="0x00000011" android:id="iv_f" android:layout_width="-1" android:layout_height="-1"/>
+</merge>

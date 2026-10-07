@@ -1,0 +1,10 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.appbar.AppBarLayout android:id="@7F0A00E1" android:layout_width="-1" android:layout_height="-2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <FrameLayout android:layout_width="-1" android:layout_height="-2">
+      <com.yallatech.yallachat.ui.view.PageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A09BC" android:layout_width="-1" android:layout_height="?7F040013" app:buttonGravity="0x00000010" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:subtitleTextAppearance="@7F140280" app:titleTextAppearance="@7F140281"/>
+      <ViewStub android:id="@7F0A08DF" android:layout="@7F0D0114" android:inflatedId="@7F0A06C0" android:layout_width="-1" android:layout_height="-1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    </FrameLayout>
+    <com.google.android.material.tabs.TabLayout android:layout_gravity="0x00000011" android:id="@7F0A0905" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="48.000000dip" app:tabTextAppearance="@7F140101" style="@7F140195"/>
+  </com.google.android.material.appbar.AppBarLayout>
+  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A0BB1" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A00E1"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

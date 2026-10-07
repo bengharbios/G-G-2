@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A06CC" android:visibility="2" android:layout_width="-2" android:layout_height="361.000000dip">
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F0806CD"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FFA7E5D3" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:text="@7F120674"/>
+  </LinearLayout>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07CF" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="7.500001dip" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip"/>
+</merge>

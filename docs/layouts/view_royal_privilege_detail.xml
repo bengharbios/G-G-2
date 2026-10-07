@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F080758" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="@7F0A02E6" android:background="@7F08070E" android:layout_width="267.000000dip" android:layout_height="32.000000dip" android:layout_marginTop="45.000000dip" android:layout_centerHorizontal="true">
+    <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+      <ImageView android:id="@7F0A0577" android:layout_width="30.000000dip" android:layout_height="23.000000dip"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFB310" android:gravity="0x00000010" android:id="@7F0A0197" android:layout_width="-2" android:layout_height="23.000000dip" android:layout_marginStart="3.000000dip" app:end_color="#FFFFC000" app:gradient="true" app:start_color="#FFFFFF75"/>
+    </LinearLayout>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0286" android:visibility="1" android:layout_width="38.000000dip" android:layout_height="32.000000dip" android:layout_marginLeft="8.000000dip" android:layout_alignTop="@7F0A02E6" android:layout_alignParentLeft="true">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:src="@7F080706"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0287" android:visibility="1" android:layout_width="38.000000dip" android:layout_height="32.000000dip" android:layout_marginRight="8.000000dip" android:layout_alignTop="@7F0A02E6" android:layout_alignParentRight="true">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:src="@7F080707"/>
+  </FrameLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A0CFC" android:paddingBottom="10.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A0287" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip"/>
+</RelativeLayout>

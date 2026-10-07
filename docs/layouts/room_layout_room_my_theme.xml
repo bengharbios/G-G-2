@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A085E" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F0807AF" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <FrameLayout android:id="@7F0A09DC" android:background="@7F080109" android:layout_width="-1" android:layout_height="53.000000dip">
+    <ImageView android:layout_gravity="0x00800005" android:id="@7F0A050D" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="8.000000dip" android:src="@7F08090C" android:layout_marginEnd="11.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="@7F06005E" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="@7F120532"/>
+  </FrameLayout>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08C9" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A09DC" android:overScrollMode="2" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip"/>
+</RelativeLayout>

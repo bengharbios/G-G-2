@@ -1,0 +1,9 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="flMyTheme" android:visibility="2" android:layout_width="-2" android:layout_height="36.000000dip" android:layout_marginTop="2.000000dip" android:layout_marginStart="11.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="ivMineTheme" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:src="room_mine_theme"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="7.000000dip" android:textColor="White" android:gravity="0x00000011" android:layout_gravity="0x00000050" android:background="room_mine_theme_bottom" android:layout_width="-2" android:layout_height="11.000000dip" android:text="room_theme_title_right"/>
+  </FrameLayout>
+  <ImageView android:id="ivOnlyImage" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:src="description_rule" android:layout_marginStart="11.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.games.common.view.DiamondsView android:id="tvMyDiamonds" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ImageView android:layout_gravity="0x00800005" android:id="ivClosedPage" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="8.000000dip" android:src="x_closed" android:layout_marginEnd="11.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</merge>

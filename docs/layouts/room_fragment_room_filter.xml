@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A07DF" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A09E0">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08D1" android:layout_width="-1" android:layout_height="-1" android:layout_marginLeft="25.000000dip" android:layout_marginRight="25.000000dip"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  <RelativeLayout android:id="@7F0A09E0" android:background="@7F080232" android:layout_width="-1" android:layout_height="58.000000dip" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="@7F0A0446" android:layout_width="21.000000dip" android:layout_height="21.000000dip" android:src="@7F08090C" android:layout_alignTop="@7F0A0BFB" android:layout_alignBottom="@7F0A0BFB" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="20.000000sp" android:textStyle="0x00000001" android:textColor="#FF58C980" android:id="@7F0A0BFB" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_centerHorizontal="true"/>
+  </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

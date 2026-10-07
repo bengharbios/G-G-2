@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="room_color_012" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="room_color_def" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:text="room_empty_playlist"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="19.000000dip" android:textStyle="0x00000001" android:textColor="color_a60" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="tv_add_music" android:background="room_btn_yellow_bg" android:padding="6.000000dip" android:layout_width="170.000000dip" android:layout_height="-2" android:layout_marginTop="96.000000dip" android:layout_marginBottom="70.000000dip" android:text="room_add_music"/>
+  <View android:id="v_empty_player" android:layout_width="-1" android:layout_height="210.000000dip"/>
+</FrameLayout>

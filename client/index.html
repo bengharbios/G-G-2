@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Yalla Ludo — غرف صوتية وألعاب</title>
+  <link rel="stylesheet" href="/css/style.css?v=25">
+</head>
+<body>
+  <!-- ===== شاشة الدخول ===== -->
+  <div class="screen active" id="screen-auth">
+    <img class="auth-logo" src="/assets/misc/logo_icon.png" alt="يلا لودو">
+    <div class="big-logo">يلا لودو</div>
+    <div class="sub">غرف صوتية • هدايا • ألعاب • أصدقاء</div>
+    <div class="auth-card">
+      <div class="field">
+        <label>اختر اسمك في التطبيق</label>
+        <input id="authName" type="text" maxlength="14" placeholder="مثال: أبو عبدالله" autocomplete="off">
+      </div>
+      <button class="btn" id="authBtn">دخول 🎉</button>
+    </div>
+  </div>
+
+  <!-- الشريط العلوي المشترك — نسخ طبق الأصل main_header.xml من 1.5.1.0:
+       أفاتار 60dip يسار (في RTL) + ذهب 100dip + ماس 90dip (حبة bg_add_coin #0C3C30 radius 10dip، أيقونة 29dip، زر +)
+       + سلة المتجر icon_skin/cart 38x32dip + إعدادات system — الخلفية friends_titlebg.9 -->
+  <template id="tpl-topbar">
+    <div class="topbar">
+      <img class="avatar-hd" id="hdAvatar" src="" alt="" onerror="this.style.display='none'">
+      <div class="spacer"></div>
+      <button class="coin-pill"><img src="/assets/ui/coin.webp" alt="ذهب"> <span class="gold-val">0</span><img class="add-btn" src="/assets/ui/jia.webp" alt="+"></button>
+      <button class="gem-pill"><img src="/assets/ui/diamonds.webp" alt="مجوهرات"> <span class="jewel-val">0</span><img class="add-btn" src="/assets/ui/jia.webp" alt="+"></button>
+      <button class="hd-icon cart-btn" title="المتجر"><img src="/assets/ui/cart.png" alt="المتجر"></button>
+      <button class="hd-icon" id="hdAdmin" title="لوحة التحكم" style="display:none"><img src="/assets/ui/system.webp" alt="الإدارة" style="filter:hue-rotate(120deg)"></button>
+      <button class="hd-icon settings-btn" title="الإعدادات"><img src="/assets/ui/system.webp" alt="الإعدادات"></button>
+    </div>
+  </template>
+
+  <!-- ===== تاب المجالس (Chat/Rooms) ===== -->
+  <div class="screen" id="screen-home" data-has-tabbar="home">
+    <div data-topbar></div>
+    <div class="page">
+      <div class="banner">
+        <h2>مرحباً <span id="homeName">صديقي</span> 👋</h2>
+        <p>انضم لمجلس، افتح المايك، وأرسل أجمل الهدايا</p>
+        <button class="btn small gold" style="margin-top:8px" id="btnDaily"><img class="btn-ic" src="/assets/currency/coin_big.png" alt=""> المكافأة اليومية</button>
+      </div>
+      <div class="section-title">
+        <h3>🔥 المجالس المباشرة</h3>
+        <button id="btnRefreshRooms">تحديث</button>
+      </div>
+      <div class="rooms-grid" id="roomsGrid"></div>
+      <div class="empty-hint" id="roomsEmpty" style="display:none">
+        لا توجد مجالس حالياً 😴<br>كن أول من ينشئ مجلساً ويدعو أصدقاءه!
+      </div>
+      <div class="section-title">
+        <h3>🏆 لوحة الصدارة</h3>
+        <button id="btnLbOpen">عرض الكل</button>
+      </div>
+      <div id="homeLb"></div>
+    </div>
+  </div>
+
+  <!-- ===== تاب المعركة (Battle) — نسخ طبق الأصل fragment_battle_main.xml + battle_ludo.xml ===== -->
+  <div class="screen" id="screen-battle" data-has-tabbar="battle">
+    <div data-topbar></div>
+    <div class="page battle-page">
+      <!-- ll_rank: شريط الرابطة 50dip — كأس الدوري + القفل يسار، كأس الترتيب العالمي يمين -->
+      <div class="rank-bar">
+        <div class="rank-cell my">
+          <div class="rk-side">
+            <img class="rk-cup" src="/assets/battle/battle_cup_seg_1.svga_static.png" alt="">
+            <img class="rk-lock" src="/assets/battle/lock.webp" alt="">
+            <span class="rk-label">بطولة الدوري</span>
+          </div>
+          <span class="rk-tx">ستفتح البطولة عند المستوى الرابع!</span>
+        </div>
+        <div class="rank-cell global">
+          <span class="rk-tx">No.1000+</span>
+          <div class="rk-side">
+            <img class="rk-globe" src="/assets/battle/rank_global.webp" alt="">
+            <span class="rk-label">الترتيب</span>
+          </div>
+        </div>
+      </div>
+      <!-- hall_title_svga: الهلال 196x178dip يبدأ تحت شريط الرابطة وخلف شعار LUDO (القوس يعلو الحروف) -->
+      <div class="battle-hero">
+        <img class="bh-moon" src="/assets/battle/hall_title_bg.webp" alt="">
+        <img class="bh-logo" src="/assets/battle/ludo_title.webp" alt="لودو">
+      </div>
+      <!-- rl_content: الصف الأول 167x134dip (2 و4 لاعبين + مسابقات) والثاني 111x99dip (تشكيل فريق + خاص ومحلي + غرفة VIP) — كما في لقطات 1.5 الحقيقية -->
+      <div class="mode-wrap" id="modeGrid">
+        <div class="mode-row1">
+          <button class="mode-card" data-mode="2ren"><img src="/assets/battle/svg_ludo_2ren.webp" alt=""><span class="mc-name s-2p">2 و4 لاعبين</span></button>
+          <button class="mode-card" data-mode="tournament"><img src="/assets/battle/svg_ludo_tournament.webp" alt=""><span class="mc-name s-tr">مسابقات</span></button>
+        </div>
+        <div class="mode-row2">
+          <button class="mode-card" data-mode="team"><img src="/assets/battle/svg_ludo_4ren.webp" alt=""><span class="mc-name s-tm">تشكيل فريق</span></button>
+          <button class="mode-card" data-mode="local"><img src="/assets/battle/svg_ludo_local.webp" alt=""><span class="mc-name s-lc">خاص ومحلي</span></button>
+          <button class="mode-card" data-mode="vip"><img src="/assets/battle/svg_ludo_vip.webp" alt=""><span class="mc-name s-vp">غرفة VIP</span></button>
+        </div>
+      </div>
+      <!-- ألعاب الغريب: شبكة البطاقات المتحركة (أيقونات بستايل يلا لودو + بيانات games-data من مستودع G-G) -->
+      <div class="gg-grid" id="ggGrid">
+        <button class="gg-card" data-game="mafia" data-players="4-14 لاعب" data-cat="اجتماعية"><img src="/assets/games/mafia.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #7A1F1F">المافيا</span></button>
+        <button class="gg-card" data-game="tobol" data-players="2-8 لاعب" data-cat="حربية"><img src="/assets/games/tobol.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #7A3A10">طبول الحرب</span></button>
+        <button class="gg-card" data-game="tabot" data-players="4-16 لاعب" data-cat="رعب"><img src="/assets/games/tabot.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #4A2E75">الهروب من التابوت</span></button>
+        <button class="gg-card" data-game="prison" data-players="4-16 لاعب" data-cat="استراتيجية"><img src="/assets/games/prison.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #14554E">السجن</span></button>
+        <button class="gg-card" data-game="risk" data-players="2-8 لاعب" data-cat="مجازفة"><img src="/assets/games/risk.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #7A1F1F">المجازفة</span></button>
+        <button class="gg-card" data-game="risk2" data-players="2-10 لاعب" data-cat="مجازفة"><img src="/assets/games/risk2.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #3A3170">المجازفة 2</span></button>
+        <button class="gg-card" data-game="baharharb" data-players="2-20 لاعب" data-cat="ذكاء"><img src="/assets/games/baharharb.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #14405C">بحر و حرب</span></button>
+        <button class="gg-card" data-game="familyfeud" data-players="2-10 لاعب" data-cat="اجتماعية"><img src="/assets/games/familyfeud.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #A0631C">فاميلي فيود</span></button>
+        <button class="gg-card" data-game="shifarat" data-players="2-20 لاعب" data-cat="ذكاء"><img src="/assets/games/shifarat.png" alt=""><span class="gg-name" style="-webkit-text-stroke:1px #387E12">الشيفرات</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- شاشة تشغيل ألعاب الغريب — الإطار فقط (الهيدر الأساسي يبقى مرئياً وأيقونة الإدارة فيه)
+       زر عودة عائم أسفل اليمين + شريحة نسخ كود الاشتراك GG-TJBS -->
+  <div class="gg-player" id="ggPlayer">
+    <iframe class="ggp-frame" id="ggpFrame" src="about:blank" allow="microphone; autoplay; fullscreen"></iframe>
+    <button class="ggp-back" id="ggpBack" title="عودة للمعركة">‹ عودة</button>
+    <button class="ggp-code-chip" id="ggpCodeChip" title="نسخ كود الاشتراك">🔑 GG-TJBS</button>
+  </div>
+
+  <!-- ===== تاب الأحداث (Events) — نسخة مطابقة لتخطيطات event_*.xml الحقيقية =====
+       كل بطاقة: 340x99.5dip (نسبة 3.417) + رسم البانر الحقيقي من APK + عنوان StrokeTextView
+       أبيض 22sp بحد #FF397F86 على يمين البطاقة (paddingEnd 16dip) + زر استلام (anniu 90x37dip)
+  -->
+  <div class="screen" id="screen-events" data-has-tabbar="events">
+    <div data-topbar></div>
+    <div class="page events-page">
+      <!-- event_sign_in.xml: sign_30/sign_7_entrance_ic + sign_title_7_type + sign_in -->
+      <div class="ev-card" style="background-image:url('/assets/events/sign_7_entrance_ic.webp')">
+        <div class="ev-col">
+          <div class="ev-title">المكافأة اليومية</div>
+          <button class="ev-recv" data-recv="signin"><span>تسجيل الدخول</span></button>
+        </div>
+      </div>
+      <!-- event_daily_task.xml: banner_task + daily_tasks -->
+      <div class="ev-card" style="background-image:url('/assets/events/banner_task.webp')">
+        <div class="ev-col">
+          <div class="ev-title">المهام اليومية</div>
+          <button class="ev-recv" data-recv="task"><span>استلام</span></button>
+        </div>
+      </div>
+      <!-- event_online_reward.xml: banner_freecoin + time(الصندوق الذهبي) + clock_activity -->
+      <div class="ev-card" style="background-image:url('/assets/events/banner_freecoin.webp')">
+        <div class="ev-col">
+          <div class="ev-title">صندوق الكنز الذهبي</div>
+          <div class="ev-clock"><img src="/assets/events/clock_activity.webp" alt=""><span id="evTimer">--:--:--</span></div>
+          <button class="ev-recv" data-recv="goldbox"><span>استلام</span></button>
+        </div>
+      </div>
+      <!-- event_arrival_bonus.xml: terminal_treasure_chest + arrival_bonus + bar_arrival_bonus -->
+      <div class="ev-card" style="background-image:url('/assets/events/terminal_treasure_chest.webp')">
+        <div class="ev-col">
+          <div class="ev-title">صندوق كنز الوصول</div>
+          <div class="ev-progress"><i id="evArrivalBar"></i><b id="evArrivalTxt">0/3</b></div>
+          <button class="ev-recv" data-recv="arrival"><span>استلام</span></button>
+        </div>
+      </div>
+      <!-- event_activity_chest.xml: event_activity_chest_bg + challenge_chest -->
+      <div class="ev-card" style="background-image:url('/assets/events/event_activity_chest_bg.webp')">
+        <div class="ev-col">
+          <div class="ev-title">برج المكافآت</div>
+          <button class="ev-recv" data-recv="tower"><span>استلام</span></button>
+        </div>
+      </div>
+      <!-- event_upgrade_reward.xml: bg_event_upgrade_reward + level_rewards -->
+      <div class="ev-card" style="background-image:url('/assets/events/bg_event_upgrade_reward.webp')">
+        <div class="ev-col">
+          <div class="ev-title">مكافأة تطور المستوى</div>
+          <button class="ev-recv" data-recv="level"><span>استلام</span></button>
+        </div>
+      </div>
+      <!-- event_vip.xml: vip_sub_entrance_ic + vip_subscription (نص #FFA24E11 بحد أصفر) -->
+      <div class="ev-card" style="background-image:url('/assets/events/vip_sub_entrance_ic.webp')">
+        <div class="ev-col">
+          <div class="ev-title vip">الاشتراك في VIP</div>
+          <button class="ev-recv" data-recv="vip"><span>استلام</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== تاب الأصدقاء (Social) — قائمة أصدقاء اللعبة ===== -->
+  <div class="screen" id="screen-dms" data-has-tabbar="dms">
+    <div data-topbar></div>
+    <div class="page social-page">
+      <div class="soc-tabs">
+        <button class="active">أصدقاء اللعبة</button>
+        <button>الرسائل <span class="dot" id="dmDot" style="display:none"></span></button>
+      </div>
+      <div class="soc-count" id="socCount">عدد الأصدقاء: 0</div>
+      <div class="soc-list" id="dmList"></div>
+      <div class="empty-hint" id="dmEmpty">لا أصدقاء بعد — ادخل مجلساً وتعارف على الأعضاء 👥</div>
+      <button class="btn add-friend" id="btnAddFriend">👤 أضف صديقاً للعبة</button>
+    </div>
+  </div>
+
+  <!-- ===== صفحة إنشاء غرفة ===== -->
+  <div class="screen" id="screen-create">
+    <div class="topbar"><button class="rt-close" id="crBack">‹</button><div class="logo">إنشاء غرفة</div></div>
+    <div class="page">
+      <div class="auth-card">
+        <div class="field">
+          <label>اسم الغرفة</label>
+          <input id="crName" type="text" maxlength="24" placeholder="مثال: فله وسوالف مع الشباب">
+        </div>
+        <div class="field">
+          <label>الموضوع</label>
+          <div class="rooms-grid" id="crThemes" style="grid-template-columns:repeat(3,1fr)"></div>
+        </div>
+        <div class="field">
+          <label>كلمة المرور (اختياري)</label>
+          <input id="crPass" type="text" maxlength="12" placeholder="اتركها فارغة لغرفة مفتوحة">
+        </div>
+        <button class="btn" id="crBtn">🎙️ افتح الغرفة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== شاشة الملف الشخصي (تفتح من ضغطة الأفاتار) ===== -->
+  <div class="screen" id="screen-profile">
+    <div class="topbar"><button class="rt-close" id="pfBack">‹</button><div class="logo">حسابي</div></div>
+    <div class="page">
+      <div class="profile-head">
+        <div class="seat" style="width:96px;border-style:solid;border-color:var(--pink)">
+          <div class="avatar" id="pfAvatar" style="width:64px;height:64px;font-size:24px">؟</div>
+        </div>
+        <div class="pname" id="pfName">—</div>
+        <div class="badge-row" id="pfBadges"></div>
+      </div>
+      <div style="padding:0 4px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt2);margin-bottom:4px">
+          <span>المستوى <b id="pfLevel">1</b></span><span id="pfXp">0/100 خبرة</span>
+        </div>
+        <div class="level-track"><div class="level-fill" id="pfLevelFill" style="width:0%"></div></div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="v"><img class="stat-ic" src="/assets/currency/base_icon_coin_s.png" alt=""> <span id="pfGold" style="color:var(--gold)">0</span></div><div class="k">الذهب</div></div>
+        <div class="stat-box"><div class="v"><img class="stat-ic" src="/assets/currency/diamonds.png" alt=""> <span id="pfJewel" style="color:var(--gem)">0</span></div><div class="k">المجوهرات</div></div>
+        <div class="stat-box"><div class="v" id="pfGames">0</div><div class="k">ألعابي</div></div>
+      </div>
+      <div class="menu-list">
+        <button class="menu-row" id="pfWallet"><span class="mi">💰</span>المحفظة والتحويل<div class="spacer" style="flex:1"></div>‹</button>
+        <button class="menu-row" id="pfLb"><span class="mi">🏆</span>لوحة الصدارة<div class="spacer" style="flex:1"></div>‹</button>
+        <button class="menu-row" id="pfAbout"><span class="mi">ℹ️</span>عن التطبيق<div class="spacer" style="flex:1"></div>‹</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== شاشة الغرفة الصوتية (هيكل room_include_room_* من APK يلا لودو) ===== -->
+  <div class="screen" id="screen-room">
+    <!-- room_include_room_top: شريط علوي بخلفية pill: أفاتار + اسم + ID + أدوات -->
+    <div class="room-top">
+      <div class="rt-pill">
+        <img class="rt-avatar" id="rtAvatar" src="/assets/ui/bg_hall.png" alt="">
+        <div>
+          <div class="rt-name" id="roomName">غرفة</div>
+          <div class="rt-id">ID: <span id="roomId">—</span></div>
+        </div>
+      </div>
+      <div class="spacer" style="flex:1"></div>
+      <button class="rt-ic" id="btnRoomMore">•••</button>
+      <button class="rt-ic" id="roomClose" title="خروج">⏻</button>
+    </div>
+
+    <!-- room_include_room_sofa: شريط الثروة يسار + أفاتارات المشاهدين يمين -->
+    <div class="room-sofa">
+      <div class="rs-rank"><span>🏆</span><b id="roomWealth">0</b><span class="rs-arrow">‹</span></div>
+      <div class="spacer" style="flex:1"></div>
+      <div class="rs-aud" id="roomAud"></div>
+      <div class="rs-count" id="roomCount">0</div>
+    </div>
+
+    <!-- المضيف أعلى الوسط + شبكة المايكات (rvRoomMic) -->
+    <div class="host-seat" id="hostSeat"></div>
+
+    <div class="seats-grid" id="seatsGrid"></div>
+
+    <!-- room_include_room_body_float_item2: دخول المضيف (enter runway) -->
+    <div class="enter-runway" id="enterRunway"></div>
+
+    <div class="game-strip" id="gameStrip"></div>
+
+    <div class="seats-grid" id="seatsGrid"></div>
+
+    <!-- لوحة سلم وثعبان -->
+    <div class="snake-board-wrap" id="snakeWrap" style="display:none">
+      <canvas id="snakeBoard" width="300" height="300"></canvas>
+      <div class="snake-players" id="snakePlayers"></div>
+      <div style="display:flex;gap:8px;padding:6px 2px">
+        <button class="btn small" id="btnDice" style="flex:1">🎲 ارمِ النرد</button>
+        <button class="btn small secondary" id="btnGameStop">إنهاء</button>
+      </div>
+    </div>
+
+    <!-- لوحة اللودو -->
+    <div id="ludoWrap" style="display:none;padding:4px 10px">
+      <img class="ludo-title" src="/assets/ui/ludo_title.png" alt="لودو">
+      <div id="ludoPlayers" class="snake-players"></div>
+      <canvas id="ludoBoard"></canvas>
+      <div style="display:flex;gap:8px;padding:8px 2px;align-items:center">
+        <button class="btn" id="btnLudoRoll" style="flex:1">🎲 ارمِ النرد</button>
+        <button class="btn small secondary" id="btnGameStop2">إنهاء اللعبة</button>
+      </div>
+      <div id="ludoHint" style="text-align:center;font-size:11px;color:var(--txt2);padding-bottom:4px"></div>
+    </div>
+
+    <!-- المسبحة -->
+    <div id="sebhaWrap" style="display:none;padding:6px 16px">
+      <div class="stat-box" style="display:flex;align-items:center;justify-content:space-between;padding:14px">
+        <button class="rb-btn" id="btnSebhaMinus" style="font-size:14px">−</button>
+        <div style="text-align:center">
+          <div class="v" style="font-size:26px;font-weight:900" id="sebhaCount">0</div>
+          <div class="k" style="font-size:10px;color:var(--txt2)">اضغط للتسبيح — كل 33 لهدايا</div>
+        </div>
+        <button class="rb-btn active" id="btnSebhaTap" style="font-size:20px">📿</button>
+      </div>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <!-- room_include_room_body_sidebar: الأزرار الجانبية (45dip عمود يمين) -->
+    <div class="room-side">
+      <button class="rs-btn" id="btnSideMusic"><span class="rs-ic">🎵</span><span>موسيقى</span></button>
+      <button class="rs-btn" id="btnSideMsgs"><span class="rs-ic">✉️</span><span>رسائل</span><span class="rs-badge" id="sideMsgBadge" style="display:none">0</span></button>
+      <button class="rs-btn" id="btnSideLucky"><span class="rs-ic">🍀</span><span>الحظ</span></button>
+    </div>
+
+    <!-- room_include_room_input: صوت / مايك / إدخال / إيموجي / ألعاب / هدية -->
+    <div class="room-bottom">
+      <button class="rb-sq" id="btnSpeaker" title="الصوت">🔊</button>
+      <button class="rb-sq" id="btnMic" title="المايك"><img id="micImg" class="rb-img" src="/assets/ui/room_ic_input_mic_off.png" alt="مايك"></button>
+      <button class="rb-sq" id="btnEmoji" title="الإيموجي">😊</button>
+      <input class="chat-input" id="chatInput" placeholder="قل شيئاً..." maxlength="300">
+      <button class="rb-sq" id="btnGames" title="الألعاب"><img class="rb-img" src="/assets/misc/gold_dice.png" alt="ألعاب"></button>
+      <button class="rb-sq gift" id="btnGift" title="هدايا">🎁</button>
+    </div>
+
+    <!-- طبقة الهدايا المتحركة -->
+    <div id="giftLayer"></div>
+  </div>
+
+  <!-- ===== شاشة محادثة خاصة ===== -->
+  <div class="screen" id="screen-dmchat">
+    <div class="topbar">
+      <button class="rt-close" id="dmBack">‹</button>
+      <div class="rt-name" id="dmTitle">محادثة</div>
+    </div>
+    <div class="dm-thread" id="dmThread"></div>
+    <div class="dm-input-row">
+      <input id="dmInput" placeholder="اكتب رسالتك..." maxlength="300">
+      <button class="rb-btn active" id="dmSend">➤</button>
+    </div>
+  </div>
+
+  <!-- ===== البوتوم شيت: الهدايا ===== -->
+  <div class="sheet-wrap" id="giftSheet">
+    <div class="sheet-backdrop" data-close></div>
+    <div class="sheet">
+      <div class="sheet-head">
+        <h3>أرسل هدية</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="gem-pill"><img src="/assets/currency/diamonds.png" alt="مجوهرات"> <span id="giftMyJewels">0</span></span>
+          <button class="sheet-close" data-close>✕</button>
+        </div>
+      </div>
+      <div class="sheet-body">
+        <div class="gift-grid" id="giftGrid"></div>
+        <div class="send-row">
+          <div class="target-label" id="giftTargetLabel">اختر هدية لإرسالها للغرفة</div>
+          <button class="btn small" id="giftSend" disabled>إرسال</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== مودال عام ===== -->
+  <div class="modal-wrap" id="modal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal">
+      <h3 id="modalTitle">عنوان</h3>
+      <div class="modal-body" id="modalBody"></div>
+      <button class="btn secondary" data-close style="margin-top:4px">إغلاق</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/catalog.js?v=25"></script>
+  <script src="/js/gifts.js?v=25"></script>
+  <script src="/js/rtc.js?v=25"></script>
+  <script src="/js/ludo.js?v=25"></script>
+  <script src="/js/games.js?v=25"></script>
+  <script src="/js/app.js?v=25"></script>
+</body>
+</html>

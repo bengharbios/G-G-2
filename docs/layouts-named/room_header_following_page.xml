@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:src="icon_no_follow_room"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="white" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:text="room_base_no_followed_room"/>
+</LinearLayout>

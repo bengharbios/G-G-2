@@ -1,0 +1,29 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="fl_main" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="4.000000dip" android:layout_marginBottom="4.000000dip" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip">
+    <LinearLayout android:orientation="0" android:id="ll_friend" android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_fb_friend" android:background="btn_buddy_selected" android:layout_width="0.000000dip" android:layout_height="37.000000dip" android:layout_weight="1.000000">
+        <ImageView android:id="iv_icon_fb" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="facebook_white"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="white" android:id="tv_fb" android:layout_width="-2" android:layout_height="-2" android:text="friend_fb" android:textAllCaps="false"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_game_friend" android:background="btn_social_unselected" android:layout_width="0.000000dip" android:layout_height="37.000000dip" android:layout_weight="1.000000">
+        <ImageView android:id="iv_icon_game" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="game_green"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF75CFB0" android:id="tv_game" android:layout_width="-2" android:layout_height="-2" android:text="game_buddies" android:textAllCaps="false"/>
+      </LinearLayout>
+      <FrameLayout android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_message" android:background="btn_social_unselected" android:layout_width="-1" android:layout_height="37.000000dip">
+          <ImageView android:id="iv_icon_message" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="message_green"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF75CFB0" android:id="tv_msg" android:layout_width="-2" android:layout_height="-2" android:text="messages" android:textAllCaps="false"/>
+        </LinearLayout>
+        <ImageView android:layout_gravity="0x00800035" android:id="iv_red_dot" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5.000000dip" android:src="reddot"/>
+      </FrameLayout>
+      <FrameLayout android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_recent" android:background="btn_social_unselected" android:layout_width="-1" android:layout_height="37.000000dip" android:layout_weight="1.000000">
+          <ImageView android:id="iv_icon_recent" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="game_green"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF75CFB0" android:id="tv_recent" android:layout_width="-2" android:layout_height="-2" android:text="recent" android:textAllCaps="false"/>
+        </LinearLayout>
+        <ImageView android:layout_gravity="0x00800035" android:id="iv_red_dot_recent" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5.000000dip" android:src="reddot"/>
+      </FrameLayout>
+    </LinearLayout>
+    <com.yalla.games.friends.view.FriendsViewPager android:id="vp_friend" android:background="social_bg" android:layout_width="-1" android:layout_height="-1" android:layout_below="ll_friend"/>
+  </RelativeLayout>
+</FrameLayout>

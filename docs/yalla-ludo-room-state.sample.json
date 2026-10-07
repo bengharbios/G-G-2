@@ -1,0 +1,270 @@
+{
+    "title": null,
+    "isFinished": false,
+    "date": null,
+    "roomId": 12345,
+    "roomType": 1,
+    "group": 0,
+    "activatedId": 1000,
+    "status": 0,
+    "sceneId": 13000,
+    "chessId": 11000,
+    "diceId": 10000,
+    "player": {
+        "player": [
+            {
+                "fPlayerInfo": {
+                    "idx": 1000,
+                    "faceId": -1,
+                    "nikeName": "Player 1",
+                    "faceUrl": "public/default_head.png"
+                },
+                "color": 0,
+                "sitNum": 1,
+                "isSignUp": 1,
+                "winIndex": -1,
+                "isLeft": 0,
+                "isFighted": 0,
+                "isInSysTrust": 0,
+                "reThrowNum": 0,
+                "reThrowCost": 2
+            },
+            {
+                "fPlayerInfo": {
+                    "idx": 1001,
+                    "faceId": -1,
+                    "nikeName": "Player 2",
+                    "faceUrl": "public/default_head.png",
+                    "placeId": 0,
+                    "ftype": 0,
+                    "country": 0,
+                    "level": 0,
+                    "viplevel": 0,
+                    "winCount": 1,
+                    "totalCount": 2
+                },
+                "color": 1,
+                "sitNum": 1,
+                "isSignUp": 1,
+                "winIndex": -1,
+                "isLeft": 0,
+                "isFighted": 0,
+                "isInSysTrust": 0,
+                "reThrowNum": 0,
+                "reThrowCost": 2
+            },
+            {
+                "fPlayerInfo": {
+                    "idx": 1002,
+                    "faceId": -1,
+                    "nikeName": "Player 3",
+                    "faceUrl": "public/default_head.png",
+                    "placeId": 0,
+                    "ftype": 0,
+                    "country": 0,
+                    "level": 0,
+                    "viplevel": 0,
+                    "winCount": 1,
+                    "totalCount": 2
+                },
+                "color": 2,
+                "sitNum": 0,
+                "isSignUp": 1,
+                "winIndex": -1,
+                "isLeft": 0,
+                "isFighted": 0,
+                "isInSysTrust": 0,
+                "reThrowNum": 0,
+                "reThrowCost": 2
+            },
+            {
+                "fPlayerInfo": {
+                    "idx": 1003,
+                    "faceId": -1,
+                    "nikeName": "Player 4",
+                    "faceUrl": "public/default_head.png",
+                    "placeId": 0,
+                    "ftype": 0,
+                    "country": 0,
+                    "level": 0,
+                    "viplevel": 0,
+                    "winCount": 1,
+                    "totalCount": 2
+                },
+                "color": 3,
+                "sitNum": 0,
+                "isSignUp": 1,
+                "winIndex": -1,
+                "isLeft": 0,
+                "isFighted": 0,
+                "isInSysTrust": 0,
+                "reThrowNum": 0,
+                "reThrowCost": 2
+            }
+        ]
+    },
+    "gamedata": {
+        "chess": [
+            {
+                "chessId": 101,
+                "color": 0,
+                "area": 1,
+                "gridPosition": 3,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": 102,
+                "isMaster": 1
+            },
+            {
+                "chessId": 102,
+                "color": 0,
+                "area": 1,
+                "gridPosition": 3,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 103,
+                "color": 0,
+                "area": 0,
+                "gridPosition": -2,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 104,
+                "color": 0,
+                "area": 0,
+                "gridPosition": -3,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 201,
+                "color": 1,
+                "area": 1,
+                "gridPosition": 101,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 202,
+                "color": 1,
+                "area": 1,
+                "gridPosition": 102,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 203,
+                "color": 1,
+                "area": 1,
+                "gridPosition": 103,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 204,
+                "color": 1,
+                "area": 1,
+                "gridPosition": 104,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 301,
+                "color": 2,
+                "area": 2,
+                "gridPosition": 101,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 302,
+                "color": 2,
+                "area": 2,
+                "gridPosition": 102,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 303,
+                "color": 2,
+                "area": 2,
+                "gridPosition": 103,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 304,
+                "color": 2,
+                "area": 2,
+                "gridPosition": 104,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 401,
+                "color": 3,
+                "area": 3,
+                "gridPosition": 101,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 402,
+                "color": 3,
+                "area": 3,
+                "gridPosition": 102,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 403,
+                "color": 3,
+                "area": 3,
+                "gridPosition": 103,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            },
+            {
+                "chessId": 404,
+                "color": 3,
+                "area": 3,
+                "gridPosition": 104,
+                "isWin": 0,
+                "chessSkin": 1,
+                "chessLinkId": -1,
+                "isMaster": 0
+            }
+        ]
+    }
+}

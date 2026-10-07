@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:padding="6.000000dip" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <TextView android:textSize="10.000000sp" android:textColor="#FFB6DCD2" android:layout_gravity="0x00000001" android:id="tv_date" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <RelativeLayout android:layout_gravity="0x00800005" android:layout_width="282.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip">
+    <com.yalla.games.common.view.HeadView android:id="iv_head_view" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_alignParentEnd="true"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="#FF626262" android:id="tv_name" android:layout_width="-2" android:layout_height="-2" android:maxLines="1" android:layout_alignTop="iv_head_view" android:textDirection="5" android:layout_toStartOf="iv_head_view"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:layout_below="tv_name" android:layout_toStartOf="iv_head_view">
+      <ImageView android:id="iv_status" android:focusable="false" android:visibility="1" android:layout_width="15.000000dip" android:layout_height="15.000000dip" android:layout_marginEnd="3.000000dip"/>
+      <FrameLayout android:id="fl_content" android:background="chat_bubble_right" android:layout_width="-2" android:layout_height="-2">
+        <ViewStub android:id="view_stub_content" android:layout_width="-2" android:layout_height="-2"/>
+      </FrameLayout>
+    </LinearLayout>
+  </RelativeLayout>
+</LinearLayout>

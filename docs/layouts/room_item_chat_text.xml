@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <include layout="@7F0D01D1"/>
+  <FrameLayout android:id="@7F0A0750" android:background="@7F08058C" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:layout_marginStart="54.000000dip">
+    <com.yalla.games.common.chat.view.EmojiTextView android:textSize="11.000000dip" android:textColor="@7F0601EF" android:gravity="0x00000010" android:layout_gravity="0x00000011" android:id="@7F0A0A23" android:layout_width="-2" android:layout_height="-2" android:lineSpacingExtra="1.500000dip"/>
+  </FrameLayout>
+</FrameLayout>

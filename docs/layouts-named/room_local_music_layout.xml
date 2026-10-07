@@ -1,0 +1,4 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="cl_local_music" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="include_title_music_layout" layout="@7F0D029F"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="rv_local_music" android:background="room_local_music_bg" android:paddingTop="12.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="53.000000dip" android:layout_marginBottom="11.000000dip" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

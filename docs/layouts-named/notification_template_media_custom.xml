@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:id="status_bar_latest_event_content" android:layout_width="-1" android:layout_height="64.000000dip">
+  <include android:layout_width="@7F070109" android:layout_height="@7F070108" layout="@7F0D0195"/>
+  <LinearLayout android:orientation="0" android:id="notification_main_column_container" android:paddingTop="@7F07010A" android:layout_width="0.000000dip" android:layout_height="-2" android:minHeight="@7F070108" android:layout_weight="1.000000" android:layout_toLeftOf="cancel_action" android:layout_toStartOf="cancel_action">
+    <FrameLayout android:id="notification_main_column" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="@7F070107" android:layout_marginRight="8.000000dip" android:layout_marginBottom="8.000000dip" android:layout_weight="1.000000" android:layout_marginStart="@7F070107" android:layout_marginEnd="8.000000dip"/>
+    <FrameLayout android:id="right_side" android:paddingTop="@7F07010D" android:layout_width="-2" android:layout_height="-2" android:layout_marginRight="8.000000dip" android:layout_marginEnd="8.000000dip">
+      <DateTimeView android:textAppearance="TextAppearance.Compat.Notification.Time.Media" android:layout_gravity="0x00800035" android:id="time" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:singleLine="true"/>
+      <Chronometer android:textAppearance="TextAppearance.Compat.Notification.Time.Media" android:layout_gravity="0x00800035" android:id="chronometer" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:singleLine="true"/>
+      <TextView android:textAppearance="TextAppearance.Compat.Notification.Info.Media" android:layout_gravity="0x00800055" android:id="info" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:singleLine="true"/>
+    </FrameLayout>
+  </LinearLayout>
+  <LinearLayout android:layout_gravity="0x00800015" android:orientation="0" android:id="media_actions" android:layout_width="-2" android:layout_height="-1" android:layoutDirection="0"/>
+  <include android:layout_width="48.000000dip" android:layout_height="-1" android:layout_marginRight="6.000000dip" android:layout_marginEnd="6.000000dip" layout="@7F0D018F"/>
+  <ImageView android:id="end_padder" android:layout_width="6.000000dip" android:layout_height="-1"/>
+</LinearLayout>

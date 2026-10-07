@@ -1,0 +1,24 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="rl_item_search_room_layout" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="item_bg_search_room" android:background="room_item_room_bg" android:layout_width="-1" android:layout_height="88.000000dip" android:layout_marginTop="5.000000dip" android:layout_marginStart="6.000000dip" android:layout_marginEnd="6.000000dip">
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:layout_marginBottom="2.000000dip" android:layout_marginStart="3.000000dip">
+      <com.yalla.ludochat.view.RoundImageView android:id="sdv_header" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:scaleType="6" app:cornerRadius="6.000000dip" app:isSquare="true"/>
+      <com.yalla.ludochat.view.RoundImageView android:id="iv_alpha_lock" android:background="room_top_lock_alpha_bg" android:visibility="2" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:src="room_top_left_lock" android:scaleType="5" app:cornerRadius="6.000000dip"/>
+    </FrameLayout>
+    <LinearLayout android:gravity="0x00000010" android:orientation="1" android:id="ll_item_room_info" android:layout_width="0.000000dip" android:layout_height="80.000000dip" android:layout_weight="1.000000" android:layout_marginStart="6.000000dip" android:layout_marginEnd="6.000000dip">
+      <LinearLayout android:gravity="0x00800013" android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+        <FrameLayout android:layout_width="-2" android:layout_height="-2">
+          <ImageView android:id="iv_honor" android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:scaleType="3" android:layout_marginEnd="5.000000dip"/>
+          <com.yalla.games.common.view.svga.LudoSVGAView android:id="iv_honor_svga" android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:scaleType="3" android:layout_marginEnd="5.000000dip" app:play_on_attach="true"/>
+        </FrameLayout>
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="color_black_5f" android:ellipsize="3" android:gravity="0x00800013" android:id="tv_room_name" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:includeFontPadding="false"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip">
+        <com.yalla.games.common.view.svga.LudoSVGAView android:id="ivPrettyID" android:visibility="2" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:scaleType="1" app:clearsAfterStop="false" app:play_on_attach="true"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="color_black_5f" android:gravity="0x00000011" android:id="tv_room_id" android:layout_width="-2" android:layout_height="15.000000dip" android:singleLine="true" android:includeFontPadding="false"/>
+      </LinearLayout>
+    </LinearLayout>
+    <ImageView android:layout_gravity="0x00000010" android:id="lv_live" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_marginEnd="4.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="color_376" android:layout_gravity="0x00000010" android:id="tv_online_num" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip" android:singleLine="true" android:drawablePadding="3.000000dip" android:drawableStart="icon_search_room_num" android:layout_marginEnd="10.000000dip"/>
+  </LinearLayout>
+  <ImageView android:id="iv_room_official" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:src="icon_room_official" android:layout_marginStart="4.000000dip"/>
+</FrameLayout>

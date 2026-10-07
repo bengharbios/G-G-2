@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+  <TextView android:textAppearance="@7F1401C1" android:textColor="?7F040569" android:ellipsize="3" android:id="@7F0A06BE" android:background="?7F04056A" android:paddingLeft="@7F07029F" android:paddingTop="@7F0702A4" android:paddingRight="@7F07029F" android:paddingBottom="@7F0702A4" android:layout_width="-2" android:layout_height="-2" android:layout_margin="@7F0702A0" android:maxWidth="256.000000dip" android:maxLines="3" android:paddingStart="@7F07029F" android:paddingEnd="@7F07029F"/>
+</LinearLayout>

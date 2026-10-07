@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="rl_main" android:background="bg_hall" android:layout_width="360.000000dip" android:layout_height="-1">
+  <View android:background="skin_bg" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <View android:background="bg_medal_detail_title" android:layout_width="-1" android:layout_height="167.800003dip" android:layout_marginTop="42.000000dip"/>
+  <RelativeLayout android:id="rl_title" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip">
+    <ImageView android:id="iv_rules" android:paddingTop="10.000000dip" android:paddingBottom="8.000000dip" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:src="description_rule" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentStart="true"/>
+    <ImageView android:id="iv_close" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="skin_close" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:gravity="0x00000010" android:layout_gravity="0x00000010" android:id="rl_gold" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="white" android:gravity="0x00000011" android:id="tv_coin_num" android:background="bg_add_coin" android:layout_width="-2" android:layout_height="20.000000dip" android:minWidth="80.000000dip" android:lines="1" android:layout_centerVertical="true" android:paddingStart="18.000000dip" android:paddingEnd="10.000000dip" android:layout_marginStart="10.000000dip"/>
+    <ImageView android:layout_width="23.000000dip" android:layout_height="26.000000dip" android:src="regression_coin_ic" android:layout_centerVertical="true" android:layout_alignParentStart="true"/>
+  </RelativeLayout>
+  <View android:id="view_switch_right_chect_bg" android:background="regression_home_switch_bg" android:visibility="1" android:layout_width="300.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="52.000000dip" android:layout_centerHorizontal="true" android:rotationY="180.000000"/>
+  <View android:id="view_switch_left_chect_bg" android:background="regression_home_switch_bg" android:layout_width="300.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="52.000000dip" android:layout_centerHorizontal="true"/>
+  <LinearLayout android:orientation="0" android:id="radio_group_switch" android:layout_width="300.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="50.000000dip" android:layout_below="rl_money_title" android:layout_centerHorizontal="true">
+    <FrameLayout android:id="fl_switch_task" android:paddingBottom="3.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="iv_switch_task" android:layout_width="14.000000dip" android:layout_height="19.000000dip" android:src="regression_switch_task_check"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00000011" android:id="ctv_task" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip" android:text="regression_switch_task" android:includeFontPadding="false"/>
+      </LinearLayout>
+    </FrameLayout>
+    <FrameLayout android:id="fl_switch_rewards" android:paddingBottom="3.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="iv_switch_rewards" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:src="regression_switch_reward_uncheck"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF17654C" android:gravity="0x00000011" android:id="ctv_rewards" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip" android:text="regression_switch_reward" android:lines="1" android:includeFontPadding="false"/>
+      </LinearLayout>
+      <ImageView android:id="shop_red_dot" android:visibility="2" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="reddot" android:layout_marginStart="80.000000dip"/>
+    </FrameLayout>
+  </LinearLayout>
+  <com.yalla.games.events.regression.view.RegressionViewPage android:id="vp_regression" android:layout_width="-1" android:layout_height="-1" android:layout_below="radio_group_switch"/>
+  <FrameLayout android:id="fl_new_guild" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:layout_gravity="0x00000001" android:layout_width="340.000000dip" android:layout_height="117.000000dip" android:layout_marginTop="80.000000dip" android:src="regression_new_help_bg"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF487664" android:gravity="0x00800013" android:layout_width="220.000000dip" android:layout_height="65.000000dip" android:layout_marginTop="110.000000dip" android:text="regression_guild_des" android:layout_marginStart="105.000000dip"/>
+  </FrameLayout>
+</RelativeLayout>

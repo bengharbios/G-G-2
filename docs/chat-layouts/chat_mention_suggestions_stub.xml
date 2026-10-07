@@ -1,0 +1,1 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android" android:name="com.yallatech.yallachat.chat.ui.fragment.MentionsPickerFragment" android:tag="mentions_picker_fragment" android:layout_width="-1" android:layout_height="-1"/>

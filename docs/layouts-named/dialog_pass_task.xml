@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="360.000000dip" android:layout_height="-1">
+  <FrameLayout android:id="rl_content" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+    <ImageView android:layout_gravity="0x00000001" android:id="iv_title_bg" android:layout_width="331.000000dip" android:layout_height="104.000000dip" android:src="battle_pass_task_title_bg"/>
+    <ImageView android:layout_gravity="0x00000001" android:id="iv_title" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="battle_pass_task_title_ic"/>
+    <FrameLayout android:id="fl_content" android:background="pass_task_battle_dialog_bg" android:layout_width="331.000000dip" android:layout_height="453.000000dip" android:layout_marginTop="51.000000dip">
+      <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="18.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FF67A58E" android:ellipsize="3" android:gravity="0x00800005" android:layout_gravity="0x00000010" android:id="ctv_current_experience" android:layout_width="-2" android:layout_height="-2" android:maxWidth="270.000000dip" android:lines="1" android:paddingStart="20.000000dip"/>
+        <ImageView android:id="iv_question" android:paddingTop="8.000000dip" android:paddingBottom="8.000000dip" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:src="question_green_ic" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+      </LinearLayout>
+      <com.yalla.games.events.pass.PassTaskProgressView android:layout_gravity="0x00000001" android:id="pt_progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="35.000000dip" android:layout_marginStart="16777206.000000dip"/>
+      <androidx.recyclerview.widget.RecyclerView android:id="rv_task" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="97.000000dip"/>
+    </FrameLayout>
+  </FrameLayout>
+  <ImageView android:id="iv_close" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:src="close" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

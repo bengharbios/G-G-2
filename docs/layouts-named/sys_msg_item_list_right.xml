@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:padding="6.000000dip" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <TextView android:textSize="10.000000sp" android:textColor="#FFB6DCD2" android:layout_gravity="0x00000001" android:id="tv_date" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <RelativeLayout android:layout_gravity="0x00800005" android:layout_width="282.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginEnd="5.000000dip">
+    <ImageView android:id="iv_head_view" android:layout_width="41.000000dip" android:layout_height="41.000000dip" android:src="system_icon_yellow" android:layout_alignParentEnd="true"/>
+    <FrameLayout android:id="fl_content" android:background="bg_sys_msg_item" android:layout_width="-2" android:layout_height="-2" android:layout_margin="3.000000dip" android:layout_alignTop="iv_head_view" android:layoutDirection="0" android:layout_toStartOf="iv_head_view">
+      <com.yalla.games.common.view.webview.NoScrollWebview android:gravity="0x00800013" android:layout_gravity="0x00000011" android:id="tv_web_content" android:layout_width="-2" android:layout_height="-2" android:layout_margin="10.000000dip" android:minHeight="53.000000dip"/>
+      <TextView android:textSize="12.000000sp" android:textColor="#FFC2C2C2" android:gravity="0x00800013" android:autoLink="0x00000001" android:layout_gravity="0x00000011" android:id="tv_content" android:layout_width="-2" android:layout_height="-2" android:layout_margin="10.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</LinearLayout>

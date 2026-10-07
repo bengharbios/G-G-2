@@ -1,0 +1,4 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <View android:id="flRoot" android:layout_width="-1" android:layout_height="106.000000dip" android:layout_marginBottom="237.000000dip"/>
+  <com.yalla.ludochat.view.MicEmojiPanelView android:layout_gravity="0x00000050" android:id="micEmojiPanelView" android:background="room_fun_center_dialog_bg" android:layout_width="-1" android:layout_height="237.000000dip"/>
+</FrameLayout>

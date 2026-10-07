@@ -1,0 +1,4 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0866" android:layout_width="-2" android:layout_height="-2">
+  <ImageView android:id="@7F0A0592" android:layout_width="75.000000dip" android:layout_height="80.000000dip" android:layout_marginStart="18.000000dip" android:layout_marginEnd="18.000000dip"/>
+  <com.yalla.games.common.view.HeadFrameView android:id="@7F0A0136" android:visibility="2" android:layout_width="75.000000dip" android:layout_height="75.000000dip" android:layout_marginStart="18.000000dip" android:layout_marginEnd="18.000000dip"/>
+</FrameLayout>

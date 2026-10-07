@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0841" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.rank.view.FriendRankView android:id="@7F0A0317" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="47.000000dip"/>
+  <RelativeLayout android:id="@7F0A086C" android:background="@7F080109" android:layout_width="-1" android:layout_height="53.000000dip">
+    <ImageView android:id="@7F0A0578" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:src="@7F080296" android:paddingStart="10.000000dip" android:layout_alignParentStart="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="22.000000sp" android:textColor="#FF87EBAA" android:gravity="0x00000011" android:id="@7F0A0BFB" android:layout_width="-2" android:layout_height="-1" android:layout_marginBottom="10.000000dip" android:text="@7F1201C7" android:includeFontPadding="false" android:shadowColor="@7F060027" android:shadowDy="5.000000" android:shadowRadius="1.000000" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="@7F0A0446" android:paddingTop="11.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="@7F0807BA" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+</RelativeLayout>

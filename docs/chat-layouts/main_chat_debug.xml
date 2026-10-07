@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:id="@7F0A0A66" android:layout_width="-2" android:layout_height="-2"/>
+  <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+    <TextView android:layout_width="-2" android:layout_height="-2" android:text="调试开关"/>
+    <androidx.appcompat.widget.SwitchCompat android:id="@7F0A0918" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:id="@7F0A05CD" android:layout_width="-1" android:layout_height="-2">
+    <TextView android:layout_width="-2" android:layout_height="-2" android:text="设置消息接收的最低版本号:"/>
+    <TextView android:id="@7F0A0A9F" android:layout_width="-1" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:id="@7F0A05D4" android:layout_width="-1" android:layout_height="-2">
+    <TextView android:layout_width="-2" android:layout_height="-2" android:text="设置消息发送版本号:"/>
+    <TextView android:id="@7F0A0AF2" android:layout_width="-1" android:layout_height="-2"/>
+  </LinearLayout>
+  <TextView android:layout_width="-2" android:layout_height="-2" android:text="点击下方按钮之后等待会重启app"/>
+  <Button android:id="@7F0A015E" android:layout_width="-2" android:layout_height="-2" android:text="处理未知消息"/>
+  <Button android:id="@7F0A015D" android:layout_width="-2" android:layout_height="-2" android:text="批量发送5000条自己创建的群消息"/>
+</LinearLayout>

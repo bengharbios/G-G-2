@@ -1,0 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A00A5" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textSize="16.000000dip" android:textColor="@7F0601F8" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A00BE" android:background="@7F08007E" android:paddingLeft="16.000000dip" android:paddingRight="16.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="14.000000dip"/>
+    <com.yallatech.yallachat.libalbum.widget.VideoTimelinePlayView android:id="@7F0A00CB" android:visibility="2" android:layout_width="-1" android:layout_height="58.000000dip" android:layout_marginTop="55.000000dip"/>
+    <ImageView android:id="@7F0A00A8" android:background="@7F08007E" android:visibility="2" android:layout_width="44.000000dip" android:layout_height="32.000000dip" android:layout_marginTop="120.000000dip" android:scaleType="7" android:layout_marginStart="16.000000dip" app:srcCompat="@7F08040A"/>
+    <TextView android:textSize="16.000000dip" android:textColor="@7F0601F8" android:gravity="0x00000011" android:id="@7F0A00BD" android:background="@7F08007E" android:paddingLeft="16.000000dip" android:paddingRight="16.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="120.000000dip" android:textDirection="3" android:layout_marginStart="68.000000dip"/>
+  </FrameLayout>
+  <ImageButton android:layout_gravity="0x00000011" android:id="@7F0A00A0" android:background="@7F080566" android:layout_width="64.000000dip" android:layout_height="64.000000dip" android:src="@7F0803E0"/>
+</FrameLayout>

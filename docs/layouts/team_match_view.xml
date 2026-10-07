@@ -1,0 +1,11 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="@7F0601EF" android:ellipsize="3" android:gravity="0x00000001" android:layout_gravity="0x00000001" android:id="@7F0A0B6F" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:text="@7F1202B2" android:maxEms="4" android:singleLine="true"/>
+  <FrameLayout android:layout_gravity="0x00000001" android:id="@7F0A02BC" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.CircleFrameLayout android:layout_gravity="0x00000001" android:layout_width="52.000000dip" android:layout_height="52.000000dip" android:layout_marginTop="26.000000dip">
+      <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A0992" android:layout_width="-1" android:layout_height="-1" android:src="@7F080727" app:speed_scale="1.500000"/>
+      <ImageView android:id="@7F0A0339" android:background="#FF365EA0" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:src="@7F080727" android:scaleType="6"/>
+    </com.yalla.games.common.view.CircleFrameLayout>
+    <ImageView android:background="@7F080346" android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:layout_marginTop="25.000000dip"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000001" android:id="@7F0A0983" android:layout_width="80.000000dip" android:layout_height="75.000000dip" android:layout_marginTop="15.000000dip" app:speed_scale="2.000000" app:view_scale="1.300000"/>
+</merge>

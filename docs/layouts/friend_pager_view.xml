@@ -1,0 +1,12 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="@7F0A068B" android:background="@7F0801A8" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layoutDirection="0">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="@7F0601EF" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0ACF" android:layout_width="-1" android:layout_height="-2" android:text="@7F12022C" android:layout_marginStart="46.000000dip" android:layout_marginEnd="3.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="1" android:id="@7F0A06D0" android:visibility="0" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0597" android:layout_width="-2" android:layout_height="-1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="25.000000sp" android:textColor="#FF1C644B" android:layout_gravity="0x00000011" android:id="@7F0A0BCE" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <FrameLayout android:id="@7F0A02FD" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF48E7B3" android:id="@7F0A0B5F" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:layout_below="@7F0A02FD" android:layout_marginStart="8.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A07C9" android:layout_width="-1" android:layout_height="-1" android:layout_above="@7F0A068B" android:layout_below="@7F0A0B5F"/>
+</merge>

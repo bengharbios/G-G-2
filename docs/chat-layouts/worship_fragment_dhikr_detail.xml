@@ -1,0 +1,6 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:layout_width="-1" android:layout_height="-1" android:src="@7F0805F7" android:scaleType="6"/>
+  <androidx.core.widget.NestedScrollView android:scrollbarSize="3.000000dip" android:id="@7F0A02E5" android:scrollbars="0x00000200" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textColor="@7F0601E2" android:id="@7F0A02E8" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="12.000000dip" android:layout_marginTop="16.000000dip" android:layout_marginRight="12.000000dip" android:layout_marginBottom="60.000000dip" android:lineSpacingMultiplier="1.200000" android:textIsSelectable="true"/>
+  </androidx.core.widget.NestedScrollView>
+</FrameLayout>

@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="royal_record_list_item" android:layout_width="-1" android:layout_height="46.000000dip" android:layout_marginBottom="3.000000dip" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip">
+  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="14.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="white" android:id="tv_title" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="#FF83FFD6" android:id="tv_time" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="ll_growth_value" android:layout_width="-2" android:layout_height="-2" android:layout_below="ctv_growth_temp" android:layout_centerVertical="true" android:layout_marginEnd="25.000000dip" android:layout_alignStart="ctv_growth_temp" android:layout_alignParentEnd="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:gravity="0x00000010" android:id="ctv_current_num" android:layout_width="-2" android:layout_height="-2" android:layoutDirection="0"/>
+    <ImageView android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="royal_level_value_ic" android:layout_marginStart="5.000000dip"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0163" android:background="@7F0805A1" android:paddingTop="16.000000dip" android:paddingBottom="16.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="16777200.000000dip" app:layout_constraintBottom_toTopOf="@7F0A0161" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+    <ViewStub android:id="@7F0A0809" android:layout="@7F0D0115" android:layout_width="0.000000dip" android:layout_height="59.000000dip" android:layout_marginBottom="16.000000dip" android:layout_marginStart="16.000000dip" android:layout_marginEnd="16.000000dip" app:layout_constraintBottom_toTopOf="@7F0A05B8" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:layout_goneMarginBottom="0.000000dip"/>
+    <com.yallatech.yallachat.chat.ui.view.LinkPreviewView android:id="@7F0A05B8" android:visibility="2" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginRight="16.000000dip" app:chat_scene="0" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0161" android:background="@7F0805A1" android:layout_width="0.000000dip" android:layout_height="-2" android:minHeight="56.000000dip" android:layoutDirection="0" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+    <include layout="@7F0D00A8"/>
+    <FrameLayout android:id="@7F0A011F" android:visibility="2" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <include layout="@7F0D00AB"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

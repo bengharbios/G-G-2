@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_create_room_guide" android:background="black_60" android:paddingTop="6.000000dip" android:layout_width="-1" android:layout_height="-1">
+  <include android:layout_width="-2" android:layout_height="126.000000dip" android:layout_marginBottom="10.000000dip" layout="@7F0D0270"/>
+  <com.yalla.games.common.view.CustomTextView android:background="bg_guide_text_arrow_up" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="120.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:gravity="0x00000011" android:id="tv_guide_create_room" android:background="bg_guide_text" android:padding="24.000000dip" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16777211.000000dip" android:layout_below="tv_bg_guide_text_arrow_up" android:layout_marginStart="70.000000dip"/>
+</LinearLayout>

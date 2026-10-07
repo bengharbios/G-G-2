@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-1" android:layout_margin="1.000000dip">
+  <com.yallatech.yallachat.libalbum.widget.PreviewRatioImageView android:id="@7F0A00A7" android:layout_width="-2" android:layout_height="-1"/>
+  <View android:id="@7F0A00C7" android:background="@7F080066" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

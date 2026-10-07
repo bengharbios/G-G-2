@@ -1,0 +1,4 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="rl_task" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="rcy_shop" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="10.000000dip"/>
+  <com.yalla.games.common.view.LoadingView android:layout_gravity="0x00000011" android:id="iv_loading" android:layout_width="-2" android:layout_height="-2"/>
+</merge>

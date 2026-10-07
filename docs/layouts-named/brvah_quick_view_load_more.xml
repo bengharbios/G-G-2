@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="@7F07009C">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="load_more_loading_view" android:layout_width="-1" android:layout_height="-1">
+    <ProgressBar android:id="loading_progress" android:layout_width="-2" android:layout_height="-2" android:layout_marginRight="@7F07009B" style="?android:01010079"/>
+    <TextView android:textSize="@7F070114" android:textColor="@android:0106000C" android:id="loading_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="@7F07009B" android:text="brvah_loading"/>
+  </LinearLayout>
+  <FrameLayout android:id="load_more_load_fail_view" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:layout_gravity="0x00000011" android:id="tv_prompt" android:layout_width="-2" android:layout_height="-2" android:text="brvah_load_failed"/>
+  </FrameLayout>
+  <FrameLayout android:id="load_more_load_end_view" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textColor="@android:01060000" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="brvah_load_end"/>
+  </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,5 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.libuikit.view.ContactSearchView android:id="@7F0A0609" android:layout_width="-1" android:layout_height="-2" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yallatech.yallachat.contacts.ui.view.contact.GroupMembersView android:id="@7F0A0607" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0609"/>
+  <com.yalla.libuikit.view.LetterBarView android:id="@7F0A060F" android:layout_width="20.000000dip" android:layout_height="-2" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

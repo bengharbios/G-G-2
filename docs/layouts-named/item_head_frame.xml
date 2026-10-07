@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:layoutDirection="0">
+  <FrameLayout android:layout_width="80.000000dip" android:layout_height="80.000000dip">
+    <ImageView android:id="iv_bg" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:layout_margin="1.500000dip" android:src="head_frame_select_bg"/>
+    <com.yalla.games.common.view.HeadFrameView android:layout_gravity="0x00000011" android:id="user_head_frame" android:visibility="0" android:layout_width="75.000000dip" android:layout_height="75.000000dip" android:src="black"/>
+    <ImageView android:layout_gravity="0x00000035" android:id="iv_check" android:visibility="2" android:layout_width="21.000000dip" android:layout_height="16.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginRight="8.000000dip" android:src="head_frame_check"/>
+  </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,18 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="360.000000dip" android:layout_height="62.000000dip">
+  <RelativeLayout android:id="@7F0A0846" android:background="@7F08022A" android:visibility="0" android:layout_width="-1" android:layout_height="62.000000dip">
+    <com.yalla.games.common.chat.view.EmojiTextView android:textColorHint="#FFC2C0C0" android:ellipsize="3" android:gravity="0x00800013" android:id="@7F0A0AF2" android:background="@7F080237" android:layout_width="295.000000dip" android:layout_height="33.000000dip" android:layout_marginTop="1.500000dip" android:hint="@7F12063D" android:lines="1" android:paddingStart="12.000000dip" android:paddingEnd="37.000000dip" android:layout_marginStart="7.000000dip"/>
+    <ImageView android:id="@7F0A048B" android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:layout_marginTop="5.000000dip" android:src="@7F0802ED" android:layout_alignTop="@7F0A0AF2" android:layout_marginEnd="6.000000dip" android:layout_alignEnd="@7F0A0AF2"/>
+    <ImageView android:id="@7F0A0501" android:layout_width="39.000000dip" android:layout_height="29.000000dip" android:layout_marginTop="4.000000dip" android:src="@7F08031B" android:layout_marginEnd="6.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0847" android:background="@7F08022A" android:visibility="0" android:layout_width="-1" android:layout_height="62.000000dip">
+    <com.yalla.game.base.view.StrokeButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F0A00EA" android:background="@7F080172" android:layout_width="163.000000dip" android:layout_height="48.000000dip" android:layout_marginBottom="2.000000dip" android:text="@7F12004B" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" style="@7F130129"/>
+    <ImageView android:id="@7F0A0502" android:visibility="2" android:layout_width="39.000000dip" android:layout_height="29.000000dip" android:layout_marginTop="4.000000dip" android:src="@7F08031B" android:layout_marginEnd="12.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0848" android:background="@7F080111" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:minHeight="62.000000dip">
+    <LinearLayout android:orientation="0" android:id="@7F0A06D6" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_alignParentEnd="true">
+      <ImageView android:id="@7F0A048A" android:layout_width="39.000000dip" android:layout_height="29.000000dip" android:src="@7F0802CD" android:layout_marginEnd="12.000000dip"/>
+      <ImageView android:id="@7F0A0585" android:visibility="2" android:layout_width="39.000000dip" android:layout_height="29.000000dip" android:src="@7F08023B" android:layout_marginEnd="12.000000dip"/>
+    </LinearLayout>
+    <com.yalla.games.common.chat.view.EmojiEditText android:scrollbarThumbVertical="@00000000" android:textSize="14.000000sp" android:textColorHint="#FFC2C0C0" android:gravity="0x00000010" android:id="@7F0A0224" android:background="@7F0800C1" android:scrollbars="0x00000200" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="9.000000dip" android:layout_marginBottom="9.000000dip" android:minHeight="34.000000dip" android:hint="@7F12063D" android:maxLines="4" android:layout_centerVertical="true" android:fontFamily="@7F090000" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="12.000000dip" android:layout_toStartOf="@7F0A06D6"/>
+  </RelativeLayout>
+</merge>

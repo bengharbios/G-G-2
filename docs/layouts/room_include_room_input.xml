@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0642" android:layout_width="-1" android:layout_height="-2" android:minHeight="50.000000dip">
+  <ImageView android:id="@7F0A03E8" android:visibility="0" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F0805EB" android:layout_marginStart="8.000000dip"/>
+  <ImageView android:id="@7F0A03B3" android:visibility="2" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F0805E9" android:layout_marginStart="8.000000dip"/>
+  <ImageView android:id="@7F0A03B4" android:visibility="2" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F08068F" android:layout_marginStart="8.000000dip"/>
+  <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+    <com.yalla.ludochat.view.FixedEmojiEditText android:textSize="13.000000dip" android:textColor="@7F06016E" android:textColorHint="@7F06018B" android:gravity="0x00800013" android:id="@7F0A021D" android:background="@7F080594" android:padding="8.000000dip" android:focusableInTouchMode="true" android:layout_width="0.000000dip" android:layout_height="38.000000dip" android:maxHeight="93.000000dip" android:minHeight="50.000000dip" android:hint="@7F120585" android:includeFontPadding="false" android:drawablePadding="4.000000dip" android:layout_weight="1.000000" android:inputType="0x00020001" android:drawableStart="@7F080367" android:textDirection="2" android:textAlignment="5" android:layout_marginStart="11.000000dip" android:layout_marginEnd="5.000000dip"/>
+  </LinearLayout>
+  <com.yalla.ludochat.view.CheckedImageView android:id="@7F0A039B" android:visibility="2" android:layout_width="37.000000dip" android:layout_height="50.000000dip" android:src="@7F0806BC" android:paddingStart="0.000000dip" android:paddingEnd="13.000000dip" app:checked="false"/>
+  <ImageView android:id="@7F0A03E5" android:visibility="0" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080632" android:paddingEnd="13.000000dip"/>
+  <ImageView android:id="@7F0A03E4" android:visibility="2" android:layout_width="37.000000dip" android:layout_height="50.000000dip" android:src="@7F0806BF" android:paddingStart="0.000000dip" android:paddingEnd="13.000000dip"/>
+  <FrameLayout android:id="@7F0A026A" android:layout_width="-2" android:layout_height="-2">
+    <ImageView android:id="@7F0A03C8" android:visibility="2" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F0806A7"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A03A0" android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:layout_marginBottom="3.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip" app:play_on_attach="true" app:source="room_gift.svga"/>
+</LinearLayout>

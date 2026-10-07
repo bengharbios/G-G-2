@@ -1,0 +1,13 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-2" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00800013" android:orientation="0" android:layout_width="-2" android:layout_height="24.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginStart="54.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="white" android:ellipsize="3" android:id="tvName" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:includeFontPadding="false" android:layout_weight="1.000000"/>
+    <ImageView android:id="iv_room_official_user" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_official_user" android:layout_marginStart="3.000000dip"/>
+    <com.yalla.ludochat.view.ContributionRankLabelView android:id="crv_chat_rank_num" android:visibility="2" android:layout_width="30.000000dip" android:layout_height="16.000000dip" android:layout_marginStart="3.000000dip" android:layout_marginEnd="1.000000dip"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="iv_royal" android:visibility="2" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginStart="3.000000dip" app:play_on_attach="true"/>
+    <com.yalla.ludochat.view.VipView android:id="vipView" android:visibility="2" android:layout_width="26.000000dip" android:layout_height="26.000000dip" android:layout_marginStart="2.000000dip" android:layout_marginEnd="2.000000dip" app:play_on_attach="true"/>
+    <com.yalla.ludochat.view.BadgeLayout android:id="badgeLayout" android:visibility="2" android:layout_width="-2" android:layout_height="20.000000dip" android:layout_marginStart="3.000000dip"/>
+    <com.yalla.ludochat.view.VipView android:id="ivPrettyID" android:visibility="2" android:layout_width="26.000000dip" android:layout_height="26.000000dip" android:layout_marginStart="2.000000dip" app:play_on_attach="true"/>
+  </LinearLayout>
+  <com.yalla.ludochat.view.RoundImageView android:id="rivHeader" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="8.000000dip" android:scaleType="6" android:layout_marginStart="14.000000dip" app:bordTrimSrc="true" app:borderColor="gray_stroke_color" app:borderWidth="1.000000dip" app:isCircle="true"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="ivSVGARoomChatHeaddress" android:visibility="0" android:layout_width="46.000000dip" android:layout_height="46.000000dip" android:layout_marginStart="8.000000dip" app:clearsAfterStop="false" app:play_on_attach="true"/>
+</merge>

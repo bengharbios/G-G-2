@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:layout_gravity="0x00000005" android:orientation="0" android:layout_width="-2" android:layout_height="150.000000dip" android:layout_marginTop="90.000000dip" android:layoutDirection="0">
+  <FrameLayout android:background="rank_guide_bg_right" android:layout_width="223.000000dip" android:layout_height="80.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF626262" android:gravity="0x00800003" android:layout_gravity="0x00000010" android:id="tv_content" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="13.000000dip" android:layout_marginRight="13.000000dip" android:text="rank_rules_tip_2"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000030" android:id="iv_finger" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:layout_marginLeft="4.000000dip" android:src="finger"/>
+</LinearLayout>

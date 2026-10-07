@@ -1,0 +1,4 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <RadioButton android:id="@7F0A0919" android:background="?android:01010031" android:layout_width="-2" android:layout_height="-2" android:buttonTint="@7F06019D"/>
+  <RadioButton android:id="@7F0A091A" android:background="?android:01010031" android:layout_width="-2" android:layout_height="-2" app:buttonTint="@7F06019D"/>
+</LinearLayout>

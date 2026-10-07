@@ -1,0 +1,6 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <com.twitter.sdk.android.tweetui.internal.VideoView android:layout_gravity="0x00000011" android:id="@7F0A0CA7" android:layout_width="-1" android:layout_height="-1"/>
+  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A0CA6" android:layout_width="-2" android:layout_height="-2"/>
+  <com.twitter.sdk.android.tweetui.internal.VideoControlView android:layout_gravity="0x00000050" android:id="@7F0A0CA5" android:layout_width="-1" android:layout_height="-2"/>
+  <TextView android:textSize="@7F070163" android:textColor="@7F0601C8" android:layout_gravity="0x00000031" android:id="@7F0A0121" android:background="@7F080842" android:padding="@7F07014D" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="@7F07014C"/>
+</merge>

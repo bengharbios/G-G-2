@@ -1,0 +1,11 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" style="tw__TweetFillWidth">
+  <LinearLayout android:id="tw__author_attribution" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_alignParentStart="true" style="tw__QuoteAttributionLine">
+    <TextView android:id="tw__tweet_author_full_name" style="tw__TweetFullName.Compact"/>
+    <TextView android:id="tw__tweet_author_screen_name" style="tw__TweetScreenName.Compact"/>
+  </LinearLayout>
+  <TextView android:id="tw__tweet_text" android:layout_below="tw__author_attribution" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="tw__TweetText.Quote"/>
+  <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout android:id="tw__aspect_ratio_media_container" android:layout_below="tw__tweet_text" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="tw__TweetMediaContainer.Quote">
+    <com.twitter.sdk.android.tweetui.internal.TweetMediaView android:id="tweet_media_view" style="tw__TweetMedia"/>
+    <com.twitter.sdk.android.tweetui.internal.MediaBadgeView android:id="tw__tweet_media_badge" style="tw__TweetBadge"/>
+  </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
+</merge>

@@ -1,0 +1,16 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A08D4" android:tag="base" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_margin="8.000000dip" android:minHeight="80.000000dip">
+    <RelativeLayout android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+      <LinearLayout android:id="@7F0A0763" android:layout_width="-1" android:layout_height="-2">
+        <ImageView android:layout_gravity="0x00800013" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F0F0001" android:scaleType="6" android:importantForAccessibility="2" android:layout_marginStart="8.000000dip"/>
+        <TextView android:id="@7F0A00E5" android:layout_width="-2" android:layout_height="-2" android:text="@7F1300B1" android:singleLine="true" android:layout_marginStart="6.000000dip" android:layout_marginEnd="6.000000dip"/>
+      </LinearLayout>
+      <TextView android:textAppearance="@7F1401DD" android:ellipsize="4" android:id="@7F0A09B2" android:fadingEdge="0x00001000" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:singleLine="true" android:layout_below="@7F0A0763" android:textAlignment="5" android:layout_marginStart="8.000000dip" android:layout_marginEnd="2.000000dip"/>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0760" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:layout_below="@7F0A09B2" android:layout_marginEnd="2.000000dip">
+        <TextView android:ellipsize="4" android:id="@7F0A091C" android:fadingEdge="0x00001000" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:layout_marginStart="8.000000dip"/>
+        <Chronometer android:id="@7F0A022F" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip"/>
+      </LinearLayout>
+    </RelativeLayout>
+    <ImageView android:id="@7F0A0438" android:padding="4.000000dip" android:layout_width="48.000000dip" android:layout_height="48.000000dip" android:layout_marginStart="16.000000dip"/>
+  </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="321.000000dip" android:layout_height="-2">
+  <FrameLayout android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.yallagames.login.email.LoginView android:id="@7F0A0731" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+    <com.yalla.yallagames.login.email.FindPasswordView android:id="@7F0A025C" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+    <com.yalla.yallagames.login.email.SignUpView android:id="@7F0A0904" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+    <com.yalla.yallagames.login.email.SetPasswordView android:id="@7F0A08FC" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+    <com.yalla.yallagames.ui.view.CommonCountrySelectView android:id="@7F0A0090" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  </FrameLayout>
+</LinearLayout>

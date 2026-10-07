@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:src="room_music_title_bg"/>
+  <FrameLayout android:background="room_color_012" android:layout_width="-1" android:layout_height="-2">
+    <FrameLayout android:layout_gravity="0x00000001" android:id="fl_mini_closed" android:layout_width="70.000000dip" android:layout_height="40.000000dip">
+      <ImageView android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:src="room_music_title_arrow"/>
+    </FrameLayout>
+    <ImageView android:layout_gravity="0x00800005" android:id="iv_exit_music_player" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:src="room_icon_exit_music" android:layout_marginEnd="16.000000dip"/>
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="54.000000dip">
+      <com.yalla.ludochat.view.MarqueeTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="room_color_def" android:ellipsize="4" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="tv_current_music_name" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="220.000000dip" android:layout_height="-2" android:singleLine="true" android:includeFontPadding="false" android:marqueeRepeatLimit="-1"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="30.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="room_color_578" android:id="tv_music_total_current" android:layout_width="38.000000dip" android:layout_height="-2" android:text="00:00"/>
+        <SeekBar android:layout_gravity="0x00000001" android:id="pb_music_play" android:background="@00000000" android:paddingTop="5.000000dip" android:paddingBottom="5.000000dip" android:layout_width="236.000000dip" android:layout_height="-2" android:max="99" android:progress="50" android:indeterminate="false" android:progressDrawable="room_bg_seekbar_style" android:thumb="room_bg_seekbar_thumb" android:thumbOffset="0.000000dip" android:layout_weight="1.000000" android:splitTrack="false"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="room_color_578" android:layout_gravity="0x00800005" android:id="tv_music_total_time" android:layout_width="38.000000dip" android:layout_height="-2"/>
+      </LinearLayout>
+      <RelativeLayout android:layout_width="-1" android:layout_height="30.000000dip" android:layout_marginTop="25.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+        <ImageView android:id="iv_play_mode" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_cycle" android:layout_centerVertical="true"/>
+        <ImageView android:id="iv_play_previous" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_previous" android:layout_centerVertical="true" android:layout_marginEnd="43.000000dip" android:layout_toStartOf="iv_play"/>
+        <ImageView android:id="iv_play" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_play_music" android:layout_centerInParent="true"/>
+        <ImageView android:id="iv_play_next" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_next" android:layout_centerVertical="true" android:layout_marginStart="43.000000dip" android:layout_toEndOf="iv_play"/>
+        <ImageView android:id="iv_play_menu" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_menu" android:layout_centerVertical="true" android:layout_alignParentEnd="true"/>
+      </RelativeLayout>
+      <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="-1" android:layout_height="20.000000dip" android:layout_marginTop="32.000000dip" android:layout_marginBottom="40.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+        <ImageView android:id="iv_turn_small" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_turn_small_voice"/>
+        <SeekBar android:layout_gravity="0x00000001" android:id="pb_music_voice" android:background="@00000000" android:paddingTop="5.000000dip" android:paddingBottom="5.000000dip" android:layout_width="180.000000dip" android:layout_height="-2" android:progress="30" android:indeterminate="false" android:progressDrawable="room_bg_seekbar_style" android:thumb="room_bg_seekbar_thumb" android:thumbOffset="0.000000dip" android:splitTrack="false"/>
+        <ImageView android:id="iv_turn_big" android:layout_width="-2" android:layout_height="-2" android:src="room_icon_turn_big_voice"/>
+      </LinearLayout>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

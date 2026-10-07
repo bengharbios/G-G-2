@@ -1,0 +1,5 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:textSize="18.000000sp" android:id="@7F0A0B19" android:text="@7F1308D5" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" style="@7F140359"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A084B" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0B19"/>
+  <include android:id="@7F0A089B" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0B19" layout="@7F0D0365"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000030" android:orientation="0" android:visibility="0" android:layout_width="-1" android:layout_height="210.000000dip">
+  <com.yalla.games.battle.room.view.PeopleSeatView android:id="@7F0A08F3" android:layout_width="0.000000px" android:layout_height="-2" android:layout_weight="1.000000"/>
+  <com.yalla.games.battle.room.view.PeopleSeatView android:id="@7F0A08F4" android:layout_width="0.000000px" android:layout_height="-2" android:layout_marginTop="42.000000dip" android:layout_weight="1.000000"/>
+  <com.yalla.games.battle.room.view.PeopleSeatView android:id="@7F0A08F5" android:layout_width="0.000000px" android:layout_height="-2" android:layout_marginTop="42.000000dip" android:layout_weight="1.000000"/>
+  <com.yalla.games.battle.room.view.PeopleSeatView android:id="@7F0A08F6" android:layout_width="0.000000px" android:layout_height="-2" android:layout_weight="1.000000"/>
+</LinearLayout>

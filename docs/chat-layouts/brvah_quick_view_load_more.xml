@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="@7F0700D7">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A05DF" android:layout_width="-1" android:layout_height="-1">
+    <ProgressBar android:id="@7F0A05E2" android:layout_width="-2" android:layout_height="-2" android:layout_marginRight="@7F0700D6" style="?android:01010079"/>
+    <TextView android:textSize="@7F070280" android:textColor="@android:0106000C" android:id="@7F0A05E3" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="@7F0700D6" android:text="@7F13013C"/>
+  </LinearLayout>
+  <FrameLayout android:id="@7F0A05DE" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:layout_gravity="0x00000011" android:id="@7F0A0ADB" android:layout_width="-2" android:layout_height="-2" android:text="@7F13013B"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A05DC" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textColor="@android:01060000" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="@7F130139"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A05DD" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textColor="@android:01060000" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="@7F13013A"/>
+  </FrameLayout>
+</FrameLayout>

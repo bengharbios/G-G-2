@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="322.000000dip" android:layout_height="500.000000dip">
+  <RelativeLayout android:id="rl_title" android:layout_width="-1" android:layout_height="38.000000dip">
+    <ImageView android:layout_width="-1" android:layout_height="-2" android:src="image_bg_title"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="white" android:id="tv_title" android:layout_width="-2" android:layout_height="-2" android:text="user_agreement" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    <ImageView android:id="iv_agreement_close" android:layout_width="-2" android:layout_height="-2" android:src="close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <FrameLayout android:background="policy_bg" android:layout_width="-1" android:layout_height="-1">
+    <WebView android:id="web_content" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="12.000000dip" android:layout_marginBottom="24.000000dip" android:layout_marginStart="16.000000dip" android:layout_marginEnd="16.000000dip"/>
+  </FrameLayout>
+</LinearLayout>

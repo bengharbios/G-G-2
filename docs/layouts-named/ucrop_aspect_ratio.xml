@@ -1,0 +1,3 @@
+<FrameLayout style="ucrop_WrapperIconState">
+  <com.yalantis.ucrop.view.widget.AspectRatioTextView style="ucrop_TextViewCropAspectRatio"/>
+</FrameLayout>

@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:layout_width="350.000000dip" android:layout_height="-2" android:layoutDirection="0">
+  <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:textColor="#FF458371" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="37.000000dip" android:text="select_sex" android:layout_marginStart="30.000000dip" android:layout_marginEnd="30.000000dip"/>
+  <LinearLayout android:orientation="0" android:id="ll_sex" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:layout_below="tv_title" android:layout_centerHorizontal="true">
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="ll_male" android:layout_width="-2" android:layout_height="-2">
+      <ImageView android:id="iv_male" android:layout_width="82.000000dip" android:layout_height="82.000000dip" android:src="male_head"/>
+      <ImageView android:id="iv_check_male" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="12.000000dip" android:src="sex_check"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="ll_female" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="30.000000dip" android:layout_marginEnd="30.000000dip">
+      <ImageView android:id="iv_female" android:layout_width="82.000000dip" android:layout_height="82.000000dip" android:src="female_head_gray"/>
+      <ImageView android:id="iv_check_female" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="12.000000dip" android:src="sex_uncheck"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="ll_no_sex" android:layout_width="-2" android:layout_height="-2">
+      <ImageView android:id="iv_no_sex" android:layout_width="82.000000dip" android:layout_height="82.000000dip" android:src="no_sex_un_select"/>
+      <ImageView android:id="iv_check_no_sex" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="12.000000dip" android:src="sex_uncheck"/>
+    </LinearLayout>
+  </LinearLayout>
+  <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="btn_confirm" android:background="bn_yes" android:layout_width="152.000000dip" android:layout_height="52.000000dip" android:layout_marginTop="36.000000dip" android:layout_marginBottom="27.000000dip" android:text="confirm" android:layout_below="ll_sex" android:layout_centerHorizontal="true" style="StrokeTextStyle_Yes"/>
+</RelativeLayout>

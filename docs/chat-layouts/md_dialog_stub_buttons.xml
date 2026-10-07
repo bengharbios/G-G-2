@@ -1,0 +1,6 @@
+<com.afollestad.materialdialogs.internal.button.DialogActionButtonLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A069B" android:layout_width="-1" android:layout_height="-2">
+  <androidx.appcompat.widget.AppCompatCheckBox android:id="@7F0A069F" android:layout_width="-2" android:layout_height="-2" style="@7F140138"/>
+  <com.afollestad.materialdialogs.internal.button.DialogActionButton android:id="@7F0A069E" style="@7F140135"/>
+  <com.afollestad.materialdialogs.internal.button.DialogActionButton android:id="@7F0A069C" style="@7F140135"/>
+  <com.afollestad.materialdialogs.internal.button.DialogActionButton android:id="@7F0A069D" style="@7F140135"/>
+</com.afollestad.materialdialogs.internal.button.DialogActionButtonLayout>

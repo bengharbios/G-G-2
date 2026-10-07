@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="svg_bg_light" android:layout_width="-1" android:layout_height="460.000000dip"/>
+  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_main" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000dip" android:id="tv_unlock_suc" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="35.000000dip" android:id="tv_medal_name" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="9.000000dip"/>
+    <ImageView android:id="iv_medal" android:layout_width="180.000000dip" android:layout_height="180.000000dip" android:layout_marginTop="60.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="17.000000dip" android:id="tv_introduce" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="88.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="svga_open_unlock_2" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="svga_open_unlock_1" android:layout_width="-1" android:layout_height="-1" app:view_scale="1.200000"/>
+  <FrameLayout android:layout_gravity="0x00800005" android:id="fl_close" android:layout_width="-2" android:layout_height="41.000000dip" android:layout_marginTop="23.000000dip">
+    <ImageView android:id="iv_close" android:layout_width="45.000000dip" android:layout_height="41.000000dip" android:src="close"/>
+    <com.yalla.games.common.view.CustomTextView android:textColor="#FF797979" android:layout_gravity="0x00000011" android:id="tv_skip" android:layout_width="-2" android:layout_height="-2" android:text="skip_animation"/>
+  </FrameLayout>
+</FrameLayout>

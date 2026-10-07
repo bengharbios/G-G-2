@@ -1,0 +1,5 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <EditText android:textSize="20.000000sp" android:textColor="@7F060051" android:gravity="0x00800033" android:id="@7F0A0386" android:layout_width="-1" android:layout_height="-1"/>
+  <TextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:gravity="0x00000011" android:id="@7F0A0A2A" android:layout_width="-2" android:layout_height="60.000000dip" android:text="长连接：" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintRight_toLeftOf="@7F0A08AA"/>
+  <androidx.appcompat.widget.AppCompatButton android:gravity="0x00000011" android:layout_gravity="0x00800015" android:id="@7F0A08AA" android:layout_width="-2" android:layout_height="60.000000dip" android:text="Racing" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,10 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000dip" android:textColor="room_color_a61" android:ellipsize="3" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="tvCarName" android:background="transparent" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="21.000000dip" android:lines="1" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip" style="StrokeTextStyle_Yes"/>
+  <ImageView android:layout_gravity="0x00000001" android:id="ivCarSkin" android:layout_width="146.000000dip" android:layout_height="68.000000dip" android:layout_marginTop="45.000000dip" android:src="room_car_default1" android:scaleType="3"/>
+  <View android:id="alphaCarCover" android:background="room_card_skin_alpha_cover" android:visibility="0" android:layout_width="-1" android:layout_height="-2" app:cornerRadius="11.000000dip" app:isSquare="true"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="ivLabel" android:layout_width="32.000000dip" android:layout_height="22.000000dip" android:layout_marginTop="37.000000dip" android:src="room_card_skin_tag" android:layout_marginStart="10.000000dip" app:clearsAfterStop="false" app:play_on_attach="true"/>
+  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000051" android:orientation="0" android:id="llLeftTime" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip">
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="room_left_time"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000dip" android:textColor="white" android:id="tvLeftTime" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="2.000000dip" app:stroke_color="room_color_30_black" app:stroke_width="1.500000dip"/>
+  </LinearLayout>
+</merge>

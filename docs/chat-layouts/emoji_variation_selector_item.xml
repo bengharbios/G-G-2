@@ -1,0 +1,1 @@
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:textColor="@7F060031" android:padding="6.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" app:autoSizeTextType="1"/>

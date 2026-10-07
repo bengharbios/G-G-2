@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="iv_finger" android:layout_width="-2" android:layout_height="-2" android:src="free_facebook"/>
+</LinearLayout>

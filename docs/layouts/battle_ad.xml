@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A0400" android:layout_width="-1" android:layout_height="-1" android:scaleType="7"/>
+  <com.yalla.games.common.view.CustomTextView android:id="@7F0A0A5E" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip"/>
+</merge>

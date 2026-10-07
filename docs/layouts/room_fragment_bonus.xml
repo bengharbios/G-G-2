@@ -1,0 +1,5 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="@7F0A06B6" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0D1F" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="50.000000dip"/>
+  <com.yalla.games.common.view.LoadingView android:id="@7F0A0CC6" android:background="#80000000" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.TitleWithDiamondView android:id="@7F0A09DC" android:layout_width="-1" android:layout_height="53.000000dip"/>
+</RelativeLayout>

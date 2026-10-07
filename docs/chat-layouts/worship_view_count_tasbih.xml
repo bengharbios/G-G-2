@@ -1,0 +1,14 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:textSize="20.000000sp" android:textColor="@7F0600F2" android:id="@7F0A0930" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toTopOf="@7F0A0966" app:layout_constraintLeft_toLeftOf="@7F0A0913"/>
+  <TextView android:textSize="16.000000sp" android:textColor="@7F0600F2" android:id="@7F0A0966" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="22.000000dip" app:layout_constraintBottom_toTopOf="@7F0A0913" app:layout_constraintLeft_toLeftOf="@7F0A015B"/>
+  <androidx.cardview.widget.CardView android:id="@7F0A0913" android:layout_width="44.000000dip" android:layout_height="44.000000dip" android:layout_marginBottom="22.000000dip" android:layout_marginStart="20.000000dip" app:cardCornerRadius="12.000000dip" app:cardElevation="4.000000dip" app:layout_constraintBottom_toTopOf="@7F0A015B" app:layout_constraintLeft_toLeftOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:src="@7F08062A"/>
+  </androidx.cardview.widget.CardView>
+  <androidx.cardview.widget.CardView android:id="@7F0A015B" android:layout_width="44.000000dip" android:layout_height="44.000000dip" android:layout_marginBottom="24.000000dip" android:layout_marginStart="20.000000dip" app:cardCornerRadius="12.000000dip" app:cardElevation="4.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0489" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:src="@7F080637"/>
+  </androidx.cardview.widget.CardView>
+  <androidx.cardview.widget.CardView android:id="@7F0A0914" android:layout_width="44.000000dip" android:layout_height="44.000000dip" android:layout_margin="24.000000dip" app:cardCornerRadius="12.000000dip" app:cardElevation="4.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintRight_toRightOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:src="@7F08062A"/>
+  </androidx.cardview.widget.CardView>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A0BDE" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="textCount,textRound,tasbih"/>
+</merge>

@@ -1,0 +1,12 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="ll_friend_bt" android:background="btn_friend_fb" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layoutDirection="0">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="tv_friend" android:layout_width="-1" android:layout_height="-2" android:text="invite_fb_friend" android:layout_marginStart="46.000000dip" android:layout_marginEnd="3.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="1" android:id="ll_no_message" android:visibility="0" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true">
+    <ImageView android:layout_gravity="0x00000011" android:id="iv_social" android:layout_width="-2" android:layout_height="-1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="25.000000sp" android:textColor="#FF1C644B" android:layout_gravity="0x00000011" android:id="tv_social" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <FrameLayout android:id="fl_title_container" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF48E7B3" android:id="tv_online_num" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:layout_below="fl_title_container" android:layout_marginStart="8.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="rcy_friend" android:layout_width="-1" android:layout_height="-1" android:layout_above="ll_friend_bt" android:layout_below="tv_online_num"/>
+</merge>

@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="fl_general_dialog" android:background="bg_dialog_no_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="19.000000dip" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="tv_dialog_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip"/>
+  <ImageView android:layout_gravity="0x00800005" android:id="iv_dialog_x" android:layout_width="21.000000dip" android:layout_height="21.000000dip" android:layout_marginTop="6.000000dip" android:src="dialog_x" android:layout_marginEnd="10.000000dip"/>
+  <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:id="ll_dialog_body" android:background="bg_dialog_no_title_body" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="41.000000dip">
+    <ViewStub android:id="vs_dialog_content" android:layout_width="-1" android:layout_height="-2"/>
+    <LinearLayout android:gravity="0x00800005" android:orientation="0" android:id="ll_dialog_bottom" android:layout_width="-1" android:layout_height="46.000000dip" android:layout_marginTop="11.000000dip" android:layout_marginBottom="11.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="color_086" android:gravity="0x00000011" android:id="btn_dialog_refuse" android:background="room_btn_green_bg" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="160.000000dip" android:layout_height="46.000000dip" android:textAllCaps="false" android:layout_marginEnd="10.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="color_a72" android:gravity="0x00000011" android:id="btn_dialog_confirm" android:background="room_btn_yellow_bg" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="160.000000dip" android:layout_height="46.000000dip" android:textAllCaps="false" android:layout_marginEnd="10.000000dip"/>
+    </LinearLayout>
+    <Space android:layout_width="-1" android:layout_height="12.000000dip"/>
+  </LinearLayout>
+</FrameLayout>

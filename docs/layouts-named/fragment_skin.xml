@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_main" android:background="skin_bg" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.TitleWithDiamondView android:id="title_view" android:layout_width="-1" android:layout_height="50.000000dip"/>
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="52.000000dip">
+    <RelativeLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_dice" android:background="innavigation_left_check" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <ImageView android:id="iv_dice" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="dice_uncheck"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="tv_dice" android:layout_width="-2" android:layout_height="-2" android:text="dice"/>
+      </LinearLayout>
+      <ImageView android:id="iv_dot_dice" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="reddot" android:layout_alignParentTop="true" android:layout_marginEnd="5.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <RelativeLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_token" android:background="innavigation_intermediate_uncheck" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <ImageView android:id="iv_token" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="token_uncheck"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="tv_token" android:layout_width="-2" android:layout_height="-2" android:text="token"/>
+      </LinearLayout>
+      <ImageView android:id="iv_dot_token" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="reddot" android:layout_alignParentTop="true" android:layout_marginEnd="5.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <RelativeLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_bubble" android:background="innavigation_intermediate_uncheck" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <ImageView android:id="iv_bubble" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="bubble_uncheck"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="tv_bubble" android:layout_width="-2" android:layout_height="-2" android:text="bubble"/>
+      </LinearLayout>
+      <ImageView android:id="iv_dot_bubble" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="reddot" android:layout_alignParentTop="true" android:layout_marginEnd="5.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <RelativeLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_theme" android:background="navigation_right_uncheck" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <ImageView android:id="iv_theme" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="theme_uncheck"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="tv_theme" android:layout_width="-2" android:layout_height="-2" android:text="theme"/>
+      </LinearLayout>
+      <ImageView android:id="iv_dot_theme" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="reddot" android:layout_alignParentTop="true" android:layout_marginEnd="5.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+  </LinearLayout>
+  <View android:background="skin_divider" android:layout_width="-1" android:layout_height="10.000000dip" android:layout_marginTop="10.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="rcy_skin_list" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="20.000000dip"/>
+</LinearLayout>

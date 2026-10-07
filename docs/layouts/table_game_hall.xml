@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0247" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="73.000000dip" android:layout_marginTop="2.000000dip">
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <com.yalla.yallagames.main.MainBottomItemView android:id="@7F0A023D" android:layout_width="-1" android:layout_height="-1" app:icon="?7F040266" app:name="@7F12018B" app:select_icon="?7F040265"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="@7F0601EF" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="@7F0A0BE1" android:background="@7F0800FD" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:includeFontPadding="false" android:layout_marginEnd="17.000000dip"/>
+    </FrameLayout>
+    <com.yalla.yallagames.main.MainBottomItemView android:id="@7F0A00A1" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000" app:icon="?7F040262" app:name="@7F12009B" app:select_icon="?7F040261"/>
+    <com.yalla.yallagames.main.MainBottomItemView android:id="@7F0A0882" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000" app:icon="?7F040264" app:name="@7F1200D0" app:select_icon="?7F040263"/>
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <com.yalla.yallagames.main.MainBottomItemView android:id="@7F0A0318" android:layout_width="-1" android:layout_height="-1" app:icon="?7F040268" app:name="@7F120698" app:select_icon="?7F040267"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="@7F0601EF" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="@7F0A0A61" android:background="@7F0800FD" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:includeFontPadding="false" android:layout_marginEnd="17.000000dip"/>
+    </FrameLayout>
+  </LinearLayout>
+</FrameLayout>

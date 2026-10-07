@@ -1,0 +1,4 @@
+<com.twitter.sdk.android.tweetui.TweetActionBarView xmlns:twitter="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:id="@7F0A0C4A" android:visibility="2" style="@7F130291">
+  <com.twitter.sdk.android.tweetui.ToggleImageButton android:id="@7F0A0C4E" android:layout_marginRight="@7F070168" android:src="@7F080899" android:layout_marginEnd="@7F070168" twitter:contentDescriptionOff="@7F120708" twitter:contentDescriptionOn="@7F120709" style="@7F130288"/>
+  <ImageButton android:id="@7F0A0C51" android:src="@7F0808A1" android:contentDescription="@7F120716" style="@7F130289"/>
+</com.twitter.sdk.android.tweetui.TweetActionBarView>

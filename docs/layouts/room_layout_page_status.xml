@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <ViewStub android:layout_gravity="0x00000011" android:id="@7F0A0D08" android:layout="@7F0D027C" android:layout_width="-1" android:layout_height="-1"/>
+  <ViewStub android:layout_gravity="0x00000011" android:id="@7F0A0D0C" android:layout="@7F0D01F7" android:layout_width="-1" android:layout_height="-1"/>
+</merge>

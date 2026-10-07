@@ -1,0 +1,5 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0184" android:clipChildren="false" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:orientation="1" android:id="@7F0A06B5" android:layout_width="-1" android:layout_height="-2" app:behavior_peekHeight="168.000000dip" app:layout_behavior="com.yallatech.yallachat.chat.ui.view.mention.MentionBottomSheetBehavior">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A06B6" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-2"/>
+  </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,3 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A083A" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toTopOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+</merge>

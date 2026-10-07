@@ -1,0 +1,8 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:id="@7F0A0928" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginRight="20.000000dip" android:layout_toLeftOf="@7F0A0929" android:layout_centerVertical="true" android:contentDescription="@android:0104000F" android:layout_marginEnd="20.000000dip" android:layout_toStartOf="@7F0A0929"/>
+  <ImageView android:id="@7F0A092A" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginRight="20.000000dip" android:layout_toLeftOf="@7F0A0929" android:layout_centerVertical="true" android:contentDescription="@android:0104000F" android:layout_marginEnd="20.000000dip" android:layout_toStartOf="@7F0A0929"/>
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F0A0929" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+    <TextView android:textSize="15.000000sp" android:textColor="#FF666666" android:id="@7F0A092B" android:layout_width="-2" android:layout_height="-2" android:text="@7F1206A7" android:maxLines="1"/>
+    <TextView android:textSize="12.000000sp" android:textColor="#FF7C7C7C" android:id="@7F0A092C" android:layout_width="-2" android:layout_height="-2" android:text="@7F1206AB" android:maxLines="1"/>
+  </LinearLayout>
+</merge>

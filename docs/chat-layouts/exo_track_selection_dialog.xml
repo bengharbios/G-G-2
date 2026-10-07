@@ -1,0 +1,3 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-1">
+  <com.google.android.exoplayer2.ui.TrackSelectionView android:id="@7F0A03BE" android:layout_width="-2" android:layout_height="-2"/>
+</ScrollView>

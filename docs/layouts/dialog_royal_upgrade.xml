@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A09A3" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:id="@7F0A0446" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="34.000000dip" android:src="@7F080248" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

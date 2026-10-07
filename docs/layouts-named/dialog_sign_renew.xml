@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textStyle="0x00000001" android:textColor="#FF626262" android:id="ctv_content" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="21.000000dip" android:text="sign_diamonds_50_remind" android:includeFontPadding="false" android:layout_centerHorizontal="true" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:layout_marginBottom="19.000000dip" android:layout_below="ctv_content" android:layout_centerHorizontal="true" android:layoutDirection="0">
+    <ImageView android:layout_width="32.000000dip" android:layout_height="37.000000dip" android:layout_marginRight="11.000000dip" android:src="diamonds"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="24.000000sp" android:textStyle="0x00000001" android:textColor="#FF00AFF1" android:layout_width="-2" android:layout_height="-2" android:text="-5"/>
+  </LinearLayout>
+</RelativeLayout>

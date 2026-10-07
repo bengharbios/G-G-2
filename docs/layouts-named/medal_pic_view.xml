@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:layout_gravity="0x00000011" android:id="iv_pic" android:layout_width="215.000000dip" android:layout_height="199.000000dip"/>
+</FrameLayout>

@@ -1,0 +1,11 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="white" android:ellipsize="3" android:gravity="0x00000001" android:layout_gravity="0x00000001" android:id="tv_player_name" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:text="matching" android:maxEms="4" android:singleLine="true"/>
+  <FrameLayout android:layout_gravity="0x00000001" android:id="fl_matching" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.CircleFrameLayout android:layout_gravity="0x00000001" android:layout_width="52.000000dip" android:layout_height="52.000000dip" android:layout_marginTop="26.000000dip">
+      <com.yalla.games.common.view.svga.LudoSVGAView android:id="svga_image" android:layout_width="-1" android:layout_height="-1" android:src="saomiao_0" app:speed_scale="1.500000"/>
+      <ImageView android:id="head_image" android:background="#FF365EA0" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:src="saomiao_0" android:scaleType="6"/>
+    </com.yalla.games.common.view.CircleFrameLayout>
+    <ImageView android:background="hesd_frame" android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:layout_marginTop="25.000000dip"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000001" android:id="svg_open" android:layout_width="80.000000dip" android:layout_height="75.000000dip" android:layout_marginTop="15.000000dip" app:speed_scale="2.000000" app:view_scale="1.300000"/>
+</merge>

@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="et_room_buttom" android:layout_width="-1" android:layout_height="400.000000dip">
+  <LinearLayout android:orientation="1" android:id="ll_no_email" android:visibility="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="105.000000dip" android:layout_marginBottom="122.000000dip">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:src="icon_record"/>
+    <com.yalla.games.common.view.CustomTextView android:textColor="#FFABD8CB" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="no_mails"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="ll_email" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <androidx.recyclerview.widget.RecyclerView android:id="rv_email" android:visibility="2" android:layout_width="-1" android:layout_height="330.000000dip" android:layout_margin="10.000000dip"/>
+    <LinearLayout android:orientation="1" android:id="ll_email_container" android:visibility="2" android:layout_width="-1" android:layout_height="330.000000dip" android:layout_margin="10.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="service_subtitle" android:ellipsize="3" android:gravity="0x00000011" android:id="tv_content_title" android:background="bg_feed_back_detail" android:layout_width="-1" android:layout_height="30.000000dip" android:singleLine="true" android:includeFontPadding="false"/>
+      <ScrollView android:background="bg_feed_back_detail" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="300.000000dip" android:layout_marginTop="6.000000dip">
+        <LinearLayout android:orientation="1" android:padding="12.000000dip" android:layout_width="-1" android:layout_height="-2">
+          <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="color_a69583" android:textColorLink="@android:01060013" android:autoLink="0x0000000F" android:id="tv_email_content" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="service_subtitle" android:id="tv_rewards" android:layout_width="-2" android:layout_height="-2" android:text="rewards"/>
+          <LinearLayout android:orientation="0" android:id="ll_rewards" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+        </LinearLayout>
+      </ScrollView>
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="btn_receive" android:layout_width="198.000000dip" android:layout_height="54.000000dip" android:layout_marginBottom="10.000000dip" android:text="btn_receive" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  </LinearLayout>
+</FrameLayout>

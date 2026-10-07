@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_task" android:layout_width="360.000000dip" android:layout_height="-2" android:layout_marginTop="16777195.000000dip">
+  <View android:id="bottom_view_1" android:background="pass_task_item_left_bottom" android:layout_width="180.000000dip" android:layout_height="140.000000dip" android:layout_marginTop="17.000000dip"/>
+  <View android:background="pass_task_item_right_bottom" android:layout_width="180.000000dip" android:layout_height="140.000000dip" android:layout_marginTop="17.000000dip" android:layout_toEndOf="bottom_view_1"/>
+  <FrameLayout android:layout_width="-2" android:layout_height="-2">
+    <View android:layout_gravity="0x00000010" android:background="pass_task_bottom_show_bg" android:layout_width="-1" android:layout_height="9.000000dip" android:layout_marginStart="16777211.000000dip" android:layout_marginEnd="16777211.000000dip"/>
+    <View android:layout_gravity="0x00000011" android:background="pass_task_bottom_show_ic" android:layout_width="115.000000dip" android:layout_height="33.000000dip" android:layout_marginStart="16777211.000000dip" android:layout_marginEnd="16777211.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="#FF9D520D" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="stv_level_reward" android:layout_width="115.000000dip" android:layout_height="30.000000dip" android:layout_marginBottom="1.000000dip" android:text="pass_task_50_reward" android:layout_alignTop="iv_task_level_tag" android:layout_alignStart="iv_task_level_tag" app:stroke_color="#FFFFDC00" app:stroke_width="1.000000dip"/>
+  </FrameLayout>
+  <FrameLayout android:background="pass_task_bottom_reward_bg" android:layout_width="308.000000dip" android:layout_height="114.000000dip" android:layout_marginTop="36.000000dip" android:layout_centerHorizontal="true">
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="100.000000dip" android:layout_height="105.000000dip" android:src="pass_task_bottom_open_bg" android:layout_marginStart="12.000000dip"/>
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="100.000000dip" android:layout_height="105.000000dip" android:src="pass_task_bottom_open_ic" android:layout_marginStart="15.000000dip"/>
+    <FrameLayout android:layout_gravity="0x00800005" android:layout_width="195.000000dip" android:layout_height="108.000000dip" android:layout_marginEnd="8.000000dip">
+      <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00800015" android:orientation="1" android:layout_width="-1" android:layout_height="102.000000dip" android:layout_marginTop="1.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="2.000000dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="stv_bottom_real_reward" android:layout_width="173.000000dip" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:layout_marginBottom="8.000000dip" android:text="pass_task_50_reward_content" android:includeFontPadding="false" android:shadowDy="1.000000" app:stroke_color="#FF054631" app:stroke_width="1.000000dip"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:gravity="0x00000011" android:id="stv_collect" android:background="bn_yes" android:paddingBottom="4.000000dip" android:layout_width="80.000000dip" android:layout_height="36.000000dip" android:text="btn_receive" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+      </LinearLayout>
+    </FrameLayout>
+  </FrameLayout>
+</RelativeLayout>

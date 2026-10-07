@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0805EA" android:layout_width="-2" android:layout_height="-2">
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="16.000000sp" android:textColor="@7F060038" android:layout_gravity="0x00000011" android:id="@7F0A07CA" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="3.000000dip"/>
+</FrameLayout>

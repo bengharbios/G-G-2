@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_match" android:background="game_bg" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="200.000000dip" android:scaleType="3" app:lowMemoryConfig="2" app:play_on_attach="true" app:source="?7F04026A"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="200.000000dip" android:scaleType="3" app:lowMemoryConfig="2" app:play_on_attach="true" app:source="?7F040269"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="svgaImage" android:layout_width="-1" android:layout_height="121.000000dip" android:layout_marginBottom="16777204.000000dip" android:scaleType="3" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga"/>
+  <ImageView android:id="iv_cha" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="close" android:layout_alignParentTop="true" android:layout_alignParentEnd="true"/>
+  <ImageView android:id="iv_rules" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="team_create_rule_ic" android:layout_alignParentTop="true" android:layout_marginStart="10.000000dip" android:layout_alignParentStart="true"/>
+  <RelativeLayout android:id="rl_game_select" android:layout_width="-1" android:layout_height="90.000000dip" android:layout_marginTop="75.000000dip">
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="59.000000dip">
+      <ImageView android:id="iv_team" android:layout_width="108.000000dip" android:layout_height="-2"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000031" android:id="tv_team" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="49.000000dip" android:text="team" android:layout_centerHorizontal="true" app:stroke_color="#FF0D73BA" app:stroke_width="1.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="59.000000dip" android:layout_alignParentEnd="true">
+      <ImageView android:id="iv_4p" android:layout_width="108.000000dip" android:layout_height="-2"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000031" android:id="tv_4p" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="49.000000dip" android:text="players_4" android:layout_centerHorizontal="true" app:stroke_color="#FF0D73BA" app:stroke_width="1.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="vp_team_4p" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip" android:layout_below="rl_game_select"/>
+</RelativeLayout>

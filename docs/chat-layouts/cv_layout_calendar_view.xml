@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:orientation="1" android:id="@7F0A03F3" android:visibility="0" android:layout_width="-1" android:layout_height="-1">
+    <com.yallatech.yallachat.calendarview.MonthViewPager android:id="@7F0A0BB2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="41.000000dip"/>
+    <com.yallatech.yallachat.calendarview.WeekViewPager android:id="@7F0A0BB5" android:visibility="2" android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="41.000000dip"/>
+    <View android:id="@7F0A05A7" android:background="#FFCFCFCF" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginLeft="16.000000dip" android:layout_marginTop="40.000000dip" android:layout_marginRight="16.000000dip"/>
+  </FrameLayout>
+</merge>

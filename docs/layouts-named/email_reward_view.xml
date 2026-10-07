@@ -1,0 +1,7 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="fl_rewards" android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:layout_marginEnd="6.000000dip">
+  <RelativeLayout android:layout_gravity="0x00000011" android:id="rl_rewards" android:layout_width="45.000000dip" android:layout_height="45.000000dip">
+    <ImageView android:id="iv_rewards" android:layout_width="-1" android:layout_height="-1" android:src="mail_exp"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="white" android:id="tv_rewards" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="4.000000dip" android:lines="1" android:layout_alignParentBottom="true" android:layout_marginEnd="4.000000dip" android:layout_alignParentEnd="true" app:strokeAutoSizeMaxTextSize="10.000000sp" app:strokeAutoSizeMinTextSize="2.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp"/>
+  </RelativeLayout>
+  <ImageView android:id="iv_complete" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

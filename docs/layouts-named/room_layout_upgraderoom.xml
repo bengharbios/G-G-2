@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_upgrade_room_container" android:clipChildren="false" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:background="bg_rank" android:layout_width="-1" android:layout_height="51.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="room_upgrade_room_title"/>
+    <ImageView android:layout_gravity="0x00800005" android:id="iv_upgrade_room_close" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="8.000000dip" android:src="x_closed" android:layout_marginEnd="10.000000dip"/>
+  </FrameLayout>
+  <HorizontalScrollView android:gravity="0x00000011" android:orientation="0" android:id="ll_room" android:scrollbars="0x00000000" android:clipChildren="false" android:layout_width="-1" android:layout_height="124.000000dip" android:layout_marginStart="6.000000dip" android:layout_marginEnd="6.000000dip">
+    <LinearLayout android:orientation="0" android:id="ll_upgrade" android:layout_width="-2" android:layout_height="-2">
+      <com.yalla.ludochat.view.RoomTypeView android:id="fl_upgrade_room_standard" android:layout_width="-2" android:layout_height="-2"/>
+      <com.yalla.ludochat.view.RoomTypeView android:id="fl_upgrade_room_garden" android:layout_width="-2" android:layout_height="-2"/>
+      <com.yalla.ludochat.view.RoomTypeView android:id="fl_upgrade_room_dream" android:layout_width="-2" android:layout_height="-2"/>
+      <com.yalla.ludochat.view.RoomTypeView android:id="fl_upgrade_room_royal" android:layout_width="-2" android:layout_height="-2"/>
+      <com.yalla.ludochat.view.RoomTypeView android:id="fl_upgrade_room_castle" android:layout_width="-2" android:layout_height="-2"/>
+    </LinearLayout>
+  </HorizontalScrollView>
+  <LinearLayout android:orientation="1" android:background="bg_upgrade_room_body" android:paddingTop="48.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="20.000000dip" android:paddingStart="23.000000dip" android:paddingEnd="23.000000dip" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip">
+    <ScrollView android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+        <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+          <ImageView android:id="iv_tips1" android:layout_width="-2" android:layout_height="-2" android:src="icon_upgraderoom_capa" android:scaleType="5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_276" android:gravity="0x00800003" android:id="tv_tips1" android:layout_width="-1" android:layout_height="-2" android:text="room_online_num" android:layout_marginStart="6.000000dip" android:layout_toEndOf="iv_tips1"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00800003" android:id="tv_tips1_des" android:layout_width="-1" android:layout_height="-2" android:text="room_online_num_des" android:layout_below="tv_tips1" android:layout_alignStart="tv_tips1"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="24.000000dip">
+          <ImageView android:id="iv_tips2" android:layout_width="-2" android:layout_height="-2" android:src="icon_upgraderoom_admin" android:scaleType="5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_276" android:gravity="0x00800003" android:id="tv_tips2" android:layout_width="-1" android:layout_height="-2" android:text="room_title_RoomPerson_admin" android:layout_marginStart="6.000000dip" android:layout_toEndOf="iv_tips2"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00800003" android:id="tv_tips2_des" android:layout_width="-1" android:layout_height="-2" android:text="room_info_administor" android:layout_below="tv_tips2" android:layout_alignStart="tv_tips2"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="24.000000dip">
+          <ImageView android:id="iv_tips3" android:layout_width="-2" android:layout_height="-2" android:src="icon_upgraderoom_member" android:scaleType="5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_276" android:gravity="0x00800003" android:id="tv_tips3" android:layout_width="-1" android:layout_height="-2" android:text="Room_Members" android:layout_marginStart="6.000000dip" android:layout_toEndOf="iv_tips3"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00800003" android:id="tv_tips3_des" android:layout_width="-1" android:layout_height="-2" android:text="room_MAX_XXX_members_in_the_room" android:layout_below="tv_tips3" android:layout_alignStart="tv_tips3"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="24.000000dip">
+          <ImageView android:id="iv_tips4" android:layout_width="-2" android:layout_height="-2" android:src="icon_upgraderoom_rank" android:scaleType="5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_276" android:gravity="0x00800003" android:id="tv_tips4" android:layout_width="-1" android:layout_height="-2" android:text="room_accelerate" android:layout_marginStart="6.000000dip" android:layout_toEndOf="iv_tips4"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00800003" android:id="tv_tips4_des" android:layout_width="-1" android:layout_height="-2" android:text="room_info_rank" android:layout_below="tv_tips4" android:layout_alignStart="tv_tips4"/>
+        </RelativeLayout>
+        <RelativeLayout android:id="rl5" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="24.000000dip">
+          <ImageView android:id="iv_tips5" android:layout_width="-2" android:layout_height="-2" android:src="room_upgrader_room_welcome" android:scaleType="5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_276" android:gravity="0x00800003" android:id="tv_tips5" android:layout_width="-1" android:layout_height="-2" android:text="room_welcome_right" android:layout_marginStart="6.000000dip" android:layout_toEndOf="iv_tips5"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00800003" android:id="tv_tips5_des" android:layout_width="-1" android:layout_height="-2" android:text="room_welcome_right_desc" android:layout_below="tv_tips5" android:layout_alignStart="tv_tips5"/>
+        </RelativeLayout>
+      </LinearLayout>
+    </ScrollView>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="color_acb" android:layout_gravity="0x00000001" android:id="tv_max_room" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="50.000000dip" android:text="room_your_room_type_is_superior"/>
+    <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="ll_room_upgrade" android:background="room_btn_yellow_bg" android:paddingTop="8.000000dip" android:paddingBottom="8.000000dip" android:layout_width="177.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="18.000000dip">
+      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="iv_coin" android:layout_width="-2" android:layout_height="-2" android:src="diamonds_s" android:layout_marginEnd="6.000000dip"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_a60" android:gravity="0x00000011" android:id="tv_price" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false"/>
+      </LinearLayout>
+      <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="color_a60" android:gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="room_Upgrade"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000050" android:orientation="1" android:background="#CC000000" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-2">
+    <ImageButton android:id="@7F0A03AF" style="@7F140117"/>
+    <ImageButton android:id="@7F0A03B3" style="@7F140118"/>
+    <ImageButton android:id="@7F0A03B7" style="@7F140112"/>
+    <ImageButton android:id="@7F0A03B2" style="@7F140112"/>
+    <ImageButton android:id="@7F0A03AB" style="@7F140116"/>
+    <ImageButton android:id="@7F0A03AA" style="@7F140115"/>
+    <ImageButton android:id="@7F0A039F" style="@7F140113"/>
+    <ImageButton android:id="@7F0A03A6" style="@7F140114"/>
+    <ImageButton android:id="@7F0A03BF" style="@7F140119"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip">
+    <TextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FFBEBEBE" android:id="@7F0A03AE" android:paddingLeft="4.000000dip" android:paddingRight="4.000000dip" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false"/>
+    <View android:id="@7F0A03B1" android:layout_width="0.000000dip" android:layout_height="26.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FFBEBEBE" android:id="@7F0A039B" android:paddingLeft="4.000000dip" android:paddingRight="4.000000dip" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false"/>
+  </LinearLayout>
+</LinearLayout>

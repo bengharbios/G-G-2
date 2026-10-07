@@ -1,0 +1,4 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:orientation="0" android:background="@7F060029" android:layout_width="-1" android:layout_height="27.000000dip">
+  <ImageView android:layout_width="16.000000dip" android:layout_height="14.000000dip" android:src="@7F08016A" android:layout_marginEnd="4.000000dip"/>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:text="@7F120312" android:singleLine="true" app:autoSizeMinTextSize="9.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1" app:strokeAutoSizeMaxTextSize="11.000000sp"/>
+</LinearLayout>

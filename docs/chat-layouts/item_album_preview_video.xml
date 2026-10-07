@@ -1,0 +1,8 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.player.ui.YCVideoView android:id="@7F0A09DF" android:layout_width="-1" android:layout_height="-1" app:show_bottom_bar="false"/>
+  <FrameLayout android:id="@7F0A00A5" android:layout_width="-1" android:layout_height="-2">
+    <TextView android:textSize="16.000000dip" android:textColor="@7F0601F8" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A00BE" android:background="@7F08007E" android:paddingLeft="16.000000dip" android:paddingRight="16.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="14.000000dip"/>
+    <com.yallatech.yallachat.libalbum.widget.VideoTimelinePlayView android:id="@7F0A00CB" android:visibility="2" android:layout_width="-1" android:layout_height="58.000000dip" android:layout_marginTop="60.000000dip"/>
+    <TextView android:textSize="16.000000dip" android:textColor="@7F0601F8" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A00BD" android:background="@7F08007E" android:paddingLeft="16.000000dip" android:paddingRight="16.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="120.000000dip" android:textDirection="3"/>
+  </FrameLayout>
+</FrameLayout>

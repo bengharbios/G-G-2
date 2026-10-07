@@ -1,0 +1,8 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A014E" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F0807AF" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <com.yalla.ludochat.view.TitleView android:id="@7F0A087E" android:background="@7F080109" android:layout_width="-1" android:layout_height="53.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <include android:id="@7F0A00B2" android:visibility="1" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" layout="@7F0D028A"/>
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A07D8" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toTopOf="@7F0A00B2" app:layout_constraintTop_toBottomOf="@7F0A087E">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08D7" android:layout_width="-1" android:layout_height="-1"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

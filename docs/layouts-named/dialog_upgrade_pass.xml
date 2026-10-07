@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:layout_width="360.000000dip" android:layout_height="-1">
+  <FrameLayout android:id="fl_content" android:background="pass_task_buy_dialog_bg" android:layout_width="360.000000dip" android:layout_height="460.000000dip" android:layout_centerInParent="true">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:textColor="#FFA55D10" android:gravity="0x00000011" android:visibility="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:text="pass_task_upgrade_battle_pass" android:includeFontPadding="false" app:stroke_color="#FFFFE322" app:stroke_width="1.000000dip" style="StrokeTextStyle_Yes"/>
+    <ImageView android:layout_gravity="0x00000001" android:layout_width="250.000000dip" android:layout_height="141.000000dip" android:layout_marginTop="59.000000dip" android:src="pass_task_buy_regard_top_open_ic"/>
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="200.000000dip" android:minHeight="185.000000dip">
+      <FrameLayout android:layout_gravity="0x00000001" android:id="fl_unlock" android:background="pass_task_bug_reward_bg" android:layout_width="287.000000dip" android:layout_height="90.000000dip" android:paddingStart="3.500000dip" android:paddingEnd="3.000000dip">
+        <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="7.000000dip">
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF87EFCC" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="250.000000dip" android:layout_height="-2" android:text="pass_task_upgrade_pass_des_1"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF87EFCC" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="250.000000dip" android:layout_height="-2" android:text="pass_task_upgrade_pass_des_11"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="rv_regard_unlock" android:scrollbars="0x00000000" android:layout_width="-2" android:layout_height="39.000000dip" android:layout_marginTop="42.000000dip" android:overScrollMode="2"/>
+      </FrameLayout>
+      <FrameLayout android:layout_gravity="0x00000001" android:id="fl_locked" android:background="pass_task_bug_reward_bg" android:layout_width="287.000000dip" android:layout_height="90.000000dip" android:layout_marginTop="5.000000dip" android:paddingStart="3.500000dip" android:paddingEnd="3.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF87EFCC" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="250.000000dip" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:text="pass_task_upgrade_pass_des_2"/>
+        <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="rv_regard_locked" android:scrollbars="0x00000000" android:layout_width="-2" android:layout_height="39.000000dip" android:layout_marginTop="42.000000dip" android:overScrollMode="2"/>
+      </FrameLayout>
+    </LinearLayout>
+  </FrameLayout>
+  <LinearLayout android:gravity="0x00000011" android:id="fl_buy" android:background="bn_yes" android:paddingBottom="5.000000dip" android:visibility="0" android:layout_width="153.000000dip" android:layout_height="52.000000dip" android:layout_marginBottom="13.000000dip" android:layout_alignBottom="fl_content" android:layout_centerHorizontal="true" android:layout_marginEnd="9.000000dip">
+    <ImageView android:layout_width="23.000000dip" android:layout_height="30.000000dip" android:src="diamonds" android:layout_marginEnd="5.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="19.000000sp" android:textStyle="0x00000001" android:textColor="#FFA55D10" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="tv_vip_money" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="8880" android:includeFontPadding="false"/>
+  </LinearLayout>
+  <ImageView android:id="iv_close" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:layout_marginBottom="30.000000dip" android:src="close" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

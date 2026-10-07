@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D0132"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+    <com.app.selectPicture.view.ViewPagerFixed android:id="@7F0A0075" android:layout_width="-1" android:layout_height="-1"/>
+  </RelativeLayout>
+</LinearLayout>

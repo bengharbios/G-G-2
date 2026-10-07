@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:padding="6.000000dip" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <TextView android:textSize="10.000000sp" android:textColor="#FFB6DCD2" android:layout_gravity="0x00000001" android:id="tv_date" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="5.000000dip">
+    <com.yalla.games.common.view.HeadView android:id="iv_head_view" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_alignParentStart="true" app:head_face_margin="7.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="#FF8DB0A7" android:id="tv_name" android:layout_width="-2" android:layout_height="-2" android:lines="1" android:layout_alignTop="iv_head_view" android:textDirection="5" android:layout_toEndOf="iv_head_view"/>
+    <RelativeLayout android:id="fl_content" android:layout_width="258.000000dip" android:layout_height="130.000000dip" android:layout_marginTop="3.000000dip" android:layout_below="tv_name" android:layout_toEndOf="iv_head_view">
+      <View android:id="view_bg" android:background="chat_game_invite_bubble_left" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="2.000000dip" android:layout_marginEnd="2.000000dip"/>
+      <RelativeLayout android:id="rl_content" android:background="team_invitation_ludo" android:layout_width="-1" android:layout_height="85.000000dip" android:layout_marginStart="10.000000dip">
+        <LinearLayout android:gravity="0x00000011" android:orientation="1" android:background="bg_chat_game_invite_mode" android:layout_width="114.000000dip" android:layout_height="-2" android:layout_marginTop="26.000000dip" android:minHeight="23.000000dip" android:layout_marginEnd="25.000000dip" android:layout_alignParentEnd="true">
+          <RelativeLayout android:id="rl_bets" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="3.000000dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="#FFFFFFFF" android:layout_width="-2" android:layout_height="-2" android:text="bets_vip_room" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginStart="4.000000dip"/>
+            <ImageView android:id="iv_coin" android:layout_width="14.000000dip" android:layout_height="14.000000dip" android:src="coin" android:layout_centerVertical="true" android:layout_alignParentEnd="true"/>
+            <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FFFBFF99" android:id="tv_coin" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_toStartOf="iv_coin"/>
+          </RelativeLayout>
+          <RelativeLayout android:id="rl_mode" android:layout_width="-1" android:layout_height="-2">
+            <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="#FFFFFFFF" android:layout_width="-2" android:layout_height="-2" android:text="mode_vip_room" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginStart="4.000000dip"/>
+            <com.yalla.game.base.view.StrokeTextView android:textSize="13.000000sp" android:textColor="#FFFBFF99" android:gravity="0x00800015" android:id="tv_mode" android:layout_width="60.000000dip" android:layout_height="-2" android:maxLines="1" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginEnd="4.000000dip" android:layout_alignParentEnd="true" app:strokeAutoSizeMaxTextSize="13.000000sp" app:strokeAutoSizeMinTextSize="8.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp"/>
+          </RelativeLayout>
+        </LinearLayout>
+      </RelativeLayout>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:gravity="0x00000011" android:id="btn_yes" android:background="bn_yes" android:layout_width="122.000000dip" android:layout_height="37.000000dip" android:layout_marginTop="6.000000dip" android:text="yes" android:layout_below="rl_content" android:layout_centerHorizontal="true" style="StrokeTextStyle_Yes"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF979797" android:gravity="0x00000011" android:id="tv_expired" android:visibility="2" android:layout_width="-1" android:layout_height="37.000000dip" android:layout_marginTop="6.000000dip" android:text="The invitation has expired" android:lines="1" android:layout_below="rl_content" android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_alignTop="fl_content" android:layout_alignBottom="fl_content" android:layout_marginStart="3.000000dip" android:layout_toEndOf="fl_content">
+      <ImageView android:layout_gravity="0x00000011" android:id="iv_status" android:focusable="false" android:visibility="2" android:layout_width="15.000000dip" android:layout_height="15.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</LinearLayout>

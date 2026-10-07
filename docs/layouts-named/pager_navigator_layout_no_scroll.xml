@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="0" android:id="indicator_container" android:layout_width="-1" android:layout_height="-1"/>
+  <LinearLayout android:orientation="0" android:id="title_container" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

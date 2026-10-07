@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:layout_width="-2" android:layout_height="-2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <include layout="@7F0D01D1"/>
+  </FrameLayout>
+  <LinearLayout android:orientation="1" android:id="@7F0A063B" android:background="@7F08058C" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:layout_marginStart="54.000000dip" app:layout_constrainedWidth="true" app:layout_constraintHorizontal_bias="0.000000" app:layout_constraintHorizontal_chainStyle="2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="@7F060057" android:id="@7F0A09F9" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:includeFontPadding="false" android:drawablePadding="2.000000dip" android:drawableStart="@7F08035E"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A03D8" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:layout_marginTop="5.000000dip" app:clearsAfterStop="false" app:play_on_attach="true"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

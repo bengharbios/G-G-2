@@ -1,0 +1,8 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:background="@7F0806B3" android:layout_width="-2" android:layout_height="32.000000dip">
+  <com.yalla.games.common.view.AutoMirrorImageView android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="-2" android:src="@7F0806B2" android:layout_marginStart="5.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:ellipsize="0" android:layout_gravity="0x00000010" android:id="@7F0A0A4E" android:layout_width="-2" android:layout_height="-2" android:text="@7F12043C" android:singleLine="true" android:layout_marginStart="6.000000dip"/>
+  <FrameLayout android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:layout_marginStart="5.000000dip">
+    <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000011" android:id="@7F0A03A5" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:src="@7F0805BA" app:isCircle="true"/>
+    <com.yalla.ludochat.view.CircleProgressBar android:id="@7F0A013B" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</LinearLayout>

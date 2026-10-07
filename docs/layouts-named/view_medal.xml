@@ -1,0 +1,12 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_medal" android:layout_width="-2" android:layout_height="-2">
+    <ImageView android:id="iv_medal" android:layout_width="69.000000dip" android:layout_height="64.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF28CF9C" android:ellipsize="3" android:gravity="0x00000011" android:id="tv_name" android:layout_width="69.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="4.000000dip" android:maxLines="2"/>
+  </LinearLayout>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:layout_gravity="0x00800055" android:id="tv_honor_value" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="32.000000dip" app:end_color="#FFFFFFFF" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFDF0F" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_medal_add" android:layout_width="-2" android:layout_height="-2">
+    <ImageView android:id="iv_add" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:src="medal_add_icon"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FFC5E3DB" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="click_add_badge"/>
+  </LinearLayout>
+  <ImageView android:layout_gravity="0x00000001" android:id="iv_other_void" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:src="medal_other_void"/>
+</merge>

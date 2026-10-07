@@ -1,0 +1,7 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:id="@7F0A071B" android:paddingTop="@7F0701D6" android:paddingBottom="@7F0701D4" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000">
+    <com.google.android.material.button.MaterialButton android:gravity="0x00800013" android:layout_gravity="0x00800003" android:id="@7F0A071C" android:layout_width="-2" android:layout_height="@7F0701D5" android:insetTop="0.000000dip" android:insetBottom="0.000000dip" app:icon="@7F0804CE" app:iconGravity="0x00000004" app:iconPadding="4.000000dip" style="?7F04030F"/>
+  </FrameLayout>
+  <com.google.android.material.button.MaterialButton android:gravity="0x00000011" android:id="@7F0A071E" android:layout_width="@7F07020E" android:layout_height="@7F0701D5" android:insetTop="0.000000dip" android:insetBottom="0.000000dip" android:contentDescription="@7F130760" app:icon="@7F0804CC" style="?7F04030C"/>
+  <com.google.android.material.button.MaterialButton android:gravity="0x00000011" android:id="@7F0A071D" android:layout_width="@7F07020E" android:layout_height="@7F0701D5" android:insetTop="0.000000dip" android:insetBottom="0.000000dip" android:contentDescription="@7F13075F" app:icon="@7F0804CB" style="?7F04030C"/>
+</LinearLayout>

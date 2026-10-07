@@ -1,0 +1,57 @@
+<com.yalla.games.common.view.TouchListenRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_main" android:background="black" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:background="vip_bg" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:id="svga_bg" android:layout_width="-1" android:layout_height="-1" app:bindPage="3" app:lowMemoryConfig="2" app:play_on_attach="true" app:source="vip_room_bg.svga"/>
+    <RelativeLayout android:id="rl_title" android:layout_width="-1" android:layout_height="36.000000dip">
+      <View android:background="vip_room_title_bg" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777206.000000dip"/>
+      <ImageView android:id="iv_show_hide" android:layout_width="29.500003dip" android:layout_height="29.500003dip" android:src="icon_eye" android:layout_centerVertical="true" android:layout_marginStart="12.000000dip"/>
+      <FrameLayout android:id="fl_close" android:layout_width="-2" android:layout_height="-1" android:layout_centerVertical="true" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true">
+        <ImageView android:layout_gravity="0x00000010" android:layout_width="21.699984dip" android:layout_height="22.599978dip" android:src="vip_room_close"/>
+      </FrameLayout>
+    </RelativeLayout>
+    <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:id="svga_logo" android:layout_width="180.000000dip" android:layout_height="51.000000dip" android:layout_marginTop="16777210.000000dip" android:layout_centerHorizontal="true" app:bindPage="3" app:lowMemoryConfig="2"/>
+    <FrameLayout android:id="fl_bottom" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true">
+      <RelativeLayout android:id="rl_host_game" android:visibility="0" android:layout_width="-1" android:layout_height="94.000000dip">
+        <FrameLayout android:orientation="0" android:id="ll_seat" android:background="bn_no" android:layout_width="95.000000dip" android:layout_height="43.000000dip" android:layout_centerVertical="true" android:layout_marginStart="15.000000dip">
+          <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="2.000000dip">
+            <ImageView android:layout_gravity="0x00000010" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="sofa"/>
+            <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:layout_gravity="0x00000010" android:id="tv_seated" android:layout_width="-2" android:layout_height="-2" android:text="seat" android:layout_marginStart="5.000000dip" app:stroke_color="#FF61F2CA" app:stroke_width="1.000000dip" style="StrokeTextStyle_No"/>
+          </LinearLayout>
+        </FrameLayout>
+        <FrameLayout android:id="fl_join_game" android:background="bn_yes" android:layout_width="95.000000dip" android:layout_height="43.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="15.000000dip" android:layout_alignParentEnd="true">
+          <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="2.000000dip">
+            <ImageView android:layout_gravity="0x00000010" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="vip_room_join"/>
+            <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:layout_gravity="0x00000010" android:id="btn_join_game" android:layout_width="-2" android:layout_height="-2" android:text="vip_room_join" android:layout_marginStart="5.000000dip" app:stroke_color="#FFFFF08B" app:stroke_width="1.000000dip" style="StrokeTextStyle_Yes"/>
+          </LinearLayout>
+        </FrameLayout>
+        <FrameLayout android:id="fl_host_game" android:background="bn_yes" android:layout_width="95.000000dip" android:layout_height="43.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="21.000000dip" android:layout_toStartOf="fl_join_game">
+          <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="2.000000dip">
+            <ImageView android:layout_gravity="0x00000010" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="vip_room_host"/>
+            <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:layout_gravity="0x00000010" android:id="btn_host_game" android:layout_width="-2" android:layout_height="-2" android:text="vip_room_host" android:layout_marginStart="5.000000dip" app:stroke_color="#FFFFF08B" app:stroke_width="1.000000dip" style="StrokeTextStyle_Yes"/>
+          </LinearLayout>
+        </FrameLayout>
+      </RelativeLayout>
+      <com.yalla.games.battle.vip.view.VipRoomMyView android:id="vip_my_room_view" android:background="vip_room_my_bg" android:visibility="2" android:layout_width="-1" android:layout_height="151.000000dip"/>
+    </FrameLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_no_search_result" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+      <ImageView android:layout_width="124.000000dip" android:layout_height="124.000000dip" android:src="vip_room_no_search_result"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFF298" android:layout_width="-2" android:layout_height="-2" android:text="no_search_result"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="rcy_rooms" android:layout_width="-1" android:layout_height="-1" android:layout_above="fl_bottom" android:layout_below="rl_title"/>
+    <LinearLayout android:gravity="0x00000051" android:orientation="1" android:id="ll_watch_switch" android:background="bg_vip_tip" android:visibility="2" android:clickable="true" android:layout_width="162.000000dip" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:layout_marginStart="4.000000dip">
+      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="id_filter_question" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:textColor="white" android:layout_width="-2" android:layout_height="-2" android:text="filter"/>
+        <ImageView android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="vip_room_filter_question" android:layout_marginStart="3.000000dip"/>
+      </LinearLayout>
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:gravity="0x00000011" android:id="tv_show_all" android:background="bg_vip_filter_select" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:text="show_all"/>
+      <View android:background="bg_vip_filter_divider" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="9.000000dip" android:layout_marginEnd="9.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:gravity="0x00000011" android:id="tv_hide_playing" android:background="bg_vip_filter_select" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:text="hide_playing"/>
+      <View android:id="divider_allow_watch" android:background="bg_vip_filter_divider" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="9.000000dip" android:layout_marginEnd="9.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:gravity="0x00000011" android:id="tv_allow_watching" android:background="bg_vip_filter_select" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:text="allow_watching"/>
+      <View android:background="bg_vip_filter_divider" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="9.000000dip" android:layout_marginEnd="9.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:gravity="0x00000011" android:id="tv_id_filtering" android:background="bg_vip_filter_select" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:text="search_vip_room"/>
+    </LinearLayout>
+    <FrameLayout android:id="fl_refresh" android:background="room_refresh" android:visibility="2" android:layout_width="91.000000dip" android:layout_height="36.500003dip" android:layout_marginTop="45.000000dip" android:layout_alignParentEnd="true">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FFFEE58E" android:layout_gravity="0x00800015" android:layout_width="-2" android:layout_height="-2" android:text="new_rooms" android:layout_marginEnd="7.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</com.yalla.games.common.view.TouchListenRelativeLayout>

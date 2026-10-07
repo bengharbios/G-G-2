@@ -1,0 +1,10 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="srl_moments" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.ludochat.view.FixedRecyclerView android:id="rv_moments" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_no_join" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="room_icon_no_data"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="color_8ac" android:layout_width="201.000000dip" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:text="room_no_join_no_moments"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="18.000000dip" android:textColor="color_A60" android:gravity="0x00000011" android:id="btn_join_room" android:background="btn_yes" android:layout_width="168.000000dip" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:text="join"/>
+  </LinearLayout>
+</FrameLayout>

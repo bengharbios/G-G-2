@@ -1,0 +1,24 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:layout_gravity="0x00800005" android:id="flWeeklyGift" android:visibility="2" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.AutoMirrorImageView android:layout_width="-2" android:layout_height="32.000000dip" android:src="room_star_bg" android:adjustViewBounds="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00800015" android:layout_gravity="0x00800015" android:layout_width="-2" android:layout_height="-2" android:text="room_weekly_gifts" android:paddingEnd="8.000000dip"/>
+  </FrameLayout>
+  <LinearLayout android:orientation="1" android:background="bg_gift" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16777212.000000dip">
+    <com.yalla.ludochat.view.GiftViewPage android:id="vpGift" android:layout_width="-1" android:layout_height="-2"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="52.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip">
+      <LinearLayout android:id="llShowUsers" android:layout_width="195.000000dip" android:layout_height="-2">
+        <LinearLayout android:orientation="0" android:background="shape_bg_dialog_gift_num" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+          <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000010" android:id="iv_user_head" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:scaleType="6" android:layout_marginStart="10.000000dip" app:isCircle="true"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="white" android:ellipsize="3" android:gravity="0x00000010" android:layout_gravity="0x00000010" android:id="tvUserName" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:text="" android:singleLine="true" android:drawablePadding="4.000000dip" android:layout_weight="1.000000" android:drawableEnd="icon_arrow_up" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+        </LinearLayout>
+        <FrameLayout android:id="flSelectAll" android:background="room_selector_iv_all_gift_select" android:layout_width="50.000000dip" android:layout_height="-1" android:layout_marginStart="1.500000dip">
+          <ImageView android:layout_gravity="0x00000011" android:id="ivSelectAll" android:background="room_selector_fl_all_gift_select" android:layout_width="24.000000dip" android:layout_height="24.000000dip"/>
+        </FrameLayout>
+      </LinearLayout>
+      <LinearLayout android:orientation="0" android:id="llSendNum" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="16.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="tvGiftNum" android:background="shape_bg_dialog_gift_num" android:layout_width="60.000000dip" android:layout_height="30.000000dip" android:text="1" android:drawableEnd="icon_arrow_up" android:paddingStart="6.000000dip" android:paddingEnd="10.000000dip"/>
+        <com.yalla.games.common.view.CustomTextView android:textColor="white" android:gravity="0x00000011" android:id="tvSend" android:background="room_gift_send_bg" android:layout_width="60.000000dip" android:layout_height="30.000000dip" android:text="room_button_send" android:textAllCaps="false"/>
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

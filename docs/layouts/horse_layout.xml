@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="60.000000dip" android:layout_height="60.000000dip">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A04B9" android:layout_width="50.000000dip" android:layout_height="50.000000dip"/>
+</FrameLayout>

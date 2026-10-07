@@ -1,0 +1,11 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <include android:id="roomItem" android:layout_width="-1" android:layout_height="-2" layout="@7F0D0261"/>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="deleteOperatorView" android:focusable="true" android:layout_width="-1" android:layout_height="-2" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.ludochat.view.RoundImageView android:id="deleteBg" android:background="room_list_item_lock_bg" android:layout_width="-1" android:layout_height="144.000000dip" android:layout_margin="5.000000dip" android:scaleType="5" app:cornerTopEndRadius="6.000000dip" app:cornerTopStartRadius="6.000000dip" app:isSquare="true" app:layout_constraintTop_toTopOf="0"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="144.000000dip" android:text="room_delete_recently_room" android:layout_marginStart="18.000000dip" android:layout_marginEnd="18.000000dip" app:layout_constraintTop_toTopOf="0"/>
+    <LinearLayout android:orientation="0" android:background="room_color_dff" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip" app:layout_constraintTop_toBottomOf="deleteBg">
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF62A289" android:gravity="0x00000011" android:background="room_recently_btn_bg" android:layout_width="0.000000dip" android:layout_height="32.000000dip" android:text="cancel" android:layout_weight="1.000000"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF62A289" android:gravity="0x00000011" android:id="tvDelete" android:background="room_recently_btn_bg" android:layout_width="0.000000dip" android:layout_height="32.000000dip" android:text="delete" android:layout_weight="1.000000" android:layout_marginStart="4.000000dip"/>
+    </LinearLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,1 @@
+<com.yalla.games.common.view.RecycleSVGAView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:clickable="false" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true" app:source="finger"/>

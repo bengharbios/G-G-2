@@ -1,0 +1,26 @@
+# ── Tool state / logs / temp ──
+.freebuff/
+*.log
+server_err.log
+server_out.log
+gg_server.log
+copy_log.txt
+_orphan.txt
+_removed_form.txt
+_ye_css.txt
+_ye_root.txt
+_ye_states.txt
+_ye_windows.txt
+_yd_css_chunk.txt
+_yd_tsx_chunk.txt
+
+# ── Root dependencies ──
+node_modules/
+
+# ── Yalla Ludo APK / decompiled reference material (proprietary + huge) ──
+yalla/
+reference/
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db

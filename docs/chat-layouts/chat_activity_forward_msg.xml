@@ -1,0 +1,12 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="-1" android:layout_height="-1" android:animateLayoutChanges="true">
+    <com.yalla.libuikit.view.ContactSearchView android:id="@7F0A0609" android:layout_width="0.000000dip" android:layout_height="-2" android:elevation="4.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <com.yallatech.yallachat.chat.ui.view.forward.ForwardHeadView android:id="@7F0A060A" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="116.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0609">
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F0A060B" android:layout_width="-1" android:layout_height="-1"/>
+    </com.yallatech.yallachat.chat.ui.view.forward.ForwardHeadView>
+    <com.yallatech.yallachat.chat.ui.view.forward.ForwardConvListView android:id="@7F0A09D8" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A060A"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  <com.yallatech.yallachat.ui.view.ShadowViewCard android:layout_gravity="0x00800055" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="24.000000dip" android:animateLayoutChanges="false" android:layout_marginEnd="24.000000dip" app:shadowBottomHeight="5.000000dip" app:shadowColor="@7F060043" app:shadowLeftHeight="3.000000dip" app:shadowRightHeight="3.000000dip" app:shadowRound="24.000000dip">
+    <TextView android:enabled="false" android:textSize="18.000000sp" android:textColor="@7F060076" android:gravity="0x00000011" android:id="@7F0A0AF0" android:background="@7F08011A" android:layout_width="-2" android:layout_height="48.000000dip" android:text="@7F13018F" android:paddingStart="27.000000dip" android:paddingEnd="27.000000dip"/>
+  </com.yallatech.yallachat.ui.view.ShadowViewCard>
+</FrameLayout>

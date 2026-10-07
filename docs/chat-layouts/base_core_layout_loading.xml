@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:background="@7F0800A8" android:layout_width="120.000000dip" android:layout_height="120.000000dip" android:maxWidth="120.000000dip" android:maxHeight="120.000000dip" android:minWidth="120.000000dip" android:minHeight="120.000000dip">
+  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A077B" android:layout_width="-2" android:layout_height="-2" android:indeterminateOnly="true" android:indeterminateDrawable="@7F010012" android:indeterminateDuration="500" android:indeterminateBehavior="1" style="?android:01010077"/>
+</FrameLayout>

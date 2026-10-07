@@ -1,0 +1,3 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <ProgressBar android:layout_gravity="0x00000011" android:id="head_loading" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:indeterminateDrawable="chat_progress_loading" android:indeterminateBehavior="1"/>
+</merge>

@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <ViewStub android:id="dialog_top_extra" android:layout_width="-1" android:layout_height="-2"/>
+  <LinearLayout android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_base_dialog" android:background="image_bg_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip">
+    <com.yalla.games.common.view.CommonDialogHeader android:id="common_header" android:background="transparent" android:layout_width="-1" android:layout_height="38.000000dip" android:layout_marginTop="6.000000dip" android:layout_marginStart="3.000000dip" android:layout_marginEnd="3.000000dip" app:end_icon="close_click" app:title="rule" app:title_color="white" app:title_size="22.000000sp"/>
+    <ViewStub android:id="dialog_content" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="3.000000dip" android:layout_marginStart="1.000000dip" android:layout_marginEnd="1.000000dip"/>
+  </LinearLayout>
+  <ViewStub android:id="dialog_extra" android:layout_width="-1" android:layout_height="-2"/>
+</LinearLayout>

@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_ludo_local_dialog" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:id="fl_container" android:paddingTop="8.000000dip" android:layout_width="-1" android:layout_height="-2" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip">
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="ll_local_record" android:visibility="2" android:layout_width="-1" android:layout_height="385.000000dip">
+      <androidx.recyclerview.widget.RecyclerView android:id="rv_local_records" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <RelativeLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_marginBottom="10.000000dip">
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:id="btn_delete_rec" android:layout_width="113.000000dip" android:layout_height="44.000000dip" android:text="Delete" android:includeFontPadding="false" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginStart="20.000000dip" android:layout_alignParentStart="true" app:need_press_status="true" style="StrokeTextStyle_No"/>
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:id="btn_start_rec" android:layout_width="113.000000dip" android:layout_height="44.000000dip" android:text="start_ludo_rec" android:includeFontPadding="false" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+      </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_no_record" android:visibility="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="105.000000dip" android:layout_marginBottom="122.000000dip">
+      <ImageView android:layout_width="-2" android:layout_height="-2" android:src="icon_record"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textColor="#FFABD8CB" android:layout_width="-2" android:layout_height="-2" android:text="no_record"/>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

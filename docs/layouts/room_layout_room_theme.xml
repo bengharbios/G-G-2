@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A085F" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F0807AF" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <com.yalla.ludochat.view.TitleView android:id="@7F0A09DC" android:background="@7F080109" android:layout_width="-1" android:layout_height="53.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <net.lucode.hackware.magicindicator.MagicIndicator android:id="@7F0A09B3" android:layout_width="-1" android:layout_height="45.000000dip" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A09DC" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip"/>
+  <View android:id="@7F0A01FE" android:background="@7F0807BF" android:layout_width="-1" android:layout_height="10.000000dip" android:layout_marginTop="14.000000dip" android:layout_below="@7F0A09B3" app:layout_constraintTop_toBottomOf="@7F0A09E0"/>
+  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@7F0A0D06" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A01FE"/>
+</RelativeLayout>

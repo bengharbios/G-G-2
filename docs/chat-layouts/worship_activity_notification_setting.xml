@@ -1,0 +1,21 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.ui.view.PageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A09BC" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:subtitleTextAppearance="@7F140280" app:titleTextAppearance="@7F140281">
+    <ImageView android:layout_gravity="0x00800015" android:id="@7F0A0559" android:padding="10.000000dip" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:src="@7F0803FD" android:layout_marginEnd="6.000000dip"/>
+  </com.yallatech.yallachat.ui.view.PageHeader>
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <androidx.core.widget.NestedScrollView android:layout_width="-1" android:layout_height="-1">
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="8.000000dip">
+        <ViewStub android:id="@7F0A0BC0" android:layout="@7F0D031B" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginRight="16.000000dip" android:layout_marginBottom="8.000000dip"/>
+        <RelativeLayout android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-2">
+          <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:gravity="0x00000010" android:background="@7F08054C" android:layout_width="-1" android:layout_height="56.000000dip" android:layout_marginTop="8.000000dip" android:text="@7F1308C5" android:layout_centerVertical="true" android:paddingStart="16.000000dip" android:paddingEnd="16.000000dip"/>
+          <com.yallatech.yallachat.worship.widget.SwitchDelegateLayout android:id="@7F0A03E6" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true">
+            <androidx.appcompat.widget.SwitchCompat android:id="@7F0A08EC" android:layout_width="-2" android:layout_height="-2"/>
+          </com.yallatech.yallachat.worship.widget.SwitchDelegateLayout>
+        </RelativeLayout>
+        <TextView android:textSize="14.000000sp" android:textColor="@7F0601E6" android:id="@7F0A0AC6" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginRight="16.000000dip" android:layout_marginBottom="4.000000dip"/>
+        <include android:id="@7F0A007B" android:visibility="2" layout="@7F0D0359"/>
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <ViewStub android:id="@7F0A0BBE" android:layout="@7F0D0356" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</LinearLayout>

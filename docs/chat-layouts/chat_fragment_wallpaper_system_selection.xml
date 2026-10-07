@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A01D8" android:padding="16.000000dip" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

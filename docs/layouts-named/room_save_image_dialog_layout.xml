@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:gravity="0x00000011" android:id="tv_down_image" android:background="room_bg_save_image" android:layout_width="-1" android:layout_height="48.000000dip" android:text="room_save_to_album"/>
+  <View android:background="color_grey_f5" android:layout_width="-1" android:layout_height="5.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:gravity="0x00000011" android:id="tv_cancel_down" android:background="white" android:layout_width="-1" android:layout_height="48.000000dip" android:text="cancel"/>
+</LinearLayout>

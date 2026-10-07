@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="et_room_buttom" android:background="login_bg" android:padding="10.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="21.000000dip" android:textColor="gray_666666" android:gravity="0x00000011" android:id="tv_note_content" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:text="the_mailbox_is_full_please_tidy_up"/>
+  <Button android:textSize="23.000000dip" android:textColor="white" android:gravity="0x00000011" android:id="btn_yes_note" android:background="bn_yes" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:layout_marginBottom="28.000000dip" android:text="yes" android:includeFontPadding="false"/>
+</LinearLayout>

@@ -1,0 +1,6 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.appbar.AppBarLayout android:id="@7F0A00DD" android:layout_width="0.000000dip" android:layout_height="-2" app:elevation="0.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <androidx.appcompat.widget.Toolbar android:theme="?7F040019" android:id="@7F0A09BE" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-2" android:minHeight="?7F040013" app:contentInsetStartWithNavigation="0.000000dip" app:navigationIcon="@7F080343" app:popupTheme="@7F140154" app:title="@7F130438" app:titleTextAppearance="@7F140281"/>
+  </com.google.android.material.appbar.AppBarLayout>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07FE" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A00DD"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

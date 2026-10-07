@@ -1,0 +1,3 @@
+<com.afollestad.materialdialogs.internal.main.DialogScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A06AA" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:id="@7F0A06AB" style="@7F14013B"/>
+</com.afollestad.materialdialogs.internal.main.DialogScrollView>

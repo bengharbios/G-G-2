@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0725" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A01D6" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A09C5">
+  <androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="0x00800005" android:id="@7F0A0218" android:background="@7F0805A6" android:visibility="2" android:layout_width="52.000000dip" android:layout_height="144.000000dip" android:layoutDirection="0" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintRight_toRightOf="0">
+    <ImageView android:id="@7F0A01B7" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:layout_marginStart="14.000000dip" android:layout_marginEnd="14.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:srcCompat="@7F080420"/>
+    <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_marginTop="27.000000dip" android:rotation="270.000000" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A01B7" app:srcCompat="@7F08041F"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  <FrameLayout android:background="@7F0601F5" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <ViewStub android:id="@7F0A01C0" android:layout="@7F0D0112" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

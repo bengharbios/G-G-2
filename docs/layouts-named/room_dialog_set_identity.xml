@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="llIdentity" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:layout_marginStart="24.000000dip" android:layout_marginEnd="24.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:layout_width="-2" android:layout_height="-2" android:text="room_current_user"/>
+    <com.yalla.ludochat.view.IdentityImageView android:id="identityMark" android:visibility="2" android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="2.000000dip" android:layout_marginBottom="2.000000dip" android:src="room_ic_room_user_guest" android:layout_marginStart="10.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="color_798" android:gravity="0x00000011" android:id="identity" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="4.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textStyle="0x00000001" android:textColor="color_6A8" android:layout_gravity="0x00000011" android:id="identityInvite" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="room_invite_user_for_free" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+  <LinearLayout android:orientation="0" android:id="ll_set_role" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:layout_marginBottom="8.000000dip" android:paddingStart="25.000000dip" android:layout_marginEnd="25.000000dip">
+    <com.yalla.ludochat.view.SetRoleView android:id="tv_set_role" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000"/>
+    <Space android:layout_width="20.000000dip" android:layout_height="-1"/>
+    <com.yalla.ludochat.view.SetRoleView android:id="tv_kick_out_member" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000"/>
+  </LinearLayout>
+</LinearLayout>

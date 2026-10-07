@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:id="@7F0A099F" android:text="100%" style="@7F140375"/>
+  <com.yallatech.yallachat.libcrop.crop.view.widget.HorizontalProgressWheelView android:id="@7F0A0853" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A099F"/>
+</RelativeLayout>

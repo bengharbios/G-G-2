@@ -1,0 +1,12 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@android:0106000C" android:layout_width="-1" android:layout_height="-1">
+  <ViewStub android:id="@7F0A02D5" android:layout="@7F0D018E" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:id="@7F0A02A5" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:scaleType="6"/>
+  <androidx.appcompat.widget.Toolbar android:theme="?7F040019" android:id="@7F0A09BD" android:fitsSystemWindows="true" android:layout_width="0.000000dip" android:layout_height="-2" android:minHeight="?7F040013" app:contentInsetStartWithNavigation="0.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:navigationIcon="@7F080345" app:title="@7F1304C7" app:titleTextAppearance="@7F140282" app:titleTextColor="@7F0601F8"/>
+  <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="42.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+    <TextView android:textSize="16.000000sp" android:textColor="@7F0601F8" android:gravity="0x00000010" android:id="@7F0A014F" android:background="@7F08022D" android:layout_width="-2" android:layout_height="50.000000dip" android:text="@7F1304B5" android:drawablePadding="8.000000dip" android:paddingStart="20.000000dip" android:paddingEnd="20.000000dip" app:drawableStartCompat="@7F080222"/>
+    <Space android:layout_width="16.000000dip" android:layout_height="16.000000dip"/>
+    <ImageButton android:id="@7F0A0146" android:background="@7F08022D" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F08021F" android:contentDescription="album"/>
+    <Space android:layout_width="16.000000dip" android:layout_height="16.000000dip"/>
+    <ImageButton android:id="@7F0A014B" android:background="@7F08022C" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F08021D" android:contentDescription="flash"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="room_timer_view_bg" android:layout_width="110.000000dip" android:layout_height="36.000000dip">
+  <ImageView android:id="iv_operator" android:layout_width="-2" android:layout_height="-1" android:src="room_timer_start" android:layout_marginStart="4.000000dip" android:layout_marginEnd="6.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00800003" android:id="chronometer" android:layout_width="48.000000dip" android:layout_height="-2" android:maxLines="1"/>
+  <View android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000"/>
+  <ImageView android:layout_gravity="0x00800005" android:id="iv_close" android:layout_width="12.000000dip" android:layout_height="-1" android:src="room_timer_view_close" android:layout_marginEnd="12.000000dip"/>
+</LinearLayout>

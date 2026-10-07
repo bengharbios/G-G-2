@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="@7F060047" android:gravity="0x00800013" android:id="@7F0A0BB8" android:visibility="2" android:layout_width="-1" android:layout_height="30.000000dip" android:text="@7F12060D" android:paddingStart="8.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08D4" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+</LinearLayout>

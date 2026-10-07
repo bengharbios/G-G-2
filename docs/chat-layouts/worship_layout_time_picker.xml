@@ -1,0 +1,8 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_gravity="0x00000011" android:background="@7F0805EE" android:layout_width="187.000000dip" android:layout_height="-1">
+    <com.yalla.libuikit.view.WheelPickerRecyclerView android:id="@7F0A07BF" android:layout_width="-1" android:layout_height="-1"/>
+    <TextView android:textSize="24.000000dip" android:textColor="@7F0601E4" android:layout_gravity="0x00800013" android:id="@7F0A07C3" android:layout_width="-2" android:layout_height="-2" android:text="+" android:includeFontPadding="false" android:layout_marginStart="31.000000dip"/>
+    <TextView android:textSize="18.000000dip" android:textColor="@7F0601E4" android:layout_gravity="0x00800015" android:id="@7F0A07C5" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginEnd="20.000000dip"/>
+  </FrameLayout>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A07B2" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="@7F080635" android:layout_marginStart="114.000000dip"/>
+</merge>

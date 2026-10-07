@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="iv_type" android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="point_star"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="tv_num" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="4.000000dip"/>
+</LinearLayout>

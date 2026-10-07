@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="bg_room_share_item" android:layout_width="-1" android:layout_height="65.000000dip" android:layout_marginTop="2.500000dip">
+  <ImageView android:id="iv_check" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="share_people_check_uncheck" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip"/>
+  <com.yalla.games.common.view.HeadView android:id="iv_head" android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_toEndOf="iv_check"/>
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip" android:layout_toEndOf="iv_head">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF458371" android:ellipsize="3" android:id="tv_name" android:layout_width="-2" android:layout_height="-2" android:maxLines="1" android:includeFontPadding="false"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF458371" android:id="tv_msg" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.500000dip" android:includeFontPadding="false"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepOneView android:layout_gravity="0x00000011" android:id="net_check_1" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepTwoView android:layout_gravity="0x00000011" android:id="net_check_2" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepThreeView android:layout_gravity="0x00000011" android:id="net_check_3" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepFourView android:layout_gravity="0x00000011" android:id="net_check_4" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+</FrameLayout>

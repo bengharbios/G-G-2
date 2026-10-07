@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="0" android:id="@7F0A036E" android:layout_width="-1" android:layout_height="-1"/>
+  <LinearLayout android:orientation="0" android:id="@7F0A09DA" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

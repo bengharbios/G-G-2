@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomButton android:textSize="16.000000sp" android:textColor="@7F060078" android:layout_gravity="0x00000001" android:id="@7F0A07E0" android:background="@7F08020A" android:layout_width="180.000000dip" android:layout_height="45.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginBottom="8.000000dip" android:text="@7F1204F6" android:textAllCaps="false" style="?android:0101032B"/>
+</LinearLayout>

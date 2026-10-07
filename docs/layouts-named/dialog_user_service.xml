@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="321.000000dip" android:layout_height="-2">
+  <LinearLayout android:orientation="1" android:layout_width="321.000000dip" android:layout_height="-2">
+    <RelativeLayout android:id="rl_title" android:layout_width="-1" android:layout_height="-2">
+      <ImageView android:layout_width="-1" android:layout_height="-2" android:src="image_bg_title"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="21.000000sp" android:textColor="white" android:id="login_text" android:layout_width="-2" android:layout_height="-2" android:text="user_agreement" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+      <ImageView android:id="iv_agreement_close" android:layout_width="-2" android:layout_height="-2" android:src="close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <LinearLayout android:orientation="1" android:background="login_bg" android:layout_width="-1" android:layout_height="350.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF626262" android:layout_gravity="0x00000001" android:id="tv_title" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="service_title"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF9C9C9C" android:layout_gravity="0x00000001" android:id="tv_service_data" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="service_data"/>
+      <ScrollView android:id="scrollView" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip" android:layout_marginBottom="10.000000dip">
+        <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:background="background2" android:layout_width="294.000000dip" android:layout_height="-2" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip">
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="service_subtitle" android:gravity="0x00800003" android:id="tv_service_rule" android:layout_width="-2" android:layout_height="-2" android:text="service_rule"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="service_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="user_behavior_rules"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="user_behavior_rules_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="Penalty_Rules"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="penalty_rules_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="disclaimer"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="disclaimer_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="Supplementary_Provisions"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="supplementary_provisions_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="Intellectual_Property_Rights"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="intellectual_property_rights_text" android:lineSpacingExtra="4.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textColor="service_subtitle" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="privacy_policy"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="service_text" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="privacy_policy_text" android:lineSpacingExtra="4.000000dip"/>
+        </LinearLayout>
+      </ScrollView>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+  <AbsoluteLayout android:id="@7F0A0322" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.battle.match.view.FourMatchView android:id="@7F0A0320" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.battle.match.view.TwoMatchView android:id="@7F0A031F" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A042D" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="@7F080248"/>
+</FrameLayout>

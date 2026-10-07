@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:gravity="0x00000010" android:layout_width="-1" android:layout_height="39.000000dip" android:layout_marginStart="21.000000dip" android:layout_marginEnd="21.000000dip">
+      <com.yalla.games.common.view.AutoMirrorImageView android:gravity="0x00000011" android:background="bg_related_title_selected_left_bg" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <View android:gravity="0x00000011" android:background="bg_related_title_selected_center_bg" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <com.yalla.games.common.view.AutoMirrorImageView android:gravity="0x00000011" android:background="bg_related_title_selected_right_bg" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000010" android:layout_width="-1" android:layout_height="39.000000dip" android:layout_marginStart="21.000000dip" android:layout_marginEnd="21.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00000011" android:id="tv_daily" android:background="bg_related_title_selected_left" android:layout_width="0.000000dip" android:layout_height="-1" android:text="room_main_top_daily" android:layout_weight="1.000000"/>
+      <View android:id="v_line2" android:background="top_rank_title_v_line" android:layout_width="1.000000dip" android:layout_height="-2"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="room_color_ff16664c" android:gravity="0x00000011" android:id="tv_weekly" android:layout_width="0.000000dip" android:layout_height="-1" android:text="room_main_top_weekly" android:layout_weight="1.000000"/>
+      <View android:id="v_line3" android:background="top_rank_title_v_line" android:layout_width="1.000000dip" android:layout_height="-2"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="room_color_ff16664c" android:gravity="0x00000011" android:id="tv_monthly" android:layout_width="0.000000dip" android:layout_height="-1" android:text="room_main_top_monthly" android:layout_weight="1.000000"/>
+    </LinearLayout>
+  </FrameLayout>
+  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="vp_rank" android:layout_width="-1" android:layout_height="-1"/>
+</LinearLayout>

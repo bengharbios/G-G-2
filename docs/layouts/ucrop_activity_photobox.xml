@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0C5B" android:layout_width="-1" android:layout_height="-1">
+  <androidx.appcompat.widget.Toolbar android:id="@7F0A09DE" android:background="@7F0601E5" android:visibility="2" android:layout_width="-1" android:layout_height="48.000000dip" android:minHeight="?7F040007" app:theme="@7F1302AA">
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E6" android:layout_gravity="0x00000011" android:id="@7F0A09DF" android:layout_width="-2" android:layout_height="-2" android:text="@7F12071E" style="@7F13017C"/>
+  </androidx.appcompat.widget.Toolbar>
+  <include android:id="@7F0A0365" layout="@7F0D0132"/>
+  <FrameLayout android:id="@7F0A0C5A" android:layout_width="-1" android:layout_height="-2" android:layout_above="@7F0A017F" android:layout_below="@7F0A0365">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A035E" android:visibility="1" android:layout_width="@7F070187" android:layout_height="@7F070187" app:srcCompat="@7F0808B9"/>
+    <com.yalantis.ucrop.view.UCropView android:id="@7F0A0C59" android:layout_width="-1" android:layout_height="-2" android:alpha="0.000000"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A017F" android:background="@android:0106000C" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

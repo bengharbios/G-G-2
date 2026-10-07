@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:animateLayoutChanges="false" android:layoutDirection="0">
+  <ImageView android:id="@7F0A03B9" android:layout_width="-2" android:layout_height="-2" android:src="@7F08038B" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="@7F0A03BA" android:layout_width="-2" android:layout_height="-2" android:src="@7F08038C" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="@7F0A03BB" android:layout_width="-2" android:layout_height="-2" android:src="@7F08038D" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="@7F0A03BC" android:layout_width="-2" android:layout_height="-2" android:src="@7F08038E" android:scaleType="1" android:adjustViewBounds="true"/>
+</LinearLayout>

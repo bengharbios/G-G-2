@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:id="newMessagePopup" android:background="room_new_msg_tips" android:layout_width="-2" android:layout_height="-2" android:layoutDirection="0">
+  <ImageView android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="room_ic_dialog_new_message" android:layout_marginStart="7.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="white" android:layout_width="-2" android:layout_height="-2" android:text="room_new" android:layout_marginStart="6.000000dip"/>
+  <ImageView android:layout_width="-2" android:layout_height="-2" android:src="room_ic_dialog_new_message_down" android:layout_marginStart="8.000000dip"/>
+</LinearLayout>

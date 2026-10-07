@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.events.dialog.online.RewardWaitingView android:id="@7F0A0D19" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
+  <com.yalla.games.events.dialog.online.RewardReadyView android:id="@7F0A07D4" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
+  <com.yalla.games.events.dialog.online.RewardOpenView android:id="@7F0A078D" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
+  <com.yalla.games.events.dialog.online.RewardRaiseOpenView android:id="@7F0A078C" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
+  <ImageView android:id="@7F0A0446" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="34.000000dip" android:src="@7F080248" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

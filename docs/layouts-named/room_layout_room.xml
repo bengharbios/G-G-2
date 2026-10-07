@@ -1,0 +1,23 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="roomRoot" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="iv_room_theme" android:layout_width="-1" android:layout_height="-1" android:scaleType="1"/>
+  <com.common.videoplayer.view.VideoView android:id="roomVideoView" android:layout_width="-1" android:layout_height="-1"/>
+  <LinearLayout android:orientation="1" android:id="llRoomContent" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="llRoomTop" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+      <include layout="@7F0D0230"/>
+      <include layout="@7F0D022E"/>
+      <include layout="@7F0D022B"/>
+    </LinearLayout>
+    <include layout="@7F0D0223"/>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="cl_bottom_input" android:layout_width="-1" android:layout_height="-2">
+      <include android:id="llRoomBottom" app:layout_constraintBottom_toTopOf="faceView" app:layout_constraintTop_toTopOf="0" layout="@7F0D0229"/>
+      <include android:id="faceView" android:layout_width="-1" android:layout_height="-2" app:layout_constraintTop_toBottomOf="llRoomBottom" layout="@7F0D022A"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+  <com.common.videoplayer.view.AlphaVideoView android:id="mp4View" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="vGiftPlayer" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="flFunCenter" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.ludochat.view.CountdownTimeView android:id="countdownView" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.ludochat.view.StopwatchView android:id="stopwatchView" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="webGame" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,9 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="fl_content" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+    <FrameLayout android:background="image_bg_title" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="35.000000dip">
+      <androidx.recyclerview.widget.RecyclerView android:id="rcy_list" android:background="bg_second_level" android:paddingTop="20.000000dip" android:paddingBottom="20.000000dip" android:layout_width="350.000000dip" android:layout_height="430.000000dip" android:layout_marginTop="5.000000dip" android:layout_marginBottom="5.000000dip"/>
+    </FrameLayout>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="20.000000sp" android:textColor="white" android:gravity="0x00000011" android:background="bg_title_upgrade_reward" android:paddingBottom="14.000000dip" android:layout_width="355.000000dip" android:layout_height="55.000000dip" android:text="level_rewards" android:layout_alignTop="fl_content" android:layout_centerHorizontal="true" app:stroke_color="#FF3D8131" app:stroke_width="1.000000dip"/>
+  </FrameLayout>
+  <ImageView android:id="iv_close" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="30.000000dip" android:src="close" android:layout_above="fl_content" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

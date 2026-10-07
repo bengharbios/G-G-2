@@ -1,0 +1,8 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="130.000000dip" android:layout_height="140.000000dip">
+  <androidx.cardview.widget.CardView android:layout_gravity="0x00000001" android:layout_width="110.000000dip" android:layout_height="110.000000dip" android:layout_margin="8.000000dip" app:cardBackgroundColor="@7F0601EF" app:cardCornerRadius="8.000000dip" app:cardElevation="5.000000dip" app:cardMaxElevation="5.000000dip" app:cardPreventCornerOverlap="true">
+    <FrameLayout android:layout_width="-1" android:layout_height="-1">
+      <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000011" android:id="@7F0A039F" android:layout_width="100.000000dip" android:layout_height="100.000000dip" app:cornerRadius="8.000000dip"/>
+      <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A07A0" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:indeterminateDrawable="@7F0805D3" android:indeterminateDuration="500" android:indeterminateBehavior="1" app:layout_constraintStart_toStartOf="0"/>
+    </FrameLayout>
+  </androidx.cardview.widget.CardView>
+</FrameLayout>

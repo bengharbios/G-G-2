@@ -1,0 +1,7 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <include layout="@7F0D01D1"/>
+  <LinearLayout android:orientation="0" android:id="message_bg" android:background="room_bg_talk0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:layout_marginStart="54.000000dip">
+    <ImageView android:layout_gravity="0x00000010" android:id="ivTimeIcon" android:layout_width="36.000000dip" android:layout_height="36.000000dip" android:src="room_stopwatch_view_icon"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00000010" android:layout_gravity="0x00000010" android:id="tvFunCenterTime" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip"/>
+  </LinearLayout>
+</FrameLayout>

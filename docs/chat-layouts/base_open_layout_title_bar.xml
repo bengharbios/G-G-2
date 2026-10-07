@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A082A" android:background="@7F06018E" android:layout_width="-1" android:layout_height="@7F07006A">
+  <FrameLayout android:id="@7F0A059D" android:background="@7F0800B8" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:minWidth="@7F07006B" android:paddingStart="@7F07006D" android:paddingEnd="@7F07006C">
+    <androidx.appcompat.widget.AppCompatImageView android:layout_gravity="0x00000011" android:id="@7F0A059C" android:layout_width="-2" android:layout_height="-2" android:scaleType="7"/>
+    <androidx.appcompat.widget.AppCompatTextView android:layout_gravity="0x00000011" android:id="@7F0A059E" android:layout_width="-2" android:layout_height="-2"/>
+  </FrameLayout>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="16.000000sp" android:textColor="#FF333333" android:layout_gravity="0x00000011" android:id="@7F0A09B2" android:layout_width="-2" android:layout_height="-2"/>
+  <FrameLayout android:layout_gravity="0x00000005" android:id="@7F0A0819" android:background="@7F0800B8" android:layout_width="-2" android:layout_height="-1" android:minWidth="50.000000dip" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip">
+    <androidx.appcompat.widget.AppCompatImageView android:layout_gravity="0x00000011" android:id="@7F0A0818" android:layout_width="-2" android:layout_height="-2" android:scaleType="7"/>
+    <androidx.appcompat.widget.AppCompatTextView android:layout_gravity="0x00000011" android:id="@7F0A081B" android:layout_width="-2" android:layout_height="-2"/>
+  </FrameLayout>
+  <View android:id="@7F0A0125" android:background="#FFD9D9D9" android:layout_width="-1" android:layout_height="1.000000px" android:layout_alignParentBottom="true"/>
+</FrameLayout>

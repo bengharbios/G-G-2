@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:layout_width="322.000000dip" android:layout_height="-2">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_below="common_header">
+    <com.yalla.games.common.view.CustomTextView android:textSize="19.000000sp" android:textColor="#FF428371" android:layout_gravity="0x00000001" android:id="tv_version_name" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="22.000000dip"/>
+    <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:background="rounded_edittext" android:layout_width="285.000000dip" android:layout_height="257.000000dip" android:layout_marginTop="22.000000dip" android:layout_marginStart="19.000000dip" android:layout_marginEnd="19.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF626262" android:layout_gravity="0x00000001" android:id="tv_version_title" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000sp"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF767676" android:id="tv_content" android:layout_width="-1" android:layout_height="-1" android:layout_margin="23.000000dip"/>
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="20.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="bt_upgrade" android:background="bn_yes_big" android:layout_width="198.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginBottom="12.000000dip" android:text="Upgrade" android:textAllCaps="false" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,4 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="previewCarSvga" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="svgaUnlock" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true"/>
+</FrameLayout>

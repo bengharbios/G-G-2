@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_chatline_content_bg" android:background="bg_system" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="12.000000dip">
+  <LinearLayout android:orientation="0" android:id="ll_room_notification" android:visibility="0" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textStyle="0x00000001" android:textColor="color_4ca" android:id="tv_announcement" android:layout_width="-2" android:layout_height="-2" android:text="room_List_Annoucement"/>
+    <ImageView android:id="iv_announcement" android:visibility="2" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="icon_anno" android:layout_marginStart="6.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="color_4ca" android:id="tvMessage" android:layout_width="-2" android:layout_height="-2"/>
+  <LinearLayout android:orientation="0" android:id="llRank" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.ludochat.view.ContributionRankLabelView android:id="ivRank" android:layout_width="30.000000dip" android:layout_height="16.000000dip" android:layout_marginTop="5.000000dip" android:layout_marginBottom="4.000000dip" android:adjustViewBounds="true" android:layout_marginStart="4.000000dip"/>
+    <com.yalla.games.common.view.AutoMirrorImageView android:layout_gravity="0x00000010" android:id="ivRankArrow" android:layout_width="-2" android:layout_height="-2" android:src="room_week_rank_arrow" android:adjustViewBounds="true" android:layout_marginStart="4.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

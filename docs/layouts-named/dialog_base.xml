@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_base_dialog" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:id="rl_title" android:background="image_bg_title" android:layout_width="-1" android:layout_height="38.000000dip">
+    <ImageView android:id="iv_return" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="btn_return" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="38.000000dip">
+      <ImageView android:id="iv_title" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="2.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="21.000000dip" android:textColor="white" android:ellipsize="3" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-2" android:layout_height="-1" android:singleLine="true" android:includeFontPadding="false"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="white" android:gravity="0x00000011" android:id="tv_title_right" android:visibility="2" android:layout_width="52.000000dip" android:layout_height="-2" android:includeFontPadding="false"/>
+    </LinearLayout>
+    <ImageView android:id="iv_dialog_close" android:layout_width="-2" android:layout_height="-2" android:src="close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <ViewStub android:id="vs_dialog" android:layout_width="-1" android:layout_height="-2"/>
+</LinearLayout>

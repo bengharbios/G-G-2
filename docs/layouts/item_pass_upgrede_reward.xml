@@ -1,0 +1,7 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="40.000000dip" android:layout_height="39.000000dip">
+  <FrameLayout android:background="@7F0804D2" android:layout_width="38.000000dip" android:layout_height="38.000000dip" android:layout_marginStart="1.000000dip" android:layout_marginEnd="1.000000dip">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0514" android:visibility="2" android:layout_width="33.000000dip" android:layout_height="29.000000dip"/>
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A04EA" android:visibility="2" android:layout_width="39.000000dip" android:layout_height="29.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:gravity="0x00000050" android:layout_gravity="0x00800055" android:id="@7F0A0964" android:layout_width="-2" android:layout_height="15.000000dip" android:layout_marginBottom="1.000000dip" android:lines="1" android:paddingStart="2.000000dip" android:paddingEnd="2.000000dip" app:strokeAutoSizeMaxTextSize="10.000000sp" app:strokeAutoSizeMinTextSize="2.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp" app:strokeAutoSizeTextType="uniform" app:stroke_color="#FF04402C" app:stroke_width="1.000000dip"/>
+  </FrameLayout>
+</FrameLayout>

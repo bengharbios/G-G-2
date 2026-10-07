@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D0132"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0077" android:layout_width="-1" android:layout_height="-1"/>
+    <TextView android:gravity="0x00000015" android:id="@7F0A0076" android:background="@7F0601AC" android:paddingRight="16.000000dip" android:layout_width="-1" android:layout_height="48.000000dip" android:text="selected(3/9)" android:layout_alignParentBottom="true"/>
+  </RelativeLayout>
+</LinearLayout>

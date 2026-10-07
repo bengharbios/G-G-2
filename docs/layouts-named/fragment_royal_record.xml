@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="rl_main" android:background="bg_hall" android:layout_width="360.000000dip" android:layout_height="-1">
+  <View android:background="skin_bg" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="44.000000dip"/>
+  <RelativeLayout android:id="rl_title" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="21.000000sp" android:textColor="#FF87EBAA" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-2" android:layout_height="-1" android:layout_marginBottom="10.000000dip" android:text="my_royal_points" android:includeFontPadding="false" android:shadowColor="black_50" android:shadowDy="5.000000" android:shadowRadius="1.000000" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="iv_close" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="skin_close" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="47.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="8.000000sp" android:textStyle="0x00000001" android:textColor="#FF87EAA9" android:id="ctv_growth" android:layout_width="-2" android:layout_height="-2" android:text="earn_royal_by_recharging" android:lines="1"/>
+    <ImageView android:id="iv_rules" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:visibility="0" android:layout_width="24.000000dip" android:layout_height="34.000000dip" android:src="royal_record_question_ic" android:paddingStart="5.000000dip" android:paddingEnd="5.000000dip"/>
+  </LinearLayout>
+  <View android:background="royal_record_head_bg" android:layout_width="269.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="84.000000dip" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="svga_royal_level" android:layout_width="65.000000dip" android:layout_height="65.000000dip" android:layout_marginTop="74.000000dip" android:layout_marginStart="55.000000dip"/>
+  <RelativeLayout android:layout_gravity="0x00000010" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="92.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:id="ctv_growth_temp" android:layout_width="-2" android:layout_height="-2" android:text="royal_points" android:layout_centerHorizontal="true"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="ll_growth_value" android:layout_width="-2" android:layout_height="-2" android:layout_below="ctv_growth_temp" android:layout_alignStart="ctv_growth_temp">
+      <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFED5D" android:gravity="0x00000010" android:id="ctv_current_growth" android:layout_width="-2" android:layout_height="-2"/>
+      <ImageView android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="royal_level_value_ic" android:layout_marginStart="5.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+  <RelativeLayout android:id="rl_time_select" android:background="royal_record_date_bg" android:layout_width="170.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="169.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:id="ctv_date" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="25.000000dip" android:layout_alignParentStart="true"/>
+    <ImageView android:layout_width="20.000000dip" android:layout_height="14.000000dip" android:src="royal_record_date_sanjiao_ic" android:layout_centerVertical="true" android:layout_marginEnd="14.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="refresh_layout" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="202.000000dip">
+    <androidx.recyclerview.widget.RecyclerView android:id="rl_detail" android:layout_width="-1" android:layout_height="-1"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  <FrameLayout android:id="fl_no_record" android:background="royal_record_no_data_bg" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="6.000000dip" android:layout_marginBottom="16.000000dip" android:layout_below="rl_time_select" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip">
+    <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_no_record" android:visibility="0" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+      <ImageView android:layout_gravity="0x00000011" android:id="iv_social" android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:src="tips_no_data"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF196D51" android:layout_gravity="0x00000011" android:id="tv_social" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="no_record"/>
+    </LinearLayout>
+  </FrameLayout>
+  <View android:id="view_month_showed" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.shop.view.ChooseMonthView android:id="chooseMonthView" android:visibility="1" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

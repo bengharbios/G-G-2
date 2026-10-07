@@ -1,0 +1,13 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.google.android.material.appbar.AppBarLayout android:id="@7F0A00DD" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-2" app:elevation="0.000000dip">
+      <androidx.recyclerview.widget.RecyclerView android:orientation="1" android:id="@7F0A026F" android:layout_width="-1" android:layout_height="-2" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" app:layout_scrollFlags="0x00000003"/>
+      <com.google.android.material.tabs.TabLayout android:layout_gravity="0x00000001" android:id="@7F0A0277" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="16.000000dip" style="@7F140194"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <com.yallatech.yallachat.contacts.ui.NestedScrollableHost2 android:layout_width="-1" android:layout_height="-1" app:layout_behavior="@7F1300B4">
+      <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A027B" android:layout_width="-1" android:layout_height="-1"/>
+    </com.yallatech.yallachat.contacts.ui.NestedScrollableHost2>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+  <com.yalla.libuikit.view.LetterBarView android:id="@7F0A03F7" android:layout_width="20.000000dip" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.libuikit.view.LetterBarView android:id="@7F0A0263" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="transparent" android:layout_width="-1" android:layout_height="-1" android:animateLayoutChanges="true">
+  <RelativeLayout android:orientation="1" android:id="rl_match" android:background="game_bg" android:layout_width="-1" android:layout_height="-1" android:animateLayoutChanges="true">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="svgaImage" android:layout_width="-1" android:layout_height="121.000000dip" android:layout_marginBottom="16777204.000000dip" android:scaleType="3" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga"/>
+    <ImageView android:id="iv_cha" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="close" android:layout_alignParentEnd="true"/>
+    <ImageView android:id="iv_logo" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="77.000000dip" android:src="logo_local" android:layout_centerHorizontal="true"/>
+    <ScrollView android:paddingBottom="78.000000dip" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2" android:layout_below="iv_logo">
+      <RelativeLayout android:gravity="0x00000001" android:paddingTop="20.000000dip" android:layout_width="-1" android:layout_height="-2">
+        <include android:id="match_room_local" layout="@7F0D0175"/>
+      </RelativeLayout>
+    </ScrollView>
+  </RelativeLayout>
+  <RelativeLayout android:gravity="0x00000001" android:orientation="0" android:id="ll_ludo_local" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true">
+    <com.yalla.game.base.view.StrokeButton android:textSize="24.000000sp" android:gravity="0x00000011" android:id="btn_local_load" android:background="bn_no" android:layout_width="147.000000dip" android:layout_height="58.000000dip" android:text="load" android:includeFontPadding="false" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginStart="20.000000dip" app:need_press_status="true" style="StrokeTextStyle_No"/>
+    <com.yalla.game.base.view.StrokeButton android:textSize="24.000000sp" android:gravity="0x00000011" android:id="btn_local_play" android:background="bn_yes" android:layout_width="147.000000dip" android:layout_height="58.000000dip" android:text="start_ludo_rec" android:includeFontPadding="false" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  </RelativeLayout>
+</RelativeLayout>

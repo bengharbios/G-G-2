@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+  <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="17.000000dip">
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="@7F0A0104" android:background="@7F08016C" android:visibility="0" android:layout_width="119.000000dip" android:layout_height="50.000000dip" android:text="@7F1200C2" android:lines="1" android:includeFontPadding="false" android:textAllCaps="false" android:layout_marginEnd="25.000000dip" app:need_press_status="true" style="@7F130128"/>
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="@7F0A011B" android:background="@7F080172" android:layout_width="119.000000dip" android:layout_height="50.000000dip" android:text="@7F12011D" android:lines="1" android:textAllCaps="false" style="@7F130129"/>
+  </LinearLayout>
+</FrameLayout>

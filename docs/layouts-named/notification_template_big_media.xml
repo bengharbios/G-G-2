@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="status_bar_latest_event_content" android:layout_width="-1" android:layout_height="128.000000dip">
+  <include android:layout_width="@7F070109" android:layout_height="@7F070108" layout="@7F0D0195"/>
+  <include android:layout_width="48.000000dip" android:layout_height="48.000000dip" android:layout_marginLeft="2.000000dip" android:layout_marginRight="2.000000dip" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" layout="@7F0D018F"/>
+  <include android:layout_gravity="0x00000070" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="@7F070109" android:layout_toLeftOf="cancel_action" android:layout_marginStart="@7F070109" android:layout_toStartOf="cancel_action" layout="@7F0D0196"/>
+  <LinearLayout android:orientation="0" android:id="media_actions" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginLeft="12.000000dip" android:layout_marginRight="12.000000dip" android:layout_alignParentBottom="true" android:layoutDirection="0"/>
+  <ImageView android:id="action_divider" android:background="?android:0101032C" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_above="media_actions"/>
+</RelativeLayout>

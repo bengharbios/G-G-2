@@ -1,0 +1,14 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:layout_width="-2" android:layout_height="-2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <include layout="@7F0D01D1"/>
+  </FrameLayout>
+  <LinearLayout android:orientation="1" android:id="ll_gift_info" android:background="room_bg_talk0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="24.000000dip" android:layout_marginStart="54.000000dip" app:layout_constrainedWidth="true" app:layout_constraintEnd_toStartOf="iv_return_gift" app:layout_constraintHorizontal_bias="0.000000" app:layout_constraintHorizontal_chainStyle="2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="color_4ca" android:id="tvChatGiftTarget" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:singleLine="true" android:includeFontPadding="false" android:drawablePadding="3.000000dip" android:drawableStart="icon_arrow_to_user" android:layout_marginStart="5.000000dip"/>
+    <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+      <ImageView android:layout_gravity="0x00000001" android:id="ivChatGift" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="2.000000dip"/>
+      <ImageView android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="9.000000dip" android:layout_marginTop="4.000000dip" android:src="icon_number_x"/>
+      <com.yalla.ludochat.view.NumberFrameLayout android:layout_gravity="0x00000010" android:id="tvChatGiftNum" android:layout_width="-2" android:layout_height="17.000000dip" android:layout_marginStart="2.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+  <ImageView android:id="iv_return_gift" android:visibility="2" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:src="icon_return_gift" android:layout_marginStart="2.000000dip" app:layout_constraintBottom_toBottomOf="ll_gift_info" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toEndOf="ll_gift_info" app:layout_constraintTop_toTopOf="ll_gift_info"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

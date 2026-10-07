@@ -1,0 +1,18 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:layout_width="-1" android:layout_height="40.000000dip">
+    <LinearLayout android:orientation="0" android:id="@7F0A064B" android:layout_width="-1" android:layout_height="-1" android:layout_toLeftOf="@7F0A0632" android:layout_alignParentStart="true">
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF487CB6" android:gravity="0x00000011" android:id="@7F0A0A0C" android:layout_width="86.000000dip" android:layout_height="-1" android:text="@7F1204AE"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A0A0E" android:layout_width="86.000000dip" android:layout_height="-1" android:text="@7F1204B4"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0632" android:layout_width="-2" android:layout_height="44.000000dip" android:layout_alignParentEnd="true">
+      <androidx.constraintlayout.widget.ConstraintLayout android:orientation="0" android:layout_width="-2" android:layout_height="26.000000dip" android:paddingEnd="15.000000dip">
+        <com.yalla.ludochat.view.RoundImageView android:layout_width="0.000000dip" android:layout_height="21.000000dip" android:src="#FF121C24" android:layout_marginStart="22.000000dip" app:borderColor="#591C2F43" app:borderWidth="2.000000dip" app:cornerBottomEndRadius="10.000000dip" app:cornerTopEndRadius="10.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <ImageView android:id="@7F0A051A" android:layout_width="23.000000dip" android:layout_height="26.000000dip" android:src="@7F08008C" android:layout_marginStart="14.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+        <TextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="@7F0601BB" android:id="@7F0A0AD7" android:layout_width="-2" android:layout_height="-2" android:text="0" android:layout_marginStart="5.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toEndOf="@7F0A051A" app:layout_constraintTop_toTopOf="0"/>
+        <ImageView android:id="@7F0A049D" android:layout_width="-2" android:layout_height="19.000000dip" android:src="@7F0805D8" android:layout_marginStart="4.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toEndOf="@7F0A0AD7" app:layout_constraintTop_toTopOf="0"/>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+      <ImageView android:gravity="0x00000011" android:id="@7F0A0A0D" android:visibility="2" android:layout_width="22.000000dip" android:layout_height="-1" android:src="@7F0805D9" android:layout_marginEnd="15.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A0CAB" android:layout_width="-1" android:layout_height="206.000000dip" android:layout_marginTop="6.000000dip"/>
+</LinearLayout>

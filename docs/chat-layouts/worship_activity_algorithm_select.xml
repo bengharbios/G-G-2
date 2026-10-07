@@ -1,0 +1,4 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.ui.view.PageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A09BC" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:subtitleTextAppearance="@7F140280" app:title="@7F13086F" app:titleTextAppearance="@7F140281"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07F9" android:layout_width="-1" android:layout_height="-2"/>
+</LinearLayout>

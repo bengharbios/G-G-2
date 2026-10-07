@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:id="ll_invited" android:background="bg_friendwindow" android:layout_width="331.000000dip" android:layout_height="-2">
+  <com.yalla.games.common.view.HeadView android:id="civ_head_inviter" android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:layout_marginTop="9.000000dip" android:layout_marginStart="14.000000dip"/>
+  <RelativeLayout android:gravity="0x00000010" android:id="rl_invited_content" android:layout_width="-1" android:layout_height="-2" android:layout_alignTop="civ_head_inviter" android:layout_marginStart="4.000000dip" android:layout_toEndOf="civ_head_inviter">
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="white" android:id="tv_inviter_name" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="color_32675f" android:id="tv_inviter_content" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_below="tv_inviter_name"/>
+  </RelativeLayout>
+  <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:layout_marginBottom="12.000000dip" android:layout_below="rl_invited_content" android:layout_alignStart="rl_invited_content">
+    <Button android:textColor="#FF51AA85" android:id="btn_no_invited" android:background="btn_friend_invite_no" android:layout_width="80.000000dip" android:layout_height="26.000000dip" android:text="no"/>
+    <Button android:textColor="#FF5DBD96" android:id="btn_yes_invited" android:background="btn_friend_invite_yes" android:layout_width="80.000000dip" android:layout_height="26.000000dip" android:text="yes" android:layout_marginStart="32.000000dip"/>
+  </LinearLayout>
+</RelativeLayout>

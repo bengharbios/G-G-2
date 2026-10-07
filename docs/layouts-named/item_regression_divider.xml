@@ -1,0 +1,3 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16777206.000000dip" android:layout_marginBottom="20.000000dip">
+  <ImageView android:layout_width="-1" android:layout_height="25.000000dip" android:src="skin_item_divider" android:scaleType="1"/>
+</FrameLayout>

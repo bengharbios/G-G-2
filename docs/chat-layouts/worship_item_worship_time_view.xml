@@ -1,0 +1,11 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@7F0805C5" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginBottom="2.000000dip" android:paddingStart="16.000000dip" android:paddingEnd="0.000000dip">
+  <ImageView android:layout_gravity="0x00800003" android:id="@7F0A0572" android:layout_width="20.000000dip" android:layout_height="20.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <TextView android:textSize="16.000000sp" android:id="@7F0A0B18" android:layout_marginStart="9.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toEndOf="@7F0A0572" app:layout_constraintTop_toTopOf="0" style="@7F14035C"/>
+  <TextView android:textSize="12.000000sp" android:id="@7F0A0AD8" app:layout_constraintBaseline_toBaselineOf="@7F0A0B18" app:layout_constraintEnd_toStartOf="@7F0A0158" style="@7F140359"/>
+  <TextView android:textSize="18.000000sp" android:id="@7F0A0AD6" android:layout_marginEnd="4.000000dip" app:layout_constraintBaseline_toBaselineOf="@7F0A0B18" app:layout_constraintEnd_toStartOf="@7F0A0AD8" style="@7F140359"/>
+  <com.yallatech.yallachat.worship.ui.view.morphing.MorphingCheckButton android:id="@7F0A0158" android:layout_width="52.000000dip" android:layout_height="32.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0596" android:background="@7F0805C5" android:visibility="2" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <View android:background="@7F080589" android:layout_width="20.000000dip" android:layout_height="20.000000dip"/>
+    <View android:background="@7F080589" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

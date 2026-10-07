@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="tw__composer_header" android:layout_width="-1" android:layout_height="-2">
+    <ImageButton android:id="tw__composer_close" android:layout_centerVertical="true" style="tw__ComposerClose"/>
+    <ImageView android:id="tw__twitter_logo" android:layout_width="@7F070145" android:layout_height="@7F070144" android:src="?7F040436" android:layout_centerInParent="true"/>
+    <ImageView android:id="tw__author_avatar" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_alignParentEnd="true" style="tw__ComposerAvatar"/>
+  </RelativeLayout>
+  <View android:id="tw__composer_profile_divider" android:visibility="1" style="tw__ComposerDivider"/>
+  <com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView android:id="tw__composer_scroll_view" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+      <EditText android:id="tw__edit_tweet" style="tw__EditTweet"/>
+      <ImageView android:id="tw__image_view" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_margin="@7F070146" android:adjustViewBounds="true"/>
+    </LinearLayout>
+  </com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView>
+  <View android:id="tw__composer_toolbar_divider" style="tw__ComposerDivider"/>
+  <LinearLayout android:id="tw__composer_toolbar" style="tw__ComposerToolbar">
+    <TextView android:id="tw__char_count" style="tw__ComposerCharCount"/>
+    <Button android:id="tw__post_tweet" style="tw__ComposerTweetButton"/>
+  </LinearLayout>
+</LinearLayout>

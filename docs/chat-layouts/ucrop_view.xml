@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.libcrop.crop.view.GestureCropImageView android:id="@7F0A0454" android:padding="@7F0702BB" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yallatech.yallachat.libcrop.crop.view.OverlayView android:id="@7F0A0BA1" android:padding="@7F0702BB" android:layout_width="-1" android:layout_height="-1"/>
+</merge>

@@ -1,0 +1,35 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <View android:id="@7F0A0396" android:background="@7F0600C3" android:layout_width="0.000000dip" android:layout_height="0.000000dip"/>
+  <FrameLayout android:layout_gravity="0x00000050" android:id="@7F0A038F" android:background="@7F0600C5" android:layout_width="-1" android:layout_height="@7F0700F3" android:layout_marginTop="@7F0700F4" android:layoutDirection="0">
+    <LinearLayout android:layout_gravity="0x00800013" android:id="@7F0A03BD" android:paddingLeft="@7F0700F5" android:paddingRight="@7F0700F5" android:layout_width="-2" android:layout_height="-2" android:layoutDirection="0" android:paddingStart="@7F0700F5" android:paddingEnd="@7F0700F5">
+      <TextView android:id="@7F0A03AE" style="@7F140130"/>
+      <TextView style="@7F140131"/>
+      <TextView android:id="@7F0A039B" style="@7F14012F"/>
+    </LinearLayout>
+    <LinearLayout android:layout_gravity="0x00800015" android:id="@7F0A038E" android:layout_width="-2" android:layout_height="-2" android:layoutDirection="0">
+      <ImageButton android:id="@7F0A03BF" style="@7F140126"/>
+      <ImageButton android:id="@7F0A03B7" style="@7F140125"/>
+      <ImageButton android:id="@7F0A03B2" style="@7F140123"/>
+      <ImageButton android:id="@7F0A03BA" style="@7F14011E"/>
+      <ImageButton android:id="@7F0A03B5" style="@7F140124"/>
+      <ImageButton android:id="@7F0A03A1" style="@7F14011F"/>
+      <ImageButton android:id="@7F0A03A8" style="@7F140121"/>
+    </LinearLayout>
+    <HorizontalScrollView android:layout_gravity="0x00800015" android:id="@7F0A039E" android:visibility="1" android:layout_width="-2" android:layout_height="-2">
+      <LinearLayout android:id="@7F0A039D" android:layout_width="-2" android:layout_height="-2" android:layoutDirection="0">
+        <ImageButton android:id="@7F0A03A7" style="@7F140120"/>
+      </LinearLayout>
+    </HorizontalScrollView>
+  </FrameLayout>
+  <View android:layout_gravity="0x00000050" android:id="@7F0A03B1" android:layout_width="-1" android:layout_height="@7F0700FB" android:layout_marginBottom="@7F0700FC"/>
+  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00800055" android:orientation="0" android:id="@7F0A03A4" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="@7F0700F7" android:layoutDirection="0">
+    <ImageButton android:id="@7F0A03A5" style="@7F14011F"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0391" android:background="@android:0106000D" android:padding="@7F0700F6" android:clipToPadding="false" android:layout_width="-2" android:layout_height="-2">
+    <ImageButton android:id="@7F0A03AF" style="@7F14012B"/>
+    <include layout="@7F0D01C1"/>
+    <ImageButton android:id="@7F0A03AC" style="@7F14012A"/>
+    <include layout="@7F0D01C0"/>
+    <ImageButton android:id="@7F0A03A6" style="@7F140129"/>
+  </LinearLayout>
+</merge>

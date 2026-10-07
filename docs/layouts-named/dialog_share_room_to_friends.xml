@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:clickable="false" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="rl_room_info" android:background="bg_share_room_dialog_title" android:clickable="false" android:layout_width="-1" android:layout_height="75.000000dip" android:layout_margin="10.000000dip">
+    <ImageView android:id="iv_image" android:layout_width="65.000000dip" android:layout_height="65.000000dip" android:layout_margin="5.000000dip" android:src="room_invite_default_pic" android:layout_centerVertical="true"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="1" android:clickable="false" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_toEndOf="iv_image">
+      <com.yalla.games.common.view.CustomTextView android:textColor="#FF666666" android:id="tv_room_name" android:layout_width="-2" android:layout_height="-2" android:maxLines="1"/>
+      <com.yalla.games.common.view.CustomTextView android:textColor="#FF666666" android:id="tv_room_id" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="13.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+  <com.yalla.games.common.view.CustomEditText android:textSize="16.000000sp" android:textColor="#FF666666" android:textColorHint="#FFA1C3B7" android:layout_gravity="0x00000001" android:id="et_comment" android:background="bg_share_room_dialog_content" android:layout_width="-1" android:layout_height="44.000000dip" android:layout_margin="10.000000dip" android:hint="say_something_to_them" android:maxLength="300" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+  <com.yalla.game.base.view.StrokeButton android:textSize="19.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="btn_ok" android:background="bn_yes_big" android:layout_width="170.000000dip" android:layout_height="48.500004dip" android:layout_marginTop="20.000000dip" android:layout_marginBottom="29.500003dip" android:text="ok" style="StrokeTextStyle_Yes"/>
+</LinearLayout>

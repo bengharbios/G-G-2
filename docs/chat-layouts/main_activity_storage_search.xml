@@ -1,0 +1,10 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0601C1" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.ui.view.PageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A09BC" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:subtitleTextAppearance="@7F140280" app:titleTextAppearance="@7F140282">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+      <EditText android:textSize="16.000000sp" android:id="@7F0A0633" android:background="@android:0106000D" android:layout_width="0.000000dip" android:layout_height="40.000000dip" android:hint="@7F1302F8" android:maxLines="1" android:lines="1" android:layout_weight="1.000000" android:inputType="0x00000001"/>
+      <ImageView android:id="@7F0A0640" android:padding="16.000000dip" android:visibility="2" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F080355"/>
+    </LinearLayout>
+  </com.yallatech.yallachat.ui.view.PageHeader>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A064E" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="2.000000dip"/>
+  <TextView android:textSize="16.000000sp" android:textColor="@7F0601E7" android:gravity="0x00000011" android:id="@7F0A0664" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="112.000000dip" android:text="@7F130567"/>
+</LinearLayout>

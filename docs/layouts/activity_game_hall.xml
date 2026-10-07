@@ -1,0 +1,16 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A073A" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A02BA" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="@7F0A06B6" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+      <FrameLayout android:id="@7F0A02BB" android:background="@7F080317" android:layout_width="-2" android:layout_height="-2">
+        <com.yalla.yallagames.main.MainHeaderView android:id="@7F0A073B" android:layout_width="-1" android:layout_height="51.000000dip"/>
+      </FrameLayout>
+      <com.yalla.yallagames.main.MainRtlViewPager android:id="@7F0A0CAA" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <include android:layout_width="-1" android:layout_height="75.000000dip" layout="@7F0D02CF"/>
+    </LinearLayout>
+  </FrameLayout>
+  <com.yalla.games.common.view.CoverView android:id="@7F0A024A" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="@7F0A02A7" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF9B9B9B" android:gravity="0x00000011" android:layout_gravity="0x00000005" android:id="@7F0A0BCD" android:background="@7F0807E3" android:paddingLeft="7.000000dip" android:visibility="2" android:layout_width="89.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="16.000000dip" android:text="@7F120695" android:includeFontPadding="false"/>
+    <include android:id="@7F0A0331" android:visibility="2" layout="@7F0D0121"/>
+  </FrameLayout>
+</FrameLayout>

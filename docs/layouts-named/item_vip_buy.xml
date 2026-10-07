@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_item_buy" android:background="cart_vip_buy_item_bg" android:layout_width="157.500014dip" android:layout_height="195.449999dip" android:layout_marginTop="4.000000dip" android:layout_marginStart="2.500000dip" android:layout_marginEnd="2.500000dip">
+  <FrameLayout android:layout_gravity="0x00000001" android:layout_width="59.000000dip" android:layout_height="72.000000dip" android:layout_marginTop="39.000000dip">
+    <ImageView android:id="iv_days" android:layout_width="-1" android:layout_height="-1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="#FF17654C" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="ctv_days" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="3.000000dip" android:text="7days" android:includeFontPadding="false"/>
+  </FrameLayout>
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="btn_vip_buy" android:background="bn_yes" android:paddingBottom="5.000000dip" android:clickable="true" android:layout_width="110.000000dip" android:layout_height="40.000000dip" android:layout_marginTop="23.000000dip">
+    <ImageView android:layout_width="15.000000dip" android:layout_height="19.000000dip" android:src="diamonds"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:id="tv_num" android:layout_width="-2" android:layout_height="-2" android:text="100" android:layout_marginStart="6.000000dip" style="StrokeTextStyle_Yes"/>
+  </LinearLayout>
+</LinearLayout>

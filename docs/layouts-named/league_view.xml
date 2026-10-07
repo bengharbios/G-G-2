@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:layout_gravity="0x00000010" android:id="iv_seg" android:layout_width="-2" android:layout_height="-2" android:scaleType="3"/>
+  <View android:layout_gravity="0x00000010" android:id="view_div_1" android:layout_width="5.000000dip" android:layout_height="1.000000dip"/>
+  <ImageView android:layout_gravity="0x00000010" android:id="iv_stars" android:layout_width="17.000000dip" android:layout_height="15.000000dip" android:src="legend_star"/>
+  <View android:layout_gravity="0x00000010" android:id="view_div_2" android:layout_width="2.000000dip" android:layout_height="1.000000dip"/>
+  <com.yalla.game.base.view.StrokeTextView android:textColor="white" android:layout_gravity="0x00000010" android:id="tv_stars_num" android:layout_width="-2" android:layout_height="-2"/>
+</merge>

@@ -1,0 +1,3 @@
+<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android" android:id="chip_group" android:layout_width="-1" android:layout_height="-2" android:layout_margin="16.000000dip">
+  <com.google.android.material.chip.Chip android:ellipsize="3" android:id="filter_chip" android:layout_width="-2" android:layout_height="-2" android:text="chip_text" style="Widget.MaterialComponents.Chip.Filter"/>
+</com.google.android.material.chip.ChipGroup>

@@ -1,0 +1,8 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601F5" android:layout_width="-2" android:layout_height="-2" android:layout_margin="20.000000dip">
+  <androidx.cardview.widget.CardView android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="160.000000dip" android:layout_height="-2" app:cardElevation="4.000000dip">
+    <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+      <TextView android:textColor="@7F0601E2" android:ellipsize="3" android:gravity="0x00000010" android:id="@7F0A095E" android:background="?android:0101030E" android:layout_width="160.000000dip" android:layout_height="-2" android:minHeight="45.000000dip" android:text="@7F130705" android:lines="1" android:paddingStart="16.000000dip" android:paddingEnd="16.000000dip"/>
+      <TextView android:textColor="@7F0601E2" android:ellipsize="3" android:gravity="0x00000010" android:id="@7F0A0934" android:background="?android:0101030E" android:layout_width="160.000000dip" android:layout_height="-2" android:minHeight="45.000000dip" android:text="@7F130702" android:lines="1" android:paddingStart="16.000000dip" android:paddingEnd="16.000000dip"/>
+    </LinearLayout>
+  </androidx.cardview.widget.CardView>
+</FrameLayout>

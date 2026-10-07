@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:background="@7F0800F5" android:layout_width="61.000000dip" android:layout_height="42.000000dip">
+  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF555555" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A0A86" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F120192"/>
+</FrameLayout>

@@ -1,0 +1,6 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0B51" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A0B50" android:background="@7F060031" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="16777204.000000dip" android:layout_above="@7F0A02ED">
+    <com.yallatech.yallachat.libcrop.crop.view.UCropView android:id="@7F0A0B4F" android:layout_width="-1" android:layout_height="-1" android:alpha="0.000000"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A02ED" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

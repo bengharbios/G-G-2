@@ -1,0 +1,29 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_user_info2" android:layout_width="322.000000dip" android:layout_height="-2">
+  <RelativeLayout android:layout_width="-1" android:layout_height="80.000000dip">
+    <com.yalla.games.common.view.HeadView android:id="iv_photo" android:layout_width="70.000000dip" android:layout_height="70.000000dip" android:layout_marginLeft="8.000000dip" android:layout_marginRight="8.000000dip" android:src="default_photo" android:layout_centerVertical="true" app:head_face_margin="8.000000dip"/>
+    <LinearLayout android:orientation="1" android:id="ll_des" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_toEndOf="iv_photo">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="#FF717171" android:gravity="0x00800003" android:layout_gravity="0x00800003" android:id="tv_description" android:visibility="1" android:layout_width="116.000000dip" android:layout_height="-2"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textColor="#FF6BD5B7" android:id="tv_tip" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="0 Day 0 H" android:drawablePadding="2.000000dip" android:drawableStart="clock_green"/>
+    </LinearLayout>
+    <ImageView android:id="iv_gift" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:layout_centerVertical="true" android:layout_toEndOf="ll_des"/>
+    <FrameLayout android:id="fl_option" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="12.000000dip" android:layout_alignParentEnd="true">
+      <com.yalla.game.base.view.StrokeTextView android:gravity="0x00000011" android:id="tv_active" android:background="active" android:visibility="1" android:layout_width="75.000000dip" android:layout_height="42.000000dip"/>
+      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="btn_buy" android:background="bn_yes" android:visibility="2" android:layout_width="91.000000dip" android:layout_height="41.000000dip">
+        <ImageView android:layout_gravity="0x00000010" android:id="iv_spent_type" android:layout_width="16.000000dip" android:layout_height="17.000000dip" android:src="coin"/>
+        <com.yalla.game.base.view.StrokeTextView android:layout_gravity="0x00000010" android:id="tv_spent_num" android:layout_width="-2" android:layout_height="-2" android:text="15k" android:layout_marginStart="2.000000dip" style="StrokeTextStyle_Yes"/>
+      </LinearLayout>
+    </FrameLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_upload" android:background="bn_yes" android:layout_width="92.000000dip" android:layout_height="39.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true">
+      <ImageView android:layout_width="23.000000dip" android:layout_height="20.000000dip" android:layout_marginBottom="3.000000dip" android:src="camera_small"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="3.000000dip" android:text="upload" style="StrokeTextStyle_Yes"/>
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:textColor="#FF458371" android:gravity="0x00000011" android:id="tv_select_photo" android:layout_width="-1" android:layout_height="-2" android:text="select_your_profile_picture" android:layout_centerVertical="true" android:layout_marginEnd="24.000000dip" android:layout_toStartOf="ll_upload" android:layout_toEndOf="iv_photo"/>
+  </RelativeLayout>
+  <RelativeLayout android:layout_gravity="0x00000001" android:layout_width="330.000000dip" android:layout_height="-2">
+    <androidx.viewpager.widget.ViewPager android:layout_gravity="0x00000001" android:id="vp_head" android:background="bg_head" android:layout_width="-1" android:layout_height="258.000000dip" android:layout_marginTop="31.500003dip" android:layout_marginBottom="14.000000dip"/>
+    <LinearLayout android:orientation="0" android:id="ll_head" android:layout_width="-1" android:layout_height="33.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="#FF6BD5B7" android:gravity="0x00000011" android:id="tv_head_frame" android:layout_width="0.000000px" android:layout_height="-1" android:text="avatar_frame" android:layout_weight="1.000000"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="#FF676364" android:gravity="0x00000011" android:id="tv_head" android:layout_width="0.000000px" android:layout_height="-1" android:text="profile_head" android:layout_weight="1.000000" android:layout_marginStart="5.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+</merge>

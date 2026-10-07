@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="rl_room_my_theme" android:background="bg_hall" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="skin_bg" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <FrameLayout android:id="title_view" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip">
+    <ImageView android:layout_gravity="0x00800005" android:id="iv_my_theme" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="8.000000dip" android:src="x_closed" android:layout_marginEnd="11.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="color_5c8" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="room_my_theme_title"/>
+  </FrameLayout>
+  <androidx.recyclerview.widget.RecyclerView android:id="rv_my_theme" android:layout_width="-1" android:layout_height="-1" android:layout_below="title_view" android:overScrollMode="2" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip"/>
+</RelativeLayout>

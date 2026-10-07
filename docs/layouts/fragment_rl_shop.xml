@@ -1,0 +1,5 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0814" android:background="@7F0800D2" android:layout_width="360.000000dip" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07D1" android:background="@7F080568" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="43.000000dip"/>
+  <com.yalla.games.common.view.TitleWithDiamondView android:id="@7F0A09DC" android:layout_width="-1" android:layout_height="53.000000dip"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="37.000000dip" app:play_on_attach="true" app:source="star_light.svga"/>
+</RelativeLayout>

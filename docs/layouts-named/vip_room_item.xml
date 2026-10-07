@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <View android:id="view_header" android:visibility="2" android:layout_width="-1" android:layout_height="9.000000dip"/>
+  <com.yalla.games.battle.vip.view.VipRoomItemView android:id="vip_room_item" android:background="vip_room_bg" android:layout_width="322.000000dip" android:layout_height="114.000000dip" android:layout_marginTop="3.000000dip"/>
+</LinearLayout>

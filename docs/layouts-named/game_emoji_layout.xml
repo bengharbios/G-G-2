@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="40.000000dip" android:layout_height="60.000000dip">
+  <ImageView android:layout_gravity="0x00000011" android:id="iv_emoji" android:layout_width="31.000000dip" android:layout_height="31.000000dip"/>
+</FrameLayout>

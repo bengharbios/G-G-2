@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A0864" android:background="@7F080160" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A0A9B" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="24.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A083C" android:background="@7F0800D2" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="@7F0A066C" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true">
+      <ImageView android:layout_gravity="0x00000001" android:id="@7F0A04E9" android:layout_width="-2" android:layout_height="-2" android:src="@7F08041C" android:stateListAnimator="@7F01002F"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="20.000000sp" android:textColor="#FFF0F0F0" android:layout_gravity="0x00000051" android:id="@7F0A09D6" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="20.000000dip" android:text="@7F120120"/>
+    </LinearLayout>
+    <ImageView android:layout_width="-2" android:layout_height="180.000000dip" android:layout_marginBottom="20.000000dip" android:src="?7F040322" android:layout_above="@7F0A066C" android:layout_centerHorizontal="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A0A9C" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="110.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
+  </RelativeLayout>
+</FrameLayout>

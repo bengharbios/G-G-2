@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A021D" android:layout_width="-1" android:layout_height="-1"/>
+  <include android:id="@7F0A01DC" layout="@7F0D0109"/>
+</FrameLayout>

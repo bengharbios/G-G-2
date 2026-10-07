@@ -1,0 +1,4 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08A5" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toTopOf="@7F0A0694" app:layout_constraintTop_toTopOf="0"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0694" android:layout_width="-1" android:layout_height="15.000000dip" app:layout_constraintBottom_toBottomOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

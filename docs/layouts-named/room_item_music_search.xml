@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="room_item_room_bg" android:visibility="0" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_marginBottom="4.000000dip">
+  <ImageView android:layout_width="-2" android:layout_height="-2" android:src="room_icon_music_folder" android:layout_marginStart="16.000000dip"/>
+  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-1" android:maxWidth="189.000000dip" android:layout_marginStart="16.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="room_color_487" android:ellipsize="3" android:id="tvFolderName" android:layout_width="-2" android:layout_height="22.000000dip" android:layout_marginTop="11.000000dip" android:includeFontPadding="false" android:layout_marginEnd="16.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="color_8ba" android:ellipsize="3" android:layout_gravity="0x00000050" android:id="tvFolderPath" android:layout_width="-2" android:layout_height="18.000000dip" android:layout_marginBottom="11.000000dip" android:singleLine="true" android:includeFontPadding="false" android:layout_marginEnd="16.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

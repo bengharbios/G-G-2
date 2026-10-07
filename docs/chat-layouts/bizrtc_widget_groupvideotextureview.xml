@@ -1,0 +1,6 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A04D6" android:layout_width="-1" android:layout_height="-1" android:scaleType="6" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <FrameLayout android:id="@7F0A09A9" android:background="@7F060037" android:visibility="2" android:layout_width="-1" android:layout_height="-1" app:layout_constraintTop_toBottomOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ImageView android:id="@7F0A04D7" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:scaleType="6" app:layout_constraintTop_toTopOf="0"/>
+  <ImageView android:id="@7F0A04D4" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginBottom="12.000000dip" android:src="@7F08036A" android:layout_marginEnd="12.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0"/>
+</merge>

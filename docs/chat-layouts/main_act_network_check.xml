@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <include android:layout_width="-1" android:layout_height="-2" layout="@7F0D01D1"/>
+  <TextView android:textSize="14.000000dip" android:textColor="@7F0601E6" android:id="@7F0A09F5" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="30.000000dip" android:text="@7F130792" android:paddingStart="30.000000dip" android:paddingEnd="30.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0238" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:id="@7F0A04DE" android:layout_width="-2" android:layout_height="-2" android:src="@7F0804AA" app:layout_constraintBottom_toTopOf="@7F0A09F4" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:layout_constraintVertical_bias="0.400000"/>
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601F8" android:gravity="0x00000011" android:id="@7F0A09F4" android:background="@7F080563" android:layout_width="0.000000dip" android:layout_height="48.000000dip" android:layout_marginBottom="28.000000dip" android:text="@7F13078D" android:layout_marginStart="32.000000dip" android:layout_marginEnd="32.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  <ViewStub android:id="@7F0A0BB9" android:layout="@7F0D022F" android:layout_width="-1" android:layout_height="-1"/>
+  <ViewStub android:id="@7F0A0BB7" android:layout="@7F0D022D" android:layout_width="-1" android:layout_height="-1"/>
+  <ViewStub android:id="@7F0A0BB8" android:layout="@7F0D022E" android:layout_width="-1" android:layout_height="-1"/>
+</LinearLayout>

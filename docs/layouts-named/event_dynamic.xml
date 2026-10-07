@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_daily_sign" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="100.000000dip" android:layout_marginTop="2.000000dip" android:layout_marginBottom="2.000000dip" android:layoutDirection="0">
+  <ImageView android:id="iv_dynamic" android:layout_width="-1" android:layout_height="-1" android:scaleType="1" android:layout_centerInParent="true" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip"/>
+  <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="-2" android:layout_height="102.000000dip" android:layout_centerInParent="true">
+    <ViewStub android:id="vs_collection" android:visibility="2" android:layout="@7F0D013C" android:layout_width="369.000000dip" android:layout_height="140.000000dip" android:layout_marginLeft="16777213.000000dip" android:layout_marginTop="16777193.000000dip"/>
+  </FrameLayout>
+</FrameLayout>

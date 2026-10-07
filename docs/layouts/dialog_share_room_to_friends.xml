@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:clickable="false" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A085D" android:background="@7F080139" android:clickable="false" android:layout_width="-1" android:layout_height="75.000000dip" android:layout_margin="10.000000dip">
+    <ImageView android:id="@7F0A04C2" android:layout_width="65.000000dip" android:layout_height="65.000000dip" android:layout_margin="5.000000dip" android:src="@7F080654" android:layout_centerVertical="true"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="1" android:clickable="false" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_toEndOf="@7F0A04C2">
+      <com.yalla.games.common.view.CustomTextView android:textColor="#FF666666" android:id="@7F0A0BA8" android:layout_width="-2" android:layout_height="-2" android:maxLines="1"/>
+      <com.yalla.games.common.view.CustomTextView android:textColor="#FF666666" android:id="@7F0A0BA5" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="13.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+  <com.yalla.games.common.view.CustomEditText android:textSize="16.000000sp" android:textColor="#FF666666" android:textColorHint="#FFA1C3B7" android:layout_gravity="0x00000001" android:id="@7F0A0221" android:background="@7F080138" android:layout_width="-1" android:layout_height="44.000000dip" android:layout_margin="10.000000dip" android:hint="@7F12063E" android:maxLength="300" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+  <com.yalla.game.base.view.StrokeButton android:textSize="19.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A0106" android:background="@7F080173" android:layout_width="170.000000dip" android:layout_height="48.500004dip" android:layout_marginTop="20.000000dip" android:layout_marginBottom="29.500003dip" android:text="@7F1202FA" style="@7F130129"/>
+</LinearLayout>

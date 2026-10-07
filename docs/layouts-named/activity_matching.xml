@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="game_bg" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="iv_cha" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="26.000000dip" android:src="close" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+  <ImageView android:id="iv_logo" android:layout_width="-2" android:layout_height="105.000000dip" android:layout_marginTop="55.000000dip" android:src="icon_ludo" android:layout_centerHorizontal="true"/>
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_below="iv_logo">
+    <include android:id="match_room" layout="@7F0D0176"/>
+    <Button android:textSize="24.000000sp" android:textColor="white" android:id="bt_ludo" android:background="btn_start" android:layout_width="202.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="15.000000dip" android:text="start" android:layout_below="match_room" android:layout_centerHorizontal="true"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,1 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:ellipsize="4" android:gravity="0x00000010" android:id="@android:01020014" android:paddingLeft="?7F04025A" android:paddingRight="?7F04025B" android:layout_width="-1" android:layout_height="-2" android:minHeight="?7F040258" style="?7F04026B"/>

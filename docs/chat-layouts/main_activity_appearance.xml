@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="@7F0601C1" android:layout_width="-1" android:layout_height="-1">
+  <androidx.appcompat.widget.Toolbar android:theme="?7F040019" android:id="@7F0A09BE" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="?7F040013" android:minHeight="?7F040013" app:contentInsetStartWithNavigation="0.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:navigationIcon="@7F080343" app:popupTheme="@7F140154" app:title="@7F13060B" app:titleTextAppearance="@7F140281"/>
+  <RelativeLayout android:id="@7F0A0587" android:background="@7F08054C" android:layout_width="-1" android:layout_height="56.000000dip" android:layout_marginTop="8.000000dip">
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:text="@7F13014F" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip"/>
+    <ImageView android:background="@7F0805E4" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <com.yalla.libuikit.view.SplitLineView android:layout_width="-1" android:layout_height="1.000000px" android:layout_alignParentBottom="true" android:layout_marginStart="15.000000dip"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A058B" android:background="@7F08054C" android:layout_width="-1" android:layout_height="56.000000dip" android:layout_marginTop="8.000000dip">
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:text="@7F130614" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip"/>
+    <ImageView android:background="@7F0805E4" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <com.yalla.libuikit.view.SplitLineView android:layout_width="-1" android:layout_height="1.000000px" android:layout_alignParentBottom="true" android:layout_marginStart="15.000000dip"/>
+  </RelativeLayout>
+</LinearLayout>

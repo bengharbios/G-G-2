@@ -1,0 +1,19 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CommonDialogHeader android:id="magic_rules_header" android:background="rule_shap" android:layout_width="-1" android:layout_height="38.000000dip" app:end_icon="close_click" app:title="rule" app:title_color="white" app:title_size="21.000000sp"/>
+  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:background="bg_magic_dialog" android:layout_width="-1" android:layout_height="-2">
+    <RelativeLayout android:background="bg_magic_rules" android:layout_width="295.000000dip" android:layout_height="95.000000dip" android:layout_marginTop="6.000000dip">
+      <ImageView android:id="icon_1" android:layout_width="-2" android:layout_height="-2" android:src="rocket" android:layout_centerVertical="true" android:layout_marginStart="17.000000dip"/>
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="13.000000dip" android:layout_toEndOf="icon_1">
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF676364" android:id="title" android:layout_width="-2" android:layout_height="-2" android:text="rocket"/>
+        <TextView android:textSize="12.000000sp" android:textColor="#FF967860" android:id="description" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="rocket_description"/>
+      </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout android:background="bg_magic_rules" android:layout_width="295.000000dip" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_marginBottom="18.000000dip">
+      <ImageView android:id="icon_2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="15.000000dip" android:src="golden_dice_big" android:layout_centerVertical="true" android:layout_marginStart="20.000000dip"/>
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_alignTop="icon_2" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip" android:layout_toEndOf="icon_2">
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF676364" android:layout_width="-2" android:layout_height="-2" android:text="golden_dice"/>
+        <TextView android:textSize="12.000000sp" android:textColor="#FF967860" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="golden_dice_description"/>
+      </LinearLayout>
+    </RelativeLayout>
+  </LinearLayout>
+</LinearLayout>

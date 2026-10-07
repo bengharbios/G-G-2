@@ -1,0 +1,8 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountTermsView android:layout_gravity="0x00000011" android:id="@7F0A01DE" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountReasonView android:layout_gravity="0x00000011" android:id="@7F0A01DC" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountSmsConfirmView android:layout_gravity="0x00000011" android:id="@7F0A01DD" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountEmailConfirmView android:layout_gravity="0x00000011" android:id="@7F0A01DB" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountAreaListView android:layout_gravity="0x00000011" android:id="@7F0A01D9" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.dialog.deleteaccount.DeleteAccountConfirmView android:layout_gravity="0x00000011" android:id="@7F0A01DA" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+</FrameLayout>

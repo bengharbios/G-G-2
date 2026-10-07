@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:orientation="1" android:background="@7F0601AB" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A05F9" android:background="@7F0601AD" android:layout_width="-1" android:layout_height="-1">
+    <com.app.selectPicture.view.photoview.PhotoView android:id="@7F0A05FA" android:layout_width="-1" android:layout_height="-1" android:src="@7F080397" android:layout_centerInParent="true"/>
+    <TextView android:textSize="16.000000dip" android:textColor="@7F0601AD" android:gravity="0x00000011" android:id="@7F0A05FC" android:background="@7F0803B9" android:visibility="0" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:layout_margin="12.000000dip" android:text="" android:layout_alignParentRight="true"/>
+    <TextView android:textSize="16.000000dip" android:gravity="0x00800013" android:id="@7F0A05FB" android:background="@7F0601A5" android:padding="8.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_margin="8.000000dip" android:text="" android:layout_alignParentBottom="true"/>
+    <ImageView android:id="@7F0A060A" android:visibility="2" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:src="@7F0803BB" android:layout_centerInParent="true"/>
+  </RelativeLayout>
+</LinearLayout>

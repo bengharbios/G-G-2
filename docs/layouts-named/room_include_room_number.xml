@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:animateLayoutChanges="false" android:layoutDirection="0">
+  <ImageView android:id="ivNumber1" android:layout_width="-2" android:layout_height="-2" android:src="icon_number_1" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="ivNumber2" android:layout_width="-2" android:layout_height="-2" android:src="icon_number_2" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="ivNumber3" android:layout_width="-2" android:layout_height="-2" android:src="icon_number_3" android:scaleType="1" android:adjustViewBounds="true"/>
+  <ImageView android:id="ivNumber4" android:layout_width="-2" android:layout_height="-2" android:src="icon_number_4" android:scaleType="1" android:adjustViewBounds="true"/>
+</LinearLayout>

@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:id="@7F0A0843" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0690" android:background="@7F08047A" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip">
+    <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="9.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="19.000000sp" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:text="@7F12064A"/>
+      <ImageView android:id="@7F0A04F8" android:layout_width="-2" android:layout_height="-2" android:src="@7F080513" android:layout_marginStart="9.000000dip"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginBottom="8.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A00CB" android:background="@7F0803CF" android:layout_width="93.000000dip" android:layout_height="50.000000dip" android:text="@7F1202A2" android:includeFontPadding="false"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A00D9" android:background="@7F0803CF" android:layout_width="93.000000dip" android:layout_height="50.000000dip" android:text="@7F120291" android:includeFontPadding="false" android:layout_marginStart="12.000000dip" android:layout_toEndOf="@7F0A0541"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A00DB" android:background="@7F0803CF" android:layout_width="93.000000dip" android:layout_height="50.000000dip" android:text="@7F120373" android:includeFontPadding="false" android:layout_marginStart="12.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000011" android:id="@7F0A06B5" android:visibility="2" android:layout_width="-1" android:layout_height="31.000000dip" android:layout_marginTop="20.000000dip">
+    <ImageView android:id="@7F0A04FA" android:layout_width="30.000000dip" android:layout_height="30.000000dip"/>
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F080330" android:layout_marginStart="6.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="20.000000dip" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="2.000000dip" android:text="@7F120285" android:includeFontPadding="false" android:layout_marginStart="4.000000dip"/>
+    <ImageView android:id="@7F0A0542" android:layout_width="20.000000dip" android:layout_height="22.000000dip" android:src="@7F0802EA" android:layout_marginStart="6.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:background="@7F08047A" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F1200D6" android:includeFontPadding="false"/>
+    <LinearLayout android:gravity="0x00000001" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="23.000000dip">
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A06DF" android:background="@7F0803D0" android:layout_width="77.000000dip" android:layout_height="58.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="23.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B68" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="2" android:includeFontPadding="false"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B69" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="@7F120348" android:includeFontPadding="false"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A06E0" android:background="@7F0803D0" android:layout_width="77.000000dip" android:layout_height="58.000000dip" android:layout_marginStart="20.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="23.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B6A" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="3" android:includeFontPadding="false"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B6B" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="@7F120348" android:includeFontPadding="false"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A06E1" android:background="@7F0803D0" android:layout_width="77.000000dip" android:layout_height="58.000000dip" android:layout_marginStart="20.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="23.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B6C" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="4" android:includeFontPadding="false"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF82D2FF" android:gravity="0x00000011" android:id="@7F0A0B6D" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="@7F120348" android:includeFontPadding="false"/>
+      </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="0" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="-1" android:layout_height="-2">
+      <RelativeLayout android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <com.yalla.games.common.view.CustomEditText android:textSize="14.000000dip" android:textColor="@7F06008C" android:id="@7F0A0229" android:background="@7F0804F7" android:layout_width="120.000000dip" android:layout_height="26.000000dip" android:text="@7F12034D" android:maxLines="1" android:singleLine="true" android:maxLength="30" android:layout_centerVertical="true" android:textAlignment="5" android:paddingStart="20.000000dip" android:layout_marginStart="16.000000dip"/>
+        <ImageView android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F0804FA"/>
+      </RelativeLayout>
+      <RelativeLayout android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <com.yalla.games.common.view.CustomEditText android:textSize="14.000000dip" android:textColor="@7F0601B2" android:id="@7F0A022A" android:background="@7F0804F7" android:layout_width="120.000000dip" android:layout_height="26.000000dip" android:text="@7F12034E" android:maxLines="1" android:singleLine="true" android:maxLength="30" android:layout_centerVertical="true" android:textAlignment="5" android:paddingStart="20.000000dip" android:layout_marginStart="16.000000dip"/>
+        <ImageView android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F0804FB"/>
+      </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:layout_marginBottom="15.000000dip">
+      <RelativeLayout android:gravity="0x00000011" android:id="@7F0A0851" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <com.yalla.games.common.view.CustomEditText android:textSize="14.000000dip" android:textColor="@7F06006B" android:id="@7F0A022B" android:background="@7F0804F7" android:layout_width="120.000000dip" android:layout_height="26.000000dip" android:text="@7F12034F" android:maxLines="1" android:singleLine="true" android:maxLength="30" android:layout_centerVertical="true" android:textAlignment="5" android:paddingStart="20.000000dip" android:layout_marginStart="16.000000dip"/>
+        <ImageView android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F0804F9"/>
+      </RelativeLayout>
+      <RelativeLayout android:gravity="0x00000011" android:id="@7F0A0852" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+        <com.yalla.games.common.view.CustomEditText android:textSize="14.000000dip" android:textColor="@7F060064" android:id="@7F0A022C" android:background="@7F0804F7" android:layout_width="120.000000dip" android:layout_height="26.000000dip" android:text="@7F120350" android:maxLines="1" android:singleLine="true" android:maxLength="30" android:layout_centerVertical="true" android:textAlignment="5" android:paddingStart="20.000000dip" android:layout_marginStart="16.000000dip"/>
+        <ImageView android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F0804F8"/>
+      </RelativeLayout>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,4 @@
+<com.afollestad.materialdialogs.internal.main.DialogTitleLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A06AF" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:id="@7F0A06A4" style="@7F140139"/>
+  <com.afollestad.materialdialogs.internal.rtl.RtlTextView android:id="@7F0A06AD" android:visibility="2" android:layout_width="-2" android:layout_height="-2" style="@7F14013C"/>
+</com.afollestad.materialdialogs.internal.main.DialogTitleLayout>

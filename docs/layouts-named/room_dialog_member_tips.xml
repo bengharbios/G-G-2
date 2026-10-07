@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:paddingBottom="20.000000dip" android:layout_width="-1" android:layout_height="-2" android:paddingStart="24.000000dip" android:paddingEnd="24.000000dip">
+  <FrameLayout android:layout_width="-1" android:layout_height="42.000000dip">
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:src="icon_host"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="-2" android:text="room_identity_owner" android:layout_marginStart="46.000000dip"/>
+  </FrameLayout>
+  <View android:background="line_dashed" android:layout_width="-1" android:layout_height="2.000000dip"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="42.000000dip">
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:src="icon_admin"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="-2" android:text="room_identity_admin" android:layout_marginStart="46.000000dip"/>
+  </FrameLayout>
+  <View android:background="line_dashed" android:layout_width="-1" android:layout_height="2.000000dip"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="42.000000dip">
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:src="icon_member"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="-2" android:text="room_identity_member" android:layout_marginStart="46.000000dip"/>
+  </FrameLayout>
+  <View android:background="line_dashed" android:layout_width="-1" android:layout_height="2.000000dip"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="42.000000dip">
+    <ImageView android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:src="icon_out"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="service_subtitle" android:layout_gravity="0x00000010" android:layout_width="-2" android:layout_height="-2" android:text="room_remove_member" android:layout_marginStart="46.000000dip"/>
+  </FrameLayout>
+  <View android:background="line_dashed" android:layout_width="-1" android:layout_height="2.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="color_9d" android:gravity="0x00800013" android:id="dialog_member_info_layout_content_tv" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:text="room_member_dialog_tips_content"/>
+</LinearLayout>

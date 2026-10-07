@@ -1,0 +1,8 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="clTopCard" android:background="bg_hall" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="skin_bg" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <com.yalla.ludochat.view.TitleView android:id="roomTitle" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <include android:id="bottom" android:visibility="1" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" layout="@7F0D028A"/>
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="refresh" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toTopOf="bottom" app:layout_constraintTop_toBottomOf="roomTitle">
+    <androidx.recyclerview.widget.RecyclerView android:id="rv_top_card" android:layout_width="-1" android:layout_height="-1"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

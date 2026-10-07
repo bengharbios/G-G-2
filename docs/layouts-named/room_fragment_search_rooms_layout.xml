@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="color_164" android:gravity="0x00800013" android:id="tv_search_rooms_tip" android:visibility="2" android:layout_width="-1" android:layout_height="30.000000dip" android:text="room_you_may_like" android:paddingStart="8.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="rv_search_rooms" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+</LinearLayout>

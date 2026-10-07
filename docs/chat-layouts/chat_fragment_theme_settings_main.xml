@@ -1,0 +1,47 @@
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+    <LinearLayout android:orientation="1" android:background="@7F080117" android:layout_width="175.000000dip" android:layout_height="330.000000dip" android:layout_marginTop="16.000000dip" android:layout_marginBottom="16.000000dip">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="28.000000dip">
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080343" android:layout_marginStart="8.000000dip" app:tint="@7F0600F2"/>
+        <TextView android:textSize="10.000000dip" android:textColor="@7F0601E2" android:id="@7F0A01FC" android:layout_width="0.000000dip" android:layout_height="-2" android:text="@7F13029F" android:layout_weight="1.000000" android:layout_marginStart="8.000000dip"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0801B2"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0801BE" android:layout_marginStart="9.000000dip" android:layout_marginEnd="6.000000dip"/>
+      </LinearLayout>
+      <FrameLayout android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000">
+        <com.yallatech.yallachat.chat.ui.view.wallpaper.ChatWallpaperBackgroundView android:id="@7F0A0207" android:layout_width="-1" android:layout_height="-1"/>
+        <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+          <com.yallatech.yallachat.chat.ui.view.wallpaper.ChatThemeTimeTextView android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A0202" android:layout_width="48.000000dip" android:layout_height="11.000000dip" android:layout_marginTop="5.000000dip"/>
+          <View android:textColor="@7F060038" android:background="@7F080116" android:layout_width="130.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginStart="8.000000dip"/>
+          <View android:layout_gravity="0x00800005" android:background="@7F080109" android:layout_width="110.000000dip" android:layout_height="20.000000dip" android:layout_marginLeft="8.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginRight="8.000000dip"/>
+        </LinearLayout>
+      </FrameLayout>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="30.000000dip">
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0803E4" android:layout_marginStart="8.000000dip"/>
+        <FrameLayout android:background="@7F080105" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_marginLeft="8.000000dip" android:layout_marginRight="8.000000dip" android:layout_weight="1.000000">
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_margin="2.000000dip" android:src="@7F080391"/>
+        </FrameLayout>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0803F2"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F08034C" android:layout_marginStart="8.000000dip"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F08042D" android:layout_marginStart="8.000000dip" android:layout_marginEnd="6.000000dip"/>
+      </LinearLayout>
+    </LinearLayout>
+    <FrameLayout android:id="@7F0A0197" android:background="@7F08054C" android:visibility="2" android:layout_width="-1" android:layout_height="56.000000dip">
+      <ImageView android:layout_gravity="0x00800013" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip" app:srcCompat="@7F0803BB"/>
+      <ImageView android:layout_gravity="0x00800015" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginEnd="16.000000dip" app:srcCompat="@7F080384"/>
+      <SeekBar android:layout_gravity="0x00000010" android:id="@7F0A01D9" android:background="@android:0106000D" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="40.000000dip" android:layout_marginRight="40.000000dip" android:maxHeight="4.000000dip" android:max="100" android:progressDrawable="@7F080143" android:minHeight="4.000000dip" android:thumb="@7F080144"/>
+      <com.yalla.libuikit.view.SplitLineView android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="16.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:id="@7F0A019B" android:background="@7F08054C" android:layout_width="-1" android:layout_height="-2">
+      <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:layout_marginBottom="16.000000dip" android:text="@7F13029C" android:layout_marginStart="14.000000dip"/>
+      <ImageView android:layout_gravity="0x00800015" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="16.000000dip" app:srcCompat="@7F0805E4"/>
+      <com.yalla.libuikit.view.SplitLineView android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="16.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:id="@7F0A0196" android:background="@7F08054C" android:layout_width="-1" android:layout_height="-2">
+      <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16.000000dip" android:layout_marginBottom="16.000000dip" android:text="@7F13029B" android:layout_marginStart="14.000000dip"/>
+      <ImageView android:layout_gravity="0x00800015" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="16.000000dip" app:srcCompat="@7F0805E4"/>
+      <com.yalla.libuikit.view.SplitLineView android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="16.000000dip"/>
+    </FrameLayout>
+    <TextView android:textSize="14.000000sp" android:textColor="@7F0601E4" android:id="@7F0A0201" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="16.000000dip" android:layout_marginRight="16.000000dip" android:lineSpacingExtra="6.000000dip"/>
+    <TextView android:textSize="14.000000sp" android:textColor="@7F0601E4" android:id="@7F0A01FD" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="16.000000dip" android:layout_marginRight="16.000000dip" android:lineSpacingExtra="6.000000dip"/>
+  </LinearLayout>
+</ScrollView>

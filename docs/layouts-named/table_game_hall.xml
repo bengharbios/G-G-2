@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="ff_bottom" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="73.000000dip" android:layout_marginTop="2.000000dip">
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <com.yalla.yallagames.main.MainBottomItemView android:id="events_item" android:layout_width="-1" android:layout_height="-1" app:icon="?7F040266" app:name="events" app:select_icon="?7F040265"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="tv_task_red" android:background="bg_num_red" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:includeFontPadding="false" android:layout_marginEnd="17.000000dip"/>
+    </FrameLayout>
+    <com.yalla.yallagames.main.MainBottomItemView android:id="battle_item" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000" app:icon="?7F040262" app:name="battle" app:select_icon="?7F040261"/>
+    <com.yalla.yallagames.main.MainBottomItemView android:id="room_item" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000" app:icon="?7F040264" app:name="chat_in_hall_name" app:select_icon="?7F040263"/>
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <com.yalla.yallagames.main.MainBottomItemView android:id="friend_item" android:layout_width="-1" android:layout_height="-1" app:icon="?7F040268" app:name="social" app:select_icon="?7F040267"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="tv_add_friend" android:background="bg_num_red" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:includeFontPadding="false" android:layout_marginEnd="17.000000dip"/>
+    </FrameLayout>
+  </LinearLayout>
+</FrameLayout>

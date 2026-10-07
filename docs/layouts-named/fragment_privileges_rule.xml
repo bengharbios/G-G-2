@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="rl_main" android:background="skin_bg" android:layout_width="360.000000dip" android:layout_height="-1">
+  <RelativeLayout android:id="rl_title" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="21.000000sp" android:textColor="#FF87EBAA" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-2" android:layout_height="-1" android:layout_marginBottom="10.000000dip" android:text="privileges" android:includeFontPadding="false" android:shadowColor="black_50" android:shadowDy="5.000000" android:shadowRadius="1.000000" android:layout_centerHorizontal="true"/>
+  </RelativeLayout>
+  <WebView android:orientation="1" android:id="wb_rule" android:background="transparent" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777210.000000dip" android:layout_below="rl_title"/>
+  <com.yalla.games.common.view.LoadingView android:id="view_loading" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true"/>
+  <ImageView android:id="iv_close" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="skin_close" android:paddingStart="14.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

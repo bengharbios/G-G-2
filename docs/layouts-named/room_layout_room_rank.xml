@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="bg_bottom_sheet" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="vp_room_rank" android:layout_width="-1" android:layout_height="-1"/>
+</LinearLayout>

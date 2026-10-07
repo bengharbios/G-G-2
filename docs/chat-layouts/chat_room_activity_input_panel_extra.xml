@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A056F" android:visibility="2" android:layout_width="140.000000dip" android:layout_height="140.000000dip" android:layout_marginRight="16777181.000000dip" android:layout_marginBottom="16777181.000000dip">
+  <com.yallatech.yallachat.support.lottie.RLottieImageView android:layout_gravity="0x00000011" android:id="@7F0A05A6" android:layout_width="140.000000dip" android:layout_height="140.000000dip"/>
+  <com.yallatech.yallachat.ui.view.BgImageView android:layout_gravity="0x00000011" android:id="@7F0A0453" android:layout_width="90.000000dip" android:layout_height="90.000000dip" app:bg_color="@7F0600F2" app:custom_src="@7F08042F" app:vector_height="28.000000dip" app:vector_width="28.000000dip"/>
+</FrameLayout>

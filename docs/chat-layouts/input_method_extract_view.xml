@@ -1,0 +1,6 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <androidx.emoji2.widget.EmojiExtractEditText android:gravity="0x00000030" android:id="@android:01020025" android:scrollbars="0x00000200" android:layout_width="0.000000px" android:layout_height="-1" android:minLines="1" android:layout_weight="1.000000" android:inputType="0x00000001"/>
+  <FrameLayout android:id="@7F0A04AB" android:layout_width="-2" android:layout_height="-1" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip">
+    <androidx.emoji2.widget.ExtractButtonCompat android:layout_gravity="0x00000011" android:id="@7F0A04AC" android:layout_width="-2" android:layout_height="-2"/>
+  </FrameLayout>
+</merge>

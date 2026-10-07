@@ -1,0 +1,16 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" style="@7F130291">
+  <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout android:id="@7F0A0C35" style="@7F130298">
+    <com.twitter.sdk.android.tweetui.internal.TweetMediaView android:id="@7F0A0C58" style="@7F130297"/>
+    <com.twitter.sdk.android.tweetui.internal.MediaBadgeView android:id="@7F0A0C4F" style="@7F13028E"/>
+  </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
+  <TextView android:id="@7F0A0C50" android:layout_below="@7F0A0C35" style="@7F13029B"/>
+  <ImageView android:id="@7F0A0C4B" android:layout_below="@7F0A0C50" style="@7F13028C"/>
+  <TextView android:id="@7F0A0C4C" android:layout_toRightOf="@7F0A0C4B" android:layout_below="@7F0A0C50" android:layout_toEndOf="@7F0A0C4B" style="@7F130292"/>
+  <ImageView android:id="@7F0A0C54" android:layout_below="@7F0A0C50" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="@7F1302A4"/>
+  <TextView android:id="@7F0A0C4D" android:layout_toRightOf="@7F0A0C4B" android:layout_below="@7F0A0C4C" android:layout_alignBottom="@7F0A0C4B" android:layout_toEndOf="@7F0A0C4B" style="@7F13029D"/>
+  <TextView android:id="@7F0A0C53" android:layout_toRightOf="@7F0A0C4D" android:layout_below="@7F0A0C4C" android:layout_alignBottom="@7F0A0C4D" android:layout_toEndOf="@7F0A0C4D" style="@7F1302A2"/>
+  <TextView android:id="@7F0A0C52" android:visibility="2" android:layout_below="@7F0A0C4B" style="@7F13029F"/>
+  <FrameLayout android:id="@7F0A07BE" android:layout_below="@7F0A0C52" style="@7F130285"/>
+  <include android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A07BE" layout="@7F0D02D8" style="@7F13028A"/>
+  <View android:id="@7F0A00B4" android:layout_width="-1" android:layout_height="@7F07016F" android:layout_below="@7F0A07BE"/>
+</merge>

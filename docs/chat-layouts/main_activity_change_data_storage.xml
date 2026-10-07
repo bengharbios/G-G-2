@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="@7F0601C1" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="@7F0A09BD" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="8.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" layout="@7F0D01D1"/>
+  <RelativeLayout android:id="@7F0A081F" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="56.000000dip" android:paddingStart="16.000000dip" android:paddingEnd="0.000000dip">
+    <ImageView android:id="@7F0A04E2" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F080357" android:scaleType="1" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:id="@7F0A0A71" android:layout_width="-2" android:layout_height="-2" android:text="@7F1305F2" android:layout_centerVertical="true" style="@7F140370"/>
+    <com.yalla.libuikit.view.SplitLineView android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0823" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="56.000000dip" android:paddingStart="16.000000dip" android:paddingEnd="0.000000dip" app:layout_constraintTop_toBottomOf="@7F0A09BD">
+    <ImageView android:id="@7F0A04F5" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F080357" android:scaleType="1" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:text="@7F1305F5" android:layout_centerVertical="true" style="@7F140370"/>
+    <com.yalla.libuikit.view.SplitLineView android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0828" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="56.000000dip" android:paddingStart="16.000000dip" android:paddingEnd="0.000000dip" app:layout_constraintTop_toBottomOf="@7F0A0823">
+    <ImageView android:id="@7F0A0504" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F080357" android:scaleType="1" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:text="@7F1305FA" android:layout_centerVertical="true" style="@7F140370"/>
+    <com.yalla.libuikit.view.SplitLineView android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0829" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="56.000000dip" android:paddingStart="16.000000dip" android:paddingEnd="0.000000dip" app:layout_constraintTop_toBottomOf="@7F0A0828">
+    <ImageView android:id="@7F0A0503" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F080357" android:scaleType="1" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:layout_width="-2" android:layout_height="-2" android:text="@7F1305FB" android:layout_centerVertical="true" android:textDirection="5"/>
+  </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0671" android:layout_width="-1" android:layout_height="-2" android:paddingStart="20.000000dip" android:paddingEnd="20.000000dip">
+  <RelativeLayout android:gravity="0x00000011" android:id="@7F0A086C" android:layout_width="-1" android:layout_height="-2">
+    <ImageView android:layout_width="-1" android:layout_height="-2" android:src="@7F0803CC" android:scaleType="1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="21.000000dip" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:text="@7F1202F1" android:layout_centerInParent="true"/>
+    <ImageView android:id="@7F0A0519" android:layout_width="-2" android:layout_height="-2" android:src="@7F080249" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="@7F0A0233" android:background="@7F080428" android:paddingTop="8.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.games.common.view.CustomTextView android:textSize="21.000000dip" android:textColor="@7F0600EC" android:gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:text="@7F120154" android:paddingStart="20.000000dip" android:paddingEnd="20.000000dip"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:layout_marginBottom="28.000000dip">
+      <com.yalla.games.common.view.CustomButton android:textSize="19.000000sp" android:textColor="@7F0601EF" android:gravity="0x00000011" android:id="@7F0A0104" android:background="@7F080185" android:layout_width="109.000000dip" android:layout_height="40.000000dip" android:text="@7F1200C2" android:includeFontPadding="false" android:textAllCaps="false"/>
+      <com.yalla.games.common.view.CustomButton android:textSize="19.000000sp" android:textColor="@7F0601EF" android:gravity="0x00000011" android:id="@7F0A011B" android:background="@7F080172" android:layout_width="109.000000dip" android:layout_height="40.000000dip" android:text="@7F12011D" android:includeFontPadding="false" android:textAllCaps="false" android:layout_marginStart="32.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

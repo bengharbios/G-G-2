@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A05CA" android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="@7F080504"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:id="@7F0A0B4F" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="4.000000dip"/>
+</LinearLayout>

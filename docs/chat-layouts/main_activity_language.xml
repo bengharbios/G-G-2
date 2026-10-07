@@ -1,0 +1,12 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="@7F0A09BD" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" layout="@7F0D01D1"/>
+  <RelativeLayout android:id="@7F0A081D" android:background="@7F08054C" android:layout_width="-1" android:layout_height="56.000000dip" android:layout_marginTop="8.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A09BD">
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:id="@7F0A0A48" android:layout_width="-2" android:layout_height="-2" android:text="@7F130593" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip"/>
+    <ImageView android:id="@7F0A048E" android:background="@7F080357" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <RelativeLayout android:id="@7F0A0820" android:background="@7F08054C" android:layout_width="-1" android:layout_height="56.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A081D">
+    <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:id="@7F0A0A83" android:layout_width="-2" android:layout_height="-2" android:text="@7F130594" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip"/>
+    <ImageView android:id="@7F0A0493" android:background="@7F080357" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <com.yalla.libuikit.view.SplitLineView android:layout_width="0.000000dip" android:layout_height="-2" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A081D" app:uikit_padding_start="true"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

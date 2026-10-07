@@ -1,0 +1,14 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="cl_main" android:layout_width="-1" android:layout_height="-1">
+  <View android:id="room_top_bg" android:background="room_top_bg" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="room_top_contain" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="32.000000dip" android:scaleType="1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="room_top_bg" app:play_on_attach="true" app:source="star_light.svga"/>
+  <ImageView android:visibility="2" android:layout_width="-1" android:layout_height="115.000000dip" android:src="room_hall_top_bg" android:scaleType="1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="room_top_bg"/>
+  <View android:id="room_top_bg_shadow" android:background="room_top_bg_shadow" android:layout_width="-1" android:layout_height="4.000000dip" app:layout_constraintTop_toBottomOf="room_top_bg"/>
+  <RelativeLayout android:id="room_top_contain" android:clipChildren="false" android:layout_width="-2" android:layout_height="51.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.games.common.view.UserHeadView android:id="user_head" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_centerVertical="true" android:layout_marginStart="5.000000dip"/>
+  </RelativeLayout>
+  <FrameLayout android:id="iv_search_room" android:layout_width="28.000000dip" android:layout_height="51.000000dip" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true" app:layout_constraintBottom_toBottomOf="room_top_contain" app:layout_constraintEnd_toEndOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="28.000000dip" android:layout_height="28.000000dip" android:src="room_main_icon_search"/>
+  </FrameLayout>
+  <com.yalla.ludochat.view.indicator.YlTableLayout android:id="tab_room" android:layout_width="0.000000dip" android:layout_height="51.000000dip" android:layout_marginBottom="16777210.000000dip" android:layout_marginEnd="4.000000dip" app:layout_constraintBottom_toBottomOf="room_top_bg" app:layout_constraintEnd_toStartOf="iv_search_room" app:layout_constraintStart_toEndOf="room_top_contain"/>
+  <com.booking.rtlviewpager.RtlViewPager android:id="vp_room_list" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="room_top_bg_shadow"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

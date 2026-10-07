@@ -1,0 +1,4 @@
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0631" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D0219"/>
+  <include layout="@7F0D021C"/>
+</androidx.drawerlayout.widget.DrawerLayout>

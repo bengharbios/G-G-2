@@ -1,0 +1,21 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:id="ll_service" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="11.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF428371" android:layout_gravity="0x00000011" android:id="title" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:text="setting_serivce" android:includeFontPadding="false" android:layout_centerHorizontal="true"/>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="smart_refresh" android:background="bg_feed_back_detail" android:focusable="false" android:layout_width="-1" android:layout_height="234.000000dip" android:layout_marginTop="5.000000dip" android:layout_below="title" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip">
+      <androidx.recyclerview.widget.RecyclerView android:id="customer_listview" android:paddingTop="2.000000dip" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <RelativeLayout android:orientation="0" android:id="bottom" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:layout_below="smart_refresh" android:layout_centerHorizontal="true" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip">
+      <com.yalla.games.common.view.CustomEditText android:textSize="11.000000sp" android:textColorHint="#FFD0CFCF" android:gravity="0x00800003" android:id="et_service" android:background="bg_feedback_input" android:paddingTop="3.000000dip" android:paddingBottom="17.000000dip" android:layout_width="225.000000dip" android:layout_height="118.000000dip" android:hint="setting_service2" android:maxEms="300" android:maxLength="300" android:layout_centerVertical="true" android:inputType="0x00020001" android:imeOptions="0x00000000" android:fontFamily="@7F090000" android:paddingStart="8.000000dip" android:paddingEnd="14.000000dip" android:layout_marginStart="4.000000dip" style="Edit_Input_Text_Color"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FFD0CFCF" android:id="tv_num" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5.000000dip" android:text="0/300" android:layout_alignBottom="et_service" android:layout_alignEnd="et_service"/>
+      <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_toEndOf="et_service">
+        <com.yalla.game.base.view.StrokeTextView android:textColor="#FF558272" android:gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="screenshot"/>
+        <com.yalla.game.base.view.StrokeTextView android:textColor="#FF558272" android:gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="optional"/>
+        <FrameLayout android:layout_width="83.000000dip" android:layout_height="83.000000dip">
+          <ImageView android:layout_gravity="0x00000011" android:id="iv_take_pic" android:padding="1.000000dip" android:layout_width="74.000000dip" android:layout_height="74.000000dip" android:src="picture_take"/>
+          <ImageView android:layout_gravity="0x00800035" android:id="iv_clear_img" android:visibility="1" android:layout_width="20.000000dip" android:layout_height="19.000000dip" android:src="del_image_report"/>
+        </FrameLayout>
+      </LinearLayout>
+    </RelativeLayout>
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="btn_send" android:background="bn_no_big" android:layout_width="181.000000dip" android:layout_height="49.000000dip" android:layout_marginTop="14.000000dip" android:text="send" android:layout_below="bottom" android:layout_centerHorizontal="true" style="StrokeTextStyle_No"/>
+  </RelativeLayout>
+</LinearLayout>

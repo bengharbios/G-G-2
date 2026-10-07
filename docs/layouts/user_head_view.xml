@@ -1,0 +1,5 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="60.000000dip" android:layout_height="60.000000dip">
+  <com.yalla.games.common.view.HeadView android:id="@7F0A05CC" android:layout_width="51.000000dip" android:layout_height="51.000000dip" android:layout_centerVertical="true" app:head_face_margin="6.000000dip"/>
+  <ImageView android:id="@7F0A04AC" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginRight="1.000000dip" android:src="@7F08053E" android:layout_alignTop="@7F0A05CC" android:layout_alignRight="@7F0A05CC"/>
+  <com.yalla.games.common.view.LevelFlagView android:textSize="9.000000sp" android:id="@7F0A0B01" android:layout_width="27.000000dip" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:includeFontPadding="false" android:layout_alignParentBottom="true" android:layout_marginEnd="1.000000dip" android:layout_alignParentEnd="true"/>
+</merge>

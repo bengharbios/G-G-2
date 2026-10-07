@@ -1,0 +1,3 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A07DE" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08CB" android:layout_width="-1" android:layout_height="-1"/>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03DE" android:layout_width="-1" android:layout_height="-2">
+  <com.yallatech.yallachat.chat.ui.view.MorePanelView android:id="@7F0A0720" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yallatech.yallachat.chat.ui.view.MiniProgramPanelView android:id="@7F0A06C7" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yallatech.yallachat.chat.ui.view.emoticon.EmotionPanelTabView android:id="@7F0A036E" android:layout_width="-1" android:layout_height="-2"/>
+</FrameLayout>

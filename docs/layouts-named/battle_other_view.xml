@@ -1,0 +1,13 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="rl_content" android:layout_width="-2" android:layout_height="-2" android:layout_centerHorizontal="true" android:layout_centerVertical="true">
+    <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:id="iv_ludo_2p" android:layout_width="200.000000dip" android:layout_height="236.000000dip" android:src="black_night_mode" android:scaleType="3" app:bindPage="5" app:default_static_source="black_night_mode"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_mode_lock" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="17.000000dip" android:layout_alignLeft="iv_ludo_2p" android:layout_alignRight="iv_ludo_2p" android:layout_alignBottom="iv_ludo_2p">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="21.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="tv_ludo_2p_1_v_1" android:layout_width="-2" android:layout_height="-2" android:text="night_mode" app:stroke_color="#FF0274B6" app:stroke_width="2.000000dip"/>
+      <LinearLayout android:gravity="0x00000011" android:id="ll_mode_lock_tip" android:background="bg_black_mode_level_5" android:layout_width="104.000000dip" android:layout_height="16.000000dip" android:layout_marginTop="3.000000dip">
+        <ImageView android:layout_width="9.000000dip" android:layout_height="10.000000dip" android:src="black_mode_lock" android:layout_marginStart="5.000000dip"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000dip" android:textColor="white" android:gravity="0x00800013" android:layout_gravity="0x00000010" android:id="tv_black_min_level_tip" android:layout_width="-1" android:layout_height="-2" android:text="Level 6 Open" android:includeFontPadding="false" android:layout_marginStart="5.000000dip" app:autoSizeMaxTextSize="10.000000sp" app:autoSizeMinTextSize="7.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
+      </LinearLayout>
+    </LinearLayout>
+  </RelativeLayout>
+  <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:id="iv_other_logo" android:layout_width="168.000000dip" android:layout_height="50.000000dip" android:layout_marginBottom="30.000000dip" android:src="others_icon" android:layout_above="rl_content" android:layout_centerHorizontal="true" app:bindPage="5" app:lowMemoryConfig="4" app:source="battle_other/other_title.svga"/>
+</merge>

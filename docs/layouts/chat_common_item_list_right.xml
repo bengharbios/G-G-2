@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:padding="6.000000dip" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <TextView android:textSize="10.000000sp" android:textColor="#FFB6DCD2" android:layout_gravity="0x00000001" android:id="@7F0A0A94" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <RelativeLayout android:layout_gravity="0x00800005" android:layout_width="282.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip">
+    <com.yalla.games.common.view.HeadView android:id="@7F0A04B2" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_alignParentEnd="true"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="#FF626262" android:id="@7F0A0B44" android:layout_width="-2" android:layout_height="-2" android:maxLines="1" android:layout_alignTop="@7F0A04B2" android:textDirection="5" android:layout_toStartOf="@7F0A04B2"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:layout_below="@7F0A0B44" android:layout_toStartOf="@7F0A04B2">
+      <ImageView android:id="@7F0A05A1" android:focusable="false" android:visibility="1" android:layout_width="15.000000dip" android:layout_height="15.000000dip" android:layout_marginEnd="3.000000dip"/>
+      <FrameLayout android:id="@7F0A028D" android:background="@7F08022D" android:layout_width="-2" android:layout_height="-2">
+        <ViewStub android:id="@7F0A0CD3" android:layout_width="-2" android:layout_height="-2"/>
+      </FrameLayout>
+    </LinearLayout>
+  </RelativeLayout>
+</LinearLayout>

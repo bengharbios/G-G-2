@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="ll_main" android:background="skin_bg" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:layout_width="-1" android:layout_height="-2">
+    <RelativeLayout android:gravity="0x00000010" android:orientation="0" android:id="rl_diamonds" android:layout_width="90.000000dip" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="6.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="white" android:gravity="0x00000011" android:id="tv_diamonds_num" android:background="bg_add_coin" android:layout_width="-1" android:layout_height="20.000000dip" android:layout_centerVertical="true" android:paddingStart="5.000000dip" android:paddingEnd="5.000000dip" android:layout_marginStart="10.000000dip"/>
+      <ImageView android:layout_width="29.000000dip" android:layout_height="29.000000dip" android:src="diamonds" android:layout_centerVertical="true" android:layout_alignParentStart="true"/>
+      <ImageView android:id="iv_add_diamonds" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip" android:layout_marginBottom="1.000000dip" android:src="jia" android:layout_centerVertical="true" android:layout_marginEnd="1.000000dip" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <ImageView android:id="skin_close" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="skin_close" android:layout_centerVertical="true" android:paddingStart="15.000000dip" android:paddingEnd="15.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:id="radio_group_switch" android:layout_width="327.593770dip" android:layout_height="43.299992dip" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip">
+    <FrameLayout android:id="fl_navigation_start" android:background="cart_navigation_start_bg_check" android:paddingBottom="3.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:layout_gravity="0x00000010" android:id="iv_navigation_start" android:layout_width="-2" android:layout_height="-2" android:src="cart_navigation_start_ic_check" android:layout_marginEnd="8.000000dip"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.399995sp" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="ctv_start" android:layout_width="-2" android:layout_height="-2" android:text="VIP" android:includeFontPadding="false"/>
+      </LinearLayout>
+    </FrameLayout>
+    <FrameLayout android:id="fl_navigation_end" android:background="cart_navigation_end_bg_uncheck" android:paddingBottom="3.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+      <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:layout_gravity="0x00000010" android:id="iv_navigation_end" android:layout_width="-2" android:layout_height="-2" android:src="cart_navigation_end_ic_uncheck" android:layout_marginEnd="8.000000dip"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.399995sp" android:textStyle="0x00000001" android:textColor="#FF17654C" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="ctv_end" android:layout_width="-2" android:layout_height="-2" android:text="skin" android:includeFontPadding="false"/>
+      </LinearLayout>
+    </FrameLayout>
+  </LinearLayout>
+  <View android:background="skin_divider" android:layout_width="-1" android:layout_height="10.000000dip" android:layout_marginTop="13.000000dip"/>
+  <com.yalla.games.cart.CartViewPager android:id="viewpager" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+</LinearLayout>

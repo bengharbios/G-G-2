@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.ludochat.view.CrossRecyclerView android:id="@7F0A08A3" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="41.000000dip"/>
+  <View android:layout_gravity="0x00000050" android:background="@7F0600EE" android:layout_width="-1" android:layout_height="2.000000px" android:layout_marginBottom="40.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000050" android:id="@7F0A08A4" android:layout_width="-1" android:layout_height="40.000000dip" android:overScrollMode="2" android:layout_marginEnd="65.000000dip"/>
+  <ImageView android:layout_gravity="0x00800055" android:id="@7F0A039C" android:layout_width="65.000000dip" android:layout_height="40.000000dip" android:src="@7F08036B" android:scaleType="5"/>
+</FrameLayout>

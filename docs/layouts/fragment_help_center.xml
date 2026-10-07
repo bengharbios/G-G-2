@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="@7F0A0841" android:background="@7F0800D2" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0D1F" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="43.000000dip"/>
+  <RelativeLayout android:id="@7F0A086C" android:background="@7F080109" android:visibility="2" android:layout_width="-1" android:layout_height="54.500005dip">
+    <ImageView android:id="@7F0A0415" android:layout_width="-2" android:layout_height="25.000000dip" android:layout_marginTop="9.000000dip" android:src="@7F080344" android:paddingStart="13.000000dip" android:layout_alignParentStart="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="25.000000sp" android:textColor="#FF9FE8AF" android:gravity="0x00000011" android:id="@7F0A0BFB" android:layout_width="-2" android:layout_height="-1" android:layout_marginBottom="11.000000dip" android:includeFontPadding="false" android:shadowColor="@7F060027" android:shadowDy="5.000000" android:shadowRadius="1.000000" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="@7F0A04B4" android:paddingTop="12.000000dip" android:paddingBottom="5.000000dip" android:layout_width="-2" android:layout_height="39.000000dip" android:src="@7F0807BA" android:paddingStart="10.000000dip" android:paddingEnd="13.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <com.yalla.games.common.view.LoadingView android:orientation="1" android:id="@7F0A0998" android:background="@7F060029" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
+  <ImageView android:id="@7F0A0446" android:background="@7F0601BC" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="13.000000dip" android:src="@7F080066" android:layout_marginEnd="14.000000dip" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

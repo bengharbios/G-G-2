@@ -1,0 +1,12 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:id="rl_play2" android:layout_width="91.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+  <com.yalla.games.common.view.CustomTextView android:textColor="#FF6DD7FF" android:gravity="0x00000051" android:id="tv_ready" android:background="ready_bg" android:paddingBottom="17.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="105.000000dip" android:text="ready" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_back_play" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="45.000000dip" android:src="head_flag" android:layout_centerHorizontal="true"/>
+  <FrameLayout android:layout_width="75.000000dip" android:layout_height="75.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CircleImageView android:id="iv_header" android:layout_width="68.000000dip" android:layout_height="67.000000dip" android:layout_marginTop="3.000000dip" android:src="matching_default" android:layout_marginStart="3.000000dip"/>
+  </FrameLayout>
+  <ImageView android:background="hesd_frame" android:layout_width="75.000000dip" android:layout_height="75.000000dip" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_invite" android:layout_width="75.000000dip" android:layout_height="75.000000dip" android:src="invitation_icon" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="white" android:layout_gravity="0x00000001" android:id="tv_invite" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="85.000000dip" android:text="invitation" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textColor="match_game_text" android:ellipsize="3" android:layout_gravity="0x00000001" android:id="tv_player_name" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="88.000000dip" android:maxEms="4" android:singleLine="true" android:includeFontPadding="false" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_kick" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:src="btn_live" android:layout_alignEnd="iv_back_play"/>
+</merge>

@@ -1,0 +1,1 @@
+<com.yalla.games.common.chat.view.EmojiTextView xmlns:android="http://schemas.android.com/apk/res/android" android:textSize="11.000000sp" android:textColor="#FF8E8E8E" android:gravity="0x00800013" android:layout_gravity="0x00000011" android:id="@7F0A0A86" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true"/>

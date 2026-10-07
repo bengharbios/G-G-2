@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0805FF" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A07B7" android:padding="12.000000dip" android:layout_width="48.000000dip" android:layout_height="48.000000dip" android:src="@7F08061F"/>
+  <com.yallatech.yallachat.worship.widget.YearMonthPickerView android:id="@7F0A07C8" android:layout_width="-1" android:layout_height="144.000000dip" android:layout_marginLeft="16.000000dip" android:layout_marginTop="24.000000dip" android:layout_marginRight="16.000000dip"/>
+  <TextView android:textSize="18.000000sp" android:textColor="@7F0601F8" android:gravity="0x00000011" android:id="@7F0A07C6" android:background="@7F0805F5" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginLeft="16.000000dip" android:layout_marginTop="32.000000dip" android:layout_marginRight="16.000000dip" android:layout_marginBottom="24.000000dip" android:text="@7F1302D4"/>
+</LinearLayout>

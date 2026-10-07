@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A089B" android:background="@7F0601C7" android:paddingLeft="16.000000dip" android:paddingTop="16.000000dip" android:paddingRight="16.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="@7F0805C4" android:layout_width="-1" android:layout_height="48.000000dip">
+    <View android:background="@7F0805B2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip"/>
+    <View android:background="@7F0805B2" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="@7F0805C4" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginTop="2.000000dip">
+    <View android:background="@7F0805B2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip"/>
+    <View android:background="@7F0805B2" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="@7F0805C4" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginTop="2.000000dip">
+    <View android:background="@7F0805B2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip"/>
+    <View android:background="@7F0805B2" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="@7F0805C4" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginTop="2.000000dip">
+    <View android:background="@7F0805B2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip"/>
+    <View android:background="@7F0805B2" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="@7F0805C4" android:layout_width="-1" android:layout_height="48.000000dip" android:layout_marginTop="2.000000dip">
+    <View android:background="@7F0805B2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginStart="16.000000dip"/>
+    <View android:background="@7F0805B2" android:layout_width="180.000000dip" android:layout_height="10.000000dip" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

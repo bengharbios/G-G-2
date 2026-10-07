@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip">
+  <FrameLayout android:layout_width="88.000000dip" android:layout_height="88.000000dip">
+    <ImageView android:id="img" android:layout_width="-1" android:layout_height="-1"/>
+    <ProgressBar android:layout_gravity="0x00000011" android:id="loading" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:indeterminateTint="white"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FFD2E9F2" android:gravity="0x00000011" android:id="tv_name" android:layout_width="-1" android:layout_height="-2"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_price" android:layout_width="-1" android:layout_height="-2">
+    <ImageView android:layout_width="14.000000dip" android:layout_height="16.000000dip" android:src="diamonds"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FFD2E9F2" android:id="tv_price" android:layout_width="-2" android:layout_height="-2" android:lines="1" android:layout_marginStart="2.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

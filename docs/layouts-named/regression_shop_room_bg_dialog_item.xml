@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="rl_main" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:id="vp_bg" android:layout_width="270.000000dip" android:layout_height="433.000000dip" android:scaleType="1" android:layout_centerInParent="true"/>
+    <include android:id="main_detail" android:layout_width="260.000000dip" android:layout_height="415.000000dip" android:layout_centerInParent="true" layout="@7F0D01C0"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="svga_label" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="18.000000dip" android:layout_alignTop="main_detail" android:layout_marginStart="5.000000dip" android:layout_alignStart="main_detail"/>
+    <ImageView android:id="iv_play" android:visibility="2" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:layout_marginBottom="38.000000dip" android:src="skin_play" android:layout_alignBottom="main_detail" android:layout_marginEnd="20.000000dip" android:layout_alignEnd="main_detail"/>
+    <FrameLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="13.000000dip" android:layout_below="vp_bg">
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="tv_description" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="24.000000dip" android:layout_marginEnd="24.000000dip"/>
+      <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="0" android:id="ll_buy" android:background="bn_yes_big" android:paddingBottom="5.000000dip" android:layout_width="144.000000dip" android:layout_height="47.000000dip">
+        <ImageView android:layout_width="21.000000dip" android:layout_height="23.000000dip" android:src="regression_shop_icon_gold"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000dip" android:textColor="#FFA96C1D" android:id="tv_cost_coin" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="5.000000dip" app:stroke_color="#FFFFED45" app:stroke_width="1.000000dip"/>
+      </LinearLayout>
+    </FrameLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="ll_time_limit" android:layout_width="-1" android:layout_height="-2" android:layout_above="vp_bg">
+      <ImageView android:layout_width="17.000000dip" android:layout_height="21.000000dip" android:src="room_bg_time_limit_clock"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000010" android:id="time_limit_tips" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="5.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+</RelativeLayout>

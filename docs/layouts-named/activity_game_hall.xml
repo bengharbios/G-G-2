@@ -1,0 +1,16 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="main_hall" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="fl_main" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="ll_main" android:background="bg_hall" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+      <FrameLayout android:id="fl_main_header" android:background="friends_titlebg" android:layout_width="-2" android:layout_height="-2">
+        <com.yalla.yallagames.main.MainHeaderView android:id="main_header" android:layout_width="-1" android:layout_height="51.000000dip"/>
+      </FrameLayout>
+      <com.yalla.yallagames.main.MainRtlViewPager android:id="viewPager" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <include android:layout_width="-1" android:layout_height="75.000000dip" layout="@7F0D02CF"/>
+    </LinearLayout>
+  </FrameLayout>
+  <com.yalla.games.common.view.CoverView android:id="ff_cover" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="fl_guide" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF9B9B9B" android:gravity="0x00000011" android:layout_gravity="0x00000005" android:id="tv_skip" android:background="skip_tutorial" android:paddingLeft="7.000000dip" android:visibility="2" android:layout_width="89.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="16.000000dip" android:text="skip_tutorial" android:includeFontPadding="false"/>
+    <include android:id="guide_battle" android:visibility="2" layout="@7F0D0121"/>
+  </FrameLayout>
+</FrameLayout>

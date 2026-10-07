@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.yallagames.ui.userinfo.UserInfoView android:id="user_info_view" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.userinfo.UserInfoChangeView android:id="user_info_change_view" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.yallagames.ui.userinfo.CountrySelectView android:id="country_select_view" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+</FrameLayout>

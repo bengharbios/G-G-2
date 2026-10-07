@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:id="rl_play2" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.games.common.view.HeadView android:id="head_view" android:layout_width="52.000000dip" android:layout_height="52.000000dip" android:layout_centerInParent="true"/>
+  <ImageView android:id="iv_kick" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="10.000000dip" android:src="btn_live" android:layout_alignEnd="head_view"/>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="#FFFFFFFF" android:ellipsize="3" android:gravity="0x00000011" android:id="tv_name" android:layout_width="52.000000dip" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:lines="1" android:layout_below="head_view" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_invite" android:layout_width="37.000000dip" android:layout_height="37.000000dip" android:layout_centerInParent="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textColor="#FFFFF298" android:gravity="0x00000011" android:id="tv_left" android:background="notice_frame" android:visibility="1" android:layout_width="-1" android:layout_height="12.000000dip" android:text="left" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginStart="4.000000dip" android:layout_marginEnd="4.000000dip"/>
+</merge>

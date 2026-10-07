@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A029D" android:layout_width="65.000000dip" android:layout_height="-1">
+  <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000011" android:id="@7F0A076C" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:scaleType="5"/>
+</FrameLayout>

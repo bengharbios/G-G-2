@@ -1,0 +1,1 @@
+<com.yalla.games.common.view.RecycleSVGAView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="63.000000dip" android:layout_height="64.000000dip" app:default_static_source="pass_small_free_key_default" app:play_on_attach="true" app:source="pass/pass_task_unred_free_small_key.svga"/>

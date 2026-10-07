@@ -1,0 +1,9 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0D1F" android:layout_width="-1" android:layout_height="380.000000dip" android:layout_marginBottom="20.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+    <RelativeLayout android:id="@7F0A084B" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="12.000000dip">
+      <com.yalla.game.base.view.StrokeButton android:gravity="0x00000011" android:id="@7F0A0104" android:background="@7F08016C" android:visibility="0" android:layout_width="109.000000dip" android:layout_height="52.000000dip" android:text="@7F1200C2" android:singleLine="true" android:includeFontPadding="false" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginStart="23.000000dip" android:layout_alignParentStart="true" app:need_press_status="true" style="@7F130128"/>
+      <com.yalla.game.base.view.StrokeButton android:gravity="0x00000011" android:id="@7F0A011B" android:background="@7F080172" android:layout_width="109.000000dip" android:layout_height="52.000000dip" android:text="@7F120079" android:singleLine="true" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="23.000000dip" android:layout_alignParentEnd="true" style="@7F130129"/>
+    </RelativeLayout>
+  </LinearLayout>
+</merge>

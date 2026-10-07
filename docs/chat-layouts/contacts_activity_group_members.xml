@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A082A" android:background="@7F0601C1" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.libuikit.view.ContactSearchView android:id="@7F0A0609" android:layout_width="-1" android:layout_height="-2" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.scwang.smart.refresh.layout.SmartRefreshLayout android:id="@7F0A0621" android:tag="close egg" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0609">
+    <com.yallatech.yallachat.contacts.ui.view.contact.ClassicsMemberHeader android:layout_width="-1" android:layout_height="-2"/>
+    <com.yallatech.yallachat.contacts.ui.view.contact.GroupMembersView android:id="@7F0A0607" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+  <Button android:enabled="false" android:textSize="18.000000sp" android:textColor="@7F0601F8" android:id="@7F0A0136" android:background="@7F080233" android:visibility="2" android:layout_width="112.000000dip" android:layout_height="48.000000dip" android:layout_margin="24.000000dip" android:text="@7F13036A" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0"/>
+  <com.yalla.libuikit.view.LetterBarView android:id="@7F0A060F" android:layout_width="30.000000dip" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

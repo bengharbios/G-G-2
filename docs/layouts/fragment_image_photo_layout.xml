@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A088E" android:background="@android:0106000D" android:layout_width="-1" android:layout_height="-1">
+  <com.previewlibrary.wight.SmoothImageView android:id="@7F0A07A5" android:background="@android:0106000D" android:layout_width="-1" android:layout_height="-1"/>
+  <ProgressBar android:id="@7F0A072A" android:visibility="0" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:indeterminate="true" android:layout_centerInParent="true" android:indeterminateTint="#80000000" style="@android:01030184"/>
+</RelativeLayout>

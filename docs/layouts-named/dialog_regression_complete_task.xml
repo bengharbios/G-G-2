@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="360.000000dip" android:layout_height="-1">
+  <ImageView android:id="iv_regression_bg" android:layout_width="356.000000dip" android:layout_height="308.000000dip" android:src="regression_complete_dialog" android:layout_centerInParent="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="21.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFE117" android:gravity="0x00000011" android:id="ctv_title" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="regression_choose_gift" android:layout_alignTop="iv_regression_bg"/>
+  <FrameLayout android:id="ll_m_info" android:background="transparent" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="58.000000dip" android:layout_alignTop="iv_regression_bg" android:paddingStart="5.000000dip" android:paddingEnd="5.000000dip">
+    <FrameLayout android:layout_gravity="0x00800003" android:id="fl_check_1" android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000">
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_top_1" android:layout_width="68.000000dip" android:layout_height="48.000000dip" android:src="regression_task_complete_top_ic"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_bg_1" android:layout_width="140.000000dip" android:layout_height="140.000000dip" android:layout_marginTop="15.000000dip" android:src="regression_complete_select_item_ic" android:layout_alignTop="iv_regression_bg"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_skin_1" android:layout_width="75.000000dip" android:layout_height="80.000000dip" android:layout_marginTop="45.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:layout_gravity="0x00000001" android:id="fl_check_2" android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000">
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_top_2" android:layout_width="68.000000dip" android:layout_height="48.000000dip" android:src="regression_task_complete_top_ic"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_bg_2" android:layout_width="140.000000dip" android:layout_height="140.000000dip" android:layout_marginTop="15.000000dip" android:src="regression_complete_select_item_ic" android:layout_alignTop="iv_regression_bg"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_skin_2" android:layout_width="75.000000dip" android:layout_height="80.000000dip" android:layout_marginTop="45.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:layout_gravity="0x00800005" android:id="fl_check_3" android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000">
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_top_3" android:layout_width="68.000000dip" android:layout_height="48.000000dip" android:src="regression_task_complete_top_ic"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_check_bg_3" android:layout_width="140.000000dip" android:layout_height="140.000000dip" android:layout_marginTop="15.000000dip" android:src="regression_complete_select_item_ic" android:layout_alignTop="iv_regression_bg"/>
+      <ImageView android:layout_gravity="0x00000001" android:id="iv_skin_3" android:layout_width="75.000000dip" android:layout_height="80.000000dip" android:layout_marginTop="45.000000dip"/>
+    </FrameLayout>
+  </FrameLayout>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="22.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="stv_confirm" android:background="bn_yes" android:paddingBottom="8.000000dip" android:visibility="0" android:layout_width="150.000000dip" android:layout_height="62.000000dip" android:layout_marginTop="210.000000dip" android:text="confirm" android:layout_alignTop="iv_regression_bg" android:layout_centerHorizontal="true" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFE117" android:gravity="0x00000011" android:id="ctv_content" android:layout_width="215.000000dip" android:layout_height="40.000000dip" android:layout_marginTop="195.000000dip" android:text="regression_choose_gift_after" android:layout_alignTop="iv_regression_bg" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="iv_close" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="34.000000dip" android:src="close" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="360.000000dip" android:layout_height="-1">
+  <View android:background="bg_medal_detail_title" android:layout_width="-1" android:layout_height="167.800003dip" android:layout_marginTop="5.000000dip"/>
+  <View android:id="view_line" android:background="shop_top_green_line" android:visibility="2" android:layout_width="-1" android:layout_height="9.000000dip"/>
+  <FrameLayout android:id="fl_switch" android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:orientation="0" android:id="radio_group_switch" android:layout_width="-1" android:layout_height="39.599979dip" android:layout_centerHorizontal="true">
+      <FrameLayout android:id="fl_switch_knight" android:background="shop_privileges_left_normal" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800005" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="ctv_knight" android:layout_width="-2" android:layout_height="-2" android:text="knight" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="shop_privileges_knight_ic"/>
+        </FrameLayout>
+      </FrameLayout>
+      <FrameLayout android:id="fl_switch_baron" android:background="shop_privileges_right_check" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800003" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="ctv_baron" android:layout_width="-2" android:layout_height="-2" android:text="baron" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="shop_privileges_baron_ic"/>
+        </FrameLayout>
+      </FrameLayout>
+    </LinearLayout>
+  </FrameLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="vp_privilege" android:layout_width="-1" android:layout_height="-1" android:layout_below="fl_switch"/>
+  <FrameLayout android:id="fl_vip_question" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentEnd="true">
+    <ImageView android:layout_width="21.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="15.000000dip" android:layout_marginBottom="5.000000dip" android:src="question_icon" android:layout_marginStart="11.000000dip" android:layout_marginEnd="8.000000dip"/>
+  </FrameLayout>
+</RelativeLayout>

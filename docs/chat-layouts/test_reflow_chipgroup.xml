@@ -1,0 +1,5 @@
+<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A022D" android:layout_width="-1" android:layout_height="-2" android:layout_margin="16.000000dip">
+  <com.google.android.material.chip.Chip android:ellipsize="3" android:id="@7F0A022A" android:layout_width="-2" android:layout_height="-2" android:text="@7F1302C3" style="@7F140305"/>
+  <com.google.android.material.chip.Chip android:ellipsize="3" android:id="@7F0A022B" android:layout_width="-2" android:layout_height="-2" android:text="@7F1302C3" style="@7F140305"/>
+  <com.google.android.material.chip.Chip android:ellipsize="3" android:id="@7F0A022C" android:layout_width="-2" android:layout_height="-2" android:text="@7F1302C3" style="@7F140305"/>
+</com.google.android.material.chip.ChipGroup>

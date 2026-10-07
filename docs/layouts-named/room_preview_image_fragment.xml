@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="fl_preview" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D00FB"/>
+  <ImageView android:layout_gravity="0x00800055" android:id="iv_down_preview_image" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="19.000000dip" android:src="room_icon_down_image" android:layout_marginEnd="19.000000dip"/>
+</FrameLayout>

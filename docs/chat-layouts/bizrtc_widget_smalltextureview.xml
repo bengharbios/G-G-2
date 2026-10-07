@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@7F0600E6" android:layout_width="-1" android:layout_height="-1" android:animateLayoutChanges="true">
+  <FrameLayout android:id="@7F0A09A9" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:id="@7F0A04D7" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:scaleType="6"/>
+  <View android:id="@7F0A04FB" android:background="@7F060051" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A04F1" android:visibility="2" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:src="@7F08036A" app:layout_constraintHorizontal_chainStyle="2"/>
+</FrameLayout>

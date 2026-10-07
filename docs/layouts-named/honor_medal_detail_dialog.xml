@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:orientation="0" android:id="ll_main" android:layout_width="-1" android:layout_height="-1">
+    <RelativeLayout android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="90.000000dip">
+      <com.booking.rtlviewpager.RtlViewPager android:id="vp_switch" android:layout_width="-1" android:layout_height="460.000000dip" android:layout_weight="1.000000" android:layout_centerInParent="true"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="35.000000sp" android:textColor="#FFCBCBCB" android:id="tv_name" android:clickable="true" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="16777136.000000dip" android:layout_above="vp_switch" android:layout_centerHorizontal="true"/>
+      <ImageView android:id="iv_arrow_left" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="skin_arrow_left" android:scaleType="7" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+      <ImageView android:id="iv_arrow_right" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="skin_arrow_right" android:scaleType="7" android:layout_alignParentRight="true" android:layout_centerVertical="true"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textColor="#FFFFFFFF" android:id="tv_description" android:clickable="true" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16777116.000000dip" android:layout_below="vp_switch" android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <ImageView android:id="iv_close" android:layout_width="45.000000dip" android:layout_height="41.000000dip" android:layout_marginTop="32.000000dip" android:src="close" android:layout_alignParentEnd="true"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="white" android:id="tv_limit" android:clickable="true" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="84.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+  </RelativeLayout>
+</FrameLayout>

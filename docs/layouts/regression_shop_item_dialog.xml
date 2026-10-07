@@ -1,0 +1,9 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:orientation="0" android:id="@7F0A06B6" android:layout_width="-1" android:layout_height="-1">
+    <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A0D04" android:layout_width="-1" android:layout_height="-2" android:layout_weight="1.000000" android:layout_centerInParent="true"/>
+    <ImageView android:id="@7F0A040B" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F0807AD" android:scaleType="7" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+    <ImageView android:id="@7F0A040D" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F0807AE" android:scaleType="7" android:layout_alignParentRight="true" android:layout_centerVertical="true"/>
+  </RelativeLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A099E" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A099D" android:layout_width="-1" android:layout_height="-1" app:view_scale="1.200000"/>
+</FrameLayout>

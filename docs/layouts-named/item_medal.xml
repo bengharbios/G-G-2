@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000050" android:layout_gravity="0x00000050" android:layout_width="120.000000dip" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textColor="white" android:ellipsize="3" android:gravity="0x00000011" android:id="tv_medal_name" android:layout_width="115.000000dip" android:layout_height="-2" android:maxLines="2" android:layout_centerHorizontal="true"/>
+  <FrameLayout android:layout_width="115.000000dip" android:layout_height="115.000000dip" android:layout_below="tv_medal_name" android:layout_centerHorizontal="true">
+    <ImageView android:id="iv_circle_light" android:layout_width="115.000000dip" android:layout_height="115.000000dip" android:src="medal_add_circle_light"/>
+    <ImageView android:layout_gravity="0x00000051" android:id="iv_medal" android:layout_width="102.000000dip" android:layout_height="95.000000dip" android:layout_marginBottom="13.000000dip"/>
+    <ImageView android:layout_gravity="0x00800035" android:id="iv_add" android:layout_width="26.000000dip" android:layout_height="26.000000dip" android:layout_marginTop="10.000000dip" android:src="medal_add" android:layout_marginEnd="10.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:layout_gravity="0x00800055" android:id="tv_honor_value" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="15.000000dip" android:layout_marginEnd="10.000000dip" app:end_color="#FFFFFFFF" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFDF0F" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+    <ImageView android:layout_gravity="0x00800035" android:id="iv_check" android:layout_width="23.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="12.000000dip" android:src="skin_check" android:layout_marginEnd="12.000000dip"/>
+  </FrameLayout>
+</RelativeLayout>

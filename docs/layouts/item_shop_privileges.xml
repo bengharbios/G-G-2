@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="360.000000dip" android:layout_height="-1">
+  <View android:background="@7F0800F2" android:layout_width="-1" android:layout_height="167.800003dip" android:layout_marginTop="5.000000dip"/>
+  <View android:id="@7F0A0CC5" android:background="@7F08076C" android:visibility="2" android:layout_width="-1" android:layout_height="9.000000dip"/>
+  <FrameLayout android:id="@7F0A02F1" android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:orientation="0" android:id="@7F0A07C0" android:layout_width="-1" android:layout_height="39.599979dip" android:layout_centerHorizontal="true">
+      <FrameLayout android:id="@7F0A02F5" android:background="@7F08075C" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800005" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A01AB" android:layout_width="-2" android:layout_height="-2" android:text="@7F120241" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="@7F080759"/>
+        </FrameLayout>
+      </FrameLayout>
+      <FrameLayout android:id="@7F0A02F2" android:background="@7F08075D" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800003" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0191" android:layout_width="-2" android:layout_height="-2" android:text="@7F12009A" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="@7F080756"/>
+        </FrameLayout>
+      </FrameLayout>
+    </LinearLayout>
+  </FrameLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A0CFC" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A02F1"/>
+  <FrameLayout android:id="@7F0A0309" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentEnd="true">
+    <ImageView android:layout_width="21.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="15.000000dip" android:layout_marginBottom="5.000000dip" android:src="@7F080513" android:layout_marginStart="11.000000dip" android:layout_marginEnd="8.000000dip"/>
+  </FrameLayout>
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0160" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="@7F0A0366" layout="@7F0D029F"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A08AE" android:background="@7F08065E" android:paddingTop="12.000000dip" android:paddingBottom="70.000000dip" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_marginTop="60.000000dip" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <LinearLayout android:orientation="0" android:id="@7F0A0719" android:background="@7F080694" android:layout_width="-1" android:layout_height="70.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0648" android:layout_width="-2" android:layout_height="-1">
+      <ImageView android:id="@7F0A03E0" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="@7F080695" android:layout_marginStart="35.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="@7F06017C" android:layout_width="-2" android:layout_height="-2" android:text="@7F12058C" android:includeFontPadding="false" android:layout_marginStart="11.000000dip" android:layout_marginEnd="16.000000dip"/>
+    </LinearLayout>
+    <TextView android:id="@7F0A0BCF" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="@7F060067" android:gravity="0x00000011" android:layout_gravity="0x00800015" android:id="@7F0A00E8" android:background="@7F080595" android:layout_width="100.000000dip" android:layout_height="-2" android:text="@7F120423" android:layout_marginEnd="23.000000dip"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

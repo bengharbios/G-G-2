@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.friends.view.chat.ChatInputView android:id="chat_input" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.games.friends.view.chat.EmojiSelectView android:id="chat_select_emoji" android:background="#FFFFFFFF" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+</LinearLayout>

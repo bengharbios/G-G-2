@@ -1,0 +1,18 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601C1" android:layout_width="-1" android:layout_height="-1">
+  <ScrollView android:layout_width="-1" android:layout_height="-1">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:orientation="1" android:id="@7F0A0241" android:visibility="1" android:layout_width="-1" android:layout_height="-2" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+        <ViewStub android:id="@7F0A0BC0" android:visibility="2" android:layout="@7F0D031B" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="12.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginRight="12.000000dip"/>
+        <include android:id="@7F0A017F" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginRight="16.000000dip" layout="@7F0D0363"/>
+        <FrameLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="20.000000dip" android:layout_marginRight="16.000000dip">
+          <TextView android:textSize="20.000000sp" android:layout_gravity="0x00800013" android:id="@7F0A0AD9" android:text="@7F13089F" style="@7F140359"/>
+          <ImageView android:layout_gravity="0x00800015" android:id="@7F0A050D" android:padding="10.000000dip" android:layout_width="38.000000dip" android:layout_height="37.000000dip" android:src="@7F080347" android:layout_marginEnd="16777206.000000dip"/>
+        </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0844" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginRight="16.000000dip" android:nestedScrollingEnabled="false"/>
+        <com.yallatech.yallachat.worship.ui.view.WorshipFeedbackView android:textSize="14.000000sp" android:textColor="@7F0601E6" android:gravity="0x00000011" android:id="@7F0A0AD7" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_marginTop="36.000000dip" style="@7F14035C"/>
+      </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+  <ViewStub android:id="@7F0A0BBD" android:layout="@7F0D0355" android:layout_width="-1" android:layout_height="-1" android:layout_marginLeft="12.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginRight="12.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ViewStub android:layout_gravity="0x00000050" android:id="@7F0A0BBB" android:layout="@7F0D0353" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginRight="16.000000dip" android:layout_marginBottom="24.000000dip"/>
+</FrameLayout>

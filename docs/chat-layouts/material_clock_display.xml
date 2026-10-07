@@ -1,0 +1,5 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:id="@7F0A0688" android:background="?7F040144" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:baselineAligned="false" android:layoutDirection="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+  <include android:id="@7F0A068F" layout="@7F0D024A"/>
+  <include layout="@7F0D0243"/>
+  <include android:id="@7F0A0692" layout="@7F0D024A"/>
+</LinearLayout>

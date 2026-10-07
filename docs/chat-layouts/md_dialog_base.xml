@@ -1,0 +1,5 @@
+<com.afollestad.materialdialogs.internal.main.DialogLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A06A8" android:clipChildren="true" android:layout_width="-1" android:layout_height="-2">
+  <include layout="@7F0D0257"/>
+  <com.afollestad.materialdialogs.internal.message.DialogContentLayout android:id="@7F0A06A0" android:layout_width="-1" android:layout_height="-2"/>
+  <include layout="@7F0D0252"/>
+</com.afollestad.materialdialogs.internal.main.DialogLayout>

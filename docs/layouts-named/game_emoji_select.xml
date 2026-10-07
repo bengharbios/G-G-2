@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <com.booking.rtlviewpager.RtlViewPager android:id="vp_emoji" android:layout_width="-1" android:layout_height="238.000000dip"/>
+  <View android:id="divider_line" android:background="#FFD6D6D6" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_below="vp_emoji"/>
+  <ImageView android:id="iv_select_1" android:layout_width="63.000000dip" android:layout_height="38.000000dip" android:src="expression_chat" android:scaleType="7" android:layout_below="divider_line"/>
+  <ImageView android:id="iv_select_2" android:layout_width="63.000000dip" android:layout_height="38.000000dip" android:src="horse_chat" android:scaleType="7" android:layout_below="divider_line" android:layout_toEndOf="iv_select_1"/>
+  <ImageView android:id="iv_delete" android:layout_width="50.000000dip" android:layout_height="38.000000dip" android:src="chat_emoji_delete" android:scaleType="7" android:layout_below="divider_line" android:layout_alignParentEnd="true"/>
+</merge>

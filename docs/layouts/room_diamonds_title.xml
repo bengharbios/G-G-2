@@ -1,0 +1,9 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A026F" android:visibility="2" android:layout_width="-2" android:layout_height="36.000000dip" android:layout_marginTop="2.000000dip" android:layout_marginStart="11.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="@7F0A03B6" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:src="@7F080690"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="7.000000dip" android:textColor="@7F060000" android:gravity="0x00000011" android:layout_gravity="0x00000050" android:background="@7F080691" android:layout_width="-2" android:layout_height="11.000000dip" android:text="@7F1205C2"/>
+  </FrameLayout>
+  <ImageView android:id="@7F0A03BD" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:src="@7F080296" android:layout_marginStart="11.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.games.common.view.DiamondsView android:id="@7F0A0A29" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0396" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="8.000000dip" android:src="@7F08090C" android:layout_marginEnd="11.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</merge>

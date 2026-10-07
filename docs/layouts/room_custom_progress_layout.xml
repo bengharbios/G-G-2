@@ -1,0 +1,8 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F0601AF" android:id="@7F0A07B4" android:layout_width="-2" android:layout_height="-2" android:text="Take Mic" android:layout_marginStart="13.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ProgressBar android:id="@7F0A079F" android:layout_width="-1" android:layout_height="12.000000dip" android:layout_marginTop="6.000000dip" android:max="100" android:progressDrawable="@7F080104" android:layout_marginStart="13.000000dip" android:layout_marginEnd="13.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A07B4" style="?android:01010078"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="3.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A079F">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="@7F060066" android:id="@7F0A0A91" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="13.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="@7F060066" android:layout_gravity="0x00800005" android:id="@7F0A0C02" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="13.000000dip"/>
+  </FrameLayout>
+</merge>

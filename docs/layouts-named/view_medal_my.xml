@@ -1,0 +1,13 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="100.000000dip" android:layout_height="120.000000dip">
+  <LinearLayout android:layout_gravity="0x00000031" android:orientation="1" android:id="ll_medal" android:layout_width="80.000000dip" android:layout_height="-2">
+    <com.yalla.games.common.view.CustomTextView android:id="tv_name" android:layout_width="-2" android:layout_height="-2"/>
+    <ImageView android:id="iv_medal" android:layout_width="80.000000dip" android:layout_height="80.000000dip"/>
+  </LinearLayout>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:layout_gravity="0x00800055" android:id="tv_honor_value" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="12.000000dip" android:layout_marginEnd="10.000000dip" app:end_color="#FFFFFFFF" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFDF0F" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+  <ImageView android:layout_gravity="0x00800035" android:id="iv_cut" android:visibility="2" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:layout_marginTop="30.000000dip" android:src="cut" android:layout_marginEnd="15.000000dip"/>
+  <FrameLayout android:layout_gravity="0x00000050" android:layout_width="100.000000dip" android:layout_height="100.000000dip">
+    <ImageView android:layout_gravity="0x00000051" android:id="iv_circle_light" android:visibility="1" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:layout_marginBottom="2.000000dip" android:src="medal_add_circle_light"/>
+    <ImageView android:layout_gravity="0x00000051" android:id="iv_add" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="my_medal_add"/>
+  </FrameLayout>
+  <ImageView android:layout_gravity="0x00000051" android:id="iv_other_void" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="other_void_medal"/>
+</merge>

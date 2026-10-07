@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:id="emptyOrErrorContainer" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="ll_center_layout" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true">
+    <ImageView android:id="ivPageStatus" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:src="tips_error" android:layout_above="tvPageStatus"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="white" android:gravity="0x00000011" android:id="tvPageStatus" android:layout_width="201.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="room_no_data"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.CustomButton android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="color_a60" android:id="btnTryAgain" android:background="room_btn_yellow_bg" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:minWidth="150.000000dip" android:minHeight="48.000000dip" android:text="room_try_again" android:layout_below="ll_center_layout" android:layout_centerHorizontal="true" android:textAllCaps="false" android:paddingStart="16.000000dip" android:paddingEnd="16.000000dip" style="?android:0101032B"/>
+</RelativeLayout>

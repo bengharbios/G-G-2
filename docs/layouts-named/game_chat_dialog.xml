@@ -1,0 +1,3 @@
+<com.yalla.games.common.view.TouchListenRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="rl_main" android:background="transparent" android:focusableInTouchMode="false" android:fitsSystemWindows="true" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.view.GameChatBottomView android:id="bottom_view" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+</com.yalla.games.common.view.TouchListenRelativeLayout>

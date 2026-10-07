@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:layout_width="-1" android:layout_height="-2">
+    <RelativeLayout android:id="@7F0A028D" android:background="@7F080774" android:layout_width="350.000000dip" android:layout_height="-2" android:layout_centerInParent="true">
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07D3" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="3.000000dip" android:layout_marginTop="6.000000dip" android:layout_marginRight="3.000000dip" android:minHeight="256.000000dip"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="350.000000dip" android:layout_height="63.000000dip" android:layout_alignLeft="@7F0A028D" android:layout_alignTop="@7F0A028D">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="20.000000sp" android:textStyle="0x00000001" android:textColor="@7F0601EF" android:layout_width="-2" android:layout_height="-2" android:text="Daily  Bonus" android:layout_centerInParent="true" app:stroke_color="#FF30876D" app:stroke_width="2.000000dip"/>
+      <FrameLayout android:id="@7F0A028B" android:layout_width="50.000000dip" android:layout_height="-1" android:layout_alignParentEnd="true">
+        <ImageView android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:src="@7F080249"/>
+      </FrameLayout>
+    </RelativeLayout>
+    <FrameLayout android:layout_width="350.000000dip" android:layout_height="41.000000dip" android:layout_alignLeft="@7F0A028D" android:layout_alignBottom="@7F0A028D">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="@7F0601EF" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="Sign in continuously to win the big prize" app:stroke_color="#FF30876D" app:stroke_width="2.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</LinearLayout>

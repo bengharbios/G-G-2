@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:background="?android:0101030E" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:gravity="0x00000011" android:id="@7F0A0877" android:layout_width="-2" android:layout_height="-2" android:text="empty"/>
+</LinearLayout>

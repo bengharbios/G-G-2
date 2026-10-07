@@ -1,0 +1,11 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.yallachat.browser.BaseWebView android:id="@7F0A0BCA" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="51.000000dip"/>
+  <androidx.appcompat.widget.Toolbar android:theme="?7F040019" android:id="@7F0A09B9" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:contentInsetStartWithNavigation="0.000000dip" app:navigationIcon="@7F080343" app:subtitleTextAppearance="@7F140280" app:titleTextAppearance="@7F140282">
+    <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-1">
+      <ImageView android:id="@7F0A0478" android:background="?7F04044C" android:visibility="2" android:layout_width="-2" android:layout_height="-1" android:layout_marginRight="4.000000dip" android:src="@7F080350" android:paddingStart="4.000000dip" android:paddingEnd="12.000000dip"/>
+      <TextView android:textSize="18.000000sp" android:textColor="@7F0601E2" android:gravity="0x00000011" android:id="@7F0A0A33" android:background="?7F04044C" android:layout_width="-2" android:layout_height="-1" android:singleLine="true" android:paddingEnd="12.000000dip"/>
+    </LinearLayout>
+  </androidx.appcompat.widget.Toolbar>
+  <ProgressBar android:id="@7F0A077C" android:visibility="0" android:layout_width="-1" android:layout_height="2.000000dip" android:layout_marginTop="51.000000dip" android:max="100" android:progress="1" android:secondaryProgress="100" android:progressDrawable="@7F080469" android:hapticFeedbackEnabled="false" style="?android:01010078"/>
+  <ViewStub android:id="@7F0A0384" android:visibility="2" android:layout="@7F0D032B" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="51.000000dip"/>
+</FrameLayout>

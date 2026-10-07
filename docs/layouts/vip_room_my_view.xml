@@ -1,0 +1,23 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@7F0808F9" android:layout_width="-1" android:layout_height="151.000000dip">
+  <ImageView android:id="@7F0A0545" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="50.000000dip" android:layout_height="40.000000dip" android:src="@7F080387" android:scaleType="7" android:paddingStart="15.000000dip" android:layout_alignParentEnd="true"/>
+  <LinearLayout android:layout_gravity="0x00000001" android:id="@7F0A06BC" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:layout_marginStart="10.000000dip">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF765128" android:layout_gravity="0x00000010" android:id="@7F0A0C05" android:layout_width="-2" android:layout_height="-2" android:text="Model Master" android:includeFontPadding="false"/>
+    <View android:layout_gravity="0x00000010" android:layout_width="4.000000dip" android:layout_height="1.000000dip"/>
+    <ImageView android:layout_gravity="0x00000010" android:id="@7F0A04F9" android:layout_width="14.000000dip" android:layout_height="14.000000dip" android:src="@7F0808EC"/>
+  </LinearLayout>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF765128" android:layout_gravity="0x00000001" android:id="@7F0A0BA5" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:text="Bet 500" android:layout_marginStart="54.000000dip" android:layout_toEndOf="@7F0A06BC"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0703" android:layout_width="257.000000dip" android:layout_height="200.000000dip" android:layout_marginTop="35.000000dip" android:layout_marginStart="3.000000dip"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="1" android:id="@7F0A06DC" android:layout_width="-1" android:layout_height="-1" android:layout_toEndOf="@7F0A0703">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="#FFFFFAC7" android:layout_gravity="0x00000001" android:id="@7F0A0B80" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:text="Rank1 2000" app:stroke_color="#FF9F6F30" app:stroke_width="1.000000dip"/>
+    <FrameLayout android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip">
+      <LinearLayout android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A070B" android:layout_width="-2" android:layout_height="-2">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A0A6E" android:layout_width="97.000000dip" android:layout_height="-2" app:stroke_color="#FF63411C" app:stroke_width="1.000000dip"/>
+        <com.yalla.game.base.view.StrokeButton android:textSize="15.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0113" android:background="@7F080174" android:layout_width="80.000000dip" android:layout_height="37.000000dip" android:layout_marginTop="2.000000dip" android:text="@7F1206B0" style="@7F130129"/>
+      </LinearLayout>
+      <LinearLayout android:orientation="1" android:id="@7F0A02DB" android:layout_width="97.000000dip" android:layout_height="43.000000dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0B93" android:layout_width="-1" android:layout_height="-2" app:stroke_color="#FF63411C" app:stroke_width="0.500000dip"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0B94" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" app:stroke_color="#FF63411C" app:stroke_width="0.500000dip"/>
+      </LinearLayout>
+    </FrameLayout>
+  </LinearLayout>
+</merge>

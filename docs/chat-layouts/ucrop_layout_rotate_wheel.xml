@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:id="@7F0A099E" style="@7F140375"/>
+  <com.yallatech.yallachat.libcrop.crop.view.widget.HorizontalProgressWheelView android:id="@7F0A082E" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A099E" android:layout_toStartOf="@7F0A0C13" android:layout_toEndOf="@7F0A0C12"/>
+  <FrameLayout android:id="@7F0A0C12" android:background="?7F04044B" android:layout_centerVertical="true" style="@7F140377">
+    <ImageView android:layout_width="14.000000dip" app:srcCompat="@7F080366" style="@7F140372"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0C13" android:background="?7F04044B" android:layout_centerVertical="true" android:layout_alignParentEnd="true" style="@7F140377">
+    <ImageView android:src="@7F0805D9" style="@7F140372"/>
+  </FrameLayout>
+</RelativeLayout>

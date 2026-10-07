@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:padding="6.000000dip" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <TextView android:textSize="10.000000sp" android:textColor="#FFB6DCD2" android:layout_gravity="0x00000001" android:id="tv_date" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <RelativeLayout android:layout_width="258.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="5.000000dip">
+    <com.yalla.games.common.view.HeadView android:id="iv_head_view" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_alignParentStart="true" app:head_face_margin="7.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="#FF8DB0A7" android:id="tv_name" android:layout_width="-2" android:layout_height="-2" android:layout_alignTop="iv_head_view" android:textDirection="5" android:layout_toEndOf="iv_head_view"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:gravity="0x00000011" android:id="svg_img" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="3.000000dip" android:layout_below="tv_name" android:layout_toEndOf="iv_head_view"/>
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_alignTop="svg_img" android:layout_alignBottom="svg_img" android:layout_marginStart="3.000000dip" android:layout_toEndOf="svg_img">
+      <ImageView android:layout_gravity="0x00000011" android:id="iv_status" android:focusable="false" android:visibility="2" android:layout_width="15.000000dip" android:layout_height="15.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</LinearLayout>

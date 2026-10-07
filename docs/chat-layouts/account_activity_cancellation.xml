@@ -1,0 +1,1 @@
+<androidx.fragment.app.FragmentContainerView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:name="androidx.navigation.fragment.NavHostFragment" android:id="@7F0A0749" android:layout_width="-1" android:layout_height="-1" app:defaultNavHost="true" app:navGraph="@7F100000"/>

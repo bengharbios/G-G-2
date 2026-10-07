@@ -1,0 +1,3 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0927" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.ludochat.view.FixedRecyclerView android:id="@7F0A08B8" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

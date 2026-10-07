@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="0" android:background="@7F080342" android:layout_width="41.000000dip" android:layout_height="36.000000dip" android:layoutDirection="0">
+  <com.yalla.games.common.view.CircleImageView android:layout_gravity="0x00000015" android:id="@7F0A04A2" android:layout_width="32.000000dip" android:layout_height="32.000000dip" android:layout_marginRight="2.500000dip" android:src="@7F080292"/>
+</FrameLayout>

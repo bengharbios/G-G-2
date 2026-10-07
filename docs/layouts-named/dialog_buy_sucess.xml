@@ -1,0 +1,9 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="ff_bg" android:layout_width="-1" android:layout_height="-2" android:layoutDirection="0">
+  <FrameLayout android:background="bg_award" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="18.000000sp" android:textColor="#FFB36900" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="tv_title" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:text="congratulations" app:stroke_color="#FFFFF3A0" app:stroke_width="1.000000dip"/>
+    <FrameLayout android:layout_gravity="0x00000011" android:orientation="0" android:background="common_regard_bubble_ic" android:layout_width="62.000000dip" android:layout_height="62.000000dip">
+      <ImageView android:layout_gravity="0x00000011" android:id="iv_vip_item" android:layout_width="34.000000dip" android:layout_height="40.000000dip"/>
+    </FrameLayout>
+    <com.yalla.game.base.view.StrokeButton android:textSize="18.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="btn_collect" android:background="bn_yes" android:paddingBottom="4.000000dip" android:layout_width="112.000000dip" android:layout_height="48.000000dip" android:layout_marginBottom="5.000000dip" android:text="confirm" app:need_press_status="true" style="StrokeTextStyle_Yes"/>
+  </FrameLayout>
+</RelativeLayout>

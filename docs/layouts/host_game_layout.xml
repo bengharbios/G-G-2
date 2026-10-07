@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0841" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.battle.view.GameOptionView android:id="@7F0A0321" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="6.000000dip" app:Option_Type="1"/>
+  <com.yalla.game.base.view.StrokeButton android:textSize="16.500001sp" android:gravity="0x00000011" android:id="@7F0A00F2" android:background="@7F080172" android:layout_width="177.000000dip" android:layout_height="48.000000dip" android:layout_marginTop="5.000000dip" android:layout_marginBottom="13.000000dip" android:text="@7F12012C" android:layout_below="@7F0A0321" android:layout_centerHorizontal="true" style="@7F130129"/>
+</RelativeLayout>

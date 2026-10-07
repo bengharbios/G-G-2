@@ -1,0 +1,782 @@
+syntax = "proto2";
+
+
+option java_package = "com.yalla.protobuf";
+option java_outer_classname = "GameProtobuf";
+
+
+
+//游戏命令
+enum Command{
+	LOGIN=10;//登陆
+
+	TICKET_LOGIN=11;//票据登陆
+
+	QUICKSTART=20;//快速开始
+	QUIT_ROOM=21;
+	JOIN_ROOM=22;//加入房间
+
+	GAMEOPERATE=30;//游戏操作
+	GAME_PRESTART=39;//游戏状态
+	GAMESTATUS=40;//游戏状态
+	GAME_PLAYER_COLOR_SELECT=41;//颜色选择
+	GAME_MAP_WHETHER_CHANGE=42;//
+	GAME_MAP_GRID_EVENT=43;//
+
+	GAME_BUFF_USE=44;//
+	GAME_CHESS_CANMOVELIST=45;
+	GAME_MAP_CHESS_MOVE=46;//
+	GAMERESULT=49;//游戏结果
+	GAMEPLAYERSTATUS=50;//玩家状态
+	GAME_PLAYER_COMPLETE=51;//玩家完成游戏
+
+	PLAYER_ENTER=60;//玩家进入
+
+	PLAYER_CHAT_ALL=70;
+	UPDATA_PLAYER_COIN=80;
+	UPDATA_PLAYER_LEVEL=81;//玩家升级
+
+	FLUSH_CURRENCY=82;//刷新货币
+	FLUSH_GAMEINFO=83;//刷新游戏
+
+	GET_AGORA_TOKEN=90;
+	AGORA_OPERATE=91;
+  GET_ZEGO_TOKEN=92;
+
+	FRIEND_ADD_MSG=100;//添加好友
+	FRIEND_LIST=101;//好友列表
+	FRIEND_INVITE=102;//邀请好友
+
+	PLAYER_REPORT=110;//举报
+
+  GAME_GIFT_CNF_LIST = 111; // 获取游戏内互动礼物配置列表 1.3.1 add
+  GAME_GIFT_SEND = 112; // 游戏内互动礼物赠送, 1.3.1 add
+
+	GOODS_LIST=120;//商品列表
+
+	OUT_GAME=126;
+	HEART=127;
+}
+
+enum ErrorCode{
+	NONE_ERROE=1;//无错误
+	LOGIN_FAILD_PW=101;//密码错误
+	LOGIN_FAILD_ID=102;//登陆ID错误
+	LOGIN_FAILD_OLDSIGN=103;//重复的签名
+	LOGIN_FAILD_SIGN=104;//签名错误
+	LOGIN_FAILD_TIME=105;//客户端时间错误
+	QUICKSTART_FAILD_NOROOM=203;//房间已满
+	ENTER_ROOM_FAILD_NOROOM=204;//房间已满
+	ENTER_ROOM_FAILD_ROOMID=205;//错误的房间号
+	GAMEOPERATE_FAILD_SIT_NOSTOOL=301;// 已有人
+	GAMEOPERATE_FAILD_SIT_WRONGSTOOLNUM=302;//错误的凳子ID
+	GAMEOPERATE_FAILD_SIT_WRONGTIME=303;//错误的操作时间
+	NO_MONEY=401;//余额不足
+	NO_DIAMOND=402;//钻石不足
+	MAX_LIMIT=601;//超出限制
+	JOIN_ROOM_FAILD_NOROOM=701;//无此房间
+	JOIN_ROOM_FAILD_MAX=702;//房间人数已满
+	ACCOUNT_BE_FROZEN = 403;//1.2.2 add 账号被冻结
+}
+
+
+//玩家游戏状态
+enum PlayerTurnStatus{
+	THROW_START=0;//开始投掷
+	THROW_END=1;//投掷结束
+	RETHROW_START=2;//是否重置开始
+	RETHROW_END=3;//是否重置结束
+	CHOOSECHESS_START=4;//选择数字和棋子开始
+	CHOOSECHESS_END=5;//选择数字和棋子结束
+	CHESSMOVE_START=6;//选择数字和棋子结束
+	CHESSMOVE_END=7;//选择数字和棋子结束
+}
+//游戏状态
+enum GameStatus{
+	GAME_SIGNUP_START=0;//开始报名
+	GAME_SIGNUP_ING=1;//报名中
+	GAME_START=2;//游戏开始
+	GAME_ING=3;//游戏中
+	GAME_RESULT=4;//游戏结果
+	GAME_END=5;//游戏结束
+}
+//游戏房间组类型
+enum RoomGroup {
+    SPORTS_MODE = 0;//竞技
+    PROP_MODE = 1;//道具
+}
+//游戏房间类型
+enum RoomType {
+    NORMAL = 0;//正常
+    MASTER = 1;//大师
+    QUICK=2;//快速
+    FIRE=3;//火拼
+}
+//操作结果
+enum OperateResult {
+	FAILED = 0;//失败
+	SUCCESS = 1;//成功
+}
+//游戏操作
+enum GameOperate {
+	SIT = 0;//入座
+	UP = 1;//离开座位
+	SIGN_UP=2;//准备
+	SIGN_CANCEL=3;//取消准备
+	THROW=4;//掷骰子
+	RESET_THROW=5;//重置投掷
+	CHOOSE_CHESS=6;//选择棋子
+	CHESS_MOVE=7;//棋子移动
+	SYSTEM_TRUST=8;//系统托管
+	SYSTEM_TRUST_CANCEL=9;//取消系统托管
+	RESET_THROW_FREE=10;//免费重置投掷
+	CHAT_OFF=11;//屏蔽聊天
+	CHAT_OFF_CANCEL=12;//取消屏蔽聊天
+}
+//地图区域颜色
+enum ChessMapArea {
+	RED = 0;//入座
+	YELLOW=1;
+	BLUE=2;
+	GREEN=3;
+	ORANGE=4;
+}
+//棋子进入格子事件
+enum ChessEvent {
+	None = 0;//正常
+	GetLink=1;//产生叠子
+	Fight=2;//发生战斗
+	Win=3;//到达终点
+	TRANSLOCATION = 4;//位移
+	GET_BUFF=5;//获得buff
+	USE_BUFF=6;//使用buff
+	ReleaseLink=7;//取消叠子
+}
+
+
+
+
+//天气
+enum Weather {
+	SUN=0;//晴天
+	WIND=1;//龙卷风
+	RAINBOW=2;//彩虹
+	THUNDERSTORM=3;//雷雨
+}
+
+enum Prop {
+	PROP_WIND=0;//龙卷风
+	PROP_RAINBOW=1;//彩虹
+	PROP_THUNDERSTORM=2;//雷雨
+	PROP_SHIELD=3;//护盾
+	PROP_DOUBLLE_DICE=4;//两次骰子
+	PROP_LUCK_DICE=5;//幸运骰子
+	PROP_ROCKET=6;//火箭
+	PROP_FLARE=7;//小照明弹,1.2.7 add
+}
+
+
+//buff
+enum Buff {
+	BUFF_NONE = 0;//无
+	SHIELD=1;//护盾
+	DOUBLLE_DICE=2;//两次骰子
+	LUCK_DICE=3;//幸运骰子
+	SWOON=4;//休眠一回合
+	FLARE=5;//小照明弹BUFF
+}
+
+//棋子位移类型
+enum ChessMoveType{
+	MOVE_NORMAL=0;//骰子点数移动
+	MOVE_BE_HIT=1;//撞击移动
+	MOVE_WIND=2;//龙卷风移动
+	MOVE_RAINBOW=3;//彩虹移动
+	MOVE_ROCKET=4;//火箭移动
+}
+
+message HeartRequest{
+	required Command command=1[default = HEART];
+}
+message HeartResponse{
+	required Command command=1[default = HEART];
+}
+
+message GamePreStartResponse{
+	required Command command=1[default = GAME_PRESTART];
+	required int32 time=2;//时间
+}
+
+
+//登陆
+message TicketLoginRequest {
+	required Command command = 1 [default = TICKET_LOGIN];
+    required int32 idx = 2; //用户id
+    required string token=3;//用户token
+    required int64 roomid = 4; //房间id
+	optional int32 msgindex=5;//消息序号默认0
+	optional string version=6;//登陆时传递主包的版本号, etc: 1.2.8.0
+	optional int32 hdVersion=7;//登陆时传递HD版本号
+}
+
+//登陆请求,无用
+message LoginRequest{
+	required Command command=1[default = LOGIN];
+	required int32 idx=2;//用户id
+	//required string token=3;//用户token
+	required string time=3;//时间戳
+	required string sign=4;//MD5（idx+token+time+key
+	required int32 pid=5;//渠道id 0apple 1google
+	required string did=6;//设备唯一码
+	required string version=7;//版本号
+}
+//登陆回复
+message LoginResponse{
+	required Command command=1[default = LOGIN];
+	required OperateResult result=2[default = SUCCESS];
+	optional PlayerInfo palyerInfo=3;
+	optional RoomList roomlist=4;
+	optional ErrorCode code=5;
+	optional int32 watchIdx=6;
+  optional string banTalkData=7; // 禁言数据,没禁言时为空串
+  optional VoiceType voiceType=8; // 语音房类别,1.2.8 add, 1.2.8 以前版本始终是声网，1.2.8以后版本开关控制
+}
+//用户信息
+message PlayerInfo{
+	required int64 money=1;//金币
+	required int64 gold=2;//钻石
+	required int32 exp=3;//经验值
+	required PlayerShowInfo playerShowInfo =4;//用户显示信息
+	required bool isRecharged=5;//是否首充
+	//required int32 winCount=6;//获胜次数
+	//required int32 totalCount=7;//总次数
+}
+//用户展示信息
+message PlayerShowInfo{
+	required FPlayerShowInfo fPlayerInfo=1;//用户id
+	optional int32 sitNum=2;//座位【-1】没入座
+	optional int32 isSignUp=3;//0未准备1准备
+	optional int32 winIndex=4;//1-4  1未没有排名
+	optional int32 isLeft=5;//0没有离去 1离去
+	optional int32 isFighted=6;//0没有战斗  1战斗过
+	repeated int32 diceNum=7;//骰子列表
+	repeated Buff buff=8;//buff列表
+	optional int32 isInSysTrust=9;//0没有托管  1托管中
+	optional int32 reThrowNum=10;//已重置次数
+	optional int32 reThrowCost=11;//重置需要消耗
+	optional int32 diceSkinId=12;//骰子皮肤
+	optional int32 talkSkinId=13;//气泡皮肤
+	optional int32 chessSkinId=14;//棋子皮肤
+	optional int32 segId=15;//段位
+	optional int32 starNum=16;//传奇之星
+	optional int64 prettyId=17;//显示id
+	optional int32 isInChatOff=18;//0开启屏蔽聊天  1关闭屏蔽聊天
+	optional int32 isQuit=19;//0未主动离开  1主动离开
+  optional int32 roylevel = 20; //皇室等级 1.2.7 add
+  optional bool royVisibility = 21; //皇室等级可见性,false:所有人可见，true：仅自己可见
+  optional int32 giftId = 22; // 别人赠送的互动礼物ID
+}
+//房间列表
+message RoomList{
+  	repeated RoomInfo roomInfo = 1;
+}
+//房间信息
+message RoomInfo{
+	required RoomType roomType=1[default = NORMAL];//房间类型
+	required RoomGroup group=2[default = SPORTS_MODE];//道具or竞技
+	required string name=3;//房间名字
+}
+
+
+//加入房间
+message JoinRoomRequest{
+	required Command command=1[default = JOIN_ROOM];
+	required int64 roomid=2;//房间号
+
+}
+
+//加入房间
+message JoinRoomResponse{
+	required Command command=1[default = JOIN_ROOM];
+	required int64 roomid=2;//房间号
+	required OperateResult result=3[default = SUCCESS];
+	required ErrorCode code=4;
+}
+
+//快速进入房间请求
+message QuickEnterRoomRequest{
+	required Command command=1[default = QUICKSTART];
+	required RoomType roomType=2[default = NORMAL];
+	required RoomGroup group=3[default = SPORTS_MODE];
+	optional int32 payCoin=4[default = 0];
+	optional int32 type=5[default = 0];//1私密 0公开
+}
+
+//快速进入房间请求
+message QuitRoomRequest{
+	required Command command=1[default = QUIT_ROOM];
+	required int64 roomid=2;//房间号
+}
+
+//快速进入房间请求
+message QuitRoomResponse{
+	required Command command=1[default = QUIT_ROOM];
+	required int64 roomid=2;//房间号
+	required OperateResult result=3[default = SUCCESS];
+	required int32 idx=4;
+	optional ErrorCode code=5;
+}
+
+
+message TeamInfo{
+	required int32 teamAPlayer1=1;//队伍A玩家1 idx
+	required int32 teamAPlayer2=2;//队伍A玩家2 idx
+	required int32 teamBPlayer1=3;//队伍B玩家1 idx
+	required int32 teamBPlayer2=4;//队伍B玩家2 idx
+}
+
+//快速进入房间回复
+message QuickEnterRoomResponse{
+	required Command command=1[default = QUICKSTART];
+	required OperateResult result=2[default = SUCCESS];
+	required int64 roomid=3;//房间号
+	required RoomType roomType=4[default = NORMAL];
+	required RoomGroup group=5[default = SPORTS_MODE];
+	optional RoomInfoPlayerInfo player=6;//所有房间用户
+	optional GameStatus status=7[default = GAME_SIGNUP_ING];
+	optional GameRoomData gamedata=8;
+	optional ErrorCode code=9;
+	required int64 showRoomid=10;//房间号
+	required int32 isPublic=11[default = 1];//0私有 1公开
+	required int32 cost=12;
+	required int32 sceneId=13;//场景id
+	optional int32 msgindex=14;//当前消息号
+	optional int32 maxReThrowNum=15;//最大重置次数
+	optional int32 maxTurnReThrowNum=16;//每轮最大重置次数
+	repeated int32 reThrowCost=17;//每次重置消耗数量
+	optional int32 currentReThrowNum=18;//当前重置次数
+	optional int32 currentTurnReThrowNum=19;//当回合重置次数
+	optional int32 freeReThrowNum=20;//当前可免费重置次数
+	optional TeamInfo teamInfo=21;//队伍信息
+}
+
+//房间用户列表
+message RoomInfoPlayerInfo{
+	repeated PlayerShowInfo player = 1;
+}
+
+
+
+//游戏操作请求
+message GameOperateRequest{
+	required Command command=1[default = GAMEOPERATE];
+	required GameOperate operate=2[default = SIT];
+	required int64 roomid=3;//房间号
+	required int32 idx=4;//用户id
+
+	optional int32 sitNum=5[default = -1];//座位号 -1为自动入座
+	optional int32 chooseNum=6;//选的数字
+	optional int32 chessId=7;//选的棋子
+	optional ChessMapArea area=8[default = RED];//棋子要去的区域
+	optional int32 gridPosition=9;//要去的格子坐标
+}
+
+
+//游戏操作请求回复
+message GameOperateResponse{
+	required Command command=1[default = GAMEOPERATE];
+	required GameOperate operate=2[default = SIT];
+	required OperateResult result=3[default = SUCCESS];
+	required int32 idx=4;//用户id
+	optional int32 sitNum=5;//座位号
+	optional int32 throwNum=6;//掷的数字
+	optional int32 chessId=7;//选的棋子
+	optional ErrorCode code=8;
+	optional int32 msgindex=9;//消息序号默认0
+}
+
+
+
+message ChessMoveResponse{
+	required Command command=1[default = GAME_MAP_CHESS_MOVE];
+	required int32 chessId=2;//棋子id
+	required ChessMapArea area=3[default = RED];//区域
+	required int32 gridPosition=4;//要去的格子坐标
+	required ChessMoveType type=5;//棋子移动类型
+	required int32 time=6;//棋子移动需要时间
+	required int32 chessLinkId=7[default = -1];//叠子的棋子 -1未没有叠子
+	optional int32 msgindex=8;//消息序号默认0
+
+}
+
+// 格子事件
+message GridEventResponse{
+	required Command command=1[default = GAME_MAP_GRID_EVENT];
+	required int32 idx=2;//棋子id
+	required int32 chessId=3;//棋子id
+	required ChessMapArea area=4[default = RED];//区域
+	required int32 gridPosition=5;//要去的格子坐标
+	required ChessEvent event=6;//格子事件
+	optional int32 chessLinkId=7[default = -1];//叠子的棋子 -1未没有叠子
+	optional Prop prop=8[default = PROP_WIND];//道具
+	optional Buff buff=9[default = BUFF_NONE];//产生的buff或使用的buff
+	optional int32 msgindex=10;//消息序号默认0
+}
+
+
+
+
+message GameBuffUseResponse{
+	required Command command=1[default = GAME_BUFF_USE];
+	required Buff buff=2[default = BUFF_NONE];
+	required int32 idx=3;//用户id
+	required int32 chessId=5[default = -1];//选的棋子
+	optional int32 msgindex=6;//消息序号默认0
+}
+
+message GameMapPropChangeResponse{
+	required Command command=1[default = GAME_MAP_WHETHER_CHANGE];
+	required Weather weather=2[default = SUN];
+	repeated PropGrid propGrid=3;
+	optional int32 msgindex=4;//消息序号默认0
+}
+
+message PropGrid{
+	required Prop prop=1[default = PROP_WIND];
+	required ChessMapArea area=2[default = RED];
+	required int32 gridPosition=3;//要去的格子坐标
+}
+
+//房间数据
+message GameRoomData{
+	repeated ChessData chess = 1;
+
+}
+//棋子信息
+message ChessData{
+	required int32 chessId=1;
+	required ChessMapArea color=2[default = RED];
+	required ChessMapArea area=3[default = RED];
+	required int32 gridPosition=4;
+	optional int32 chessLinkId=5[default = -1];//叠子的棋子 -1未没有叠子
+	optional int32 isMaster=6[default = 0];//是否是叠子 0否 1是
+	optional int32 isWin=7[default = 0];//是否在终点 0否 1是
+	repeated Buff buff=8;
+	optional int32 chessSkin=9;//棋子皮肤
+}
+
+//游戏状态广播
+message GameStatusResponse{
+	required Command command=1[default = GAMESTATUS];
+	required GameStatus status=2[default = GAME_SIGNUP_ING];
+	optional int32 msgindex=3;//消息序号默认0
+}
+
+//游戏用户状态广播
+message GamePlayerStatusResponse{
+	required Command command=1[default = GAMEPLAYERSTATUS];
+	required int32 idx=2;//用户id
+	required PlayerTurnStatus status=3[default = THROW_START];
+	optional int32 costDiamond=4;
+	optional int32 msgindex=5;//消息序号默认0
+}
+
+//游戏用户状态广播
+message GameResultResponse{
+	required Command command=1[default = GAMERESULT];
+	required int32 winMoney1=2;//用户id
+	required int32 winMoney2=3;//用户id
+	repeated PlayerShowInfo player = 4;
+}
+message GamePlayerColorSelectResponse{
+	required Command command=1[default = GAME_PLAYER_COLOR_SELECT];
+	repeated PlayerColorSelect pcolor=2;
+  optional int32 quitPunishTime=3; // 强退惩罚的1个触发时间阀值, 若在该值以内强退，则给客户端惩罚提示, 单位秒
+  optional int32 gameBeginTime=4; // 游戏开始时间戳
+}
+message PlayerColorSelect{
+	required int32 idx=1;//用户id
+	required ChessMapArea color=2[default = RED];//用户颜色
+	repeated ChessData chess = 3;
+}
+// 有玩家进入房间，广播给其余玩家
+message GamePlayerEnterResponse{
+	required Command command=1[default = PLAYER_ENTER];
+	required PlayerShowInfo player = 2;
+}
+
+message GameChessCanMoveListResponse{
+	required Command command=1[default = GAME_CHESS_CANMOVELIST];
+	repeated ChessMoveItem item = 2;//用户可选择移动列表
+}
+
+message ChessMoveItem{
+	required int32 chessId=1;//选的棋子
+	required int32 chessLinkId=2[default=-1];//叠子的棋子 -1未没有叠子
+	required ChessMapArea area=3[default = RED];//区域
+	required int32 gridPosition=4;//要去的格子坐标
+	required int32 num=5;//选的数字
+}
+message GamePlayerCompleteResponse{
+	required Command command=1[default = GAME_PLAYER_COMPLETE];
+	required int32 idx=2;//用户id
+	required int32 index=3;//第几个完成
+	optional int32 msgindex=4;//消息序号默认0
+}
+
+message GameRoomPlayerChatToAllRequestAndResponse{
+	required Command command=1[default = PLAYER_CHAT_ALL];
+	required int32 idx=2;//用户id
+	required int64 roomid=3;//房间号
+	required string msg=4;//消息
+}
+message UpdataCoinResponse{
+	required Command command=1[default = UPDATA_PLAYER_COIN];
+	required int32 type=2;//0金币 1钻石
+	required int64 value=3;//余额
+}
+
+message GetAgoraTokenRequest{
+	required Command command=1[default = GET_AGORA_TOKEN];
+	required int32 idx=2;//用户id
+	required int64 roomid=3;//房间号
+}
+message GetAgoraTokenResponse{
+	required Command command=1[default = GET_AGORA_TOKEN];
+	required string token=2;//token
+	required string cName=3;//频道名
+}
+
+
+// 获取 即构 token, 暂未用
+message GetZegoTokenRequest{
+	required Command command=1[default = GET_ZEGO_TOKEN];
+	required int32 idx=2;//用户id
+	required int64 roomid=3;//房间号
+}
+message GetZegoTokenResponse{
+	required Command command=1[default = GET_ZEGO_TOKEN];
+	optional string token=2;//token
+	optional string cName=3;//频道名
+}
+
+
+enum AgoraOperate{
+	START_SPEAK=0;//开始说话
+	STOP_SPEAK=1;//停止说话
+}
+message AgoraOperateRequestAndResponse{
+	required Command command=1[default = AGORA_OPERATE];
+	required int32 idx=2;//用户id
+	required int64 roomid=3;//房间号
+	required AgoraOperate operate=4;//
+}
+
+//添加好友请求
+message AddFriendMsgRequest{
+	required Command command=1[default = FRIEND_ADD_MSG];
+	required int32 fromidx=2;//用户id
+	required int32 toidx=3;//用户id
+}
+//获取好友列表
+message FriendListRequest{
+	required Command command=1[default = FRIEND_LIST];
+}
+//返回好友列表
+message FriendListResponse{
+	required Command command=1[default = FRIEND_LIST];
+	repeated FPlayerShowInfo playerList=2;
+}
+//显示用信息
+message FPlayerShowInfo{
+	required int32 idx=1;//用户id
+	required int32 faceId =2;//特效id
+	required string nikeName=3;//昵称
+	required string faceUrl=4;//头像地址
+	required int32 placeId=5;//所在位置    0大厅 其他对应的gameid -1 离线
+	required int32 ftype=6;//好友类型    0
+	required int32 country=7;//国家
+	required int32 level=8;//等级
+	required int32 viplevel=9;//vip等级
+	required int32 winCount=10;//获胜次数
+	required int32 totalCount=11;//总次数
+}
+message FriendInviteRequest{
+	required Command command=1[default = FRIEND_INVITE];
+	required FPlayerShowInfo from=2;
+	required FPlayerShowInfo to=3;
+	required int64 roomid=4;//房间id
+}
+message PlayerReportRequest{
+	required Command command=1[default = FRIEND_INVITE];
+	required int32 fromId=2;
+	required int32 toId=3;
+	required int64 roomid=4;//房间id
+	optional string msg=5;
+}
+message MassagePlayerLevelUPResponse{
+	required Command command=1[default = UPDATA_PLAYER_LEVEL];
+	required int32 level=2;//新等级
+	required int32 exp=3;//新经验
+}
+
+message GoodsListRequest{
+	required Command command=1[default = GOODS_LIST];
+}
+
+//商品列表
+message GoodsListResponse{
+	required Command command=1[default = GOODS_LIST];
+	repeated Goods goods=2;//商品信息
+	repeated GoodsDiscount goodsDiscount=3;//商品折扣信息
+	repeated GoodsGift goodsGift=4;//商品赠送信息
+	repeated GoodsTag goodsTag=5;//商品标签信息
+}
+
+enum GoodsType {
+	COIN = 1;//金币
+	JEWEL = 2;//钻石
+	PROP=3;//道具
+	VIP=4;//vip
+}
+enum GoodsSpentType {
+	SPENT_COIN = 1;//金币
+	SPENT_JEWEL = 2;//钻石
+	SPENT_MONEY=9;//钱
+}
+
+enum GoodsGiftType {
+	GIFT_COIN = 1;//金币
+	GIFT_JEWEL = 2;//钻石
+}
+
+enum GoodsTagType{
+	HOT=1;//热门
+	NEW=2;//新
+	LIMIT=3;//限时
+}
+
+message Goods{
+	required int32 id=1;//商品id
+	required string androidId=2;//商品id
+	required string iosId=3;//商品id
+	required string name=4;//商品id
+	required GoodsType type=5;//商品类型(1：金币，2：钻石，3：道具，4：vip)
+	required int32 num=6;//商品数量
+	required GoodsSpentType SpentType=7;//消费类型(1：金币，2：钻石，9：钱)
+	required int32 price=8;//商品价格
+	required int32 levelNeed=9;
+	required int64 effectiveTime=10;
+	required int64 expireTime=11;
+	required int32 Sort=12;
+	required int32 firstChargeValue=13;
+}
+
+
+message GoodsDiscount{
+	required int32 id=1;//商品id
+	required float discount=2;
+	required int64 effectiveTime=3;
+	required int64 expireTime=4;
+}
+
+message GoodsGift{
+	required int32 id=1;//商品id
+	required GoodsGiftType type=2;
+	required int32 count=3;//商品id
+	required int64 effectiveTime=4;
+	required int64 expireTime=5;
+}
+message GoodsTag{
+	required int32 id=1;//商品id
+	required GoodsTagType type=2;
+}
+
+enum OutReason{
+	LOGIN_OTHER=1;//别处登陆
+	SERVER_MAINTAIN=2;//服务器维护
+	GM_OUT=3;//被踢
+}
+
+// 语音房类别
+enum VoiceType{
+  Agora=1;//声网
+  Zego=2;//即构
+}
+
+message OutGameHallLoginResponse{
+	required Command command=1[default = OUT_GAME];
+	required OutReason reason=2;
+	required int32 idx=3;
+}
+
+
+message OutGameResponse{
+	required Command command=1[default = OUT_GAME];
+	required OutReason reason=2;
+}
+message FlushCurrencyRequest{
+	required Command command=1[default = FLUSH_CURRENCY];
+
+}
+
+message FlushGameInfoRequest{
+	required Command command=1[default = FLUSH_GAMEINFO];
+	required int32 idx=2;//用户id
+	required int64 roomid=3;//房间号
+}
+
+message FlushCurrencyResponse{
+	required Command command=1[default = FLUSH_CURRENCY];
+	required int64 money=2;//金币
+	required int64 gold=3;//钻石
+	required int32 exp=4;
+	required int32 level=5;
+	required int32 vipExp=6;
+	required int32 vipLevel=7;
+}
+
+// 获取游戏内互动礼物配置
+message GameGiftCnfListRequest {
+    required Command command = 1 [default = GAME_GIFT_CNF_LIST];
+}
+
+// 游戏内互动礼物配置响应
+message GameGiftCnfListRespone {
+    required Command command = 1 [default = GAME_GIFT_CNF_LIST];
+    repeated GameGiftCnf gameGiftCnf = 2; // 互动礼物列表
+    optional int32 limitCount = 3; // 冷却触发阀值 N
+    optional int32 coolDownTime = 4; // 冷却触发阀值 M
+}
+
+// 发送互动礼物
+message GameGiftSendRequest {
+    required Command command = 1 [default = GAME_GIFT_SEND];
+    optional int32 giftId = 2; // 本次赠送的互动礼物ID: GameGiftCnf->id
+    repeated int32 rcvIdx = 3; // 本次接收互动礼物的玩家ID
+}
+
+message GameGiftSendResponse {
+    required OperateResult result = 1 [default = SUCCESS];
+    optional ErrorCode code = 2;
+    optional int32 giftId = 3; // 本次赠送的礼物ID: GameGiftCnf->id
+    optional int32 senderIdx = 4; // 发送者玩家ID
+    optional int64 senderMoney = 5 [default = -1]; // 发送者当前金币, 非-1表示有变动
+    optional int64 senderDiamond = 6 [default = -1]; // 发送者当前钻石, 非-1表示有变动
+    repeated int32 rcvIdx = 7; // 本次接收互动礼物的玩家ID
+}
+
+// 游戏互动礼物配置
+message GameGiftCnf {
+  optional int32 id = 1; // 唯一标识，赠送的时候上传该 id
+  optional string icon = 2; // 互动礼物图标地址
+  optional int32 money = 3; // 金币价格
+  optional int32 diamond = 4; // 钻石价格
+  optional int32 sort = 5; // 排序权重
+  optional GameGiftType gameGiftType = 6; // 互动礼物类型
+}
+
+// 游戏内互动礼物类型
+enum GameGiftType {
+  EMOJ = 1; // 表情
+}

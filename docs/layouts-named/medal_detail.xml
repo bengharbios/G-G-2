@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="rl_main" android:background="#FF154D3C" android:layout_width="360.000000dip" android:layout_height="-1">
+  <RelativeLayout android:id="rl_title" android:background="bg_rank" android:layout_width="-1" android:layout_height="53.000000dip">
+    <FrameLayout android:id="fl_rules" android:layout_width="50.000000dip" android:layout_height="40.000000dip">
+      <ImageView android:id="iv_rules" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:src="description_rule" android:layout_marginStart="7.000000dip" android:layout_alignParentStart="true"/>
+    </FrameLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="25.000000sp" android:textColor="#FF87EBAA" android:gravity="0x00000011" android:id="tv_title" android:layout_width="-2" android:layout_height="-1" android:layout_marginBottom="10.000000dip" android:text="badge" android:includeFontPadding="false" android:shadowColor="black_50" android:shadowDy="5.000000" android:shadowRadius="1.000000" android:layout_centerHorizontal="true"/>
+    <FrameLayout android:id="fl_close" android:layout_width="50.000000dip" android:layout_height="40.000000dip" android:layout_alignParentEnd="true">
+      <ImageView android:layout_gravity="0x00800005" android:id="iv_close" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:src="skin_close" android:layout_marginEnd="10.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+  <View android:background="bg_medal_detail_title" android:layout_width="-1" android:layout_height="129.000000dip" android:layout_marginTop="44.000000dip"/>
+  <ImageView android:id="iv_medal" android:background="medal_bg" android:layout_width="350.000000dip" android:layout_height="185.000000dip" android:layout_marginTop="16777210.000000dip" android:layout_below="rl_title" android:layout_centerHorizontal="true"/>
+  <LinearLayout android:layout_width="350.000000dip" android:layout_height="-2" android:layout_marginBottom="75.000000dip" android:layout_alignBottom="iv_medal" android:layout_centerHorizontal="true">
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="104.000000dip" android:layout_weight="1.000000">
+      <com.yalla.yallagames.ui.medal.OwnMedalView android:id="medal_view_1" android:layout_width="100.000000dip" android:layout_height="104.000000dip" android:layout_marginStart="15.500001dip"/>
+    </FrameLayout>
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="104.000000dip" android:layout_weight="1.000000">
+      <com.yalla.yallagames.ui.medal.OwnMedalView android:layout_gravity="0x00000011" android:id="medal_view_2" android:layout_width="100.000000dip" android:layout_height="104.000000dip"/>
+    </FrameLayout>
+    <FrameLayout android:layout_width="0.000000px" android:layout_height="104.000000dip" android:layout_weight="1.000000">
+      <com.yalla.yallagames.ui.medal.OwnMedalView android:layout_gravity="0x00800005" android:id="medal_view_3" android:layout_width="100.000000dip" android:layout_height="104.000000dip" android:layout_marginEnd="10.500001dip"/>
+    </FrameLayout>
+  </LinearLayout>
+  <RelativeLayout android:layout_width="350.000000dip" android:layout_height="55.000000dip" android:layout_marginBottom="7.000000dip" android:layout_alignBottom="iv_medal" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00000011" android:id="tv_achievement" android:background="medal_select" android:layout_width="138.000000dip" android:layout_height="-2" android:text="achievement_badge" android:layout_marginStart="33.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF5ED2AC" android:gravity="0x00000011" android:id="tv_honor" android:background="medal_unselect" android:layout_width="138.000000dip" android:layout_height="-2" android:text="honor_badge" android:layout_marginEnd="33.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <FrameLayout android:background="#FF17694F" android:layout_width="350.000000dip" android:layout_height="-1" android:layout_marginTop="16777206.000000dip" android:layout_marginBottom="40.000000dip" android:layout_below="iv_medal" android:layout_centerHorizontal="true">
+    <com.booking.rtlviewpager.RtlViewPager android:layout_gravity="0x00000011" android:id="vp_medal" android:layout_width="350.000000dip" android:layout_height="-1" android:layout_marginTop="16777213.000000dip"/>
+  </FrameLayout>
+  <FrameLayout android:layout_width="-1" android:layout_height="30.000000dip"/>
+  <FrameLayout android:background="bg_point" android:layout_width="350.000000dip" android:layout_height="40.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+    <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000001" android:orientation="0" android:id="ll_points" android:background="point_bg" android:layout_width="-2" android:layout_height="28.000000dip" android:layout_marginTop="5.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="#FFFFFFFF" android:layout_width="-2" android:layout_height="-2" android:text="on_top_stars" android:layout_marginStart="14.000000dip"/>
+      <ImageView android:id="iv_point_star" android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="point_star" android:layout_marginStart="5.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFF65D" android:id="tv_points" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="3.000000dip"/>
+      <ImageView android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="point_enter" android:layout_marginStart="10.000000dip" android:layout_marginEnd="5.000000dip"/>
+    </LinearLayout>
+  </FrameLayout>
+  <FrameLayout android:id="fl_my_badge" android:background="bg_my_badge" android:layout_width="78.000000dip" android:layout_height="61.000000dip" android:layout_marginBottom="64.000000dip" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="white" android:layout_gravity="0x00000051" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:text="my_badge" android:layout_marginStart="6.000000dip" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+  </FrameLayout>
+</RelativeLayout>

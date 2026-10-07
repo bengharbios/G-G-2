@@ -1,0 +1,12 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="cl_upload_music" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="include_title_music_layout" layout="@7F0D029F"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="rvMusicAdd" android:background="room_local_music_bg" android:paddingTop="12.000000dip" android:paddingBottom="70.000000dip" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_marginTop="60.000000dip" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip" android:layout_marginStart="11.000000dip" android:layout_marginEnd="11.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <LinearLayout android:orientation="0" android:id="ll_upload" android:background="room_music_add_bottom_bg" android:layout_width="-1" android:layout_height="70.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="llSelectAll" android:layout_width="-2" android:layout_height="-1">
+      <ImageView android:id="ivSelectAll" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="room_music_add_selected" android:layout_marginStart="35.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="room_color_8ea" android:layout_width="-2" android:layout_height="-2" android:text="room_select_all" android:includeFontPadding="false" android:layout_marginStart="11.000000dip" android:layout_marginEnd="16.000000dip"/>
+    </LinearLayout>
+    <TextView android:id="tv_space" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="color_7a" android:gravity="0x00000011" android:layout_gravity="0x00800015" android:id="btn_add_music" android:background="room_btn_gray_bg" android:layout_width="100.000000dip" android:layout_height="-2" android:text="room_Upload" android:layout_marginEnd="23.000000dip"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

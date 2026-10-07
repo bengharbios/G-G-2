@@ -1,0 +1,23 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0879" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A056F" android:layout_width="-1" android:layout_height="-1" android:scaleType="1"/>
+  <com.common.videoplayer.view.VideoView android:id="@7F0A087F" android:layout_width="-1" android:layout_height="-1"/>
+  <LinearLayout android:orientation="1" android:id="@7F0A0643" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="@7F0A0645" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+      <include layout="@7F0D0230"/>
+      <include layout="@7F0D022E"/>
+      <include layout="@7F0D022B"/>
+    </LinearLayout>
+    <include layout="@7F0D0223"/>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0151" android:layout_width="-1" android:layout_height="-2">
+      <include android:id="@7F0A0642" app:layout_constraintBottom_toTopOf="@7F0A0242" app:layout_constraintTop_toTopOf="0" layout="@7F0D0229"/>
+      <include android:id="@7F0A0242" android:layout_width="-1" android:layout_height="-2" app:layout_constraintTop_toBottomOf="@7F0A0642" layout="@7F0D022A"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+  <com.common.videoplayer.view.AlphaVideoView android:id="@7F0A0756" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="@7F0A0C7E" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="@7F0A0269" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.ludochat.view.CountdownTimeView android:id="@7F0A0182" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.ludochat.view.StopwatchView android:id="@7F0A0944" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0D1D" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</FrameLayout>

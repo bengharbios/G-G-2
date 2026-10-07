@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="3.000000dip">
+  <RelativeLayout android:id="@7F0A0841" android:background="@7F08030F" android:layout_width="340.000000dip" android:layout_height="57.000000dip" android:layout_centerHorizontal="true">
+    <FrameLayout android:id="@7F0A025F" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true">
+      <com.yalla.games.common.view.HeadView android:id="@7F0A0338" android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:layout_marginStart="8.000000dip" app:civ_border_color="@7F0600F2" app:civ_border_width="1.000000dip"/>
+      <com.yalla.games.common.view.LevelFlagView android:textSize="7.000000sp" android:layout_gravity="0x00800055" android:id="@7F0A0B01" android:layout_width="22.000000dip" android:layout_height="-2" android:layout_marginBottom="3.000000dip"/>
+    </FrameLayout>
+    <com.yalla.game.base.view.StrokeButton android:textSize="13.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:id="@7F0A00E7" android:layout_width="84.000000dip" android:layout_height="33.000000dip" android:text="@7F120049" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="7.000000dip" android:layout_alignParentEnd="true" app:need_press_status="true" style="@7F130129"/>
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_toStartOf="@7F0A00E7" android:layout_toEndOf="@7F0A025F">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A06C5" android:layout_width="-2" android:layout_height="25.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="@7F0601EF" android:ellipsize="3" android:id="@7F0A0B44" android:layout_width="-2" android:layout_height="-2" android:maxEms="30" android:singleLine="true" android:layout_weight="1.000000" android:textAlignment="5"/>
+        <com.yalla.games.common.view.PrivilegeFlagView android:id="@7F0A05D4" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000050" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="@7F0A04C9" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:src="@7F08037B"/>
+        <FrameLayout android:id="@7F0A02AF" android:layout_width="-2" android:layout_height="-2">
+          <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="@7F0601EF" android:layout_gravity="0x00000050" android:id="@7F0A0BD2" android:background="@7F0803F1" android:layout_width="-2" android:layout_height="12.000000dip" android:includeFontPadding="false" android:paddingStart="18.000000dip" android:layout_marginStart="5.000000dip" app:stroke_color="#FF9C520A" app:stroke_width="1.000000dip"/>
+          <ImageView android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:layout_marginTop="3.000000dip" android:src="@7F0803EF"/>
+        </FrameLayout>
+        <LinearLayout android:orientation="0" android:id="@7F0A06B8" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="3.000000dip"/>
+      </LinearLayout>
+    </LinearLayout>
+  </RelativeLayout>
+</RelativeLayout>

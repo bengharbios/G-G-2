@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="0" android:background="medal_item_view_bg" android:layout_width="-1" android:layout_height="160.000000dip" android:layout_marginLeft="5.000000dip" android:layout_marginTop="5.000000dip" android:layout_marginRight="5.000000dip">
+  <com.yalla.yallagames.ui.medal.MedalItemView android:id="medal_item_view_1" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="4.000000dip" android:layout_alignParentBottom="true" android:layout_marginStart="30.000000dip" android:layout_alignParentStart="true"/>
+  <com.yalla.yallagames.ui.medal.MedalItemView android:id="medal_item_view_2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="4.000000dip" android:layout_alignParentBottom="true" android:layout_marginEnd="30.000000dip" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

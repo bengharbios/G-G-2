@@ -1,0 +1,23 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:fitsSystemWindows="false" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.appbar.AppBarLayout android:orientation="1" android:id="@7F0A0018" android:background="@7F0601BB" android:visibility="0" android:layout_width="-1" android:layout_height="-2" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
+    <com.google.android.material.appbar.CollapsingToolbarLayout android:id="@7F0A0190" android:paddingTop="6.000000dip" android:layout_width="-1" android:layout_height="-2" app:layout_scrollFlags="0x0000000B" app:scrimAnimationDuration="150">
+      <include android:layout_width="-1" android:layout_height="-2" layout="@7F0D0270"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginStart="21.000000dip" android:layout_marginEnd="21.000000dip">
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="40.000000dip">
+        <com.yalla.games.common.view.AutoMirrorImageView android:gravity="0x00000011" android:background="@7F080118" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+        <View android:gravity="0x00000011" android:background="@7F080116" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+        <com.yalla.games.common.view.AutoMirrorImageView android:gravity="0x00000011" android:background="@7F08011A" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <LinearLayout android:orientation="0" android:id="@7F0A06F2" android:layout_width="-1" android:layout_height="40.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="@7F0601EF" android:gravity="0x00000011" android:id="@7F0A0B97" android:background="@7F080117" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_marginBottom="1.000000dip" android:text="@7F120568" android:layout_weight="1.000000"/>
+        <View android:background="@7F08014A" android:layout_width="1.000000dip" android:layout_height="-2"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="@7F060197" android:gravity="0x00000011" android:id="@7F0A0AF9" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_marginBottom="1.000000dip" android:text="@7F1203FD" android:layout_weight="1.000000"/>
+        <View android:background="@7F08014A" android:layout_width="1.000000dip" android:layout_height="-2"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="@7F060197" android:gravity="0x00000011" android:id="@7F0A0ACA" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_marginBottom="1.000000dip" android:text="@7F1205E0" android:layout_weight="1.000000"/>
+      </LinearLayout>
+    </FrameLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@7F0A0CFF" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="25.000000dip" android:layout_marginEnd="25.000000dip" app:layout_behavior="@7F120088"/>
+  <ViewStub android:id="@7F0A0D12" android:layout="@7F0D0271" android:layout_width="-1" android:layout_height="-1"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

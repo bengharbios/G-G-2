@@ -1,0 +1,11 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0850" android:layout_width="-2" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A06C5" android:layout_width="60.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_centerHorizontal="true">
+    <ImageView android:id="@7F0A059A" android:layout_width="-2" android:layout_height="-2" android:layout_margin="1.000000dip" android:src="@7F0808FC"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="#FF683614" android:ellipsize="3" android:gravity="0x00800003" android:id="@7F0A0B44" android:layout_width="-2" android:layout_height="-2" android:lines="1" app:stroke_color="#FFF8CA59" app:stroke_width="1.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.HeadView android:id="@7F0A033B" android:layout_width="58.000000dip" android:layout_height="58.000000dip" android:layout_marginTop="16777214.000000dip" android:layout_below="@7F0A06C5" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="@7F0A04C7" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="17.000000dip" android:src="@7F0801BB" android:layout_alignEnd="@7F0A033B"/>
+  <ImageView android:id="@7F0A04C5" android:layout_width="42.000000dip" android:layout_height="42.000000dip" android:layout_marginTop="22.000000dip" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF7F7F7F" android:gravity="0x00000011" android:id="@7F0A0B00" android:background="@7F08049A" android:visibility="1" android:layout_width="-1" android:layout_height="-2" android:text="@7F120257" android:layout_centerVertical="true"/>
+  <ImageView android:id="@7F0A0490" android:layout_width="43.000000dip" android:layout_height="19.000000dip" android:layout_marginTop="5.000000dip" android:src="@7F0802EC" android:layout_below="@7F0A033B" android:layout_centerHorizontal="true"/>
+</merge>

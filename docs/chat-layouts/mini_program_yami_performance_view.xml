@@ -1,0 +1,9 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="#CE353434" android:padding="10.000000dip" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="10.000000dip">
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="17.000000dip" android:textColor="@7F060190" android:layout_width="-2" android:layout_height="-2" android:text="Performance Data"/>
+  <View android:background="@7F060190" android:layout_width="-1" android:layout_height="2.000000px" android:layout_marginTop="10.000000dip"/>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="14.000000dip" android:textColor="@7F060190" android:id="@7F0A09EA" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip"/>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="14.000000dip" android:textColor="@7F060190" android:id="@7F0A0A34" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip"/>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="14.000000dip" android:textColor="@7F060190" android:id="@7F0A0A0D" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip"/>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="14.000000dip" android:textColor="@7F060190" android:id="@7F0A0A0A" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip"/>
+  <androidx.appcompat.widget.AppCompatTextView android:textSize="14.000000dip" android:textColor="@7F060190" android:id="@7F0A0A10" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

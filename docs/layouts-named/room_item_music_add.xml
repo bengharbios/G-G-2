@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="room_item_room_bg" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_marginBottom="4.000000dip">
+  <ImageView android:layout_gravity="0x00000010" android:id="ivSelect" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="room_music_add_unselect" android:layout_marginStart="11.000000dip"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="65.000000dip" android:layout_marginStart="11.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="color_487" android:id="tvMusicName" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:singleLine="true" android:includeFontPadding="false" android:layout_marginEnd="16.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="color_8ba" android:layout_gravity="0x00800053" android:id="tvMusicSinger" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="14.000000dip" android:maxWidth="189.000000dip" android:singleLine="true" android:includeFontPadding="false" android:layout_marginEnd="16.000000dip"/>
+  </FrameLayout>
+</LinearLayout>

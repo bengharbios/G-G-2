@@ -1,0 +1,7 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0601C7" android:layout_width="-1" android:layout_height="-1">
+  <include android:id="@7F0A09BD" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" layout="@7F0D01D1"/>
+  <com.scwang.smart.refresh.layout.SmartRefreshLayout android:id="@7F0A0621" android:tag="close egg" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A09BD" app:srlEnableAutoLoadMore="true">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A061B" android:layout_width="-1" android:layout_height="-1" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <com.yallatech.yallachat.moment.ui.view.LoadFooter android:layout_width="-1" android:layout_height="-2"/>
+  </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

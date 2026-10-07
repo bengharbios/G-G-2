@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="@7F060059" android:gravity="0x00000011" android:id="@7F0A0B15" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="21.000000dip" app:autoSizeTextType="1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.ludochat.view.LevelProgressView android:id="@7F0A0186" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="27.000000dip"/>
+  <com.yalla.ludochat.view.LevelProgressView android:id="@7F0A0184" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="19.000000dip"/>
+  <com.yalla.ludochat.view.LevelProgressView android:id="@7F0A0185" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="19.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F060066" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="32.000000dip" android:text="@7F1204E5" android:layout_marginStart="13.000000dip"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textStyle="0x00000001" android:textColor="@7F060066" android:id="@7F0A061C" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="13.000000dip"/>
+</LinearLayout>

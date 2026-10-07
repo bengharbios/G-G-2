@@ -1,0 +1,7 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0349" android:duplicateParentState="true" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:layout_marginTop="@7F070074" android:layout_marginBottom="@7F070074" android:contentDescription="@00000000"/>
+  <com.google.android.material.internal.BaselineLayout android:layout_gravity="0x00000051" android:paddingBottom="10.000000dip" android:duplicateParentState="true" android:clipToPadding="false" android:layout_width="-2" android:layout_height="-2">
+    <TextView android:textSize="@7F070076" android:ellipsize="3" android:id="@7F0A090B" android:duplicateParentState="true" android:layout_width="-2" android:layout_height="-2" android:maxLines="1"/>
+    <TextView android:textSize="@7F07006E" android:ellipsize="3" android:id="@7F0A05E1" android:visibility="1" android:duplicateParentState="true" android:layout_width="-2" android:layout_height="-2" android:maxLines="1"/>
+  </com.google.android.material.internal.BaselineLayout>
+</merge>

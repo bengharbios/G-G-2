@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:layout_gravity="0x00000001" android:id="rl_item" android:background="signin_7day_final_bg" android:layout_width="162.000000dip" android:layout_height="122.000000dip" android:layout_marginBottom="6.000000dip">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="csv_bg" android:visibility="2" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true" app:source="sign_signing_bg.svga"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FF71C0A9" android:gravity="0x00000011" android:id="tv_dayCount" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="iv_middle_show" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+      <ImageView android:id="iv_coin" android:layout_width="18.000000dip" android:layout_height="19.000000dip" android:layout_marginRight="2.000000dip" android:src="coin"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:textColor="@android:0106000B" android:gravity="0x00000011" android:id="tv_coin_num" android:layout_width="-2" android:layout_height="-2" app:stroke_color="#80000000" app:stroke_width="1.000000dip"/>
+    </LinearLayout>
+    <View android:id="view_front" android:background="sign_in_7_front_bg" android:layout_width="-1" android:layout_height="-1"/>
+    <ImageView android:id="iv_signed" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:src="signin_hook_ic" android:layout_alignParentRight="true"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="csv_front" android:visibility="2" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true" app:source="sign_signing_front.svga"/>
+  </RelativeLayout>
+</FrameLayout>

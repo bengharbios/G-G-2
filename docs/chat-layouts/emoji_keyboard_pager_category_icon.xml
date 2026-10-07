@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:background="?7F04044B" android:layout_width="-2" android:layout_height="-1">
+  <View android:layout_gravity="0x00000011" android:id="@7F0A0182" android:background="@7F0802B6" android:layout_width="@7F07011E" android:layout_height="@7F07011E"/>
+  <androidx.appcompat.widget.AppCompatImageView android:layout_gravity="0x00000011" android:id="@7F0A0181" android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:scaleType="3"/>
+</FrameLayout>

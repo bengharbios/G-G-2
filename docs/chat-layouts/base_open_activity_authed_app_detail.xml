@@ -1,0 +1,7 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yallatech.support.open.view.OpenPageHeader android:theme="?7F040019" android:gravity="0x00000010" android:id="@7F0A010D" android:layout_width="-1" android:layout_height="50.000000dip" app:buttonGravity="0x00000010" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:subtitleTextAppearance="@7F1400F1" app:titleTextAppearance="@7F1400F4"/>
+  <FrameLayout android:id="@7F0A03DF" android:background="@7F06018C" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A010D">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A07FA" android:background="@7F06018E" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <include android:id="@7F0A010C" android:visibility="2" layout="@7F0D0060"/>
+  </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

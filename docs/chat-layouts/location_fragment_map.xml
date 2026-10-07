@@ -1,0 +1,28 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A067F" android:layout_width="-1" android:layout_height="-1"/>
+  <LinearLayout android:orientation="1" android:id="@7F0A057D" android:background="@7F0805D1" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="45.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginEnd="10.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="@7F0A04FE" android:layout_width="-1" android:layout_height="-2" android:src="@7F080453"/>
+    <ImageView android:id="@7F0A04F2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="22.000000dip" android:src="@7F08044F"/>
+    <ImageView android:id="@7F0A04EB" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="22.000000dip" android:src="@7F080450"/>
+  </LinearLayout>
+  <FrameLayout android:id="@7F0A0680" android:visibility="0" android:layout_width="0.000000dip" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:id="@7F0A05C9" android:background="@7F08044D" android:paddingTop="10.000000dip" android:paddingBottom="14.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip">
+      <TextView android:textSize="16.000000sp" android:textColor="@7F0601F8" android:ellipsize="3" android:gravity="0x00800003" android:layout_width="-2" android:layout_height="-2" android:maxWidth="300.000000dip" android:text="@7F1305BF" android:maxLines="1" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+      <TextView android:textSize="14.000000sp" android:textColor="@7F0601E7" android:ellipsize="3" android:gravity="0x00800003" android:id="@7F0A0A11" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:maxWidth="300.000000dip" android:maxLines="1" app:layout_constraintStart_toStartOf="@7F0A0A20" app:layout_constraintTop_toBottomOf="@7F0A0A20"/>
+    </LinearLayout>
+    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0684" android:layout_width="14.000000dip" android:layout_height="7.000000dip" android:src="@7F080451"/>
+    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0683" android:layout_width="-2" android:layout_height="-2" android:src="@7F08044B"/>
+  </FrameLayout>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0579" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <FrameLayout android:id="@7F0A043B" android:background="@7F080577" android:layout_width="32.000000dip" android:layout_height="32.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+      <ImageView android:layout_gravity="0x00000011" android:id="@7F0A04F7" android:layout_width="20.000000dip" android:layout_height="20.000000dip"/>
+    </FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:orientation="1" android:id="@7F0A05C8" android:background="@7F08044D" android:paddingTop="10.000000dip" android:paddingBottom="14.000000dip" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip" app:layout_constraintBottom_toTopOf="@7F0A043B" app:layout_constraintEnd_toEndOf="@7F0A043B" app:layout_constraintStart_toStartOf="@7F0A043B">
+      <ImageView android:id="@7F0A04F3" android:layout_width="-2" android:layout_height="-2" android:src="@7F080470" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+      <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="5.000000dip" app:layout_constraintEnd_toStartOf="@7F0A04F3" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+        <TextView android:textSize="16.000000sp" android:textColor="@7F0601F8" android:ellipsize="3" android:gravity="0x00800003" android:id="@7F0A0A20" android:layout_width="-2" android:layout_height="-2" android:maxWidth="280.000000dip" android:maxLines="1"/>
+        <TextView android:textSize="14.000000sp" android:textColor="@7F0601E7" android:ellipsize="3" android:gravity="0x00800003" android:id="@7F0A0A1F" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:maxWidth="280.000000dip" android:maxLines="1"/>
+      </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
