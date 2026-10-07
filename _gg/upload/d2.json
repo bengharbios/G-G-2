@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "This is a voice room app interface with a **teal-green gradient background** (darker at the top, lighter at the bottom) and a diamond-patterned texture overlay. Here’s a detailed breakdown of all elements:\n\n\n### **Top Navigation Bar**  \n- **Left**: Circular user avatar (profile picture) with a small shield icon (possibly for verification/status) in the top-left corner.  \n- **Center**: Three tabs:  \n  - *Explore* (white text, unselected)  \n  - *Hot* (white text, unselected)  \n  - *My* (white text, **selected**, highlighted with a green underline)  \n- **Right**: Magnifying glass icon (search button) in the top-right corner.  \n\n\n### **Room Creation Section**  \n- A rectangular button with a **green plus icon** (centered) and the text *“Create my room”* (gray, centered) below it.  \n- The button has a light gray background with rounded corners, set against the teal-green backdrop.  \n\n\n### **Tab Navigation (Below Room Creation)**  \nA horizontal bar with three tabs:  \n- *Recently* (**teal background**, white text, **selected**)  \n- *Joined* (white background, teal text, unselected)  \n- *Following* (white background, teal text, unselected)  \n\n\n### **Empty State (Main Content Area)**  \n- **Icon**: A simple line-drawn house with a tree and small trees around it (centered).  \n- **Text**: *“You haven’t visited any room recently.”* (white, centered, below the icon).  \n- **Button**: A bright yellow rectangular button with rounded corners, text *“Go Find Rooms”* (black, centered, bold).  \n\n\n### **Bottom Navigation Bar**  \nFour icons (each with a label below) arranged horizontally:  \n1. **Events**: Gift box icon (red, with a “2” notification badge in the top-right corner of the icon).  \n2. **Battle**: Sword/crossed-swords icon (teal).  \n3. **Chat**: Speech bubble icon (teal, with a small cloud/room icon inside).  \n4. **Social**: Group of people icon (teal, with a “1” notification badge in the top-right corner).  \n\n\n### **Design & Layout Notes**  \n- **Color Scheme**: Dominant teal-green with accents of green (selected tabs/buttons), yellow (call-to-action), and white (text/icons).  \n- **Layout**: Vertical flow (top navigation → room creation → tabs → empty state → bottom nav).  \n- **Empty State**: Uses a friendly, minimalistic icon and clear messaging to guide users to explore rooms.  \n- **Notifications**: Red badges on “Events” (2) and “Social” (1) indicate unread activity.  \n\n\nThis interface is designed for easy navigation, with clear calls to action (create a room, find rooms) and intuitive tabbing for room management. The bottom nav provides quick access to core features (events, battles, chat, social).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706111,
+  "id": "202604210128140775b45b4f544b94",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202604210128140775b45b4f544b94",
+  "usage": {
+    "completion_tokens": 638,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 359,
+    "prompt_tokens_details": {
+      "cached_tokens": 13
+    },
+    "total_tokens": 997
+  }
+}

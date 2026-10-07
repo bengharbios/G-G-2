@@ -1,0 +1,560 @@
+[{
+	"areaCode": "966",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_1.png",
+	"id": 1,
+	"name": "KSA",
+	"name_ar":"السعودية",
+	"shortName": "SA"
+}, {
+	"areaCode": "213",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_3.png",
+	"id": 3,
+	"name": "Algeria",
+	"name_ar":"الجزائر",
+	"shortName": "DZ"
+}, {
+	"areaCode": "61",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_64.png",
+	"id": 64,
+	"name": "Australia",
+	"name_ar":"أستراليا",
+	"shortName": "AU"
+}, {
+	"areaCode": "43",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_104.png",
+	"id": 104,
+	"name": "Austria",
+	"name_ar":"النمسا",
+	"shortName": "AT"
+}, {
+	"areaCode": "973",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_9.png",
+	"id": 9,
+	"name": "Bahrain",
+	"name_ar":"البحرين",
+	"shortName": "BH"
+}, {
+	"areaCode": "880",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_35.png",
+	"id": 35,
+	"name": "Bangladesh",
+	"name_ar":"بنغلاديش",
+	"shortName": "BD"
+}, {
+	"areaCode": "1",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_32.png",
+	"id": 32,
+	"name": "Canada",
+	"name_ar":"كندا",
+	"shortName": "CA"
+}, {
+	"areaCode": "86",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_19.png",
+	"id": 19,
+	"name": "China",
+	"name_ar":"الصين",
+	"shortName": "CN"
+}, {
+	"areaCode": "20",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_2.png",
+	"id": 2,
+	"name": "Egypt",
+	"name_ar":"مصر",
+	"shortName": "EG"
+}, {
+	"areaCode": "251",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_30.png",
+	"id": 30,
+	"name": "Ethiopia",
+	"name_ar":"إثيوبيا",
+	"shortName": "ET"
+}, {
+	"areaCode": "33",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_21.png",
+	"id": 21,
+	"name": "France",
+	"name_ar":"فرنسا",
+	"shortName": "FR"
+}, {
+	"areaCode": "49",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_23.png",
+	"id": 23,
+	"name": "Germany",
+	"name_ar":"ألمانيا",
+	"shortName": "DE"
+}, {
+	"areaCode": "91",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_17.png",
+	"id": 17,
+	"name": "India",
+	"name_ar":"الهند",
+	"shortName": "IN"
+}, {
+	"areaCode": "62",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_18.png",
+	"id": 18,
+	"name": "Indonesia",
+	"name_ar":"إندونيسيا",
+	"shortName": "ID"
+}, {
+	"areaCode": "964",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_8.png",
+	"id": 8,
+	"name": "Iraq",
+	"name_ar":"العراق",
+	"shortName": "IO"
+}, {
+	"areaCode": "39",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_25.png",
+	"id": 25,
+	"name": "Italy",
+	"name_ar":"إيطاليا",
+	"shortName": "IT"
+}, {
+	"areaCode": "962",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_5.png",
+	"id": 5,
+	"name": "Jordan",
+	"name_ar":"الأردن",
+	"shortName": "JO"
+}, {
+	"areaCode": "965",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_7.png",
+	"id": 7,
+	"name": "Kuwait",
+	"name_ar":"الكويت",
+	"shortName": "KW"
+}, {
+	"areaCode": "961",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_13.png",
+	"id": 13,
+	"name": "Lebanon",
+	"name_ar":"لبنان",
+	"shortName": "LB"
+}, {
+	"areaCode": "218",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_27.png",
+	"id": 27,
+	"name": "Libya",
+	"name_ar":"ليبيا",
+	"shortName": "LY"
+}, {
+	"areaCode": "212",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_4.png",
+	"id": 4,
+	"name": "Morocco",
+	"name_ar":"المغرب",
+	"shortName": "MA"
+}, {
+	"areaCode": "977",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_58.png",
+	"id": 58,
+	"name": "Nepal",
+	"name_ar":"نيبال",
+	"shortName": "NP"
+}, {
+	"areaCode": "31",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_76.png",
+	"id": 76,
+	"name": "Netherlands",
+	"name_ar":"هولندا",
+	"shortName": "NL"
+}, {
+	"areaCode": "968",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_14.png",
+	"id": 14,
+	"name": "Oman",
+	"name_ar":"عمان",
+	"shortName": "OM"
+}, {
+	"areaCode": "92",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_16.png",
+	"id": 16,
+	"name": "Pakistan",
+	"name_ar":"باكستان",
+	"shortName": "PK"
+}, {
+	"areaCode": "970",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_15.png",
+	"id": 15,
+	"name": "Palestine",
+	"name_ar":"فلسطين",
+	"shortName": "BL"
+}, {
+	"areaCode": "63",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_38.png",
+	"id": 38,
+	"name": "Philippines",
+	"name_ar":"الفلبين",
+	"shortName": "PH"
+}, {
+	"areaCode": "974",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_11.png",
+	"id": 11,
+	"name": "Qatar",
+	"name_ar":"قطر",
+	"shortName": "QA"
+}, {
+	"areaCode": "7",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_26.png",
+	"id": 26,
+	"name": "Russia",
+	"name_ar":"روسيا",
+	"shortName": "RU"
+}, {
+	"areaCode": "34",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_24.png",
+	"id": 24,
+	"name": "Spain",
+	"name_ar":"إسبانيا",
+	"shortName": "ES"
+}, {
+	"areaCode": "249",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_29.png",
+	"id": 29,
+	"name": "Sudan",
+	"name_ar":"السودان",
+	"shortName": "SD"
+}, {
+	"areaCode": "216",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_28.png",
+	"id": 28,
+	"name": "Tunisia",
+	"name_ar":"تونس",
+	"shortName": "TN"
+}, {
+	"areaCode": "90",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_20.png",
+	"id": 20,
+	"name": "Turkey",
+	"name_ar":"تركيا",
+	"shortName": "TR"
+}, {
+	"areaCode": "971",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_6.png",
+	"id": 6,
+	"name": "UAE",
+	"name_ar":"الإمارات",
+	"shortName": "AE"
+}, {
+	"areaCode": "44",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_22.png",
+	"id": 22,
+	"name": "UK",
+	"name_ar":"بريطانيا",
+	"shortName": "UK"
+}, {
+	"areaCode": "380",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_49.png",
+	"id": 49,
+	"name": "Ukraine",
+	"name_ar":"أوكرانيا",
+	"shortName": "UA"
+}, {
+	"areaCode": "1",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_31.png",
+	"id": 31,
+	"name": "USA",
+	"name_ar":"أمريكا",
+	"shortName": "USA"
+}, {
+	"areaCode": "967",
+	"flagUrl": "file:///android_asset/app/country_img/icon_country_12.png",
+	"id": 12,
+	"name": "Yemen",
+	"name_ar":"اليمن",
+	"shortName": "YE"
+}, {
+	"areaCode": "355",
+	"flagUrl": "file:///android_asset/app/country_img/10001_AL_355.png",
+	"id": 10001,
+	"name": "Albania",
+	"name_ar":"ألبانيا",
+	"shortName": "AL"
+},
+ {
+	"areaCode": "56",
+	"flagUrl": "file:///android_asset/app/country_img/10002_CL_56.png",
+	"id": 10002,
+	"name": "Chile",
+	"name_ar":"تشيلي",
+	"shortName": "CL"
+},
+ {
+	"areaCode": "353",
+	"flagUrl": "file:///android_asset/app/country_img/10003_IE_353.png",
+	"id": 10003,
+	"name": "Ireland",
+	"name_ar":"أيرلندا",
+	"shortName": "IE"
+},
+ {
+	"areaCode": "60",
+	"flagUrl": "file:///android_asset/app/country_img/10004_MY_60.png",
+	"id": 10004,
+	"name": "Malaysia",
+	"name_ar":"ماليزيا",
+	"shortName": "MY"
+},
+ {
+	"areaCode": "356",
+	"flagUrl": "file:///android_asset/app/country_img/10005_MT_356.png",
+	"id": 10005,
+	"name": "Malta",
+	"name_ar":"مالطا",
+	"shortName": "MT"
+},
+ {
+	"areaCode": "373",
+	"flagUrl": "file:///android_asset/app/country_img/10006_MD_373.png",
+	"id": 10006,
+	"name": "Moldova",
+	"name_ar":"مولدوفا",
+	"shortName": "MD"
+},
+ {
+	"areaCode": "64",
+	"flagUrl": "file:///android_asset/app/country_img/10007_NZ_64.png",
+	"id": 10007,
+	"name": "New Zealand",
+	"name_ar":"نيوزيلاندا",
+	"shortName": "NZ"
+},
+ {
+	"areaCode": "27",
+	"flagUrl": "file:///android_asset/app/country_img/10008_ZA_27.png",
+	"id": 10008,
+	"name": "South Africa",
+	"name_ar":"جنوب أفريقيا",
+	"shortName": "ZA"
+},
+ {
+	"areaCode": "41",
+	"flagUrl": "file:///android_asset/app/country_img/10010_CH_41.png",
+	"id": 10010,
+	"name": "Switzerland",
+	"name_ar":"سويسرا",
+	"shortName": "CH"
+},
+ {
+	"areaCode": "66",
+	"flagUrl": "file:///android_asset/app/country_img/10011_TH_66.png",
+	"id": 10011,
+	"name": "Thailand",
+	"name_ar":"تايلاند",
+	"shortName": "TH"
+},
+ {
+	"areaCode": "598",
+	"flagUrl": "file:///android_asset/app/country_img/10012_UY_598.png",
+	"id": 10012,
+	"name": "Uruguay",
+	"name_ar":"أوروغواي",
+	"shortName": "UY"
+}
+,
+ {
+	"areaCode": "81",
+	"flagUrl": "file:///android_asset/app/country_img/10013_JP_81.png",
+	"id": 10013,
+	"name": "Japan",
+	"name_ar":"اليابان",
+	"shortName": "JP"
+},
+ {
+	"areaCode": "82",
+	"flagUrl": "file:///android_asset/app/country_img/10014_KR_82.png",
+	"id": 10014,
+	"name": "South Korea",
+	"name_ar":"كوريا الجنوبية",
+	"shortName": "KR"
+},
+ {
+	"areaCode": "55",
+	"flagUrl": "file:///android_asset/app/country_img/10015_BR_55.png",
+	"id": 10015,
+	"name": "Brazil",
+	"name_ar":"البرازيل",
+	"shortName": "BR"
+},
+ {
+	"areaCode": "46",
+	"flagUrl": "file:///android_asset/app/country_img/10016_SE_46.png",
+	"id": 10016,
+	"name": "Sweden",
+	"name_ar":"السويد",
+	"shortName": "SE"
+},
+ {
+	"areaCode": "358",
+	"flagUrl": "file:///android_asset/app/country_img/10017_FI_358.png",
+	"id": 10017,
+	"name": "Finland",
+	"name_ar":"فنلندا",
+	"shortName": "FI"
+},
+ {
+	"areaCode": "387",
+	"flagUrl": "file:///android_asset/app/country_img/10018_BA_387.png",
+	"id": 10018,
+	"name": "Bosnia and Herzegovina",
+	"name_ar":"البوسنة والهرسك",
+	"shortName": "BA"
+},
+ {
+	"areaCode": "94",
+	"flagUrl": "file:///android_asset/app/country_img/10019_LK_94.png",
+	"id": 10019,
+	"name": "Sri Lanka",
+	"name_ar":"سيريلانكا",
+	"shortName": "LK"
+},
+ {
+	"areaCode": "222",
+	"flagUrl": "file:///android_asset/app/country_img/10020_MR_222.png",
+	"id": 10020,
+	"name": "Mauritania",
+	"name_ar":"موريتانيا",
+	"shortName": "MR"
+}
+,
+ {
+	"areaCode": "420",
+	"flagUrl": "file:///android_asset/app/country_img/10021_CZ_420.png",
+	"id": 10021,
+	"name": "Czechia",
+	"name_ar":"التشيك",
+	"shortName": "CZ"
+}
+,
+ {
+	"areaCode": "235",
+	"flagUrl": "file:///android_asset/app/country_img/10022_TD_235.png",
+	"id": 10022,
+	"name": "Chad",
+	"name_ar":"تشاد",
+	"shortName": "TD"
+},
+  {
+ 	"areaCode": "255",
+ 	"flagUrl": "file:///android_asset/app/country_img/10023_TZ_255.png",
+ 	"id": 10023,
+ 	"name": "Tanzania",
+ 	"name_ar":"تنزانيا",
+ 	"shortName": "TZ"
+ },
+    {
+   	"areaCode": "351",
+   	"flagUrl": "file:///android_asset/app/country_img/10024_PT_351.png",
+   	"id": 10024,
+   	"name": "Portugal",
+   	"name_ar":"البرتغال",
+   	"shortName": "PT"
+ },
+    {
+   	"areaCode": "47",
+   	"flagUrl": "file:///android_asset/app/country_img/10025_NO_47.png",
+   	"id": 10025,
+   	"name": "Norway",
+   	"name_ar":"النرويج",
+   	"shortName": "NO"
+   },
+    {
+    "areaCode": "30",
+    "flagUrl": "file:///android_asset/app/country_img/10026_GR_30.png",
+    "id": 10026,
+    "name": "Greece",
+    "name_ar":"اليونان",
+    "shortName": "GR"
+       }
+,
+    {
+   	"areaCode": "383",
+   	"flagUrl": "file:///android_asset/app/country_img/10027_XK_383.png",
+   	"id": 10027,
+   	"name": "Kosovo",
+   	"name_ar":"كوسوفو",
+   	"shortName": "XK"
+   }
+,
+ {
+	"areaCode": "45",
+	"flagUrl": "file:///android_asset/app/country_img/10028_DK_45.png",
+	"id": 10028,
+	"name": "Denmark",
+	"name_ar":"الدنمارك",
+	"shortName": "DK"
+}
+,
+  {
+ 	"areaCode": "36",
+ 	"flagUrl": "file:///android_asset/app/country_img/10030_HU_36.png",
+ 	"id": 10030,
+ 	"name": "Hungary",
+ 	"name_ar":"المجر",
+ 	"shortName": "HU"
+ }
+ ,
+   {
+  	"areaCode": "996",
+  	"flagUrl": "file:///android_asset/app/country_img/10032_KG_996.png",
+  	"id": 10032,
+  	"name": "Kyrgyzstan",
+  	"name_ar":"قيرغيزستان",
+  	"shortName": "KG"
+  }
+ ,
+   {
+  	"areaCode": "32",
+  	"flagUrl": "file:///android_asset/app/country_img/10033_BE_32.png",
+  	"id": 10033,
+  	"name": "Belgium",
+  	"name_ar":"بلجيكا",
+  	"shortName": "BE"
+  }
+ ,
+   {
+  	"areaCode": "48",
+  	"flagUrl": "file:///android_asset/app/country_img/10034_PL_48.png",
+  	"id": 10034,
+  	"name": "Poland",
+  	"name_ar":"بولندا",
+  	"shortName": "PL"
+  }
+ ,
+   {
+  	"areaCode": "230",
+  	"flagUrl": "file:///android_asset/app/country_img/10035_MU_230.png",
+  	"id": 10035,
+  	"name": "Mauritius",
+  	"name_ar":"موريشيوس",
+  	"shortName": "MU"
+  }
+ ,
+   {
+  	"areaCode": "994",
+  	"flagUrl": "file:///android_asset/app/country_img/10036_AZ_994.png",
+  	"id": 10036,
+  	"name": "Azerbaijan",
+  	"name_ar":"أذربيجان",
+  	"shortName": "AZ"
+  }
+ ,
+   {
+  	"areaCode": "359",
+  	"flagUrl": "file:///android_asset/app/country_img/10037_BG_359.png",
+  	"id": 10037,
+  	"name": "Bulgaria",
+  	"name_ar":"بلغاريا",
+  	"shortName": "BG"
+  }
+ ,
+   {
+  	"areaCode": "381",
+  	"flagUrl": "file:///android_asset/app/country_img/10038_RS_381.png",
+  	"id": 10038,
+  	"name": "Serbia",
+  	"name_ar":"صربيا",
+  	"shortName": "RS"
+  }
+]

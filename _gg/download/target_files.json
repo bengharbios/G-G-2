@@ -1,0 +1,83 @@
+{
+  "found": {
+    "src/src/app/page.tsx": {
+      "uid": "85e442477d68871f60294ab61bdaa237e16a4522",
+      "dest": "app/page.tsx"
+    },
+    "src/src/app/admin/page.tsx": {
+      "uid": "ecb8b9109bfdb7bbc02cd2a28873b5660afd14f1",
+      "dest": "app/admin/page.tsx"
+    },
+    "src/src/app/admin/layout.tsx": {
+      "uid": "73d894f84b6fdc3d7792d011a5fbfdc4d561c611",
+      "dest": "app/admin/layout.tsx"
+    },
+    "src/src/app/layout.tsx": {
+      "uid": "572abfb13d8c8421d87f430c25ba09f838a17550",
+      "dest": "app/layout.tsx"
+    },
+    "src/src/app/familyfeud/page.tsx": {
+      "uid": "1d854a3ea8585bae05c1ea036030efcf488b3f93",
+      "dest": "app/familyfeud/page.tsx"
+    },
+    "src/src/app/mafia/page.tsx": {
+      "uid": "eecaa8df2e2c7ce30468d77bcacd3e6f10ea5ea0",
+      "dest": "app/mafia/page.tsx"
+    },
+    "src/src/app/diwaniya/page.tsx": {
+      "uid": "9bc96342d8009bd496ccd8b663ff62dbb469be3e",
+      "dest": "app/diwaniya/page.tsx"
+    },
+    "src/src/app/prison/page.tsx": {
+      "uid": "9e353f4fa160370236d40cf14760b6c7152a680a",
+      "dest": "app/prison/page.tsx"
+    },
+    "src/src/app/risk/page.tsx": {
+      "uid": "b1232146cc96cf8f8fc31d58ef6dc6857a6f8506",
+      "dest": "app/risk/page.tsx"
+    },
+    "src/src/app/risk2/page.tsx": {
+      "uid": "8aaef26a9f4fb2e4e051c73d8ffc25b66c940817",
+      "dest": "app/risk2/page.tsx"
+    },
+    "src/src/app/tabot/page.tsx": {
+      "uid": "f6be0841ea4080ce78d4c449eda0a65c4dce0709",
+      "dest": "app/tabot/page.tsx"
+    },
+    "src/src/app/tobol/page.tsx": {
+      "uid": "8f19ada5d1a1760f3449e62352fbb2b9f1ef66f1",
+      "dest": "app/tobol/page.tsx"
+    },
+    "src/src/app/join/[code]/page.tsx": {
+      "uid": "bf9516e2e51b35183c5da03907c9c9994596b9ad",
+      "dest": "app/join/[code]/page.tsx"
+    },
+    "src/src/app/join/risk/[code]/page.tsx": {
+      "uid": "317b947c5c4ce7354fe1172d21ab9ad116d6c2b1",
+      "dest": "app/join/risk/[code]/page.tsx"
+    },
+    "src/src/app/join/risk2/[code]/page.tsx": {
+      "uid": "59d47e116ade495c5152b88582244c43e5cab31a",
+      "dest": "app/join/risk2/[code]/page.tsx"
+    },
+    "src/src/app/join/prison/[code]/page.tsx": {
+      "uid": "85e9f4cede7953bf3c72e806ed50c2a4beb5499c",
+      "dest": "app/join/prison/[code]/page.tsx"
+    },
+    "src/src/app/join/tobol/[code]/page.tsx": {
+      "uid": "00039b59a93318791f3db13edf31875f3ed6eb33",
+      "dest": "app/join/tobol/[code]/page.tsx"
+    },
+    "src/src/lib/admin-auth.ts": {
+      "uid": "28b4dbbb79c710a1f7e0a26a90e29b2af92c7bd9",
+      "dest": "lib/admin-auth.ts"
+    },
+    "src/src/lib/admin-db.ts": {
+      "uid": "c358553996575ed88748c489cf5abfdd1bb01251",
+      "dest": "lib/admin-db.ts"
+    }
+  },
+  "missing": [
+    "src/src/lib/games-data.ts"
+  ]
+}

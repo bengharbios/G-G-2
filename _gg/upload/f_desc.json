@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The first image shows a **paper airplane** (a classic folded paper craft in a light greenish hue, with the characteristic triangular shape of a traditional paper plane). The second image depicts a **white, stylized hand gesture** (resembling a \"thumbs - up\" or a simplified, cartoon - like hand with a rounded, curved form, set against a dark background).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1775752646,
+  "id": "202604100037239dadc5e5a9224613",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202604100037239dadc5e5a9224613",
+  "usage": {
+    "completion_tokens": 77,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 49,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 126
+  }
+}

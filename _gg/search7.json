@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.npmjs.com/package/canvas-confetti",
+    "name": "canvas-confetti",
+    "snippet": "25 Oct 2025 — performant confetti animation in the browser . Latest version: 1.9.4, last published: 6 months ago. Start using canvas-confetti in your ...\nInternally, the same canvas element will be reused, continuing the existing animation with the new confetti added. The promise returned by each call to confetti will resolve once all animations are done.",
+    "host_name": "www.npmjs.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.npmjs.com/package/react-canvas-confetti",
+    "name": "react-canvas-confetti",
+    "snippet": "8 Mar 2024 — The React component for canvas-confetti library . In the demo version, you can play with the settings and see examples.",
+    "host_name": "www.npmjs.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.npmjs.com/package//react-confetti-explosion?activeTab=readme",
+    "name": "react-confetti-explosion",
+    "snippet": "3 Jun 2025 — A lightweight css-animation based confetti exploder for React . Latest version: 3.0.3, last published: 10 months ago.",
+    "host_name": "www.npmjs.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ulitcos/react-canvas-confetti",
+    "name": "ulitcos/react-canvas-confetti",
+    "snippet": "The React component for canvas-confetti library . In the demo version, you can play with the settings and see examples.\nThe React component for canvas-confetti library. In the demo version, you can play with the settings and see examples.",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://css-tricks.com/write-code-get-confetti",
+    "name": "Write Code, Get Confetti",
+    "snippet": "It is a simple JavaScript package that injects a (virtual, <canvas> ) confetti explosion into whatever web page you are working on.\nThis year I learned about the canvas-confetti npm package. It is a simple JavaScript package that injects a (virtual, <canvas>) confetti explosion into whatever web page you are working on.",
+    "host_name": "css-tricks.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://classic.yarnpkg.com/en/package/confetti-explosion-react",
+    "name": "confetti-explosion-react",
+    "snippet": "A super lightweight confetti component that would not require canvas , use only CSS for animation , and could also be controlled as an explosion .",
+    "host_name": "classic.yarnpkg.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://magicui.design/docs/components/confetti",
+    "name": "Confetti | React Components & Templates",
+    "snippet": "Confetti animations are best used to delight your users when something special happens.",
+    "host_name": "magicui.design",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://socket.dev/npm/package/react-confetti-boom",
+    "name": "react-confetti-boom - npm Package Security Analysis - Socket",
+    "snippet": "11 Apr 2023 — A customizable React confetti explosion component for celebrations and special events. Version: 2.0.1 was published by almondbongbong.",
+    "host_name": "socket.dev",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.skypack.dev/view/react-canvas-confetti",
+    "name": "npm:react-canvas-confetti",
+    "snippet": "18 Dec 2020 — react-canvas-confetti. React component for canvas-confetti library . In the demo example you can play with the settings. Build Status NPM.",
+    "host_name": "www.skypack.dev",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dev.to/dangote/making-react-apps-delightful-with-confetti-effects-1ag5",
+    "name": "Making React Apps Delightful with Confetti Effects",
+    "snippet": "React is powerful but sometimes, even with beautiful logic and data flow, the user experience can feel dry. What if we could add a little joy when users complete tasks?",
+    "host_name": "dev.to",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

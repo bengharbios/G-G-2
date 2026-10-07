@@ -1,0 +1,414 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:var(--font-sans);}
+body{direction:rtl;}
+#app{max-width:700px;margin:0 auto;padding:1rem;}
+.header{text-align:center;padding:1rem 0 1.5rem;}
+.header h1{font-size:22px;font-weight:500;color:var(--color-text-primary);}
+.header p{font-size:14px;color:var(--color-text-secondary);margin-top:4px;}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.team-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;text-align:center;}
+.team-card.active{border:2px solid #1D9E75;}
+.team-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;}
+.team-name{font-size:16px;font-weight:500;color:var(--color-text-primary);}
+.team-score{font-size:28px;font-weight:500;color:#1D9E75;margin-top:4px;}
+.word-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:2rem;text-align:center;margin-bottom:1rem;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.word-display{font-size:32px;font-weight:500;color:var(--color-text-primary);letter-spacing:2px;}
+.word-category{font-size:13px;color:var(--color-text-secondary);margin-top:8px;}
+.hints-area{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;margin-bottom:1rem;min-height:80px;}
+.hints-title{font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;}
+.hints-list{display:flex;flex-wrap:wrap;gap:8px;}
+.hint-badge{background:#E1F5EE;color:#0F6E56;border-radius:20px;padding:4px 12px;font-size:13px;}
+.timer-bar{height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;margin-bottom:1rem;}
+.timer-fill{height:100%;background:#1D9E75;transition:width 0.1s linear;border-radius:3px;}
+.timer-fill.warn{background:#EF9F27;}
+.timer-fill.danger{background:#E24B4A;}
+.controls{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;}
+.btn{flex:1;padding:10px 16px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;cursor:pointer;min-width:100px;}
+.btn:hover{background:var(--color-background-secondary);}
+.btn.primary{background:#1D9E75;color:white;border-color:#0F6E56;}
+.btn.primary:hover{background:#0F6E56;}
+.btn.danger{background:#E24B4A;color:white;border-color:#A32D2D;}
+.btn.danger:hover{background:#A32D2D;}
+.btn.warn{background:#EF9F27;color:white;border-color:#BA7517;}
+.btn.warn:hover{background:#BA7517;}
+.turn-info{text-align:center;font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;}
+.turn-info span{color:var(--color-text-primary);font-weight:500;}
+.msg{text-align:center;padding:12px;border-radius:var(--border-radius-md);margin-bottom:1rem;font-size:14px;}
+.msg.success{background:#E1F5EE;color:#085041;}
+.msg.error{background:#FCEBEB;color:#501313;}
+.msg.info{background:#E6F1FB;color:#042C53;}
+.categories{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;justify-content:center;}
+.cat-btn{padding:6px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:12px;cursor:pointer;color:var(--color-text-secondary);}
+.cat-btn:hover,.cat-btn.active{background:#E1F5EE;color:#085041;border-color:#5DCAA5;}
+.setup{padding:1rem 0;}
+.setup h2{font-size:18px;font-weight:500;margin-bottom:1rem;text-align:center;}
+.input-group{margin-bottom:1rem;}
+.input-group label{font-size:13px;color:var(--color-text-secondary);display:block;margin-bottom:6px;}
+.input-group input{width:100%;padding:8px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;}
+.skip-count{font-size:12px;color:var(--color-text-secondary);text-align:center;margin-bottom:8px;}
+.words-count{font-size:12px;color:var(--color-text-secondary);text-align:center;margin-top:4px;}
+</style>
+<div id="app" dir="rtl">
+<div class="header">
+  <h1>لعبة الشيفرات 🎯</h1>
+  <p>لمحّ بكلمة واحدة فقط — لا تقل الكلمة ولا مرادفاتها!</p>
+</div>
+<div id="screen-setup" class="setup">
+  <h2>إعداد اللعبة</h2>
+  <div class="input-group">
+    <label>اسم الفريق الأول</label>
+    <input id="t1name" value="الفريق الأزرق" />
+  </div>
+  <div class="input-group">
+    <label>اسم الفريق الثاني</label>
+    <input id="t2name" value="الفريق الأخضر" />
+  </div>
+  <div class="input-group">
+    <label>الوقت لكل جولة (ثانية)</label>
+    <input id="timer-setting" type="number" value="60" min="20" max="120" />
+  </div>
+  <div style="margin-bottom:1rem;">
+    <label style="font-size:13px;color:var(--color-text-secondary);display:block;margin-bottom:8px;">اختر الفئات:</label>
+    <div class="categories" id="cat-select"></div>
+  </div>
+  <button class="btn primary" style="width:100%" onclick="startGame()">ابدأ اللعبة</button>
+</div>
+<div id="screen-game" style="display:none">
+  <div class="teams" id="teams-display"></div>
+  <div class="turn-info" id="turn-info"></div>
+  <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+  <div class="word-box">
+    <div class="word-display" id="word-display">⏳</div>
+    <div class="word-category" id="word-cat"></div>
+  </div>
+  <div class="hints-area">
+    <div class="hints-title">التلميحات المُعطاة في هذه الجولة:</div>
+    <div class="hints-list" id="hints-list"></div>
+  </div>
+  <div class="skip-count" id="skip-count"></div>
+  <div class="msg" id="msg" style="display:none"></div>
+  <div class="controls">
+    <button class="btn primary" id="btn-correct" onclick="correct()">✓ صح</button>
+    <button class="btn warn" id="btn-skip" onclick="skipWord()">↷ تخطي</button>
+    <button class="btn danger" id="btn-wrong" onclick="wrong()">✗ خطأ</button>
+  </div>
+  <button class="btn" onclick="nextTurn()" id="btn-next" style="width:100%;display:none">التالي →</button>
+  <button class="btn" onclick="resetGame()" style="width:100%;margin-top:8px;font-size:12px;color:var(--color-text-secondary)">إعادة الإعداد</button>
+</div>
+<div id="screen-end" style="display:none">
+  <div class="word-box" style="min-height:200px">
+    <div style="font-size:48px">🏆</div>
+    <div class="word-display" id="winner-display" style="font-size:24px;margin-top:12px;"></div>
+    <div class="word-category" id="final-scores" style="margin-top:8px;font-size:15px;"></div>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:1rem" onclick="resetGame()">العب مجددًا</button>
+</div>
+</div>
+<script>
+const ALL_WORDS = {
+  "مكان وسفر": [
+    {w:"مطار",hint:"مكان تنطلق منه الرحلات الجوية"},
+    {w:"فندق",hint:"مكان تنام فيه عند السفر"},
+    {w:"ميناء",hint:"مرسى السفن"},
+    {w:"محطة",hint:"توقف القطار هنا"},
+    {w:"جواز",hint:"وثيقة السفر الرسمية"},
+    {w:"حقيبة",hint:"تحمل ملابسك فيها"},
+    {w:"خريطة",hint:"تدل على الطريق"},
+    {w:"سفارة",hint:"مكتب تمثيل الدولة في الخارج"},
+    {w:"تأشيرة",hint:"ختم في الجواز للدخول"},
+    {w:"رحلة",hint:"تنقل من مكان لآخر"},
+    {w:"سياحة",hint:"تصفح المعالم والأماكن"},
+    {w:"مطعم",hint:"تأكل فيه خارج البيت"},
+  ],
+  "مهن وأعمال": [
+    {w:"طبيب",hint:"يعالج المرضى"},
+    {w:"معلم",hint:"يشرح الدروس في الفصل"},
+    {w:"مهندس",hint:"يصمم المباني والجسور"},
+    {w:"نجار",hint:"يصنع الأثاث من الخشب"},
+    {w:"سباك",hint:"يصلح أنابيب المياه"},
+    {w:"محامي",hint:"يدافع في المحكمة"},
+    {w:"طيار",hint:"يقود الطائرة"},
+    {w:"شيف",hint:"يطبخ في مطعم"},
+    {w:"ممرضة",hint:"تساعد الطبيب"},
+    {w:"مصور",hint:"يلتقط الصور"},
+    {w:"صحفي",hint:"يكتب الأخبار"},
+    {w:"بناء",hint:"يشيد المنازل"},
+  ],
+  "أدوات ومواد": [
+    {w:"منشار",hint:"أداة لقطع الخشب"},
+    {w:"مطرقة",hint:"تضرب المسمار بها"},
+    {w:"مفتاح",hint:"يفتح الباب أو الصامولة"},
+    {w:"فرجار",hint:"يرسم الدوائر"},
+    {w:"مسطرة",hint:"تقيس الطول"},
+    {w:"مقص",hint:"يقطع الورق"},
+    {w:"مثقاب",hint:"يثقب الجدار"},
+    {w:"قلم",hint:"تكتب به"},
+    {w:"ممحاة",hint:"تمسح الكتابة"},
+    {w:"مسطرة",hint:"تقيس المسافات"},
+    {w:"مشبك",hint:"يثبت الأوراق"},
+    {w:"شريط لاصق",hint:"يلصق الأشياء"},
+  ],
+  "طعام وشراب": [
+    {w:"قهوة",hint:"مشروب يحتوي على كافيين"},
+    {w:"شاي",hint:"مشروب ساخن من الأعشاب"},
+    {w:"برغر",hint:"وجبة سريعة بالخبز واللحم"},
+    {w:"بيتزا",hint:"عجينة مستديرة بالجبن"},
+    {w:"سلطة",hint:"طبق من الخضار"},
+    {w:"حليب",hint:"يخرج من البقرة"},
+    {w:"خبز",hint:"يُعجن ويُخبز"},
+    {w:"أرز",hint:"حبوب بيضاء تُطبخ"},
+    {w:"سمك",hint:"يعيش في الماء ويُأكل"},
+    {w:"عصير",hint:"مشروب من الفاكهة"},
+    {w:"كعكة",hint:"حلوى في الأعياد"},
+    {w:"شاورما",hint:"لحم دوار في الخبز"},
+  ],
+  "تقنية وترفيه": [
+    {w:"تلفزيون",hint:"شاشة في الصالة"},
+    {w:"راديو",hint:"يبث الأغاني والأخبار بالأمواج"},
+    {w:"هاتف",hint:"جهاز الاتصال"},
+    {w:"حاسوب",hint:"جهاز معالجة المعلومات"},
+    {w:"إنترنت",hint:"شبكة عالمية للمعلومات"},
+    {w:"كاميرا",hint:"تلتقط الصور والفيديو"},
+    {w:"سماعة",hint:"تسمع بها الصوت"},
+    {w:"شاحن",hint:"يعيد الطاقة للجهاز"},
+    {w:"قناة",hint:"محطة بث تلفزيوني أو يوتيوب"},
+    {w:"تطبيق",hint:"برنامج على الهاتف"},
+    {w:"بلوتوث",hint:"اتصال لاسلكي قصير المدى"},
+    {w:"لاب توب",hint:"حاسوب محمول"},
+  ],
+  "طبيعة وحيوانات": [
+    {w:"نسر",hint:"طائر ضخم يحلق عالياً"},
+    {w:"صقر",hint:"طائر صيد سريع"},
+    {w:"أسد",hint:"ملك الغابة"},
+    {w:"دلفين",hint:"حيوان بحري ذكي"},
+    {w:"جبل",hint:"قمة عالية من الصخور"},
+    {w:"نهر",hint:"مجرى مائي يصب في البحر"},
+    {w:"صحراء",hint:"منطقة جافة ورملية"},
+    {w:"غابة",hint:"مكان كثير الأشجار"},
+    {w:"زلزال",hint:"اهتزاز الأرض فجأة"},
+    {w:"بركان",hint:"يقذف الحمم"},
+    {w:"قمر",hint:"يضيء الليل"},
+    {w:"شمس",hint:"تشرق صباحاً وتغرب مساءً"},
+  ],
+  "رياضة": [
+    {w:"هدف",hint:"تسجيله يُفرح الجمهور"},
+    {w:"حكم",hint:"يطبق قوانين المباراة"},
+    {w:"بطولة",hint:"منافسة للفوز باللقب"},
+    {w:"تدريب",hint:"ممارسة لتحسين المهارة"},
+    {w:"ملعب",hint:"الأرض التي تُلعب عليها"},
+    {w:"مرمى",hint:"الشباك التي يسجل فيها"},
+    {w:"كأس",hint:"جائزة الفائز"},
+    {w:"مهاجم",hint:"لاعب يسعى للتسجيل"},
+    {w:"بطل",hint:"الفائز الأول"},
+    {w:"سباحة",hint:"رياضة في الماء"},
+    {w:"قفز",hint:"ارتفاع عن الأرض"},
+    {w:"ميدالية",hint:"تُعطى للمتفوق في المسابقة"},
+  ],
+  "بيت ومنزل": [
+    {w:"ثلاجة",hint:"تحفظ الطعام بارداً"},
+    {w:"فريزر",hint:"الجزء الجليدي من الثلاجة"},
+    {w:"قلاية",hint:"تقلي الطعام بالزيت"},
+    {w:"مكيف",hint:"يبرد الغرفة صيفاً"},
+    {w:"غسالة",hint:"تنظف الملابس"},
+    {w:"مكنسة",hint:"تنظف الأرض"},
+    {w:"مرآة",hint:"ترى فيها انعكاس وجهك"},
+    {w:"وسادة",hint:"تضع رأسك عليها أثناء النوم"},
+    {w:"ستارة",hint:"تغطي النافذة"},
+    {w:"سجادة",hint:"تفرش على الأرض"},
+    {w:"صنبور",hint:"يخرج منه الماء"},
+    {w:"مصباح",hint:"ينير الغرفة"},
+  ],
+};
+
+const ALL_CATS = Object.keys(ALL_WORDS);
+let selectedCats = [...ALL_CATS];
+let team1={name:"",score:0};
+let team2={name:"",score:0};
+let currentTeam=1;
+let currentWord=null;
+let currentWordObj=null;
+let usedWords=new Set();
+let roundHints=[];
+let timerMax=60;
+let timerLeft=60;
+let timerInterval=null;
+let skipsLeft=2;
+let roundActive=false;
+
+function init(){
+  const catSel=document.getElementById('cat-select');
+  catSel.innerHTML='';
+  ALL_CATS.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='cat-btn active';
+    b.textContent=c;
+    b.onclick=()=>{
+      if(selectedCats.includes(c)){
+        if(selectedCats.length<=1)return;
+        selectedCats=selectedCats.filter(x=>x!==c);
+        b.className='cat-btn';
+      }else{
+        selectedCats.push(c);
+        b.className='cat-btn active';
+      }
+    };
+    catSel.appendChild(b);
+  });
+}
+
+function startGame(){
+  team1.name=document.getElementById('t1name').value||'الفريق الأول';
+  team2.name=document.getElementById('t2name').value||'الفريق الثاني';
+  team1.score=0; team2.score=0;
+  timerMax=parseInt(document.getElementById('timer-setting').value)||60;
+  currentTeam=1;
+  usedWords=new Set();
+  document.getElementById('screen-setup').style.display='none';
+  document.getElementById('screen-game').style.display='block';
+  renderTeams();
+  newRound();
+}
+
+function renderTeams(){
+  const t=document.getElementById('teams-display');
+  t.innerHTML=`
+    <div class="team-card ${currentTeam===1?'active':''}">
+      <div class="team-label">الفريق الأول</div>
+      <div class="team-name">${team1.name}</div>
+      <div class="team-score">${team1.score}</div>
+    </div>
+    <div class="team-card ${currentTeam===2?'active':''}">
+      <div class="team-label">الفريق الثاني</div>
+      <div class="team-name">${team2.name}</div>
+      <div class="team-score">${team2.score}</div>
+    </div>`;
+}
+
+function getRandomWord(){
+  const pool=[];
+  selectedCats.forEach(c=>{
+    ALL_WORDS[c].forEach(w=>{
+      if(!usedWords.has(w.w)) pool.push({...w,cat:c});
+    });
+  });
+  if(pool.length===0){usedWords=new Set();return getRandomWord();}
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function newRound(){
+  currentWordObj=getRandomWord();
+  usedWords.add(currentWordObj.w);
+  roundHints=[];
+  skipsLeft=2;
+  roundActive=true;
+  document.getElementById('hints-list').innerHTML='';
+  document.getElementById('word-display').textContent=currentWordObj.w;
+  document.getElementById('word-cat').textContent='📂 '+currentWordObj.cat;
+  document.getElementById('msg').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.getElementById('btn-correct').disabled=false;
+  document.getElementById('btn-skip').disabled=false;
+  document.getElementById('btn-wrong').disabled=false;
+  document.getElementById('skip-count').textContent='التخطي المتبقي: '+skipsLeft;
+  const ti=document.getElementById('turn-info');
+  const tm=currentTeam===1?team1:team2;
+  ti.innerHTML='دور: <span>'+tm.name+'</span> — لمّح بكلمة واحدة فقط!';
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timerLeft=timerMax;
+  updateTimerBar();
+  timerInterval=setInterval(()=>{
+    timerLeft--;
+    updateTimerBar();
+    if(timerLeft<=0){clearInterval(timerInterval);timeUp();}
+  },1000);
+}
+
+function updateTimerBar(){
+  const pct=(timerLeft/timerMax)*100;
+  const fill=document.getElementById('timer-fill');
+  fill.style.width=pct+'%';
+  fill.className='timer-fill'+(pct<=20?' danger':pct<=40?' warn':'');
+}
+
+function timeUp(){
+  roundActive=false;
+  showMsg('⏰ انتهى الوقت! ينتقل الدور للفريق الثاني','error');
+  endTurn(false);
+}
+
+function showMsg(text,type){
+  const m=document.getElementById('msg');
+  m.textContent=text;
+  m.className='msg '+type;
+  m.style.display='block';
+}
+
+function correct(){
+  if(!roundActive)return;
+  clearInterval(timerInterval);
+  roundActive=false;
+  if(currentTeam===1)team1.score++;
+  else team2.score++;
+  renderTeams();
+  showMsg('🎉 إجابة صحيحة! نقطة للفريق '+( currentTeam===1?team1.name:team2.name),'success');
+  endTurn(true);
+}
+
+function wrong(){
+  if(!roundActive)return;
+  clearInterval(timerInterval);
+  roundActive=false;
+  showMsg('❌ إجابة خاطئة! ينتقل الدور','error');
+  currentTeam=currentTeam===1?2:1;
+  endTurn(false,true);
+}
+
+function skipWord(){
+  if(!roundActive)return;
+  if(skipsLeft<=0){showMsg('لا تخطيات متبقية!','error');return;}
+  skipsLeft--;
+  document.getElementById('skip-count').textContent='التخطي المتبقي: '+skipsLeft;
+  currentWordObj=getRandomWord();
+  usedWords.add(currentWordObj.w);
+  roundHints=[];
+  document.getElementById('hints-list').innerHTML='';
+  document.getElementById('word-display').textContent=currentWordObj.w;
+  document.getElementById('word-cat').textContent='📂 '+currentWordObj.cat;
+}
+
+function endTurn(won,switched){
+  document.getElementById('btn-correct').disabled=true;
+  document.getElementById('btn-skip').disabled=true;
+  document.getElementById('btn-wrong').disabled=true;
+  document.getElementById('btn-next').style.display='block';
+  if(!won&&!switched) currentTeam=currentTeam===1?2:1;
+}
+
+function nextTurn(){
+  renderTeams();
+  newRound();
+}
+
+function resetGame(){
+  clearInterval(timerInterval);
+  document.getElementById('screen-game').style.display='none';
+  document.getElementById('screen-end').style.display='none';
+  document.getElementById('screen-setup').style.display='block';
+}
+
+function addHint(text){
+  roundHints.push(text);
+  const li=document.getElementById('hints-list');
+  const b=document.createElement('span');
+  b.className='hint-badge';
+  b.textContent=text;
+  li.appendChild(b);
+}
+
+init();
+</script>

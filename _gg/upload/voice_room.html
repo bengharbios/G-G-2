@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>غرفة نجوم العرب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep:    #0d0f1a;
+    --bg-mid:     #141726;
+    --bg-card:    #1c2035;
+    --bg-hover:   #232843;
+    --accent:     #6c63ff;
+    --accent2:    #a78bfa;
+    --green:      #22c55e;
+    --gold:       #f59e0b;
+    --red:        #ef4444;
+    --orange:     #f97316;
+    --text-1:     #f0f0f8;
+    --text-2:     #9ca3c4;
+    --text-3:     #5a6080;
+    --border:     rgba(108,99,255,0.18);
+    --border2:    rgba(255,255,255,0.07);
+    --mic-open:   #1a2540;
+    --mic-ring:   rgba(108,99,255,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    background: var(--bg-deep);
+    font-family: 'Cairo', sans-serif;
+    color: var(--text-1);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── PHONE FRAME ─────────────────────────── */
+  .scene {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #080a12;
+    padding: 24px 12px;
+  }
+  .phone {
+    width: 375px;
+    height: 812px;
+    background: var(--bg-deep);
+    border-radius: 40px;
+    border: 2px solid rgba(108,99,255,0.35);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ── STATUS BAR ──────────────────────────── */
+  .status-bar {
+    height: 44px;
+    background: var(--bg-mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--border2);
+  }
+  .status-time { font-weight: 600; font-size: 14px; color: var(--text-1); }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+
+  /* ── TOP BAR ─────────────────────────────── */
+  .top-bar {
+    height: 56px;
+    background: var(--bg-mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exit-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 10px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ef4444;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .exit-btn:active { background: rgba(239,68,68,0.25); }
+  .room-title-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .room-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .room-count { font-size: 10px; color: var(--text-3); }
+  .top-actions { display: flex; gap: 8px; }
+  .top-icon-btn {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .top-icon-btn:active { background: var(--bg-hover); }
+
+  /* ── MIC GRID ────────────────────────────── */
+  .mics-wrap {
+    background: var(--bg-mid);
+    padding: 14px 12px 10px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border2);
+  }
+  .mics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .mics-label { font-size: 11px; color: var(--text-3); }
+  .mics-count-badge {
+    font-size: 10px;
+    background: rgba(108,99,255,0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(108,99,255,0.3);
+    border-radius: 99px;
+    padding: 2px 8px;
+  }
+  .mics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px 6px;
+  }
+  .mic-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .mic-avatar-wrap { position: relative; }
+  .mic-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    position: relative;
+    transition: transform .15s;
+    border: 2px solid transparent;
+  }
+  .mic-slot:active .mic-avatar { transform: scale(.93); }
+
+  .mic-avatar.empty {
+    background: var(--mic-open);
+    border-color: rgba(108,99,255,0.25);
+  }
+  .mic-avatar.occupied {
+    border-color: var(--green);
+    background: var(--bg-card);
+  }
+  .mic-avatar.speaking {
+    border-color: var(--green);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+    animation: speakRing 1s infinite;
+  }
+  @keyframes speakRing {
+    0%,100%{ box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+    50%{ box-shadow: 0 0 0 6px rgba(34,197,94,0.08); }
+  }
+  .mic-avatar.locked {
+    background: #111318;
+    border-color: rgba(255,255,255,0.06);
+    opacity: .7;
+  }
+  .mic-avatar.owner-slot {
+    border-color: var(--gold);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
+  }
+  .mic-avatar img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .mic-badge {
+    position: absolute;
+    bottom: -2px; right: -2px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+  }
+  .mic-badge.owner { background: var(--gold); }
+  .mic-badge.speaking { background: var(--green); }
+  .mic-num {
+    font-size: 9px;
+    color: var(--text-3);
+    margin-top: 1px;
+  }
+  .mic-name {
+    font-size: 9.5px;
+    color: var(--text-2);
+    text-align: center;
+    max-width: 54px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+
+  /* ── CHAT AREA ───────────────────────────── */
+  .chat-area {
+    flex: 1;
+    padding: 10px 12px 6px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    scrollbar-width: none;
+  }
+  .chat-area::-webkit-scrollbar { display: none; }
+
+  .chat-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    animation: fadeUp .3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(6px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .chat-av {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .chat-bubble {
+    background: var(--bg-card);
+    border: 1px solid var(--border2);
+    border-radius: 12px 4px 12px 12px;
+    padding: 5px 10px;
+    max-width: 75%;
+  }
+  .chat-sender { font-size: 10px; font-weight: 700; margin-bottom: 1px; }
+  .chat-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+  .gift-notif {
+    align-self: center;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-size: 10.5px;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: fadeUp .3s ease;
+  }
+
+  /* ── BOTTOM BAR ──────────────────────────── */
+  .bottom-bar {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+    padding: 10px 12px 20px;
+    flex-shrink: 0;
+  }
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bar-icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .bar-icon-btn:active { transform: scale(.93); }
+  .bar-icon-btn.active-mic {
+    background: rgba(34,197,94,0.15);
+    border-color: var(--green);
+  }
+  .bar-icon-btn.muted {
+    background: rgba(239,68,68,0.1);
+    border-color: rgba(239,68,68,0.3);
+  }
+  .chat-input-wrap {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    height: 38px;
+    gap: 6px;
+    cursor: text;
+  }
+  .chat-input-wrap input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    color: var(--text-1);
+    direction: rtl;
+  }
+  .chat-input-wrap input::placeholder { color: var(--text-3); }
+  .send-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity .15s;
+  }
+  .gift-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform .15s;
+  }
+  .gift-btn:active { transform: scale(.93); }
+
+  /* ── BOTTOM SHEET (shared) ───────────────── */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+  }
+  .overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .sheet {
+    background: #181c2e;
+    border-radius: 22px 22px 0 0;
+    border-top: 1px solid var(--border);
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.32,.72,0,1);
+    padding: 0 0 24px;
+  }
+  .overlay.open .sheet { transform: translateY(0); }
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 99px;
+    margin: 12px auto 14px;
+  }
+
+  /* ── MIC CONTEXT MENU ────────────────────── */
+  .mic-menu-sheet .sheet { padding-bottom: 24px; }
+  .mic-menu-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-2);
+    text-align: center;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid var(--border2);
+    margin: 0 16px;
+  }
+  .mic-menu-items { padding: 8px 12px; }
+  .mic-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    transition: background .15s;
+  }
+  .mic-menu-item:active { background: var(--bg-hover); }
+  .mic-menu-item .icon-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .item-red .icon-circle { background: rgba(239,68,68,0.15); }
+  .item-red { color: #ef4444; }
+  .item-orange .icon-circle { background: rgba(249,115,22,0.15); }
+  .item-orange { color: var(--orange); }
+  .item-yellow .icon-circle { background: rgba(245,158,11,0.15); }
+  .item-yellow { color: var(--gold); }
+  .item-green .icon-circle { background: rgba(34,197,94,0.15); }
+  .item-green { color: var(--green); }
+  .item-purple .icon-circle { background: rgba(108,99,255,0.15); }
+  .item-purple { color: var(--accent2); }
+  .mic-menu-item-sub { font-size: 11px; color: var(--text-3); font-weight: 400; margin-top: 1px; }
+
+  /* ── PROFILE SHEET ───────────────────────── */
+  .profile-sheet .sheet { padding-bottom: 24px; }
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 20px 16px;
+    border-bottom: 1px solid var(--border2);
+    margin: 0 0 4px;
+  }
+  .profile-av {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+  .profile-name { font-size: 16px; font-weight: 700; }
+  .profile-role {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .role-pill {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+  }
+  .role-member { background: rgba(108,99,255,0.15); color: var(--accent2); }
+  .role-admin  { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .profile-stats {
+    display: flex;
+    gap: 1px;
+    margin: 0 16px 12px;
+    background: var(--border2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .profile-stat {
+    flex: 1;
+    padding: 10px 8px;
+    background: var(--bg-card);
+    text-align: center;
+  }
+  .profile-stat:not(:last-child) { border-left: 1px solid var(--border2); }
+  .stat-val { font-size: 15px; font-weight: 700; color: var(--text-1); }
+  .stat-lbl { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .profile-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+  }
+  .pact-btn {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .pact-btn:active { background: var(--bg-hover); transform: scale(.97); }
+  .pact-lbl { font-size: 11px; color: var(--text-2); font-weight: 600; }
+
+  /* ── GIFTS SHEET ─────────────────────────── */
+  .gifts-sheet .sheet { padding-bottom: 24px; }
+  .gifts-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    padding: 0 16px 10px;
+    color: var(--text-1);
+  }
+  .gifts-targets {
+    display: flex;
+    gap: 6px;
+    padding: 0 16px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .gifts-targets::-webkit-scrollbar { display: none; }
+  .target-btn {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--border2);
+    color: var(--text-3);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .target-btn.active {
+    background: rgba(108,99,255,0.15);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+  .gifts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0 12px 12px;
+  }
+  .gift-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border2);
+    border-radius: 14px;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .gift-card:active, .gift-card.selected {
+    border-color: var(--gold);
+    background: rgba(245,158,11,0.08);
+  }
+  .gift-icon-big { font-size: 26px; line-height: 1; }
+  .gift-name { font-size: 10px; color: var(--text-2); font-weight: 600; }
+  .gift-price {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .gift-receive { font-size: 9px; color: var(--text-3); }
+  .gift-send-btn {
+    margin: 0 16px;
+    width: calc(100% - 32px);
+    height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .gift-send-btn:active { opacity: .85; }
+
+  /* ── SETTINGS SHEET ──────────────────────── */
+  .settings-sheet .sheet { padding-bottom: 24px; }
+  .settings-title {
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    padding: 0 16px 14px;
+    border-bottom: 1px solid var(--border2);
+    margin: 0 0 8px;
+  }
+  .settings-section { padding: 0 16px; margin-bottom: 14px; }
+  .settings-section-title { font-size: 11px; color: var(--text-3); font-weight: 600; margin-bottom: 8px; }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .setting-row:active { background: var(--bg-hover); }
+  .setting-row-left { display: flex; align-items: center; gap: 10px; }
+  .setting-icon { font-size: 16px; }
+  .toggle {
+    width: 36px; height: 20px;
+    border-radius: 99px;
+    background: var(--text-3);
+    position: relative;
+    transition: background .2s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--green); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px; right: 2px;
+    transition: right .2s;
+  }
+  .toggle.on::after { right: 18px; }
+  .setting-val { font-size: 12px; color: var(--text-3); }
+  .mic-count-btns { display: flex; gap: 6px; }
+  .mic-count-btn {
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border2);
+    background: var(--bg-card);
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+  }
+  .mic-count-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* ── FLOATING TOAST ──────────────────────── */
+  .toast {
+    position: absolute;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(30,35,60,0.95);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-1);
+    white-space: nowrap;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="scene">
+<div class="phone">
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><rect x="0" y="4" width="2.5" height="7" rx="1"/><rect x="3.5" y="2.5" width="2.5" height="8.5" rx="1"/><rect x="7" y="0.5" width="2.5" height="10.5" rx="1"/><rect x="10.5" y="0.5" width="2.5" height="10.5" rx="1" opacity=".3"/></svg>
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 8.5c-.8 0-1.5.3-2 .8"/><path d="M7 5.5c-1.6 0-3 .6-4 1.6"/><path d="M7 2.5C4.2 2.5 1.7 3.6 0 5.4"/><path d="M9 9.3c-.5-.5-1.2-.8-2-.8"/><path d="M11 7.1c-1-.9-2.4-1.6-4-1.6"/><path d="M14 5.4C12.3 3.6 9.8 2.5 7 2.5"/><circle cx="7" cy="10.5" r=".8" fill="currentColor"/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="currentColor"><rect x="0" y="1" width="19" height="9" rx="2.5" opacity=".3"/><rect x="0" y="1" width="19" height="9" rx="2.5" stroke="currentColor" stroke-width="1" fill="none"/><rect x="1.5" y="2.5" width="13" height="6" rx="1.5"/><rect x="20" y="3.5" width="2" height="4" rx="1"/></svg>
+    </div>
+  </div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="exit-btn" onclick="showToast('تم الخروج من الغرفة')">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3L3 9M3 3l6 6"/></svg>
+      خروج
+    </div>
+    <div class="room-title-wrap">
+      <div class="room-title">
+        <div class="live-dot"></div>
+        غرفة نجوم العرب
+      </div>
+      <div class="room-count">243 مستمع</div>
+    </div>
+    <div class="top-actions">
+      <div class="top-icon-btn" onclick="openSheet('settings')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9ca3c4" stroke-width="1.5">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+        </svg>
+      </div>
+      <div class="top-icon-btn" onclick="showToast('تم نسخ رابط الغرفة')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9ca3c4" stroke-width="1.5">
+          <path d="M6.5 9.5a3.5 3.5 0 005 0l2-2a3.5 3.5 0 00-5-5l-1 1"/>
+          <path d="M9.5 6.5a3.5 3.5 0 00-5 0l-2 2a3.5 3.5 0 005 5l1-1"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mics Grid -->
+  <div class="mics-wrap">
+    <div class="mics-header">
+      <span class="mics-label">المنابر الصوتية</span>
+      <span class="mics-count-badge" id="micsCountBadge">10 مايك</span>
+    </div>
+    <div class="mics-grid" id="micsGrid"></div>
+  </div>
+
+  <!-- Chat Area -->
+  <div class="chat-area" id="chatArea">
+    <div class="gift-notif">⭐ سارة أرسلت تاجاً لأحمد</div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-row">
+      <div class="bar-icon-btn" id="muteRoomBtn" onclick="toggleRoomMute()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#9ca3c4" stroke-width="1.6">
+          <path d="M9 2a4 4 0 014 4v3a4 4 0 01-8 0V6a4 4 0 014-4z"/>
+          <path d="M3 10c0 3.3 12 3.3 12 0"/>
+          <line x1="9" y1="14" x2="9" y2="16"/>
+        </svg>
+      </div>
+      <div class="bar-icon-btn active-mic" id="myMicBtn" onclick="toggleMyMic()" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#22c55e" stroke-width="1.6" id="myMicIcon">
+          <path d="M9 2a4 4 0 014 4v3a4 4 0 01-8 0V6a4 4 0 014-4z"/>
+          <path d="M3 10c0 3.3 12 3.3 12 0"/>
+          <line x1="9" y1="14" x2="9" y2="16"/>
+        </svg>
+      </div>
+      <div class="chat-input-wrap">
+        <input type="text" placeholder="اكتب رسالة..." id="chatInput" onkeydown="handleChatKey(event)">
+        <div class="send-btn" onclick="sendMessage()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2">
+            <path d="M2 6h8M6 2l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+      <div class="gift-btn" onclick="openSheet('gifts')">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="1.6">
+          <path d="M9 2l2.2 4.5 5 .7-3.6 3.5.85 4.9L9 13.5l-4.45 2.1.85-4.9L1.8 7.2l5-.7z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OVERLAY: MIC MENU ─────────────────── -->
+  <div class="overlay mic-menu-sheet" id="overlay-micmenu" onclick="closeSheet('micmenu')">
+    <div class="sheet" onclick="e=>e.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="mic-menu-title" id="micMenuTitle">المايك رقم 1 — أحمد</div>
+      <div class="mic-menu-items">
+        <div class="mic-menu-item item-red" onclick="micAction('pull')">
+          <div class="icon-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ef4444" stroke-width="1.8">
+              <path d="M7 2a3 3 0 013 3v4a3 3 0 01-6 0V5a3 3 0 013-3z"/>
+              <path d="M2 9c0 2.8 10 2.8 10 0"/>
+              <line x1="3" y1="15" x2="13" y2="15"/>
+              <line x1="9" y1="13" x2="9" y2="15.5"/>
+              <line x1="4" y1="4" x2="14" y2="14" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div>سحب من المايك</div>
+            <div class="mic-menu-item-sub">إخراج العضو من المنبر فوراً</div>
+          </div>
+        </div>
+        <div class="mic-menu-item item-orange" onclick="micAction('temp-kick')">
+          <div class="icon-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#f97316" stroke-width="1.8">
+              <circle cx="9" cy="9" r="7"/>
+              <path d="M9 5v4l2.5 2.5"/>
+            </svg>
+          </div>
+          <div>
+            <div>طرد مؤقت من الروم</div>
+            <div class="mic-menu-item-sub" id="tempKickLabel">مدة الطرد: 10 دقائق</div>
+          </div>
+        </div>
+        <div class="mic-menu-item item-red" onclick="micAction('perm-kick')">
+          <div class="icon-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ef4444" stroke-width="1.8">
+              <path d="M9 2a5 5 0 110 10A5 5 0 019 2z"/>
+              <path d="M6 15h6M12 13l1 2M6 13l-1 2"/>
+              <line x1="5" y1="5" x2="13" y2="13" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div>طرد نهائي من الروم</div>
+            <div class="mic-menu-item-sub">حظر دائم من الغرفة</div>
+          </div>
+        </div>
+        <div class="mic-menu-item item-yellow" onclick="micAction('lock')">
+          <div class="icon-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#f59e0b" stroke-width="1.8">
+              <rect x="4" y="8" width="10" height="8" rx="2"/>
+              <path d="M6 8V6a3 3 0 016 0v2"/>
+            </svg>
+          </div>
+          <div>
+            <div>قفل المايك</div>
+            <div class="mic-menu-item-sub">منع أي شخص من الجلوس هنا</div>
+          </div>
+        </div>
+        <div class="mic-menu-item item-green" onclick="micAction('unlock')">
+          <div class="icon-circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#22c55e" stroke-width="1.8">
+              <rect x="4" y="8" width="10" height="8" rx="2"/>
+              <path d="M6 8V6a3 3 0 016 0v1"/>
+            </svg>
+          </div>
+          <div>
+            <div>فتح المايك</div>
+            <div class="mic-menu-item-sub">السماح للأعضاء بالجلوس</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OVERLAY: PROFILE ──────────────────── -->
+  <div class="overlay profile-sheet" id="overlay-profile" onclick="closeSheet('profile')">
+    <div class="sheet" onclick="e=>e.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="profile-header">
+        <div class="profile-av" id="profileAv" style="background:#1e3060"></div>
+        <div>
+          <div class="profile-name" id="profileName"></div>
+          <div class="profile-role">
+            <span class="role-pill role-member" id="profileRole"></span>
+            مستوى <span id="profileLevel"></span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat"><div class="stat-val" id="profGifts">0</div><div class="stat-lbl">هدايا أُرسلت</div></div>
+        <div class="profile-stat"><div class="stat-val" id="profDays">0</div><div class="stat-lbl">يوم في الغرفة</div></div>
+        <div class="profile-stat"><div class="stat-val" id="profJewels">0</div><div class="stat-lbl">مجوهرات</div></div>
+      </div>
+      <div class="profile-actions">
+        <div class="pact-btn" onclick="closeSheet('profile');openSheet('gifts')">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#f59e0b" stroke-width="1.6">
+            <path d="M11 2.5l2.5 5L19 8.5l-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.5-1z"/>
+          </svg>
+          <span class="pact-lbl">إرسال هدية</span>
+        </div>
+        <div class="pact-btn" onclick="giveFrame()">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#a78bfa" stroke-width="1.6">
+            <rect x="3" y="3" width="16" height="16" rx="4"/>
+            <rect x="6" y="6" width="10" height="10" rx="2"/>
+          </svg>
+          <span class="pact-lbl">إطار 5 دقائق</span>
+        </div>
+        <div class="pact-btn" onclick="closeSheet('profile')">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#5a6080" stroke-width="1.6">
+            <path d="M6 6l10 10M16 6L6 16"/>
+          </svg>
+          <span class="pact-lbl">إغلاق</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OVERLAY: GIFTS ────────────────────── -->
+  <div class="overlay gifts-sheet" id="overlay-gifts" onclick="closeSheet('gifts')">
+    <div class="sheet" onclick="e=>e.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="gifts-title">اختر هدية</div>
+      <div class="gifts-targets">
+        <div class="target-btn active" onclick="selectTarget(this)">شخص محدد</div>
+        <div class="target-btn" onclick="selectTarget(this)">من في المايك</div>
+        <div class="target-btn" onclick="selectTarget(this)">جميع الغرفة</div>
+      </div>
+      <div class="gifts-grid" id="giftsGrid"></div>
+      <button class="gift-send-btn" onclick="sendGift()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.8">
+          <path d="M8 1.5l1.8 3.6L14 6l-3 2.9.7 4.1-3.7-2-3.7 2 .7-4.1L2 6l4.2-.9z"/>
+        </svg>
+        إرسال الهدية
+      </button>
+    </div>
+  </div>
+
+  <!-- ── OVERLAY: SETTINGS ─────────────────── -->
+  <div class="overlay settings-sheet" id="overlay-settings" onclick="closeSheet('settings')">
+    <div class="sheet" onclick="e=>e.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="settings-title">إعدادات الغرفة</div>
+      <div class="settings-section">
+        <div class="settings-section-title">عدد المايكات</div>
+        <div class="setting-row" style="cursor:default">
+          <div class="setting-row-left"><span class="setting-icon">🎙</span><span>المقاعد الصوتية</span></div>
+          <div class="mic-count-btns">
+            <button class="mic-count-btn" onclick="setMicCount(5,this)">5</button>
+            <button class="mic-count-btn active" onclick="setMicCount(10,this)">10</button>
+            <button class="mic-count-btn" onclick="setMicCount(15,this)">15</button>
+            <button class="mic-count-btn" onclick="setMicCount(20,this)">20</button>
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">صلاحيات الصعود للمايك</div>
+        <div class="setting-row" onclick="toggleSettingRow(this,'guestMic')">
+          <div class="setting-row-left"><span class="setting-icon">👤</span><span>الزوار يصعدون للمايك</span></div>
+          <div class="toggle" id="guestMic"></div>
+        </div>
+        <div class="setting-row" onclick="toggleSettingRow(this,'memberMic')">
+          <div class="setting-row-left"><span class="setting-icon">⭐</span><span>الأعضاء يصعدون مباشرة</span></div>
+          <div class="toggle on" id="memberMic"></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">خصوصية الغرفة</div>
+        <div class="setting-row" onclick="cycleRoomType(this)">
+          <div class="setting-row-left"><span class="setting-icon">🔓</span><span>نوع الغرفة</span></div>
+          <span class="setting-val" id="roomTypeVal">عامة</span>
+        </div>
+        <div class="setting-row">
+          <div class="setting-row-left"><span class="setting-icon">⏱</span><span>مدة الطرد المؤقت</span></div>
+          <span class="setting-val">10 دقائق</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /phone -->
+</div><!-- /scene -->
+
+<script>
+/* ═══ DATA ════════════════════════════════════ */
+const ROOM_USERS = [
+  { id:1, name:'أحمد',  initials:'أح', role:'owner',  level:24, color:'#1e3a7a', gifts:88,  days:120, jewels:3400, isSpeaking:true  },
+  { id:2, name:'سارة',  initials:'سا', role:'admin',  level:18, color:'#3a1e6a', gifts:55,  days:90,  jewels:1200, isSpeaking:false },
+  { id:3, name:'منى',   initials:'من', role:'member', level:9,  color:'#1a4040', gifts:22,  days:30,  jewels:400,  isSpeaking:false },
+  { id:4, name:'خالد',  initials:'خا', role:'member', level:5,  color:'#3a2010', gifts:10,  days:14,  jewels:200,  isSpeaking:false },
+];
+
+const GIFTS_DATA = [
+  { name:'ورد',      icon:'🌹', price:3,    },
+  { name:'نجمة',    icon:'⭐', price:9,    },
+  { name:'هدية',    icon:'🎁', price:99,   },
+  { name:'تاج',     icon:'👑', price:199,  },
+  { name:'صاروخ',   icon:'🚀', price:1999, },
+  { name:'ألماس',   icon:'💎', price:2999, },
+  { name:'كأس',     icon:'🏆', price:3999, },
+  { name:'نجم ذهبي',icon:'🌟', price:4999, },
+];
+
+const CHAT_MSGS = [
+  { user:ROOM_USERS[1], text:'مرحبا بالجميع 👋' },
+  { user:ROOM_USERS[2], text:'أهلاً وسهلاً!' },
+  { user:ROOM_USERS[3], text:'هلا هلا يا أهل الخير' },
+];
+
+let micCount = 10;
+let selectedGift = 0;
+let myMicSlot = null;
+let roomMuted = false;
+let myMicMuted = false;
+let roomType = 0;
+const roomTypes = ['عامة','خاصة','مقيّدة'];
+const roomIcons = ['🔓','🔒','🔑'];
+
+/* ═══ INIT ════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  renderMics();
+  renderChat();
+  renderGifts();
+});
+
+/* ═══ MICS ════════════════════════════════════ */
+function renderMics() {
+  const grid = document.getElementById('micsGrid');
+  document.getElementById('micsCountBadge').textContent = micCount + ' مايك';
+  grid.innerHTML = '';
+  for (let i = 0; i < micCount; i++) {
+    const user = ROOM_USERS[i] || null;
+    grid.appendChild(makeMicSlot(i+1, user));
+  }
+}
+
+function makeMicSlot(num, user) {
+  const slot = document.createElement('div');
+  slot.className = 'mic-slot';
+  slot.dataset.num = num;
+
+  let avatarClass = 'mic-avatar ';
+  let inner = '';
+  let name = '';
+
+  if (user) {
+    if (user.role === 'owner')  avatarClass += 'owner-slot';
+    else if (user.isSpeaking)  avatarClass += 'speaking';
+    else                        avatarClass += 'occupied';
+    inner = `<div style="font-size:11px;font-weight:700">${user.initials}</div>`;
+    if (user.role === 'owner')  inner += '<div class="mic-badge owner">★</div>';
+    else if (user.isSpeaking)   inner += '<div class="mic-badge speaking">♪</div>';
+    name = user.name;
+  } else if (num === 4) {
+    avatarClass += 'locked';
+    inner = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#555" stroke-width="1.5"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>`;
+    name = 'مقفل';
+  } else {
+    avatarClass += 'empty';
+    inner = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#6c63ff" stroke-width="1.4" opacity=".6"><path d="M8 2a3 3 0 013 3v3a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>`;
+    name = '';
+  }
+
+  const bg = user ? `background:${user.color}` : '';
+  slot.innerHTML = `
+    <div class="mic-avatar-wrap">
+      <div class="${avatarClass}" style="${bg}">${inner}</div>
+    </div>
+    <div class="mic-num">${num}</div>
+    <div class="mic-name">${name}</div>
+  `;
+
+  slot.addEventListener('click', () => onMicClick(num, user));
+  return slot;
+}
+
+function onMicClick(num, user) {
+  if (user) {
+    const me = ROOM_USERS[0];
+    if (me.role === 'owner' || me.role === 'admin') {
+      document.getElementById('micMenuTitle').textContent = `المايك ${num} — ${user.name}`;
+      openSheet('micmenu');
+    } else {
+      openProfile(user);
+    }
+  } else {
+    if (num === 4) { showToast('هذا المايك مقفول'); return; }
+    if (myMicSlot !== null) { showToast('أنت بالفعل في المايك ' + myMicSlot); return; }
+    myMicSlot = num;
+    ROOM_USERS[0].isSpeaking = true;
+    document.getElementById('myMicBtn').style.display = 'flex';
+    addChatMsg(null, `انضممت للمنبر الصوتي ${num} 🎙`);
+    renderMics();
+    showToast('صعدت للمايك رقم ' + num);
+  }
+}
+
+function setMicCount(n, btn) {
+  micCount = n;
+  renderMics();
+  document.querySelectorAll('.mic-count-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ═══ CHAT ════════════════════════════════════ */
+function renderChat() {
+  CHAT_MSGS.forEach(m => addChatMsg(m.user, m.text));
+}
+
+function addChatMsg(user, text) {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+
+  if (!user) {
+    div.className = 'gift-notif';
+    div.textContent = text;
+  } else {
+    div.className = 'chat-msg';
+    const colors = ['#1e3a7a','#3a1e6a','#1a4040','#3a2010'];
+    const colorIdx = ROOM_USERS.indexOf(user);
+    const c = colorIdx >= 0 ? colors[colorIdx] : '#1e3a7a';
+    div.innerHTML = `
+      <div class="chat-av" style="background:${c}; color:#fff">${user.initials}</div>
+      <div class="chat-bubble">
+        <div class="chat-sender" style="color:${['#6c63ff','#f59e0b','#22c55e','#f97316'][colorIdx]||'#6c63ff'}">${user.name}</div>
+        <div class="chat-text">${text}</div>
+      </div>`;
+  }
+
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter') sendMessage();
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addChatMsg(ROOM_USERS[0], text);
+  input.value = '';
+}
+
+/* ═══ GIFTS ═══════════════════════════════════ */
+function renderGifts() {
+  const grid = document.getElementById('giftsGrid');
+  grid.innerHTML = '';
+  GIFTS_DATA.forEach((g, i) => {
+    const card = document.createElement('div');
+    card.className = 'gift-card' + (i === 0 ? ' selected' : '');
+    const receive = Math.floor(g.price / 3);
+    card.innerHTML = `
+      <div class="gift-icon-big">${g.icon}</div>
+      <div class="gift-name">${g.name}</div>
+      <div class="gift-price">${g.price.toLocaleString()} 💎</div>
+      <div class="gift-receive">يصل: ${receive} 💎</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.gift-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedGift = i;
+    });
+    grid.appendChild(card);
+  });
+}
+
+function selectTarget(btn) {
+  document.querySelectorAll('.target-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function sendGift() {
+  const g = GIFTS_DATA[selectedGift];
+  const receive = Math.floor(g.price / 3);
+  closeSheet('gifts');
+  const area = document.getElementById('chatArea');
+  const notif = document.createElement('div');
+  notif.className = 'gift-notif';
+  notif.textContent = `${g.icon} أنت أرسلت ${g.name} — وصل للمستلم ${receive} 💎`;
+  area.appendChild(notif);
+  area.scrollTop = area.scrollHeight;
+  showToast(`تم إرسال ${g.name} بنجاح!`);
+}
+
+/* ═══ PROFILE ══════════════════════════════════ */
+function openProfile(user) {
+  document.getElementById('profileAv').textContent = user.initials;
+  document.getElementById('profileAv').style.background = user.color;
+  document.getElementById('profileName').textContent = user.name;
+  const roleMap = { owner:'أونر', admin:'مشرف', member:'عضو' };
+  document.getElementById('profileRole').textContent = roleMap[user.role] || 'زائر';
+  document.getElementById('profileLevel').textContent = user.level;
+  document.getElementById('profGifts').textContent = user.gifts;
+  document.getElementById('profDays').textContent = user.days;
+  document.getElementById('profJewels').textContent = user.jewels.toLocaleString();
+  openSheet('profile');
+}
+
+function giveFrame() {
+  closeSheet('profile');
+  showToast('تم منح إطار مؤقت لمدة 5 دقائق');
+}
+
+/* ═══ MIC ACTIONS ══════════════════════════════ */
+function micAction(type) {
+  closeSheet('micmenu');
+  const msgs = {
+    'pull': 'تم سحب العضو من المايك',
+    'temp-kick': 'تم طرد العضو مؤقتاً لمدة 10 دقائق',
+    'perm-kick': 'تم الطرد النهائي من الغرفة',
+    'lock': 'تم قفل المايك',
+    'unlock': 'تم فتح المايك',
+  };
+  showToast(msgs[type] || 'تم');
+}
+
+/* ═══ SETTINGS ═════════════════════════════════ */
+function toggleSettingRow(row, id) {
+  const toggle = document.getElementById(id);
+  toggle.classList.toggle('on');
+}
+
+function cycleRoomType(row) {
+  roomType = (roomType + 1) % 3;
+  const val = row.querySelector('.setting-val');
+  const icon = row.querySelector('.setting-icon');
+  val.textContent = roomTypes[roomType];
+  icon.textContent = roomIcons[roomType];
+}
+
+/* ═══ MUTE ══════════════════════════════════════ */
+function toggleRoomMute() {
+  roomMuted = !roomMuted;
+  const btn = document.getElementById('muteRoomBtn');
+  btn.classList.toggle('muted', roomMuted);
+  showToast(roomMuted ? 'تم كتم صوت الغرفة' : 'تم فتح صوت الغرفة');
+}
+
+function toggleMyMic() {
+  myMicMuted = !myMicMuted;
+  const btn = document.getElementById('myMicBtn');
+  btn.classList.toggle('muted', myMicMuted);
+  btn.classList.toggle('active-mic', !myMicMuted);
+  showToast(myMicMuted ? 'تم كتم مايكك' : 'تم فتح مايكك');
+}
+
+/* ═══ SHEETS & UTILS ════════════════════════════ */
+function openSheet(id) {
+  document.getElementById('overlay-' + id).classList.add('open');
+}
+function closeSheet(id) {
+  document.getElementById('overlay-' + id).classList.remove('open');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://stackoverflow.com/questions/64551387/android-webrtc-receiving-call-with-no-audio",
+    "name": "android webRTC receiving call with no audio",
+    "snippet": "I am implementing VoIP with Native Android WebRTC lib. I have managed to make a call from the Android app to the Browser. I can hear and talk as expected. Read more",
+    "host_name": "stackoverflow.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/webrtc-sdk/android/issues/5",
+    "name": "Audio not being played on Android · Issue #5 · webrtc-sdk",
+    "snippet": "Sep 19, 2022 — Audio is not playing on Android , but sending audio from Android to other sides ( Web or iOS), works fine and it plays fine. I'm not sure if there ... Read more\nAudio is not playing on Android, but sending audio from Android to other sides (Web or iOS), works fine and it plays fine. I'm not sure if ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forum.babylonjs.com/t/sound-created-with-a-remote-webrtc-stream-track-does-not-seem-to-work/7047",
+    "name": "Sound created with a remote webrtc stream track does not",
+    "snippet": "Nov 17, 2019 — Sound does not seem to work with a MediaStream object created with a remote track (coming from a SFU). The same MediaStream object works ...\nSound does not seem to work with a MediaStream object created with a remote track (coming from a SFU). The same MediaStream object works ... Missing: android WebView",
+    "host_name": "forum.babylonjs.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/react-native-webview/react-native-webview/issues/2571",
+    "name": "Audio not coming while live video streaming #2571",
+    "snippet": "Jun 28, 2022 — Description: I am using webview for a live video calling platform, where the video is working seamlessly, but audio is not coming.\nDescription: I am using webview for a live video calling platform, where the video is working seamlessly, but audio is not coming. Missing: remote | Show results with: remote",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://community.amazondeveloper.com/t/audio-and-video-not-working-in-webview/24676",
+    "name": "Audio and Video Not Working in WebView - Bug Reports",
+    "snippet": "Oct 31, 2025 — The problem was due to missing permissions in app's manifest file. We've tested the fix and can confirm that audio and video now work correctly ... Read more",
+    "host_name": "community.amazondeveloper.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

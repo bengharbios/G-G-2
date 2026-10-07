@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://www.metered.ca/tools/openrelay",
+    "name": "Open Relay: Free WebRTC TURN Server",
+    "snippet": "Open Relay is a free TURN server provided by Metered Video that you can use in your WebRTC applications.",
+    "host_name": "www.metered.ca",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://groups.google.com/g/discuss-webrtc/c/k_1l-rwCH1g",
+    "name": "Out of the sudden - no TURN connectivity",
+    "snippet": "Farvardin 12, 1401 AP — Out of the sudden I was triggered by a customer, who told me, that connections backed by LTE doesn't work anymore. And in fact: I tried to ...",
+    "host_name": "groups.google.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/blog/list-of-webrtc-ice-servers",
+    "name": "List of WebRTC ICE Servers",
+    "snippet": "Tir 19, 1404 AP — In this article, we are going to give you a list of ICE servers that you can use in your project. We are also going to give you free as well as paid providers ...",
+    "host_name": "www.metered.ca",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/stun-turn",
+    "name": "WebRTC Stun Turn Servers",
+    "snippet": "Enterprise WebRTC TURN server with 31+ global regions, less than 30ms latency worldwide, and 99.999% proven uptime. Free 500MB monthly with unlimited STUN.",
+    "host_name": "www.metered.ca",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/75725613/unable-to-integrate-open-relay-project-turn-server-into-webrtc-application-using",
+    "name": "Unable to integrate Open Relay Project TURN server into",
+    "snippet": "I had similar problem few days ago(honestly thought free turn server is scam)and then it started working after a day.But now its down again.",
+    "host_name": "stackoverflow.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

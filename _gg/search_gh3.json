@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/Cap-go/capacitor-audiosession",
+    "name": "Cap-go/capacitor-audiosession: Capacitor plugin to",
+    "snippet": "The only free and maintained iOS audio session plugin for Capacitor : Audio route control - Detect and manage headphones , Bluetooth, speakers ; Interruption ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Cap-go/capacitor-native-audio",
+    "name": "Cap-go/capacitor-native-audio: Capacitor plugin for",
+    "snippet": "The only free, full-featured audio playback plugin for Capacitor : HLS/M3U8 streaming - Play live audio streams and adaptive bitrate content ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/7179",
+    "name": "iOS Capacitor phone app cannot select audio Bluetooth",
+    "snippet": "Jan 7, 2024 — I created a plugin to toggle the speakerphone - which works on Android but not for iOS (15.2.1). I noticed for iOS, when looking at the audio ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Resgrid/capacitor-plugin-headset",
+    "name": "Resgrid/capacitor-plugin-headset",
+    "snippet": "Contribute to Resgrid/ capacitor - plugin - headset development by creating an account on GitHub .",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/riderx/awesome-capacitor",
+    "name": "Awesome lists of capacitor plugins. Made by Capgo",
+    "snippet": "A curated list of awesome resources related to the Capacitor Platform. Capacitor is an open-source native runtime for building Web Native apps.",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/capacitor-community/native-audio/issues",
+    "name": "Issues · capacitor-community/native-audio",
+    "snippet": "Android loop() does not start playback and play() resets looping flag ... How download audio file and play with native - audio plugin ? Status: Open. #98 ...",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/5401",
+    "name": "iOS Capacitor phone app cannot select audio output #5401",
+    "snippet": "Use cordova iosrtc plugin for ios webrtc connection and then you can also use it to change audio output between speaker and earpiece.",
+    "host_name": "github.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/7901",
+    "name": "Webview crash while using capacitor-voice-recorder plugin",
+    "snippet": "Mar 5, 2025 — [Bug]: Webview crash while using capacitor-voice-recorder plugin which leads to recording issue. #7901. New issue.",
+    "host_name": "github.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/3214",
+    "name": "Need help: To bridge functionality between Webview UI",
+    "snippet": "Jul 6, 2020 — A. Use a Capacitor plugin for audio/video capturing and playback and manage everything in the Capacitor Web View.",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/angeloraso/capacitor-plugin-audiotoggle-bluetooth",
+    "name": "angeloraso/capacitor-plugin-audiotoggle-bluetooth",
+    "snippet": "Capacitor plugin for switching between speaker , earpiece and bluetooth headset when playing audio . Install. npm install capacitor - plugin -audiotoggle-bluetooth ...",
+    "host_name": "github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

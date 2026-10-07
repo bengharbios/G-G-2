@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://news.ycombinator.com/item?id=43510710",
+    "name": "Show HN: An Almost Free, Open Source TURN Server - Hacker News",
+    "snippet": "TURN is considered an extension to the STUN. So, a typical TURN server would include a STUN server implementation by default.",
+    "host_name": "news.ycombinator.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dev.to/aprogrammer22/list-of-free-stun-and-turn-servers-open-relay-project-3a70",
+    "name": "List of Free Stun and Turn Servers | Open Relay Project",
+    "snippet": "There are currently several options for TURN servers available online, one of the reliable and free option is the https://openrelayproject.org ...",
+    "host_name": "dev.to",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/blog/what-is-a-turn-server-3",
+    "name": "What is a TURN server? (Traversal Using Relays around NAT)",
+    "snippet": "A TURN server relays WebRTC traffic around NATs and firewalls, keeping voice, video and data flowing without drops.",
+    "host_name": "www.metered.ca",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@justin.edgewoods/turn-servers-explained-delivering-reliable-webrtc-calls-464592073080",
+    "name": "TURN Servers Explained: Delivering Reliable WebRTC Calls",
+    "snippet": "What Is a TURN Server? TURN stands for Traversal Using Relays around NAT. It allows voice, video and data traffic to pass through a secure relay ...",
+    "host_name": "medium.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/colocohen/turn-server",
+    "name": "STUN/TURN server and client for Node.js - GitHub",
+    "snippet": "NAT traversal: Most devices sit behind NATs that block incoming connections. STUN lets a client discover its public IP and port. When direct ... Missing: free | Show results with: free",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://bloggeek.me/webrtc-turn",
+    "name": "WebRTC TURN Servers: When you NEED it - BlogGeek.me",
+    "snippet": "Coturn is the obvious choice if you want a opensource TURN server, but if you don't want to setup your own server the https://openrelayproject.org provides a ...",
+    "host_name": "bloggeek.me",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/68610661/webrtc-do-we-need-a-turn-server-if-one-peer-is-always-using-full-cone-or-addres",
+    "name": "WebRTC: do we need a TURN server if one peer is always using",
+    "snippet": "I'm not getting why we need a Turn Server if only 1 peer is using Symmetric NAT, and the other is using neither Symmetric nor Port Restricted NAT.",
+    "host_name": "stackoverflow.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://webrtc.org/getting-started/turn-server",
+    "name": "TURN server - WebRTC",
+    "snippet": "There are currently several options for TURN servers available online, both as self-hosted applications (like the open-source COTURN project) ... Missing: 2025 2026",
+    "host_name": "webrtc.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.expressturn.com",
+    "name": "ExpressTURN - Free and Premium TURN Servers",
+    "snippet": "ExpressTURN provides fast, free and reliable TURN servers for your WebRTC applications and services.",
+    "host_name": "www.expressturn.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://viblo.asia/p/webrtc-basic-phan-1-tim-hieu-ve-nat-stun-turn-vs-ice-MJykjWlDvPB",
+    "name": "WebRTC basic – Phần 1: Tìm hiểu về NAT, STUN, TURN vs ICE",
+    "snippet": "Dữ liệu thay vì được gửi trực tiếp tới các peer thì các peer sẽ gửi dữ liệu tới các TURN server và TURN server sẽ đóng vai trò trung gian vận chuyển gói tin.",
+    "host_name": "viblo.asia",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

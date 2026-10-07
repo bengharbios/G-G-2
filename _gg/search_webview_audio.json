@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/AlexxIT/go2rtc/issues/1742",
+    "name": "WebRTC no longer loads after upgrading Android",
+    "snippet": "20-May-2025 — Last working version is 135.0.7049.113, downgrading to it resolves the problem . To downgrade: uninstall Android WebView updates, then install ...\nThe device is a Teclast P20HD tablet running Android 10 · Last working version is 135.0.7049.113, downgrading to it resolves the problem.",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/79778948/no-audio-in-webrtc-over-webview-in-android-pip-mode",
+    "name": "No audio in WebRTC over WebView in Android PiP mode",
+    "snippet": "I tried to play a sound in the pip using the MediaPlayer , and it worked, but the meeting WebRTC audio is not working . Is it possible to ...\nI tried to play a sound in the pip using the MediaPlayer , and it worked, but the meeting WebRTC audio is not working. Is it possible to ... android webRTC receiving call with no audio - Stack Overflow No audio in WebRTC over WebView in Android app - Stack Overflow More results from stackoverflow.com Missing: fix | Show results with: fix",
+    "host_name": "stackoverflow.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/home-assistant/android/issues/6262",
+    "name": "Two-way audio via WebRTC (go2rtc) fails in Android app",
+    "snippet": "15-Jan-2026 — The issue occurs with a simplified configuration using a single Advanced Camera Card and a single go2rtc WebRTC stream with audio backchannel ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://web.sdk.qcloud.com/trtc/webrtc/v5/doc/zh-cn/tutorial-02-info-webrtc-issues.html",
+    "name": "Tencent RTC SDK - Tutorial: WebRTC Known Issues",
+    "snippet": "RTC SDK Documentation. Run a demo within one minute and build solutions for audio /video calls or interactive live streaming within 30 minutes.\nRTC SDK Documentation. Run a demo within one minute and build solutions for audio/video calls or interactive live streaming within 30 minutes.",
+    "host_name": "web.sdk.qcloud.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.webrtc.org/42230028",
+    "name": "Webrtc remote audio not working [42230028]",
+    "snippet": "2. ICE and DTLS seem to be working because WebRTC internals indicates \"ICEConnectionStateCompleted\"\". 3. Either Chrome isn't receiving audio or Firefox isn't ...",
+    "host_name": "issues.webrtc.org",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.chromium.org/issues/330055211",
+    "name": "Android WebView Update Causing Error in WebRTC",
+    "snippet": "Specifically, when attempting to route audio output through the earpiece, an error with code MEDIA_ERR_DECODE arises within the video element. This issue ...\nThe app will try to reload the webview ...",
+    "host_name": "issues.chromium.org",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://groups.google.com/g/meetecho-janus/c/C8WtyPYT0JY",
+    "name": "Need help: Streaming WebRTC/H.264 to Android WebView",
+    "snippet": "15-Jan-2021 — I want to use Janus to stream my IP-Cam rtsp- Streams vie WebRTC to some Android Tablets running an App with a WebView inside. In the past there were some ...\nI want to use Janus to stream my IP-Cam rtsp-Streams vie WebRTC to some Android Tablets running an App with a WebView inside. In the past there were some ... Webrtc remote video is not displayed android - Google Groups Android WebRTC can not mute remote sound on speaker More results from groups.google.com Missing: audio 2025",
+    "host_name": "groups.google.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.webrtc.org/42232418",
+    "name": "WebRTC causes Android to route non-WebRTC audio in",
+    "snippet": "It seems that playing an AudioTrack in STREAM_VOICE, even if it's silence, tells that Android AudioManager that it should be routing audio from the application ...",
+    "host_name": "issues.webrtc.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forum.babylonjs.com/t/sound-created-with-a-remote-webrtc-stream-track-does-not-seem-to-work/7047",
+    "name": "Sound created with a remote webrtc stream track does not",
+    "snippet": "17-Nov-2019 — It only works when an audio element is rendered and srcObject is set to the stream as well. The sound is echoing, feels like the stream is “cloned” multiple ...\nIt only works when an audio element is rendered and srcObject is set to the stream as well. The sound is echoing, feels like the stream is “cloned” multiple ... Missing: Android WebView 2025",
+    "host_name": "forum.babylonjs.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://community.amazondeveloper.com/t/audio-and-video-not-working-in-webview/24676",
+    "name": "Audio and Video Not Working in WebView - Bug Reports",
+    "snippet": "31-Oct-2025 — The problem was due to missing permissions in app's manifest file. We've tested the fix and can confirm that audio and video now work correctly ...",
+    "host_name": "community.amazondeveloper.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "header, tabs, cards, buttons, bottom bar, mic layout, chat, settings",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776705921,
+  "id": "2026042101252090f47e9154b6404c",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "2026042101252090f47e9154b6404c",
+  "usage": {
+    "completion_tokens": 20,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 520,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 540
+  }
+}

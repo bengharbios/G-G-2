@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.tencentcloud.com/ko/document/product/647/77556",
+    "name": "Virtual Gifts (Flutter) - Tencent Cloud",
+    "snippet": "GiftStore is a module in AtomicXCore specialized in managing the gift function of live streaming rooms. With it, you can build a complete gift system for ...",
+    "host_name": "www.tencentcloud.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Tencent-RTC/TUILiveKit",
+    "name": "TUILiveKit is a product suitable for interactive live scenes  - GitHub",
+    "snippet": "TUILiveKit is a product suitable for interactive live streaming scenarios such as social entertainment, shopping, fitness, etc.",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://intl.cloud.tencent.com/jp/document/product/647/77556",
+    "name": "Virtual Gifts (Flutter) - Tencent Cloud",
+    "snippet": "GiftStore is a module in AtomicXCore specialized in managing the gift function of live streaming rooms. With it, you can build a complete ...",
+    "host_name": "intl.cloud.tencent.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://trtc.io/document/67300",
+    "name": "Voice Chat Room (with UI) Interactive Gifts (TUILiveKit) - Tencent RTC",
+    "snippet": "The Interactive Gift Component supports setting like, gift sending panel, send gifts, play normal gift animation, play SVGA gift animation, etc. Flutter.",
+    "host_name": "trtc.io",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.tencentcloud.com/ko/document/product/1071/76626",
+    "name": "Preparation（Flutter） - Tencent Cloud",
+    "snippet": "All TUILiveKit features require a successful login to function properly, so ensure your parameters are configured correctly. Note: In the example code, the ...",
+    "host_name": "www.tencentcloud.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Tencent-RTC/TUILiveKit/releases",
+    "name": "Releases · Tencent-RTC/TUILiveKit - GitHub",
+    "snippet": "Likes, Gifts, Audience List, Bullet Comments, Sound Effects, and Beauty Filters are now implemented using AtomicXCore. Flutter. TUILiveKit ...",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pub.dev/packages/tencent_live_uikit/versions/2.2.2",
+    "name": "tencent_live_uikit 2.2.2 | Flutter package - Pub.dev",
+    "snippet": "TUILiveKit is an interactive live streaming UI component launched by Tencent Cloud. By integrating this component, you can add interactive live streaming ...",
+    "host_name": "pub.dev",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://intl.cloud.tencent.com/document/product/1071/76656",
+    "name": "Audience Viewing (Flutter) - Tencent Cloud",
+    "snippet": "TUILiveKit's audience viewing page provides users with various and convenient live streaming and interaction features, enabling quick ...",
+    "host_name": "intl.cloud.tencent.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Tencent-RTC/TUILiveKit/blob/main/Flutter/livekit/example/lib/main.dart",
+    "name": "TUILiveKit/Flutter/livekit/example/lib/main.dart at main - GitHub",
+    "snippet": "TUILiveKit is a product suitable for interactive live scenes such as social entertainment, shopping, and fitness.",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://staticintl.cloudcachetci.com/doc/pdf/product/pdf/1047_38722_en.pdf",
+    "name": "[PDF] Chat More Practices",
+    "snippet": "This document is intended to provide users with general information about Tencent Cloud's products and services only and does not form part of Tencent ...",
+    "host_name": "staticintl.cloudcachetci.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

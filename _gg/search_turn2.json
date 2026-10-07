@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.metered.ca/tools/openrelay",
+    "name": "Open Relay: Free WebRTC TURN Server",
+    "snippet": "The Open Relay TURN server is highly available, reliable and offers both STUN and TURN Capabilities . The Open Relay runs on port 80 and 443 to bypass corporate ...",
+    "host_name": "www.metered.ca",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b?permalink_comment_id=3392646",
+    "name": "webRTC stun / turn server list",
+    "snippet": "What is the best site today for free turn services? Is openrelay limited in traffic?",
+    "host_name": "gist.github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@jamesbordane57/coturn-alternative-how-to-migrate-from-self-hosted-coturn-to-a-managed-turn-service-f9890db7b008",
+    "name": "Coturn Alternative: How to Migrate from Self-Hosted",
+    "snippet": "Start with the Open Relay Project if you want to test the concept for free. When you're ready for production, visit [metered.ca/stun-turn](https ...",
+    "host_name": "medium.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/stun-turn",
+    "name": "WebRTC Stun Turn Servers",
+    "snippet": "Enterprise WebRTC TURN server with 31+ global regions, less than 30ms latency worldwide, and 99.999% proven uptime. Free 500MB monthly with unlimited STUN .",
+    "host_name": "www.metered.ca",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://bloggeek.me/webrtc-turn",
+    "name": "WebRTC TURN Servers: When you NEED it",
+    "snippet": "STUN – STUN servers are used to find the public IP address of the user . They are needed for the majority of the services. It should be noted though that a TURN ...",
+    "host_name": "bloggeek.me",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/75725613/unable-to-integrate-open-relay-project-turn-server-into-webrtc-application-using",
+    "name": "Unable to integrate Open Relay Project TURN server into",
+    "snippet": "I have been trying to create a simple live-streaming application in Vue using WebRTC which streams the video frames from one side to another.",
+    "host_name": "stackoverflow.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dev.to/aprogrammer22/list-of-free-stun-and-turn-servers-open-relay-project-3a70",
+    "name": "List of Free Stun and Turn Servers | Open Relay Project",
+    "snippet": "Feb 19, 2022 — There are currently several options for TURN servers available online, one of the reliable and free option is the https://openrelayproject.org ...",
+    "host_name": "dev.to",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/WebRTC/comments/sqx3ip/openrelay_project_free_reliable_webrtc_turn_server",
+    "name": "OpenRelay Project: Free Reliable WebRTC TURN Server",
+    "snippet": "A reliable, production ready WebRTC TURN+STUN Server that is completely free . It runs on port 80 and 443, and also support TCP to bypass most corporate ...",
+    "host_name": "www.reddit.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b",
+    "name": "webRTC stun / turn server list",
+    "snippet": "20 GB of TURN relay data every calendar month ( STUN is unlimited). Docs: https://www. metered . ca /tools/ openrelay /#overview. • Runs on ports 80 & 443 and ...",
+    "host_name": "gist.github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://groups.google.com/g/discuss-webrtc/c/k_1l-rwCH1g",
+    "name": "Out of the sudden - no TURN connectivity",
+    "snippet": "Apr 1, 2022 — That free TURN server only supports UDP (which could be the issue). Is your COTURN server setup to use UDP/TCP/TLS? What clients are you using?",
+    "host_name": "groups.google.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

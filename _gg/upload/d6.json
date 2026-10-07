@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot displays a **voice room app's \"Admin Permission\" settings modal** with a teal-green gradient background (darker at the edges, lighter in the center). Here’s a detailed breakdown of all elements:  \n\n\n### 1. Header Section  \n- **Title**: \"Admin Permission\" (centered at the top, white text, medium-bold font).  \n- **Close Button**: A white \"X\" icon (top-right corner) for dismissing the modal.  \n\n\n### 2. Permission Toggle List (Two Sections)  \nThe modal contains two vertically stacked white rectangular sections (with subtle rounded corners) holding toggle switches. Each toggle has a label (left-aligned, dark gray text) and a circular switch (right-aligned, gray by default, with a white circle inside).  \n\n#### Top Section (5 Permissions):  \n1. **\"Allow admin to use Clock\"**: Toggle is *off* (gray background, white circle left-aligned).  \n2. **\"Allow admin to start Vote\"**: Toggle is *off*.  \n3. **\"Allow admin to start Fruit Fight\"**: Toggle is *off*.  \n4. **\"Allow admin to start Fortune Chest\"**: Toggle is *off*.  \n5. **\"Allow admin to start Random Wheel\"**: Toggle is *off*.  \n\n#### Bottom Section (2 Permissions):  \n1. **\"Allow admin to lock/unlock the mic\"**: Toggle is *off*.  \n   - **Orange Notification Badge**: A small orange circle (top-right of this toggle) with a white \"1\" (indicating 1 pending action/reminder).  \n2. **\"Allow admin to change themes\"**: Toggle is *off*.  \n\n\n### 3. Layout & Design  \n- **Background**: Teal-green gradient (darker at the edges, lighter center) with a subtle diamond-pattern texture.  \n- **Modal Structure**: The permission list is centered, with white sections creating contrast against the background.  \n- **Toggle Style**: Circular switches (consistent size) with a minimalist design (gray when off, white circle for the \"active\" part).  \n\n\n### 4. Key Features  \n- **Admin Controls**: The modal lets room admins enable/disable specific permissions (e.g., starting games, using tools, managing mics/themes).  \n- **Notification Badge**: The orange \"1\" on the \"lock/unlock mic\" toggle signals a pending action (e.g., a mic lock request).  \n- **Dismiss Option**: The \"X\" button allows users to exit the modal without saving changes.  \n\n\nThis UI is typical of voice room apps (e.g., Clubhouse, Discord voice rooms) where admins manage room permissions to control interactions, games, and settings.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706231,
+  "id": "20260421013014406ecf6b946e490a",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260421013014406ecf6b946e490a",
+  "usage": {
+    "completion_tokens": 556,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 323,
+    "prompt_tokens_details": {
+      "cached_tokens": 28
+    },
+    "total_tokens": 879
+  }
+}

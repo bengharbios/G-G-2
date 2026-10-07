@@ -1,0 +1,2330 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-cairo);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.08 0.01 280);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.13 0.01 280);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.13 0.01 280);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.85 0.15 85);
+  --primary-foreground: oklch(0.15 0.02 280);
+  --secondary: oklch(0.2 0.01 280);
+  --secondary-foreground: oklch(0.9 0 0);
+  --muted: oklch(0.2 0.01 280);
+  --muted-foreground: oklch(0.65 0.02 280);
+  --accent: oklch(0.25 0.02 280);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.65 0.25 25);
+  --border: oklch(0.25 0.01 280);
+  --input: oklch(0.22 0.01 280);
+  --ring: oklch(0.7 0.15 85);
+  --chart-1: oklch(0.65 0.25 25);
+  --chart-2: oklch(0.6 0.15 250);
+  --chart-3: oklch(0.7 0.15 85);
+  --chart-4: oklch(0.55 0.2 320);
+  --chart-5: oklch(0.6 0.2 150);
+  --sidebar: oklch(0.1 0.01 280);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.85 0.15 85);
+  --sidebar-primary-foreground: oklch(0.15 0.02 280);
+  --sidebar-accent: oklch(0.2 0.01 280);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.25 0.01 280);
+  --sidebar-ring: oklch(0.7 0.15 85);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================ */
+/* MAFIA GAME CUSTOM STYLES                                     */
+/* ============================================================ */
+
+/* Night/Day background transitions */
+.mafia-bg-night {
+  background: radial-gradient(ellipse at top, #0c1445 0%, #020617 50%, #000000 100%);
+}
+
+.mafia-bg-day {
+  background: radial-gradient(ellipse at top, #1e3a5f 0%, #0f172a 50%, #020617 100%);
+}
+
+/* Card flip animation */
+.card-flip-container {
+  perspective: 1000px;
+}
+
+.card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.card-flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Blood splatter effect */
+.blood-splatter {
+  position: relative;
+  overflow: hidden;
+}
+
+.blood-splatter::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  animation: bloodSplash 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes bloodSplash {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Pulse glow for important elements */
+.pulse-glow-gold {
+  animation: pulseGold 2s ease-in-out infinite;
+}
+
+@keyframes pulseGold {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.3), 0 0 30px rgba(234, 179, 8, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(234, 179, 8, 0.5), 0 0 50px rgba(234, 179, 8, 0.2);
+  }
+}
+
+.pulse-glow-red {
+  animation: pulseRed 2s ease-in-out infinite;
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.3), 0 0 30px rgba(220, 38, 38, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(220, 38, 38, 0.5), 0 0 50px rgba(220, 38, 38, 0.2);
+  }
+}
+
+.pulse-glow-blue {
+  animation: pulseBlue 2s ease-in-out infinite;
+}
+
+@keyframes pulseBlue {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.5), 0 0 50px rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Eliminated player styling */
+.player-eliminated {
+  opacity: 0.4;
+  position: relative;
+}
+
+.player-eliminated::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  width: 110%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ef4444, transparent);
+  transform: rotate(-15deg);
+}
+
+/* Moon animation */
+.moon-glow {
+  animation: moonFloat 6s ease-in-out infinite;
+}
+
+@keyframes moonFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Stars twinkle */
+.star-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Fade in up animation */
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in */
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scale in */
+.scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dramatic entrance */
+.dramatic-entrance {
+  animation: dramaticEntrance 1s ease-out forwards;
+}
+
+@keyframes dramaticEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotateY(90deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1) rotateY(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+/* Vote bar animation */
+.vote-bar {
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Custom scrollbar */
+.mafia-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mafia-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.mafia-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.mafia-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Shimmer effect for loading */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Confetti animation for game over */
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confettiFall 3s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================================ */
+/* TABOT GAME CUSTOM STYLES                                      */
+/* ============================================================ */
+
+.tabot-bg {
+  background: linear-gradient(180deg, #0a0810 0%, #140d1d 30%, #0d0a16 60%, #0a0810 100%);
+}
+
+/* Tabot pulse glow purple */
+.pulse-glow-purple {
+  animation: pulsePurple 2s ease-in-out infinite;
+}
+
+@keyframes pulsePurple {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3), 0 0 30px rgba(168, 85, 247, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), 0 0 50px rgba(168, 85, 247, 0.2);
+  }
+}
+
+/* Tabot coffin float animation */
+.coffin-float {
+  animation: coffinFloat 4s ease-in-out infinite;
+}
+
+@keyframes coffinFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+/* Tabot door shake */
+.door-shake {
+  animation: doorShake 0.5s ease-in-out;
+}
+
+@keyframes doorShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+/* Tabot death flash */
+.death-flash {
+  animation: deathFlash 0.6s ease-out;
+}
+
+@keyframes deathFlash {
+  0% { background-color: rgba(220, 38, 38, 0.4); }
+  100% { background-color: transparent; }
+}
+
+/* ============================================================ */
+/* TOBOL (WAR DRUMS) GAME CUSTOM STYLES                          */
+/* ============================================================ */
+
+.tobol-bg {
+  background: linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%);
+}
+
+/* ============================================================ */
+/* TOBOL BUTTON COLOR CLASSES (from original index.css)          */
+/* ============================================================ */
+
+.btn-red {
+  background-image: url('/img/ligowar/buttons/back/red.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-pink {
+  background-image: url('/img/ligowar/buttons/back/pink.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-blue {
+  background-image: url('/img/ligowar/buttons/back/blue.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-sky {
+  background-image: url('/img/ligowar/buttons/back/sky.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-purple {
+  background-image: url('/img/ligowar/buttons/back/purple.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-orange {
+  background-image: url('/img/ligowar/buttons/back/orange.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-green {
+  background-image: url('/img/ligowar/buttons/back/green.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-teal {
+  background-image: url('/img/ligowar/buttons/back/teal.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.btn-yellow {
+  background-image: url('/img/ligowar/buttons/back/yellow.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.score-blue-bg {
+  background-image: url('/img/ligowar/core/blue_score_back.png');
+  background-size: 100% 100%;
+}
+
+.score-red-bg {
+  background-image: url('/img/ligowar/core/red_score_back.png');
+  background-size: 100% 100%;
+}
+
+/* ============================================================ */
+/* TOBOL GAME TABLE STYLES (from original index.css)             */
+/* ============================================================ */
+
+.gameDiv {
+  position: relative;
+  width: 95vw;
+  max-width: 100vmin;
+  margin: auto;
+  padding: 2vh 0 10vh 0;
+}
+
+.gameTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.btnTable {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0.8vmin;
+  border-collapse: separate;
+}
+
+.btnTable td {
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.btnTable td:active {
+  transform: scale(0.9);
+}
+
+.btnTable2 {
+  margin: 0 auto;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 1.3vmin 0.4vmin;
+  border-collapse: separate;
+}
+
+.btnTable2 td {
+  padding: 0.2vmin;
+  cursor: pointer;
+}
+
+.scoreTable {
+  width: 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  text-align: center;
+}
+
+.teamName {
+  font-size: 3.5vmin;
+  color: white;
+  padding-top: 1vmin;
+}
+
+.teamScore {
+  font-size: 4.5vmin;
+  color: white;
+  padding-bottom: 0.5vmin;
+}
+
+.active-turn-red {
+  box-shadow: 0 0 35px 15px rgba(255, 0, 0, 0.4);
+  transform: scale(1.05);
+  z-index: 10;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid white;
+}
+
+.active-turn-blue {
+  box-shadow: 0 0 35px 15px rgba(0, 0, 255, 0.4);
+  transform: scale(1.05);
+  z-index: 10;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid white;
+}
+
+.inactive-turn {
+  opacity: 0.5;
+  filter: grayscale(60%);
+  transition: all 0.3s ease;
+}
+
+.tobol-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tobol-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tobol-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.tobol-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================ */
+/* PRISON (السجن) GAME CUSTOM STYLES                               */
+/* ============================================================ */
+
+.prison-bg {
+  background: linear-gradient(180deg, #0a0e17 0%, #0c1220 30%, #080c14 60%, #060a10 100%);
+  background-image: radial-gradient(circle at top, #1a1a2e 0%, #0a0e17 70%);
+}
+
+.prison-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prison-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.prison-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.prison-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Prison cell pulse glow */
+.pulse-glow-amber {
+  animation: pulseAmber 2s ease-in-out infinite;
+}
+
+@keyframes pulseAmber {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.3), 0 0 30px rgba(245, 158, 11, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.5), 0 0 50px rgba(245, 158, 11, 0.2);
+  }
+}
+
+/* ============================================================ */
+/* RISK (المجازفة) GAME CUSTOM STYLES                              */
+/* ============================================================ */
+
+.risk-bg {
+  background: linear-gradient(180deg, #0a0a17 0%, #12081e 30%, #0d0a18 60%, #080612 100%);
+  background-image: radial-gradient(circle at top, #1e1030 0%, #0a0a17 70%);
+}
+
+.risk-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.risk-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.risk-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.risk-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Risk card hover glow */
+.risk-card-hover {
+  transition: all 0.2s ease;
+}
+
+.risk-card-hover:hover {
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.3), 0 0 40px rgba(167, 139, 250, 0.1);
+}
+
+/* Risk bomb pulse */
+.pulse-glow-bomb {
+  animation: pulseBomb 2s ease-in-out infinite;
+}
+
+@keyframes pulseBomb {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3), 0 0 30px rgba(239, 68, 68, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.5), 0 0 50px rgba(239, 68, 68, 0.2);
+  }
+}
+
+/* ============================================================ */
+/* RISK2 (المجازفة 2) 3D CARD FLIP STYLES                        */
+/* ============================================================ */
+
+.flip-card {
+  width: 100%;
+  aspect-ratio: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Hover effect for clickable flip cards */
+.flip-card:hover .flip-card-front {
+  border-color: rgba(251, 146, 60, 0.4);
+  box-shadow: 0 0 12px rgba(251, 146, 60, 0.15);
+}
+
+/* ============================================================ */
+/* BAHR HARB (بحر و حرب) GAME CUSTOM STYLES                       */
+/* ============================================================ */
+
+.baharharb-bg {
+  background: linear-gradient(180deg, #041f1e 0%, #071e1a 30%, #061210 60%, #040e0d 100%);
+  background-image: radial-gradient(ellipse at top, #0d3b36 0%, #041f1e 60%, #040e0d 100%);
+}
+
+.baharharb-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.baharharb-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.baharharb-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.baharharb-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Teal pulse glow for bahar harb */
+.pulse-glow-teal {
+  animation: pulseTeal 2s ease-in-out infinite;
+}
+
+@keyframes pulseTeal {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.3), 0 0 30px rgba(20, 184, 166, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(20, 184, 166, 0.5), 0 0 50px rgba(20, 184, 166, 0.2);
+  }
+}
+
+/* Wave animation for sea clue */
+@keyframes waveFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-6px) rotate(1deg); }
+}
+
+.wave-float {
+  animation: waveFloat 3s ease-in-out infinite;
+}
+
+/* Sword animation for war clue */
+@keyframes swordSwing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+.sword-swing {
+  animation: swordSwing 2s ease-in-out infinite;
+}
+
+/* ===== هيكل يلا لودو — هيدر وشريط سفلي بنفس تصميم التطبيق الأصلي (1.5.1.0) ===== */
+.yalla-topbar {
+  background: url('/yalla-ui/friends_titlebg.png') center / 100% 100% no-repeat,
+              linear-gradient(180deg, #0E5140, #0A3D30) !important;
+  background-blend-mode: overlay;
+  border-bottom: none !important;
+  backdrop-filter: none !important;
+}
+/* هيكل main_header.xml: أفاتار 44px بحد ذهبي + حبات العملة #0C3C30 ارتفاع 24px + أيقونات 34px */
+.yalla-topbar-inner {
+  max-width: 672px;
+  margin: 0 auto;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 5px;
+}
+.yalla-topbar-inner .spacer { flex: 1; }
+.yalla-topbar .avatar-hd {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #ffd75e;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.yalla-topbar .coin-pill,
+.yalla-topbar .gem-pill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #0C3C30;
+  border: none;
+  padding: 0 6px 0 2px;
+  border-radius: 10px;
+  height: 24px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+}
+.yalla-topbar .coin-pill > img:first-child,
+.yalla-topbar .gem-pill > img:first-child {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  margin: -2px;
+}
+.yalla-topbar .add-btn {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+.yalla-topbar .hd-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.yalla-topbar .hd-icon img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.yalla-topbar .hd-icon.cart-btn img {
+  width: 34px;
+  height: 30px;
+}
+.yalla-topbar::before {
+  background: none !important;
+}
+.yalla-tabbar {
+  height: 75px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: url('/yalla-ui/friends_titlebg.png') center / 100% 100% no-repeat,
+              linear-gradient(180deg, #0E5140, #083429) !important;
+  background-blend-mode: overlay;
+  border-top: none !important;
+  backdrop-filter: none !important;
+}
+.yalla-tab-btn {
+  flex: 1;
+  color: #7fae9b;
+  transition: color .15s ease;
+}
+.yalla-tab-btn .yalla-tab-ic {
+  width: 44px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+}
+.yalla-tab-btn .yalla-tab-ic img {
+  max-width: 44px; max-height: 40px; object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.35));
+}
+.yalla-tab-btn .yalla-tab-tl {
+  font-size: 11px; font-weight: 700; line-height: 13px;
+}
+.yalla-tab-btn.active { color: #ffd75e; }
+
+/* ===== وضع التضمين داخل يلا لودو (iframe) — إخفاء هيدر اللعبة واللوحة الجانبية =====
+   العناصر محددة بـ data-gg-hide في المكوّنات (GameHeader + SideUtilityPanel) — آمن من تغيّر كلاسات Tailwind */
+html.gg-embedded [data-gg-hide] {
+  display: none !important;
+}
+html.gg-embedded .min-h-screen {
+  background: #041F18 !important;
+}
+
+/* ===== ثيم يلا لودو — عالمي على كل صفحات G-G (البوابة + الألعاب) =====
+   تحويل رمادي slate إلى أخضر يلا — بلا شرط التضمين */
+html, body {
+  background: #041F18 !important;
+}
+.bg-slate-950 { background-color: #03211A !important; }
+.bg-slate-900 { background-color: #06332A !important; }
+.bg-slate-800 { background-color: #0A3D30 !important; }
+.bg-slate-950\/95 { background-color: rgba(4, 31, 24, .96) !important; }
+.bg-slate-950\/90 { background-color: rgba(4, 31, 24, .92) !important; }
+.bg-slate-950\/80 { background-color: rgba(4, 31, 24, .84) !important; }
+.bg-slate-900\/95 { background-color: rgba(6, 42, 32, .96) !important; }
+.bg-slate-900\/90 { background-color: rgba(6, 42, 32, .92) !important; }
+.bg-slate-900\/80 { background-color: rgba(6, 42, 32, .84) !important; }
+.bg-slate-900\/60 { background-color: rgba(6, 42, 32, .62) !important; }
+.bg-slate-800\/90 { background-color: rgba(10, 61, 48, .92) !important; }
+.bg-slate-800\/50 { background-color: rgba(10, 61, 48, .52) !important; }
+.bg-gray-950 { background-color: #03211A !important; }
+.bg-gray-900 { background-color: #06332A !important; }
+.bg-black\/80 { background-color: rgba(4, 31, 24, .84) !important; }
+.bg-black\/60 { background-color: rgba(4, 31, 24, .64) !important; }
+.bg-black\/40 { background-color: rgba(4, 31, 24, .44) !important; }
+.border-slate-800 { border-color: rgba(74, 197, 149, .18) !important; }
+.border-slate-700 { border-color: rgba(74, 197, 149, .26) !important; }
+.border-slate-600 { border-color: rgba(74, 197, 149, .34) !important; }
+.border-slate-800\/30 { border-color: rgba(74, 197, 149, .18) !important; }
+.border-white\/\[0\.08\] { border-color: rgba(74, 197, 149, .2) !important; }
+
+/* ═══════════════ Yalla Profile Dialog (dialog_user_info_v2) ═══════════════ */
+
+.yp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  background: #D9F0E4;
+  backdrop-filter: none;
+}
+
+.yp-panel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  background-color: #D9F0E4;
+  background-image: url('/yalla-ui/bg_user_info_pic.9.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  filter: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44, 119, 98, .35) transparent;
+}
+.yp-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44, 119, 98, .35) transparent;
+}
+.yp-scroll::-webkit-scrollbar { width: 5px; }
+.yp-scroll::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+.yp-panel::-webkit-scrollbar { width: 5px; }
+.yp-panel::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+
+.yp-iconbtn {
+  position: absolute;
+  top: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #2C7762;
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(44, 119, 98, .35);
+  transition: background .15s, color .15s;
+}
+.yp-iconbtn:hover { background: rgba(255, 255, 255, .9); color: #C0392B; }
+.yp-iconbtn--close { left: 12px; }
+.yp-iconbtn--logout { right: 12px; }
+
+/* Avatar head — هيكل صفحة البروفايل (view_user_basic_info: HeadView 230.41 على 921.61) */
+.yp-headwrap { position: relative; width: 105px; height: 105px; margin: calc(min(340px, 38vh) - 52px) auto 0; z-index: 4; }
+.yp-headwrap--cover { margin: calc(min(340px, 38vh) - 52px) auto 0; }
+.yp-head {
+  position: absolute;
+  inset: 11.11%; /* head_face_margin 25.61 / 230.41 */
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+}
+.yp-head--plain { box-shadow: 0 0 0 2px #CDEBDD, 0 0 0 5px #2E7D5F; }
+.yp-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 6;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .3));
+}
+
+/* موضوع الملف الشخصي — بعرض الشاشة كاملاً (527.37dip على 921.61 في يلا) */
+.yp-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min(340px, 38vh);
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+}
+.yp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع */
+.yp-ornament {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: min(230px, 26vh);
+  object-fit: contain;
+  object-position: center top;
+  z-index: 7;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
+}
+
+/* بطاقة خلف البروفايل — شريط أسفل الموضوع بعرض الشاشة */
+.yp-carddecor {
+  position: absolute;
+  top: calc(min(340px, 38vh) - 140px);
+  left: 0;
+  width: 100%;
+  height: min(230px, 26vh);
+  object-fit: cover;
+  object-position: center bottom;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* بطاقة الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل بمنزلة الخاصة تحت الوصف */
+.yp-profcard {
+  position: relative;
+  margin: 12px auto 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(4, 31, 24, .18);
+  text-align: right;
+}
+.yp-profcard--wide { width: 100%; height: 92px; }
+.yp-profcard--wide .yp-profcard-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.yp-profcard--tile { width: 172px; text-align: center; }
+.yp-profcard--tile .yp-profcard-bg { width: 100%; display: block; }
+.yp-profcard-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+}
+.yp-profcard-face {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2.5px solid #FFD84D;
+  box-shadow: 0 2px 6px rgba(4, 31, 24, .3);
+  object-fit: cover;
+  background: #fff;
+  flex-shrink: 0;
+}
+.yp-profcard-meta { min-width: 0; }
+.yp-profcard-name {
+  margin: 0;
+  font-weight: 900;
+  color: #14563F;
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.yp-profcard-id {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #33705B;
+  opacity: .9;
+}
+.yp-profcard-tile-name {
+  position: absolute;
+  inset: auto 0 10px;
+  margin: 0;
+  font-weight: 900;
+  font-size: 13px;
+  color: #14563F;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, .9);
+}
+
+/* عناوين أقسام لوحة الزينة */
+.yd-section {
+  margin: 12px 4px 8px;
+  font-size: 12.5px;
+  font-weight: 900;
+  color: #1C5C44;
+  opacity: .85;
+  text-align: right;
+}
+.yd-section:first-child { margin-top: 2px; }
+
+/* Side buttons: square-pencil + shirt */
+.yp-sidebtn {
+  position: absolute;
+  top: calc(min(340px, 38vh) + 89px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: transform .15s, filter .15s;
+}
+.yp-sidebtn:hover { transform: scale(1.1); }
+.yp-sidebtn--edit { left: 10px; background: transparent; }
+.yp-sidebtn--edit img { width: 34px; height: 34px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); }
+.yp-sidebtn--shirt { right: 10px; background: linear-gradient(180deg, #43C08E, #1E8560); color: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255,255,255,.35); }
+
+/* Shirt dropdown menu */
+.yp-menu {
+  position: absolute;
+  top: calc(min(340px, 38vh) + 147px);
+  right: 10px;
+  z-index: 40;
+  width: 210px;
+  background: rgba(210, 245, 230, .96);
+  border: 1px solid rgba(44, 119, 98, .4);
+  border-radius: 10px;
+  box-shadow: 0 10px 26px rgba(4, 31, 24, .35);
+  overflow: hidden;
+}
+.yp-menuitem {
+  display: block;
+  width: 100%;
+  padding: 9px 14px;
+  background: none;
+  border: 0;
+  border-bottom: 1px dashed rgba(44, 119, 98, .25);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #1C5C44;
+  text-align: right;
+  cursor: pointer;
+}
+.yp-menuitem:last-child { border-bottom: 0; }
+.yp-menuitem:hover { background: rgba(44, 119, 98, .12); }
+.yp-head-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.yp-body { width: 100%; max-width: 460px; margin: 0 auto; padding: 10px 22px 40px; text-align: center; }
+.yp-body--guest { padding-top: 34px; }
+
+/* Badges row (BadgeDynamicView + StrokeTextView) */
+.yp-badges {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 20px;
+}
+.yp-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #2C7762;
+  background: rgba(255, 255, 255, .55);
+  border: 1.5px solid #2C7762;
+  border-radius: 9px;
+  letter-spacing: .3px;
+}
+.yp-badge--paid { border-color: #E8C24A; color: #B8860B; background: rgba(255, 244, 200, .6); }
+.yp-badge--trial { border-color: #B08CFF; color: #7C5CBF; background: rgba(240, 233, 255, .6); }
+.yp-badge--code { direction: ltr; font-family: ui-monospace, monospace; }
+
+/* Player name (LoopGradientTextView) */
+.yp-name {
+  margin-top: 2px;
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 900;
+  color: #33705B;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Info row: level flag | pencils | country flag | ID */
+.yp-inforow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 7px;
+}
+.yp-flag-sm {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2.5px;
+  box-shadow: 0 0 0 1px rgba(44, 119, 98, .3);
+}
+.yp-flag {
+  position: relative;
+  display: inline-flex;
+  width: 27px;
+  height: 37px;
+  flex-shrink: 0;
+}
+.yp-flag-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+.yp-flag-num {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 900;
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 #1A4A38, 0 0 4px rgba(0,0,0,.6);
+}
+.yp-sep { width: 2px; height: 16px; background: rgba(111, 165, 230, .55); border-radius: 1px; }
+.yp-country { font-size: 15px; font-weight: 700; color: #6FA5E6; }
+.yp-id {
+  font-size: 11px;
+  color: #7FA795;
+  font-family: ui-monospace, monospace;
+}
+.yp-edit-ico {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  opacity: .9;
+  transition: transform .15s, opacity .15s;
+}
+.yp-edit-ico:hover { opacity: 1; transform: scale(1.12); }
+.yp-edit-ico img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Bio (max 5 lines) */
+.yp-bio {
+  margin: 6px auto 0;
+  max-width: 340px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #4E8471;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Gold edit buttons (0x7f0802d0) on the parchment panel */
+.yp-btnrow {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.yp-btnrow--guest { flex-direction: column; align-items: center; gap: 10px; margin-top: 16px; }
+.yp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 118px;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6B4A00;
+  background: linear-gradient(180deg, #FFE082, #F0B429);
+  border: 1px solid rgba(146, 98, 10, .45);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 2px 5px rgba(44, 119, 98, .25);
+  transition: filter .15s, transform .1s;
+}
+.yp-btn:hover { filter: brightness(1.06); }
+.yp-btn:active { transform: scale(.97); }
+.yp-btn:disabled { opacity: .6; cursor: default; }
+.yp-btn--alt { background: linear-gradient(180deg, #2E8B57, #1C6B45); color: #E2FBF4; border-color: rgba(0, 0, 0, .22); }
+.yp-btn--save { background: linear-gradient(180deg, #5ACD96, #2C8A62); color: #FFFFFF; border-color: rgba(10, 60, 45, .4); }
+.yp-btn-ico { width: 15px; height: 15px; object-fit: contain; }
+
+/* Yalla country picker (dialog_country_select + item_list_country) */
+.yp-cselect {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, .78);
+  border: 1px solid rgba(44, 119, 98, .35);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.yp-cselect:hover { border-color: #2C7762; }
+.yp-cselect img { width: 28px; height: 19px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px rgba(44, 119, 98, .25); }
+.yp-cname { flex: 1; text-align: right; font-size: 13.5px; font-weight: 800; color: #23574A; }
+.yp-cname:dir(ltr) { text-align: left; }
+.yp-carrow { font-size: 11px; color: #55897A; }
+.yp-clist {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  max-height: 215px;
+  overflow-y: auto;
+  background: #F4FBF7;
+  border: 1.5px solid #2C7762;
+  border-radius: 11px;
+  box-shadow: 0 12px 30px rgba(4, 31, 24, .3);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44, 119, 98, .35) transparent;
+}
+.yp-clist::-webkit-scrollbar { width: 5px; }
+.yp-clist::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+.yp-citem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 13px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(44, 119, 98, .12);
+  cursor: pointer;
+  transition: background .12s;
+  text-align: right;
+}
+.yp-citem:last-child { border-bottom: 0; }
+.yp-citem:hover { background: rgba(44, 119, 98, .09); }
+.yp-citem--on { background: rgba(44, 119, 98, .14); }
+.yp-citem img { width: 34px; height: 23px; object-fit: cover; border-radius: 3.5px; box-shadow: 0 0 0 1px rgba(44, 119, 98, .22); flex-shrink: 0; }
+.yp-citem-name { flex: 1; font-size: 13.5px; font-weight: 800; color: #23574A; }
+.yp-ccode { font-size: 10.5px; color: #6C9C8B; font-family: ui-monospace, monospace; }
+
+/* Edit form — Yalla view_user_edit_item style */
+.yp-form {
+  margin-top: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(255, 255, 255, .42);
+  border: 1px solid rgba(44, 119, 98, .28);
+  border-radius: 12px;
+}
+.yp-form-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #2E7A5E;
+  text-align: center;
+}
+.yp-field { display: flex; flex-direction: column; gap: 5px; }
+.yp-field > label {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #55897A;
+}
+.yp-inputwrap { position: relative; }
+.yp-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #23574A;
+  background: rgba(255, 255, 255, .78);
+  border: 1px solid rgba(44, 119, 98, .35);
+  border-radius: 9px;
+  outline: none;
+  transition: border-color .15s;
+}
+.yp-input:focus { border-color: #2C7762; }
+.yp-input::placeholder { color: rgba(44, 119, 98, .5); }
+.yp-textarea { height: auto; padding: 9px 12px; resize: none; line-height: 1.5; }
+.yp-counter {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: #8FB3A7;
+  font-family: ui-monospace, monospace;
+}
+.yp-counter--area { top: auto; bottom: 7px; transform: none; }
+.yp-form-msg { font-size: 11px; color: #C0392B; text-align: center; }
+.yp-form .yp-btn--save {
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+}
+.yp-cancel {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #55897A;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.yp-cancel:hover { color: #2E7A5E; }
+
+/* XP bar (0x7f0802c3 row) — light parchment strip */
+.yp-xp {
+  margin-top: 14px;
+  padding: 10px 14px 11px;
+  background: rgba(255, 255, 255, .32);
+  border: 1px solid rgba(44, 119, 98, .28);
+  border-radius: 14px;
+}
+.yp-xp-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.yp-xp-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #2E7A5E;
+  margin-inline-end: 4px;
+}
+.yp-xp-cap { font-size: 10.5px; color: #55897A; }
+.yp-xp-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 9px;
+  background: rgba(255, 255, 255, .7);
+  border: 1px solid rgba(44, 119, 98, .32);
+  border-radius: 9px;
+}
+.yp-xp-box img { width: 14px; height: 17px; object-fit: contain; }
+.yp-xp-box b { font-size: 12.5px; font-weight: 900; color: #2C7762; }
+.yp-xp-track {
+  margin-top: 8px;
+  height: 9px;
+  background: rgba(44, 119, 98, .18);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.yp-xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4FBF8B, #2C7762);
+  border-radius: 5px;
+  transition: width .6s ease;
+}
+
+/* Game stats section (0x7f08075b panel + 0x7f08075c dark header) */
+.yp-stats {
+  margin-top: 13px;
+  background: rgba(255, 255, 255, .22);
+  border: 1px solid rgba(44, 119, 98, .28);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: right;
+}
+.yp-stats-head,
+.yp-stats-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  align-items: center;
+  padding: 8px 13px;
+}
+.yp-stats-head {
+  background: rgba(23, 84, 63, .92);
+  font-size: 13px;
+  font-weight: 800;
+  color: #E2FBF4;
+}
+.yp-stats-row {
+  border-top: 1px solid rgba(44, 119, 98, .16);
+  font-size: 13px;
+}
+.yp-stats-row:first-child { border-top: 0; }
+.yp-game-cell { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.yp-game-ico {
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(44, 119, 98, .25);
+}
+.yp-game-name {
+  color: #2F6B57;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.yp-num { text-align: center; color: #3F7A64; font-weight: 800; }
+.yp-stats-empty { padding: 16px 13px; text-align: center; font-size: 12px; color: #6C9C8B; }
+
+/* Subscription code card (bottom invite-style card) */
+.yp-invite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 78%;
+  margin: 14px auto 0;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, .55);
+  border: 1.5px solid #E8C24A;
+  border-radius: 12px;
+  transition: filter .15s;
+}
+.yp-invite:hover { filter: brightness(1.04); }
+.yp-invite-ico { width: 16px; height: 16px; object-fit: contain; }
+.yp-invite-txt {
+  font-size: 13px;
+  font-weight: 900;
+  color: #B8860B;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 1px;
+}
+.yp-invite-act { font-size: 10.5px; color: #6C9C8B; }
+
+/* Guest text */
+.yp-guest-txt {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #4E8471;
+}
+
+
+/* ═══════════ نوافذ الزينة ملء الشاشة (Yalla decoration windows) ═══════════
+   مطابقة لنوافذ يلا الحقيقية: overlay أخضر داكن متدرج + عنوان نيون + أرفف
+   (room_profile_card_shop / dialog_skin_theme / dialog_head_frame_select) */
+
+.yd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 60% at 50% -6%, rgba(72, 205, 158, .34), transparent 60%),
+    radial-gradient(90% 42% at 50% 104%, rgba(38, 132, 99, .28), transparent 62%),
+    linear-gradient(180deg, #0E4A38 0%, #0B3D2E 40%, #082B21 100%);
+  color: #DFF5EA;
+}
+.yd-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(226, 251, 244, .35) transparent;
+  padding: 12px 10px 26px;
+}
+.yd-scroll::-webkit-scrollbar { width: 5px; }
+.yd-scroll::-webkit-scrollbar-thumb { background: rgba(226, 251, 244, .3); border-radius: 4px; }
+
+/* أشعة أعلى النافذة (ديكور يلا العلوي) */
+.yd-rays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 190px;
+  pointer-events: none;
+  opacity: .3;
+  background: repeating-conic-gradient(from 250deg at 50% -14%,
+    rgba(140, 245, 200, .16) 0deg 4deg, transparent 4deg 11deg);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 100%);
+}
+.yd-bubbles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.yd-bubble {
+  position: absolute;
+  bottom: -70px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .35), rgba(140, 245, 200, .1) 55%, transparent 72%);
+  animation: ydFloat 11s linear infinite;
+}
+@keyframes ydFloat {
+  from { transform: translateY(0); opacity: .5; }
+  85%  { opacity: .35; }
+  to   { transform: translateY(-108vh); opacity: 0; }
+}
+
+/* زر X دائري أعلى يسار (نمط يلا) */
+.yd-close {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid #BFEFD9;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, #3DC08F, #1E7A59);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+  transition: transform .12s, filter .12s;
+}
+.yd-close:hover { transform: scale(1.07); filter: brightness(1.1); }
+
+/* عنوان نيون أخضر داخل لوحة بإطار مزدوج */
+.yd-titlewrap { display: flex; justify-content: center; padding-top: 12px; }
+.yd-title {
+  min-width: 220px;
+  padding: 9px 44px 11px;
+  font-size: 21px;
+  font-weight: 900;
+  text-align: center;
+  color: #8CFFCB;
+  text-shadow: 0 0 12px rgba(80, 255, 180, .75), 0 0 28px rgba(60, 230, 160, .4);
+  background: linear-gradient(180deg, rgba(9, 44, 34, .55), rgba(9, 44, 34, .3));
+  border: 2px solid #63E8AE;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 2px rgba(9, 40, 31, .75), 0 0 22px rgba(80, 255, 180, .22);
+}
+
+/* صف العملات أعلى يمين (ذهبي + ماس كما في لقطات يلا) */
+.yd-wallet {
+  position: fixed;
+  top: 16px;
+  right: 14px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 8px;
+  background: rgba(4, 28, 21, .72);
+  border: 1.5px solid rgba(140, 245, 176, .4);
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 900;
+  color: #E2FBF4;
+}
+.yd-wallet img { width: 20px; height: 20px; object-fit: contain; }
+
+/* تبويبات (موضوع الملف/المواضيع — احصل عليه/ملفك الشخصي) */
+.yd-tabs { display: flex; justify-content: center; gap: 10px; margin-top: 16px; }
+.yd-tab {
+  padding: 8px 30px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #BFEFD9;
+  background: linear-gradient(180deg, #14785A, #0B4A37);
+  border: 2px solid rgba(190, 255, 225, .55);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.yd-tab--on {
+  color: #063A2B;
+  background: linear-gradient(180deg, #A8F5D4, #5BD9A6);
+  box-shadow: 0 -3px 14px rgba(90, 240, 170, .4);
+}
+
+/* قسم فرعي تحت التبويب */
+.yd-section { margin: 20px 2px 10px; text-align: center; font-size: 15px; font-weight: 900; color: #8CFFCB; text-shadow: 0 0 10px rgba(80, 255, 180, .5); }
+
+/* شبكات على الرفوف — أعمدة مختلفة لكل نافذة */
+.yd-grid { display: grid; gap: 22px 14px; max-width: 700px; margin: 0 auto; }
+.yd-grid--2 { grid-template-columns: 1fr 1fr; }
+.yd-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+.yd-grid--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+@media (max-width: 560px) {
+  .yd-grid--3, .yd-grid--4 { grid-template-columns: 1fr 1fr; }
+}
+
+/* بطاقة زينة (بنفسجية/زرقاء متدرجة كما بلقطات يلا) */
+.yd-card {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 8px 10px;
+  text-align: center;
+  border: 2.5px solid rgba(255, 255, 255, .75);
+  border-radius: 16px;
+  cursor: pointer;
+  background:
+    radial-gradient(120% 90% at 50% 108%, rgba(255, 255, 255, .34), transparent 55%),
+    linear-gradient(180deg, #9FA8EE 0%, #7E8AE2 52%, #6F7CDA 100%);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, .4), 0 6px 16px rgba(0, 0, 0, .35);
+  transition: transform .12s, box-shadow .12s;
+}
+.yd-card:hover { transform: translateY(-3px); }
+.yd-card:disabled { opacity: .75; cursor: default; }
+.yd-card--blue {
+  background:
+    radial-gradient(120% 90% at 50% 108%, rgba(255, 255, 255, .34), transparent 55%),
+    linear-gradient(180deg, #8ED4F5 0%, #6FBAE8 52%, #5FACDF 100%);
+}
+.yd-card--on {
+  border-color: #B6FF8C;
+  box-shadow: 0 0 0 3px rgba(150, 255, 110, .65), 0 0 24px rgba(150, 255, 110, .4);
+}
+.yd-check {
+  position: absolute;
+  bottom: 7px;
+  left: 7px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  background: #22B365;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .35);
+}
+.yd-card-name {
+  display: block;
+  margin-bottom: 7px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(20, 40, 90, .55);
+  background: rgba(255, 255, 255, .22);
+  border-radius: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* معاينة الأفاتار داخل بطاقات المعلقات/البطاقات (شريط بمركز أفاتار كما بلقطات يلا) */
+.yd-ornpreview { position: relative; display: block; height: 86px; overflow: hidden; border-radius: 10px; }
+.yd-ornpreview-avatar {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.yd-ornpreview img:not(.yd-ornpreview-avatar) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* بطاقة موضوع عمودية (3 أعمدة كما بنافذة المواضيع) */
+.yd-themecard {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  aspect-ratio: 3 / 4.4;
+  border: 2.5px solid rgba(255, 255, 255, .75);
+  border-radius: 14px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, .25);
+  transition: transform .12s;
+}
+.yd-themecard:hover { transform: translateY(-3px); }
+.yd-themecard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.yd-themecard .yd-none { height: 100%; }
+.yd-themename {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 6px 6px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, transparent, rgba(6, 42, 31, .9));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* خلية إطار دائرية (item_head_frame 204dip) */
+.yd-framecard {
+  position: relative;
+  padding: 6px 3px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background .12s;
+}
+.yd-framecard:hover { background: rgba(255, 255, 255, .1); }
+.yd-framecircle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto;
+  background: #CFEADF;
+  border-radius: 50%;
+}
+.yd-framecircle img { position: absolute; inset: -13%; width: 126%; height: 126%; object-fit: contain; pointer-events: none; }
+.yd-framename {
+  display: block;
+  max-width: 110px;
+  margin: 6px auto 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #DFF5EA;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* بطاقة «لا يوجد» */
+.yd-none { display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 800; color: #E2FBF4; }
+
+/* ── صفوف الهوية بنمط يلا: حبة ID + شريط الدولة/المستوى/العضوية ── */
+.yp-idrow { display: flex; justify-content: center; margin-top: 4px; }
+.yp-idpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 12px 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .6);
+  border: 1.5px solid rgba(44, 119, 98, .35);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #33705B;
+  font-family: ui-monospace, monospace;
+}
+.yp-idico {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #3DC08F, #1E7A59);
+}
+.yp-idico::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 3px;
+  height: 1.5px;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 0 3.5px 0 #fff;
+}
+.yp-flag-lg {
+  width: 44px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(44, 119, 98, .3);
+}
+.yp-mflag { width: 30px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .25)); }
+
+/* ── بطاقات الأقسام الكريمية بشرائط خضراء (المستوى/اللعبة/الإنجازات كما في يلا) ── */
+/* بطاقات الأقسام — عمود مركزي بنفس مقاسات يلا */
+.yp-sec { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; max-width: 460px; margin-left: auto; margin-right: auto; width: 100%; }
+.yp-seccard {
+  position: relative;
+  padding: 20px 14px 8px;
+  text-align: right;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(180deg, #FDF9EA, #F5EED6);
+  border: 2px solid #E3D5A6;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), inset 0 0 0 3px rgba(150, 170, 120, .16), 0 3px 8px rgba(4, 31, 24, .12);
+}
+.yp-ribbon {
+  position: absolute;
+  top: -5px;
+  padding: 6px 22px 7px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 60, 40, .5);
+  background: linear-gradient(180deg, #35B57F, #1E7A59);
+  box-shadow: 0 3px 6px rgba(4, 31, 24, .25), inset 0 1px 0 rgba(255, 255, 255, .35);
+}
+.yp-ribbon--tr { right: 12px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 9% 50%); }
+.yp-ribbon--tl { left: 12px; clip-path: polygon(0 0, 100% 0, 91% 50%, 100% 100%, 0 100%); }
+.yp-lvrow { display: flex; align-items: center; gap: 8px; }
+.yp-lvtrack {
+  position: relative;
+  flex: 1;
+  height: 27px;
+  background: linear-gradient(180deg, #E8F6FD, #CFEBF8);
+  border: 1.5px solid rgba(47, 128, 180, .35);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.yp-lvfill { position: absolute; top: 0; bottom: 0; right: 0; background: linear-gradient(180deg, #6FD0F5, #2F9BD8); border-radius: 999px; }
+.yp-lvnum {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(10, 60, 100, .55);
+}
+.yp-secrow { display: flex; align-items: center; justify-content: space-between; padding: 6px 2px; }
+.yp-secrow + .yp-secrow,
+.yp-secgames + .yp-secrow { border-top: 1.5px dashed #DACD9F; }
+.yp-seclabel { font-size: 13.5px; font-weight: 900; color: #2E7D5F; }
+.yp-secval { font-size: 15px; font-weight: 900; color: #C9971C; }
+.yp-secval--blue { color: #2F86C8; }
+.yp-secgames { display: flex; align-items: center; gap: 16px; padding: 5px 2px 3px; flex-wrap: wrap; }
+.yp-secgame { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 58px; }
+.yp-secgame img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(4, 31, 24, .2); }
+.yp-secgame span { font-size: 10.5px; color: #4E8471; }
+.yp-secgame b { font-size: 11px; color: #C9971C; }
+.yp-secrow--btn { width: 100%; background: none; border: 0; cursor: pointer; font-family: inherit; padding: 6px 2px; }
+
+/* ═══════════ نافذة التعديل ملء الشاشة (view_edit_user_info) ═══════════ */
+
+.ye-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  overflow: hidden;
+  color: #2E7D5F;
+  background:
+    radial-gradient(120% 55% at 50% -8%, rgba(110, 231, 183, .35), transparent 60%),
+    linear-gradient(180deg, #D8F3E7 0%, #C6EADC 45%, #AFDEC9 100%);
+}
+.ye-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44, 119, 98, .35) transparent;
+}
+.ye-scroll::-webkit-scrollbar { width: 5px; }
+.ye-scroll::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+.ye-close {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2.5px solid #E7FFF4;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, #F1707C, #D95562);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .28);
+  transition: transform .12s, filter .12s;
+}
+.ye-close:hover { transform: scale(1.07); filter: brightness(1.08); }
+
+/* رأس النافذة: أفاتار فوق بطاقة خلفية كما في view_edit_user_info */
+.ye-head { position: relative; padding: 14px 16px 0; }
+.ye-headcard {
+  height: 120px;
+  overflow: hidden;
+  border-radius: 18px 18px 16px 16px;
+  border: 2px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 6px 18px rgba(4, 31, 24, .18);
+  background: linear-gradient(180deg, #8ED4F5, #5FACDF);
+}
+.ye-headcard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ye-headbtn {
+  position: absolute;
+  right: 20px;
+  bottom: -18px;
+  z-index: 5;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #7ED9AF;
+  box-shadow: 0 4px 12px rgba(4, 31, 24, .3);
+  cursor: pointer;
+  padding: 0;
+  background: #CFEADF;
+}
+.ye-headbtn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* حقول النموذج — UserEditItemView */
+.ye-body { width: 100%; max-width: 460px; margin: 0 auto; padding: 26px 16px 40px; }
+.ye-field { margin-top: 12px; }
+.ye-label { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 900; color: #2E7D5F; opacity: .85; }
+.ye-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #23574A;
+  background: rgba(255, 255, 255, .85);
+  border: 1.5px solid rgba(44, 119, 98, .35);
+  border-radius: 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+.ye-input:focus { border-color: #2C7762; }
+.ye-counter { position: absolute; bottom: -18px; left: 2px; font-size: 10px; color: #55897A; }
+
+.ye-row { display: flex; gap: 10px; }
+.ye-row > .ye-field { flex: 1; min-width: 0; }
+
+/* منتقي الجنس والبلد — أزرار حقلية تفتح شبكة الاختيار */
+.ye-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #23574A;
+  background: rgba(255, 255, 255, .85);
+  border: 1.5px solid rgba(44, 119, 98, .35);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.ye-pick:hover { border-color: #2C7762; }
+.ye-pick img { width: 26px; height: 26px; object-fit: contain; }
+.ye-pick .yp-flag-lg { flex-shrink: 0; }
+.ye-pick-name { flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ye-pick-car { font-size: 11px; color: #55897A; }
+
+/* شبكة اختيار الدولة داخل النافذة */
+.ye-cgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+  max-height: 230px;
+  overflow-y: auto;
+  padding: 10px;
+  background: rgba(255, 255, 255, .55);
+  border: 1.5px solid rgba(44, 119, 98, .25);
+  border-radius: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44, 119, 98, .35) transparent;
+}
+.ye-cgrid::-webkit-scrollbar { width: 5px; }
+.ye-cgrid::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+.ye-citem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 4px;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  transition: background .12s;
+}
+.ye-citem:hover { background: rgba(44, 119, 98, .1); }
+.ye-citem--on { border-color: #2C7762; background: rgba(44, 119, 98, .14); }
+.ye-citem img { width: 34px; height: 23px; object-fit: cover; border-radius: 3.5px; box-shadow: 0 0 0 1px rgba(44, 119, 98, .22); }
+.ye-citem span { max-width: 100%; font-size: 10.5px; font-weight: 800; color: #23574A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* الأزرار الذهبية (view_user_edit_info_btn) */
+.ye-save {
+  display: block;
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #6B4A00;
+  background: linear-gradient(180deg, #FFE082, #F0B429);
+  border: 1.5px solid rgba(146, 98, 10, .45);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 3px 8px rgba(44, 119, 98, .25);
+  cursor: pointer;
+  transition: filter .15s, transform .1s;
+}
+.ye-save:hover { filter: brightness(1.05); }
+.ye-save:active { transform: scale(.98); }
+.ye-save:disabled { opacity: .6; cursor: default; }
+.ye-msg { margin-top: 10px; text-align: center; font-size: 12.5px; font-weight: 800; color: #2E7D5F; }
+.ye-msg--err { color: #C0392B; }
+
+/* ═══════════ نافذة معلومات أساسية (edit_avatar/dialog_avatar_edit) ═══════════ */
+
+.yb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(3, 28, 21, .55);
+  backdrop-filter: blur(3px);
+}
+.yb-card {
+  position: relative;
+  width: 430px;
+  max-width: 96vw;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #EFFAF3, #DCF2E6);
+  box-shadow: 0 18px 50px rgba(3, 28, 21, .45);
+}
+.yb-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #5ED0A0, #37B585);
+}
+.yb-title { font-size: 17px; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0, 60, 40, .4); }
+.yb-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(0, 0, 0, .18);
+  cursor: pointer;
+  transition: background .15s;
+}
+.yb-x:hover { background: rgba(0, 0, 0, .32); }
+
+.yb-headrow { display: flex; align-items: center; gap: 12px; padding: 14px 16px 6px; }
+.yb-userpick {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 13px;
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(180deg, #43C08E, #1E8560);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .22);
+  cursor: pointer;
+}
+.yb-userpick:hover { filter: brightness(1.07); }
+.yb-xpwrap { flex: 1; min-width: 0; text-align: right; }
+.yb-xprow { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #55897A; }
+.yb-xprow b { color: #2E7D5F; }
+.yb-xptrack { height: 7px; margin-top: 4px; background: #CBE8DA; border-radius: 999px; overflow: hidden; }
+.yb-xpfill { height: 100%; background: linear-gradient(90deg, #35B57F, #6FD0A8); border-radius: 999px; }
+.yb-avwrap { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+.yb-avwrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.yb-avwrap .yb-avface { position: absolute; inset: 14%; width: 72%; height: 72%; border-radius: 50%; object-fit: cover; }
+
+/* التبويبات: إطار الصورة | صورة الملف الشخصي */
+.yb-tabs { display: flex; gap: 8px; padding: 8px 16px 0; }
+.yb-tab {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid rgba(44, 119, 98, .35);
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #2E7D5F;
+  background: rgba(255, 255, 255, .7);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.yb-tab--on { color: #fff; background: linear-gradient(180deg, #43C08E, #1E8560); border-color: rgba(20, 90, 65, .5); }
+
+/* شريط عامل التصفية (الكل | النص الرقمي…) */
+.yb-filterbar { display: flex; justify-content: flex-end; gap: 7px; padding: 10px 16px 4px; flex-wrap: wrap; }
+.yb-filter {
+  height: 30px;
+  padding: 0 15px;
+  border: 1.5px solid rgba(44, 119, 98, .35);
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #2E7D5F;
+  background: rgba(255, 255, 255, .65);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.yb-filter:hover { background: rgba(44, 119, 98, .12); }
+.yb-filter--on { color: #fff; background: linear-gradient(180deg, #43C08E, #1E8560); border-color: rgba(20, 90, 65, .5); }
+
+.yb-body { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px 16px; scrollbar-width: thin; scrollbar-color: rgba(44, 119, 98, .35) transparent; }
+.yb-body::-webkit-scrollbar { width: 5px; }
+.yb-body::-webkit-scrollbar-thumb { background: rgba(44, 119, 98, .3); border-radius: 4px; }
+
+/* شريط قسم «تم الحصول عليها» */
+.yb-secband {
+  margin: 6px 0 10px;
+  padding: 5px 0 7px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 900;
+  color: #1C5C44;
+  background: rgba(160, 214, 188, .5);
+  clip-path: polygon(4% 0, 96% 0, 100% 50%, 96% 100%, 4% 100%, 0 50%);
+}
+
+/* شبكة الإطارات الدائرية 4 أعمدة */
+.yb-framegrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 10px; }
+@media (max-width: 420px) { .yb-framegrid { grid-template-columns: repeat(3, 1fr); } }
+.yb-framecell { position: relative; border: none; background: none; padding: 4px; cursor: pointer; border-radius: 12px; transition: background .12s; }
+.yb-framecell:hover { background: rgba(44, 119, 98, .1); }
+.yb-framecell--on { background: rgba(44, 119, 98, .14); box-shadow: inset 0 0 0 1.5px rgba(44, 119, 98, .5); }
+.yb-framecell-imgwrap { position: relative; aspect-ratio: 1 / 1; }
+.yb-framecell-imgwrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.yb-framecell-face {
+  position: absolute;
+  inset: 17%;
+  width: 66%;
+  height: 66%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.yb-timer {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 7px 2px;
+  font-size: 9px;
+  font-weight: 900;
+  color: #fff;
+  background: rgba(28, 92, 68, .8);
+  border-radius: 7px;
+  pointer-events: none;
+}
+.yb-check {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  color: #fff;
+  background: #22B365;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+}
+
+/* شبكة الصور الشخصية (صورة الملف الشخصي) */
+.yb-photogrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 10px; }
+@media (max-width: 420px) { .yb-photogrid { grid-template-columns: repeat(3, 1fr); } }
+.yb-photocell { position: relative; border: none; background: none; padding: 4px; cursor: pointer; border-radius: 12px; transition: background .12s; }
+.yb-photocell:hover { background: rgba(44, 119, 98, .1); }
+.yb-photocell--on { background: rgba(44, 119, 98, .14); box-shadow: inset 0 0 0 1.5px rgba(44, 119, 98, .5); }
+.yb-photocell-face { width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; border: 2.5px solid #7ED9AF; }
+.yb-addphoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed rgba(44, 119, 98, .45);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .55);
+  color: #2E7D5F;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background .15s;
+}
+.yb-addphoto:hover { background: rgba(255, 255, 255, .85); }
+.yb-addphoto-ico { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #fff; background: linear-gradient(180deg, #43C08E, #1E8560); }
+.yb-empty { padding: 26px 0; text-align: center; font-size: 12.5px; font-weight: 800; color: #55897A; }

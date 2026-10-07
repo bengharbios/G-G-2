@@ -1,0 +1,550 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.root{padding:1.5rem 0}
+.tabs{display:flex;gap:6px;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none}
+.tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary)}
+.pane{display:none}.pane.active{display:block}
+
+/* MOCKUP */
+.phone-wrap{display:flex;justify-content:center;padding:1rem 0 1.5rem}
+.phone{width:300px;background:#1a1a2e;border-radius:28px;overflow:hidden;border:2px solid #333;min-height:580px;display:flex;flex-direction:column}
+.phone-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#16213e;border-bottom:1px solid #0f3460}
+.room-name{font-size:13px;font-weight:500;color:#e0e0e0;display:flex;align-items:center;gap:6px}
+.room-name .dot{width:7px;height:7px;border-radius:50%;background:#4ade80}
+.top-right{display:flex;gap:8px;align-items:center}
+.icon-btn{width:28px;height:28px;border-radius:8px;background:#0f3460;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn svg{width:14px;height:14px}
+.exit-btn{font-size:10px;color:#f87171;background:#3f1010;border-radius:6px;padding:3px 8px;font-weight:500}
+
+/* Mics grid */
+.mics-section{padding:12px 10px;background:#1a1a2e;flex-shrink:0}
+.mics-label{font-size:10px;color:#666;margin-bottom:8px;text-align:right;direction:rtl}
+.mics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mic-slot{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.mic-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid transparent;font-size:11px;color:#fff;font-weight:500;position:relative}
+.mic-avatar.empty{background:#0f3460;border-color:#1e4a8a;color:#4a7abf}
+.mic-avatar.occupied{border-color:#4ade80}
+.mic-avatar.locked{background:#1f1f1f;border-color:#333}
+.mic-avatar .wave{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#4ade80;display:flex;align-items:center;justify-content:center}
+.mic-num{font-size:9px;color:#555}
+.mic-name{font-size:9px;color:#aaa;text-align:center;max-width:40px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Chat area */
+.chat-area{flex:1;padding:8px 10px;overflow:hidden;display:flex;flex-direction:column;gap:4px;min-height:100px;background:#1a1a2e;position:relative}
+.chat-msg{display:inline-flex;align-items:baseline;gap:6px;background:rgba(255,255,255,0.05);padding:4px 8px;border-radius:10px;max-width:90%;direction:rtl;align-self:flex-start}
+.chat-msg .sender{font-size:10px;color:#7fb3ff;font-weight:500;white-space:nowrap}
+.chat-msg .text{font-size:10px;color:#ccc}
+.gift-notif{font-size:10px;color:#f59e0b;background:rgba(245,158,11,0.1);padding:3px 10px;border-radius:99px;text-align:center;align-self:center}
+
+/* Bottom bar */
+.bottom-bar{background:#16213e;border-top:1px solid #0f3460;padding:8px 10px;flex-shrink:0}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-icon{width:32px;height:32px;border-radius:50%;background:#0f3460;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.bar-icon svg{width:15px;height:15px}
+.bar-input{flex:1;background:#0f3460;border:none;border-radius:16px;padding:6px 12px;font-size:11px;color:#aaa;outline:none;direction:rtl}
+.gift-icon{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#dc2626);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+
+/* Bottom sheet */
+.bottom-sheet{background:#0f1b35;border-radius:16px 16px 0 0;padding:12px 10px;border-top:1px solid #1e4a8a;margin-top:4px;flex-shrink:0}
+.sheet-handle{width:36px;height:3px;background:#333;border-radius:99px;margin:0 auto 10px}
+.sheet-title{font-size:11px;color:#aaa;direction:rtl;text-align:right;margin-bottom:8px}
+.gifts-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.gift-item{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;background:#1a2a4a;border-radius:10px;cursor:pointer;min-width:46px;border:1px solid transparent}
+.gift-item.sel{border-color:#f59e0b}
+.gift-icon-box{width:30px;height:30px;border-radius:8px;background:#0f3460;display:flex;align-items:center;justify-content:center;font-size:16px}
+.gift-price{font-size:9px;color:#f59e0b;font-weight:500}
+.send-targets{display:flex;gap:6px;margin-top:8px;direction:rtl}
+.send-target{font-size:10px;padding:4px 10px;border-radius:99px;border:0.5px solid #1e4a8a;color:#aaa;cursor:pointer;background:none}
+.send-target.active{background:#1e4a8a;color:#7fb3ff;border-color:#378add}
+.send-btn{font-size:11px;font-weight:500;background:#378add;color:#fff;border:none;border-radius:8px;padding:6px 16px;cursor:pointer;margin-top:8px;width:100%}
+
+/* Popup menu */
+.popup-menu{background:#0f1b35;border:0.5px solid #1e4a8a;border-radius:12px;padding:6px;position:absolute;right:10px;top:20px;z-index:10;min-width:140px}
+.popup-item{padding:7px 12px;font-size:11px;color:#ccc;direction:rtl;cursor:pointer;border-radius:8px;display:flex;align-items:center;gap:8px}
+.popup-item:hover{background:#1e4a8a}
+.popup-item .dot-r{width:7px;height:7px;border-radius:50%;background:#f87171}
+.popup-item .dot-g{width:7px;height:7px;border-radius:50%;background:#4ade80}
+.popup-item .dot-o{width:7px;height:7px;border-radius:50%;background:#f59e0b}
+
+/* Profile sheet */
+.profile-sheet{background:#0f1b35;border-radius:16px 16px 0 0;padding:14px 12px;border-top:1px solid #1e4a8a;direction:rtl;flex-shrink:0}
+.prof-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.prof-av{width:44px;height:44px;border-radius:50%;background:#1e4a8a;display:flex;align-items:center;justify-content:center;font-size:15px;color:#7fb3ff;font-weight:500;border:2px solid #378add}
+.prof-info .name{font-size:13px;color:#e0e0e0;font-weight:500}
+.prof-info .role{font-size:10px;color:#666;margin-top:2px}
+.prof-actions{display:flex;gap:8px}
+.pact{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;padding:8px 6px;background:#1a2a4a;border-radius:10px;cursor:pointer}
+.pact svg{width:18px;height:18px}
+.pact span{font-size:9px;color:#aaa}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:1rem 0 1.5rem;direction:rtl}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--color-text-secondary)}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* Mic controls diagram */
+.flow-box{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;margin-bottom:1rem}
+.flow-title{font-size:13px;font-weight:500;color:var(--color-text-primary);direction:rtl;margin-bottom:10px}
+.flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.flow-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;direction:rtl}
+.flow-card-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.flow-card ul{padding-right:12px;font-size:11.5px;color:var(--color-text-secondary);line-height:1.8}
+.badge-r{background:var(--color-background-danger);color:var(--color-text-danger);font-size:10px;padding:1px 6px;border-radius:99px}
+.badge-g{background:var(--color-background-success);color:var(--color-text-success);font-size:10px;padding:1px 6px;border-radius:99px}
+.badge-b{background:var(--color-background-info);color:var(--color-text-info);font-size:10px;padding:1px 6px;border-radius:99px}
+.badge-o{background:var(--color-background-warning);color:var(--color-text-warning);font-size:10px;padding:1px 6px;border-radius:99px}
+
+/* Gifts table */
+.gift-table{width:100%;border-collapse:collapse;font-size:12px;direction:rtl;margin:8px 0}
+.gift-table th{background:var(--color-background-secondary);padding:7px 10px;text-align:right;font-weight:500;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.gift-table td{padding:7px 10px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.gift-table tr:nth-child(odd) td{background:var(--color-background-secondary)}
+
+/* Prompt pane */
+.prompt-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;direction:rtl;text-align:right;font-size:13px;line-height:1.9;color:var(--color-text-primary);white-space:pre-wrap;word-break:break-word;max-height:540px;overflow-y:auto;margin-bottom:1rem}
+.prompt-box b{font-weight:500;color:var(--color-text-primary)}
+.prompt-hr{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:10px 0}
+.copy-btn{padding:9px 22px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;background:var(--color-background-info);color:var(--color-text-info);border:none;display:inline-block}
+.toast{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 18px;font-size:13px;color:var(--color-text-primary);display:none;margin-top:8px;text-align:center;direction:rtl}
+
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;direction:rtl}
+.vt{font-size:11px;padding:4px 12px;border-radius:99px;border:0.5px solid var(--color-border-secondary);cursor:pointer;background:none;color:var(--color-text-secondary)}
+.vt.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.mockup-sub{display:none}.mockup-sub.show{display:block}
+</style>
+
+<div class="root">
+<h2 class="sr-only">مواصفات الغرفة الصوتية الاجتماعية — موكاب تفاعلي وبرومبت احترافي</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('mockup')">واجهة الغرفة</button>
+  <button class="tab" onclick="switchTab('logic')">منطق التفاعل</button>
+  <button class="tab" onclick="switchTab('gifts')">نظام الهدايا</button>
+  <button class="tab" onclick="switchTab('prompt')">البرومبت الكامل</button>
+</div>
+
+<!-- TAB 1: Mockup -->
+<div class="pane active" id="pane-mockup">
+  <div class="view-toggle">
+    <button class="vt active" onclick="showView('main')">الشاشة الرئيسية</button>
+    <button class="vt" onclick="showView('micmenu')">قائمة المايك</button>
+    <button class="vt" onclick="showView('profile')">بروفايل عضو</button>
+    <button class="vt" onclick="showView('gifts')">نافذة الهدايا</button>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+
+      <!-- Top bar -->
+      <div class="phone-top">
+        <div class="exit-btn">خروج</div>
+        <div class="room-name"><span class="dot"></span>غرفة نجوم العرب</div>
+        <div class="top-right">
+          <div class="icon-btn">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#7fb3ff" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+          </div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#7fb3ff" stroke-width="1.5"><circle cx="8" cy="3" r="1.2" fill="#7fb3ff"/><circle cx="8" cy="8" r="1.2" fill="#7fb3ff"/><circle cx="8" cy="13" r="1.2" fill="#7fb3ff"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mics: 5×2 = 10 mics shown -->
+      <div class="mics-section">
+        <div class="mics-label">المايكات (5 في كل صف — يصل للمجموع 5/10/15/20)</div>
+        <div class="mics-grid">
+          <!-- Row 1 -->
+          <div class="mic-slot">
+            <div class="mic-avatar occupied" style="background:#1e3a5a">
+              <span>أحمد</span>
+              <div class="wave"><svg width="8" height="8" viewBox="0 0 8 8" fill="white"><rect x="1" y="3" width="1.5" height="2" rx="0.5"/><rect x="3.2" y="1.5" width="1.5" height="5" rx="0.5"/><rect x="5.4" y="2.5" width="1.5" height="3" rx="0.5"/></svg></div>
+            </div>
+            <div class="mic-num">1</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar occupied" style="background:#1e3a5a"><span>سارة</span></div>
+            <div class="mic-num">2</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">3</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar locked" style="background:#111">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#555" stroke-width="1.5"><rect x="3" y="6" width="8" height="6" rx="2"/><path d="M5 6V5a2 2 0 014 0v1"/></svg>
+            </div>
+            <div class="mic-num">4</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">5</div>
+          </div>
+          <!-- Row 2 -->
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">6</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar occupied" style="background:#1e3a5a"><span>منى</span></div>
+            <div class="mic-num">7</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">8</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">9</div>
+          </div>
+          <div class="mic-slot">
+            <div class="mic-avatar empty">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4a7abf" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/><line x1="8" y1="12" x2="8" y2="14"/></svg>
+            </div>
+            <div class="mic-num">10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat area - MAIN VIEW -->
+      <div class="chat-area mockup-sub show" id="view-main">
+        <div class="chat-msg"><span class="sender">أحمد:</span><span class="text">مرحبا بالجميع!</span></div>
+        <div class="gift-notif">سارة أرسلت هدية ورد لأحمد</div>
+        <div class="chat-msg"><span class="sender">ليلى:</span><span class="text">أهلاً وسهلاً</span></div>
+        <div class="chat-msg"><span class="sender">خالد:</span><span class="text">هلا هلا</span></div>
+      </div>
+
+      <!-- Mic popup menu -->
+      <div class="chat-area mockup-sub" id="view-micmenu" style="padding:10px;position:relative;min-height:120px">
+        <div style="font-size:10px;color:#666;direction:rtl;margin-bottom:8px">عند ضغط المشرف على مايك مشغول:</div>
+        <div class="popup-menu" style="position:relative;right:auto;top:auto;display:block">
+          <div class="popup-item"><div class="dot-r"></div>سحب من المايك</div>
+          <div class="popup-item"><div class="dot-o"></div>طرد مؤقت من الروم</div>
+          <div class="popup-item"><div class="dot-r"></div>طرد نهائي</div>
+          <div class="popup-item"><div class="dot-g"></div>فتح المايك</div>
+          <div class="popup-item" style="color:#f87171"><div class="dot-r" style="background:#f87171"></div>قفل المايك</div>
+        </div>
+      </div>
+
+      <!-- Profile sheet -->
+      <div class="chat-area mockup-sub" id="view-profile" style="padding:0">
+        <div style="padding:10px 10px 4px;font-size:10px;color:#555;direction:rtl">منطقة الدردشة</div>
+        <div style="flex:1"></div>
+        <div class="profile-sheet">
+          <div class="sheet-handle"></div>
+          <div class="prof-row">
+            <div class="prof-av">أح</div>
+            <div class="prof-info">
+              <div class="name">أحمد محمد</div>
+              <div class="role">عضو منظم — مستوى 12</div>
+            </div>
+          </div>
+          <div class="prof-actions">
+            <div class="pact">
+              <svg viewBox="0 0 18 18" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M9 2l2 4 4.5.7-3.2 3.1.7 4.5L9 12l-4 2.3.7-4.5L2.5 6.7 7 6z"/></svg>
+              <span>إرسال هدية</span>
+            </div>
+            <div class="pact">
+              <svg viewBox="0 0 18 18" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="2" y="2" width="14" height="14" rx="5"/><path d="M6 9h6M9 6v6"/></svg>
+              <span>إطار 5 دقائق</span>
+            </div>
+            <div class="pact">
+              <svg viewBox="0 0 18 18" fill="none" stroke="#7fb3ff" stroke-width="1.5"><path d="M4 4l10 10M14 4L4 14"/></svg>
+              <span>إغلاق</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gifts sheet -->
+      <div class="chat-area mockup-sub" id="view-gifts" style="padding:0">
+        <div style="flex:1;padding:8px 10px">
+          <div class="chat-msg"><span class="sender">أحمد:</span><span class="text">هلا!</span></div>
+        </div>
+        <div class="bottom-sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">اختر هدية — الاستلام: ثلث قيمة الهدية</div>
+          <div class="gifts-row">
+            <div class="gift-item sel"><div class="gift-icon-box">🌹</div><div class="gift-price">3 💎</div></div>
+            <div class="gift-item"><div class="gift-icon-box">⭐</div><div class="gift-price">9 💎</div></div>
+            <div class="gift-item"><div class="gift-icon-box">🎁</div><div class="gift-price">99 💎</div></div>
+            <div class="gift-item"><div class="gift-icon-box">👑</div><div class="gift-price">199 💎</div></div>
+            <div class="gift-item"><div class="gift-icon-box">🚀</div><div class="gift-price">1999 💎</div></div>
+          </div>
+          <div class="send-targets">
+            <div class="send-target active">شخص محدد</div>
+            <div class="send-target">من في المايك</div>
+            <div class="send-target">الجميع</div>
+          </div>
+          <button class="send-btn">إرسال الهدية</button>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="bottom-bar">
+        <div class="bar-row">
+          <div class="bar-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#7fb3ff" stroke-width="1.5"><path d="M2 8c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M2 8v1a6 6 0 0012 0V8"/></svg>
+          </div>
+          <div class="bar-icon" style="background:#0d3025;border:1px solid #1d9e75">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#4ade80" stroke-width="1.5"><rect x="5" y="2" width="6" height="8" rx="3"/><path d="M3 9c0 2.8 10 2.8 10 0"/></svg>
+          </div>
+          <input class="bar-input" placeholder="اكتب رسالة..." readonly>
+          <div class="gift-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M8 2l2 4 4.5.7-3.2 3.1.7 4.5L8 12l-4 2.3.7-4.5L1.5 6.7 6 6z"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="leg-dot" style="background:#4ade80"></div>مقعد مشغول (حدود خضراء)</div>
+    <div class="legend-item"><div class="leg-dot" style="background:#378add"></div>مقعد فارغ (قابل للصعود)</div>
+    <div class="legend-item"><div class="leg-dot" style="background:#444"></div>مقعد مقفول</div>
+    <div class="legend-item"><div class="leg-dot" style="background:#f59e0b"></div>يتحدث الآن (موجة صوتية)</div>
+  </div>
+</div>
+
+<!-- TAB 2: Logic -->
+<div class="pane" id="pane-logic">
+  <div class="flow-box">
+    <div class="flow-title">سلوك الضغط على المايك — حسب الدور</div>
+    <div class="flow-grid">
+      <div class="flow-card">
+        <div class="flow-card-title"><span class="badge-b">عضو منظم</span> على مايك فارغ</div>
+        <ul>
+          <li>يصعد مباشرة فوراً</li>
+          <li>بدون قائمة بدون تأكيد</li>
+          <li>مشروط بإعداد صلاحية الصعود في الغرفة</li>
+        </ul>
+      </div>
+      <div class="flow-card">
+        <div class="flow-card-title"><span class="badge-o">زائر</span> على مايك فارغ</div>
+        <ul>
+          <li>يُرسل طلب صعود للإدارة</li>
+          <li>ينتظر الموافقة إن كان مسموحاً له</li>
+          <li>أو يُمنع كلياً حسب إعداد الغرفة</li>
+        </ul>
+      </div>
+      <div class="flow-card">
+        <div class="flow-card-title"><span class="badge-g">مشرف / أونر</span> على مايك فارغ</div>
+        <ul>
+          <li>تفتح قائمة: صعود / قفل المايك / فتحه</li>
+          <li>يمكنه قفل المايك لمنع الآخرين</li>
+          <li>يمكنه تخصيصه لشخص بعينه</li>
+        </ul>
+      </div>
+      <div class="flow-card">
+        <div class="flow-card-title"><span class="badge-r">أي مشرف</span> على صورة جالس في المايك</div>
+        <ul>
+          <li>سحب من المايك فوراً</li>
+          <li>طرد مؤقت (مدة قابلة للتحديد)</li>
+          <li>طرد نهائي من الروم</li>
+          <li>قفل المايك بعد السحب</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-title">قواعد التخزين في قاعدة البيانات</div>
+    <div style="direction:rtl;font-size:13px;line-height:1.9;color:var(--color-text-secondary)">
+      <div style="margin-bottom:6px">كل مستخدم لديه <b style="color:var(--color-text-primary)">غرفة واحدة فقط</b> مرتبطة بحسابه — تُحفظ إعداداتها كلها في قاعدة البيانات:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">اسم الغرفة + وصفها + صورتها</div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">عدد المايكات (5/10/15/20)</div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">صلاحيات الصعود لكل دور</div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">وضع الغرفة (عامة/خاصة/مقيدة)</div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">قائمة المشرفين والأعضاء المحظورين</div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px">مدة الطرد المؤقت الافتراضية</div>
+      </div>
+      <div style="margin-top:10px;color:var(--color-text-warning);font-size:12px">⚠️ الدردشة النصية لا تُحفظ — تختفي عند مغادرة المستخدم وعودته للروم (real-time only).</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: Gifts -->
+<div class="pane" id="pane-gifts">
+  <div style="direction:rtl;font-size:13px;line-height:1.9;margin-bottom:1rem;color:var(--color-text-secondary)">
+    نظام الهدايا يعتمد على <b style="color:var(--color-text-primary)">مبدأ الثلث</b>: المُرسِل يُخصم منه الكامل، المُستقبِل يحصل على الثلث فقط. الثلثان يذهبان للمنصة.
+  </div>
+  <table class="gift-table">
+    <tr><th>رمز الهدية</th><th>سعرها (مجوهرات مُخصومة)</th><th>ما يصل للمُستقبِل</th><th>يُضاف للمنصة</th></tr>
+    <tr><td>🌹 ورد</td><td>3 💎</td><td>1 💎</td><td>2 💎</td></tr>
+    <tr><td>⭐ نجمة</td><td>9 💎</td><td>3 💎</td><td>6 💎</td></tr>
+    <tr><td>🎁 هدية</td><td>99 💎</td><td>33 💎</td><td>66 💎</td></tr>
+    <tr><td>👑 تاج</td><td>199 💎</td><td>66 💎</td><td>133 💎</td></tr>
+    <tr><td>🚀 صاروخ</td><td>1,999 💎</td><td>666 💎</td><td>1,333 💎</td></tr>
+    <tr><td>💎 ألماس</td><td>2,999 💎</td><td>999 💎</td><td>2,000 💎</td></tr>
+    <tr><td>🏆 كأس</td><td>3,999 💎</td><td>1,333 💎</td><td>2,666 💎</td></tr>
+    <tr><td>🌟 نجم ذهبي</td><td>4,999 💎</td><td>1,666 💎</td><td>3,333 💎</td></tr>
+  </table>
+  <div style="direction:rtl;font-size:12.5px;line-height:1.9;margin-top:10px;color:var(--color-text-secondary)">
+    <b style="color:var(--color-text-primary)">خيارات الإرسال الثلاثة:</b><br>
+    1. شخص محدد (اختياره من قائمة أو من قائمة أعضاء الروم)<br>
+    2. جميع من في المايك (توزّع الثلث على عدد الجالسين)<br>
+    3. جميع من في الروم (توزّع الثلث على جميع الحاضرين)<br><br>
+    <span style="color:var(--color-text-warning)">⚠️ الهدايا وأسعارها يضيفها ويعدّلها صاحب الموقع من لوحة التحكم الرئيسية — لا يملك الأونر إضافة هدايا.</span><br>
+    <span style="color:var(--color-text-warning)">⚠️ مدة الإطار المؤقت (5 دقائق افتراضياً) قابلة للتحديد من لوحة تحكم الموقع أيضاً.</span>
+  </div>
+</div>
+
+<!-- TAB 4: Prompt -->
+<div class="pane" id="pane-prompt">
+  <div class="prompt-box" id="pText">
+<b>الدور:</b>
+أنت مطوّر ومصمم نظام متكامل للغرف الصوتية الاجتماعية. مهمتك تصميم وبناء نظام غرف دردشة صوتية احترافي بالمواصفات الدقيقة التالية. لا تتجاوز أياً من هذه المواصفات.
+
+━━━━━━━━━━━━━━
+أولاً: هيكل الشاشة الرئيسية للغرفة
+━━━━━━━━━━━━━━
+
+الشاشة مقسّمة من الأعلى للأسفل كالتالي:
+
+[A] شريط العنوان العلوي:
+- اليمين: اسم الغرفة + أيقونة الإعدادات (تفتح إعدادات الغرفة)
+- اليسار: زر الخروج من الروم
+
+[B] منطقة المايكات:
+- المايكات مرتّبة في صفوف أفقية، 5 مايكات في كل صف
+- الأحجام المتاحة: 5 (صف واحد) / 10 (صفان) / 15 (ثلاثة صفوف) / 20 (أربعة صفوف)
+- كل مايك يعرض: صورة/اسم الجالس إن كان مشغولاً، أو أيقونة مايك فارغ، أو أيقونة قفل إن كان مقفلاً
+- المايك المشغول يظهر عليه موجة صوتية صغيرة عند الكلام
+
+[C] منطقة الدردشة النصية (تحت المايكات مباشرة):
+- رسائل الدردشة تظهر في هذه المنطقة بشكل متصاعد (الأحدث في الأسفل)
+- الرسائل لا تُحفظ ولا تُسترجع — عند مغادرة المستخدم وعودته تبدأ الدردشة فارغة
+- إشعارات الهدايا تظهر هنا أيضاً (مثال: "أحمد أرسل تاجاً لسارة")
+- هذه المنطقة لا تحتوي على صندوق كتابة — صندوق الكتابة في الشريط السفلي
+
+[D] الشريط السفلي (Bottom Bar) — من اليمين لليسار:
+1. أيقونة كتم صوت الروم كاملاً (Mute Room) — دائمة الظهور
+2. أيقونة المايك الشخصي — تظهر فقط عندما يكون المستخدم جالساً على مايك، لكتم صوته أو فتحه
+3. حقل الكتابة النصية (يمتد ويأخذ المساحة المتبقية)
+4. أيقونة الهدايا — عند الضغط تفتح نافذة سفلية (Bottom Sheet) بالهدايا
+
+━━━━━━━━━━━━━━
+ثانياً: سلوك الضغط على المايك
+━━━━━━━━━━━━━━
+
+[1] ضغط على مايك فارغ — مشروط بدور المستخدم وإعداد الغرفة:
+- عضو منظم (في الغرفة التي تسمح له بالصعود): يصعد مباشرة فوراً بلا تأكيد
+- زائر غير منظم: يُرسَل طلب للإدارة وينتظر موافقتها — أو يُحظر كلياً حسب إعداد الغرفة
+- مشرف / أونر: تفتح قائمة خيارات: [صعود للمايك] [قفل المايك] [فتح المايك] [تخصيص لشخص]
+
+[2] ضغط على مايك مشغول (الضغط على صورة الجالس):
+تفتح قائمة خيارات الإدارة (متاحة للمشرفين والأونر فقط):
+- سحب من المايك (Kick from Mic)
+- طرد مؤقت من الروم — مع تحديد المدة بالدقائق (المدة الافتراضية محددة في الإعدادات)
+- طرد نهائي من الروم
+- قفل هذا المايك
+
+[3] ضغط على أي صورة بروفايل في الروم (خارج المايك):
+تفتح نافذة بروفايل انسيابية من الأسفل (Bottom Sheet) تحتوي:
+- صورة المستخدم + اسمه + دوره في الغرفة + مستواه
+- زر إرسال هدية (يفتح نافذة الهدايا مع تحديد هذا الشخص مسبقاً)
+- زر منح إطار مؤقت (Frame) — المدة محددة مسبقاً من لوحة تحكم الموقع (5 دقائق افتراضاً)
+
+━━━━━━━━━━━━━━
+ثالثاً: نظام الهدايا
+━━━━━━━━━━━━━━
+
+نافذة الهدايا (Bottom Sheet لا تغطي الشاشة كاملاً):
+- تعرض الهدايا في صف أفقي قابل للتمرير
+- كل هدية: أيقونة + السعر بالمجوهرات تحتها
+- الأسعار المتاحة افتراضياً: 3 / 9 / 99 / 199 / 1999 / 2999 / 3999 / 4999 مجوهرة
+- الهدايا وأسعارها يضيفها ويعدّلها صاحب الموقع من لوحة التحكم الخلفية
+
+قانون الثلث في الهدايا:
+- المُرسِل: تُخصم منه القيمة الكاملة للهدية
+- المُستقبِل: يحصل على ثلث (1/3) قيمة الهدية فقط داخل رصيد الروم
+- مثال: هدية قيمتها 99 مجوهرة → يُخصم من المُرسِل 99 → يحصل المُستقبِل على 33
+
+خيارات الإرسال الثلاثة:
+1. شخص محدد (من اختاره المستخدم بالضغط على بروفايله)
+2. جميع من في المايك (الثلث يوزّع عليهم بالتساوي)
+3. جميع من في الروم (الثلث يوزّع على جميع الحاضرين)
+
+━━━━━━━━━━━━━━
+رابعاً: قاعدة البيانات وإعدادات الغرفة
+━━━━━━━━━━━━━━
+
+كل مستخدم يملك غرفة واحدة فقط مرتبطة بحسابه — تُحفظ إعداداتها دائماً ولا تُحذف.
+الإعدادات المحفوظة تشمل:
+- اسم الغرفة / الوصف / صورة الغلاف
+- عدد المايكات (5 أو 10 أو 15 أو 20)
+- وضع الغرفة (عامة / خاصة / مقيدة بكلمة مرور)
+- صلاحيات الصعود للمايك لكل دور (زائر: مسموح/ممنوع — عضو منظم: مسموح/ممنوع)
+- مدة الطرد المؤقت الافتراضية بالدقائق
+- قائمة المشرفين المعيّنين
+- قائمة الأعضاء المحظورين
+- الإعلان الثابت للغرفة (يظهر لكل داخل جديد)
+
+━━━━━━━━━━━━━━
+خامساً: الأدوار والصلاحيات
+━━━━━━━━━━━━━━
+
+الأونر (Owner): مالك الغرفة الوحيد — يملك كل الصلاحيات — يعيّن ويعزل المشرفين — ينقل الملكية — يتحكم في جميع إعدادات الغرفة.
+
+المشرف (Admin): يُعيَّن من الأونر — يستطيع: سحب الأعضاء من المايك، طردهم مؤقتاً أو نهائياً، قفل وفتح المايكات — لا يستطيع: تعديل إعدادات الغرفة، تعيين مشرفين آخرين.
+
+العضو المنظم (Registered Member): يمكنه الصعود للمايك مباشرة إن أتاح له الأونر ذلك في الإعدادات.
+
+الزائر غير المنظم (Guest/Visitor): يشاهد ويكتب في الدردشة — صعوده للمايك خاضع لإعداد الغرفة (ممنوع أو بطلب موافقة).
+
+━━━━━━━━━━━━━━
+سادساً: تعليمات التطوير
+━━━━━━━━━━━━━━
+
+- الدردشة النصية: real-time فقط (WebSocket) — لا تُخزَّن في قاعدة البيانات
+- المايكات والحضور: real-time state — يُحدَّث فورياً لجميع المستخدمين في الروم
+- نافذة البروفايل والهدايا: تُعرض كـ Bottom Sheet لا تغطي الشاشة بالكامل
+- لوحة تحكم الموقع: تتيح لصاحب الموقع إضافة وتعديل الهدايا وأسعارها ومدة الإطار المؤقت وأي إعدادات عامة للمنصة
+  </div>
+  <button class="copy-btn" onclick="copyPrompt()">نسخ البرومبت الكامل ↗</button>
+  <div class="toast" id="toast">تم النسخ بنجاح</div>
+</div>
+
+</div>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const ids=['mockup','logic','gifts','prompt'];
+    t.classList.toggle('active',ids[i]===id);
+  });
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+id).classList.add('active');
+}
+function showView(v){
+  document.querySelectorAll('.vt').forEach((b,i)=>{
+    const vs=['main','micmenu','profile','gifts'];
+    b.classList.toggle('active',vs[i]===v);
+  });
+  document.querySelectorAll('.mockup-sub').forEach(s=>s.classList.remove('show'));
+  const el=document.getElementById('view-'+v);
+  if(el)el.classList.add('show');
+}
+function copyPrompt(){
+  const text=document.getElementById('pText').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast');
+    t.style.display='block';
+    setTimeout(()=>t.style.display='none',2500);
+  });
+}
+</script>

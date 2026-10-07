@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://stackoverflow.com/questions/64551387/android-webrtc-receiving-call-with-no-audio",
+    "name": "android webRTC receiving call with no audio - Stack Overflow",
+    "snippet": "I am implementing VoIP with Native Android WebRTC lib. I have managed to make a call from the Android app to the Browser. I can hear and talk as expected. No audio in WebRTC over WebView in Android PiP mode android - WebView won't play any sound - Stack Overflow More results from stackoverflow.com Missing: silent | Show results with: silent",
+    "host_name": "stackoverflow.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://groups.google.com/g/discuss-webrtc/c/o_twMw_HFn4",
+    "name": "Android WebRTC can not mute remote sound on speaker",
+    "snippet": "If I use volume button I can only lower the volume but can not mute the volume. I use these code to bring sound to speaker : AudioManager audioManager = ( ... Native WebRTC audio problems on Android - Google Groups Webrtc remote video is not displayed android - Google Groups More results from groups.google.com Missing: webview audio solution",
+    "host_name": "groups.google.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/react-native-webview/react-native-webview/issues/2571",
+    "name": "Audio not coming while live video streaming #2571 - GitHub",
+    "snippet": "Description: I am using webview for a live video calling platform, where the video is working seamlessly, but audio is not coming. Missing: remote silent",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.webrtc.org/42230028",
+    "name": "Webrtc remote audio not working [42230028]",
+    "snippet": "What steps will reproduce the problem? Create a webrtc audio call between Firefox and Chrome; Firefox can hear Chrome, but Chrome can't hear Firefox ...",
+    "host_name": "issues.webrtc.org",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forums.developer.nvidia.com/t/silent-muted-no-microphone-input-audio-recording-in-webview-webrtc-after-upgrade-to-androidtv-11-nvidia-shield-9-0-0/210640",
+    "name": "Silent/muted/no microphone input audio recording in WebView",
+    "snippet": "Hello, I have written an AndroidTV application that uses an Android WebView which uses WebRTC and HTML5 getUserMedia to record microphone ...",
+    "host_name": "forums.developer.nvidia.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forum.babylonjs.com/t/sound-created-with-a-remote-webrtc-stream-track-does-not-seem-to-work/7047",
+    "name": "Sound created with a remote webrtc stream track does not seem to",
+    "snippet": "Sound does not seem to work with a MediaStream object created with a remote track (coming from a SFU). The same MediaStream object works ... Missing: android webview",
+    "host_name": "forum.babylonjs.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://web.sdk.qcloud.com/trtc/webrtc/v5/doc/zh-cn/tutorial-02-info-webrtc-issues.html",
+    "name": "Tencent RTC SDK - Tutorial: WebRTC Known Issues - Documentation",
+    "snippet": "RTC SDK Documentation. Run a demo within one minute and build solutions for audio/video calls or interactive live streaming within 30 minutes.",
+    "host_name": "web.sdk.qcloud.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/flutter-webrtc/flutter-webrtc/issues/1186",
+    "name": "Android: Mute/Unmute has no effect when a stream with audio track",
+    "snippet": "Describe the bug. I want to mute/umute an audio track using the enabled property of the respective MediaStreamTrack object. Missing: webview sound",
+    "host_name": "github.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://react-native-webrtc.discourse.group/t/no-audio-output-on-web-only-i-use-react-native-webrtc-web-shim-library/2099",
+    "name": "No audio output on web only (I use react-native-webrtc-web-shim",
+    "snippet": "Hi. I have a react-native application that establish WebRTC communication using this library for Android. Also I have built the same ...",
+    "host_name": "react-native-webrtc.discourse.group",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.chromium.org/issues/330055211",
+    "name": "Android WebView Update Causing Error in WebRTC Calling App",
+    "snippet": "Unplug the wired headset after Remote audio playing. 8. Now you will see the MEDIA_ERR_DECODE(code 3) in the page. Most of the reports are samsung phone ... Missing: silent | Show results with: silent",
+    "host_name": "issues.chromium.org",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

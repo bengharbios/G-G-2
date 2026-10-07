@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot displays a **bonus collection interface** from a voice room app, with a green gradient background and a centered white modal window containing bonus-related information. Here’s a detailed breakdown of all elements:\n\n\n### **Top Navigation Bar (Outside the Modal)**\n- **Left Side**: A blue diamond-shaped icon (likely a currency or status indicator) with the number \"0\" and a yellow \"+\" button (for adding/earning currency) next to it.  \n- **Right Side**: A white \"X\" button (to close the modal).  \n\n\n### **Modal Window (Main Content)**\nThe modal has a white background with rounded corners and is divided into three sections: a header, a stats bar, and a detailed explanation panel.\n\n\n#### **1. Header Section: \"Bonus to be collected\"**\n- **Title**: Centered text in dark gray, \"Bonus to be collected\".  \n- **Bonus Display**: A blue gradient banner with a large, stylized blue diamond icon (left) and the number \"0\" (center).  \n- **\"Collect\" Button**: A rounded rectangular button (beige/tan color) with the text \"Collect\" in dark gray, positioned to the right of the diamond icon.  \n\n\n#### **2. Stats Bar (Below Header)**\nThree evenly spaced rectangular boxes (light gray background) with rounded corners, each containing:  \n- **Left Box**: \"0\" (dark gray text) + \"Yesterday's Points\" (smaller, gray text below).  \n- **Middle Box**: \"2%\" (dark gray text) + \"Reward Rate\" (smaller, gray text below).  \n- **Right Box**: \"0\" (dark gray text) + \"Yesterday's Bonus\" (smaller, gray text below).  \n\n\n#### **3. \"Bonus Calculation\" Panel (Detailed Explanation)**\nA section with a light gray header (containing a grid icon and the title \"Bonus Calculation\" in dark gray) and three numbered points:  \n\n- **Point 1**: \"Daily Bonus = Daily Points x Reward Rate\" (bold, dark gray text).  \n- **Point 2**: A paragraph explaining that points depend on diamonds consumed (gifts, membership fees) and that bonuses are not earned if daily points are <100.  \n- **Point 3**: A table titled \"Reward Rate\" with two columns:  \n  - **Room Level**: Lists \"Level 0-5\", \"Level 6-10\", \"Level 11-40\", \"Level 41-100\".  \n  - **Reward Rate**: Corresponding percentages: \"2%\", \"2.5%\", \"3%\", \"3.5%\".  \n\n- **Bonus Pay Time Section**: A circular clock icon (left) followed by text:  \n  - \"Bonus is paid daily at 01:00 (GMT+3) of the next day. It expires by 24:00 (GMT+3) of the next day. Please remember to collect your bonus in time.\" (dark gray text).  \n\n\n### **Layout & Design**\n- The modal is vertically stacked, with clear separation between sections via padding and background colors.  \n- Text is primarily dark gray for readability, with key terms (e.g., \"Bonus Calculation\", \"Reward Rate\") in bold.  \n- Icons (diamond, grid, clock) are simple and intuitive, supporting the text.  \n\n\n### **Key Features/Settings**\n- **Bonus Collection**: The \"Collect\" button allows users to claim accumulated bonuses.  \n- **Reward Rate Calculation**: The table links room level to bonus percentage, incentivizing room upgrades.  \n- **Time-Sensitive Bonus**: The \"Bonus Pay Time\" section emphasizes urgency (expires within 24 hours).  \n\n\nThis interface is designed to clearly communicate how users earn and collect bonuses, with visual hierarchy (icons, bold text, tables) to simplify complex rules.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706140,
+  "id": "202604210128321f47b9bd21114cdf",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202604210128321f47b9bd21114cdf",
+  "usage": {
+    "completion_tokens": 795,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 331,
+    "prompt_tokens_details": {
+      "cached_tokens": 5
+    },
+    "total_tokens": 1126
+  }
+}

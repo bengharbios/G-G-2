@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://www.metered.ca/tools/openrelay",
+    "name": "Open Relay: Free WebRTC TURN Server - Metered",
+    "snippet": "Go to the TURN Server Testing tool website at: https://www.metered.ca/turn-server-testing and enter the TURN Server credentials. 1. Add TURN Server Info Add the ...",
+    "host_name": "www.metered.ca",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/docs/turn-server-service/creating-turn-credentials",
+    "name": "Creating TURN Credentials | Metered Video Docs",
+    "snippet": "Creating Credentials from the Dashboard​. To create the TURN Credential from the dashboard, log into the Metered Dashboard and then go to the TURN Server page.",
+    "host_name": "www.metered.ca",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://qiita.com/moeka-k0729/items/2393eb2683316e2bd312",
+    "name": "【完全保存版】WebRTCで作る！ブラウザだけで動く電話アプリの",
+    "snippet": "はじめに 実務でブラウザ上での電話機能を実装する機会があり、自分用の備忘録として残しておきます。少しでもお役に立てれれば幸いです。",
+    "host_name": "qiita.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/WebRTC/comments/1j8ih9x/launching_a_simple_turn_server_for_webrtc_5gb",
+    "name": "Launching a Simple TURN Server for WebRTC – 5GB Free, $0.20",
+    "snippet": "You get 5GB free bandwidth to test it out—no credit card needed—and after that, it's just $0.20/GB. No hidden fees, just sign in with Apple/ ...",
+    "host_name": "www.reddit.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b",
+    "name": "webRTC stun / turn server list - GitHub Gist",
+    "snippet": "You can read the docs here and get the credentials: openrelayproject.org ... 20 GB of TURN relay data every calendar month (STUN is unlimited). Docs: https://www.",
+    "host_name": "gist.github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

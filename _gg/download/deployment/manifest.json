@@ -1,0 +1,127 @@
+{
+  "deployment_id": "dpl_8R8ipjs56vTUv28DHVo1Z11QnuN3",
+  "deployment_url": "g-ld360t8ez-bengharbios-projects.vercel.app",
+  "project": "g-g",
+  "team": "bengharbios",
+  "downloaded_at": "2025-06-15T00:00:00Z",
+  "total_files": 19,
+  "missing_files": [
+    "src/lib/games-data.ts (not found in deployment)"
+  ],
+  "files": [
+    {
+      "path": "app/admin/layout.tsx",
+      "size_bytes": 414,
+      "lines": 19,
+      "type": "text"
+    },
+    {
+      "path": "app/admin/page.tsx",
+      "size_bytes": 129483,
+      "lines": 2851,
+      "type": "text"
+    },
+    {
+      "path": "app/diwaniya/page.tsx",
+      "size_bytes": 29996,
+      "lines": 721,
+      "type": "text"
+    },
+    {
+      "path": "app/familyfeud/page.tsx",
+      "size_bytes": 307709,
+      "lines": 7441,
+      "type": "text"
+    },
+    {
+      "path": "app/join/[code]/page.tsx",
+      "size_bytes": 105392,
+      "lines": 2684,
+      "type": "text"
+    },
+    {
+      "path": "app/join/prison/[code]/page.tsx",
+      "size_bytes": 9234,
+      "lines": 272,
+      "type": "text"
+    },
+    {
+      "path": "app/join/risk/[code]/page.tsx",
+      "size_bytes": 8789,
+      "lines": 255,
+      "type": "text"
+    },
+    {
+      "path": "app/join/risk2/[code]/page.tsx",
+      "size_bytes": 9118,
+      "lines": 262,
+      "type": "text"
+    },
+    {
+      "path": "app/join/tobol/[code]/page.tsx",
+      "size_bytes": 11876,
+      "lines": 302,
+      "type": "text"
+    },
+    {
+      "path": "app/layout.tsx",
+      "size_bytes": 1006,
+      "lines": 36,
+      "type": "text"
+    },
+    {
+      "path": "app/mafia/page.tsx",
+      "size_bytes": 17595,
+      "lines": 519,
+      "type": "text"
+    },
+    {
+      "path": "app/page.tsx",
+      "size_bytes": 56819,
+      "lines": 1397,
+      "type": "text"
+    },
+    {
+      "path": "app/prison/page.tsx",
+      "size_bytes": 17939,
+      "lines": 483,
+      "type": "text"
+    },
+    {
+      "path": "app/risk/page.tsx",
+      "size_bytes": 16604,
+      "lines": 431,
+      "type": "text"
+    },
+    {
+      "path": "app/risk2/page.tsx",
+      "size_bytes": 11295,
+      "lines": 301,
+      "type": "text"
+    },
+    {
+      "path": "app/tabot/page.tsx",
+      "size_bytes": 12786,
+      "lines": 368,
+      "type": "text"
+    },
+    {
+      "path": "app/tobol/page.tsx",
+      "size_bytes": 17644,
+      "lines": 474,
+      "type": "text"
+    },
+    {
+      "path": "lib/admin-auth.ts",
+      "size_bytes": 6337,
+      "lines": 205,
+      "type": "text"
+    },
+    {
+      "path": "lib/admin-db.ts",
+      "size_bytes": 59302,
+      "lines": 1884,
+      "type": "text"
+    }
+  ]
+}

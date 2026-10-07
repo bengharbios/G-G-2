@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/3214",
+    "name": "Need help: To bridge functionality between Webview UI and Native",
+    "snippet": "Use a Capacitor plugin for audio/video capturing and playback and manage everything in the Capacitor Web View. B. Switch between native view ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/8176",
+    "name": "[Bug]: webRTC not working properly on ios device #8176 - GitHub",
+    "snippet": "The capacitor app works perfectly on an android ... The audio must play smoothly on both ios and android devices without stops and starts.",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/3899",
+    "name": "Android performance issue #3899 - ionic-team capacitor - GitHub",
+    "snippet": "We are experiencing a similar issue with capacitor/webview on android. We build a custom Slider which animates really smooth on IOS and desktop but has ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/6636",
+    "name": "Some videos don't play in webview, but play in Chrome sometimes",
+    "snippet": "I've been hunting a strange bug, where some videos (included via html video element) don't play on some Android devices.",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/mediagrid/capacitor-native-audio",
+    "name": "GitHub - mediagrid/capacitor-native-audio",
+    "snippet": "Play audio in a Capacitor app natively (Android/iOS) from a URL/web source simultaneously with background audio. Also supports background playing with an OS ...",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/802",
+    "name": "WebRTC audio, \"could not start audio source\" · Issue #802 - GitHub",
+    "snippet": "I installed Capacitor beta 8 and I now get the prompt for \"do you want to allow to record audio?\". However, after clicking yes, when attempting to read media ...",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://forum.ionicframework.com/t/playing-sounds-in-webview/245401",
+    "name": "Playing sounds in WebView - Ionic Framework",
+    "snippet": "I want to allow a page opened in WebView to play sounds. What settings do I need to access for that? Thank you.",
+    "host_name": "forum.ionicframework.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/mail2chromium/Android-Audio-Processing-Using-WebRTC",
+    "name": "mail2chromium/Android-Audio-Processing-Using-WebRTC - GitHub",
+    "snippet": "WebRTC Native Code package is meant for Android Developers who want to integrate Custom WebRTC into their applications. WebRTC native code package can be found ...",
+    "host_name": "github.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Cap-go/capacitor-webview-version-checker",
+    "name": "Cap-go/capacitor-webview-version-checker - GitHub",
+    "snippet": "Capacitor plugin for checking outdated Android WebView engines with native update prompts and runtime status events.",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/7713",
+    "name": "Create some mechanism to notify plugins when the webview",
+    "snippet": "Description It would be nice to have a way for a plugin to tell Capacitor to run some code when the webview crashes Platforms iOS Android ...",
+    "host_name": "github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

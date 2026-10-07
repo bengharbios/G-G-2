@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The game \"Risk\" (المجازفة) is a competitive card-based game where players strategically select numbers from a grid to score points, with special cards adding tactical depth. Below is a detailed breakdown of its mechanics:\n\n\n### **1. Card Design & Visuals**  \nCards are square-shaped (approximately 1:1 aspect ratio) with a **rounded corner design** (soft edges) and a consistent layout. Each card features:  \n- **Background**: Solid color (varies by card type) with a subtle texture (e.g., metallic sheen for brown cards, smooth matte for white cards).  \n- **Border**: Thin, golden outline (1-2px) for standard cards; thicker, glowing outline for special cards (e.g., bombs have a red glow).  \n- **Text**: Bold, sans-serif font (e.g., Arial or similar) in contrasting colors:  \n  - Numbers: White for dark backgrounds (black/brown), black for light backgrounds (white).  \n  - Special cards: Red text for \"bomb\" (قنبلة), yellow text for \"multiplier\" (x2), white text for \"skip\" (تخطي).  \n- **Card Types**:  \n  - **Standard Number Cards**: Display a single digit (1-50) in the center. Background colors include:  \n    - Black (dark theme, early game)  \n    - Brown (metallic, mid-game)  \n    - White (light theme, late game)  \n  - **Special Cards**:  \n    - **Bomb (قنبلة)**: Black background with a red bomb icon (small, centered) and red text.  \n    - **Multiplier (x2)**: White background with yellow \"x2\" text.  \n    - **Skip (تخطي)**: White background with white text (rare, used to pass a turn).  \n\n\n### **2. Game Board Layout**  \nThe board is a **10x5 grid** (50 total spaces) displayed on a mobile screen (blue border, rounded corners). Key elements:  \n- **Top Bar**:  \n  - Player scores (e.g., \"اللاعب 1\" = Player 1, \"اللاعب 2\" = Player 2) in colored boxes (red for Player 1, black for Player 2).  \n  - Turn indicator (e.g., \"الآن\" = Now, highlighting the active player).  \n- **Grid**: Numbers 1-50 arranged in ascending order (left-to-right, top-to-bottom).  \n- **Selected Cards Area**: A row above the grid showing cards chosen by each player (e.g., Player 1’s cards in red boxes, Player 2’s in black).  \n- **Special Card Slots**: A small section (e.g., bottom-left) for holding unused special cards (bomb, multiplier, skip).  \n\n\n### **3. Core Rules**  \n- **Objective**: Be the first player to reach a target score (e.g., 50 points) or have the highest score when the grid is empty.  \n- **Turn Structure**:  \n  1. **Draw a Card**: Players draw a card from a deck (or select from the grid).  \n  2. **Select a Number**: Choose a number from the grid (1-50). If the number is available, it is added to the player’s \"selected cards\" area.  \n  3. **Special Card Activation**: If a special card is drawn, use it immediately (e.g., bomb removes an opponent’s card, multiplier doubles a score).  \n- **Win/Loss Conditions**:  \n  - **Win**: First to reach the target score (e.g., 50) or empty the grid with the highest score.  \n  - **Lose**: Run out of cards or fail to reach the target score when the grid is empty.  \n\n\n### **4. Special Cards**  \nSpecial cards add tactical depth and are visually distinct:  \n- **Bomb (قنبلة)**:  \n  - **Effect**: Removes one of the opponent’s selected cards (e.g., if Player 1 has 5, 10, 15, the bomb can delete 10).  \n  - **Visuals**: Black background, red bomb icon, red text.  \n- **Multiplier (x2)**:  \n  - **Effect**: Doubles the value of the next card played (e.g., playing x2 then 10 gives 20 points).  \n  - **Visuals**: White background, yellow \"x2\" text.  \n- **Skip (تخطي)**:  \n  - **Effect**: Allows a player to pass their turn (useful to avoid a bad draw).  \n  - **Visuals**: White background, white text (rare, often hidden in the deck).  \n\n\n### **5. Scoring System**  \n- **Base Score**: Sum of all selected number cards (e.g., 5 + 10 + 15 = 30).  \n- **Multiplier Bonus**: If a multiplier (x2) is used, the next card’s value is doubled (e.g., x2 + 10 = 20, added to the total).  \n- **Penalties**: If a bomb is used against you, subtract the value of the removed card (e.g., losing 10 reduces your score by 10).  \n- **Winning Score**: The first player to reach the target (e.g., 50) wins. If the grid empties, the player with the highest score wins.  \n\n\n### **Visual Design Consistency**  \nThe game uses a **color-coded system** to distinguish players and card types:  \n- **Player 1**: Red (boxes, text)  \n- **Player 2**: Black (boxes, text)  \n- **Special Cards**: High-contrast colors (red for bomb, yellow for multiplier) to stand out.  \n- **Grid Themes**: Dark (black) → metallic (brown) → light (white) as the game progresses, adding visual variety.  \n\nThis design ensures clarity (easy to identify cards/players) and engagement (dynamic color changes).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1775752223,
+  "id": "20260410002926eecd6469e2274109",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260410002926eecd6469e2274109",
+  "usage": {
+    "completion_tokens": 1270,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 6342,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 7612
+  }
+}

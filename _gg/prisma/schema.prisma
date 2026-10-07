@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  code        String   @unique                    // 6-char join code
+  phase       String   @default("waiting")        // waiting, card_distribution, night_start, ..., game_over
+  round       Int      @default(0)
+  gameWinner  String?                             // "mafia" | "citizen" | null
+  hostName    String                               // العراب - who created the room
+  playerCount Int      @default(14)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Full game state synced from host
+  stateJson   String   @default("{}")             // JSON: { players, nightActions, votes, eliminatedPlayers, ... }
+
+  // Results for Diwaniya players
+  resultsJson String?                             // JSON: game over results
+
+  // Game type: 'mafia' or 'tabot' — used by join page to render correct spectator view
+  gameType   String?
+
+  // Host heartbeat - updated by host every 5s, checked by players
+  hostLastSeen DateTime @default(now())
+
+  players     RoomPlayer[]
+}
+
+model RoomPlayer {
+  id              String   @id @default(cuid())
+  roomId          String
+  room            Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  name            String
+  role            String?                             // RoleType or null (hidden until distributed)
+  isAlive         Boolean  @default(true)
+  isSilenced      Boolean  @default(false)
+  hasRevealedMayor Boolean @default(false)
+  eliminatedBy    String?                             // "vote" | "mafia" | "sniper" | "good_son" | "sniper_miss"
+  eliminatedRound Int?
+  voteTarget      String?                             // who this player voted for (player ID in room)
+  nightActionTarget String?                          // who this player chose during their night action (target name)
+  nightActionType   String?                          // boss_kill, silencer, medic_save, sniper_shoot, sniper_hold
+  hasJoined       Boolean  @default(false)           // player has seen their role
+  joinedAt        DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ── Push Notification Subscriptions ──
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String                             // User ID who subscribed
+  endpoint  String   @unique                    // Push subscription endpoint (unique per subscription)
+  keysAuth  String                             // auth key from subscription
+  keysP256dh String                             // p256dh key from subscription
+  userAgent String?                             // Browser/device info for debugging
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://stackoverflow.com/questions/tagged/webrtc-android?tab=Newest",
+    "name": "Newest 'webrtc-android' Questions - Stack Overflow",
+    "snippet": "I am having sound issues using a USB audio device with WebRTC. When I try to play a sound outside of WebRTC with the USB audio device, the audio is routed ...",
+    "host_name": "stackoverflow.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/79273299/streaming-screen-record-from-webrtc-app-route-audio-to-internal",
+    "name": "Streaming screen record from WebRTC app - route audio to internal",
+    "snippet": "To route WebRTC audio as \"Internal\" for apps like Streamlabs, you can implement a custom Audio Device Module (ADM) in WebRTC, configuring AudioTrack with USAGE ...",
+    "host_name": "stackoverflow.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/tagged/android-webview?tab=Newest",
+    "name": "Newest 'android-webview' Questions - Stack Overflow",
+    "snippet": "1 answer. 76 views. No audio in WebRTC over WebView in Android PiP mode. I have an Android Webview that has a meeting running inside of it. When I'm in full ...",
+    "host_name": "stackoverflow.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/tagged/webrtc-android?tab=Active",
+    "name": "Recently Active 'webrtc-android' Questions - Stack Overflow",
+    "snippet": "I'm currently learning how to build an Android WebView app that includes features like chat and WebRTC audio calls. All my files (HTML, JS, CSS) are loaded ...",
+    "host_name": "stackoverflow.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/76922060/getusermedia-is-failing-with-permission-denied-in-android-webview",
+    "name": "getUserMedia is failing with \"Permission Denied\" in Android WebView",
+    "snippet": "After debugging we found out that getUserMedia is failing with a exception \"Permission Denied\". The prompt to ask for microphone and camera permissions never ...",
+    "host_name": "stackoverflow.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/71483732/webrtc-running-from-wkwebview-avaudiosession-development-roadblock",
+    "name": "WebRTC running from WKWebView AVAudioSession development",
+    "snippet": "The next problem with AVAudioSession is that since you cannot access the session for WkWebView, you cannot change the output of the <audio> ...",
+    "host_name": "stackoverflow.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/tagged/webrtc-ios?tab=Newest",
+    "name": "Newest 'webrtc-ios' Questions - Stack Overflow",
+    "snippet": "I'm trying to integrate webrtc into Xamarin Forms app using webview Android is working fine but in IOS streaming camera not working . I think the problem in IOS ...",
+    "host_name": "stackoverflow.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/tagged/react-native-webrtc?tab=Unanswered",
+    "name": "Unanswered 'react-native-webrtc' Questions - Stack Overflow",
+    "snippet": "I am using sip.js with React-Native-WebRTC for audio calling feature in react native app but getting this error when trying to make outgoing call with Inviter.",
+    "host_name": "stackoverflow.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/tagged/webrtc?tab=Newest&page=3",
+    "name": "Newest 'webrtc' Questions - Page 3 - Stack Overflow",
+    "snippet": "WebRTC audio output not working after handling CallKit in foreground app state ... How to use raw PCM audio data as a custom audio source in WebRTC on Android?",
+    "host_name": "stackoverflow.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/72103146/how-to-fix-failed-to-resolve-org-webrtcgoogle-webrtc",
+    "name": "How to fix \"Failed to resolve: org.webrtc:google-webrtc\"?",
+    "snippet": "Currently it seems we are forced to keep jcenter, a deprecated repository, to install this package. Jcenter remain readonly and is not ...",
+    "host_name": "stackoverflow.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

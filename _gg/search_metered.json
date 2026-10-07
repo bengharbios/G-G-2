@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://www.metered.ca/docs/turn-rest-api",
+    "name": "TURN Server REST API | Metered Video Docs",
+    "snippet": "The Metered TURN Server REST API lets you programmatically create, enable / disable, label, rotate, and scope TURN credentials while monitoring real‑time ... Missing: free temporary 2026",
+    "host_name": "www.metered.ca",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/docs/turn-rest-api/get-credential",
+    "name": "Get TURN Credential | Metered Video Docs",
+    "snippet": "API endpoint allows clients to request credentials for using the TURN server. It returns information about the TURN server and credentials. Missing: free temporary 2026",
+    "host_name": "www.metered.ca",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/docs/turn-server-service/creating-turn-credentials",
+    "name": "Creating TURN Credentials | Metered Video Docs",
+    "snippet": "Learn how to create TURN credentials using the Metered dashboard or REST API. Includes steps for generating expiring credentials, retrieving ICE server ... Missing: free temporary 2026",
+    "host_name": "www.metered.ca",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/tools/openrelay",
+    "name": "Open Relay: Free WebRTC TURN Server - Metered",
+    "snippet": "Plus also offer powerful REST API that allows creation, automatic expiry of credentials and ability to fetch detailed usage stats. Learn more about it here. Missing: temporary 2026",
+    "host_name": "www.metered.ca",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.metered.ca/docs/turnserver-guides/expiring-turn-credentials",
+    "name": "How to Create Expiring TURN Credentials | Metered Video Docs",
+    "snippet": "Step 1: Obtain your Metered Domain and Secret Key​ · Step 2: Call the Create TURN Credential REST API​ · Step 3: Done​. Missing: free temporary 2026",
+    "host_name": "www.metered.ca",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

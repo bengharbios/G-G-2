@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/7179",
+    "name": "iOS Capacitor phone app cannot select audio Bluetooth",
+    "snippet": "7 Jan 2024 — I created a plugin to toggle the speakerphone - which works on Android but not for iOS (15.2.1). I noticed for iOS, when looking at the audio ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/discussions/5401",
+    "name": "iOS Capacitor phone app cannot select audio output #5401",
+    "snippet": "Use cordova iosrtc plugin for ios webrtc connection and then you can also use it to change audio output between speaker and earpiece.",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Cap-go/capacitor-audiosession",
+    "name": "Cap-go/capacitor-audiosession: Capacitor plugin to",
+    "snippet": "The only free and maintained iOS audio session plugin for Capacitor : Audio route control - Detect and manage headphones, Bluetooth, speakers ; Interruption ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/8176",
+    "name": "[Bug]: webRTC not working properly on ios device #8176",
+    "snippet": "30 Sept 2025 — So to fix the error it would be pretty easy on your end because all you really need to do is pre-activate the AVAudioSession inside capacitor .",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/react-native-webrtc/react-native-callkeep/issues/743",
+    "name": "Audio is not routed to speaker on incoming call on Android",
+    "snippet": "1 Nov 2023 — My scenario is the following: I am using react-native-incall-manager with react-native-callkeep . When initiating an outgoing video call i am ...",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

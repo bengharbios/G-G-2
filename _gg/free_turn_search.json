@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.metered.ca/tools/openrelay",
+    "name": "Open Relay: Free WebRTC TURN Server - Metered",
+    "snippet": "The Open Relay TURN server is highly available, reliable and offers both STUN and TURN Capabilities. The Open Relay runs on port 80 and 443 to bypass corporate ...",
+    "host_name": "www.metered.ca",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://news.ycombinator.com/item?id=43510710",
+    "name": "Show HN: An Almost Free, Open Source TURN Server - Hacker News",
+    "snippet": "TURN is considered an extension to the STUN. So, a typical TURN server would include a STUN server implementation by default.",
+    "host_name": "news.ycombinator.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/WebRTC/comments/1j8ih9x/launching_a_simple_turn_server_for_webrtc_5gb",
+    "name": "Launching a Simple TURN Server for WebRTC – 5GB Free, $0.20",
+    "snippet": "You get 5GB free bandwidth to test it out—no credit card needed—and after that, it's just $0.20/GB. No hidden fees, just sign in with Apple/ ... OpenRelay Project: Free Reliable WebRTC TURN Server - Reddit Looking for cost-effective alternatives to my current TURN server setup More results from www.reddit.com Missing: key | Show results with: key",
+    "host_name": "www.reddit.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dev.to/aprogrammer22/list-of-free-stun-and-turn-servers-open-relay-project-3a70",
+    "name": "List of Free Stun and Turn Servers | Open Relay Project",
+    "snippet": "The set of standards of WebRTC enables people to do video conferencing and data transfers across the web without installing any software. WebRTC ...",
+    "host_name": "dev.to",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://webrtc.ventures/2025/01/how-to-set-up-self-hosted-stun-turn-servers-for-webrtc-applications",
+    "name": "How to Set Up Self-Hosted STUN/TURN Servers for WebRTC",
+    "snippet": "In this post, we'll outline best practices for provisioning self-hosted STUN/TURN servers, as recommended by our WebRTC experts.",
+    "host_name": "webrtc.ventures",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b?permalink_comment_id=3644623",
+    "name": "webRTC stun / turn server list - Github-Gist",
+    "snippet": "openrelay is limited to 500MB included monthly TURN usage. There is no unlimited TURN sevice. https://freeturn.net/ is free, but limited in bandwith, not in ... Missing: API key",
+    "host_name": "gist.github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.videosdk.live/developer-hub/stun-turn-server/stun-server-free",
+    "name": "STUN Server Free: Unlocking NAT Traversal for WebRTC, VoIP, and",
+    "snippet": "In this 2025 guide, we'll explore what STUN servers are, how they work, the best free options available, and how to implement them securely in your applications ...",
+    "host_name": "www.videosdk.live",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/30745153/turn-server-for-webrtc-with-rest-api-authentication",
+    "name": "TURN server for WebRTC with REST API authentication",
+    "snippet": "I'm trying to use the REST API feature that comes with the TURN server to avoid sending the password over the network or storing it on the client side. Unable to authenticate WebRTC clients of my TURN server WebRTC on isolated LAN without ice/stun/turn server - Stack Overflow More results from stackoverflow.com",
+    "host_name": "stackoverflow.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://webrtc.org/getting-started/turn-server",
+    "name": "TURN server - WebRTC",
+    "snippet": "There are currently several options for TURN servers available online, both as self-hosted applications (like the open-source COTURN project) ... Missing: 2025 API",
+    "host_name": "webrtc.org",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.expressturn.com",
+    "name": "ExpressTURN - Free and Premium TURN Servers",
+    "snippet": "ExpressTURN provides fast, free and reliable TURN servers for your WebRTC applications and services. Missing: 2025 API",
+    "host_name": "www.expressturn.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

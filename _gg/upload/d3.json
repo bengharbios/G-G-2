@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "### Overall Layout & Theme  \nThe app has a **dark, immersive voice-room interface** with a purple-to-blue gradient background (resembling a night city skyline). The layout is vertically oriented, prioritizing voice interaction and chat, with a bottom navigation bar and side menu for additional features.  \n\n\n### Top Section (Status Bar & User Info)  \n- **Top-left**: A circular profile picture (avatar) with a small crown icon (indicating a host/moderator role). Next to it:  \n  - A phone number: `+948557885`  \n  - A user ID: `ID:24827096918`  \n  - A small lion/fox-like avatar (possibly a user badge or status icon).  \n- **Top-right**: Three icons:  \n  - A vertical ellipsis (`⋮`) for more options (e.g., settings, room details).  \n  - A power icon (⚡ or 🔄) for room management (e.g., start/stop, refresh).  \n  - A circular icon (likely a user list or settings) with a \"1\" badge (indicating 1 active user or notification).  \n\n\n### Microphone Grid (Voice Interaction)  \nBelow the top bar, a **5-column grid of circular microphone buttons** (numbered 1–5) for voice channels:  \n- Each button has a **gray microphone icon** (unselected) or **white icon** (selected/active).  \n- Buttons are evenly spaced, with numbers (1–5) below them (e.g., \"1\" under the first mic, \"2\" under the second).  \n- The third mic (number 3) is highlighted with a **teal/green border** (indicating the active voice channel).  \n\n\n### Chat & Announcement Section  \n- **Chat Bubble**: A green chat bubble with the text:  \n  - `[998551] sent ❤️ Ltha 🎉 and chat in a decent manner!` (user message with emojis).  \n  - A \"Go\" button (orange, with a play icon) next to it (likely to join a sub-room or action).  \n- **Announcement Bar**: A yellow banner with:  \n  - \"Announcement: ✏️\" (pencil icon for editing).  \n  - \"Add your room announcement here.\" (placeholder text for room rules/info).  \n\n\n### Right-Side Menu (Vertical Icons)  \nA vertical menu on the right with 4 icons (from top to bottom):  \n1. **Treasure Icon** (crown/coin): Labeled \"Treasure...\" (likely a rewards or points system).  \n2. **Activity Icon** (gift/medal): Labeled \"Activity\" (events, challenges, or user stats).  \n3. **Message Icon** (chat bubble): Labeled \"Messa...\" (abbreviated \"Messages\" for private chats).  \n4. **Music Icon** (headphones/record): Labeled \"Music\" (music playback or audio controls).  \n\n\n### Bottom Navigation Bar  \n- **Left**: A speaker icon (volume control) with a downward arrow (mute/unmute).  \n- **Center**: A text input field with the placeholder \"Say something\" (for typing messages) and a pencil icon (compose).  \n- **Right**: Three icons:  \n  - A game controller (🎮): For mini-games or interactive features.  \n  - A gift box (🎁): For rewards, gifts, or in-app purchases.  \n\n\n### Visual Details  \n- **Background**: A stylized night city skyline (purple buildings with lit windows) for immersion.  \n- **Colors**: Dominant dark blue/purple with teal (active mic), green (chat), yellow (announcement), and orange (action buttons) for contrast.  \n- **Icons**: Simple, flat design (e.g., microphone, chat bubble, gift) for clarity.  \n\n\nThis layout emphasizes **voice interaction** (mic grid), **social chat** (message bubble), and **additional features** (right-side menu, bottom bar) typical of voice-chat apps (e.g., Clubhouse, Discord voice rooms).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706134,
+  "id": "20260421012831116c86efc9364893",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260421012831116c86efc9364893",
+  "usage": {
+    "completion_tokens": 865,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 359,
+    "prompt_tokens_details": {
+      "cached_tokens": 28
+    },
+    "total_tokens": 1224
+  }
+}

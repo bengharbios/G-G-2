@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.tencentcloud.com/pt/document/product/647/77556",
+    "name": "Virtual Gifts (Flutter) - Tencent Cloud",
+    "snippet": "When a user sends a \"Rocket\", \"Carnival\", or other luxury gift, display a full-screen animation (e.g., SVGA) to boost engagement. Implementation ...",
+    "host_name": "www.tencentcloud.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://intl.cloud.tencent.com/jp/document/product/647/77556",
+    "name": "Virtual Gifts (Flutter) - Tencent Cloud",
+    "snippet": "Gift animation format is unified as SVGA with controllable file size ... TUILiveKit to get better performance. 前の記事へ: Virtual Gifts ...",
+    "host_name": "intl.cloud.tencent.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pub.dev/documentation/live_uikit_gift/latest/animation",
+    "name": "animation library - Dart API - Pub.dev",
+    "snippet": "SVGAPlayer on GiftFullScreenAnimationWidgetState. Missing: TUILiveKit flutter",
+    "host_name": "pub.dev",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Tencent-RTC/TUILiveKit",
+    "name": "TUILiveKit is a product suitable for interactive live scenes  - GitHub",
+    "snippet": "By integrating this product, you can add features like interactive voice and video calls, gifting, room management, etc., to your App in just three steps within ... Missing: widget SVGA",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pub.dev/packages/tencent_live_uikit",
+    "name": "tencent_live_uikit | Flutter package - Pub.dev",
+    "snippet": "TUILiveKit is a real-time interactive live streaming component that includes features such as host streaming, audience viewing, bullet chat, likes and gifts.",
+    "host_name": "pub.dev",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/Tencent-RTC/TUILiveKit/blob/main/Flutter/livekit/lib/live_stream/features/anchor_broadcast/living_widget/anchor_living_widget.dart",
+    "name": "anchor_living_widget.dart - Tencent-RTC/TUILiveKit · GitHub",
+    "snippet": "TUILiveKit is a product suitable for interactive live scenes such as social entertainment, shopping, and fitness. Missing: animation SVGA",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.tencentcloud.com/pt/document/product/1071/76700",
+    "name": "Live Gift Component (Android Kotlin) - Tencent Cloud",
+    "snippet": "This guide introduces how to quickly integrate the TUILiveKit live gifting component into your project. Component Overview. The gifting feature ... Missing: flutter dart",
+    "host_name": "www.tencentcloud.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@bhattacharyarajkumar1995/how-to-play-svga-file-in-flutter-coder-assists-66b5d95214a4",
+    "name": "How to Play SVGA File in Flutter — Coder Assists - Medium",
+    "snippet": "Where SVGA is Used: Animated stickers and emojis. Virtual gifts in live-streaming apps. UI animations like hearts, likes, or celebration effects ...",
+    "host_name": "medium.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dribbble.com/shots/20105185-live-streaming-animation-of-gifts-design",
+    "name": "live streaming animation of gifts design - Dribbble",
+    "snippet": "live streaming animation of gifts design designed by XY W. Connect with them on Dribbble; the global community for designers and creative ...",
+    "host_name": "dribbble.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=ohKtht2w_Eo",
+    "name": "Flutter GIF Animation in just 5 minutes | Lottie Gif rendering package",
+    "snippet": "5 minutes | Lottie Gif rendering package | Flutter pub add lottie in iOS & Android with Dart for Flutter App Development .This project ... Missing: TUILiveKit gift widget SVGA",
+    "host_name": "www.youtube.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

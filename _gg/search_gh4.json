@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/bigbluebutton/bigbluebutton/issues/6504",
+    "name": "Sometimes Bigbluebutton html5 client run in the android Webview",
+    "snippet": "When I run BigBlueButton on default browser works fine, but on my WebView App I can't listen webrtc audios. (I can hear the audios on \"Test your ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/webrtc/apprtc/issues/226",
+    "name": "Android WebView Video Keyart · Issue #226 · webrtc/apprtc - GitHub",
+    "snippet": "Both Remote video & audio streams are not getting played in the Android Webview. ... setMediaPlaybackRequiresUserGesture(false);. It works ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/langhuihui/jessibuca/blob/v3/demo/document.md",
+    "name": "jessibuca/demo/document.md at v3 - GitHub",
+    "snippet": "mediaPlaybackRequiresUserAction = NO. Android：. webView.getSettings().setMediaPlaybackRequiresUserGesture(false). 走MSE/Webcodec硬解码的时候，浏览器video标签 ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/37333163/webview-setmediaplaybackrequiresusergesturefalse-not-working",
+    "name": "WebView setMediaPlaybackRequiresUserGesture(false) not working",
+    "snippet": "I am trying to make youtube videos autoplay in my webview. After going through many other pages, I figured these settings are necessary to make it work. Missing: webrtc | Show results with: webrtc",
+    "host_name": "stackoverflow.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/37848110/no-audio-in-webrtc-over-webview-in-android-app",
+    "name": "No audio in WebRTC over WebView in Android app - Stack Overflow",
+    "snippet": "Adding <uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\" /> in the permission solved the problem for me.",
+    "host_name": "stackoverflow.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/AlexxIT/go2rtc/issues/1742",
+    "name": "WebRTC no longer loads after upgrading Android WebView to",
+    "snippet": "After upgrading Android Webview to 136.0.7103.60 in my tablet, the go2rtc stream no longer loads. It fails to load with: webrtc/offer: unable to ... Missing: setMediaPlaybackRequiresUserGesture | Show results with: setMediaPlaybackRequiresUserGesture",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.chromium.org/issues/330055211",
+    "name": "Android WebView Update Causing Error in WebRTC Calling App",
+    "snippet": "Specifically, when attempting to route audio output through the earpiece, an error with code MEDIA_ERR_DECODE arises within the video element. This issue ... Missing: setMediaPlaybackRequiresUserGesture | Show results with: setMediaPlaybackRequiresUserGesture",
+    "host_name": "issues.chromium.org",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.daniweb.com/programming/mobile-development/threads/524430/audio-and-video-calling-is-not-working-in-android-webview",
+    "name": "Audio and Video calling is not working in android webview - DaniWeb",
+    "snippet": "I am making an android app for a ready made social medial website. Website url is: \"www.MixMasala.in\" I am using webview for this site, all the ...",
+    "host_name": "www.daniweb.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/55242345/audio-controls-not-working-in-android-webview",
+    "name": "Audio Controls Not Working in Android WebView - Stack Overflow",
+    "snippet": "On some Android devices the play button does not work. That is, the audio player does not play any sound when the play button is pressed. Missing: webrtc | Show results with: webrtc",
+    "host_name": "stackoverflow.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.b4x.com/android/forum/threads/webrtc-with-self-signed-cert-cant-load-the-camera-and-microphone.157445",
+    "name": "WebRTC with self signed cert can't load the camera and microphone",
+    "snippet": "Camera and audio permissions used to be handled in webview. They are now handled with runtime permissions and permission requests in the manifest.",
+    "host_name": "www.b4x.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

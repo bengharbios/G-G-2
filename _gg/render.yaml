@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ggames-voice-signal
+    runtime: node
+    rootDir: mini-services/voice-signal
+    plan: free
+    buildCommand: npm install
+    startCommand: npx tsx index.ts
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: PUSH_API_URL
+        sync: false
+      - key: PUSH_API_KEY
+        value: gg-push-internal-key-2024

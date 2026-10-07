@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot displays an **\"Admin Permission\" settings panel** within a voice room app, with a teal-green gradient background (darker at the top, lighter at the bottom) and a subtle diamond-pattern texture. The layout is structured as a modal window with a header, toggleable permission options, and a close button. Below is a detailed breakdown of all elements:\n\n\n### **1. Header Section**\n- **Title**: \"Admin Permission\" (centered at the top, white text, medium font size, bold).  \n- **Close Button**: A white \"X\" icon (top-right corner, circular, medium size) for dismissing the modal.\n\n\n### **2. Permission Options (Toggle List)**\nThe panel contains **7 toggleable permission options**, each with a label and a switch. All toggles are currently in the **\"off\" position** (gray/white, indicating disabled). The options are grouped into two sections (top and bottom) with a thin white divider between them.  \n\n#### **Top Section (5 Options)**  \n1. **\"Allow admin to use Clock\"**  \n   - Label: Black text, left-aligned, medium font.  \n   - Toggle: Round switch (white, off) with a gray background, positioned to the right of the label.  \n\n2. **\"Allow admin to start Vote\"**  \n   - Label: Same style as above.  \n   - Toggle: Off.  \n\n3. **\"Allow admin to start Fruit Fight\"**  \n   - Label: Same style.  \n   - Toggle: Off.  \n\n4. **\"Allow admin to start Fortune Chest\"**  \n   - Label: Same style.  \n   - Toggle: Off.  \n\n5. **\"Allow admin to start Random Wheel\"**  \n   - Label: Same style.  \n   - Toggle: Off.  \n\n#### **Bottom Section (2 Options)**  \n1. **\"Allow admin to lock/unlock the mic\"**  \n   - Label: Same style as top section.  \n   - Toggle: Off.  \n   - **Notification Badge**: A small orange circle (top-right of the toggle) with white text \"1\" (indicating 1 pending action or notification).  \n\n2. **\"Allow admin to change themes\"**  \n   - Label: Same style.  \n   - Toggle: Off.  \n\n\n### **3. Layout & Design**\n- **Modal Structure**: The panel is a rounded rectangle (white background) with a subtle shadow, centered on the screen.  \n- **Spacing**: Each permission option is separated by a thin gray line, with consistent padding (top/bottom: ~12px, left/right: ~16px) for readability.  \n- **Color Scheme**:  \n  - Background: Teal-green gradient (dark to light).  \n  - Panel: White.  \n  - Text: Black (labels), white (title/close button).  \n  - Toggles: Gray (off), white (switch).  \n  - Notification Badge: Orange (high contrast for attention).  \n\n\n### **4. Visible Features & Settings**\nThe app exposes **admin-specific controls** for managing voice room interactions:  \n- **Clock**: A timer or time-based feature (e.g., for timed discussions).  \n- **Vote**: A voting system (e.g., for polls or decisions).  \n- **Fruit Fight**: A game or interactive activity (likely a playful room feature).  \n- **Fortune Chest**: A reward or random item system (e.g., virtual gifts).  \n- **Random Wheel**: A spinner for random selections (e.g., choosing participants).  \n- **Mic Lock/Unlock**: Control over user microphone permissions (admin can mute/unmute others).  \n- **Themes**: Customization of the room’s visual style (e.g., backgrounds, colors).  \n\n\n### **5. Mic Patterns (Implied, Not Visible)**\nWhile no mic patterns are shown in this screenshot, the \"lock/unlock the mic\" permission suggests the app supports **microphone management**—likely with patterns like:  \n- **Open Mic**: All users can speak freely (default).  \n- **Locked Mic**: Only admins can unmute users (requires admin permission).  \n- **Request-to-Speak**: Users request mic access (admin approves).  \n\n\n### **Summary**\nThis screen is a **permissions management interface** for voice room admins, allowing them to enable/disable specific features (games, tools, mic control, themes). The design is clean and functional, with clear labels and toggle switches for easy configuration. The notification badge on the \"mic lock\" toggle highlights a pending action, emphasizing real-time admin control.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706112,
+  "id": "20260421012804b848e26b149743ab",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260421012804b848e26b149743ab",
+  "usage": {
+    "completion_tokens": 951,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 331,
+    "prompt_tokens_details": {
+      "cached_tokens": 36
+    },
+    "total_tokens": 1282
+  }
+}

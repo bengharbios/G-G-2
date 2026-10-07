@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://github.com/webrtc-sdk/android/issues/5",
+    "name": "Audio not being played on Android · Issue #5 · webrtc-sdk",
+    "snippet": "19 Sept 2022 — I've been using your lib for WebRTC and I have one major issue which I'm not sure if it's an implementation issue or on the library side. Audio ... Read more",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/64551387/android-webrtc-receiving-call-with-no-audio",
+    "name": "android webRTC receiving call with no audio",
+    "snippet": "I am implementing VoIP with Native Android WebRTC lib. I have managed to make a call from the Android app to the Browser. I can hear and talk as expected. Read more",
+    "host_name": "stackoverflow.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ant-media/Ant-Media-Server/issues/5084",
+    "name": "No audio from phone's primary speaker when playing",
+    "snippet": "9 May 2023 — The issue arose when the audio manager was not initialized for play mode, causing the default speakers to act as the calling speaker. Read more",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.webrtc.org/41480939",
+    "name": "WebRTC audio not working properly on Samsung android",
+    "snippet": "I tried doing &media= audio but the issue is still present. We use Javascript & HTML 5 for our call center app. I am unsure how to get you a webrtc trace file ... Read more",
+    "host_name": "issues.webrtc.org",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://web.sdk.qcloud.com/trtc/webrtc/v5/doc/zh-cn/tutorial-02-info-webrtc-issues.html",
+    "name": "Tencent RTC SDK - Tutorial: WebRTC Known Issues",
+    "snippet": "... Android 15 may experience no audio during calls, Sony system bug . Workaround : Upgrade to the latest system version and the latest SDK version. (2021-11- 5 ) ... Read more",
+    "host_name": "web.sdk.qcloud.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

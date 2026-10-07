@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "This is a voice room app interface with a **night cityscape background** (purple/pink gradient sky, dark buildings with lit windows). Here’s a detailed breakdown of all elements:  \n\n\n### **Top Status Bar**  \n- **Left Section**:  \n  - A circular profile picture (avatar) with a small orange “1” badge (indicating 1 notification/friend request).  \n  - A phone number: `+948557885`.  \n  - A user ID: `ID:24827096918`.  \n  - A gold crown icon (likely a premium status or host badge).  \n\n- **Right Section**:  \n  - Three-dot menu icon (for additional options).  \n  - Power icon (to exit the room).  \n\n\n### **Microphone Grid (Voice Channel Controls)**  \nFive circular microphone buttons (numbered 1–5) in a horizontal row, each with a microphone icon. These represent voice channels (e.g., for different speakers/guests).  \n\n\n### **Chat & Announcement Section**  \n- **Chat Message**:  \n  - Username: `998551` (with a small avatar).  \n  - Message: `sent ❤️ Ltha 🎮 🎁 Go 🎤 other` (includes emojis and text).  \n\n- **Announcement Bar**:  \n  - Label: `Announcement: ✏️` (pencil icon for editing).  \n  - Placeholder text: `Add your room announcement here.`  \n\n\n### **Right-Side Vertical Menu (Floating Icons)**  \nFour circular icons (from top to bottom):  \n1. **Treasure Icon** (labeled `Treasur...`): Likely a “treasure chest” or rewards feature.  \n2. **Activity Icon** (labeled `Activity`): Shows a colorful character (e.g., for room activities/events).  \n3. **Message Icon** (labeled `Messa...`): With a red “1” badge (1 unread message).  \n4. **Music Icon** (labeled `Music`): For playing music in the room.  \n\n\n### **Bottom Bar**  \n- **Left**: Speaker icon (to adjust volume).  \n- **Center**: Text input field with placeholder `Say something` and a pencil icon (to type messages).  \n- **Right**: Two icons:  \n  - Game controller icon (for games/interactive features).  \n  - Gift box icon (for sending gifts to users).  \n\n\n### **Additional Details**  \n- **Layout**: Clean, vertical stacking with a focus on voice interaction (microphones) and social features (chat, announcements, rewards).  \n- **Color Scheme**: Dark blue/purple background with bright accent colors (orange, red, gold) for interactive elements.  \n- **Purpose**: Designed for live voice chat rooms (e.g., social, gaming, or community spaces) with features for communication, announcements, and engagement.  \n\n\nThis interface balances voice controls, chat, and social features, typical of apps like Clubhouse or similar voice-based social platforms.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706025,
+  "id": "2026042101264333be30d8effd4bde",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "2026042101264333be30d8effd4bde",
+  "usage": {
+    "completion_tokens": 631,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 367,
+    "prompt_tokens_details": {
+      "cached_tokens": 36
+    },
+    "total_tokens": 998
+  }
+}

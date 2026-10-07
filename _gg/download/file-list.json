@@ -1,0 +1,4110 @@
+[
+  {
+    "path": "src/.env",
+    "uid": "bd3455046b48d6f103d4560fd2c30c619eff8e23"
+  },
+  {
+    "path": "src/.zscripts/build.sh",
+    "uid": "42441607bb6fcc9299f86c48a009a940aeb5c7f5"
+  },
+  {
+    "path": "src/.zscripts/dev.log",
+    "uid": "e4dc631a18dc6b7a76333f45a1321219bbc89bd3"
+  },
+  {
+    "path": "src/.zscripts/dev.pid",
+    "uid": "fdd7d2b874b989496bb9f4e484da8f2ac53642d5"
+  },
+  {
+    "path": "src/.zscripts/dev.sh",
+    "uid": "80f435eef618be063806bf2454b9b8b1c3b37e76"
+  },
+  {
+    "path": "src/.zscripts/mini-services-build.sh",
+    "uid": "c888ab8bca8e35fe70c774c6c80d9806e2aa9cb7"
+  },
+  {
+    "path": "src/.zscripts/mini-services-install.sh",
+    "uid": "58ae75a4c306b1a167b6f4ec6cdb838d6de0de75"
+  },
+  {
+    "path": "src/.zscripts/mini-services-start.sh",
+    "uid": "c27eb3dd6a4eae512bf5f6bb803bbb7e2341882e"
+  },
+  {
+    "path": "src/.zscripts/start.sh",
+    "uid": "0c8c3f2b6c0b55c3a487d9a8685b8bf919793a40"
+  },
+  {
+    "path": "src/Caddyfile",
+    "uid": "e87340d310fbfc2ac604130fc96fef867b75e52b"
+  },
+  {
+    "path": "src/agent-ctx/1-main.md",
+    "uid": "c7307208f38b3d7df6ebc405f34382acde1e1b2d"
+  },
+  {
+    "path": "src/agent-ctx/15-b-feature-agent.md",
+    "uid": "9f153536dcbb79cb61338de51c5eaecd39eccc02"
+  },
+  {
+    "path": "src/agent-ctx/17-b-subscription-backend.md",
+    "uid": "6cd3a877449bc21282004ab6d01bfee7b7fa19cd"
+  },
+  {
+    "path": "src/agent-ctx/17-c-frontend.md",
+    "uid": "3d346d412dc8f4a31527fc01a91838dfe8a0f692"
+  },
+  {
+    "path": "src/agent-ctx/17-d-main-agent.md",
+    "uid": "e7fa0427d372b36f0fe75f99e69937dd3b189daa"
+  },
+  {
+    "path": "src/agent-ctx/task-shared-components.md",
+    "uid": "dc13b49fdcdaa82acd2ee1a0ec22c48922658332"
+  },
+  {
+    "path": "src/bun.lock",
+    "uid": "53cb858e993684c63a82f8a53bb94e13a23e3b16"
+  },
+  {
+    "path": "src/cell-game-ref.json",
+    "uid": "01de68176ca7964196d591047dfd6acb61c0ed76"
+  },
+  {
+    "path": "src/prison-ref.json",
+    "uid": "01de68176ca7964196d591047dfd6acb61c0ed76"
+  },
+  {
+    "path": "src/cell-game-view.json",
+    "uid": "6e3d92bab866d025e35f513be0594028ff7c933b"
+  },
+  {
+    "path": "src/components.json",
+    "uid": "9fd3d1ed580e6bd1949dd6fbace3f32fb7451e51"
+  },
+  {
+    "path": "src/db/custom.db",
+    "uid": "53de1c18664c00bfec5cd64dc3a090c327ea7545"
+  },
+  {
+    "path": "src/dev.log",
+    "uid": "ee9f46766ad97d23704cdb7560cc455f635bc662"
+  },
+  {
+    "path": "src/download/README.md",
+    "uid": "2a2c78f9ba43203e84b42dda6cb655451bb86881"
+  },
+  {
+    "path": "src/eslint.config.mjs",
+    "uid": "32a1a49ae4a81f8c6ea8fadec3e07186efc0211d"
+  },
+  {
+    "path": "src/examples/websocket/frontend.tsx",
+    "uid": "8c84f18c40479fac9919f6a86b5e07e296eef644"
+  },
+  {
+    "path": "src/examples/websocket/server.ts",
+    "uid": "f60191ce5438cd443bd0d2ed5a525c6f62e1f8a2"
+  },
+  {
+    "path": "src/family-feud-questions.json",
+    "uid": "a6cf5d44c2241f06344f9bb647804ed31c1c748f"
+  },
+  {
+    "path": "src/ff-extracted-questions.txt",
+    "uid": "38a4f4e2e0583a116e402556fce1cf886880e143"
+  },
+  {
+    "path": "src/ff-questions.json",
+    "uid": "85f19e72e776cfa4bc206fc9ad736edecb3825a1"
+  },
+  {
+    "path": "src/keep-alive.sh",
+    "uid": "2cfbd9a834b133329bb5902bdd20b581429da9ec"
+  },
+  {
+    "path": "src/loveligo-risk.json",
+    "uid": "45b3543b1917800c36d69b74d31304a51db44f10"
+  },
+  {
+    "path": "src/mini-services/.gitkeep",
+    "uid": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/__init__.py",
+    "uid": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/aggregate_benchmark.py",
+    "uid": "69f5d596b34533144f214504f38530231fe74086"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/generate_report.py",
+    "uid": "61a1dcb4a37770eb578e94f30237e66bfe86bb8c"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/improve_description.py",
+    "uid": "b0518bfcd82f6cd458c9ecd96480ff5a8b58a001"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/package_skill.py",
+    "uid": "a1d94b3d3871e2ec9b2d4aeffef06eeb06e2e5d0"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/quick_validate.py",
+    "uid": "26ba67ccfe1cb6b849d4b06293462e1fff089a1b"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/run_eval.py",
+    "uid": "c5f151d1a85a113c653b71d71a3266637cece940"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/run_loop.py",
+    "uid": "a4b40709be9a17cd155ce279d47c61c9e26b6979"
+  },
+  {
+    "path": "src/skills/skill-creator/scripts/utils.py",
+    "uid": "81fa84ebe63405fd1f52a692c118e5078ff617d2"
+  },
+  {
+    "path": "src/skills/skill-creator/LICENSE.txt",
+    "uid": "1128f8f91104ba9ef98d37eea6523a888dcfa5de"
+  },
+  {
+    "path": "src/skills/skill-creator/SKILL.md",
+    "uid": "fd9c24967427a36c27467a8179ebd8aeb6c0dee9"
+  },
+  {
+    "path": "src/skills/skill-creator/agents/analyzer.md",
+    "uid": "d301e0ba2519af95c183a9d6bf57ce743c2f57c2"
+  },
+  {
+    "path": "src/skills/skill-creator/agents/comparator.md",
+    "uid": "acc949f15a6cd41ce1268c80ec109786ee40b0ff"
+  },
+  {
+    "path": "src/skills/skill-creator/agents/grader.md",
+    "uid": "53ecc3331ca4b438bbeaebc93c3bb722d61f48e2"
+  },
+  {
+    "path": "src/skills/skill-creator/assets/eval_review.html",
+    "uid": "4184a5128aac41325a655cefa45f25e7d13ddafc"
+  },
+  {
+    "path": "src/skills/skill-creator/eval-viewer/generate_review.py",
+    "uid": "24c4bb583b483532ecc677ecc884d4b7666ac3c8"
+  },
+  {
+    "path": "src/skills/skill-creator/eval-viewer/viewer.html",
+    "uid": "7df523400157ae15ddfb7e2913ab55866c91f3d6"
+  },
+  {
+    "path": "src/skills/skill-creator/references/schemas.md",
+    "uid": "e01da1f13fe620a4db56861b12e4bba4f5d7992b"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/scripts/__init__.py",
+    "uid": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/scripts/core.py",
+    "uid": "2d966e58c5fb3d74009b4ad6614393d1d72d695d"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/scripts/design_system.py",
+    "uid": "6e535d0ab754d10af32c693f0d212210c12774ff"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/scripts/search.py",
+    "uid": "a1800c5e12fc9411a432b4f782597218871e65f3"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/SKILL.md",
+    "uid": "38e73753c087555f4d41601ba122d68655acffa0"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/_meta.json",
+    "uid": "da35732a99b91b733c3016883bc01d2563895f29"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/charts.csv",
+    "uid": "a5075ee430dba784d6c9ad5a1506909dcc259708"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/colors.csv",
+    "uid": "7f8a5c6af6849b2105d1ff6b13dc8298db7067ef"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/icons.csv",
+    "uid": "61c4753cd73f4a90ade204491b5b8829b698554b"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/landing.csv",
+    "uid": "03060f2db69bf02cbcffd7ad346412fd6ca349d9"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/products.csv",
+    "uid": "a5a6e58729f920285e43b0c1f7f6f829873652de"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/react-performance.csv",
+    "uid": "0da47e51994e5526eea3e8f6fe21b13fe7fb4584"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/astro.csv",
+    "uid": "7374fb3029cefb2a88b4d19b2f4f1b504f32f201"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/flutter.csv",
+    "uid": "efa740cb0b21a3f8afeec89a82366637873e3ec8"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/html-tailwind.csv",
+    "uid": "ba0bf41e2f96c7bb0d0b3bdcda17fcc433e50810"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/jetpack-compose.csv",
+    "uid": "e7b6afca0ff476341280bf4de116ef890a71cc6d"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/nextjs.csv",
+    "uid": "da786fcf3f57a2baba41b0e2d118a2790248ed79"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/nuxt-ui.csv",
+    "uid": "e5da67f1663f7669a98397b8b05ca73a67043db8"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/nuxtjs.csv",
+    "uid": "9931222bdaaf01f816f5ce4779feb4dc03028db3"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/react-native.csv",
+    "uid": "570bb04fa64d55cc8e9f85d17bce4567dfa2bf6d"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/react.csv",
+    "uid": "1fc103ad5afd656911eb89dd7a61d659e4c82643"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/shadcn.csv",
+    "uid": "65fd43e1cfdf86fb6c5cb050f8bc4d7d0959d4d0"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/svelte.csv",
+    "uid": "b565e6789bdcec062541bdf263c20edd4cb05f17"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/swiftui.csv",
+    "uid": "f57aeb7d3d83c8fefdc1424933e4eb2093601b08"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/stacks/vue.csv",
+    "uid": "e6d5ea226b9743749bf2202e6d71dfd5deb3d2ab"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/styles.csv",
+    "uid": "5fe67c2e8ed84c97e59f8c8e951be20d0d78c98c"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/typography.csv",
+    "uid": "9f1bdd19c46f03bdef90c393a1c5101a5210df71"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/ui-reasoning.csv",
+    "uid": "97958fb737b5ec898e868c7e6b0de9d326b61dba"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/ux-guidelines.csv",
+    "uid": "59137148b25ffb2c59ef958512bcf37634b69a3f"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/assets/data/web-interface.csv",
+    "uid": "81ec5ca28d04b78c25583aba6ce6418f190921c7"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/charts.csv",
+    "uid": "a5075ee430dba784d6c9ad5a1506909dcc259708"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/colors.csv",
+    "uid": "7f8a5c6af6849b2105d1ff6b13dc8298db7067ef"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/icons.csv",
+    "uid": "61c4753cd73f4a90ade204491b5b8829b698554b"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/landing.csv",
+    "uid": "03060f2db69bf02cbcffd7ad346412fd6ca349d9"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/products.csv",
+    "uid": "a5a6e58729f920285e43b0c1f7f6f829873652de"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/react-performance.csv",
+    "uid": "0da47e51994e5526eea3e8f6fe21b13fe7fb4584"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/astro.csv",
+    "uid": "7374fb3029cefb2a88b4d19b2f4f1b504f32f201"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/flutter.csv",
+    "uid": "efa740cb0b21a3f8afeec89a82366637873e3ec8"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv",
+    "uid": "ba0bf41e2f96c7bb0d0b3bdcda17fcc433e50810"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv",
+    "uid": "e7b6afca0ff476341280bf4de116ef890a71cc6d"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/nextjs.csv",
+    "uid": "da786fcf3f57a2baba41b0e2d118a2790248ed79"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv",
+    "uid": "e5da67f1663f7669a98397b8b05ca73a67043db8"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv",
+    "uid": "9931222bdaaf01f816f5ce4779feb4dc03028db3"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/react-native.csv",
+    "uid": "570bb04fa64d55cc8e9f85d17bce4567dfa2bf6d"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/react.csv",
+    "uid": "1fc103ad5afd656911eb89dd7a61d659e4c82643"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/shadcn.csv",
+    "uid": "65fd43e1cfdf86fb6c5cb050f8bc4d7d0959d4d0"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/svelte.csv",
+    "uid": "b565e6789bdcec062541bdf263c20edd4cb05f17"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/swiftui.csv",
+    "uid": "f57aeb7d3d83c8fefdc1424933e4eb2093601b08"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/stacks/vue.csv",
+    "uid": "e6d5ea226b9743749bf2202e6d71dfd5deb3d2ab"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/styles.csv",
+    "uid": "5fe67c2e8ed84c97e59f8c8e951be20d0d78c98c"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/typography.csv",
+    "uid": "9f1bdd19c46f03bdef90c393a1c5101a5210df71"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/ui-reasoning.csv",
+    "uid": "97958fb737b5ec898e868c7e6b0de9d326b61dba"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/ux-guidelines.csv",
+    "uid": "59137148b25ffb2c59ef958512bcf37634b69a3f"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/data/web-interface.csv",
+    "uid": "81ec5ca28d04b78c25583aba6ce6418f190921c7"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/references/upstream-README.md",
+    "uid": "7504b2189fbedca9371fa2dd72db6709c6b85b9f"
+  },
+  {
+    "path": "src/skills/ui-ux-pro-max/references/upstream-skill-content.md",
+    "uid": "f62085d8eb03a9bb2adbc2cab0a88cd0fb456725"
+  },
+  {
+    "path": "src/skills/ASR/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/ASR/SKILL.md",
+    "uid": "eacda6b09301dab97e8d510fa95e3aebd811c622"
+  },
+  {
+    "path": "src/skills/ASR/scripts/asr.ts",
+    "uid": "0d2e0d21088fba3ed19b79cc046a57a15c09e89a"
+  },
+  {
+    "path": "src/skills/LLM/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/LLM/SKILL.md",
+    "uid": "a0ca66f5fdd0906dd79264b1cc6e12b9035d5248"
+  },
+  {
+    "path": "src/skills/LLM/scripts/chat.ts",
+    "uid": "9006e5606b62fa255cef10428f58cbbca95e8e2a"
+  },
+  {
+    "path": "src/skills/TTS/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/TTS/SKILL.md",
+    "uid": "902063c920866033d6ef250d7b23ede8daafbf42"
+  },
+  {
+    "path": "src/skills/TTS/tts.ts",
+    "uid": "06dc5c4182bdcda440313d0f3ef4bd4668b086ff"
+  },
+  {
+    "path": "src/skills/VLM/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/VLM/SKILL.md",
+    "uid": "6849e06e9982a2156e2d83674d19ff449a0e8799"
+  },
+  {
+    "path": "src/skills/VLM/scripts/vlm.ts",
+    "uid": "79d26a52a54e0c7c2268f36a923e655e327381b0"
+  },
+  {
+    "path": "src/skills/image-edit/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/image-edit/SKILL.md",
+    "uid": "d5f946ceedbd7ab8bec1b9bfcd79de9c25cbe833"
+  },
+  {
+    "path": "src/skills/image-edit/scripts/image-edit.ts",
+    "uid": "60bd63ce5a36d2b77753de13e97673c883f5acea"
+  },
+  {
+    "path": "src/skills/image-generation/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/image-generation/SKILL.md",
+    "uid": "1a0c0e24b1fbf4142ab2d06c3828bd2310c3c05e"
+  },
+  {
+    "path": "src/skills/image-generation/scripts/image-generation.ts",
+    "uid": "fe8b157748a9dff09db04d911013d53101860350"
+  },
+  {
+    "path": "src/skills/image-understand/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/image-understand/SKILL.md",
+    "uid": "f41f826427b1250a4e18b31b7ab18a89ec78263a"
+  },
+  {
+    "path": "src/skills/image-understand/scripts/image-understand.ts",
+    "uid": "8dc63e0f5b957ce60d08d0e44ab8c1ed0479c23b"
+  },
+  {
+    "path": "src/skills/podcast-generate/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/podcast-generate/SKILL.md",
+    "uid": "6de0d6cde450abf85cacff7c0990876e3945f372"
+  },
+  {
+    "path": "src/skills/podcast-generate/generate.ts",
+    "uid": "cc3d530b9d7643554b644ae249f7450b4740e183"
+  },
+  {
+    "path": "src/skills/podcast-generate/package.json",
+    "uid": "87229f404091d6ae8e2cf75539179b438e9bbc67"
+  },
+  {
+    "path": "src/skills/podcast-generate/readme.md",
+    "uid": "1d9db01a47b35eb1ced4c0c4770380b4b683db22"
+  },
+  {
+    "path": "src/skills/podcast-generate/test_data/segments.jsonl",
+    "uid": "274086a94a1e7888f8b714dc0e258cea244e3a59"
+  },
+  {
+    "path": "src/skills/podcast-generate/tsconfig.json",
+    "uid": "b9ca573011971a3e20c97aad18f78f8bacfba26c"
+  },
+  {
+    "path": "src/skills/video-generation/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/video-generation/SKILL.md",
+    "uid": "7027ff0266820af9843af0ecff9a4cd11200410a"
+  },
+  {
+    "path": "src/skills/video-generation/scripts/video.ts",
+    "uid": "7b68ab80f45074d363de2ba36e0eadb5340dca4b"
+  },
+  {
+    "path": "src/skills/video-understand/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/video-understand/SKILL.md",
+    "uid": "4b53eccc2dc4127d466cb2c290d5d5d187f58019"
+  },
+  {
+    "path": "src/skills/video-understand/scripts/video-understand.ts",
+    "uid": "afeeffbbaaa3a7f14aa7aaf98cd4dc08acc8c7b5"
+  },
+  {
+    "path": "src/skills/web-reader/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/web-reader/SKILL.md",
+    "uid": "72ea10e53123c8e3e403e346de211de99d40a26e"
+  },
+  {
+    "path": "src/skills/web-reader/scripts/web-reader.ts",
+    "uid": "1dcb7d71021c37254948ecb860d78813db4d3102"
+  },
+  {
+    "path": "src/skills/web-search/LICENSE.txt",
+    "uid": "75b0ffefe84a5c68201a4d74f0631625690acefa"
+  },
+  {
+    "path": "src/skills/web-search/SKILL.md",
+    "uid": "42a26156f19ec8eac3cfb299fb1e3427e815e8c9"
+  },
+  {
+    "path": "src/skills/web-search/scripts/web_search.ts",
+    "uid": "c65b3f461f260ef250505ac2451fea3c3c1bfd43"
+  },
+  {
+    "path": "src/skills/agent-browser/SKILL.md",
+    "uid": "d25f46b07ea4b7dd96ac79451f8772f939e65988"
+  },
+  {
+    "path": "src/skills/ai-news-collectors/SKILL.md",
+    "uid": "de63f95d59c0c7f294a949598ba23dac6fb3de15"
+  },
+  {
+    "path": "src/skills/ai-news-collectors/_meta.json",
+    "uid": "cf7dea07c384c560f23a24f89ab752835e0466cf"
+  },
+  {
+    "path": "src/skills/ai-news-collectors/references/sources.md",
+    "uid": "114041865174e0964b03aaf1066722f9387f742a"
+  },
+  {
+    "path": "src/skills/aminer-open-academic/SKILL.md",
+    "uid": "8ce84dcb3c4670b112665797f91de8acb15fd6c9"
+  },
+  {
+    "path": "src/skills/aminer-open-academic/_meta.json",
+    "uid": "eee7fea7c9df8c603ffce90688ee29623596a9f5"
+  },
+  {
+    "path": "src/skills/aminer-open-academic/evals/evals.json",
+    "uid": "d95b90145c82ce2f2cd04c1ff5053a1875df7850"
+  },
+  {
+    "path": "src/skills/aminer-open-academic/references/api-catalog.md",
+    "uid": "eb75f9b6d9d22ab79ef9c2e901d6726b2950800d"
+  },
+  {
+    "path": "src/skills/aminer-open-academic/scripts/aminer_client.py",
+    "uid": "997c06372905df3a06b5d4688fb04eff9f4860fb"
+  },
+  {
+    "path": "src/skills/auto-target-tracker/SKILL.md",
+    "uid": "a99102a5bbcc1e87489334ab5ece4d1de81597ac"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-02-17-radical-transparency-sales.md",
+    "uid": "af5bede70d47d9ea200a35209296a1414abbf39c"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-02-17-raycast-spotlight-superpowers.md",
+    "uid": "6a261793ef48541d188a12f75a2f3da1e9f4d7e6"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-02-17-short-form-content-marketing.md",
+    "uid": "5ec46693c7b2c592ad2202cb85dc694e9e99a624"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-02-17-typing-speed-benefits.md",
+    "uid": "8bb14119076f4500a41fa20a960f9ca4b12c194f"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-03-14-effective-ai-prompts.md",
+    "uid": "098936723ec8b4b34141cd568c5f0d30e52d207c"
+  },
+  {
+    "path": "src/skills/blog-writer/2024-11-08-ai-revolutionizing-entry-level-sales.md",
+    "uid": "e7dd49b41b53f9b56a572075265d9f6648996aa9"
+  },
+  {
+    "path": "src/skills/blog-writer/2025-11-12-why-ai-art-is-useless.md",
+    "uid": "ab2197dad0977c9a010f1b4000fd17f789b9e3e2"
+  },
+  {
+    "path": "src/skills/blog-writer/README.md",
+    "uid": "f8b5de5a44e313f61df70694856fbed72d842e46"
+  },
+  {
+    "path": "src/skills/blog-writer/SKILL.md",
+    "uid": "1d5d02c49b98da7bd667e37720a5c86bcc30bfd7"
+  },
+  {
+    "path": "src/skills/blog-writer/_meta.json",
+    "uid": "ae136c229b596db971e1dafa5e3d444643ada2b5"
+  },
+  {
+    "path": "src/skills/blog-writer/manage_examples.py",
+    "uid": "1b192989333e6f24344623fdf8d4fbef2e107dc7"
+  },
+  {
+    "path": "src/skills/blog-writer/style-guide.md",
+    "uid": "d9c710a529b0e045ebfbe2c8e85a4e1502f70a45"
+  },
+  {
+    "path": "src/skills/charts/LICENSE.txt",
+    "uid": "c3601e24f8e76ed70d2849d5059ccc8947f97850"
+  },
+  {
+    "path": "src/skills/charts/SKILL.md",
+    "uid": "9daefa1d308eb673fd0421aaaa744d179d5f620c"
+  },
+  {
+    "path": "src/skills/charts/references/_rules.md",
+    "uid": "65d85414479edec2cbde582fa278ff88835bc5ba"
+  },
+  {
+    "path": "src/skills/charts/references/d3.md",
+    "uid": "90a9589564430db329961687c9e782075b3268e6"
+  },
+  {
+    "path": "src/skills/charts/references/echarts.md",
+    "uid": "de39b9baa15d9bd981c08b557ae010940756fd4b"
+  },
+  {
+    "path": "src/skills/charts/references/matplotlib.md",
+    "uid": "666e46683da614dd432b4a56dbdf98efe78aa0fa"
+  },
+  {
+    "path": "src/skills/charts/references/mermaid.md",
+    "uid": "fb5a5bfb33e2e91b4f15edb60c85b5909dc2643d"
+  },
+  {
+    "path": "src/skills/charts/references/mindmap-css.md",
+    "uid": "0b626592c3e6fa09f346c32a2bb1f1c13ea7e4bb"
+  },
+  {
+    "path": "src/skills/charts/references/playwright-css.md",
+    "uid": "16750a6e02b92f8d0be0c9d472730b6989f32163"
+  },
+  {
+    "path": "src/skills/charts/references/radial-grid.md",
+    "uid": "cce36168bdbafdedaa9a4c2fab42847bfb378000"
+  },
+  {
+    "path": "src/skills/charts/references/seaborn.md",
+    "uid": "df633e14d5b2628070aee05e951b562e74153d2b"
+  },
+  {
+    "path": "src/skills/charts/setup.sh",
+    "uid": "95c58e8a8ab80167e76462404edd4d042d18ff62"
+  },
+  {
+    "path": "src/skills/docx/LICENSE.txt",
+    "uid": "c3601e24f8e76ed70d2849d5059ccc8947f97850"
+  },
+  {
+    "path": "src/skills/docx/CHANGELOG.md",
+    "uid": "6e9f9ee15da84fa6d244e56d0901cda8fee8cabc"
+  },
+  {
+    "path": "src/skills/docx/SKILL.md",
+    "uid": "5ba44b08dad83b9e2893948604082b1410027ace"
+  },
+  {
+    "path": "src/skills/docx/docx-js.md",
+    "uid": "c8dc3daf2248deb2b673741029dc083ab8f8e65c"
+  },
+  {
+    "path": "src/skills/docx/ooxml.md",
+    "uid": "d83095ec931857cbf5e1155dabc2fc8da7f9a3c3"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd",
+    "uid": "4c0e6f6c6138b559fb0dab1d5934334c1d770809"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd",
+    "uid": "2856105c805c355f0b45ff56a891b84b0d817c98"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd",
+    "uid": "7c6e10149e38998aefe1937acfdf2027e65e6ebb"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd",
+    "uid": "5a5bc0143e8e5b5ae866c4094aa3685192c2eddb"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd",
+    "uid": "a5eeae6513f8f8f3147ddcdedd3a4bfe5b228f8c"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd",
+    "uid": "14b98ecab678c0b1510e36232630c201ed435380"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd",
+    "uid": "a488b73acf2f127985bc2cfb351b71f1cc58011d"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd",
+    "uid": "d6ac26600618d60101aa66d4cc9bfe069ac6bcc7"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd",
+    "uid": "d2898e843d4a5cfa6a4ff4e9adf3ab55b4cdfa54"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd",
+    "uid": "7745bd039dcf87d35ce8523d96d0c25a259ccc67"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd",
+    "uid": "7bea2f0020f1c9135fa0e1189310dcf4bc29a47f"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd",
+    "uid": "c533f4b352c765784b66d277eef5c6546b781c6f"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd",
+    "uid": "17648bc8d47645edcc5e897cd255c62e819b1587"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd",
+    "uid": "7b5d14b42625f15a9fd535e0efaa99ba701f92e4"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd",
+    "uid": "39d1d6faacbce3e19b5a245ae745e350c6f8eba8"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd",
+    "uid": "863afe291fc482016090c1d6e944ec24cd400c79"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd",
+    "uid": "e9f1494bd451d6a588dcd961462cd7025de67a48"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd",
+    "uid": "4166e9a07552d03ffd39352aa88811af2001da6c"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd",
+    "uid": "56dfe36740cb7aff3309f83b49c638deceaafe1a"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd",
+    "uid": "09b2d680921696a5846ca0a5c7ad6d088d8e0f52"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd",
+    "uid": "3cdfe27a37cdb2fbd112e4ca528ecd9e39dbfa4d"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd",
+    "uid": "24d34c4089251b55abf82361bb588f36da7e269e"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd",
+    "uid": "bb3b9f27e23cd7d2b919cda02e44ddf5fbf2b688"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd",
+    "uid": "debb347068c1e9e9ff5dccd3b68914e36f306527"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd",
+    "uid": "c7a9f32e1ce1b911c6ea22710a38bd973f06e525"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd",
+    "uid": "e9eb7a1a6a7255e28107c009265b2f02a440e6c4"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd",
+    "uid": "3f78fcc43409726ab647cd893e722d5bc9324edd"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+    "uid": "0361ade426d61a07960f3321f69316646a8d3dad"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+    "uid": "5f93259fe2fc4dd1a097ba3ac968144e62cc828e"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd",
+    "uid": "a99fe4663cba1a762512755dad8850d320373c4d"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd",
+    "uid": "ff674e6e94aaf9f7cfa63863d1bd0a1b9839bc6c"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/mce/mc.xsd",
+    "uid": "f6a8b649478d0cbad46521fce8e465564742cb8b"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-2010.xsd",
+    "uid": "9dae98f78b071111322f78c6060ee1332e97ec05"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-2012.xsd",
+    "uid": "4bae12500e750e8d264b03a39522a62c252e7911"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-2018.xsd",
+    "uid": "fc5f36a58d66a171c81fc3e89243ceec1fe1def9"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-cex-2018.xsd",
+    "uid": "b36dcb8b3c4e5d84bca660bf5d95d5645f5ffdab"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-cid-2016.xsd",
+    "uid": "6e9463abd265d28d84930d057485dcfed30944f3"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+    "uid": "ef4714320170e9eba080298ac250ad3094752d1f"
+  },
+  {
+    "path": "src/skills/docx/ooxml/schemas/microsoft/wml-symex-2015.xsd",
+    "uid": "87bceb1091ef7825ab674713aa8f7c13f8b2268e"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/pack.py",
+    "uid": "48327c411090982220f9546f8b699d9b93745744"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/unpack.py",
+    "uid": "43a105d60a844b0b498794b11911be5e34ea54a9"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validate.py",
+    "uid": "e911c47132f5663de05ca8b4d32f5476db7d7d06"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validation/__init__.py",
+    "uid": "f3b82b83cd17a455c92544d6391dbbd9e1666395"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validation/base.py",
+    "uid": "ab0dad12efc70f90aded7a4babfa11125b66b0ae"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validation/docx.py",
+    "uid": "d063e332822719d1fd4e2d884513d561195ce108"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validation/pptx.py",
+    "uid": "444266e31fb8f49c397b1ca76de642dc920aa1a3"
+  },
+  {
+    "path": "src/skills/docx/ooxml/scripts/validation/redlining.py",
+    "uid": "4cdc1cbbb9b4c1acca56b6e4df97d29fe0fed48d"
+  },
+  {
+    "path": "src/skills/docx/references/chart-templates.md",
+    "uid": "5866a5634c06ae29ea421ff580eb03d60287c3a6"
+  },
+  {
+    "path": "src/skills/docx/references/common-rules.md",
+    "uid": "d1dd193c477a38dbaa62368b48fb06669180441d"
+  },
+  {
+    "path": "src/skills/docx/references/decorations.md",
+    "uid": "a353967674f1a7059b4c7c8f1020060d7495f556"
+  },
+  {
+    "path": "src/skills/docx/references/design-system.md",
+    "uid": "72260cc7ec38820ba0bea2fe239acfde2e26e94e"
+  },
+  {
+    "path": "src/skills/docx/references/docx-js-advanced.md",
+    "uid": "d9ca594ecaefdd480fe2c42388510379cd506082"
+  },
+  {
+    "path": "src/skills/docx/references/docx-js-core.md",
+    "uid": "718b2b73f96d683e1396c35c86faaac036322ea5"
+  },
+  {
+    "path": "src/skills/docx/references/faq.md",
+    "uid": "f70942078e154ed41117598e392bc4b1dbc32f92"
+  },
+  {
+    "path": "src/skills/docx/references/math-formulas.md",
+    "uid": "b380ec19e532b5282e8b3bded05b83b484a825a2"
+  },
+  {
+    "path": "src/skills/docx/references/ooxml.md",
+    "uid": "4c08e3f24fc7a002ca4a1ee94d408517d73af229"
+  },
+  {
+    "path": "src/skills/docx/references/toc.md",
+    "uid": "9c54f14944a64fe2a133ea4a0e64622b09ff3bf0"
+  },
+  {
+    "path": "src/skills/docx/routes/comment.md",
+    "uid": "b3f9d8a877f59f8e84d447beee754668cfb44569"
+  },
+  {
+    "path": "src/skills/docx/routes/create.md",
+    "uid": "86c44617a42b43bd9f58cf000dfab667de29abf9"
+  },
+  {
+    "path": "src/skills/docx/routes/edit.md",
+    "uid": "1015c744077c55d28a71e163ada3a866fd907ff4"
+  },
+  {
+    "path": "src/skills/docx/routes/format.md",
+    "uid": "c69523a8393211a232140cba7d8259e197a57e73"
+  },
+  {
+    "path": "src/skills/docx/routes/read.md",
+    "uid": "b471af3b8038930fcea9f3a40d8b41d9bdb0bbe5"
+  },
+  {
+    "path": "src/skills/docx/scenes/academic.md",
+    "uid": "bf7e9e4b45a07c5e9aa0e0fa421e31cbcf81ca22"
+  },
+  {
+    "path": "src/skills/docx/scenes/contract.md",
+    "uid": "208ad841cab03b2e3a6bf166c959303fc5ebf37c"
+  },
+  {
+    "path": "src/skills/docx/scenes/copywriting.md",
+    "uid": "8632a33b8cba96367e632b8b9ad3d48433045802"
+  },
+  {
+    "path": "src/skills/docx/scenes/exam.md",
+    "uid": "b22cba38cb3a2e326cd5afa6f19a5ea77fa3a7e8"
+  },
+  {
+    "path": "src/skills/docx/scenes/official-doc.md",
+    "uid": "fabb6f085c2280f730747e2787177b8beeaa8096"
+  },
+  {
+    "path": "src/skills/docx/scenes/report.md",
+    "uid": "a86a4724cca3cf0d87fc2ff9295816c9e83f6791"
+  },
+  {
+    "path": "src/skills/docx/scenes/resume.md",
+    "uid": "2e265e2adaea1206577daa6d5616390c5c0f1e1b"
+  },
+  {
+    "path": "src/skills/docx/scripts/__init__.py",
+    "uid": "38b7ce57be19eec6690494831da158f926d2ac99"
+  },
+  {
+    "path": "src/skills/docx/scripts/add_toc_placeholders.py",
+    "uid": "0b1882b217541861cfbf6b524962e894ca60f415"
+  },
+  {
+    "path": "src/skills/docx/scripts/document.py",
+    "uid": "45cecc17e3ed3163d6cbf6400653d850dcd604d2"
+  },
+  {
+    "path": "src/skills/docx/scripts/postcheck.py",
+    "uid": "93b56465c99d9383e6c11d3b73607c9a4eb7e870"
+  },
+  {
+    "path": "src/skills/docx/scripts/templates/comments.xml",
+    "uid": "ad612eef3a62b6e5097159f57ba633ad060642d1"
+  },
+  {
+    "path": "src/skills/docx/scripts/templates/commentsExtended.xml",
+    "uid": "c52d3a107347a11085c6f56ad07769678536c3dc"
+  },
+  {
+    "path": "src/skills/docx/scripts/templates/commentsExtensible.xml",
+    "uid": "f44cc3a7849f8970977cd3dc3a3f4f317d18dc7d"
+  },
+  {
+    "path": "src/skills/docx/scripts/templates/commentsIds.xml",
+    "uid": "2d877512aa86fb94a56ae018660cead7b0b3dfcf"
+  },
+  {
+    "path": "src/skills/docx/scripts/templates/people.xml",
+    "uid": "90078a680c509d77c53830dbe31da1c2e11a25d6"
+  },
+  {
+    "path": "src/skills/docx/scripts/utilities.py",
+    "uid": "51e77f02e3f9b292490aad31b9d725d6a8c80143"
+  },
+  {
+    "path": "src/skills/docx/setup.sh",
+    "uid": "af6481f66ef2170bbf0ce2f259d04f68e9bb2e3e"
+  },
+  {
+    "path": "src/skills/pdf/LICENSE.txt",
+    "uid": "c3601e24f8e76ed70d2849d5059ccc8947f97850"
+  },
+  {
+    "path": "src/skills/pdf/SKILL.md",
+    "uid": "5e622522a0df3f52eb1ef54b4269de2bfda681b7"
+  },
+  {
+    "path": "src/skills/pdf/briefs/academic.md",
+    "uid": "2f0f80f1cd193c14abcf5baa2800aeb31c3e39f7"
+  },
+  {
+    "path": "src/skills/pdf/briefs/creative.md",
+    "uid": "9186f931597e06c86cd03ca8c78fdd4d7aee8b46"
+  },
+  {
+    "path": "src/skills/pdf/briefs/poster.md",
+    "uid": "5baad56e19a11590a94b03d74328bc8f904b29fe"
+  },
+  {
+    "path": "src/skills/pdf/briefs/process-advanced.md",
+    "uid": "263af8b3621eacbff42095b3638a2f61345eba8c"
+  },
+  {
+    "path": "src/skills/pdf/briefs/process.md",
+    "uid": "24b9231af4a9f3ff583c20c73a5aa6acc95f0572"
+  },
+  {
+    "path": "src/skills/pdf/briefs/report.md",
+    "uid": "dc4602ec1d8e4ede028cd64a2ee890f12db74bf3"
+  },
+  {
+    "path": "src/skills/pdf/configs/components.md",
+    "uid": "0297c88677d558c2ee2c1c759dae642c8da9b335"
+  },
+  {
+    "path": "src/skills/pdf/configs/fonts.md",
+    "uid": "7ca411b7fe3e9ee1372d2c5af70c2e784f26b7ad"
+  },
+  {
+    "path": "src/skills/pdf/configs/visual_framework.md",
+    "uid": "bc298dfb8520ab3bdd8d29d540b0ffb9fae8a3cf"
+  },
+  {
+    "path": "src/skills/pdf/forms.md",
+    "uid": "14b6b85c3ac0e12e061b24b581b4d038aba75557"
+  },
+  {
+    "path": "src/skills/pdf/reference.md",
+    "uid": "95571e8eda1b272e25eb99541402b2ee15bbbf78"
+  },
+  {
+    "path": "src/skills/pdf/references/resume-academic.tex",
+    "uid": "eb265714629afad55a5ca7ed0baa12f40a9f042a"
+  },
+  {
+    "path": "src/skills/pdf/references/resume-altacv.tex",
+    "uid": "5b9f0c4c4d369cbec537aff9c8101666b2925996"
+  },
+  {
+    "path": "src/skills/pdf/scripts/add_zai_metadata.py",
+    "uid": "aa4393db03b21a444799870d5520a43fdd01b547"
+  },
+  {
+    "path": "src/skills/pdf/scripts/check_bounding_boxes.py",
+    "uid": "0a2096254388108e0683c04f9824c163855e63e4"
+  },
+  {
+    "path": "src/skills/pdf/scripts/check_bounding_boxes_test.py",
+    "uid": "1fb718a6cebbae0687f72198941490d630c0e9bc"
+  },
+  {
+    "path": "src/skills/pdf/scripts/check_fillable_fields.py",
+    "uid": "738bf9b9f42fb18d9cb79bc21afb2c18c591b0e5"
+  },
+  {
+    "path": "src/skills/pdf/scripts/convert_pdf_to_images.py",
+    "uid": "301b152c72657c4069b328f8f0cf7897566d0bd2"
+  },
+  {
+    "path": "src/skills/pdf/scripts/cover_validate.js",
+    "uid": "5226215938ef1ae86e973d963bc1d349624acc23"
+  },
+  {
+    "path": "src/skills/pdf/scripts/create_validation_image.py",
+    "uid": "c6e524bdf84bf418f1a841a8e9ac9ceb3896e484"
+  },
+  {
+    "path": "src/skills/pdf/scripts/design_engine.py",
+    "uid": "bfae5ad7340476ade05a394d5a27182da0553f8d"
+  },
+  {
+    "path": "src/skills/pdf/scripts/extract_form_field_info.py",
+    "uid": "f11fc3de8df97e68039e6a05b29ba1edde005df8"
+  },
+  {
+    "path": "src/skills/pdf/scripts/fill_fillable_fields.py",
+    "uid": "b147faaaefdf2bbe37fa48ad9103a9c5117c90d4"
+  },
+  {
+    "path": "src/skills/pdf/scripts/fill_pdf_form_with_annotations.py",
+    "uid": "fa41e7cdd080cc13cb8df92e6648d79d0d8296c2"
+  },
+  {
+    "path": "src/skills/pdf/scripts/html2pdf-next.js",
+    "uid": "333c98d2a7a4e465934f8321ae362fc98a5bb89a"
+  },
+  {
+    "path": "src/skills/pdf/scripts/html2poster.js",
+    "uid": "c139a69e668f8c88fd935f1d27a347254cfedfdc"
+  },
+  {
+    "path": "src/skills/pdf/scripts/pdf.py",
+    "uid": "d4bc407f536876ceaa24b855e8b4148bb02bdd2b"
+  },
+  {
+    "path": "src/skills/pdf/scripts/pdf_qa.py",
+    "uid": "bec43937cd1d13de0dabae530c05da06466ebc8e"
+  },
+  {
+    "path": "src/skills/pdf/scripts/poster_validate.py",
+    "uid": "a631125ff7b8feb3e53105878fa35b2c89c7149a"
+  },
+  {
+    "path": "src/skills/pdf/scripts/sanitize_code.py",
+    "uid": "f646eb1861bdd642b67cf9e855a6bbe5642e4847"
+  },
+  {
+    "path": "src/skills/pdf/scripts/setup.sh",
+    "uid": "96f359a3f337ff62b3ba0b78ce9aaeb229fa2167"
+  },
+  {
+    "path": "src/skills/pdf/scripts/toc_validate.py",
+    "uid": "b60e3272244bd59971f2cd4fd4b66b39e540cad2"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/charts.md",
+    "uid": "463e7f153d3a7ae7e1362b80a819cde0398314c2"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/cover-backgrounds.md",
+    "uid": "5a26589e3cff701da1c88c5075cde032e8e1af2d"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/cover.md",
+    "uid": "2909134030512b71caaebdd447008f3d51db1e7b"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/fill-engine.md",
+    "uid": "3f057d7484e271806240b8ebc21011cf47f57d35"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/geometry.md",
+    "uid": "e04ce6542241a74812d67a4777ed19fdff152e80"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/overflow.md",
+    "uid": "2b51fabb4760a9ff3fd200810f5a5ccd1537ae63"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/pagination.md",
+    "uid": "c5e96e264b2a06ab432c5dd47879215460a061f1"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/palette.md",
+    "uid": "0d7506643b412598eaf6216c084540148c83bde0"
+  },
+  {
+    "path": "src/skills/pdf/typesetting/typography.md",
+    "uid": "7d0fddf9b61e68784896c95ecc34a9afb285bc3d"
+  },
+  {
+    "path": "src/skills/ppt/LICENSE.txt",
+    "uid": "c3601e24f8e76ed70d2849d5059ccc8947f97850"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd",
+    "uid": "4c0e6f6c6138b559fb0dab1d5934334c1d770809"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd",
+    "uid": "2856105c805c355f0b45ff56a891b84b0d817c98"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd",
+    "uid": "7c6e10149e38998aefe1937acfdf2027e65e6ebb"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd",
+    "uid": "5a5bc0143e8e5b5ae866c4094aa3685192c2eddb"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd",
+    "uid": "a5eeae6513f8f8f3147ddcdedd3a4bfe5b228f8c"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd",
+    "uid": "14b98ecab678c0b1510e36232630c201ed435380"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd",
+    "uid": "a488b73acf2f127985bc2cfb351b71f1cc58011d"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd",
+    "uid": "d6ac26600618d60101aa66d4cc9bfe069ac6bcc7"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd",
+    "uid": "d2898e843d4a5cfa6a4ff4e9adf3ab55b4cdfa54"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd",
+    "uid": "7745bd039dcf87d35ce8523d96d0c25a259ccc67"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd",
+    "uid": "7bea2f0020f1c9135fa0e1189310dcf4bc29a47f"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd",
+    "uid": "c533f4b352c765784b66d277eef5c6546b781c6f"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd",
+    "uid": "17648bc8d47645edcc5e897cd255c62e819b1587"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd",
+    "uid": "7b5d14b42625f15a9fd535e0efaa99ba701f92e4"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd",
+    "uid": "39d1d6faacbce3e19b5a245ae745e350c6f8eba8"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd",
+    "uid": "863afe291fc482016090c1d6e944ec24cd400c79"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd",
+    "uid": "e9f1494bd451d6a588dcd961462cd7025de67a48"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd",
+    "uid": "4166e9a07552d03ffd39352aa88811af2001da6c"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd",
+    "uid": "56dfe36740cb7aff3309f83b49c638deceaafe1a"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd",
+    "uid": "09b2d680921696a5846ca0a5c7ad6d088d8e0f52"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd",
+    "uid": "3cdfe27a37cdb2fbd112e4ca528ecd9e39dbfa4d"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd",
+    "uid": "24d34c4089251b55abf82361bb588f36da7e269e"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd",
+    "uid": "bb3b9f27e23cd7d2b919cda02e44ddf5fbf2b688"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd",
+    "uid": "debb347068c1e9e9ff5dccd3b68914e36f306527"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd",
+    "uid": "c7a9f32e1ce1b911c6ea22710a38bd973f06e525"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd",
+    "uid": "e9eb7a1a6a7255e28107c009265b2f02a440e6c4"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd",
+    "uid": "3f78fcc43409726ab647cd893e722d5bc9324edd"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+    "uid": "0361ade426d61a07960f3321f69316646a8d3dad"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+    "uid": "5f93259fe2fc4dd1a097ba3ac968144e62cc828e"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd",
+    "uid": "a99fe4663cba1a762512755dad8850d320373c4d"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd",
+    "uid": "ff674e6e94aaf9f7cfa63863d1bd0a1b9839bc6c"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/mce/mc.xsd",
+    "uid": "f6a8b649478d0cbad46521fce8e465564742cb8b"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-2010.xsd",
+    "uid": "9dae98f78b071111322f78c6060ee1332e97ec05"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-2012.xsd",
+    "uid": "4bae12500e750e8d264b03a39522a62c252e7911"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-2018.xsd",
+    "uid": "fc5f36a58d66a171c81fc3e89243ceec1fe1def9"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-cex-2018.xsd",
+    "uid": "b36dcb8b3c4e5d84bca660bf5d95d5645f5ffdab"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-cid-2016.xsd",
+    "uid": "6e9463abd265d28d84930d057485dcfed30944f3"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+    "uid": "ef4714320170e9eba080298ac250ad3094752d1f"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/schemas/microsoft/wml-symex-2015.xsd",
+    "uid": "87bceb1091ef7825ab674713aa8f7c13f8b2268e"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/pack.py",
+    "uid": "48327c411090982220f9546f8b699d9b93745744"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validation/__init__.py",
+    "uid": "f3b82b83cd17a455c92544d6391dbbd9e1666395"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validation/docx.py",
+    "uid": "d063e332822719d1fd4e2d884513d561195ce108"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validation/base.py",
+    "uid": "aace1dcd54eae1a28d6e445aaa554fa927660071"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validation/pptx.py",
+    "uid": "daf0cb2e2c552a27f4dde56865bbda2c74597d48"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validation/redlining.py",
+    "uid": "1c8551135ef0c43a4ca0828a09130831b593c63c"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/unpack.py",
+    "uid": "7239d7c14a1cdc409f982a7379a0b7a9adceeeaa"
+  },
+  {
+    "path": "src/skills/ppt/ooxml/scripts/validate.py",
+    "uid": "885f612e0ffd27e423616c29ea6c30c951d474df"
+  },
+  {
+    "path": "src/skills/ppt/.claude/settings.local.json",
+    "uid": "4175d3f8a39803d22410f0e3f5c14f2f17725539"
+  },
+  {
+    "path": "src/skills/ppt/SKILL.md",
+    "uid": "397c97f78eecb101bedaa201c567dbfd94b244ec"
+  },
+  {
+    "path": "src/skills/ppt/beamer.md",
+    "uid": "df19acf90d769fd7a364b373067c68d2db3e2d34"
+  },
+  {
+    "path": "src/skills/ppt/components.md",
+    "uid": "86753f950ab74fa6c3244d6b32c1b6f198ecb6b5"
+  },
+  {
+    "path": "src/skills/ppt/data-viz-components.md",
+    "uid": "6c2b8fe86219ab74589f26fc5530a1327242e730"
+  },
+  {
+    "path": "src/skills/ppt/design-system.md",
+    "uid": "acbb8bf719d71b77c74c5faaf3be9c7fa10ae4fe"
+  },
+  {
+    "path": "src/skills/ppt/html2pptx.md",
+    "uid": "b7f70fe759d7476c09b487758b97cd4a0dd5ceba"
+  },
+  {
+    "path": "src/skills/ppt/ooxml.md",
+    "uid": "96a18ec58c78bab3e621f06e9b2dc274fb455872"
+  },
+  {
+    "path": "src/skills/ppt/references/beamer.md",
+    "uid": "6e45a7f38f4ee85a956fde1edc3f9262e2e999dc"
+  },
+  {
+    "path": "src/skills/ppt/references/latex.md",
+    "uid": "ce9a9136f90f3dec5bbf19abbb84b1183c97dce9"
+  },
+  {
+    "path": "src/skills/ppt/references/paper-navbar.tex",
+    "uid": "267df04f6161108d4198bdfb67ac84de58d4e910"
+  },
+  {
+    "path": "src/skills/ppt/references/progress-navbar.tex",
+    "uid": "6f8d2027e9b10ab136ee53df5d562045aa75617a"
+  },
+  {
+    "path": "src/skills/ppt/scripts/html2pptx.js",
+    "uid": "8ddbcd1c234295f2f2203de2008c92e810c549ac"
+  },
+  {
+    "path": "src/skills/ppt/scripts/inventory.py",
+    "uid": "83bfe6279ee1907637790a25d0c9e69ac340e48d"
+  },
+  {
+    "path": "src/skills/ppt/scripts/pdf.py",
+    "uid": "1724f81d96820465752a18c79f9e3dee8c84e5dc"
+  },
+  {
+    "path": "src/skills/ppt/scripts/rearrange.py",
+    "uid": "f07b85ff2a1acef8e6bf8c541815615a56eccedd"
+  },
+  {
+    "path": "src/skills/ppt/scripts/replace.py",
+    "uid": "84de8b32c16ac7ab65034349cc03f3fd8e557f9a"
+  },
+  {
+    "path": "src/skills/ppt/scripts/tectonic",
+    "uid": "2eab991c592680feeb1d07a6122f10b52b331436"
+  },
+  {
+    "path": "src/skills/ppt/scripts/thumbnail.py",
+    "uid": "d5b948906ddbbdc51aa3841ea5fc38853713ec47"
+  },
+  {
+    "path": "src/skills/ppt/setup.sh",
+    "uid": "ad04cae5c9bd7d346962c22942e620e5e2d1fe0c"
+  },
+  {
+    "path": "src/skills/ppt/themes.md",
+    "uid": "8a8e75f29f82cf48388940169f420434ffb35bc2"
+  },
+  {
+    "path": "src/skills/xlsx/LICENSE.txt",
+    "uid": "c3601e24f8e76ed70d2849d5059ccc8947f97850"
+  },
+  {
+    "path": "src/skills/xlsx/SKILL.md",
+    "uid": "d93a68a50dfcae633dbdcb5305403252e308a582"
+  },
+  {
+    "path": "src/skills/xlsx/engines/chart-templates.md",
+    "uid": "4ff5f2ded0eb49ea324ad1f8a4b14d08bb6282e2"
+  },
+  {
+    "path": "src/skills/xlsx/engines/chart.md",
+    "uid": "8072db87b0aab4b61f726d0e61f7adad8771cae6"
+  },
+  {
+    "path": "src/skills/xlsx/engines/design.md",
+    "uid": "396c63180885af58d87955b353b958497ae8cae7"
+  },
+  {
+    "path": "src/skills/xlsx/engines/vba-templates.md",
+    "uid": "ca0115204f1b7d90c3848a99b128dac77717f2f2"
+  },
+  {
+    "path": "src/skills/xlsx/quality/pipeline.md",
+    "uid": "877382a5a8471e973148b70c7ae97dcda8039461"
+  },
+  {
+    "path": "src/skills/xlsx/recalc.py",
+    "uid": "80d58e60328c9a97de5e2190975462da8240b2df"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/advanced.md",
+    "uid": "3597220a515587ace0c5e009a095f6eab578c578"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/analyze-recipes.md",
+    "uid": "6b93773a7e4be1e9d447af38e45e6667e2d602d9"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/analyze.md",
+    "uid": "9860f86939d170c73e1cbfd51fb84a662fa90028"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/convert.md",
+    "uid": "6d5f87db539797dd6c2e0fca9a89100a7df129c8"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/create.md",
+    "uid": "41c0f56bbeb382e02f317e655155f44463f9c2e6"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/edit-patterns.md",
+    "uid": "ae557884f82bdf5832d73cb58388d5107a2e19bb"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/edit.md",
+    "uid": "981151d83de589cacd7be26988ceb397008e78b9"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/finance.md",
+    "uid": "70575a04814557341bf1ba864ee61a4a774be48b"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/finance_lite.md",
+    "uid": "f4be8f167df532bb652db3b31d3322af6ce47e74"
+  },
+  {
+    "path": "src/skills/xlsx/scenes/vba.md",
+    "uid": "11ad0865277f0138b7b72062d725b2155a19018c"
+  },
+  {
+    "path": "src/skills/xlsx/setup.sh",
+    "uid": "3248b43a503c2578f2b36f19379c86281659bd3e"
+  },
+  {
+    "path": "src/skills/xlsx/templates/base.py",
+    "uid": "766eb47416c87792b30d2401e3c4c1d0fe6cae01"
+  },
+  {
+    "path": "src/skills/xlsx/templates/palettes.py",
+    "uid": "9a83220a2c72b71d01f4044d6b101be7ffa0ed58"
+  },
+  {
+    "path": "src/skills/xlsx/xlsx.py",
+    "uid": "545625e657eae0ece0e97baf8b57a597355fa10f"
+  },
+  {
+    "path": "src/skills/coding-agent/SKILL.md",
+    "uid": "8810099f79874bc12c54ec7a0b4e10d3831d345f"
+  },
+  {
+    "path": "src/skills/coding-agent/_meta.json",
+    "uid": "bb8ee3d386e1453c0ba81e10e1940814e8324e0a"
+  },
+  {
+    "path": "src/skills/coding-agent/criteria.md",
+    "uid": "6ecda8eba5e8ee4dd245ecb9070c50d9dc975ecf"
+  },
+  {
+    "path": "src/skills/coding-agent/execution.md",
+    "uid": "286d623aa6cf8e5c4c5d7e6db5b721d422f21f06"
+  },
+  {
+    "path": "src/skills/coding-agent/memory-template.md",
+    "uid": "6b144f8fa6b3a1629c0108736bc9cc6411f00eef"
+  },
+  {
+    "path": "src/skills/coding-agent/planning.md",
+    "uid": "d50b73b9254510db675823a35dfc951831d5ebb3"
+  },
+  {
+    "path": "src/skills/coding-agent/state.md",
+    "uid": "9e8bc16486b09437e7a272616e2f3225cecbe703"
+  },
+  {
+    "path": "src/skills/coding-agent/verification.md",
+    "uid": "4f8e729a2ac467182050da09e79e9457cea9b346"
+  },
+  {
+    "path": "src/skills/content-strategy/SKILL.md",
+    "uid": "ca72f370ff58caaa84cfe80e89557d7a5099a05c"
+  },
+  {
+    "path": "src/skills/content-strategy/_meta.json",
+    "uid": "917b1ffa47dc8ec6eb4c627f1ebccb2221d199a4"
+  },
+  {
+    "path": "src/skills/contentanalysis/ExtractWisdom/SKILL.md",
+    "uid": "69c769b7192171e11fc15c7b68a5c9693ae5e50d"
+  },
+  {
+    "path": "src/skills/contentanalysis/ExtractWisdom/Workflows/Extract.md",
+    "uid": "c05166a08ef31a5cafc652d376e47ffc321e60f2"
+  },
+  {
+    "path": "src/skills/contentanalysis/SKILL.md",
+    "uid": "7b5de54cd60ac6671e5078420b8285d5d5f34d79"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd",
+    "uid": "4c0e6f6c6138b559fb0dab1d5934334c1d770809"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd",
+    "uid": "2856105c805c355f0b45ff56a891b84b0d817c98"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd",
+    "uid": "7c6e10149e38998aefe1937acfdf2027e65e6ebb"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd",
+    "uid": "5a5bc0143e8e5b5ae866c4094aa3685192c2eddb"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd",
+    "uid": "a5eeae6513f8f8f3147ddcdedd3a4bfe5b228f8c"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd",
+    "uid": "14b98ecab678c0b1510e36232630c201ed435380"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd",
+    "uid": "a488b73acf2f127985bc2cfb351b71f1cc58011d"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd",
+    "uid": "d6ac26600618d60101aa66d4cc9bfe069ac6bcc7"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd",
+    "uid": "d2898e843d4a5cfa6a4ff4e9adf3ab55b4cdfa54"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd",
+    "uid": "7745bd039dcf87d35ce8523d96d0c25a259ccc67"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd",
+    "uid": "7bea2f0020f1c9135fa0e1189310dcf4bc29a47f"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd",
+    "uid": "c533f4b352c765784b66d277eef5c6546b781c6f"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd",
+    "uid": "17648bc8d47645edcc5e897cd255c62e819b1587"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd",
+    "uid": "7b5d14b42625f15a9fd535e0efaa99ba701f92e4"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd",
+    "uid": "39d1d6faacbce3e19b5a245ae745e350c6f8eba8"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd",
+    "uid": "863afe291fc482016090c1d6e944ec24cd400c79"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd",
+    "uid": "e9f1494bd451d6a588dcd961462cd7025de67a48"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd",
+    "uid": "4166e9a07552d03ffd39352aa88811af2001da6c"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd",
+    "uid": "56dfe36740cb7aff3309f83b49c638deceaafe1a"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd",
+    "uid": "09b2d680921696a5846ca0a5c7ad6d088d8e0f52"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd",
+    "uid": "3cdfe27a37cdb2fbd112e4ca528ecd9e39dbfa4d"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd",
+    "uid": "24d34c4089251b55abf82361bb588f36da7e269e"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd",
+    "uid": "bb3b9f27e23cd7d2b919cda02e44ddf5fbf2b688"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd",
+    "uid": "debb347068c1e9e9ff5dccd3b68914e36f306527"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd",
+    "uid": "c7a9f32e1ce1b911c6ea22710a38bd973f06e525"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd",
+    "uid": "e9eb7a1a6a7255e28107c009265b2f02a440e6c4"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd",
+    "uid": "3f78fcc43409726ab647cd893e722d5bc9324edd"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+    "uid": "0361ade426d61a07960f3321f69316646a8d3dad"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+    "uid": "5f93259fe2fc4dd1a097ba3ac968144e62cc828e"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd",
+    "uid": "a99fe4663cba1a762512755dad8850d320373c4d"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd",
+    "uid": "ff674e6e94aaf9f7cfa63863d1bd0a1b9839bc6c"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/mce/mc.xsd",
+    "uid": "f6a8b649478d0cbad46521fce8e465564742cb8b"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-2010.xsd",
+    "uid": "9dae98f78b071111322f78c6060ee1332e97ec05"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-2012.xsd",
+    "uid": "4bae12500e750e8d264b03a39522a62c252e7911"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-2018.xsd",
+    "uid": "fc5f36a58d66a171c81fc3e89243ceec1fe1def9"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-cex-2018.xsd",
+    "uid": "b36dcb8b3c4e5d84bca660bf5d95d5645f5ffdab"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-cid-2016.xsd",
+    "uid": "6e9463abd265d28d84930d057485dcfed30944f3"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+    "uid": "ef4714320170e9eba080298ac250ad3094752d1f"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/schemas/microsoft/wml-symex-2015.xsd",
+    "uid": "87bceb1091ef7825ab674713aa8f7c13f8b2268e"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/pack.py",
+    "uid": "48327c411090982220f9546f8b699d9b93745744"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/unpack.py",
+    "uid": "43a105d60a844b0b498794b11911be5e34ea54a9"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validate.py",
+    "uid": "e911c47132f5663de05ca8b4d32f5476db7d7d06"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validation/__init__.py",
+    "uid": "f3b82b83cd17a455c92544d6391dbbd9e1666395"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validation/base.py",
+    "uid": "ab0dad12efc70f90aded7a4babfa11125b66b0ae"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validation/docx.py",
+    "uid": "d063e332822719d1fd4e2d884513d561195ce108"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validation/pptx.py",
+    "uid": "444266e31fb8f49c397b1ca76de642dc920aa1a3"
+  },
+  {
+    "path": "src/skills/pptx/ooxml/scripts/validation/redlining.py",
+    "uid": "a94415098c55b7760652e79d049dde64349cdf7d"
+  },
+  {
+    "path": "src/skills/pptx/ooxml.md",
+    "uid": "96a18ec58c78bab3e621f06e9b2dc274fb455872"
+  },
+  {
+    "path": "src/skills/pptx/LICENSE.txt",
+    "uid": "33b3a5817279c18cbdc4143e3b71ed33d728ca06"
+  },
+  {
+    "path": "src/skills/pptx/SKILL.md",
+    "uid": "6e67166e36c5aa612d2f8694485c6fc74f87f10a"
+  },
+  {
+    "path": "src/skills/pptx/html2pptx.md",
+    "uid": "a2483f9d24cbf64e420069539f8e030eec1fa684"
+  },
+  {
+    "path": "src/skills/pptx/scripts/html2pptx.js",
+    "uid": "f23a27e4da88865bb4a0b42dd5d782c2dee3d51b"
+  },
+  {
+    "path": "src/skills/pptx/scripts/inventory.py",
+    "uid": "0bab493162b6bb72f617745bf247e63c49fbe690"
+  },
+  {
+    "path": "src/skills/pptx/scripts/rearrange.py",
+    "uid": "825e42916951c1412b19692af957fe96ae035c12"
+  },
+  {
+    "path": "src/skills/pptx/scripts/replace.py",
+    "uid": "a49b90489dc4a0a3c9118dc23608eadb9b57c33d"
+  },
+  {
+    "path": "src/skills/pptx/scripts/thumbnail.py",
+    "uid": "99e5c3def0b64bea2e6fc7dc1f8dc4ec07e8ed28"
+  },
+  {
+    "path": "src/skills/dream-interpreter/SKILL.md",
+    "uid": "da37216083bc74b7b9b02c56d6724d92f30a65a8"
+  },
+  {
+    "path": "src/skills/dream-interpreter/assets/example_asset.txt",
+    "uid": "4e22d288808fea5dbe66235240b3267a8db1ed77"
+  },
+  {
+    "path": "src/skills/dream-interpreter/references/api_reference.md",
+    "uid": "d6b539d9453434eb51810ae093ee684bc38867ff"
+  },
+  {
+    "path": "src/skills/dream-interpreter/references/interpretation-guide.md",
+    "uid": "83aa65caae55d83addde69ac73ddd1498872aafb"
+  },
+  {
+    "path": "src/skills/dream-interpreter/references/output-schema.md",
+    "uid": "8c75f70c1cc6605223a7cbb8e873b0afc74d7c58"
+  },
+  {
+    "path": "src/skills/dream-interpreter/references/questioning-strategy.md",
+    "uid": "b6badc164b154d2fa4e125a82600be139e86c82e"
+  },
+  {
+    "path": "src/skills/dream-interpreter/references/visual-mapping.md",
+    "uid": "c414877c91d3e3fb0f03ff8025fa0e66be896413"
+  },
+  {
+    "path": "src/skills/dream-interpreter/scripts/example.py",
+    "uid": "1a32cf6bbbc7697491a018af04bd11d86e021750"
+  },
+  {
+    "path": "src/skills/dream-interpreter/skill.json",
+    "uid": "c08fedbf0af87fb85f4bdc57ded377b0d4eee5c8"
+  },
+  {
+    "path": "src/skills/finance/Finance_API_Doc.md",
+    "uid": "520ab2848e8057423b11f6401f5b0d743b8b03d0"
+  },
+  {
+    "path": "src/skills/finance/SKILL.md",
+    "uid": "3de7ac56740affb0bbb5b392f25eb6661252e145"
+  },
+  {
+    "path": "src/skills/fullstack-dev/SKILL.md",
+    "uid": "d463aa4135198887d631b3470ab1b7255c8b53df"
+  },
+  {
+    "path": "src/skills/get-fortune-analysis/SKILL.md",
+    "uid": "77d63d2f431545242d0958de80a8daf7f30d624a"
+  },
+  {
+    "path": "src/skills/get-fortune-analysis/lunar_python.py",
+    "uid": "c040c804a32020b98136affcd5475c2473a28683"
+  },
+  {
+    "path": "src/skills/gift-evaluator/SKILL.md",
+    "uid": "98f12d4c514165469ed4d6b06cfd313ebe4dcba1"
+  },
+  {
+    "path": "src/skills/gift-evaluator/html_tools.py",
+    "uid": "e0436697394bf215372e322a311c0b722c47e637"
+  },
+  {
+    "path": "src/skills/interview-designer/README.md",
+    "uid": "3d115b4628e911bec5f911403a03852633f2cde0"
+  },
+  {
+    "path": "src/skills/interview-designer/SKILL.md",
+    "uid": "860b60f956d9c9eb0fc417d742992b3425b6507e"
+  },
+  {
+    "path": "src/skills/interview-designer/_meta.json",
+    "uid": "7b6a7e57245f8250b3d7c7255051044165a6333d"
+  },
+  {
+    "path": "src/skills/interview-designer/references/design_rationale.md",
+    "uid": "3292ae46852601e2893f6a6a246b72f14ac621b5"
+  },
+  {
+    "path": "src/skills/interview-designer/templates/interview_guide_template.md",
+    "uid": "1f2ec3bc4d9d6c6e71c4c3b7abd45ca702e751e2"
+  },
+  {
+    "path": "src/skills/market-research-reports/SKILL.md",
+    "uid": "2148bb493699e58e548d793a22e2218177c2f7a8"
+  },
+  {
+    "path": "src/skills/market-research-reports/assets/FORMATTING_GUIDE.md",
+    "uid": "e573cb8f035bd1043b0de81e0ff89722e58a32ed"
+  },
+  {
+    "path": "src/skills/market-research-reports/assets/market_report_template.tex",
+    "uid": "179626cdff2b923209e9e6fe8369d516fd9e8647"
+  },
+  {
+    "path": "src/skills/market-research-reports/assets/market_research.sty",
+    "uid": "a87fff7fc515f7091b0cb355f99299b2aa8826a0"
+  },
+  {
+    "path": "src/skills/market-research-reports/references/data_analysis_patterns.md",
+    "uid": "e1f95d3c335fc0bc8de9292d94823976e70d65c9"
+  },
+  {
+    "path": "src/skills/market-research-reports/references/report_structure_guide.md",
+    "uid": "08422e7af56cb342fccfb60e6ab245d3c70b6d38"
+  },
+  {
+    "path": "src/skills/market-research-reports/references/visual_generation_guide.md",
+    "uid": "9709a611bf056883bc1b52151d33ab2c1fdd5fae"
+  },
+  {
+    "path": "src/skills/market-research-reports/scripts/generate_market_visuals.py",
+    "uid": "aeed8d5c82c06fda848ff0e61fe87fbda4944dad"
+  },
+  {
+    "path": "src/skills/marketing-mode/README.md",
+    "uid": "001e9615a66010d1869804f7601a730df1c8a544"
+  },
+  {
+    "path": "src/skills/marketing-mode/SKILL.md",
+    "uid": "a7514ade23226eb9b8829c1a477cd3946121fdd5"
+  },
+  {
+    "path": "src/skills/marketing-mode/_meta.json",
+    "uid": "976de32835c9870458a5e12d9df39909412d0d38"
+  },
+  {
+    "path": "src/skills/marketing-mode/mode-prompt.md",
+    "uid": "7deb390ef342d46fdb033d94ea0d85ea03d5f4c3"
+  },
+  {
+    "path": "src/skills/marketing-mode/skill.json",
+    "uid": "a3afe70b5e571eec263d7d6ce9dffb06a4fa8e43"
+  },
+  {
+    "path": "src/skills/mindfulness-meditation/SKILL.md",
+    "uid": "fd705b9faca09f2e7bdf65702b41f781bc045efb"
+  },
+  {
+    "path": "src/skills/mindfulness-meditation/_meta.json",
+    "uid": "4f1b1bb2ee8a3a6b121c1855f75e3e75f8ac96e1"
+  },
+  {
+    "path": "src/skills/multi-search-engine/CHANGELOG.md",
+    "uid": "63b7806ea00553e4b0211c0155db763fcc7178d0"
+  },
+  {
+    "path": "src/skills/multi-search-engine/CHANNELLOG.md",
+    "uid": "b1769d515b28a1a54324cc1872db17da614429a4"
+  },
+  {
+    "path": "src/skills/multi-search-engine/SKILL.md",
+    "uid": "7cf3b9ff977655514b3ddafe99f38a95aade2301"
+  },
+  {
+    "path": "src/skills/multi-search-engine/_meta.json",
+    "uid": "1abb9c37095875113b1fd036489182139afff7ba"
+  },
+  {
+    "path": "src/skills/multi-search-engine/config.json",
+    "uid": "26dc39fb917bd503e3f5365c67c86704103e8f61"
+  },
+  {
+    "path": "src/skills/multi-search-engine/metadata.json",
+    "uid": "59ace4e4c2c0917324c3f0227cfb307fa8b788fa"
+  },
+  {
+    "path": "src/skills/multi-search-engine/references/international-search.md",
+    "uid": "bc8d6d9648994ceae65c6a5745c95b7d8fffea6d"
+  },
+  {
+    "path": "src/skills/qingyan-research/SKILL.md",
+    "uid": "3964ee518564be9d75d89afbb27b7ffe00263404"
+  },
+  {
+    "path": "src/skills/qingyan-research/generate_html.py",
+    "uid": "19a98c214fe5930e69bfa712e0714cc89ecca42b"
+  },
+  {
+    "path": "src/skills/seo-content-writer/SKILL.md",
+    "uid": "a6fbbe19f28ac23282f36b45b8b2dfcfb2ed4441"
+  },
+  {
+    "path": "src/skills/seo-content-writer/_meta.json",
+    "uid": "08908a68b045c1154f96f70c55933e4a339c6cad"
+  },
+  {
+    "path": "src/skills/seo-content-writer/references/content-structure-templates.md",
+    "uid": "8e304fdccfad85b0e1dacdf3c4686ec82b6ee01b"
+  },
+  {
+    "path": "src/skills/seo-content-writer/references/title-formulas.md",
+    "uid": "ed681711856bfcd3833511478b8262c9270af578"
+  },
+  {
+    "path": "src/skills/skill-finder-cn/SKILL.md",
+    "uid": "7eb7dffab4c5e473aa02d7171bf4a7bcee86f227"
+  },
+  {
+    "path": "src/skills/skill-finder-cn/_meta.json",
+    "uid": "e3c4585d19f3f26feec0967f90cee420b74e86af"
+  },
+  {
+    "path": "src/skills/skill-finder-cn/package.json",
+    "uid": "e364d618c9f35905534629449b907756e21a9b42"
+  },
+  {
+    "path": "src/skills/skill-finder-cn/scripts/search.sh",
+    "uid": "deb7b7eba5eada48737bf3b8e0d4664818b77995"
+  },
+  {
+    "path": "src/skills/skill-vetter/SKILL.md",
+    "uid": "b9ef3e6a52fd14b9022fc72bd378ccbe47e7d9c7"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/SKILL.md",
+    "uid": "74c115a54f9f2065ed79a565285d294c5f55d4fc"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/package.json",
+    "uid": "7a555014b75e1906955d5f9abaadafd843d67852"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/analyzer.ts",
+    "uid": "ac974e991e7811cc7ff3386b9ff31b6964f19b1e"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/dataFetcher.ts",
+    "uid": "9393174ae071c2d7170c8cf3c35abe22fefa6fe3"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/dividend.ts",
+    "uid": "d6a907e21b5cc1e7bcd7930af15c036d2b5eaec2"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/index.ts",
+    "uid": "6a644cc8c7f7ae7cdd5ff90f3aa9837eddbb7d70"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/rumorScanner.ts",
+    "uid": "b86a775e6f9ceb9f357614d587b384f17af29537"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/types.ts",
+    "uid": "1bd4a6ab515c7ef2293ca7a727066fd1baa9a0ac"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/src/watchlist.ts",
+    "uid": "ca27e0b960d377c61492bca65a43d5ea786f6e2d"
+  },
+  {
+    "path": "src/skills/stock-analysis-skill/tsconfig.json",
+    "uid": "afc9f418925b8da987b3da74761251b97c784b31"
+  },
+  {
+    "path": "src/skills/storyboard-manager/SKILL.md",
+    "uid": "06bb5bfb138cff8e08ba4cf28d2ed73644c09072"
+  },
+  {
+    "path": "src/skills/storyboard-manager/index.js",
+    "uid": "61645ba33894c65d1f4a4576affc6f5947d4ac1d"
+  },
+  {
+    "path": "src/skills/storyboard-manager/package.json",
+    "uid": "0ac7f3bafa6a5d2194289e3b46eb29aa7cf6a2ca"
+  },
+  {
+    "path": "src/skills/storyboard-manager/references/character_development.md",
+    "uid": "f6d32e04390adf30408d53bd1f0c99fc267a44fa"
+  },
+  {
+    "path": "src/skills/storyboard-manager/references/story_structures.md",
+    "uid": "09150c217007994dade7055edb46ff4879d195ef"
+  },
+  {
+    "path": "src/skills/storyboard-manager/scripts/consistency_checker.py",
+    "uid": "779cd720b5926558c557a69eb4d9cb7fff9dc195"
+  },
+  {
+    "path": "src/skills/storyboard-manager/scripts/timeline_tracker.py",
+    "uid": "49b700720fab46c396e1e0c303e29e2f3269aff5"
+  },
+  {
+    "path": "src/skills/visual-design-foundations/SKILL.md",
+    "uid": "ae169453b41091f5bc4f3c6a0e788d43b6a49b66"
+  },
+  {
+    "path": "src/skills/visual-design-foundations/references/color-systems.md",
+    "uid": "6af6e0b4b6da48b8bcd03ec816a975aad1f34e1a"
+  },
+  {
+    "path": "src/skills/visual-design-foundations/references/spacing-iconography.md",
+    "uid": "274b6357f7ba98158503bb268cf37606f2fd3246"
+  },
+  {
+    "path": "src/skills/visual-design-foundations/references/typography-systems.md",
+    "uid": "abfd22b6ca2899f02354000e7ace86875cd36d03"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/SKILL.md",
+    "uid": "afdabfb0da5ac73b0846a82e525c586237bea3dc"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/config-extraction.md",
+    "uid": "7dac5bef3826c5036fad456037dcd573012c44bc"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/encoded-definitions.md",
+    "uid": "54df84dd08d6a66bd5fcd38f826df51fbcaf4430"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/extraction-workflow.md",
+    "uid": "65c9930d4d1cca2d6c611b5a617c9d2bc885ea88"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/porting-strategy.md",
+    "uid": "d3b19bc4ea91b20fcde69f0ac9fccda74c2ed0f1"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/shader-injection.md",
+    "uid": "23f619437319f64de861eb6e3b288122d3c87012"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/shaders-com.md",
+    "uid": "d4c8c8fdeed7f9836e2766037749f3c8dbbd46a5"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/tech-signatures.md",
+    "uid": "287db61614ff1245c1e959245fe0cf7a9d96b066"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/tsl-extraction.md",
+    "uid": "8d5e2b55f3ceb70a952b309cb5908e95aeb02b99"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/references/unicorn-studio.md",
+    "uid": "cd36ee15f90ef8eafc481944e4b2753c89d34a7a"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/scripts/fetch-rendered-dom.mjs",
+    "uid": "27c48336f8ec08ecf717d9489acc6754cf5778d5"
+  },
+  {
+    "path": "src/skills/web-shader-extractor/scripts/scan-bundle.sh",
+    "uid": "d583aa5360fc6933ecedca33a533a6125ebcc3fc"
+  },
+  {
+    "path": "src/skills/writing-plans/SKILL.md",
+    "uid": "1174716b24e0d7a706c79056674ce273f6ac7f67"
+  },
+  {
+    "path": "src/skills/writing-plans/_meta.json",
+    "uid": "4bb4c9cbd8d27cd64c9f86d211c0135621be1edb"
+  },
+  {
+    "path": "src/next-env.d.ts",
+    "uid": "d0edc62da2f216ad272c8e8ed9d04f5267bd85a2"
+  },
+  {
+    "path": "src/next.config.ts",
+    "uid": "6483aa6a106768d8ea670ef91d9eaf22e78386be"
+  },
+  {
+    "path": "src/package.json",
+    "uid": "5cb6c78df21693e8699c0ba2685fde95ab4b26ee"
+  },
+  {
+    "path": "src/postcss.config.mjs",
+    "uid": "73695b153f42c92ffd2e6af7b20a4c0c74adc3ec"
+  },
+  {
+    "path": "src/prisma/schema.prisma",
+    "uid": "82017a4fd6d1f8ec5e153ba15a4c61bf59e8dea7"
+  },
+  {
+    "path": "src/prison-screenshot-1.png",
+    "uid": "9cefcec0b1d824491efda77da28a7a1239f39dc9"
+  },
+  {
+    "path": "src/prison-screenshot-2.png",
+    "uid": "fb39f1fccc6b25ff11ba3fb87f2cd45a2f324b60"
+  },
+  {
+    "path": "src/public/favicon.png",
+    "uid": "7b547d67528a83aaffbdd245d90a38834c96cf16"
+  },
+  {
+    "path": "src/public/platform-logo.png",
+    "uid": "7b547d67528a83aaffbdd245d90a38834c96cf16"
+  },
+  {
+    "path": "src/public/images/familyfeud/familyfeud_banner.webp",
+    "uid": "2c2a61b82c3a2b165d5d577aaf02b6632a5bbc4e"
+  },
+  {
+    "path": "src/public/images/risk/f1.png",
+    "uid": "e6dd83c7111d776f2d5c4ba9ffbc1d1b92de1d84"
+  },
+  {
+    "path": "src/public/images/risk/f2.png",
+    "uid": "afbebb7782063e6a93697ce0ffe117531821cff9"
+  },
+  {
+    "path": "src/public/images/risk/risk2_banner.webp",
+    "uid": "aabc70f1907518ca8bb7f51c32baa935efcd4127"
+  },
+  {
+    "path": "src/public/images/risk/risk_1.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/images/risk/risk_2.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/images/risk2/risk2_banner.webp",
+    "uid": "aabc70f1907518ca8bb7f51c32baa935efcd4127"
+  },
+  {
+    "path": "src/public/images/risk2/risk_2.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/images/risk2/risk_cover1.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/images/risk2/risk_cover2.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/img/risk/risk_og.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/img/risk/risk_thumb.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/img/risk/risk_thumb2.webp",
+    "uid": "52897e645ea50d151a7109ee6752524582152d22"
+  },
+  {
+    "path": "src/public/img/risk/risk_featured.webp",
+    "uid": "7c2e147654b27d3697a677946fd77c1f5ddc7ebb"
+  },
+  {
+    "path": "src/public/img/bg.png",
+    "uid": "df719bb71d5b426c65fb2abf82fc8fb665cd1d67"
+  },
+  {
+    "path": "src/public/img/ligowar/core/card_points_blue.png",
+    "uid": "df719bb71d5b426c65fb2abf82fc8fb665cd1d67"
+  },
+  {
+    "path": "src/public/img/ligowar/core/card_points_red.png",
+    "uid": "df719bb71d5b426c65fb2abf82fc8fb665cd1d67"
+  },
+  {
+    "path": "src/public/img/ligowar/core/progress_bar_empty.png",
+    "uid": "df719bb71d5b426c65fb2abf82fc8fb665cd1d67"
+  },
+  {
+    "path": "src/public/img/ligowar/core/blue_score_back.png",
+    "uid": "73fa75ac827c59292d373eef2e91ca9976af2fcd"
+  },
+  {
+    "path": "src/public/img/ligowar/core/card.png",
+    "uid": "78fb38f212fa49029aff24c669a39648d9b4e68b"
+  },
+  {
+    "path": "src/public/img/ligowar/core/red_score_back.png",
+    "uid": "b591a1183de3163d0bb9538198eb323ad110a070"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/blue.png",
+    "uid": "0eaa612dd453a1fbad8931ef1f8c505897e0e1ba"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/green.png",
+    "uid": "e1c859177791878c28be14beb85b2acdd562aa0f"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/orange.png",
+    "uid": "469c91ec4d18a6340b8f53cfd498b84efac56936"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/pink.png",
+    "uid": "9cda3e5c0fa9bc7538ae52ab250a80fd25f4f0cf"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/purple.png",
+    "uid": "2a5186c33c93cc080ffa539efe7ad999ea4926b4"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/red.png",
+    "uid": "cebffe3dc4f64e23bf8ff3abe2e4e6d2a55b2dd1"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/sky.png",
+    "uid": "bad294ad1a0ed8320bd8a00ce3e4c794d356fef3"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/teal.png",
+    "uid": "133056e658518005c561630637268d4df642a11d"
+  },
+  {
+    "path": "src/public/img/ligowar/buttons/back/yellow.png",
+    "uid": "394818da99a0e9a96e4c7b929a74f82ef7239c6f"
+  },
+  {
+    "path": "src/public/img/logo.png",
+    "uid": "656d2868cdad1313041f17dbb197b5d6844166f0"
+  },
+  {
+    "path": "src/public/img/prison/instructions.png",
+    "uid": "861faea827a1479fde9be0a7887f23aeacb960af"
+  },
+  {
+    "path": "src/public/img/prison/key.png",
+    "uid": "f71e95419210b5c7cf54c4a5bed3c56557d9755b"
+  },
+  {
+    "path": "src/public/img/prison/open.png",
+    "uid": "a433c5da97ebbb82ca0194cb1e3f62f08e2001b1"
+  },
+  {
+    "path": "src/public/img/prison/skip.png",
+    "uid": "93f344ee2dbddf22c84a6abcf25411d368aa21ca"
+  },
+  {
+    "path": "src/public/img/prison/skull.png",
+    "uid": "8e7ee43ffd16776f687de522c7b2a6e6d586c195"
+  },
+  {
+    "path": "src/public/img/prison/uniform.png",
+    "uid": "4aaf85a2e32903d6aa532bf9b74df30e55cd5c7f"
+  },
+  {
+    "path": "src/public/img/random/1.png",
+    "uid": "85d3b3a385ed5cce1b9387ad6804f9722117b677"
+  },
+  {
+    "path": "src/public/img/random/10.png",
+    "uid": "d60ee27dff8a3ea72900875e8f9e001b2473020c"
+  },
+  {
+    "path": "src/public/img/random/11.png",
+    "uid": "f6dcac33edb6932b1c5807da659c72cd8a0ff2c3"
+  },
+  {
+    "path": "src/public/img/random/12.png",
+    "uid": "84fba1c3aec3575ec82b8b1bea9a750923f791a4"
+  },
+  {
+    "path": "src/public/img/random/13.png",
+    "uid": "d0917c0745ac582e21868a572e6980c832a1c878"
+  },
+  {
+    "path": "src/public/img/random/14.png",
+    "uid": "c2a55f88f0119e3e578794da87b8fae61dd54c10"
+  },
+  {
+    "path": "src/public/img/random/15.png",
+    "uid": "3274b51d8c2560fd79b5aadeb7057155c8bff860"
+  },
+  {
+    "path": "src/public/img/random/16.png",
+    "uid": "eae015d18b90131b192d9f7fc4320c7346d02ddf"
+  },
+  {
+    "path": "src/public/img/random/17.png",
+    "uid": "ec37581ae82be3bc4a9071c2250710fb13ae21de"
+  },
+  {
+    "path": "src/public/img/random/18.png",
+    "uid": "67b8a31391cb64a256c9bdcc0a44b7f042dbfd5e"
+  },
+  {
+    "path": "src/public/img/random/19.png",
+    "uid": "01ae3ca15751bb0957a020b2c3e39fdb2568aa88"
+  },
+  {
+    "path": "src/public/img/random/2.png",
+    "uid": "f6865d06b645e2621683c711aa3b3e0b36ca6ffd"
+  },
+  {
+    "path": "src/public/img/random/3.png",
+    "uid": "27850ada6d72e44988a5147b7bfd0a5df43313dc"
+  },
+  {
+    "path": "src/public/img/random/4.png",
+    "uid": "79c7f7624992060aee6e52f5aa83ffe3a6493b33"
+  },
+  {
+    "path": "src/public/img/random/5.png",
+    "uid": "a37464ce1c635da5a24a3210977345b59e1d8162"
+  },
+  {
+    "path": "src/public/img/random/6.png",
+    "uid": "70f546801b998233dbf6b553d527b29541435f65"
+  },
+  {
+    "path": "src/public/img/random/7.png",
+    "uid": "d7c97717bbd10b9f98f00edea321528da2f21b20"
+  },
+  {
+    "path": "src/public/img/random/8.png",
+    "uid": "0cc26330651ddf253acd152657f74b7d1b21a46c"
+  },
+  {
+    "path": "src/public/img/random/9.png",
+    "uid": "a46ff9039f71504641121db7208df4c3694d7b02"
+  },
+  {
+    "path": "src/public/img/random/vs/1.png",
+    "uid": "c7b9b722bb986ef5b8f390631ca81aed3bd14246"
+  },
+  {
+    "path": "src/public/img/random/vs/2.png",
+    "uid": "754281a9565f61e6246469477077b6e9998c2358"
+  },
+  {
+    "path": "src/public/img/random/vs/3.png",
+    "uid": "d2a795e5b5c970b295e149f4e51a2a240a70b3fd"
+  },
+  {
+    "path": "src/public/img/random/vs/4.png",
+    "uid": "c6e99c475df413e8e6c34b8e92b3f36dd85b7088"
+  },
+  {
+    "path": "src/public/img/random/vs/5.png",
+    "uid": "ca84225a72e0bbdeba9726c7e0e53d732ed1d4ea"
+  },
+  {
+    "path": "src/public/img/settings.png",
+    "uid": "f4b6d91c7fd6dc0f431296382c8526d11f5e9bbd"
+  },
+  {
+    "path": "src/public/img/tobol-icons/1.png",
+    "uid": "14a5c3012b0cc556cce083bece0642c776f7844e"
+  },
+  {
+    "path": "src/public/img/tobol-icons/10.png",
+    "uid": "db88515e10539baec7d790de5e5efde6ff585030"
+  },
+  {
+    "path": "src/public/img/tobol-icons/11.png",
+    "uid": "2eb0453cf1a187a70c2ec9de3d2a865c60fa7569"
+  },
+  {
+    "path": "src/public/img/tobol-icons/12.png",
+    "uid": "e16d35fd4fc846b6537f674ec2950006d01ed3b9"
+  },
+  {
+    "path": "src/public/img/tobol-icons/13.png",
+    "uid": "1f3869dd9698ffea6fbe8cd725af92c2690afb95"
+  },
+  {
+    "path": "src/public/img/tobol-icons/14.png",
+    "uid": "78fe066e1eb2afc6f07628ec8ad498811c552994"
+  },
+  {
+    "path": "src/public/img/tobol-icons/15.png",
+    "uid": "cd2135d82df5b3daa70bcb6d17b03c6af2a19e1b"
+  },
+  {
+    "path": "src/public/img/tobol-icons/16.png",
+    "uid": "c067b6f3b49d702015005a4a0ce5e32ae51b6b62"
+  },
+  {
+    "path": "src/public/img/tobol-icons/17.png",
+    "uid": "22deae13a609e6950dd4e889304526345246a080"
+  },
+  {
+    "path": "src/public/img/tobol-icons/18.png",
+    "uid": "5adbcc69f228a091316988827127c8477a4328ad"
+  },
+  {
+    "path": "src/public/img/tobol-icons/2.png",
+    "uid": "19095e28785c09b3156cf73ca3d5552bf2716b29"
+  },
+  {
+    "path": "src/public/img/tobol-icons/3.png",
+    "uid": "eb5506aee174475390ef51e7551294cba4d056a5"
+  },
+  {
+    "path": "src/public/img/tobol-icons/4.png",
+    "uid": "33418c9d6edad05142e6589ab42b862773a2aba5"
+  },
+  {
+    "path": "src/public/img/tobol-icons/5.png",
+    "uid": "e84544c0f0a54fe034087f88739d20bf248798b7"
+  },
+  {
+    "path": "src/public/img/tobol-icons/6.png",
+    "uid": "7e67537a023c310d7f8f38ca3fd4707874b0ade2"
+  },
+  {
+    "path": "src/public/img/tobol-icons/7.png",
+    "uid": "3d709a236b0ff09d7ddbf922e671a10776206d60"
+  },
+  {
+    "path": "src/public/img/tobol-icons/8.png",
+    "uid": "2c500b3f2cbadf3cdb15e60b10a96af7b7bce3bb"
+  },
+  {
+    "path": "src/public/img/tobol-icons/9.png",
+    "uid": "3e093789c3c42aad7bfca89e839ada750c045fed"
+  },
+  {
+    "path": "src/public/img/tobol-icons/bomb.png",
+    "uid": "9ccf1be1f0d9a020b998737a40053812932f78b7"
+  },
+  {
+    "path": "src/public/img/tobol-icons/butterfly.png",
+    "uid": "4defcc830ae00121d498cf95930c9c882cab421d"
+  },
+  {
+    "path": "src/public/img/tobol-icons/camel.png",
+    "uid": "221a44926ef966d15c536fb7c92ab976993c1417"
+  },
+  {
+    "path": "src/public/img/tobol-icons/camera.png",
+    "uid": "87466990c3bc29f0784bdbfe0dac0b9e53fe8aae"
+  },
+  {
+    "path": "src/public/img/tobol-icons/case.png",
+    "uid": "d8a343b7af0bb44e54d1361dbbce28abccb57d46"
+  },
+  {
+    "path": "src/public/img/tobol-icons/cow.png",
+    "uid": "706a32949797ab7d93fd160f688662fcaf6db53c"
+  },
+  {
+    "path": "src/public/img/tobol-icons/cressent.png",
+    "uid": "9be067d759f83463c569e7a7f0a155e116c31475"
+  },
+  {
+    "path": "src/public/img/tobol-icons/deer.png",
+    "uid": "2e8fbd8e9d3ff8feca592a7e217b10094b871a2d"
+  },
+  {
+    "path": "src/public/img/tobol-icons/donkey.png",
+    "uid": "913ae6fff02eb24c76488480941976ff8180dbd8"
+  },
+  {
+    "path": "src/public/img/tobol-icons/duck.png",
+    "uid": "5fc1f42729bee6cde7cee12d1fc44756f16bf172"
+  },
+  {
+    "path": "src/public/img/tobol-icons/elephant.png",
+    "uid": "01fc874f434024a560936a63c5247e79a7e23436"
+  },
+  {
+    "path": "src/public/img/tobol-icons/eye.png",
+    "uid": "6386c5611c2f3e88397f9bc914388ca7f80a8490"
+  },
+  {
+    "path": "src/public/img/tobol-icons/feather.png",
+    "uid": "670907655f0f5fc065194a7328f768b09ee574c3"
+  },
+  {
+    "path": "src/public/img/tobol-icons/fish.png",
+    "uid": "da27ee198d2fb69e1d3aa31db03cfe4c3773234c"
+  },
+  {
+    "path": "src/public/img/tobol-icons/frog.png",
+    "uid": "7b9a0c08fef95f224ce8808f999b88f177d0b689"
+  },
+  {
+    "path": "src/public/img/tobol-icons/giraffe.png",
+    "uid": "df6d3e018a92f5c014b1ead1fa8907eeb248aa0d"
+  },
+  {
+    "path": "src/public/img/tobol-icons/globe.png",
+    "uid": "a5daba0e3e06beb69830bf1189fb80cc7aaa0f97"
+  },
+  {
+    "path": "src/public/img/tobol-icons/heart.png",
+    "uid": "70e34bf2f6f2cb73062beb6c7d497d21858c2e50"
+  },
+  {
+    "path": "src/public/img/tobol-icons/house.png",
+    "uid": "3d44a20b26a25a394f336aa53dbfc32190079b80"
+  },
+  {
+    "path": "src/public/img/tobol-icons/key.png",
+    "uid": "3a2b547743a18b4fe72fa2954ef0a7066dc4ceb5"
+  },
+  {
+    "path": "src/public/img/tobol-icons/lamp.png",
+    "uid": "060a30b711b93f996a06410164ca228d5f2f5d4d"
+  },
+  {
+    "path": "src/public/img/tobol-icons/lion.png",
+    "uid": "b85dd980486c920ba9de9be8768505baad537a24"
+  },
+  {
+    "path": "src/public/img/tobol-icons/lock.png",
+    "uid": "ce8c2f6ebb552170b954e98815598add93c9817a"
+  },
+  {
+    "path": "src/public/img/tobol-icons/magnet.png",
+    "uid": "3ab9ba0726b8665dd69ab3fbafa911dbc8e8c275"
+  },
+  {
+    "path": "src/public/img/tobol-icons/magnifier.png",
+    "uid": "5974a1d4be78c2f4d04509d750e50f766fdf6c05"
+  },
+  {
+    "path": "src/public/img/tobol-icons/message.png",
+    "uid": "932f3dce7ed17730880e15f51a19a9638b383b74"
+  },
+  {
+    "path": "src/public/img/tobol-icons/mouse.png",
+    "uid": "e2aad36e07761765ef6739683cde826c5c57b494"
+  },
+  {
+    "path": "src/public/img/tobol-icons/music.png",
+    "uid": "59e977a0d36f3136df8ce65a3f744cbd1068f21a"
+  },
+  {
+    "path": "src/public/img/tobol-icons/pencil.png",
+    "uid": "9e78b4e270e8469f8e809fc7100c6227dcc985f3"
+  },
+  {
+    "path": "src/public/img/tobol-icons/phone.png",
+    "uid": "de4359a2a48a12c5517a81062b9c233d39d26d84"
+  },
+  {
+    "path": "src/public/img/tobol-icons/pigeon.png",
+    "uid": "9ce30d3f4df9f99e76eb4957b8fc2304ce6e9b39"
+  },
+  {
+    "path": "src/public/img/tobol-icons/plane.png",
+    "uid": "6d70190b6fa1cbfeefa859f1b6fc55fb5c1ec2f2"
+  },
+  {
+    "path": "src/public/img/tobol-icons/rabbit.png",
+    "uid": "ac55e9ae8a25cd66f088061adeac7398cacc87c3"
+  },
+  {
+    "path": "src/public/img/tobol-icons/roaster.png",
+    "uid": "c83f6241b89209e14a33de6f165f4734608e639f"
+  },
+  {
+    "path": "src/public/img/tobol-icons/scorbion.png",
+    "uid": "33c682f61d72022c4274405912501ad8f795fb2e"
+  },
+  {
+    "path": "src/public/img/tobol-icons/snail.png",
+    "uid": "b5392213066b306fd96965cbb2c22a7f8aa3aea0"
+  },
+  {
+    "path": "src/public/img/tobol-icons/snake.png",
+    "uid": "f872141c3a35409f29ff0f408491e090fac2d785"
+  },
+  {
+    "path": "src/public/img/tobol-icons/sparrow.png",
+    "uid": "f59d5b5df5e9fb2cd647d00ca91039c3035f25ec"
+  },
+  {
+    "path": "src/public/img/tobol-icons/star.png",
+    "uid": "21a02dac3439e49916f4740f47083509b315eaa0"
+  },
+  {
+    "path": "src/public/img/tobol-icons/turtle.png",
+    "uid": "e6b340eeefc0cd624e52aefe6e9da4b2fea302ed"
+  },
+  {
+    "path": "src/public/img/war/card-bg.png",
+    "uid": "8b750bed9135941c4f1824d1e8b1ebf1c3e50c10"
+  },
+  {
+    "path": "src/public/img/war/waiting/1.png",
+    "uid": "534a25f8d06e195461ca4efb29f2b6bee5a494b3"
+  },
+  {
+    "path": "src/public/img/war/waiting/2.png",
+    "uid": "5715e10ce4ca42392b8b75502b16d1c06aaa0bf8"
+  },
+  {
+    "path": "src/public/img/war/waiting/3.png",
+    "uid": "6f68a45582921d479cae4483d29f30ddc0cc4eb9"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/01.png",
+    "uid": "0d03358b07aad795f0651524e097c25e2d7526aa"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/02.png",
+    "uid": "85205d277e938d69c1bd1e191ab0c561945cb7f9"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/03.png",
+    "uid": "6254dfca70495c52e36cd799401bbde0275eb3fc"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/04.png",
+    "uid": "31f62e5fda08862949c24dbb83ddb132b5541672"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/05.png",
+    "uid": "c8c2e0d29a6094afb5852496476ed39e4873d1fb"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/06.png",
+    "uid": "49f7f5737b04d3937fab2fe3b74d2e0653d6cd11"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/07.png",
+    "uid": "0e9c04d37978d51eb5121248baefdbef7e81c684"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/08.png",
+    "uid": "009f47881d2aa41b711b3278d57c6e5ec9bc5438"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/09.png",
+    "uid": "7b12268935befb978310680210298f5fb502dfd9"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/10.png",
+    "uid": "e52444705ddca35cec93dc367859e10984202454"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/11.png",
+    "uid": "310ce50e5c94f792f7295991c30f1226f29161fb"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/12.png",
+    "uid": "7f7e61e9e84881ecf60720aa026833ea2750f870"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/13.png",
+    "uid": "97a017345e836ec34608a7d37301ef6ed3742c71"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/14.png",
+    "uid": "85b320c9c2ff4b06f3e45cbfb463df0ecfd61b39"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/15.png",
+    "uid": "cb29acaa04942a276fba4b8ca2df6895b6788a50"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/16.png",
+    "uid": "fad696b582802c945fe1ffb507b8488a80cfb095"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/17.png",
+    "uid": "b3086f58406a4b5cbf4d6a2e8f5eb9c914a290a1"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/18.png",
+    "uid": "78158edfc05c85d6092c71b6c49badac6f7d4914"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/19.png",
+    "uid": "44789fb25ca34455772eb691efd7f8f7bfec3359"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/20.png",
+    "uid": "e0c3d04f820e1b360110bbfb3786c46fde7500fd"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/21.png",
+    "uid": "f71f650bf550fd34ad3cccb3ee9d2d89334411d4"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/22.png",
+    "uid": "cd08e8da31d296d7dfbbd6f768a2b73bc3e31774"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/23.png",
+    "uid": "e0ee1a728ab27dbfd8e13b5e9b3c8cbb39457435"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/24.png",
+    "uid": "f1f00ef5f98133138182a0a59bbab2d1805feb34"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/25.png",
+    "uid": "1bcfb96e1e5b9449ed4b4f283e84b918795972f4"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/26.png",
+    "uid": "a98c71d7105977086b4cd799b6a01370300b0622"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/27.png",
+    "uid": "291e1dec9ca256e1d73dea5656b18c682ad4451d"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/28.png",
+    "uid": "7120b30960f9903b6df9adbfe8d2fc6233c39b55"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/29.png",
+    "uid": "a86ebf504d66060f860f98f509a62553c029b1c6"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/30.png",
+    "uid": "4470dfde21658e0fd494dd0a9d22db374b801096"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/31.png",
+    "uid": "a9aef605830336578d96421588fa7b5fd9a261ec"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/32.png",
+    "uid": "ffcaca28f8daffdc186515378f895a11ac4d754d"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/33.png",
+    "uid": "9729a749e35c39302e9cfcceb0d16604a409296c"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/34.png",
+    "uid": "f8b4cb2beef954bf2e2debc253faebb81cac4ad6"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/35.png",
+    "uid": "24930f58533b7b434f4aa745df4044c3ff9c63b4"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/36.png",
+    "uid": "f110d5a7b7828e7652a8ec987afc9e7d5e8af8a5"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/37.png",
+    "uid": "74b3ca1cf4cf04c186d2f42274d4b68dac217bb0"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/38.png",
+    "uid": "5e615b4fc5a55b46d60660c30fce7e03be9d628c"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/39.png",
+    "uid": "cce4d8ecc71e3131ffa9f79f21294071290433fe"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/40.png",
+    "uid": "8b43391e1850d97c3673805689230d4f9bcec917"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/41.png",
+    "uid": "e9a23f4e5fcccf9dba462d141a3c58c31e2e93e2"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/42.png",
+    "uid": "96bf05ab08947c660de43654add38d4ed9e0156e"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/43.png",
+    "uid": "d7dfd942a31f91db1e4090a4e7e4b7f0e32f1537"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/44.png",
+    "uid": "0eadfcd52d8b07ec890a6640eaf6024e5497033d"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/45.png",
+    "uid": "905bbf6179a3f7fbbc4cbd87f77734312aeb947c"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/46.png",
+    "uid": "6b9ef0faf60138f1dfb26e866d7948ccb49c931b"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/47.png",
+    "uid": "cba4739fd72467d04f934a8af964162dd57e03ee"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/48.png",
+    "uid": "8dfd1a66dd626cc565b8d5325c0cc2c80389e41b"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/49.png",
+    "uid": "63fe4063c7320d63aa6844cf7e96299f26bc7cd4"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/50.png",
+    "uid": "3e43f92013b2cbf03aa9b39d817742529dab1c74"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/51.png",
+    "uid": "d8381af13467fc2a79c45efb94d51240466e8e37"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/52.png",
+    "uid": "4c54c5724ee6cea61a5244e87bd44fe7fab430a7"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/53.png",
+    "uid": "e3d169647bd3889825ce763bd491d01c89ce8ada"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/54.png",
+    "uid": "9d26491a013b857409cae1ebc89880f5f17dbf97"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/55.png",
+    "uid": "a01197714d9359b63bee3aa806c784637ba8d596"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/56.png",
+    "uid": "0b23776e6d95df3a63687e8f0ad1fa556e9ad4ef"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/57.png",
+    "uid": "7cb381d8bdc8e309b741351d19ec1546691f9a21"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/58.png",
+    "uid": "d56f045ea3ed8f25dba88840f6536f263cf5e5ec"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/59.png",
+    "uid": "9437c53d608c25f4bcd41e927a5a2efdbd36234b"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/60.png",
+    "uid": "9776afb0227eaef5807dcf7f0233af11480c8c8d"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/61.png",
+    "uid": "63e7eebf5a1bdfba738c68a5cd1cc5603156aa3e"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/62.png",
+    "uid": "07e6e9e7a49c050ccf452a29e051ea3e59bc385e"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/63.png",
+    "uid": "92c4fe8a13c96e125dbe8a819782039aa0fc4fe6"
+  },
+  {
+    "path": "src/public/img/war/war_wpn_images/64.png",
+    "uid": "4295beabc97a26f2cf3c5e96fbf09b8514f1be8c"
+  },
+  {
+    "path": "src/public/logo.svg",
+    "uid": "4a04bbac11839d5b5e2b278a46080b13c99e00e7"
+  },
+  {
+    "path": "src/public/mafia-bg.png",
+    "uid": "54e03a58cfbc23132adbff15d0ee1ec2f9ddd9d8"
+  },
+  {
+    "path": "src/public/morning-rooster.mp3",
+    "uid": "c63898820e9f1ef8075117d3b3a16dc1953ec84d"
+  },
+  {
+    "path": "src/public/sounds/rooster-crowing-364473.mp3",
+    "uid": "c63898820e9f1ef8075117d3b3a16dc1953ec84d"
+  },
+  {
+    "path": "src/public/sounds/owl-hooting-223549.mp3",
+    "uid": "86133d78eb180a844872fab79d2654baf7719a0a"
+  },
+  {
+    "path": "src/public/sounds/mafia-theme.mp3",
+    "uid": "cb58fdb2541fda7e103bc06cb4a7f9e1f14e2280"
+  },
+  {
+    "path": "src/public/night-owl.mp3",
+    "uid": "86133d78eb180a844872fab79d2654baf7719a0a"
+  },
+  {
+    "path": "src/public/robots.txt",
+    "uid": "08a1974887bb4d2b2a0d39869bf9d8d6dfe8e5dd"
+  },
+  {
+    "path": "src/public/tabot-bg.png",
+    "uid": "e0f7f11481da406f3f473547a2f826c66373010d"
+  },
+  {
+    "path": "src/public/words-bg.png",
+    "uid": "b593085f0ef4a0b646edef00fed3ef5b30cc73a2"
+  },
+  {
+    "path": "src/upload/Gemini_Generated_Image_qui8e0qui8e0qui8.png",
+    "uid": "7b547d67528a83aaffbdd245d90a38834c96cf16"
+  },
+  {
+    "path": "src/upload/f_desc.json",
+    "uid": "f69e062e2ea663dbc7e48ac015e34be022835a9a"
+  },
+  {
+    "path": "src/upload/loveligo_risk.json",
+    "uid": "a5f2fa80d971df290d40e94996fcc8a6b5aadcf6"
+  },
+  {
+    "path": "src/upload/pasted_image_1775732926035.png",
+    "uid": "e23c13799a9c635318ac5cb6d123b819955ada2e"
+  },
+  {
+    "path": "src/upload/pasted_image_1775732926182.png",
+    "uid": "e23c13799a9c635318ac5cb6d123b819955ada2e"
+  },
+  {
+    "path": "src/upload/pasted_image_1775734242619.png",
+    "uid": "3f192ea2cf54ffb281751200d66a8730cae8a98b"
+  },
+  {
+    "path": "src/upload/pasted_image_1775734408944.png",
+    "uid": "3f192ea2cf54ffb281751200d66a8730cae8a98b"
+  },
+  {
+    "path": "src/upload/pasted_image_1775741714243.png",
+    "uid": "0d4889ffcfad0b4b36eeb65ef4f842562510d5e6"
+  },
+  {
+    "path": "src/upload/pasted_image_1775742728440.png",
+    "uid": "343a313746ca5642580302576e9ddf1657690ea2"
+  },
+  {
+    "path": "src/upload/pasted_image_1775751943390.png",
+    "uid": "67484dbced080639f52ba953ab3ab12db064a14b"
+  },
+  {
+    "path": "src/upload/pasted_image_1775751959645.png",
+    "uid": "85ef57203fc0dfc61b463abeea2f2b6db4b8535c"
+  },
+  {
+    "path": "src/upload/pasted_image_1775751983343.png",
+    "uid": "7ed088223142232094039dbf671f02624a988630"
+  },
+  {
+    "path": "src/upload/pasted_image_1775752002933.png",
+    "uid": "25e4f1941fced9730bd6dce60b6931fa848d1fcb"
+  },
+  {
+    "path": "src/upload/pasted_image_1775752036529.png",
+    "uid": "6905a18dfacf42dc38354f25eb851dda17e207b7"
+  },
+  {
+    "path": "src/upload/pasted_image_1775752093809.png",
+    "uid": "b6ebad85be13f9dce49d983a680f65ec8d0a9431"
+  },
+  {
+    "path": "src/upload/pasted_image_1775753147306.png",
+    "uid": "f7c52d2ce24ea9c8c1afc481ed7860d1b26b1683"
+  },
+  {
+    "path": "src/upload/pasted_image_1775754743333.png",
+    "uid": "de9967b520224217d4ab081747517198ccfb57be"
+  },
+  {
+    "path": "src/upload/pasted_image_1776085847121.png",
+    "uid": "0b00b035aacafd84c3ca37573beea4f0129c3bfe"
+  },
+  {
+    "path": "src/upload/pasted_image_1776085871318.png",
+    "uid": "0b00b035aacafd84c3ca37573beea4f0129c3bfe"
+  },
+  {
+    "path": "src/upload/pasted_image_1776097061330.png",
+    "uid": "7ae45e7e98abba96fa8453bf0e1cc11e8c55017e"
+  },
+  {
+    "path": "src/upload/pasted_image_1776097290123.png",
+    "uid": "7ae45e7e98abba96fa8453bf0e1cc11e8c55017e"
+  },
+  {
+    "path": "src/upload/pasted_image_1776267784293.png",
+    "uid": "4dc43252456128f376d72e8af5d79f6c77276574"
+  },
+  {
+    "path": "src/upload/pasted_image_1776267993167.png",
+    "uid": "77f733cf0a40cd87557a82ea4b3c74d15a3d2a0c"
+  },
+  {
+    "path": "src/upload/pasted_image_1776268035614.png",
+    "uid": "77f733cf0a40cd87557a82ea4b3c74d15a3d2a0c"
+  },
+  {
+    "path": "src/upload/pasted_image_1776268074140.png",
+    "uid": "61cef7a6215f6ff229b68bb8ecaffc3289aa1116"
+  },
+  {
+    "path": "src/upload/vlm_analysis.json",
+    "uid": "8822361c22563a6e69eb632f2df174da677fe6f9"
+  },
+  {
+    "path": "src/qa-screenshots/01-landing.png",
+    "uid": "dcafabd65163d20fecc390ad02c3f8e61431d52a"
+  },
+  {
+    "path": "src/qa-screenshots/02-godfather-mode.png",
+    "uid": "e6e4f43fe686f6c6f70a29c4a960076c10d65cf9"
+  },
+  {
+    "path": "src/qa-screenshots/03-team-setup.png",
+    "uid": "5dd3d5ac1a4377c8b1839c64a22dc4ede30f151f"
+  },
+  {
+    "path": "src/qa-screenshots/03b-team-setup-filled.png",
+    "uid": "79e7613ece6dda2bea936f5045a59c0660854029"
+  },
+  {
+    "path": "src/qa-screenshots/ff-countdown.png",
+    "uid": "8ba7c9f1b5f77b06830347dfd6d9aa170de3c33d"
+  },
+  {
+    "path": "src/qa-screenshots/ff-emoji-setup-latest.png",
+    "uid": "c72396b21a18b471fc5dc86a85b2e7117ee03436"
+  },
+  {
+    "path": "src/qa-screenshots/ff-faceoff-latest.png",
+    "uid": "2c25f1b8bc2e3954ac6bbc975ffd01bb69a88418"
+  },
+  {
+    "path": "src/qa-screenshots/ff-faceoff.png",
+    "uid": "05c93242183f95a0bb285cda8a99e56ff0e30d16"
+  },
+  {
+    "path": "src/qa-screenshots/ff-gameboard-latest.png",
+    "uid": "76fae0c1a8e4ebcb7996171833a567a6b67b693f"
+  },
+  {
+    "path": "src/qa-screenshots/ff-landing-latest.png",
+    "uid": "7ed2291f4a920750a859e5580c3f061156722eac"
+  },
+  {
+    "path": "src/qa-screenshots/ff-landing.png",
+    "uid": "f69ea5912980eaef849703bd7cddee175b61fc41"
+  },
+  {
+    "path": "src/qa-screenshots/ff-settings-latest.png",
+    "uid": "943b2da0768c9fc5aa9e13a97011ef52e18b4b7c"
+  },
+  {
+    "path": "src/qa-screenshots/ff-team-select.png",
+    "uid": "663d2d369f9a7ac349001607affbc95f3b82a89f"
+  },
+  {
+    "path": "src/qa-screenshots/ff-team-setup.png",
+    "uid": "ea486589249c7482b714e9398a84e801a7463b47"
+  },
+  {
+    "path": "src/qa-screenshots/ff-teamsetup-latest.png",
+    "uid": "a1c91dd9241d0d785fbb0e0571dfb20750f54855"
+  },
+  {
+    "path": "src/qa-screenshots/ff-verify-latest.png",
+    "uid": "6b993d366f8ce681ba7574982ebc202b41f0483c"
+  },
+  {
+    "path": "src/qa-screenshots/homepage-1776098013.png",
+    "uid": "7736740a0af353a1f762979759884e3fea1ce924"
+  },
+  {
+    "path": "src/qa-screenshots/homepage-qa-latest.png",
+    "uid": "8ca811646a5e590ed3f6ce3d1b99ef37a8b59b0e"
+  },
+  {
+    "path": "src/qa-screenshots/qa-homepage-latest.png",
+    "uid": "c9c5a49f19a56177764204d4d7331befb7ba79f2"
+  },
+  {
+    "path": "src/qa-screenshots/qa-round15-faceoff.png",
+    "uid": "797a6da2e94cb989c13b9cc803830a9b00a878d3"
+  },
+  {
+    "path": "src/qa-screenshots/qa-round15-homepage.png",
+    "uid": "4a4c59c3144b7214575c0dca88e7feb22542c6a2"
+  },
+  {
+    "path": "src/qa-screenshots/qa-round15-setup.png",
+    "uid": "7399b4a370178757b15e167694dabc820e40e43c"
+  },
+  {
+    "path": "src/src/app/admin/layout.tsx",
+    "uid": "73d894f84b6fdc3d7792d011a5fbfdc4d561c611"
+  },
+  {
+    "path": "src/src/app/admin/page.tsx",
+    "uid": "ecb8b9109bfdb7bbc02cd2a28873b5660afd14f1"
+  },
+  {
+    "path": "src/src/app/api/admin/deploy/route.ts",
+    "uid": "555ea53d9851f6f66e95682a889368660feec3bb"
+  },
+  {
+    "path": "src/src/app/api/admin/events/[id]/route.ts",
+    "uid": "1a6eb96794568c0ed6f26407b50d886c7b354142"
+  },
+  {
+    "path": "src/src/app/api/admin/events/route.ts",
+    "uid": "5207a1fdf0ed04b4a42e230d98b1ece78346cbf7"
+  },
+  {
+    "path": "src/src/app/api/admin/games/[slug]/route.ts",
+    "uid": "1630d6e680ca1181d9967657eefbc87b5473b4f1"
+  },
+  {
+    "path": "src/src/app/api/admin/games/route.ts",
+    "uid": "921e09713550b0742a39a027cc64aace39fd29d4"
+  },
+  {
+    "path": "src/src/app/api/admin/gem-charges/[id]/route.ts",
+    "uid": "dc117cd8ee33b0e7791ec512c0cd4444fd61f55f"
+  },
+  {
+    "path": "src/src/app/api/admin/gem-charges/route.ts",
+    "uid": "d190ac3352a13717605f283bcd54ccb6da3d5aca"
+  },
+  {
+    "path": "src/src/app/api/admin/login/route.ts",
+    "uid": "7d5f159b691289a30b666c3be6f8a80a3d6abfd6"
+  },
+  {
+    "path": "src/src/app/api/admin/messages/route.ts",
+    "uid": "e2ddcac50be36cab980df513f02faa427d42e600"
+  },
+  {
+    "path": "src/src/app/api/admin/sessions/route.ts",
+    "uid": "933d455d20ed0ba00707a33ff58a64e9ae854c72"
+  },
+  {
+    "path": "src/src/app/api/admin/settings/route.ts",
+    "uid": "8ed06cf3b7bf5b6fecd6db5c614c755a87b21812"
+  },
+  {
+    "path": "src/src/app/api/admin/site-config/route.ts",
+    "uid": "4d577c1873c8e006e93b9fd2e232ab6495a4994f"
+  },
+  {
+    "path": "src/src/app/api/admin/stats/route.ts",
+    "uid": "75181298a3fdbbeb6599976797df09a2aaecb331"
+  },
+  {
+    "path": "src/src/app/api/admin/subscriptions/[id]/route.ts",
+    "uid": "def1ed23fd94480dfb6c007df5b948523f320056"
+  },
+  {
+    "path": "src/src/app/api/admin/subscriptions/route.ts",
+    "uid": "40abe4bad7f2ae3c76d924bc1c9d802b41089c01"
+  },
+  {
+    "path": "src/src/app/api/admin/tables/route.ts",
+    "uid": "876c436e820227412020508ef18033cfa9caeff6"
+  },
+  {
+    "path": "src/src/app/api/events/route.ts",
+    "uid": "6cb17fd1095543e02cffbb80b96d71f470467842"
+  },
+  {
+    "path": "src/src/app/api/games-config/route.ts",
+    "uid": "5af5241ef10d7a904559a7bcbd9500ecbc31cbc3"
+  },
+  {
+    "path": "src/src/app/api/gems/charge/route.ts",
+    "uid": "a8f9ed3b6230594af0737b1fd7fe46092294d1b4"
+  },
+  {
+    "path": "src/src/app/api/gems/packages/route.ts",
+    "uid": "b6dbdf0c91c1295439d6d03b6a63b0f8aae096f2"
+  },
+  {
+    "path": "src/src/app/api/gems/purchase/route.ts",
+    "uid": "1181f09ae6f4109b010e322bc69574b9930f5c5b"
+  },
+  {
+    "path": "src/src/app/api/player/leaderboard/route.ts",
+    "uid": "58e3642543fabe4c7cff30aca92c95b033307b61"
+  },
+  {
+    "path": "src/src/app/api/player/level/route.ts",
+    "uid": "4d82dcfe66ef84af7e49b7144f8f8d8ec53b30cf"
+  },
+  {
+    "path": "src/src/app/api/player/xp/route.ts",
+    "uid": "8b541339d5d1d317879f21e79c21eceb7c60ddeb"
+  },
+  {
+    "path": "src/src/app/api/prison-room/[code]/heartbeat/route.ts",
+    "uid": "e4dc1ba0f5af3bae8fd4a3e294965a849362313e"
+  },
+  {
+    "path": "src/src/app/api/prison-room/[code]/route.ts",
+    "uid": "e76a8fd466225829d201afc4a57f455bd7498072"
+  },
+  {
+    "path": "src/src/app/api/prison-room/[code]/spectator/route.ts",
+    "uid": "86482875db0ee242f5b528b48c5ea239c59df66f"
+  },
+  {
+    "path": "src/src/app/api/prison-room/route.ts",
+    "uid": "f905b44b3e154218dbe7882327f394a1b1d2ff45"
+  },
+  {
+    "path": "src/src/app/api/risk-room/[code]/heartbeat/route.ts",
+    "uid": "f2d1c4f80ec750a3006129cbdb715f7dd233923f"
+  },
+  {
+    "path": "src/src/app/api/risk-room/[code]/route.ts",
+    "uid": "48704d1a4f00a32799e25f7cfa50924310bcf2dd"
+  },
+  {
+    "path": "src/src/app/api/risk-room/[code]/spectator/route.ts",
+    "uid": "12f5ecb1a5650f07818f20ace3bc9d33a4b37c97"
+  },
+  {
+    "path": "src/src/app/api/risk-room/route.ts",
+    "uid": "726dd7b3c66796fe2859864cc8422dd6cb990307"
+  },
+  {
+    "path": "src/src/app/api/risk2-room/[code]/heartbeat/route.ts",
+    "uid": "9ddb5b67b613d5e090d04ae89129cc8e6f15f2c8"
+  },
+  {
+    "path": "src/src/app/api/risk2-room/[code]/route.ts",
+    "uid": "e55954c11a4ae337572c682ef4b0b6785e57182e"
+  },
+  {
+    "path": "src/src/app/api/risk2-room/[code]/spectator/route.ts",
+    "uid": "bf3ea374ab8dc50562605b33fd8127b8f2eaa9d1"
+  },
+  {
+    "path": "src/src/app/api/risk2-room/rooms.ts",
+    "uid": "f80833ce0ba81cf7e32e26b7ae46ba9f2c136c06"
+  },
+  {
+    "path": "src/src/app/api/risk2-room/route.ts",
+    "uid": "d047129ab404caec678e16a164deb723f0610891"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/good-son-revenge/route.ts",
+    "uid": "7da1308066dc97da26b1d6207e53e452da7f5aa7"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/heartbeat/route.ts",
+    "uid": "43301bd3aa2d998e3464f70cc1a61775eb8b9463"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/join/route.ts",
+    "uid": "9f39c1c6dc99957a57209c8e2f0ddea7821f4138"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/mayor-reveal/route.ts",
+    "uid": "a7728cb979d75bb95daedb0e9a8f01bd27c163f6"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/night-action/route.ts",
+    "uid": "1eebefea647901e860d038e6c8b98f69d24a33f8"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/route.ts",
+    "uid": "7c5d4e4d118f152732285137fa4a5a8a376b164a"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/start/route.ts",
+    "uid": "5e8e43da1e38e3a35f388fc58e529ab6957bd78d"
+  },
+  {
+    "path": "src/src/app/api/room/[code]/vote/route.ts",
+    "uid": "bbcf58a5082b4a91b9e56a42db9129db37cbed1e"
+  },
+  {
+    "path": "src/src/app/api/room/route.ts",
+    "uid": "254e9317e119480cd0b2eb934a9da7a41c1ea814"
+  },
+  {
+    "path": "src/src/app/api/route.ts",
+    "uid": "6f39d9997c5aa63e34cc52b3ddb6f3c166d831ed"
+  },
+  {
+    "path": "src/src/app/api/site-config/route.ts",
+    "uid": "f85954c7fdf1bc626975060cf83c535d86a8c9a7"
+  },
+  {
+    "path": "src/src/app/api/subscription/profile/route.ts",
+    "uid": "def7685574d0914660b46e2833a327b509ebac9f"
+  },
+  {
+    "path": "src/src/app/api/subscription/register/route.ts",
+    "uid": "7b37a94350b461f34e176ffbf8a9acfb40bd58c9"
+  },
+  {
+    "path": "src/src/app/api/subscription/validate/route.ts",
+    "uid": "f7420c3b459505c75d9960218e384d4f7f710d5c"
+  },
+  {
+    "path": "src/src/app/api/tobol-room/[code]/heartbeat/route.ts",
+    "uid": "259c6a278baae19e4a292859af8078efcb57b208"
+  },
+  {
+    "path": "src/src/app/api/tobol-room/[code]/route.ts",
+    "uid": "1e9cd5d393fff1ab9077da2a24bdc399777be84c"
+  },
+  {
+    "path": "src/src/app/api/tobol-room/[code]/spectator/route.ts",
+    "uid": "5679dc79d0e947cab15ce3c610394e6134fffed0"
+  },
+  {
+    "path": "src/src/app/api/tobol-room/route.ts",
+    "uid": "d3ea4ec0b4249d875dab574077cc6e4126fc0f55"
+  },
+  {
+    "path": "src/src/app/baharharb/page.tsx",
+    "uid": "14d3144ba45dbc9b81d688177ae2d4d5bb225cfc"
+  },
+  {
+    "path": "src/src/app/diwaniya/page.tsx",
+    "uid": "9bc96342d8009bd496ccd8b663ff62dbb469be3e"
+  },
+  {
+    "path": "src/src/app/error.tsx",
+    "uid": "5b903180ee2d9fa59445cf2592afc917f025ec27"
+  },
+  {
+    "path": "src/src/app/familyfeud/page.tsx",
+    "uid": "1d854a3ea8585bae05c1ea036030efcf488b3f93"
+  },
+  {
+    "path": "src/src/app/globals.css",
+    "uid": "9daa8e8e1d53dbd1c775ce196af7ee154dfe06f5"
+  },
+  {
+    "path": "src/src/app/join/[code]/page.tsx",
+    "uid": "bf9516e2e51b35183c5da03907c9c9994596b9ad"
+  },
+  {
+    "path": "src/src/app/join/prison/[code]/page.tsx",
+    "uid": "85e9f4cede7953bf3c72e806ed50c2a4beb5499c"
+  },
+  {
+    "path": "src/src/app/join/risk/[code]/page.tsx",
+    "uid": "317b947c5c4ce7354fe1172d21ab9ad116d6c2b1"
+  },
+  {
+    "path": "src/src/app/join/risk2/[code]/page.tsx",
+    "uid": "59d47e116ade495c5152b88582244c43e5cab31a"
+  },
+  {
+    "path": "src/src/app/join/tobol/[code]/page.tsx",
+    "uid": "00039b59a93318791f3db13edf31875f3ed6eb33"
+  },
+  {
+    "path": "src/src/app/layout.tsx",
+    "uid": "572abfb13d8c8421d87f430c25ba09f838a17550"
+  },
+  {
+    "path": "src/src/app/loading.tsx",
+    "uid": "95dc9f4eaa207b73a4dea1451e6db808b67b2787"
+  },
+  {
+    "path": "src/src/app/mafia/page.tsx",
+    "uid": "eecaa8df2e2c7ce30468d77bcacd3e6f10ea5ea0"
+  },
+  {
+    "path": "src/src/app/page.tsx",
+    "uid": "85e442477d68871f60294ab61bdaa237e16a4522"
+  },
+  {
+    "path": "src/src/app/prison/page.tsx",
+    "uid": "9e353f4fa160370236d40cf14760b6c7152a680a"
+  },
+  {
+    "path": "src/src/app/risk/page.tsx",
+    "uid": "b1232146cc96cf8f8fc31d58ef6dc6857a6f8506"
+  },
+  {
+    "path": "src/src/app/risk2/page.tsx",
+    "uid": "8aaef26a9f4fb2e4e051c73d8ffc25b66c940817"
+  },
+  {
+    "path": "src/src/app/tabot/page.tsx",
+    "uid": "f6be0841ea4080ce78d4c449eda0a65c4dce0709"
+  },
+  {
+    "path": "src/src/app/tobol/page.tsx",
+    "uid": "8f19ada5d1a1760f3449e62352fbb2b9f1ef66f1"
+  },
+  {
+    "path": "src/src/components/RegistrationDialog.tsx",
+    "uid": "48e5078b63eb7a8f8cfbbf84c9f9842ab5d511eb"
+  },
+  {
+    "path": "src/src/components/SubscriptionGuard.tsx",
+    "uid": "64a834d39470d2f183becc106a483cb471a8b20b"
+  },
+  {
+    "path": "src/src/components/mafia/CardDistribution.tsx",
+    "uid": "1dab7fb1d80d2e926cbe25b9612a6d0478ba66ce"
+  },
+  {
+    "path": "src/src/components/mafia/DayPhase.tsx",
+    "uid": "4781a562feb4804c8438209ff2ff652e7b87a209"
+  },
+  {
+    "path": "src/src/components/mafia/DiwaniyaSetup.tsx",
+    "uid": "befd15223f02bd89aa4baada5ef3c8f407222dcf"
+  },
+  {
+    "path": "src/src/components/mafia/GameFooter.tsx",
+    "uid": "851ce5515a1f5f6dedb6151dd58e73ff1b5132cc"
+  },
+  {
+    "path": "src/src/components/mafia/GameIntroCard.tsx",
+    "uid": "640fd88bb731d22c2fcf7ce2ae2223e6677bce96"
+  },
+  {
+    "path": "src/src/components/mafia/GameOver.tsx",
+    "uid": "de317862d1a0c17b42d899f2b16e8a87ae00b69e"
+  },
+  {
+    "path": "src/src/components/mafia/GameSetup.tsx",
+    "uid": "123b8b80dbd6bb1b16c2380009c3a49dcd6e6f1a"
+  },
+  {
+    "path": "src/src/components/mafia/LandingPage.tsx",
+    "uid": "42e8e0af67b3f1a30d518d6e0deaa13b09fddf94"
+  },
+  {
+    "path": "src/src/components/mafia/LobbyPage.tsx",
+    "uid": "17a5655651d73ff6ced9eeed451e1650417dc9b5"
+  },
+  {
+    "path": "src/src/components/mafia/MobileBottomNav.tsx",
+    "uid": "27e2ca888d4a79ee562d743884a89ea8fe04f048"
+  },
+  {
+    "path": "src/src/components/mafia/NightPhase.tsx",
+    "uid": "16865ec442528acda0e73c9801c3a1980e96af30"
+  },
+  {
+    "path": "src/src/components/mafia/PlayerAvatar.tsx",
+    "uid": "8cd38cd8b33644882ee6f37075562e1bfa583120"
+  },
+  {
+    "path": "src/src/components/mafia/RoleCard.tsx",
+    "uid": "01f59d43d4fc1288ae36912938affced11d3abdc"
+  },
+  {
+    "path": "src/src/components/mafia/VolumeControl.tsx",
+    "uid": "7d8eaac6321a526927c564719032064a8d22c849"
+  },
+  {
+    "path": "src/src/components/mafia/WelcomePopup.tsx",
+    "uid": "affb1515ef7a4d69fc720dd7553786310f8a619b"
+  },
+  {
+    "path": "src/src/components/prison/GameBoard.tsx",
+    "uid": "b914c2b22a6c474a1cc8228b5578794846868444"
+  },
+  {
+    "path": "src/src/components/prison/GameSetup.tsx",
+    "uid": "adaab415ee4c1cbcb686d256b17142a918fd2539"
+  },
+  {
+    "path": "src/src/components/prison/LandingPage.tsx",
+    "uid": "f5b4b9f5744f5c581745df6a68ac830d78946054"
+  },
+  {
+    "path": "src/src/components/prison/PrisonGameOver.tsx",
+    "uid": "3a915f7f9a34cbb48f12c494d2e3f38233b84dd1"
+  },
+  {
+    "path": "src/src/components/prison/PrisonSpectatorView.tsx",
+    "uid": "2ee56a9537e19ba9a9c095e4f68549b5558aa9b6"
+  },
+  {
+    "path": "src/src/components/risk/GameBoard.tsx",
+    "uid": "ede45389ba6710b735a3167e62403962020de117"
+  },
+  {
+    "path": "src/src/components/risk/GameSetup.tsx",
+    "uid": "ee1694c61f34277dcb86d6564b2a26bf06051190"
+  },
+  {
+    "path": "src/src/components/risk/LandingPage.tsx",
+    "uid": "5d2b63510c708d5d04d3b221775844aeeb654615"
+  },
+  {
+    "path": "src/src/components/risk/RiskGameOver.tsx",
+    "uid": "6ff3bc3990eaf9c3514a4b80bda9277435d096bf"
+  },
+  {
+    "path": "src/src/components/risk/RiskSpectatorView.tsx",
+    "uid": "92421148739663880fba5c9694885abb0da11454"
+  },
+  {
+    "path": "src/src/components/risk2/GameBoard.tsx",
+    "uid": "e8657029bd4bf498ac9ff25eaec06338a5d99f09"
+  },
+  {
+    "path": "src/src/components/risk2/GameSetup.tsx",
+    "uid": "5ea8cccda6bbafb7d77e5c9c53a7cbd46f8e4c08"
+  },
+  {
+    "path": "src/src/components/risk2/LandingPage.tsx",
+    "uid": "983c53ee1ebf521f6951242310652a6a74247d62"
+  },
+  {
+    "path": "src/src/components/risk2/Risk2GameOver.tsx",
+    "uid": "6b22de1b4daf990429e46257b3f8e18050a14f53"
+  },
+  {
+    "path": "src/src/components/risk2/Risk2SpectatorView.tsx",
+    "uid": "972f2a7a0743a24af48adde65ddcb7652dc62359"
+  },
+  {
+    "path": "src/src/components/shared/EventsModal.tsx",
+    "uid": "3a7bf8552864e2f403cb53cfefaaadb18faa3e56"
+  },
+  {
+    "path": "src/src/components/shared/GameHeader.tsx",
+    "uid": "ccf085132ad438a183808d409cacfb76fba809ad"
+  },
+  {
+    "path": "src/src/components/shared/GameLayout.tsx",
+    "uid": "47a5f11fc6bc9ebf0424ee87aaa55efb2bba59ec"
+  },
+  {
+    "path": "src/src/components/shared/SideUtilityPanel.tsx",
+    "uid": "a399c0f25da36aacd7355f91dfdbdf8073652578"
+  },
+  {
+    "path": "src/src/components/shared/StoreModal.tsx",
+    "uid": "0468451509e39a8c52bd59a94892d0d2d25418e3"
+  },
+  {
+    "path": "src/src/components/shared/UserProfileModal.tsx",
+    "uid": "055e05c1a7cadd845f2a0403be0fe5d2c7483834"
+  },
+  {
+    "path": "src/src/components/tabot/DiceRoll.tsx",
+    "uid": "f283468156c0afd3146454acbcbfe3764d0c81c5"
+  },
+  {
+    "path": "src/src/components/tabot/DiwaniyaSetup.tsx",
+    "uid": "38f5299fada2ee1d898cac3b31d0a9e96db895b8"
+  },
+  {
+    "path": "src/src/components/tabot/DoorCard.tsx",
+    "uid": "43983c0c16d442c4ff627d73643dd6a2efc6a83a"
+  },
+  {
+    "path": "src/src/components/tabot/GameBoard.tsx",
+    "uid": "3d2df5a2ce74ad20295c3f6eb0c1940ccb1f3a21"
+  },
+  {
+    "path": "src/src/components/tabot/GameOver.tsx",
+    "uid": "46352af99059cde5ad68328d1e8363c8abcbf83e"
+  },
+  {
+    "path": "src/src/components/tabot/LandingPage.tsx",
+    "uid": "973b3b5602989077cc60ed3addef7519f70101cb"
+  },
+  {
+    "path": "src/src/components/tabot/PenaltyDialog.tsx",
+    "uid": "68590e55440f0c760492062b348852bbbad50c97"
+  },
+  {
+    "path": "src/src/components/tabot/TabotGameBoard.tsx",
+    "uid": "ff46d6212d62aed7cb169bfae49906e2c3d4cdef"
+  },
+  {
+    "path": "src/src/components/tabot/TabotGameOver.tsx",
+    "uid": "88f880f677008e7cdca26a43aa9fb80bb5e74f5f"
+  },
+  {
+    "path": "src/src/components/tabot/TabotLanding.tsx",
+    "uid": "8155c0c52cc917975b1e89a41b378cda7dd63842"
+  },
+  {
+    "path": "src/src/components/tabot/TabotSetup.tsx",
+    "uid": "a3f751614d2d2b240bc2ab6ad43007aa6ae6b7be"
+  },
+  {
+    "path": "src/src/components/tabot/TabotSpectatorView.tsx",
+    "uid": "0498419e5d6e0a419937539dbd347b841c3ac7a4"
+  },
+  {
+    "path": "src/src/components/tabot/TeamSetup.tsx",
+    "uid": "4767dc39568ad8970cac8389a9fcbf69c242f126"
+  },
+  {
+    "path": "src/src/components/tabot/TeamStatus.tsx",
+    "uid": "911c511f3f1b10c357e94f4fe565973e47680114"
+  },
+  {
+    "path": "src/src/components/tobol/GameBoard.tsx",
+    "uid": "eb317afa1dc24fa14646a3a323b9210a5e404648"
+  },
+  {
+    "path": "src/src/components/tobol/GameSetup.tsx",
+    "uid": "1f76b35885ce983c6cd7ca617d4471dc5634d1df"
+  },
+  {
+    "path": "src/src/components/tobol/LandingPage.tsx",
+    "uid": "47449b3a8e8f1482c3868667f6c55dee155156f9"
+  },
+  {
+    "path": "src/src/components/tobol/TobolGameOver.tsx",
+    "uid": "93bc83b0dc4baf184e343a2422acf179e087be38"
+  },
+  {
+    "path": "src/src/components/tobol/TobolSpectatorView.tsx",
+    "uid": "dd8a5f3d50db2b379833a1b9d9510d429dabc268"
+  },
+  {
+    "path": "src/src/components/ui/accordion.tsx",
+    "uid": "8da6edc89d56af25a1f11abe4a180517e6a93830"
+  },
+  {
+    "path": "src/src/components/ui/alert-dialog.tsx",
+    "uid": "e7c18b53d412b5bcd6cfdd822656700049db140c"
+  },
+  {
+    "path": "src/src/components/ui/alert.tsx",
+    "uid": "1440ff785cca3f821881c33d1ad7a23cefb7dc67"
+  },
+  {
+    "path": "src/src/components/ui/aspect-ratio.tsx",
+    "uid": "524849a3efda11100acb350117d579049cfbb2f5"
+  },
+  {
+    "path": "src/src/components/ui/avatar.tsx",
+    "uid": "c3d8fdc843f12f5e8613140692353e1e285c6e06"
+  },
+  {
+    "path": "src/src/components/ui/badge.tsx",
+    "uid": "88c95fcf7712cbcf13c184c8ef4dfc15521892d8"
+  },
+  {
+    "path": "src/src/components/ui/breadcrumb.tsx",
+    "uid": "69da058532bed842cab2112d86e783bb0aefd0b1"
+  },
+  {
+    "path": "src/src/components/ui/button.tsx",
+    "uid": "45b10581e237a7895d49179e77bd188e071d7cbf"
+  },
+  {
+    "path": "src/src/components/ui/calendar.tsx",
+    "uid": "55a29922ba5f43b81f425fd770fa152c1619bf98"
+  },
+  {
+    "path": "src/src/components/ui/card.tsx",
+    "uid": "99cd1857f44b8924ae9ba2915fa0a1ce4fd3b75b"
+  },
+  {
+    "path": "src/src/components/ui/carousel.tsx",
+    "uid": "46588b1ac2efd1668d18a59b24741ac2452fa9f9"
+  },
+  {
+    "path": "src/src/components/ui/chart.tsx",
+    "uid": "5c70c814202da46346fa19579218afb30a81c9a6"
+  },
+  {
+    "path": "src/src/components/ui/checkbox.tsx",
+    "uid": "fd51eb65b9a8c380da5b08ac7443464d4dbc55a9"
+  },
+  {
+    "path": "src/src/components/ui/collapsible.tsx",
+    "uid": "a38a04e97bf06d0be23bdc4530fd571b558bdf91"
+  },
+  {
+    "path": "src/src/components/ui/command.tsx",
+    "uid": "4beb9ce38fc6b6798a95f563c8401d90f6ebd423"
+  },
+  {
+    "path": "src/src/components/ui/context-menu.tsx",
+    "uid": "909fe144c71c4adba44d7af6b836ce585c3e7694"
+  },
+  {
+    "path": "src/src/components/ui/dialog.tsx",
+    "uid": "2a4bc240ea4c8c618d56cd1bb72bda81aaab0223"
+  },
+  {
+    "path": "src/src/components/ui/drawer.tsx",
+    "uid": "5bfb15a475dc704f0e6e22cae8b5cfd7b46501f9"
+  },
+  {
+    "path": "src/src/components/ui/dropdown-menu.tsx",
+    "uid": "c3f2d1dcc9333bf545da9b10d163ef893078323e"
+  },
+  {
+    "path": "src/src/components/ui/form.tsx",
+    "uid": "879600cad03732462c1deb3976de2ff6e0744120"
+  },
+  {
+    "path": "src/src/components/ui/hover-card.tsx",
+    "uid": "8aa0bd9fc6a78a28394f203c0a8a81071527d6ec"
+  },
+  {
+    "path": "src/src/components/ui/input-otp.tsx",
+    "uid": "79a2697b3ceff36c83163a03a998942435146466"
+  },
+  {
+    "path": "src/src/components/ui/input.tsx",
+    "uid": "d604373f8db27ec563c859979305cd2a77633ff0"
+  },
+  {
+    "path": "src/src/components/ui/label.tsx",
+    "uid": "98b6f5068e0240462a196bbf2ef00e3e8c888aef"
+  },
+  {
+    "path": "src/src/components/ui/menubar.tsx",
+    "uid": "5cf9285bdce0f07dd3298fe5c359cab45af8e7e3"
+  },
+  {
+    "path": "src/src/components/ui/navigation-menu.tsx",
+    "uid": "e2e6d383c6a1260805819cbab88592cd40c4de66"
+  },
+  {
+    "path": "src/src/components/ui/pagination.tsx",
+    "uid": "4e556a0ad54689f2a689bc1f23dfbadd41cd5f92"
+  },
+  {
+    "path": "src/src/components/ui/popover.tsx",
+    "uid": "d3705dea19ea56a76e14a10bf1f8f3e192b15195"
+  },
+  {
+    "path": "src/src/components/ui/progress.tsx",
+    "uid": "cae93bf1a836771eeac48f4d6cf0833c324206f8"
+  },
+  {
+    "path": "src/src/components/ui/radio-group.tsx",
+    "uid": "6513ce2efab9d23c703a80f550ea16f13eada411"
+  },
+  {
+    "path": "src/src/components/ui/resizable.tsx",
+    "uid": "bc4c6360979c5176ffa5f47589db65b282d36731"
+  },
+  {
+    "path": "src/src/components/ui/scroll-area.tsx",
+    "uid": "b0ae43fef7f80d08d02a334dbad5ec69007a702e"
+  },
+  {
+    "path": "src/src/components/ui/select.tsx",
+    "uid": "47f9f39e48f7a39798fcc6241d56c6583d17ac99"
+  },
+  {
+    "path": "src/src/components/ui/separator.tsx",
+    "uid": "eedbe31e4adbc4399efb76a8466b77bd5595b7b8"
+  },
+  {
+    "path": "src/src/components/ui/sheet.tsx",
+    "uid": "e3979845a753ec943751ae5e6fa992eb17411642"
+  },
+  {
+    "path": "src/src/components/ui/sidebar.tsx",
+    "uid": "252f73a73c54ede2fb5630156cc8158437df18db"
+  },
+  {
+    "path": "src/src/components/ui/skeleton.tsx",
+    "uid": "08ceeb5c59e325e7851701e6818874633e1b21c8"
+  },
+  {
+    "path": "src/src/components/ui/slider.tsx",
+    "uid": "04c0fabf41f4c334ae03d811777bc7bbd2a9d5e4"
+  },
+  {
+    "path": "src/src/components/ui/sonner.tsx",
+    "uid": "8d41dd25c6c377a49ccd61a2bf85bd0b8f5fed6c"
+  },
+  {
+    "path": "src/src/components/ui/switch.tsx",
+    "uid": "4b6b1082de04e234a2d2d5a192fde14d0052dfad"
+  },
+  {
+    "path": "src/src/components/ui/table.tsx",
+    "uid": "8661d30bb35e1d33b695faf673560db88ea69114"
+  },
+  {
+    "path": "src/src/components/ui/tabs.tsx",
+    "uid": "62d6df28a0003084b886e0c1a7f754f0d8821e79"
+  },
+  {
+    "path": "src/src/components/ui/textarea.tsx",
+    "uid": "8791b5020843e91dba30b01529f87cb403648afc"
+  },
+  {
+    "path": "src/src/components/ui/toast.tsx",
+    "uid": "748fa5349c6769708961b9dfe6489895ecf07aba"
+  },
+  {
+    "path": "src/src/components/ui/toaster.tsx",
+    "uid": "05c0fddcfe9da4e8b97be70e54d12b7c4a44eaf5"
+  },
+  {
+    "path": "src/src/components/ui/toggle-group.tsx",
+    "uid": "322c24088717363608bc295c580c029eb0834b55"
+  },
+  {
+    "path": "src/src/components/ui/toggle.tsx",
+    "uid": "13084508a1a57712b7d476cdb0b0305495dcafd2"
+  },
+  {
+    "path": "src/src/components/ui/tooltip.tsx",
+    "uid": "306c3ddb4dd19e1683718da56bbd33835715bf9a"
+  },
+  {
+    "path": "src/src/hooks/use-mobile.ts",
+    "uid": "cdb9aae9ca8d354d767e8da4731ff7eb4a16d532"
+  },
+  {
+    "path": "src/src/hooks/use-toast.ts",
+    "uid": "5c76010d74a2d5a3a532c72377171a64c60bb0f9"
+  },
+  {
+    "path": "src/src/hooks/useEvents.ts",
+    "uid": "c36135c7a1d3a3a2ee9e85a30b2e09e6bd3fc726"
+  },
+  {
+    "path": "src/src/lib/admin-auth.ts",
+    "uid": "28b4dbbb79c710a1f7e0a26a90e29b2af92c7bd9"
+  },
+  {
+    "path": "src/src/lib/admin-db.ts",
+    "uid": "c358553996575ed88748c489cf5abfdd1bb01251"
+  },
+  {
+    "path": "src/src/lib/audio.ts",
+    "uid": "2b01ef3e9a99e481dc6c731e0ed2fbba82285ae7"
+  },
+  {
+    "path": "src/src/lib/baharharb-questions.ts",
+    "uid": "76a88700fc5525700ca4698ef32405c3a3edfb08"
+  },
+  {
+    "path": "src/src/lib/diwaniya-notifications.ts",
+    "uid": "8c04b6c4fcc0aa463fe6e440773ef7daee35fb2a"
+  },
+  {
+    "path": "src/src/lib/game-logic.ts",
+    "uid": "a1487f0246be72e2458dc95e4d9676395f476702"
+  },
+  {
+    "path": "src/src/lib/game-store.ts",
+    "uid": "b728ae133b94fd53f916cdd1e96b1a829b12a8b9"
+  },
+  {
+    "path": "src/src/lib/game-types.ts",
+    "uid": "63bf0173758dde9d67ed6ae98fa62d29722cca89"
+  },
+  {
+    "path": "src/src/lib/i18n.ts",
+    "uid": "ddaee620ffb41eee854620084bba134a137fdf36"
+  },
+  {
+    "path": "src/src/lib/prison-room-store.ts",
+    "uid": "334d649bd5cae52b0508b63cb4af38dd336b57a5"
+  },
+  {
+    "path": "src/src/lib/prison-store.ts",
+    "uid": "1e8e6a88cb8509802da927fb1d0bcf966cf26d66"
+  },
+  {
+    "path": "src/src/lib/prison-sync.ts",
+    "uid": "f5cb48936482e8dddd151823bfca6140c2eb7cb7"
+  },
+  {
+    "path": "src/src/lib/prison-types.ts",
+    "uid": "b5dd1555dfe85ae4d8319247bed6a07e4abc527f"
+  },
+  {
+    "path": "src/src/lib/risk-room-store.ts",
+    "uid": "697735be168b9f0d41282950254d3a355489716d"
+  },
+  {
+    "path": "src/src/lib/risk-store.ts",
+    "uid": "495e360822d3c153612a2e8665db2c0a7fcd69ed"
+  },
+  {
+    "path": "src/src/lib/risk-types.ts",
+    "uid": "8b5accbc448fe3e207230898784bc0eca038d09e"
+  },
+  {
+    "path": "src/src/lib/risk2-store.ts",
+    "uid": "5cd77f53d38b2f258339c8ba2dd9f6bc0578b6e8"
+  },
+  {
+    "path": "src/src/lib/risk2-types.ts",
+    "uid": "b656fc4eda1eeb581b68e7d6a7d07e314af5c708"
+  },
+  {
+    "path": "src/src/lib/room-sync.ts",
+    "uid": "25d4fcd452095a5fe1e7932567e47a38cc614d4d"
+  },
+  {
+    "path": "src/src/lib/sounds.ts",
+    "uid": "23577aab843a6ea95916a182a26c8e97ffeee28a"
+  },
+  {
+    "path": "src/src/lib/tabot-store.ts",
+    "uid": "7191904cb3a49efd7bba3d4a2a755d3a08e65c25"
+  },
+  {
+    "path": "src/src/lib/tabot-types.ts",
+    "uid": "09a51d44613db6e379f63a7a9433038987127fce"
+  },
+  {
+    "path": "src/src/lib/tobol-room-store.ts",
+    "uid": "b5661321e7d0da78483fb9756ba63c9a8215928a"
+  },
+  {
+    "path": "src/src/lib/tobol-store.ts",
+    "uid": "e71f0bbda938ba76e6e9691284458408fb26c024"
+  },
+  {
+    "path": "src/src/lib/tobol-types.ts",
+    "uid": "de2afc0a9c7560d9b40da0650cc06d1a99e1cc54"
+  },
+  {
+    "path": "src/src/lib/turso.ts",
+    "uid": "6224970942abfd93b9a9547fe08f430bda9702b0"
+  },
+  {
+    "path": "src/src/lib/utils.ts",
+    "uid": "03edf7b44c7cf1d3f48be4f72866007dbb63b8c6"
+  },
+  {
+    "path": "src/tailwind.config.ts",
+    "uid": "51b2537f4113d7d299f1d39efd9a244aa6a2b601"
+  },
+  {
+    "path": "src/tsconfig.json",
+    "uid": "c126da803bc20106593d91484cd820a9025e11d5"
+  },
+  {
+    "path": "src/worklog.md",
+    "uid": "6f2331757ad8a8925a7e5c0dd52286e5fdebf159"
+  }
+]

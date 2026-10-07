@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot displays the **Settings page** of a voice room app, with a green gradient background and a structured layout of interactive elements. Here’s a detailed breakdown:  \n\n\n### 1. Header & Navigation  \n- **Title**: “Settings” (centered at the top, white text).  \n- **Close Button**: A white “X” icon in a green circle (top-right corner) to exit the settings page.  \n\n\n### 2. User Profile Section  \nA light blue card with rounded corners containing:  \n- **User ID**: “user_65848557885” (white text, left-aligned).  \n- **Tag**: “Tag” (white text, left-aligned, with a right-facing arrow indicating it’s a clickable option).  \n- **Profile Icon**: A gray silhouette of a person (left side of the card).  \n- **Room Announcement**: “Add your room announcement here.” (gray text, with a right-facing arrow; a green chat bubble icon is to the left of this text).  \n\n\n### 3. Mic & Permission Settings  \nA light blue card with rounded corners (below the user profile section) containing:  \n- **Mic Mode**:  \n  - Label: “Mic Mode” (white text, left-aligned).  \n  - Current Setting: “Chat - 5 Mics” (white text, right-aligned).  \n  - **Pause Button**: A white pause icon (circle with two vertical bars) to the right of “Chat - 5 Mics” (likely to toggle mic mode).  \n- **Mic Permission**:  \n  - Label: “Mic Permission” (white text, left-aligned).  \n  - **Red Stop Icon**: A red square (stop button) to the right (likely to disable mic access).  \n\n\n### 4. Admin & Membership Settings  \nA light blue card with rounded corners (below the mic settings) containing:  \n- **Admin Permission**:  \n  - Label: “Admin Permission” (white text, left-aligned).  \n  - **Pencil Icon**: A white pencil (edit button) to the right (to modify admin permissions).  \n- **Membership Fee**:  \n  - Label: “Membership Fee” (white text, left-aligned).  \n  - Current Setting: “80” (white text, right-aligned) with a blue diamond icon (likely a currency symbol) to the left of “80”.  \n- **Remove Members**:  \n  - Label: “Remove Members” (white text, left-aligned) with a right-facing arrow (clickable option).  \n- **Room Entry Blocked List**:  \n  - Label: “Room Entry Blocked List” (white text, left-aligned) with a right-facing arrow (clickable option).  \n- **Operation Records**:  \n  - Label: “Operation Records” (white text, left-aligned) with a right-facing arrow (clickable option).  \n\n\n### 5. Daily Bonus Section  \nA light blue card with rounded corners (at the bottom of the screen) containing:  \n- **Daily Bonus**: “Daily Bonus” (white text, left-aligned) with a right-facing arrow (clickable option).  \n\n\n### Additional UI Details  \n- **Color Scheme**: Green gradient background, light blue cards for sections, white text for labels/settings, and colored icons (red, blue, orange) for interactive elements.  \n- **Icons**: Right-facing arrows indicate clickable options; pause, stop, pencil, and diamond icons serve functional purposes (toggle, disable, edit, currency).  \n- **Layout**: Vertical list of cards, each with clear labels and interactive elements, ensuring easy navigation.  \n\n\nThis layout prioritizes user profile management, mic/chat controls, admin permissions, and room customization—core features of a voice room app.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706050,
+  "id": "202604210127061c1a2f7c47654aa3",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202604210127061c1a2f7c47654aa3",
+  "usage": {
+    "completion_tokens": 770,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 367,
+    "prompt_tokens_details": {
+      "cached_tokens": 5
+    },
+    "total_tokens": 1137
+  }
+}

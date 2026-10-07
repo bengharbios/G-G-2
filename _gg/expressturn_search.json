@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://www.expressturn.com/webrtc-secret-key-examples",
+    "name": "Secret Key Authentication Examples - ExpressTURN",
+    "snippet": "Code examples in Python, JavaScript (Node.js), Perl, and Go for generating temporary TURN credentials using HMAC-SHA1 secret key authentication. Missing: free API",
+    "host_name": "www.expressturn.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.expressturn.com",
+    "name": "ExpressTURN - Free and Premium TURN Servers",
+    "snippet": "There are multiple ways to authenticate with a TURN server. ExpressTURN supports both the long-term credentials mechanism (server setting \"lt-cred-mech\") and ... Missing: API | Show results with: API",
+    "host_name": "www.expressturn.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/30745153/turn-server-for-webrtc-with-rest-api-authentication",
+    "name": "TURN server for WebRTC with REST API authentication",
+    "snippet": "I'm trying to use the REST API feature that comes with the TURN server to avoid sending the password over the network or storing it on the client side. Clarification about TURN server authentication through REST api CoTURN: How to use TURN REST API? - Stack Overflow More results from stackoverflow.com Missing: expressturn. | Show results with: expressturn.",
+    "host_name": "stackoverflow.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/jofr/express-turn-credentials-rest-api",
+    "name": "jofr/express-turn-credentials-rest-api - GitHub",
+    "snippet": "The REST API needs to be configured in two places. The TURN server needs to be configured to accept the ephemeral credentials (see e.g. the documentation of ... Missing: free | Show results with: free",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/WebRTC/comments/1j8ih9x/launching_a_simple_turn_server_for_webrtc_5gb",
+    "name": "Launching a Simple TURN Server for WebRTC – 5GB Free, $0.20",
+    "snippet": "No hidden fees, just sign in with Apple/Google to get credentials (there's also an API for programmatic access). I built this to make TURN ...",
+    "host_name": "www.reddit.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

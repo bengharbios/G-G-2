@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/steveseguin/problems-with-webRTC",
+    "name": "steveseguin/problems-with-webRTC: A collection of issues  - GitHub",
+    "snippet": "Surround sound headsets (logitech/corsair) cause Chrome to not work with webrtc audio playback. PCM stereo 2.0 audio only supports 32khz; not 44.1 or 48.",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/AlexxIT/go2rtc/issues/1742",
+    "name": "WebRTC no longer loads after upgrading Android WebView to",
+    "snippet": "Last working version is 135.0.7049.113, downgrading to it resolves the problem. To downgrade: uninstall Android WebView updates, then install ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/react-native-webview/react-native-webview/issues/2571",
+    "name": "Audio not coming while live video streaming #2571 - GitHub",
+    "snippet": "Description: I am using webview for a live video calling platform, where the video is working seamlessly, but audio is not coming.",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/AlexxIT/WebRTC/issues/791",
+    "name": "WebRTC working on chrome, and android phone.. does not  - GitHub",
+    "snippet": "I get the following error when trying to access the feeds on the tablet: The error is as follows: Custom Element doesn't exist: webrtc-camera. Missing: audio only",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/79778948/no-audio-in-webrtc-over-webview-in-android-pip-mode",
+    "name": "No audio in WebRTC over WebView in Android PiP mode",
+    "snippet": "I tried to play a sound in the pip using the MediaPlayer , and it worked, but the meeting WebRTC audio is not working. Is it possible to have ... No audio in WebRTC over WebView in Android app - Stack Overflow WebRTC video / audio stream in mobile browser will not play in ... More results from stackoverflow.com",
+    "host_name": "stackoverflow.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.chromium.org/41325932",
+    "name": "WebRTC: Working in full Chrome, but not in Webview of same version",
+    "snippet": "Steps to reproduce the problem: 1. Perform a meeting from PC to tablet where you are using full version of Chrome on Android - it works the version of full ...",
+    "host_name": "issues.chromium.org",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/webrtc/apprtc/issues/226",
+    "name": "Android WebView Video Keyart · Issue #226 · webrtc/apprtc - GitHub",
+    "snippet": "I have a WebRTC app that runs in the Mobile Chrome but not on my app inside a WebView. The newtowrk connection and streams seems to work, but ...",
+    "host_name": "github.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://issues.webrtc.org/42221350",
+    "name": "Android Chrome WebRTC Audio not respecting system volume",
+    "snippet": "What steps will reproduce the problem? 1. Connect to appr.tc or any other WebRTC application in Chrome for Android or from within a WebView",
+    "host_name": "issues.webrtc.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/AlexxIT/go2rtc/issues/1127",
+    "name": "webRTC Stream does not run on Fully Kiosk Browser #1127 - GitHub",
+    "snippet": "It only works with webRTC if I transcode the resolution down far enough. The sub stream only runs at a resolution of 640x 480 pixels and 256 ...",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/katspaugh/wavesurfer.js/issues/341",
+    "name": "WebAudio and AudioElement not working in Android webview",
+    "snippet": "-Using Chrome with WebAudio works. -I am using the basic example in the main page http://www.wavesurfer.fm/. There's any way to achieve this? Missing: WebRTC | Show results with: WebRTC",
+    "host_name": "github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

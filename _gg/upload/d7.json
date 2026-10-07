@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "This is a **bonus collection modal/popup window** from a voice room app, designed with a green gradient background and a white rounded rectangular container. Here’s a detailed breakdown of all UI elements:  \n\n\n### 1. **Top Bar & Close Button**  \n- **Top-left**: A small blue gem icon (likely a currency or status indicator) with a “0” badge next to it.  \n- **Top-center**: A “+” button (possibly for adding gems or navigating to a store).  \n- **Top-right**: A white “X” icon (close button) to dismiss the modal.  \n\n\n### 2. **Main Modal Container**  \nThe modal has a white background with rounded corners, containing multiple sections:  \n\n#### a. **Bonus Header Section**  \n- **Title**: “Bonus to be collected” (centered, gray text).  \n- **Gem Display**: A large blue gem icon (with a glowing effect) and a “0” (current bonus amount) to its right.  \n- **Collect Button**: A gray, rounded rectangular button with “Collect” (brown text) on the right side of the gem.  \n\n\n#### b. **Stats Bar (3 Columns)**  \nBelow the gem, a horizontal bar with three sections (light gray background):  \n- **Left**: “0” (labeled “Yesterday’s Points,” gray text).  \n- **Center**: “2%” (labeled “Reward Rate,” gray text).  \n- **Right**: A small blue gem icon with “0” (labeled “Yesterday’s Bonus,” gray text).  \n\n\n#### c. **Bonus Calculation Section**  \n- **Title**: “Bonus Calculation” (with a small grid icon to the left, gray text).  \n- **Numbered List**:  \n  1. *“Daily Bonus = Daily Points x Reward Rate”* (black text).  \n  2. *“The points you earn depend on the diamond consumed in your room, including gifts and membership fee. The more diamonds consumed, the more points you earn. You won’t receive a bonus if your daily points are less than 100.”* (smaller black text).  \n  3. *“Reward rate depends on your room level as follows.”* (smaller black text).  \n- **Table**:  \n  - Header: “Room Level” (left) | “Reward Rate” (right).  \n  - Rows:  \n    - Level 0-5 → 2%  \n    - Level 6-10 → 2.5%  \n    - Level 11-40 → 3%  \n    - Level 41-100 → 3.5%  \n\n\n#### d. **Bonus Pay Time Section**  \n- **Icon**: A clock icon (left, gray).  \n- **Text**: *“Bonus is paid daily at 01:00 (GMT+3) of the next day. It expires by 24:00 (GMT+3) of the next day. Please remember to collect your bonus in time.”* (smaller black text).  \n\n\n### 3. **Layout & Design**  \n- **Color Scheme**: Green gradient background (top-to-bottom), white modal, blue accents (gems, stats), gray text for labels, black text for main content.  \n- **Spacing**: Clean, vertical spacing between sections; rounded corners on the modal and “Collect” button.  \n- **Hierarchy**: The “Collect” button and gem are prominent (larger size), while the table and instructions use smaller text for detail.  \n\n\nThis modal clearly explains how to collect bonuses, calculates rewards, and provides timing details—core features for a voice room app’s in-app economy.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1776706255,
+  "id": "20260421013031468f4cb103cc4190",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260421013031468f4cb103cc4190",
+  "usage": {
+    "completion_tokens": 762,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 323,
+    "prompt_tokens_details": {
+      "cached_tokens": 28
+    },
+    "total_tokens": 1085
+  }
+}

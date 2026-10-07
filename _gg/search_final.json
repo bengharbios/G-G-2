@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/8176",
+    "name": "[Bug]: webRTC not working properly on ios device #8176",
+    "snippet": "30 Sept 2025 — The capacitor app works perfectly on an android device and i can even get it to work perfectly in the chrome and safari browser but when I use ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://stackoverflow.com/questions/37848110/no-audio-in-webrtc-over-webview-in-android-app",
+    "name": "No audio in WebRTC over WebView in Android app",
+    "snippet": "Adding <uses-permission android :name=\" android .permission.MODIFY_AUDIO_SETTINGS\" /> in the permission solved the problem for me.",
+    "host_name": "stackoverflow.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/AlexxIT/go2rtc/issues/1742",
+    "name": "WebRTC no longer loads after upgrading Android",
+    "snippet": "20 May 2025 — Last working version is 135.0.7049.113, downgrading to it resolves the problem . To downgrade: uninstall Android WebView updates, then install ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://community.amazondeveloper.com/t/audio-and-video-not-working-in-webview/24676",
+    "name": "Audio and Video Not Working in WebView - Bug Reports",
+    "snippet": "31 Oct 2025 — The problem was due to missing permissions in app's manifest file. We've tested the fix and can confirm that audio and video now work correctly ...",
+    "host_name": "community.amazondeveloper.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ionic-team/capacitor/issues/802",
+    "name": "WebRTC audio, \"could not start audio source\" · Issue #802",
+    "snippet": "15 Sept 2018 — I installed Capacitor beta 8 and I now get the prompt for \"do you want to allow to record audio ?\". However, after clicking yes, when attempting to read media ...",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

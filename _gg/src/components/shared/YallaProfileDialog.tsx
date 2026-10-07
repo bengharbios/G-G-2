@@ -1,0 +1,1150 @@
+'use client';
+
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { LogOut, X, Shirt } from 'lucide-react';
+
+// ─── Types ────────────────────────────────────────────────────────────
+
+interface YallaAuthUser {
+  id: string;
+  username: string;
+  email?: string;
+  displayName?: string;
+  phone?: string;
+  avatar?: string;
+  bio?: string;
+  country?: string;
+  cover?: string;
+  frame?: string;
+  ornament?: string;
+  card?: string;
+  role?: string;
+  numericId?: number | null;
+}
+
+interface GameStat {
+  slug: string;
+  name: string;
+  played: number;
+  won: number;
+}
+
+interface XPInfo {
+  total: number;
+  level: number;
+  currentLevelXP: number;
+  nextLevelXP: number;
+  progress: number;
+  isMaxLevel: boolean;
+}
+
+interface CountryRec {
+  id: number;
+  name: string;
+  name_ar: string;
+  shortName: string;
+  areaCode: string;
+}
+
+interface FrameRec {
+  id: number;
+  name: string;
+  png: string;
+}
+
+type DecorPanel = 'ornaments' | 'themes' | 'frames' | 'cards' | null;
+
+interface YallaProfileDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  authUser?: YallaAuthUser | null;
+  subscriberCode?: string;
+  subscriberPlan?: string;
+  isTrial?: boolean;
+  allowedGames?: string[];
+  onLoginClick?: () => void;
+  onRegisterClick?: () => void;
+  onLogout?: () => void;
+  onProfileUpdated?: (u: Partial<YallaAuthUser>) => void;
+}
+
+// ─── Yalla asset catalogs (extracted from APK 1.5.1.0) ────────────────
+
+// Garland banners that drape over the TOP of the profile cover (yalla معلقة جدارية)
+const ORNAMENTS: Array<{ file: string; name: string }> = [
+  { file: '', name: 'لا يوجد' },
+  { file: 'orn_banner', name: 'لافتة الاحتفال' },
+  { file: 'orn_lights', name: 'أضواء البطولة' },
+  { file: 'orn_sparkle', name: 'بريق ذهبي' },
+];
+
+// بطاقات خلف البروفايل — فنيات تملأ منطقة الغلاف خلف الأفاتار (كل جزء مكانه)
+const CARD_BACKDROPS: Array<{ file: string; name: string }> = [
+  { file: 'card_astronaut', name: 'حديقة الفضاء' },
+  { file: 'card_glow', name: 'هالة ضوئية' },
+];
+
+// بطاقات الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل في جسم البروفايل لا خلفية
+const CARD_IDENTITY: Array<{ file: string; name: string; wide?: boolean }> = [
+  { file: 'room_profile_member_bg', name: 'بطاقة العضوية', wide: true },
+  { file: 'charge_reward_profile_card', name: 'بطاقة الشحن' },
+];
+const isIdentityCard = (f: string) => CARD_IDENTITY.some((c) => c.file === f);
+
+const COVERS: Array<{ file: string; name: string }> = [
+  { file: '', name: 'بدون موضوع' },
+  { file: '/yalla-covers/bg_profile_theme_default.webp', name: 'افتراضي' },
+  { file: '/yalla-games/mafia.png', name: 'المافيا' },
+  { file: '/yalla-games/tobol.png', name: 'طبول الحرب' },
+  { file: '/yalla-games/tabot.png', name: 'الهروب من التابوت' },
+  { file: '/yalla-games/prison.png', name: 'السجن' },
+  { file: '/yalla-games/risk.png', name: 'المجازفة' },
+  { file: '/yalla-games/risk2.png', name: 'المجازفة 2' },
+  { file: '/yalla-games/familyfeud.png', name: 'فاميلي فيود' },
+  { file: '/yalla-games/baharharb.png', name: 'بحر و حرب' },
+  { file: '/yalla-games/shifarat.png', name: 'الشيفرات' },
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────
+
+function levelFlagSrc(level: number): string {
+  if (level >= 50) return '/yalla-ui/level_big_50_60_ic.png';
+  if (level >= 40) return '/yalla-ui/level_big_40_49_ic.png';
+  if (level >= 30) return '/yalla-ui/level_big_30_39_ic.png';
+  if (level >= 20) return '/yalla-ui/level_big_20_29_ic.png';
+  if (level >= 10) return '/yalla-ui/level_big_10_19_ic.png';
+  return '/yalla-ui/level_big_1_9_ic.png';
+}
+
+function idSeed(user: YallaAuthUser | null | undefined): number {
+  if (!user) return 1;
+  if (user.numericId && Number.isFinite(user.numericId)) return Number(user.numericId);
+  let h = 0;
+  const s = user.id || '';
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function avatarSrc(user: YallaAuthUser | null | undefined): string {
+  if (user?.avatar) return user.avatar;
+  return `/yalla-avatars/defaultPhoto_${(idSeed(user) % 12) + 1}.png`;
+}
+
+function planInfo(plan?: string, isTrial?: boolean) {
+  if (isTrial) return { label: 'تجربة', cls: 'yp-badge--trial' };
+  if (plan === 'paid') return { label: 'مميز', cls: 'yp-badge--paid' };
+  return { label: 'مشترك', cls: 'yp-badge--free' };
+}
+
+// ─── Yalla countries (extracted from APK: assets/app/country) ────────
+
+function flagUrlFor(name: string | undefined, countries: CountryRec[]): string {
+  const c = countries.find((x) => x.name_ar === name);
+  return c ? `/yalla-flags/icon_country_${c.id}.png` : '/yalla-flags/NO_COUNTRY.png';
+}
+
+// ─── Component ────────────────────────────────────────────────────────
+
+export default function YallaProfileDialog({
+  open,
+  onOpenChange,
+  authUser,
+  subscriberCode,
+  subscriberPlan,
+  isTrial,
+  allowedGames = [],
+  onLoginClick,
+  onRegisterClick,
+  onLogout,
+  onProfileUpdated,
+}: YallaProfileDialogProps) {
+  const [xp, setXp] = useState<XPInfo | null>(null);
+  const [stats, setStats] = useState<GameStat[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+
+  // Edit form state
+  const [editing, setEditing] = useState(false);
+  const [formName, setFormName] = useState('');
+  const [formBio, setFormBio] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [formMsg, setFormMsg] = useState('');
+
+  // Country picker state (yalla flag list)
+  const [countries, setCountries] = useState<CountryRec[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<CountryRec | null>(null);
+  const [showCountryList, setShowCountryList] = useState(false);
+
+  // Decoration state (shirt menu: ornaments/themes/frames/card)
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [decorPanel, setDecorPanel] = useState<DecorPanel>(null);
+  const [frames, setFrames] = useState<FrameRec[]>([]);
+  const [savingDecor, setSavingDecor] = useState(false);
+
+  // ── Edit window (view_edit_user_info) + Basic info window (edit_avatar) state ──
+  const [editWin, setEditWin] = useState(false);
+  const [basicWin, setBasicWin] = useState(false);
+  const [eAvatar, setEAvatar] = useState('');
+  const [eGender, setEGender] = useState('');
+  const [eBirth, setEBirth] = useState('');
+  const [eName, setEName] = useState('');
+  const [eBio, setEBio] = useState('');
+  const [eCountry, setECountry] = useState<CountryRec | null>(null);
+  const [eSaving, setESaving] = useState(false);
+  const [eMsg, setEMsg] = useState('');
+  const [photoTab, setPhotoTab] = useState<'frames' | 'photos'>('frames');
+  const [frameFilter, setFrameFilter] = useState<string>('all');
+  const [ownedAvatars, setOwnedAvatars] = useState<string[]>([]);
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
+
+  const FRAME_FILTERS: Array<{ key: string; label: string }> = [
+    { key: 'all', label: 'الكل' },
+    { key: 'buy', label: 'تم الشراء' },
+    { key: 'pop', label: 'المس' },
+    { key: 'nav', label: 'الأنشطة' },
+    { key: 'hot', label: 'الفلاخر' },
+  ];
+
+  const openEditWindow = useCallback(() => {
+    setEName(authUser?.displayName || authUser?.username || '');
+    setEBio(authUser?.bio || '');
+    setECountry(countries.find((c) => c.name_ar === authUser?.country) || null);
+    setEAvatar(authUser?.avatar || '');
+    setEGender((authUser as Partial<YallaAuthUser> & { gender?: string })?.gender || 'ذكر');
+    setEBirth((authUser as Partial<YallaAuthUser> & { birthDate?: string })?.birthDate || '');
+    setEMsg('');
+    setEditWin(true);
+  }, [authUser, countries]);
+
+  const saveEditWindow = useCallback(async () => {
+    if (!eName.trim()) { setEMsg('الاسم مطلوب'); return; }
+    setESaving(true);
+    setEMsg('');
+    try {
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          displayName: eName.trim(),
+          bio: eBio.trim(),
+          country: eCountry?.name_ar ?? '',
+          gender: eGender,
+          birthDate: eBirth,
+          ...(eAvatar !== (authUser?.avatar || '') ? { avatar: eAvatar } : {}),
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        onProfileUpdated?.({
+          displayName: data.user?.displayName || eName.trim(),
+          bio: data.user?.bio || '',
+          country: data.user?.country || '',
+          avatar: data.user?.avatar,
+        });
+        setEditWin(false);
+      } else {
+        setEMsg(data.error || 'تعذر حفظ التغييرات');
+      }
+    } catch {
+      setEMsg('تعذر الاتصال بالخادم');
+    } finally {
+      setESaving(false);
+    }
+  }, [eName, eBio, eCountry, eGender, eBirth, eAvatar, authUser, onProfileUpdated]);
+
+  // Pick a photo from the owned-avatars grid (defaultPhoto_1..12)
+  const applyOwnedAvatar = useCallback(async (src: string) => {
+    setEAvatar(src);
+    setOwnedAvatars((prev) => (prev.includes(src) ? prev : [...prev, src]));
+    try {
+      await fetch('/api/auth/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avatar: src }),
+      });
+      onProfileUpdated?.({ avatar: src });
+    } catch { /* silent */ }
+  }, [onProfileUpdated]);
+
+  // Upload a custom photo → dataURL (small) or uploaded file URL
+  const onPhotoFile = useCallback(async (file: File) => {
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(String(fr.result));
+        fr.onerror = reject;
+        fr.readAsDataURL(file);
+      });
+      // Downscale to 256px to keep payload small
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise((r) => { img.onload = r; img.onerror = r; });
+      const canvas = document.createElement('canvas');
+      const side = Math.min(img.width, img.height) || 256;
+      canvas.width = 256; canvas.height = 256;
+      const ctx = canvas.getContext('2d');
+      if (ctx && img.width) {
+        ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 256, 256);
+        const out = canvas.toDataURL('image/jpeg', 0.82);
+        setEAvatar(out);
+        setOwnedAvatars((prev) => (prev.includes(out) ? prev : [...prev, out]));
+        await fetch('/api/auth/update-profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ avatar: out }),
+        });
+        onProfileUpdated?.({ avatar: out });
+      }
+    } catch { /* silent */ }
+  }, [onProfileUpdated]);
+
+  // Copy code state
+  const [copied, setCopied] = useState(false);
+
+  const plan = planInfo(subscriberPlan, isTrial);
+  const hasCover = !!authUser?.cover;
+
+  // Fetch XP + game stats when dialog opens
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+
+    async function loadData() {
+      if (!subscriberCode) return;
+      setLoadingData(true);
+      try {
+        const [xpRes, statsRes] = await Promise.allSettled([
+          fetch(`/api/player/xp?code=${encodeURIComponent(subscriberCode)}`),
+          fetch(`/api/player/game-stats?code=${encodeURIComponent(subscriberCode)}`),
+        ]);
+        if (cancelled) return;
+        if (xpRes.status === 'fulfilled' && xpRes.value.ok) {
+          const d = await xpRes.value.json();
+          if (!cancelled && d.success && d.xp) {
+            setXp({
+              total: d.xp.total ?? 0,
+              level: d.xp.level ?? 1,
+              currentLevelXP: d.xp.currentLevelXP ?? 0,
+              nextLevelXP: d.xp.nextLevelXP ?? 0,
+              progress: d.xp.progress ?? 0,
+              isMaxLevel: d.xp.isMaxLevel ?? false,
+            });
+          }
+        }
+        if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+          const d = await statsRes.value.json();
+          if (!cancelled && d.success && Array.isArray(d.games)) {
+            setStats(d.games);
+          }
+        }
+      } catch {
+        // silent — dialog still renders with placeholders
+      } finally {
+        if (!cancelled) setLoadingData(false);
+      }
+    }
+
+    loadData();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, subscriberCode]);
+
+  // Load yalla frames catalog (frameConfig + localFrameConfig, Arabic names)
+  useEffect(() => {
+    if (!open || frames.length > 0) return;
+    fetch('/yalla-frames/frames.json')
+      .then((r) => r.json())
+      .then((list) => setFrames(Array.isArray(list) ? list : []))
+      .catch(() => { /* silent */ });
+  }, [open, frames.length]);
+
+  // Load yalla countries list once per open session
+  useEffect(() => {
+    if (!open || countries.length > 0) return;
+    fetch('/yalla-flags/countries.json')
+      .then((r) => r.json())
+      .then((list) => setCountries(Array.isArray(list) ? list : []))
+      .catch(() => { /* silent */ });
+  }, [open, countries.length]);
+
+  // Reset edit form from the current user when opening / exiting edit mode
+  useEffect(() => {
+    if (open && authUser) {
+      setFormName(authUser.displayName || authUser.username || '');
+      setFormBio(authUser.bio || '');
+      setFormMsg('');
+      setEditing(false);
+      setShowCountryList(false);
+      setMenuOpen(false);
+      setDecorPanel(null);
+    }
+    if (!open) {
+      setEditing(false);
+      setMenuOpen(false);
+      setDecorPanel(null);
+    }
+  }, [open, authUser]);
+
+  // Sync selected country with the stored user country
+  useEffect(() => {
+    if (!open) return;
+    setSelectedCountry(countries.find((c) => c.name_ar === authUser?.country) || null);
+  }, [open, authUser, countries]);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  // Escape closes topmost layer
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (editWin) setEditWin(false);
+      else if (basicWin) setBasicWin(false);
+      else if (decorPanel) setDecorPanel(null);
+      else if (menuOpen) setMenuOpen(false);
+      else onOpenChange(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, decorPanel, menuOpen, editWin, basicWin, onOpenChange]);
+
+  const handleSave = useCallback(async () => {
+    if (!formName.trim()) {
+      setFormMsg('الاسم مطلوب');
+      return;
+    }
+    setSaving(true);
+    setFormMsg('');
+    try {
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          displayName: formName.trim(),
+          country: selectedCountry?.name_ar ?? '',
+          bio: formBio.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        onProfileUpdated?.({
+          displayName: data.user?.displayName || formName.trim(),
+          country: data.user?.country || '',
+          bio: data.user?.bio || '',
+        });
+        setEditing(false);
+        setShowCountryList(false);
+      } else {
+        setFormMsg(data.error || 'تعذر حفظ التغييرات');
+      }
+    } catch {
+      setFormMsg('تعذر الاتصال بالخادم');
+    } finally {
+      setSaving(false);
+    }
+  }, [formName, selectedCountry, formBio, onProfileUpdated]);
+
+  // Apply a decoration immediately (like yalla: uses the item at once)
+  const applyDecor = useCallback(async (field: 'cover' | 'frame' | 'ornament' | 'card', value: string) => {
+    setSavingDecor(true);
+    try {
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [field]: value }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        onProfileUpdated?.({ [field]: data.user?.[field] ?? value });
+      }
+    } catch {
+      // silent
+    } finally {
+      setSavingDecor(false);
+    }
+  }, [onProfileUpdated]);
+
+  const handleCopyCode = useCallback(() => {
+    if (!subscriberCode) return;
+    navigator.clipboard.writeText(subscriberCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    }).catch(() => { /* silent */ });
+  }, [subscriberCode]);
+
+  const totalPts = stats.reduce((s, g) => s + g.won, 0);
+  const winRate = xp ? Math.round(xp.progress) : 0;
+  const frameUrl = authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '';
+  const ornamentUrl = authUser?.ornament ? `/yalla-ornaments/${authUser.ornament}.png` : '';
+  const backdropUrl = authUser?.card && !isIdentityCard(authUser.card) ? `/yalla-ornaments/${authUser.card}.png` : '';
+  const identityFile = authUser?.card && isIdentityCard(authUser.card) ? authUser.card : '';
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="yp-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
+          onClick={() => onOpenChange(false)}
+        >
+          <motion.div
+            className="yp-panel"
+            initial={{ opacity: 0, scale: 0.9, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 12 }}
+            transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+            onClick={(e) => e.stopPropagation()}
+            dir="rtl"
+          >
+            {/* Close / Logout buttons — pinned to panel, outside the scroll area */}
+            <button className="yp-iconbtn yp-iconbtn--close" onClick={() => onOpenChange(false)} aria-label="إغلاق">
+              <X className="w-4 h-4" />
+            </button>
+            {authUser && onLogout && (
+              <button className="yp-iconbtn yp-iconbtn--logout" onClick={onLogout} aria-label="تسجيل الخروج" title="تسجيل الخروج">
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            )}
+
+            {/* Avatar head (with yalla frame overlay) */}
+            {authUser && (
+              <div className={`yp-headwrap${hasCover ? ' yp-headwrap--cover' : ''}`}>
+                <div className={`yp-head${frameUrl ? '' : ' yp-head--plain'}`}>
+                  <img
+                    src={avatarSrc(authUser)}
+                    alt={authUser.displayName || authUser.username}
+                    className="yp-head-img"
+                    onError={(e) => {
+                      const t = e.currentTarget;
+                      if (!t.src.includes('defaultPhoto_')) t.src = '/yalla-avatars/defaultPhoto_1.png';
+                    }}
+                  />
+                </div>
+                {frameUrl && (
+                  <img src={frameUrl} alt="" className="yp-frame" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                )}
+              </div>
+            )}
+
+            {/* Profile cover strip (yalla موضوع الملف الشخصي) — الافتراضي الأخضر دائم كما في يلا */}
+            {authUser && (
+              <div className="yp-cover" onClick={() => setDecorPanel('themes')}>
+                <img
+                  src={authUser.cover || '/yalla-covers/bg_profile_theme_default.webp'}
+                  alt=""
+                  onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }}
+                />
+              </div>
+            )}
+
+            {/* Card backdrop BEHIND the avatar (بطاقة خلف البروفايل) — بعرض الموضوع، ذائبة الحواف */}
+
+            {/* Wall garland draped over the cover TOP (معلقة جدارية) */}
+            {authUser && ornamentUrl && (
+              <img
+                src={ornamentUrl}
+                alt=""
+                className="yp-ornament"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            )}
+
+            {/* Side buttons: square-pencil (edit) + shirt (decoration menu) */}
+            {authUser && (
+              <>
+                <button
+                  className="yp-sidebtn yp-sidebtn--edit"
+                  onClick={() => openEditWindow()}
+                  aria-label="تعديل الملف الشخصي"
+                  title="تعديل الملف الشخصي"
+                >
+                  <img src="/yalla-ui/icon_edit_profile.webp" alt="" onError={(e) => { e.currentTarget.style.opacity = '0'; }} />
+                </button>
+                <button
+                  className="yp-sidebtn yp-sidebtn--shirt"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-label="زينة الملف الشخصي"
+                  title="زينة الملف الشخصي"
+                >
+                  <Shirt className="w-5 h-5" />
+                </button>
+
+                {/* Shirt dropdown menu (yalla: تفعيل معلقة / موضوع / بطاقة / إطار) */}
+                <AnimatePresence>
+                  {menuOpen && (
+                    <motion.div
+                      className="yp-menu"
+                      initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('ornaments'); }}>تفعيل معلقة جدارية</button>
+                      <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('themes'); }}>تعديل موضوع الملف الشخصي</button>
+                      <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('cards'); }}>تعيين بطاقة الملف الشخصي</button>
+                      <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('frames'); }}>تعيين إطار صورة الملف الشخصي</button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+
+            {/* Scrollable content — avatar head stays above/outside it */}
+            <div className="yp-scroll">
+
+              {/* خلفية فنية داخل منطقة الغلاف بالضبط (لكل جزء مكانه) */}
+              {authUser && backdropUrl && (
+                <img
+                  src={backdropUrl}
+                  alt=""
+                  className="yp-carddecor"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              )}
+
+              {/* ── Guest view ── */}
+              {!authUser ? (
+                <div className="yp-body yp-body--guest">
+                  <h2 className="yp-name">الملف الشخصي</h2>
+                  <p className="yp-guest-txt">
+                    سجّل دخولك لعرض ملفك الشخصي ومستواك وخبرتك وإحصاءات ألعابك
+                  </p>
+                  <div className="yp-btnrow yp-btnrow--guest">
+                    <button className="yp-btn" onClick={onLoginClick}>تسجيل الدخول</button>
+                    <button className="yp-btn yp-btn--alt" onClick={onRegisterClick}>حساب جديد</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="yp-body">
+                  {/* Player name */}
+                  <h2 className="yp-name">{authUser.displayName || authUser.username || 'لاعب'}</h2>
+
+                  {/* ID pill (يلا: ID: 9805432347) */}
+                  <div className="yp-idrow">
+                    <span className="yp-idpill">
+                      <span className="yp-idico" />
+                      <span dir="ltr">ID: {authUser.numericId ?? '—'}</span>
+                    </span>
+                  </div>
+
+                  {/* Info strip: level flag | membership | sep | gender | country (يلا) */}
+                  <div className="yp-inforow">
+                    <span className="yp-flag">
+                      <img src={levelFlagSrc(xp?.level ?? 1)} alt="" className="yp-flag-img" />
+                      <i className="yp-flag-num">{xp?.level ?? 1}</i>
+                    </span>
+                    <img
+                      className="yp-mflag"
+                      src="/yalla-ui/level_big_50_60_ic.png"
+                      alt="العضوية"
+                      title={`العضوية: ${plan.label}`}
+                    />
+                    <span className="yp-sep" />
+                    <img className="yp-mflag" src="/yalla-ui/gender_male.webp" alt="ذكر" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    <img
+                      className="yp-flag-lg"
+                      src={flagUrlFor(authUser.country, countries)}
+                      alt={authUser.country || 'دولة'}
+                      onError={(e) => { e.currentTarget.src = '/yalla-flags/NO_COUNTRY.png'; }}
+                    />
+                  </div>
+
+                  {/* Bio (max 5 lines, like CustomTextView) */}
+                  <p className="yp-bio">
+                    {authUser.bio || 'لا يوجد وصف شخصي بعد — أضف وصفك من زر التعديل'}
+                  </p>
+
+    {editWin && (
+      <div className="ye-overlay" dir="rtl" onClick={() => setEditWin(false)}>
+        <div className="ye-scroll" onClick={(e) => e.stopPropagation()}>
+            <button className="ye-close" onClick={() => setEditWin(false)} aria-label="إغلاق">
+                <X className="w-6 h-6" />
+              </button>
+              <div className="ye-head">
+                <div className="ye-headcard">
+                  <img src={authUser.cover || '/yalla-covers/bg_profile_theme_default.webp'} alt="" onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }} />
+                </div>
+                <button className="ye-headbtn" onClick={() => setBasicWin(true)} aria-label="تغيير صورة الملف الشخصي" title="تغيير صورة الملف الشخصي">
+                  <img src={eAvatar || avatarSrc(authUser)} alt="" onError={(e) => { e.currentTarget.src = avatarSrc(authUser); }} />
+                </button>
+              </div>
+              <div className="ye-body">
+                <div className="ye-field">
+                  <label className="ye-label">الاسم المعروض</label>
+                  <div style={{ position: 'relative' }}>
+                    <input className="ye-input" value={eName} onChange={(e) => setEName(e.target.value)} maxLength={16} placeholder="أدخل اسمك" />
+                    <span className="ye-counter" dir="ltr">{eName.length}/16</span>
+                  </div>
+                </div>
+
+                {/* الجنس — منتقي شبكي (dialog_sex_select) */}
+                <div className="ye-field">
+                  <label className="ye-label">الجنس</label>
+                  <div className="ye-row">
+                    {['ذكر', 'أنثى'].map((g) => (
+                      <button
+                        key={g}
+                        type="button"
+                        className={`ye-pick${eGender === g ? ' ye-pick--on' : ''}`}
+                        style={eGender === g ? { borderColor: '#2C7762', background: 'rgba(44,119,98,.14)' } : undefined}
+                        onClick={() => setEGender(g)}
+                      >
+                        <img src={`/yalla-ui/gender_${g === 'ذكر' ? 'male' : 'female'}.webp`} alt="" />
+                        <span className="ye-pick-name">{g}</span>
+                        {eGender === g && <span className="yp-idico" style={{ width: 12, height: 12, borderRadius: '50%', background: '#22B365' }} />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* تاريخ الميلاد */}
+                <div className="ye-field">
+                  <label className="ye-label">تاريخ الميلاد</label>
+                  <input
+                    className="ye-input"
+                    type="date"
+                    value={eBirth}
+                    max="2025-12-31"
+                    onChange={(e) => setEBirth(e.target.value)}
+                  />
+                </div>
+
+                {/* الدولة — شبكة الأعلام */}
+                <div className="ye-field">
+                  <label className="ye-label">الدولة</label>
+                  <button type="button" className="ye-pick" onClick={(e) => { const el = document.getElementById('ye-cgrid'); if (el) el.style.display = el.style.display === 'none' ? 'grid' : 'none'; }}>
+                    <img className="yp-flag-lg" src={flagUrlFor(eCountry?.name_ar, countries)} alt="" onError={(e) => { e.currentTarget.src = '/yalla-flags/NO_COUNTRY.png'; }} />
+                    <span className="ye-pick-name">{eCountry?.name_ar || 'اختر دولتك'}</span>
+                    <span className="ye-pick-car">▾</span>
+                  </button>
+                  <div id="ye-cgrid" className="ye-cgrid" style={{ display: 'none' }}>
+                    {countries.map((c) => (
+                      <button
+                        type="button"
+                        key={c.id}
+                        className={`ye-citem${eCountry?.id === c.id ? ' ye-citem--on' : ''}`}
+                        onClick={() => { setECountry(c); const el = document.getElementById('ye-cgrid'); if (el) el.style.display = 'none'; }}
+                      >
+                        <img src={`/yalla-flags/icon_country_${c.id}.png`} alt="" />
+                        <span>{c.name_ar}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* الوصف الشخصي */}
+                <div className="ye-field">
+                  <label className="ye-label">الوصف الشخصي</label>
+                  <div style={{ position: 'relative' }}>
+                    <textarea
+                      className="ye-input"
+                      style={{ height: 84, padding: '10px 13px', resize: 'none' }}
+                      value={eBio}
+                      onChange={(e) => setEBio(e.target.value)}
+                      maxLength={300}
+                      rows={3}
+                      placeholder="اكتب وصفاً قصيراً عنك..."
+                    />
+                    <span className="ye-counter" dir="ltr">{eBio.length}/300</span>
+                  </div>
+                </div>
+
+                {eMsg && <p className={`ye-msg${eMsg.includes('تعذر') ? ' ye-msg--err' : ''}`}>{eMsg}</p>}
+                <button className="ye-save" onClick={saveEditWindow} disabled={eSaving}>
+                  {eSaving ? '...جارٍ الحفظ' : 'حفظ التغييرات'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── Basic info window (edit_avatar / dialog_avatar_edit) ─── */}
+    {basicWin && (
+          <div className="yb-overlay" dir="rtl" onClick={() => setBasicWin(false)}>
+            <div className="yb-card" onClick={(e) => e.stopPropagation()}>
+              <div className="yb-titlebar">
+                <h2 className="yb-title">معلومات أساسية</h2>
+                <button className="yb-x" onClick={() => setBasicWin(false)} aria-label="إغلاق">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="yb-headrow">
+                <span className="yb-avwrap">
+                  <img className="yb-avface" src={eAvatar || avatarSrc(authUser)} alt="" />
+                  {!!authUser.frame && (
+                    <img src={`/yalla-frames/${authUser.frame}.png`} alt="" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  )}
+                </span>
+                <div className="yb-xpwrap">
+                  <div className="yb-xprow">
+                    <span>الخبرة</span>
+                    <b dir="ltr">{xp ? `${new Intl.NumberFormat('en-US').format(xp.currentLevelXP)}/${new Intl.NumberFormat('en-US').format(xp.nextLevelXP)}` : '—'}</b>
+                  </div>
+                  <div className="yb-xptrack">
+                    <div className="yb-xpfill" style={{ width: `${Math.max(4, Math.min(100, xp?.progress ?? 0))}%` }} />
+                  </div>
+                </div>
+                <button className="yb-userpick">
+                  <img src="/yalla-ui/jia.webp" alt="" style={{ width: 16, height: 16 }} />
+                  <span>لدي</span>
+                </button>
+              </div>
+
+              <div className="yb-tabs">
+                <button className={`yb-tab${photoTab === 'photos' ? ' yb-tab--on' : ''}`} onClick={() => setPhotoTab('photos')}>صورة الملف الشخصي</button>
+                <button className={`yb-tab${photoTab === 'frames' ? ' yb-tab--on' : ''}`} onClick={() => setPhotoTab('frames')}>إطار الصورة</button>
+              </div>
+
+              {photoTab === 'frames' ? (
+                <>
+                  <div className="yb-filterbar">
+                    {FRAME_FILTERS.map((f) => (
+                      <button key={f.key} className={`yb-filter${frameFilter === f.key ? ' yb-filter--on' : ''}`} onClick={() => setFrameFilter(f.key)}>
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="yb-body">
+                    <div className="yb-secband">تم الحصول عليها</div>
+                    <div className="yb-framegrid">
+                      <button className={`yb-framecell${!authUser.frame ? ' yb-framecell--on' : ''}`} onClick={() => applyDecor('frame', '')}>
+                        <span className="yb-framecell-imgwrap">
+                          <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
+                        </span>
+                        {!authUser.frame && <i className="yb-check">✓</i>}
+                      </button>
+                      {frames
+                        .filter((f) => {
+                          if (frameFilter === 'all') return true;
+                          if (frameFilter === 'buy') return authUser.frame === String(f.id);
+                          const rem = frameFilter === 'pop' ? 1 : frameFilter === 'nav' ? 2 : frameFilter === 'hot' ? 3 : 4;
+                          return Number(f.id) % 5 === rem;
+                        })
+                        .map((f) => {
+                          const active = authUser.frame === String(f.id);
+                          return (
+                            <button
+                              key={f.id}
+                              className={`yb-framecell${active ? ' yb-framecell--on' : ''}`}
+                              onClick={() => applyDecor('frame', String(f.id))}
+                              title={f.name}
+                            >
+                              <span className="yb-framecell-imgwrap">
+                                <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
+                                <img src={f.png} alt={f.name} />
+                              </span>
+                              {active && <i className="yb-check">✓</i>}
+                            </button>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="yb-body">
+                  <div className="yb-secband">تم الحصول عليها</div>
+                  <div className="yb-photogrid">
+                    <button className="yb-addphoto" onClick={() => photoInputRef.current?.click()}>
+                      <span className="yb-addphoto-ico">+</span>
+                      <span>إضافة صورة</span>
+                    </button>
+                    {(ownedAvatars.length ? ownedAvatars : [avatarSrc(authUser)]).map((src, i) => (
+                      <button
+                        key={i}
+                        className={`yb-photocell${(eAvatar || authUser.avatar) === src ? ' yb-photocell--on' : ''}`}
+                        onClick={() => applyOwnedAvatar(src)}
+                      >
+                        <img className="yb-photocell-face" src={src} alt="" />
+                        {(eAvatar || authUser.avatar) === src && <i className="yb-check">✓</i>}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    ref={photoInputRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={(e) => { const f = e.target.files?.[0]; if (f) onPhotoFile(f); e.target.value = ''; }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+                  {/* ── بطاقات الأقسام بنمط يلا: المستوى / اللعبة / الإنجازات ── */}
+                  <div className="yp-sec">
+                    {/* المستوى */}
+                    <div className="yp-seccard">
+                      <span className="yp-ribbon yp-ribbon--tr">المستوى</span>
+                      <div className="yp-lvrow">
+                        <div className="yp-lvtrack">
+                          <div
+                            className="yp-lvfill"
+                            style={{ width: `${Math.max(4, Math.min(100, xp?.progress ?? 0))}%` }}
+                          />
+                          <span className="yp-lvnum" dir="ltr">
+                            {xp
+                              ? `${new Intl.NumberFormat('en-US').format(xp.currentLevelXP)}/${new Intl.NumberFormat('en-US').format(xp.isMaxLevel ? xp.currentLevelXP : xp.nextLevelXP)}`
+                              : '—'}
+                          </span>
+                        </div>
+                        <span className="yp-flag">
+                          <img src={levelFlagSrc(xp?.level ?? 1)} alt="" className="yp-flag-img" />
+                          <i className="yp-flag-num">{xp?.level ?? 1}</i>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* اللعبة */}
+                    <div className="yp-seccard">
+                      <span className="yp-ribbon yp-ribbon--tr">اللعبة</span>
+                      <div className="yp-secrow yp-secrow--btn">
+                        <span className="yp-seclabel">بطولة الدوري</span>
+                        <span className="yp-secval">{new Intl.NumberFormat('en-US').format(totalPts)}</span>
+                        <span className="yp-secval yp-secval--blue">احتمال الفوز {winRate}%</span>
+                      </div>
+                      <div className="yp-secgames">
+                        {loadingData && stats.length === 0 && (
+                          <span className="yp-secgame"><span>...جارٍ التحميل</span></span>
+                        )}
+                        {!loadingData && stats.length === 0 && (
+                          <span className="yp-secgame"><span>لا توجد ألعاب مفعّلة بعد</span></span>
+                        )}
+                        {stats.slice(0, 4).map((g) => (
+                          <span className="yp-secgame" key={g.slug}>
+                            <img
+                              src={`/yalla-games/${g.slug}.png`}
+                              alt={g.name}
+                              onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+                            />
+                            <span>{g.name}</span>
+                            <b>{new Intl.NumberFormat('en-US').format(g.won)}</b>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* الإنجازات */}
+                    <div className="yp-seccard">
+                      <span className="yp-ribbon yp-ribbon--tr">الإنجازات</span>
+                      <div className="yp-secrow">
+                        <span className="yp-seclabel">الشارات</span>
+                        <span className="yp-secval" style={{ display: 'inline-flex', gap: 5, alignItems: 'center' }}>
+                          <i style={{ display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'linear-gradient(180deg,#F0B429,#C98A12)', color: '#fff', fontSize: 10, fontWeight: 900, fontStyle: 'normal' }}>5</i>
+                          <i style={{ display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'linear-gradient(180deg,#4A90D9,#2C5F9E)', color: '#fff', fontSize: 10, fontWeight: 900, fontStyle: 'normal' }}>1</i>
+                        </span>
+                      </div>
+                      <div className="yp-secrow">
+                        <span className="yp-seclabel">مستوى رويال</span>
+                        <span className="yp-secval">مستوى {xp?.level ?? 1}</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  {/* Subscription code card (bottom invite-style card) */}
+                  {subscriberCode && (
+                    <button className="yp-invite" onClick={handleCopyCode}>
+                      <img src="/yalla-ui/jia.webp" alt="" className="yp-invite-ico" />
+                      <span className="yp-invite-txt" dir="ltr">{subscriberCode}</span>
+                      <span className="yp-invite-act">{copied ? 'تم النسخ ✓' : 'نسخ الكود'}</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+      {/* ─── Decoration FULL-SCREEN windows (yalla: room_profile_card_shop / dialog_skin_theme / dialog_head_frame_select) ─── */}
+      <AnimatePresence>
+        {open && authUser && decorPanel && (
+          <motion.div
+            className="yd-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="yd-rays" />
+            <div className="yd-bubbles">
+              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+                <span
+                  key={i}
+                  className="yd-bubble"
+                  style={{
+                    left: `${6 + i * 13.5}%`,
+                    width: 16 + (i % 3) * 10,
+                    height: 16 + (i % 3) * 10,
+                    animationDelay: `${i * 1.7}s`,
+                    animationDuration: `${10 + (i % 3) * 2.5}s`,
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="yd-scroll" dir="rtl">
+              <button className="yd-close" onClick={() => setDecorPanel(null)} aria-label="إغلاق">
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="yd-wallet">
+                <img src="/yalla-ui/exp.png" alt="" />
+                <span dir="ltr">3.8M</span>
+                <img src="/yalla-ui/exp.png" alt="" />
+                <span dir="ltr">144</span>
+              </div>
+
+              <div className="yd-titlewrap">
+                <h2 className="yd-title">
+                  {decorPanel === 'ornaments' && 'المعلقات الجدارية'}
+                  {decorPanel === 'themes' && 'موضوع الملف الشخصي'}
+                  {decorPanel === 'frames' && 'إطار الصورة'}
+                  {decorPanel === 'cards' && 'بطاقة الملف الشخصي'}
+                </h2>
+              </div>
+
+              {/* Ornaments: 2-col shelf cards with embedded avatar preview */}
+              {decorPanel === 'ornaments' && (
+                <div className="yd-grid yd-grid--2">
+                  {ORNAMENTS.map((o) => {
+                    const active = (authUser.ornament || '') === o.file;
+                    return (
+                      <button
+                        key={`orn-${o.file || 'none'}`}
+                        className={`yd-card${o.file ? '' : ' yd-card--blue'}${active ? ' yd-card--on' : ''}`}
+                        disabled={savingDecor}
+                        onClick={() => applyDecor('ornament', o.file)}
+                      >
+                        <span className="yd-card-name">{o.name}</span>
+                        <span className="yd-ornpreview">
+                          {avatarSrc(authUser) && o.file && (
+                            <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />
+                          )}
+                          {o.file ? (
+                            <img src={`/yalla-ornaments/${o.file}.png`} alt={o.name} onError={(e) => { const t = e.currentTarget; if (!t.dataset.f) { t.dataset.f = '1'; t.src = `/yalla-ornaments/${o.file}.webp`; } else { t.style.display = 'none'; } }} />
+                          ) : (
+                            <span className="yd-none">لا يوجد</span>
+                          )}
+                        </span>
+                        {active && <i className="yd-check">✓</i>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Themes/covers: 3-col vertical cards (dialog_skin_theme) */}
+              {decorPanel === 'themes' && (
+                <div className="yd-grid yd-grid--3">
+                  {COVERS.map((c) => {
+                    const active = (authUser.cover || '') === c.file;
+                    return (
+                      <button
+                        key={`cover-${c.file || 'none'}`}
+                        className={`yd-themecard${active ? ' yd-card--on' : ''}`}
+                        disabled={savingDecor}
+                        onClick={() => applyDecor('cover', c.file)}
+                      >
+                        {c.file ? (
+                          <img src={c.file} alt={c.name} />
+                        ) : (
+                          <span className="yd-none">لا يوجد</span>
+                        )}
+                        <span className="yd-themename">{c.name}</span>
+                        {active && <i className="yd-check">✓</i>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Frames: 4-col circles (dialog_head_frame_select) */}
+              {decorPanel === 'frames' && (
+                <div className="yd-grid yd-grid--4">
+                  <button
+                    className={`yd-framecard${!authUser.frame ? ' yd-card--on' : ''}`}
+                    disabled={savingDecor}
+                    onClick={() => applyDecor('frame', '')}
+                  >
+                    <span className="yd-framecircle" />
+                    <span className="yd-framename">بدون إطار</span>
+                    {!authUser.frame && <i className="yd-check">✓</i>}
+                  </button>
+                  {frames.map((f) => {
+                    const active = authUser.frame === String(f.id);
+                    return (
+                      <button
+                        key={f.id}
+                        className={`yd-framecard${active ? ' yd-card--on' : ''}`}
+                        disabled={savingDecor}
+                        onClick={() => applyDecor('frame', String(f.id))}
+                        title={f.name}
+                      >
+                        <span className="yd-framecircle">
+                          <img src={f.png} alt={f.name} />
+                        </span>
+                        <span className="yd-framename">{f.name}</span>
+                        {active && <i className="yd-check">✓</i>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Cards: 2-col shelf cards with embedded avatar preview */}
+              {decorPanel === 'cards' && (
+                <div className="yd-grid yd-grid--2">
+                  <button
+                    key="none"
+                    className={`yd-card yd-card--blue${!authUser.card ? ' yd-card--on' : ''}`}
+                    disabled={savingDecor}
+                    onClick={() => applyDecor('card', '')}
+                  >
+                    <span className="yd-card-name">لا يوجد</span>
+                    <span className="yd-ornpreview">
+                      <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />
+                      <span className="yd-none">لا يوجد</span>
+                    </span>
+                    {!authUser.card && <i className="yd-check">✓</i>}
+                  </button>
+                  {CARD_BACKDROPS.map((c) => {
+                    const active = (authUser.card || '') === c.file;
+                    return (
+                      <button key={`card-${c.file}`}
+                        className={`yd-card${active ? ' yd-card--on' : ''}`}
+                        disabled={savingDecor}
+                        onClick={() => applyDecor('card', c.file)}
+                      >
+                        <span className="yd-card-name">{c.name}</span>
+                        <span className="yd-ornpreview">
+                          <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />
+                          <img src={`/yalla-ornaments/${c.file}.png`} alt={c.name} />
+                        </span>
+                        {active && <i className="yd-check">✓</i>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </AnimatePresence>
+  );
+}
