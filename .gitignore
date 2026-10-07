@@ -1,5 +1,6 @@
 # ── Tool state / logs / temp ──
 .freebuff/
+_gg/.git_backup_gg/
 *.log
 server_err.log
 server_out.log
