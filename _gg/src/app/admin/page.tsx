@@ -216,7 +216,7 @@ interface LeaderboardEntry {
   isSpecialId: boolean;
 }
 
-type ActiveSection = 'dashboard' | 'games' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds';
+type ActiveSection = 'dashboard' | 'games' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
 
 // ─── Navigation items ─────────────────────────────────────────────────
 
@@ -231,6 +231,9 @@ const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = 
   { id: 'gem-charges', label: 'شحن الجواهر', icon: <Gem className="w-5 h-5" /> },
   { id: 'leaderboard', label: 'المتصدرين', icon: <Trophy className="w-5 h-5" /> },
   { id: 'frames', label: 'إدارة الإطارات', icon: <Frame className="w-5 h-5" /> },
+  { id: 'ornaments', label: 'المعلقات الجدارية', icon: <ImageIcon className="w-5 h-5" /> },
+  { id: 'themes', label: 'المواضيع', icon: <ImageIcon className="w-5 h-5" /> },
+  { id: 'cards', label: 'البطاقات', icon: <ImageIcon className="w-5 h-5" /> },
   { id: 'users', label: 'إدارة المستخدمين', icon: <UserPlus className="w-5 h-5" /> },
   { id: 'backgrounds', label: 'خلفيات الرومات', icon: <ImageIcon className="w-5 h-5" /> },
   { id: 'settings', label: 'الإعدادات', icon: <Settings className="w-5 h-5" /> },
@@ -411,7 +414,7 @@ export default function AdminPage() {
   const [frameFormOpen, setFrameFormOpen] = useState(false);
   const [editingFrame, setEditingFrame] = useState<typeof frames[number] | null>(null);
   const [frameForm, setFrameForm] = useState({
-    name: '', nameAr: '', description: '', rarity: 'common' as string,
+    name: '', nameAr: '', description: '', imageUrl: '', rarity: 'common' as string,
     gradientFrom: '#f59e0b', gradientTo: '#eab308', borderColor: 'rgba(245, 158, 11, 0.7)',
     glowColor: 'rgba(245, 158, 11, 0.4)', pattern: 'gradient' as string,
     price: 0, isFree: false, isActive: true, sortOrder: 0,
@@ -436,6 +439,18 @@ export default function AdminPage() {
     rarity: 'common' as string, price: 0, isFree: false, isDefault: false, isActive: true, sortOrder: 0,
   });
   const [bgFormLoading, setBgFormLoading] = useState(false);
+  // ─── الزينة (معلقات/مواضيع/بطاقات) ───
+  const [decorItems, setDecorItems] = useState<Array<{
+    id: string; kind: string; nameAr: string; imageUrl: string; rarity: string;
+    price: number; isFree: boolean; isActive: boolean; sortOrder: number; totalOwned: number;
+  }>>([]);
+  const [decorFormOpen, setDecorFormOpen] = useState(false);
+  const [editingDecor, setEditingDecor] = useState<typeof decorItems[number] | null>(null);
+  const [decorKind, setDecorKind] = useState<'ornament' | 'theme' | 'card'>('ornament');
+  const [decorForm, setDecorForm] = useState({
+    nameAr: '', imageUrl: '', rarity: 'common' as string, price: 0, isFree: false, isActive: true, sortOrder: 0,
+  });
+  const [decorFormLoading, setDecorFormLoading] = useState(false);
   const [bgUploading, setBgUploading] = useState(false);
 
   // ─── Toast helper ───────────────────────────────────────────────────
@@ -618,6 +633,105 @@ export default function AdminPage() {
     } catch { /* ignore */ }
   }, []);
 
+  // ─── الزينة (معلقات/مواضيع/بطاقات) ───
+  const fetchDecor = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/decor');
+      if (res.ok) {
+        const data = await res.json();
+        setDecorItems(data.items || []);
+      }
+    } catch {
+      showToast('تعذر تحميل الزينة', 'error');
+    }
+  }, [showToast]);
+
+  const openAddDecorDialog = (kind: 'ornament' | 'theme' | 'card') => {
+    setEditingDecor(null);
+    setDecorKind(kind);
+    setDecorForm({ nameAr: '', imageUrl: '', rarity: 'common', price: 0, isFree: false, isActive: true, sortOrder: decorItems.length });
+    setDecorFormOpen(true);
+  };
+
+  const openEditDecorDialog = (item: typeof decorItems[number]) => {
+    setEditingDecor(item);
+    setDecorKind(item.kind as 'ornament' | 'theme' | 'card');
+    setDecorForm({
+      nameAr: item.nameAr, imageUrl: item.imageUrl, rarity: item.rarity,
+      price: item.price, isFree: item.isFree, isActive: item.isActive, sortOrder: item.sortOrder,
+    });
+    setDecorFormOpen(true);
+  };
+
+  const saveDecor = async () => {
+    if (!decorForm.nameAr) {
+      showToast('اسم العنصر مطلوب', 'error');
+      return;
+    }
+    setDecorFormLoading(true);
+    try {
+      if (editingDecor) {
+        const res = await fetch('/api/admin/decor', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editingDecor.id, ...decorForm }),
+        });
+        if (res.ok) {
+          showToast('تم تحديث العنصر بنجاح');
+          setDecorFormOpen(false);
+          fetchDecor();
+        } else {
+          showToast('فشل التحديث', 'error');
+        }
+      } else {
+        const res = await fetch('/api/admin/decor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kind: decorKind, ...decorForm }),
+        });
+        if (res.ok) {
+          showToast('تم إنشاء العنصر بنجاح');
+          setDecorFormOpen(false);
+          fetchDecor();
+        } else {
+          showToast('فشل الإنشاء', 'error');
+        }
+      }
+    } catch {
+      showToast('حدث خطأ', 'error');
+    } finally {
+      setDecorFormLoading(false);
+    }
+  };
+
+  const deleteDecorHandler = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/decor?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (res.ok) {
+        setDecorItems(prev => prev.filter(d => d.id !== id));
+        showToast('تم حذف العنصر');
+      }
+    } catch {
+      showToast('حدث خطأ', 'error');
+    }
+  };
+
+  const toggleDecorActive = async (id: string, active: boolean) => {
+    try {
+      const res = await fetch('/api/admin/decor', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, isActive: !active }),
+      });
+      if (res.ok) {
+        setDecorItems(prev => prev.map(d => d.id === id ? { ...d, isActive: !active } : d));
+        showToast(active ? 'تم تعطيل العنصر' : 'تم تفعيل العنصر');
+      }
+    } catch {
+      showToast('حدث خطأ', 'error');
+    }
+  };
+
   const fetchBackgrounds = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/backgrounds');
@@ -737,6 +851,11 @@ export default function AdminPage() {
         break;
       case 'frames':
         fetchFrames();
+        break;
+      case 'ornaments':
+      case 'themes':
+      case 'cards':
+        fetchDecor();
         break;
       case 'users':
         fetchUsers();
@@ -1363,7 +1482,7 @@ export default function AdminPage() {
   const openAddFrameDialog = () => {
     setEditingFrame(null);
     setFrameForm({
-      name: '', nameAr: '', description: '', rarity: 'common',
+      name: '', nameAr: '', description: '', imageUrl: '', rarity: 'common',
       gradientFrom: '#f59e0b', gradientTo: '#eab308', borderColor: 'rgba(245, 158, 11, 0.7)',
       glowColor: 'rgba(245, 158, 11, 0.4)', pattern: 'gradient',
       price: 0, isFree: false, isActive: true, sortOrder: frames.length,
@@ -1375,6 +1494,7 @@ export default function AdminPage() {
     setEditingFrame(frame);
     setFrameForm({
       name: frame.name, nameAr: frame.nameAr, description: frame.description,
+      imageUrl: frame.imageUrl || '',
       rarity: frame.rarity, gradientFrom: frame.gradientFrom, gradientTo: frame.gradientTo,
       borderColor: frame.borderColor, glowColor: frame.glowColor, pattern: frame.pattern,
       price: frame.price, isFree: frame.isFree, isActive: frame.isActive, sortOrder: frame.sortOrder,
@@ -2628,8 +2748,19 @@ export default function AdminPage() {
                                 boxShadow: `0 0 12px ${frame.glowColor}`,
                               }}
                             >
-                              <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-                                <User className="w-6 h-6 text-slate-500" />
+                              <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
+                                {frame.imageUrl ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    key={frame.imageUrl}
+                                    src={frame.imageUrl}
+                                    alt={frame.nameAr || frame.name}
+                                    className="w-full h-full object-contain"
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                  />
+                                ) : (
+                                  <User className="w-6 h-6 text-slate-500" />
+                                )}
                               </div>
                             </div>
                           </div>
@@ -2710,8 +2841,19 @@ export default function AdminPage() {
                           boxShadow: `0 0 16px ${frameForm.glowColor}`,
                         }}
                       >
-                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-                          <User className="w-8 h-8 text-slate-500" />
+                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
+                          {frameForm.imageUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              key={frameForm.imageUrl}
+                              src={frameForm.imageUrl}
+                              alt="معاينة الإطار"
+                              className="w-full h-full object-contain"
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          ) : (
+                            <User className="w-8 h-8 text-slate-500" />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2745,6 +2887,17 @@ export default function AdminPage() {
                         onChange={(e) => setFrameForm(prev => ({ ...prev, description: e.target.value }))}
                         placeholder="وصف مختصر للإطار"
                         className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-slate-300 text-sm">رابط الصورة (PNG محلي)</Label>
+                      <Input
+                        value={frameForm.imageUrl}
+                        onChange={(e) => setFrameForm(prev => ({ ...prev, imageUrl: e.target.value }))}
+                        placeholder="/yalla-frames/110001.png"
+                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                        dir="ltr"
                       />
                     </div>
 
@@ -3009,6 +3162,191 @@ export default function AdminPage() {
                     >
                       {grantLoading ? <Loader2 className="w-4 h-4 ml-1 animate-spin" /> : <Gift className="w-4 h-4 ml-1" />}
                       منح الإطار
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
+          {/* ─── الزينة: معلقات / مواضيع / بطاقات ─────────────────── */}
+          {(activeSection === 'ornaments' || activeSection === 'themes' || activeSection === 'cards') && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-emerald-400" />
+                    {activeSection === 'ornaments' ? 'المعلقات الجدارية' : activeSection === 'themes' ? 'المواضيع' : 'البطاقات'}
+                  </h2>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-sm text-slate-400">
+                      {decorItems.filter(d => d.kind === (activeSection === 'ornaments' ? 'ornament' : activeSection === 'themes' ? 'theme' : 'card')).length} عنصر
+                    </p>
+                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[10px]">
+                      {decorItems.filter(d => d.kind === (activeSection === 'ornaments' ? 'ornament' : activeSection === 'themes' ? 'theme' : 'card') && d.isActive).length} نشط
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="bg-slate-800/60 border-slate-700/50 text-slate-300 hover:bg-slate-700/60" onClick={() => fetchDecor()}>
+                    <RefreshCw className="w-3.5 h-3.5 ml-1" />
+                    تحديث
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                    onClick={() => openAddDecorDialog(activeSection === 'ornaments' ? 'ornament' : activeSection === 'themes' ? 'theme' : 'card')}
+                  >
+                    <Plus className="w-3.5 h-3.5 ml-1" />
+                    إضافة عنصر
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {decorItems
+                  .filter(d => d.kind === (activeSection === 'ornaments' ? 'ornament' : activeSection === 'themes' ? 'theme' : 'card'))
+                  .sort((a, b) => a.sortOrder - b.sortOrder)
+                  .map((item) => {
+                    const rarityConfig: Record<string, { cls: string; label: string }> = {
+                      common: { cls: 'bg-slate-500/10 border-slate-500/30 text-slate-400', label: 'عادي' },
+                      rare: { cls: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400', label: 'نادر' },
+                      epic: { cls: 'bg-violet-500/10 border-violet-500/30 text-violet-400', label: 'ملحمي' },
+                      legendary: { cls: 'bg-amber-500/10 border-amber-500/30 text-amber-400', label: 'أسطوري' },
+                    };
+                    const rarity = rarityConfig[item.rarity] || rarityConfig.common;
+                    return (
+                      <Card key={item.id} className={`bg-slate-900/60 border-slate-800/50 ${!item.isActive ? 'opacity-50' : ''}`}>
+                        <CardContent className="p-4 space-y-3">
+                          <div className="flex justify-center pt-2">
+                            <div className="w-24 h-16 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden">
+                              {item.imageUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img key={item.imageUrl} src={item.imageUrl} alt={item.nameAr} className="max-w-full max-h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                              ) : (
+                                <ImageIcon className="w-6 h-6 text-slate-600" />
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-center space-y-1">
+                            <p className="font-bold text-white text-sm">{item.nameAr}</p>
+                            <Badge variant="outline" className={`text-[10px] ${rarity.cls}`}>
+                              {rarity.label}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center justify-between text-xs text-slate-400">
+                            <span>{item.isFree ? 'مجاني' : `${item.price} جوهرة`}</span>
+                            <span>{item.totalOwned} مملوك</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full ${item.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                              {item.isActive ? 'نشط' : 'معطل'}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 pt-1">
+                            <Button variant="ghost" size="sm" className="flex-1 text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 text-xs" onClick={() => openEditDecorDialog(item)}>
+                              <Edit className="w-3.5 h-3.5 ml-1" />
+                              تعديل
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={`text-xs ${item.isActive ? 'text-emerald-400 hover:bg-emerald-500/10' : 'text-slate-500 hover:bg-slate-800'}`}
+                              onClick={() => toggleDecorActive(item.id, item.isActive)}
+                            >
+                              {item.isActive ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-xs text-red-400 hover:bg-red-500/10" onClick={() => deleteDecorHandler(item.id)}>
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+              </div>
+
+              {/* حوار إضافة/تعديل عنصر الزينة */}
+              <Dialog open={decorFormOpen} onOpenChange={setDecorFormOpen}>
+                <DialogContent className="bg-slate-900 border-slate-800 text-white max-w-lg max-h-[90vh] overflow-y-auto" dir="rtl">
+                  <DialogHeader>
+                    <DialogTitle>{editingDecor ? 'تعديل العنصر' : 'إضافة عنصر جديد'}</DialogTitle>
+                    <DialogDescription className="text-slate-400">
+                      {activeSection === 'ornaments' ? 'معلقات جدارية فوق الغلاف' : activeSection === 'themes' ? 'أغلفة المواضيع للبروفايل' : 'بطاقات خلفية وهوية للبروفايل'}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 mt-2">
+                    <div className="flex justify-center py-2">
+                      <div className="w-24 h-16 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden">
+                        {decorForm.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img key={decorForm.imageUrl} src={decorForm.imageUrl} alt="معاينة" className="max-w-full max-h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        ) : (
+                          <ImageIcon className="w-6 h-6 text-slate-600" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-slate-300 text-sm">الاسم (عربي) *</Label>
+                      <Input
+                        value={decorForm.nameAr}
+                        onChange={(e) => setDecorForm(prev => ({ ...prev, nameAr: e.target.value }))}
+                        placeholder="لافتة الاحتفال"
+                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-slate-300 text-sm">رابط الصورة (محلي)</Label>
+                      <Input
+                        value={decorForm.imageUrl}
+                        onChange={(e) => setDecorForm(prev => ({ ...prev, imageUrl: e.target.value }))}
+                        placeholder="/yalla-ornaments/orn_banner.png"
+                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                        dir="ltr"
+                      />
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-1.5">
+                        <Label className="text-slate-300 text-sm">الندرة</Label>
+                        <Select value={decorForm.rarity} onValueChange={(val) => setDecorForm(prev => ({ ...prev, rarity: val }))}>
+                          <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-900 border-slate-800">
+                            <SelectItem value="common">عادي</SelectItem>
+                            <SelectItem value="rare">نادر</SelectItem>
+                            <SelectItem value="epic">ملحمي</SelectItem>
+                            <SelectItem value="legendary">أسطوري</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-slate-300 text-sm">السعر (جواهر)</Label>
+                        <Input type="number" value={decorForm.price} onChange={(e) => setDecorForm(prev => ({ ...prev, price: parseInt(e.target.value) || 0 }))} className="bg-slate-800/60 border-slate-700/50 text-white text-sm" min={0} />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-slate-300 text-sm">الترتيب</Label>
+                        <Input type="number" value={decorForm.sortOrder} onChange={(e) => setDecorForm(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))} className="bg-slate-800/60 border-slate-700/50 text-white text-sm" min={0} />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-2">
+                        <Switch checked={decorForm.isFree} onCheckedChange={(checked) => setDecorForm(prev => ({ ...prev, isFree: checked }))} />
+                        <Label className="text-slate-300 text-sm">مجاني</Label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch checked={decorForm.isActive} onCheckedChange={(checked) => setDecorForm(prev => ({ ...prev, isActive: checked }))} />
+                        <Label className="text-slate-300 text-sm">نشط</Label>
+                      </div>
+                    </div>
+                  </div>
+                  <DialogFooter className="mt-4">
+                    <Button variant="outline" onClick={() => setDecorFormOpen(false)} className="border-slate-700/50 text-slate-300 hover:bg-slate-800">
+                      إلغاء
+                    </Button>
+                    <Button onClick={saveDecor} disabled={decorFormLoading} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+                      {decorFormLoading ? <Loader2 className="w-4 h-4 ml-1 animate-spin" /> : <Check className="w-4 h-4 ml-1" />}
+                      {editingDecor ? 'تحديث' : 'إنشاء'}
                     </Button>
                   </DialogFooter>
                 </DialogContent>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { updateUser } from '@/lib/admin-db';
+import { updateUser, ensureAdminTables, getClient, grantDecorToUser } from '@/lib/admin-db';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'gg-platform-secret-key-2024'
@@ -37,11 +37,67 @@ export async function PUT(request: NextRequest) {
     if (avatar !== undefined) updateData.avatar = avatar.trim();
     if (bio !== undefined) updateData.bio = bio.trim().slice(0, 300);
     if (country !== undefined) updateData.country = country.trim().slice(0, 40);
-    // Profile decoration fields (yalla-style) — store as short asset paths/ids
-    if (cover !== undefined) updateData.cover = String(cover).trim().slice(0, 120);
-    if (frame !== undefined) updateData.frame = String(frame).trim().slice(0, 60);
-    if (ornament !== undefined) updateData.ornament = String(ornament).trim().slice(0, 60);
-    if (card !== undefined) updateData.card = String(card).trim().slice(0, 60);
+    // زينة الملف (معلق/موضوع/بطاقة): تُقبل القيمة فقط إن كان المستخدم يملك العنصر،
+    // والعناصر المجانية تُمنح تلقائياً عند أول اختيار. مصدر الحقيقة: كتالوج DecorItem
+    const decorFields: Array<{ val: string; kind: 'ornament' | 'theme' | 'card'; key: 'ornament' | 'cover' | 'card' }> = [];
+    if (ornament !== undefined) decorFields.push({ val: String(ornament).trim().slice(0, 60), kind: 'ornament', key: 'ornament' });
+    if (cover !== undefined) decorFields.push({ val: String(cover).trim().slice(0, 120), kind: 'theme', key: 'cover' });
+    if (card !== undefined) decorFields.push({ val: String(card).trim().slice(0, 60), kind: 'card', key: 'card' });
+    for (const df of decorFields) {
+      if (df.val === '') {
+        updateData[df.key] = '';
+        continue;
+      }
+      await ensureAdminTables();
+      const c = getClient();
+      const itemRes = await c.execute({
+        sql: 'SELECT id, isFree FROM DecorItem WHERE id = ? AND kind = ? AND isActive = 1 LIMIT 1',
+        args: [df.val, df.kind],
+      });
+      if (itemRes.rows.length === 0) {
+        // القيمة ليست في الكتالوج — لا نقبلها (حماية من التزوير)
+        return NextResponse.json(
+          { error: 'عنصر الزينة غير معروف', success: false },
+          { status: 403 }
+        );
+      }
+      const itemRow = itemRes.rows[0] as Record<string, unknown>;
+      const owned = await c.execute({
+        sql: 'SELECT id FROM UserDecor WHERE userId = ? AND itemId = ? LIMIT 1',
+        args: [userId, df.val],
+      });
+      if (owned.rows.length === 0) {
+        if (Number(itemRow.isFree ?? 0) === 1) {
+          await grantDecorToUser({ userId, itemId: df.val, obtainedFrom: 'gift', obtainedNote: 'عنصر مجاني' });
+        } else {
+          return NextResponse.json(
+            { error: 'غير مصرح: هذا العنصر غير مملوك لك — يمكنك اقتناؤه من المتجر', success: false },
+            { status: 403 }
+          );
+        }
+      }
+      updateData[df.key] = df.val;
+    }
+    // الإطار: يُضبط فقط عبر مسار الملكية (/api/frames equip) — هنا نقبل الإزالة فقط،
+    // وأي قيمة غير فارغة تُرفض ما لم يكن المستخدم يملك الإطار فعلاً (حماية من التزوير)
+    if (frame !== undefined && String(frame).trim() !== '') {
+      await ensureAdminTables();
+      const c = getClient();
+      const fid = String(frame).trim().slice(0, 60);
+      const owned = await c.execute({
+        sql: 'SELECT id FROM UserFrame WHERE userId = ? AND frameId = ? LIMIT 1',
+        args: [userId, fid],
+      });
+      if (owned.rows.length === 0) {
+        return NextResponse.json(
+          { error: 'غير مصرح: هذا الإطار غير مملوك لك', success: false },
+          { status: 403 }
+        );
+      }
+      updateData.frame = fid;
+    } else if (frame !== undefined) {
+      updateData.frame = '';
+    }
     // Edit form extras (yalla view_edit_user_info)
     if (gender !== undefined) updateData.gender = String(gender).trim().slice(0, 20);
     if (birthDate !== undefined) updateData.birthDate = String(birthDate).trim().slice(0, 20);

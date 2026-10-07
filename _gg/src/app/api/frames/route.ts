@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { getUserFrames, equipFrame, removeFrameFromUser } from '@/lib/admin-db';
+import { getUserFrames, equipFrame, removeFrameFromUser, seedDefaultFrames, grantFrameToUser, getFrameById, ensureAdminTables, getClient } from '@/lib/admin-db';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'gg-platform-secret-key-2024'
@@ -17,6 +17,16 @@ async function verifyAppUser(request: NextRequest) {
   }
 }
 
+// ─── زرع كتالوج الإطارات عند أول استخدام (idempotent عبر SiteConfig.framesSeeded) ───
+export async function HEAD() {
+  try {
+    await seedDefaultFrames();
+  } catch (error) {
+    console.error('Frame seed error:', error);
+  }
+  return new Response(null, { status: 204 });
+}
+
 export async function GET(request: NextRequest) {
   try {
     const userId = await verifyAppUser(request);
@@ -24,11 +34,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'يجب تسجيل الدخول' }, { status: 401 });
     }
 
+    // زرع الكتالوج عند أول طلب (idempotent — لا يكرر الزرع بعد أول مرة)
+    await seedDefaultFrames();
     const userFrames = await getUserFrames(userId);
 
     return NextResponse.json({ success: true, userFrames });
   } catch (error) {
-    console.error('Get user frames error:', error);
+    console.error('Get user frames GET error:', error);
     return NextResponse.json({ error: 'فشل في تحميل الإطارات' }, { status: 500 });
   }
 }
@@ -44,8 +56,29 @@ export async function POST(request: NextRequest) {
     const { action, frameId } = body;
 
     if (action === 'equip') {
-      await equipFrame(userId, frameId || null);
-      return NextResponse.json({ success: true });
+      try {
+        await ensureAdminTables();
+        const c = getClient();
+        if (frameId) {
+          // الإطارات المجانية تُمنح تلقائياً عند أول تجهيز (مثل «مجانية» في النظام)
+          const own = await c.execute({
+            sql: 'SELECT id FROM UserFrame WHERE userId = ? AND frameId = ? LIMIT 1',
+            args: [userId, frameId],
+          });
+          if (own.rows.length === 0) {
+            const fr = await getFrameById(String(frameId));
+            if (fr && fr.isActive && fr.isFree) {
+              await grantFrameToUser({ userId, frameId: fr.id, obtainedFrom: 'gift', obtainedNote: 'إطار مجاني' });
+            }
+          }
+        }
+        await equipFrame(userId, frameId || null);
+        return NextResponse.json({ success: true });
+      } catch (equipError) {
+        const msg = equipError instanceof Error ? equipError.message : 'فشل في تجهيز الإطار';
+        console.error('Frame equip denied:', equipError);
+        return NextResponse.json({ success: false, error: msg }, { status: 403 });
+      }
     }
 
     if (action === 'remove') {

@@ -1,4 +1,4 @@
-import { createClient, Client } from '@libsql/client';
+import { createClient, Client, type InValue } from '@libsql/client';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -187,7 +187,7 @@ export interface AppUser {
 let _client: Client | null = null;
 let _tablesReady = false;
 
-function getClient(): Client {
+export function getClient(): Client {
   if (_client) return _client;
 
   // Priority: TURSO_DATABASE_URL > DATABASE_URL > local fallback
@@ -218,7 +218,7 @@ function sqlVal(val: unknown): unknown {
 
 // ─── Table creation + seeding ─────────────────────────────────────────
 
-async function ensureAdminTables(): Promise<void> {
+export async function ensureAdminTables(): Promise<void> {
   if (_tablesReady) return;
   const c = getClient();
 
@@ -489,6 +489,18 @@ async function ensureAdminTables(): Promise<void> {
     await c.execute(`ALTER TABLE AppUser ADD COLUMN numericId INTEGER`);
   } catch {
     // Column already exists — ignore
+  }  // Migrate: علامة زرع الإطارات في SiteConfig
+  try {
+    await c.execute(`ALTER TABLE SiteConfig ADD COLUMN framesSeeded INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+
+  // Migrate: علامة زرع كتالوج الزينة في SiteConfig
+  try {
+    await c.execute(`ALTER TABLE SiteConfig ADD COLUMN decorSeeded INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
   }
 
   // PlayerFrame table - frame catalog
@@ -527,6 +539,39 @@ async function ensureAdminTables(): Promise<void> {
       obtainedNote TEXT DEFAULT '',
       obtainedAt TEXT DEFAULT (datetime('now')),
       UNIQUE(userId, frameId)
+    )
+  `);
+
+  // ═══ كتالوج الزينة العام: معلقات جدارية / مواضيع (أغلفة) / بطاقات ═══
+  // DecorItem: عنصر واحد قابل للشراء/المنح — النوع kind: ornament|theme|card
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS DecorItem (
+      id TEXT PRIMARY KEY,
+      kind TEXT NOT NULL,
+      nameAr TEXT NOT NULL,
+      imageUrl TEXT DEFAULT '',
+      rarity TEXT DEFAULT 'common',
+      price INTEGER DEFAULT 0,
+      isFree INTEGER DEFAULT 0,
+      isActive INTEGER DEFAULT 1,
+      sortOrder INTEGER DEFAULT 0,
+      totalOwned INTEGER DEFAULT 0,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // UserDecor: ملكية مستخدم لعنصر زينة + المجهز الحالي لكل نوع
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS UserDecor (
+      id TEXT PRIMARY KEY,
+      userId TEXT NOT NULL,
+      itemId TEXT NOT NULL,
+      isEquipped INTEGER DEFAULT 0,
+      obtainedFrom TEXT DEFAULT 'gift',
+      obtainedNote TEXT DEFAULT '',
+      obtainedAt TEXT DEFAULT (datetime('now')),
+      UNIQUE(userId, itemId)
     )
   `);
 
@@ -3307,10 +3352,25 @@ export async function grantFrameToUser(data: {
 export async function equipFrame(userId: string, frameId: string | null): Promise<void> {
   await ensureAdminTables();
   const c = getClient();
+  if (frameId) {
+    // حماية الملكية: لا يمكن تجهيز إطار لا يملكه المستخدم
+    const owned = await c.execute({
+      sql: 'SELECT id FROM UserFrame WHERE userId = ? AND frameId = ? LIMIT 1',
+      args: [userId, frameId],
+    });
+    if (owned.rows.length === 0) {
+      throw new Error('غير مصرح: هذا الإطار غير مملوك لك');
+    }
+  }
   await c.execute({ sql: 'UPDATE UserFrame SET isEquipped = 0 WHERE userId = ?', args: [userId] });
   if (frameId) {
     await c.execute({ sql: 'UPDATE UserFrame SET isEquipped = 1 WHERE userId = ? AND frameId = ?', args: [userId, frameId] });
   }
+  // عمود frame في AppUser هو مصدر العرض في الهيدر والبروفايل — نزامنه مع التجهيز
+  await c.execute({
+    sql: "UPDATE AppUser SET frame = ?, updatedAt = datetime('now') WHERE id = ?",
+    args: [frameId ?? '', userId],
+  });
 }
 
 export async function removeFrameFromUser(userId: string, frameId: string): Promise<void> {
@@ -3352,31 +3412,376 @@ export async function getEquippedFrame(userId: string): Promise<(UserFrame & { f
 
 // ─── Seed default frames ─────────────────────────────────────────────
 
-export async function seedDefaultFrames(): Promise<void> {
+// ─── كتالوج الإطارات (صور PNG حقيقية محلية في public/yalla-frames — مستقل تماماً عن أي طرف خارجي) ─────
+
+const YALLA_FRAMES: Array<{ id: string; nameAr: string; rarity: PlayerFrame['rarity']; price: number; isFree: boolean }> = [
+  // دوري الأسطورة (2000xx) — أسطورية
+  { id: '200001', nameAr: 'نجوم الأسطورة 7', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200002', nameAr: 'نجوم الأسطورة 37', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200003', nameAr: 'نجوم الأسطورة 77', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200004', nameAr: 'نجوم الأسطورة 177', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200005', nameAr: 'نجوم الأسطورة 277', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200006', nameAr: 'نجوم الأسطورة 377', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200007', nameAr: 'نجوم الأسطورة 477', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '200008', nameAr: 'نجوم الأسطورة 577', rarity: 'legendary', price: 1000, isFree: false },
+  // رويال (121023..121027) — أسطورية
+  { id: '121023', nameAr: 'حصري رويال 1', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '121024', nameAr: 'حصري رويال 2', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '121025', nameAr: 'حصري رويال 3', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '121026', nameAr: 'حصري رويال 4', rarity: 'legendary', price: 1000, isFree: false },
+  { id: '121027', nameAr: 'حصري رويال 5', rarity: 'legendary', price: 1000, isFree: false },
+  // VIP — ملحمية
+  { id: '121017', nameAr: 'VIP — الفارس', rarity: 'epic', price: 600, isFree: false },
+  { id: '121018', nameAr: 'VIP — اللواء', rarity: 'epic', price: 600, isFree: false },
+  // الترتيب العالمي (1100xx) — ملحمية
+  { id: '110001', nameAr: 'البطل في الترتيب العالمي', rarity: 'epic', price: 500, isFree: false },
+  { id: '110002', nameAr: 'الثاني في الترتيب العالمي', rarity: 'epic', price: 500, isFree: false },
+  { id: '110003', nameAr: 'الثالث في الترتيب العالمي', rarity: 'epic', price: 500, isFree: false },
+  { id: '110004', nameAr: 'أعلى 100 عالمياً', rarity: 'epic', price: 500, isFree: false },
+  { id: '110005', nameAr: 'أعلى 500 عالمياً', rarity: 'epic', price: 500, isFree: false },
+  { id: '110006', nameAr: 'أعلى 1000 عالمياً', rarity: 'epic', price: 500, isFree: false },
+  // الشراء (1200xx) — نادرة
+  { id: '120001', nameAr: 'إطار مميز أ', rarity: 'rare', price: 300, isFree: false },
+  { id: '120002', nameAr: 'إطار مميز ب', rarity: 'rare', price: 300, isFree: false },
+  { id: '120003', nameAr: 'إطار أسبوعي أ', rarity: 'rare', price: 300, isFree: false },
+  { id: '120004', nameAr: 'إطار أسبوعي ب', rarity: 'rare', price: 300, isFree: false },
+  { id: '120005', nameAr: 'إطار أسبوعي ج', rarity: 'rare', price: 300, isFree: false },
+  { id: '120006', nameAr: 'إطار أسبوعي د', rarity: 'rare', price: 300, isFree: false },
+  { id: '120008', nameAr: 'إطار أسبوعي هـ', rarity: 'rare', price: 300, isFree: false },
+  { id: '120009', nameAr: 'إطار أسبوعي و', rarity: 'rare', price: 300, isFree: false },
+  { id: '121001', nameAr: 'إطار المتجر', rarity: 'rare', price: 300, isFree: false },
+  { id: '121003', nameAr: 'إطار أسبوعي ز', rarity: 'rare', price: 300, isFree: false },
+  { id: '121039', nameAr: 'إطار أسبوعي ح', rarity: 'rare', price: 300, isFree: false },
+  // هدايا (1210xx) — نادرة
+  { id: '121013', nameAr: 'هدية فريق الأكروبات', rarity: 'rare', price: 250, isFree: false },
+  { id: '121014', nameAr: 'هدية الجزيرة', rarity: 'rare', price: 250, isFree: false },
+  { id: '121015', nameAr: 'هدية تساقط الشهب', rarity: 'rare', price: 250, isFree: false },
+  { id: '121016', nameAr: 'هدية القلعة', rarity: 'rare', price: 250, isFree: false },
+  { id: '121031', nameAr: 'هدية عجلة الملاهي', rarity: 'rare', price: 250, isFree: false },
+  // نشاطات (1210xx) — عادية
+  { id: '121019', nameAr: 'نشاط عيد الفطر 2021', rarity: 'common', price: 100, isFree: false },
+  { id: '121020', nameAr: 'نشاط عيد الأضحى 2021', rarity: 'common', price: 100, isFree: false },
+  { id: '121021', nameAr: 'نشاط أضئ البرج أ', rarity: 'common', price: 100, isFree: false },
+  { id: '121022', nameAr: 'نشاط عيد الفطر 2022', rarity: 'common', price: 100, isFree: false },
+  { id: '121032', nameAr: 'نشاط أضئ البرج ب', rarity: 'common', price: 100, isFree: false },
+  { id: '121033', nameAr: 'نشاط من هو الفائز', rarity: 'common', price: 100, isFree: false },
+  { id: '121035', nameAr: 'محصول النشاط أ', rarity: 'common', price: 100, isFree: false },
+  { id: '121036', nameAr: 'نشاط عيد الفطر 2023', rarity: 'common', price: 100, isFree: false },
+  { id: '121041', nameAr: 'نشاط دعوة الأصدقاء', rarity: 'common', price: 100, isFree: false },
+  { id: '121044', nameAr: 'نشاط وقت القهوة', rarity: 'common', price: 100, isFree: false },
+  { id: '121046', nameAr: 'محصول النشاط ب', rarity: 'common', price: 100, isFree: false },
+  { id: '132309', nameAr: 'دخول سبتمبر', rarity: 'common', price: 100, isFree: false },
+  { id: '132311', nameAr: 'دخول نوفمبر', rarity: 'common', price: 100, isFree: false },
+  { id: '132312', nameAr: 'دخول ديسمبر', rarity: 'common', price: 100, isFree: false },
+  { id: '132323', nameAr: 'إطارات 2023 الشهرية', rarity: 'common', price: 100, isFree: false },
+  // مجانية (تبدأ بها — بلا سعر)
+  { id: '121037', nameAr: 'هدية اللاعبين الجدد', rarity: 'common', price: 0, isFree: true },
+  { id: '121038', nameAr: 'أعد بدء الرحلة', rarity: 'common', price: 0, isFree: true },
+  { id: '121028', nameAr: 'مكافأة ربط YallaChat', rarity: 'common', price: 0, isFree: true },
+  { id: '121029', nameAr: 'مكافأة ربط الهاتف', rarity: 'common', price: 0, isFree: true },
+  { id: '121042', nameAr: 'رخصة الغرفة الممتازة', rarity: 'common', price: 0, isFree: true },
+  { id: '121043', nameAr: 'رخصة الغرفة المجانية', rarity: 'common', price: 0, isFree: true },
+  { id: '121045', nameAr: 'محدود عيد الميلاد', rarity: 'common', price: 0, isFree: true },
+  { id: 'silver_moon', nameAr: 'فضة القمر', rarity: 'common', price: 0, isFree: true },
+  { id: 'golden_classic', nameAr: 'ذهبي كلاسيكي', rarity: 'common', price: 0, isFree: true },
+];
+
+// زرع كتالوج الإطارات: يزيل القديم (بذور تدرجات CSS/UUID) ويزرع الكتالوج كاملاً بمعرفات مستقرة
+// SEED_VERSION: ارفعه عند أي تغيير في الكتالوج لإعادة الزرع تلقائياً
+const YALLA_FRAMES_SEED_VERSION = 2;
+
+async function seedYallaFrames(): Promise<void> {
   await ensureAdminTables();
   const c = getClient();
   const result = await c.execute('SELECT COUNT(*) as count FROM PlayerFrame');
   const count = Number(result.rows[0]?.count ?? 0);
-  if (count > 0) return;
-
-  const defaults = [
-    { name: 'golden_classic', nameAr: 'ذهبي كلاسيكي', description: 'إطار ذهبي أنيق للملف الشخصي', rarity: 'common', gradientFrom: '#f59e0b', gradientTo: '#eab308', borderColor: 'rgba(245, 158, 11, 0.7)', glowColor: 'rgba(245, 158, 11, 0.4)', pattern: 'gradient', price: 0, isFree: true, sortOrder: 0 },
-    { name: 'silver_moon', nameAr: 'فضة القمر', description: 'إطار فضي هادئ كضوء القمر', rarity: 'common', gradientFrom: '#94a3b8', gradientTo: '#cbd5e1', borderColor: 'rgba(148, 163, 184, 0.7)', glowColor: 'rgba(148, 163, 184, 0.3)', pattern: 'gradient', price: 0, isFree: true, sortOrder: 1 },
-    { name: 'emerald_royal', nameAr: 'زمرد ملكي', description: 'إطار أخضر لامع بلمسة ملكية', rarity: 'rare', gradientFrom: '#10b981', gradientTo: '#059669', borderColor: 'rgba(16, 185, 129, 0.7)', glowColor: 'rgba(16, 185, 129, 0.4)', pattern: 'gradient', price: 200, isFree: false, sortOrder: 2 },
-    { name: 'ruby_fire', nameAr: 'ياقوت ناري', description: 'إطار أحمر متوهج كالنار', rarity: 'rare', gradientFrom: '#ef4444', gradientTo: '#dc2626', borderColor: 'rgba(239, 68, 68, 0.7)', glowColor: 'rgba(239, 68, 68, 0.4)', pattern: 'gradient', price: 200, isFree: false, sortOrder: 3 },
-    { name: 'sapphire_ocean', nameAr: 'ياقوت الأزرق المحيط', description: 'إطار أزرق كأعماق المحيط', rarity: 'rare', gradientFrom: '#06b6d4', gradientTo: '#0891b2', borderColor: 'rgba(6, 182, 212, 0.7)', glowColor: 'rgba(6, 182, 212, 0.4)', pattern: 'gradient', price: 250, isFree: false, sortOrder: 4 },
-    { name: 'purple_mystic', nameAr: 'بنفسجي غامض', description: 'إطار بنفسجي بسحر الأساطير', rarity: 'epic', gradientFrom: '#8b5cf6', gradientTo: '#7c3aed', borderColor: 'rgba(139, 92, 246, 0.7)', glowColor: 'rgba(139, 92, 246, 0.4)', pattern: 'gradient', price: 500, isFree: false, sortOrder: 5 },
-    { name: 'rose_elegant', nameAr: 'وردي أنيق', description: 'إطار وردي بلمسة فاخرة', rarity: 'epic', gradientFrom: '#f43f5e', gradientTo: '#e11d48', borderColor: 'rgba(244, 63, 94, 0.7)', glowColor: 'rgba(244, 63, 94, 0.4)', pattern: 'gradient', price: 500, isFree: false, sortOrder: 6 },
-    { name: 'diamond_legend', nameAr: 'أسطورة الماس', description: 'إطار الماس الأسطوري - للأسياد فقط', rarity: 'legendary', gradientFrom: '#e2e8f0', gradientTo: '#f8fafc', borderColor: 'rgba(226, 232, 240, 0.9)', glowColor: 'rgba(255, 255, 255, 0.5)', pattern: 'animated', price: 1000, isFree: false, sortOrder: 7 },
-    { name: 'phoenix_flame', nameAr: 'لهيب العنقاء', description: 'إطار ناري أسطوري من ريش العنقاء', rarity: 'legendary', gradientFrom: '#f97316', gradientTo: '#fbbf24', borderColor: 'rgba(249, 115, 22, 0.8)', glowColor: 'rgba(251, 191, 36, 0.5)', pattern: 'animated', price: 1000, isFree: false, sortOrder: 8 },
-    { name: 'neon_cyber', nameAr: 'نيون سايبر', description: 'إطار نيون عصري بتقنية المستقبل', rarity: 'epic', gradientFrom: '#22d3ee', gradientTo: '#a78bfa', borderColor: 'rgba(34, 211, 238, 0.7)', glowColor: 'rgba(167, 139, 250, 0.4)', pattern: 'animated', price: 600, isFree: false, sortOrder: 9 },
-    { name: 'chocolate_warm', nameAr: 'شوكولاتة دافئة', description: 'إطار بني دافئ ومريح', rarity: 'common', gradientFrom: '#a16207', gradientTo: '#854d0e', borderColor: 'rgba(161, 98, 7, 0.6)', glowColor: 'rgba(161, 98, 7, 0.3)', pattern: 'solid', price: 100, isFree: false, sortOrder: 10 },
-    { name: 'double_gold', nameAr: 'ذهبي مزدوج', description: 'إطار ذهبي مزدوج بحدود فاخرة', rarity: 'rare', gradientFrom: '#fbbf24', gradientTo: '#f59e0b', borderColor: 'rgba(251, 191, 36, 0.8)', glowColor: 'rgba(245, 158, 11, 0.4)', pattern: 'double', price: 300, isFree: false, sortOrder: 11 },
-  ];
-
-  for (const frame of defaults) {
-    await createFrame(frame);
+  // علامة الزرع: تمنع إعادة الزرع في كل استدعاء (idempotent عبر قاعدة البيانات نفسها)
+  const marker = await c.execute({
+    sql: "SELECT framesSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
+    args: [],
+  });
+  const mrow = marker.rows[0] as Record<string, unknown> | undefined;
+  if (count > 0 && Number(mrow?.framesSeeded ?? 0) >= YALLA_FRAMES_SEED_VERSION) return; // مزروعة فعلاً
+  const markupNames = YALLA_FRAMES.map((f) => f.id);
+  const placeholders = markupNames.map(() => '?').join(', ');
+  // الحذف بمطابقة المعرف (id) — يزيل صفوف البذور القديمة بمعرفات UUID وغيرها
+  await c.execute({
+    sql: `DELETE FROM PlayerFrame WHERE id NOT IN (${placeholders})`,
+    args: markupNames,
+  });
+  for (const [i, f] of YALLA_FRAMES.entries()) {
+    const isPng = /^\d+$/.test(f.id);
+    await c.execute({
+      sql: `INSERT OR REPLACE INTO PlayerFrame (id, name, nameAr, description, imageUrl, rarity, gradientFrom, gradientTo, borderColor, glowColor, pattern, price, isFree, isActive, sortOrder)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        f.id, f.id, f.nameAr,
+        isPng ? 'إطار حصري للملف الشخصي' : 'إطار مصمم للملف الشخصي',
+        isPng ? `/yalla-frames/${f.id}.png` : '',
+        f.rarity, '#f59e0b', '#eab308', 'rgba(245, 158, 11, 0.6)', 'rgba(245, 158, 11, 0.3)',
+        'gradient', f.price, f.isFree ? 1 : 0, 1, i,
+      ],
+    });
   }
+  // تنظيف ملكيات المستخدمين لأطر لم تعد موجودة (القديمة المزروعة سابقاً)
+  await c.execute(`DELETE FROM UserFrame WHERE frameId NOT IN (SELECT id FROM PlayerFrame)`);
+  await c.execute(`UPDATE UserFrame SET isEquipped = 0 WHERE frameId NOT IN (SELECT id FROM PlayerFrame)`);
+  await c.execute(`UPDATE AppUser SET frame = '' WHERE TRIM(COALESCE(frame, '')) <> '' AND UPPER(TRIM(frame)) NOT IN (SELECT UPPER(id) FROM PlayerFrame)`);
+  await c.execute(`INSERT OR IGNORE INTO SiteConfig (id) VALUES ('main')`);
+  await c.execute({
+    sql: `UPDATE SiteConfig SET framesSeeded = ?, updatedAt = datetime('now') WHERE id = 'main'`,
+    args: [YALLA_FRAMES_SEED_VERSION],
+  });
+}
+
+// ─── Seed default frames (متوافق مع الكود السابق — يعتمد الآن كتالوج الإطارات الحقيقي) ───
+
+export async function seedDefaultFrames(): Promise<void> {
+  await seedYallaFrames();
+  await seedDefaultDecor();
+}
+
+
+// ═══════════════════════ الزينة (معلقات/مواضيع/بطاقات) ═══════════════════════
+
+export type DecorKind = 'ornament' | 'theme' | 'card';
+
+export interface DecorItem {
+  id: string;
+  kind: DecorKind;
+  nameAr: string;
+  imageUrl: string;
+  rarity: PlayerFrame['rarity'];
+  price: number;
+  isFree: boolean;
+  isActive: boolean;
+  sortOrder: number;
+  totalOwned: number;
+}
+
+export interface UserDecorRec {
+  id: string;
+  userId: string;
+  itemId: string;
+  isEquipped: boolean;
+  obtainedFrom: UserFrame['obtainedFrom'];
+  obtainedNote: string;
+  obtainedAt: string;
+  item: DecorItem;
+}
+
+// كتالوج البذر — مصدره الأصول المحلية نفسها المتاحة في النوافذ: public/yalla-ornaments و yalla-covers
+const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl: string; rarity: DecorItem['rarity']; price: number; isFree: boolean }> = [
+  // المعلقات الجدارية (تفوق غلاف البروفايل)
+  { id: 'orn_banner', kind: 'ornament', nameAr: 'لافتة الاحتفال', imageUrl: '/yalla-ornaments/orn_banner.png', rarity: 'rare', price: 250, isFree: false },
+  { id: 'orn_lights', kind: 'ornament', nameAr: 'أضواء البطولة', imageUrl: '/yalla-ornaments/orn_lights.png', rarity: 'epic', price: 500, isFree: false },
+  { id: 'orn_sparkle', kind: 'ornament', nameAr: 'بريق ذهبي', imageUrl: '/yalla-ornaments/orn_sparkle.png', rarity: 'legendary', price: 800, isFree: false },
+  // المواضيع (أغلفة البروفايل) — المعرف = مسار الملف كما يُخزن في AppUser.cover
+  { id: '/yalla-covers/bg_profile_theme_default.webp', kind: 'theme', nameAr: 'افتراضي', imageUrl: '/yalla-covers/bg_profile_theme_default.webp', rarity: 'common', price: 0, isFree: true },
+  { id: '/yalla-games/mafia.png', kind: 'theme', nameAr: 'المافيا', imageUrl: '/yalla-games/mafia.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/tobol.png', kind: 'theme', nameAr: 'طبول الحرب', imageUrl: '/yalla-games/tobol.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/tabot.png', kind: 'theme', nameAr: 'الهروب من التابوت', imageUrl: '/yalla-games/tabot.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/prison.png', kind: 'theme', nameAr: 'السجن', imageUrl: '/yalla-games/prison.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/risk.png', kind: 'theme', nameAr: 'المجازفة', imageUrl: '/yalla-games/risk.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/risk2.png', kind: 'theme', nameAr: 'المجازفة 2', imageUrl: '/yalla-games/risk2.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/familyfeud.png', kind: 'theme', nameAr: 'فاميلي فيود', imageUrl: '/yalla-games/familyfeud.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/baharharb.png', kind: 'theme', nameAr: 'بحر و حرب', imageUrl: '/yalla-games/baharharb.png', rarity: 'rare', price: 300, isFree: false },
+  { id: '/yalla-games/shifarat.png', kind: 'theme', nameAr: 'الشيفرات', imageUrl: '/yalla-games/shifarat.png', rarity: 'rare', price: 300, isFree: false },
+  // البطاقات (فنيات خلفية + بطاقات هوية) — المعرف = اسم الملف كما يُخزن في AppUser.card
+  { id: 'card_astronaut', kind: 'card', nameAr: 'حديقة الفضاء', imageUrl: '/yalla-ornaments/card_astronaut.png', rarity: 'epic', price: 500, isFree: false },
+  { id: 'card_glow', kind: 'card', nameAr: 'هالة ضوئية', imageUrl: '/yalla-ornaments/card_glow.png', rarity: 'epic', price: 500, isFree: false },
+  { id: 'room_profile_member_bg', kind: 'card', nameAr: 'بطاقة العضوية', imageUrl: '/yalla-ornaments/room_profile_member_bg.png', rarity: 'rare', price: 400, isFree: false },
+  { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
+];
+
+const DECOR_SEED_VERSION = 1;
+
+export async function seedDefaultDecor(): Promise<void> {
+  await ensureAdminTables();
+  const c = getClient();
+  const marker = await c.execute({
+    sql: "SELECT framesSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
+    args: [],
+  });
+  const mrow = marker.rows[0] as Record<string, unknown> | undefined;
+  if (Number(mrow?.decorSeeded ?? 0) >= DECOR_SEED_VERSION) return;
+  await c.execute('DELETE FROM DecorItem');
+  for (const [i, f] of DECOR_SEED.entries()) {
+    await c.execute({
+      sql: `INSERT OR REPLACE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+      args: [f.id, f.kind, f.nameAr, f.imageUrl, f.rarity, f.price, f.isFree ? 1 : 0, i, 0],
+    });
+  }
+  // تنظيف ملكيات التيّم + إعادة تعيين القيم غير الموجودة في الكتالوج الجديد
+  await c.execute('DELETE FROM UserDecor WHERE itemId NOT IN (SELECT id FROM DecorItem)');
+  await c.execute(`UPDATE AppUser SET ornament = '' WHERE TRIM(COALESCE(ornament, '')) <> '' AND ornament NOT IN (SELECT id FROM DecorItem WHERE kind = 'ornament')`);
+  await c.execute(`UPDATE AppUser SET cover = '' WHERE TRIM(COALESCE(cover, '')) <> '' AND cover NOT IN (SELECT id FROM DecorItem WHERE kind = 'theme')`);
+  await c.execute(`UPDATE AppUser SET card = '' WHERE TRIM(COALESCE(card, '')) <> '' AND card NOT IN (SELECT id FROM DecorItem WHERE kind = 'card')`);
+  await c.execute({
+    sql: `UPDATE SiteConfig SET decorSeeded = ?, updatedAt = datetime('now') WHERE id = 'main'`,
+    args: [DECOR_SEED_VERSION],
+  });
+}
+
+function toDecorItem(row: Record<string, unknown>): DecorItem {
+  return {
+    id: String(row.id),
+    kind: (String(row.kind) as DecorKind),
+    nameAr: String(row.nameAr ?? ''),
+    imageUrl: String(row.imageUrl ?? ''),
+    rarity: (String(row.rarity) as PlayerFrame['rarity']) || 'common',
+    price: Number(row.price ?? 0),
+    isFree: Number(row.isFree ?? 0) === 1,
+    isActive: Number(row.isActive ?? 1) === 1,
+    sortOrder: Number(row.sortOrder ?? 0),
+    totalOwned: Number(row.totalOwned ?? 0),
+  };
+}
+
+export async function getDecorItems(kind?: DecorKind): Promise<DecorItem[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  if (kind) {
+    const res = await c.execute({
+      sql: 'SELECT * FROM DecorItem WHERE kind = ? AND isActive = 1 ORDER BY sortOrder ASC',
+      args: [kind],
+    });
+    return res.rows.map((r) => toDecorItem(r as Record<string, unknown>));
+  }
+  const res = await c.execute('SELECT * FROM DecorItem WHERE isActive = 1 ORDER BY sortOrder ASC');
+  return res.rows.map((r) => toDecorItem(r as Record<string, unknown>));
+}
+
+export async function getAllDecorItems(): Promise<DecorItem[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const res = await c.execute('SELECT * FROM DecorItem ORDER BY kind ASC, sortOrder ASC');
+  return res.rows.map((r) => toDecorItem(r as Record<string, unknown>));
+}
+
+export async function createDecorItem(data: Partial<DecorItem> & { kind: DecorKind; nameAr: string }): Promise<DecorItem> {
+  await ensureAdminTables();
+  const c = getClient();
+  const id = crypto.randomUUID();
+  await c.execute({
+    sql: `INSERT INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned)
+          VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, 0)`,
+    args: [id, data.kind, data.nameAr, data.imageUrl ?? '', data.rarity ?? 'common', data.price ?? 0, data.isFree ? 1 : 0, data.sortOrder ?? 0],
+  });
+  const res = await c.execute({ sql: 'SELECT * FROM DecorItem WHERE id = ?', args: [id] });
+  return toDecorItem(res.rows[0] as Record<string, unknown>);
+}
+
+export async function updateDecorItem(id: string, data: Partial<DecorItem>): Promise<DecorItem | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const entries = Object.entries(data).filter(([k, v]) => v !== undefined && k !== 'id');
+  if (entries.length === 0) {
+    const res = await c.execute({ sql: 'SELECT * FROM DecorItem WHERE id = ?', args: [id] });
+    return res.rows.length ? toDecorItem(res.rows[0] as Record<string, unknown>) : null;
+  }
+  const setClauses: string[] = []; const values: InValue[] = [];
+  for (const [k, v] of entries) {
+    if (k === 'rarity' && !['common', 'rare', 'epic', 'legendary'].includes(String(v))) continue;
+    if (k === 'kind' && !['ornament', 'theme', 'card'].includes(String(v))) continue;
+    setClauses.push(`${k} = ?`); values.push(sqlVal(v) as InValue);
+  }
+  if (setClauses.length > 0) {
+    values.push(id);
+    await c.execute({ sql: `UPDATE DecorItem SET ${setClauses.join(', ')}, updatedAt = datetime('now') WHERE id = ?`, args: values });
+  }
+  const res = await c.execute({ sql: 'SELECT * FROM DecorItem WHERE id = ?', args: [id] });
+  return res.rows.length ? toDecorItem(res.rows[0] as Record<string, unknown>) : null;
+}
+
+export async function deleteDecorItem(id: string): Promise<void> {
+  await ensureAdminTables();
+  const c = getClient();
+  await c.execute({ sql: 'DELETE FROM DecorItem WHERE id = ?', args: [id] });
+  await c.execute({ sql: 'DELETE FROM UserDecor WHERE itemId = ?', args: [id] });
+}
+
+export async function grantDecorToUser(data: { userId: string; itemId: string; obtainedFrom?: UserFrame['obtainedFrom']; obtainedNote?: string }): Promise<UserDecorRec | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const existing = await c.execute({
+    sql: 'SELECT id FROM UserDecor WHERE userId = ? AND itemId = ?',
+    args: [data.userId, data.itemId],
+  });
+  if (existing.rows.length > 0) return null;
+  const id = crypto.randomUUID();
+  await c.execute({
+    sql: `INSERT INTO UserDecor (id, userId, itemId, isEquipped, obtainedFrom, obtainedNote)
+          VALUES (?, ?, ?, 0, ?, ?)`,
+    args: [id, data.userId, data.itemId, data.obtainedFrom ?? 'gift', data.obtainedNote ?? ''],
+  });
+  await c.execute({ sql: 'UPDATE DecorItem SET totalOwned = totalOwned + 1 WHERE id = ?', args: [data.itemId] });
+  const res = await c.execute({ sql: 'SELECT * FROM UserDecor WHERE id = ?', args: [id] });
+  const row = res.rows[0] as Record<string, unknown>;
+  const itemRes = await c.execute({ sql: 'SELECT * FROM DecorItem WHERE id = ?', args: [data.itemId] });
+  if (itemRes.rows.length === 0) return null;
+  return {
+    id: String(row.id), userId: String(row.userId), itemId: String(row.itemId),
+    isEquipped: Number(row.isEquipped ?? 0) === 1,
+    obtainedFrom: (String(row.obtainedFrom) as UserFrame['obtainedFrom']) ?? 'gift',
+    obtainedNote: String(row.obtainedNote ?? ''), obtainedAt: String(row.obtainedAt ?? ''),
+    item: toDecorItem(itemRes.rows[0] as Record<string, unknown>),
+  };
+}
+
+// تجهيز زينة (المعلق/الموضوع/البطاقة) — يقبل فارغاً للإزالة. يكتب في أعمدة AppUser الأصلية
+// ornament → ornament ، theme → cover ، card → card
+export async function equipDecor(userId: string, kind: DecorKind, itemId: string | null): Promise<void> {
+  await ensureAdminTables();
+  const c = getClient();
+  if (itemId) {
+    const itemRes = await c.execute({ sql: 'SELECT kind FROM DecorItem WHERE id = ? AND isActive = 1', args: [itemId] });
+    if (itemRes.rows.length === 0) throw new Error('عنصر الزينة غير موجود');
+    if (String((itemRes.rows[0] as Record<string, unknown>).kind) !== kind) throw new Error('نوع العنصر غير مطابق');
+    const owned = await c.execute({
+      sql: 'SELECT id FROM UserDecor WHERE userId = ? AND itemId = ? LIMIT 1',
+      args: [userId, itemId],
+    });
+    if (owned.rows.length === 0) throw new Error('غير مصرح: عنصر الزينة غير مملوك لك');
+  }
+  const col = kind === 'ornament' ? 'ornament' : kind === 'theme' ? 'cover' : 'card';
+  await c.execute({
+    sql: `UPDATE AppUser SET ${col} = ?, updatedAt = datetime('now') WHERE id = ?`,
+    args: [itemId ?? '', userId],
+  });
+}
+
+export async function getUserDecor(userId: string): Promise<UserDecorRec[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const res = await c.execute({
+    sql: `SELECT ud.*, d.kind as dKind, d.nameAr as dNameAr, d.imageUrl as dImageUrl, d.rarity as dRarity,
+          d.price as dPrice, d.isFree as dIsFree, d.isActive as dIsActive, d.totalOwned as dTotalOwned, d.sortOrder as dSortOrder
+          FROM UserDecor ud JOIN DecorItem d ON ud.itemId = d.id WHERE ud.userId = ? ORDER BY d.sortOrder ASC`,
+    args: [userId],
+  });
+  return res.rows.map((r) => {
+    const row = r as Record<string, unknown>;
+    return {
+      id: String(row.id), userId: String(row.userId), itemId: String(row.itemId),
+      isEquipped: Number(row.isEquipped ?? 0) === 1,
+      obtainedFrom: (String(row.obtainedFrom) as UserFrame['obtainedFrom']) ?? 'gift',
+      obtainedNote: String(row.obtainedNote ?? ''), obtainedAt: String(row.obtainedAt ?? ''),
+      item: {
+        id: String(row.itemId),
+        kind: (String(row.dKind) as DecorKind),
+        nameAr: String(row.dNameAr ?? ''),
+        imageUrl: String(row.dImageUrl ?? ''),
+        rarity: (String(row.dRarity) as PlayerFrame['rarity']) || 'common',
+        price: Number(row.dPrice ?? 0),
+        isFree: Number(row.dIsFree ?? 0) === 1,
+        isActive: Number(row.dIsActive ?? 1) === 1,
+        sortOrder: Number(row.dSortOrder ?? 0),
+        totalOwned: Number(row.dTotalOwned ?? 0),
+      },
+    };
+  });
 }
 
 export async function authenticateUser(

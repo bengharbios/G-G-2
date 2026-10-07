@@ -79,12 +79,7 @@ const ORNAMENTS: Array<{ file: string; name: string }> = [
   { file: 'orn_sparkle', name: 'بريق ذهبي' },
 ];
 
-// بطاقات خلف البروفايل — فنيات تملأ منطقة الغلاف خلف الأفاتار (كل جزء مكانه)
-const CARD_BACKDROPS: Array<{ file: string; name: string }> = [
-  { file: 'card_astronaut', name: 'حديقة الفضاء' },
-  { file: 'card_glow', name: 'هالة ضوئية' },
-];
-
+// بطاقات خلف البروفايل وبطاقات الهوية — انقلت إلى كتالوج الزينة في قاعدة البيانات (DecorItem)
 // بطاقات الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل في جسم البروفايل لا خلفية
 const CARD_IDENTITY: Array<{ file: string; name: string; wide?: boolean }> = [
   { file: 'room_profile_member_bg', name: 'بطاقة العضوية', wide: true },
@@ -193,17 +188,16 @@ export default function YallaProfileDialog({
   const [eSaving, setESaving] = useState(false);
   const [eMsg, setEMsg] = useState('');
   const [photoTab, setPhotoTab] = useState<'frames' | 'photos'>('frames');
-  const [frameFilter, setFrameFilter] = useState<string>('all');
   const [ownedAvatars, setOwnedAvatars] = useState<string[]>([]);
   const photoInputRef = useRef<HTMLInputElement | null>(null);
 
-  const FRAME_FILTERS: Array<{ key: string; label: string }> = [
-    { key: 'all', label: 'الكل' },
-    { key: 'buy', label: 'تم الشراء' },
-    { key: 'pop', label: 'المس' },
-    { key: 'nav', label: 'الأنشطة' },
-    { key: 'hot', label: 'الفلاخر' },
-  ];
+  // الملكية: معرفات الإطارات التي يملكها المستخدم (مجاني/شراء/نشاط) + بيانات كتالوج الأسعار
+  const [ownedFrameIds, setOwnedFrameIds] = useState<Set<string>>(new Set());
+  const [framesCatalog, setFramesCatalog] = useState<Map<string, { nameAr: string; price: number; isFree: boolean; rarity: string }>>(new Map());
+  const [frameView, setFrameView] = useState<'all' | 'owned'>('all');
+  // ملكية الزينة (معلقات/مواضيع/بطاقات) من قاعدة البيانات + الكتالوج العام
+  const [ownedDecor, setOwnedDecor] = useState<Set<string>>(new Set());
+  const [decorCatalog, setDecorCatalog] = useState<Array<{ id: string; kind: string; nameAr: string; imageUrl: string; rarity: string; price: number; isFree: boolean }>>([]);
 
   const openEditWindow = useCallback(() => {
     setEName(authUser?.displayName || authUser?.username || '');
@@ -358,6 +352,39 @@ export default function YallaProfileDialog({
       .then((list) => setFrames(Array.isArray(list) ? list : []))
       .catch(() => { /* silent */ });
   }, [open, frames.length]);
+
+  // جلب ملكية الإطارات + أسعار الكتالوج + ملكية الزينة عند فتح النافذة (المصدر: قاعدة بياناتنا)
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    fetch('/api/frames')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.success || !Array.isArray(d.userFrames)) return;
+        setOwnedFrameIds(new Set(d.userFrames.map((uf: { frame?: { id?: number | string } }) => String(uf.frame?.id ?? ''))));
+      })
+      .catch(() => { /* silent */ });
+    fetch('/api/store/frames-catalog')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
+        const m = new Map<string, { nameAr: string; price: number; isFree: boolean; rarity: string }>();
+        for (const f of d.frames) {
+          m.set(String(f.id), { nameAr: f.nameAr || f.name, price: f.price, isFree: f.isFree, rarity: f.rarity });
+        }
+        setFramesCatalog(m);
+      })
+      .catch(() => { /* silent */ });
+    fetch('/api/store/decor-catalog')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.success || !Array.isArray(d.items)) return;
+        setDecorCatalog(d.items);
+        setOwnedDecor(new Set((d.ownedDecor || []).map(String)));
+      })
+      .catch(() => { /* silent */ });
+    return () => { cancelled = true; };
+  }, [open]);
 
   // Load yalla countries list once per open session
   useEffect(() => {
@@ -811,14 +838,11 @@ export default function YallaProfileDialog({
               {photoTab === 'frames' ? (
                 <>
                   <div className="yb-filterbar">
-                    {FRAME_FILTERS.map((f) => (
-                      <button key={f.key} className={`yb-filter${frameFilter === f.key ? ' yb-filter--on' : ''}`} onClick={() => setFrameFilter(f.key)}>
-                        {f.label}
-                      </button>
-                    ))}
+                    <button className={`yb-filter${frameView === 'all' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('all')}>الكل</button>
+                    <button className={`yb-filter${frameView === 'owned' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('owned')}>المملوكة</button>
                   </div>
                   <div className="yb-body">
-                    <div className="yb-secband">تم الحصول عليها</div>
+                    <div className="yb-secband">إطارات الصورة</div>
                     <div className="yb-framegrid">
                       <button className={`yb-framecell${!authUser.frame ? ' yb-framecell--on' : ''}`} onClick={() => applyDecor('frame', '')}>
                         <span className="yb-framecell-imgwrap">
@@ -827,24 +851,26 @@ export default function YallaProfileDialog({
                         {!authUser.frame && <i className="yb-check">✓</i>}
                       </button>
                       {frames
-                        .filter((f) => {
-                          if (frameFilter === 'all') return true;
-                          if (frameFilter === 'buy') return authUser.frame === String(f.id);
-                          const rem = frameFilter === 'pop' ? 1 : frameFilter === 'nav' ? 2 : frameFilter === 'hot' ? 3 : 4;
-                          return Number(f.id) % 5 === rem;
-                        })
+                        .filter((f) => (frameView === 'owned' ? ownedFrameIds.has(String(f.id)) : true))
                         .map((f) => {
-                          const active = authUser.frame === String(f.id);
+                          const fid = String(f.id);
+                          const active = authUser.frame === fid;
+                          const owned = ownedFrameIds.has(fid);
+                          const cat = framesCatalog.get(fid);
                           return (
                             <button
                               key={f.id}
-                              className={`yb-framecell${active ? ' yb-framecell--on' : ''}`}
-                              onClick={() => applyDecor('frame', String(f.id))}
-                              title={f.name}
+                              className={`yb-framecell${active ? ' yb-framecell--on' : ''}${owned ? '' : ' yb-framecell--locked'}`}
+                              onClick={() => { if (owned) applyDecor('frame', fid); }}
+                              title={owned ? (cat?.nameAr || f.name) : `${cat?.nameAr || f.name} — ${cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة — من المتجر`}`}
                             >
                               <span className="yb-framecell-imgwrap">
                                 <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
                                 <img src={f.png} alt={f.name} />
+                                {!owned && <i className="yb-lock">🔒</i>}
+                                {!owned && cat && !cat.isFree && (
+                                  <span className="yb-price">{cat.price}<img src="/yalla-ui/diamonds.webp" alt="" /></span>
+                                )}
                               </span>
                               {active && <i className="yb-check">✓</i>}
                             </button>
@@ -1021,24 +1047,39 @@ export default function YallaProfileDialog({
               {/* Ornaments: 2-col shelf cards with embedded avatar preview */}
               {decorPanel === 'ornaments' && (
                 <div className="yd-grid yd-grid--2">
-                  {ORNAMENTS.map((o) => {
-                    const active = (authUser.ornament || '') === o.file;
+                  <button
+                    className={`yd-card yd-card--blue${!authUser.ornament ? ' yd-card--on' : ''}`}
+                    disabled={savingDecor}
+                    onClick={() => applyDecor('ornament', '')}
+                  >
+                    <span className="yd-card-name">لا يوجد</span>
+                    <span className="yd-ornpreview">
+                      {avatarSrc(authUser) && <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />}
+                      <span className="yd-none">لا يوجد</span>
+                    </span>
+                    {!authUser.ornament && <i className="yd-check">✓</i>}
+                  </button>
+                  {decorCatalog.filter((d) => d.kind === 'ornament').map((o) => {
+                    const active = (authUser.ornament || '') === o.id;
+                    const owned = ownedDecor.has(o.id);
                     return (
                       <button
-                        key={`orn-${o.file || 'none'}`}
-                        className={`yd-card${o.file ? '' : ' yd-card--blue'}${active ? ' yd-card--on' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('ornament', o.file)}
+                        key={`orn-${o.id}`}
+                        className={`yd-card${active ? ' yd-card--on' : ''}${owned ? '' : ' yd-card--locked'}`}
+                        disabled={savingDecor || !owned}
+                        onClick={() => { if (owned) applyDecor('ornament', o.id); }}
+                        title={owned ? o.nameAr : `${o.nameAr} — ${o.isFree ? 'مجاني' : `${o.price} جوهرة — من المتجر`}`}
                       >
-                        <span className="yd-card-name">{o.name}</span>
+                        <span className="yd-card-name">{o.nameAr}</span>
                         <span className="yd-ornpreview">
-                          {avatarSrc(authUser) && o.file && (
+                          {avatarSrc(authUser) && (
                             <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />
                           )}
-                          {o.file ? (
-                            <img src={`/yalla-ornaments/${o.file}.png`} alt={o.name} onError={(e) => { const t = e.currentTarget; if (!t.dataset.f) { t.dataset.f = '1'; t.src = `/yalla-ornaments/${o.file}.webp`; } else { t.style.display = 'none'; } }} />
-                          ) : (
-                            <span className="yd-none">لا يوجد</span>
+                          <img src={o.imageUrl} alt={o.nameAr} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                          {!owned && (
+                            <span className="yd-badge">
+                              {o.isFree ? 'مجاني' : <>{o.price}<img src="/yalla-ui/diamonds.webp" alt="" /></>}
+                            </span>
                           )}
                         </span>
                         {active && <i className="yd-check">✓</i>}
@@ -1051,21 +1092,33 @@ export default function YallaProfileDialog({
               {/* Themes/covers: 3-col vertical cards (dialog_skin_theme) */}
               {decorPanel === 'themes' && (
                 <div className="yd-grid yd-grid--3">
-                  {COVERS.map((c) => {
-                    const active = (authUser.cover || '') === c.file;
+                  <button
+                    className={`yd-themecard${!authUser.cover ? ' yd-card--on' : ''}`}
+                    disabled={savingDecor}
+                    onClick={() => applyDecor('cover', '')}
+                  >
+                    <span className="yd-none">لا يوجد</span>
+                    <span className="yd-themename">بدون موضوع</span>
+                    {!authUser.cover && <i className="yd-check">✓</i>}
+                  </button>
+                  {decorCatalog.filter((d) => d.kind === 'theme').map((t) => {
+                    const active = (authUser.cover || '') === t.id;
+                    const owned = ownedDecor.has(t.id);
                     return (
                       <button
-                        key={`cover-${c.file || 'none'}`}
-                        className={`yd-themecard${active ? ' yd-card--on' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('cover', c.file)}
+                        key={`cover-${t.id}`}
+                        className={`yd-themecard${active ? ' yd-card--on' : ''}${owned ? '' : ' yd-card--locked'}`}
+                        disabled={savingDecor || !owned}
+                        onClick={() => { if (owned) applyDecor('cover', t.id); }}
+                        title={owned ? t.nameAr : `${t.nameAr} — ${t.isFree ? 'مجاني' : `${t.price} جوهرة — من المتجر`}`}
                       >
-                        {c.file ? (
-                          <img src={c.file} alt={c.name} />
-                        ) : (
-                          <span className="yd-none">لا يوجد</span>
+                        <img src={t.imageUrl} alt={t.nameAr} onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.35'; }} />
+                        {!owned && (
+                          <span className="yd-badge">
+                            {t.isFree ? 'مجاني' : <>{t.price}<img src="/yalla-ui/diamonds.webp" alt="" /></>}
+                          </span>
                         )}
-                        <span className="yd-themename">{c.name}</span>
+                        <span className="yd-themename">{t.nameAr}</span>
                         {active && <i className="yd-check">✓</i>}
                       </button>
                     );
@@ -1086,19 +1139,27 @@ export default function YallaProfileDialog({
                     {!authUser.frame && <i className="yd-check">✓</i>}
                   </button>
                   {frames.map((f) => {
-                    const active = authUser.frame === String(f.id);
+                    const fid = String(f.id);
+                    const active = authUser.frame === fid;
+                    const owned = ownedFrameIds.has(fid);
+                    const cat = framesCatalog.get(fid);
+                    const frameName = cat?.nameAr || f.name;
                     return (
                       <button
                         key={f.id}
-                        className={`yd-framecard${active ? ' yd-card--on' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('frame', String(f.id))}
-                        title={f.name}
+                        className={`yd-framecard${active ? ' yd-card--on' : ''}${owned ? '' : ' yd-framecard--locked'}`}
+                        disabled={savingDecor || !owned}
+                        onClick={() => { if (owned) applyDecor('frame', fid); }}
+                        title={owned ? frameName : `${frameName} — ${cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة — من المتجر`}`}
                       >
                         <span className="yd-framecircle">
                           <img src={f.png} alt={f.name} />
+                          {!owned && <i className="yd-lock">🔒</i>}
+                          {!owned && cat && !cat.isFree && (
+                            <span className="yd-price">{cat.price}<img src="/yalla-ui/diamonds.webp" alt="" /></span>
+                          )}
                         </span>
-                        <span className="yd-framename">{f.name}</span>
+                        <span className="yd-framename">{frameName}</span>
                         {active && <i className="yd-check">✓</i>}
                       </button>
                     );
@@ -1122,18 +1183,25 @@ export default function YallaProfileDialog({
                     </span>
                     {!authUser.card && <i className="yd-check">✓</i>}
                   </button>
-                  {CARD_BACKDROPS.map((c) => {
-                    const active = (authUser.card || '') === c.file;
+                  {decorCatalog.filter((d) => d.kind === 'card').map((cb) => {
+                    const active = (authUser.card || '') === cb.id;
+                    const owned = ownedDecor.has(cb.id);
                     return (
-                      <button key={`card-${c.file}`}
-                        className={`yd-card${active ? ' yd-card--on' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('card', c.file)}
+                      <button key={`card-${cb.id}`}
+                        className={`yd-card${active ? ' yd-card--on' : ''}${owned ? '' : ' yd-card--locked'}`}
+                        disabled={savingDecor || !owned}
+                        onClick={() => { if (owned) applyDecor('card', cb.id); }}
+                        title={owned ? cb.nameAr : `${cb.nameAr} — ${cb.isFree ? 'مجاني' : `${cb.price} جوهرة — من المتجر`}`}
                       >
-                        <span className="yd-card-name">{c.name}</span>
+                        <span className="yd-card-name">{cb.nameAr}</span>
                         <span className="yd-ornpreview">
                           <img className="yd-ornpreview-avatar" src={avatarSrc(authUser)} alt="" />
-                          <img src={`/yalla-ornaments/${c.file}.png`} alt={c.name} />
+                          <img src={cb.imageUrl} alt={cb.nameAr} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                          {!owned && (
+                            <span className="yd-badge">
+                              {cb.isFree ? 'مجاني' : <>{cb.price}<img src="/yalla-ui/diamonds.webp" alt="" /></>}
+                            </span>
+                          )}
                         </span>
                         {active && <i className="yd-check">✓</i>}
                       </button>
