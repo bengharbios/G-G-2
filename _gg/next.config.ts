@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // standalone للتشغيل الذاتي (bun .next/standalone/server.js) — على فيرسل يجب إلغاؤه وإلا تسجل الصفحات والدوال 404
+  output: process.env.VERCEL ? undefined : "standalone",
   /* config options here */
   typescript: {
     ignoreBuildErrors: true,
