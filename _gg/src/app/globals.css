@@ -1055,7 +1055,7 @@ html, body {
   left: 0;
   width: 100%;
   height: min(230px, 26vh);
-  object-fit: cover;
+  object-fit: contain;
   object-position: center bottom;
   z-index: 3;
   pointer-events: none;
