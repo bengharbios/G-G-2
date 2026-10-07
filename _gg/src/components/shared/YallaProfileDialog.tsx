@@ -505,9 +505,8 @@ export default function YallaProfileDialog({
   const winRate = xp ? Math.round(xp.progress) : 0;
   const frameUrl = authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '';
   const ornamentUrl = authUser?.ornament ? `/yalla-ornaments/${authUser.ornament}.png` : '';
-  // بطاقات الخلفية (حديقة الفضاء/هالة) تملأ الغلاف — بطاقات الهوية (الشحن/العضوية) لوحة بمقاسها في مكانها المحدد
-  const backdropUrl = authUser?.card && !isIdentityCard(authUser.card) ? `/yalla-ornaments/${authUser.card}.png` : '';
-  const identityFile = authUser?.card && isIdentityCard(authUser.card) ? authUser.card : '';
+  // كل البطاقات بلا استثناء: نفس تموضع حديقة الفضاء (طبقة الغلاف yp-carddecor)
+  const backdropUrl = authUser?.card ? `/yalla-ornaments/${authUser.card}.png` : '';
 
   return (
     <AnimatePresence>
@@ -649,15 +648,6 @@ export default function YallaProfileDialog({
                 </div>
               ) : (
                 <div className="yp-body">
-                  {/* بطاقة الهوية (الشحن/العضوية) — لوحة بمقاسها الطبيعي فوق الاسم مباشرة */}
-                  {identityFile && (
-                    <img
-                      src={`/yalla-ornaments/${identityFile}.png`}
-                      alt="بطاقة الملف الشخصي"
-                      className="yp-identity"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                  )}
                   {/* Player name */}
                   <h2 className="yp-name">{authUser.displayName || authUser.username || 'لاعب'}</h2>
 
