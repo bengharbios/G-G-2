@@ -3589,6 +3589,8 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: '/yalla-games/shifarat.png', kind: 'theme', nameAr: 'الشيفرات', imageUrl: '/yalla-games/shifarat.png', rarity: 'rare', price: 300, isFree: false },
   // البطاقات (فنيات خلفية + بطاقات هوية) — المعرف = اسم الملف كما يُخزن في AppUser.card
   // card_emerald_royal: البطاقة المرجعية للتصميم (عريضة، شفافة، زخرفة الأطراف والمركز مفتوح للأفاتار)
+  // card_royal_deer: بطاقة الغزالين الزمردين (شفتها المستخدم — قواعد نفسها: أطراف مزينة، مركز مفتوح)
+  { id: 'card_royal_deer', kind: 'card', nameAr: 'الغزلان الملكية', imageUrl: '/yalla-ornaments/card_royal_deer.png', rarity: 'legendary', price: 800, isFree: false },
   { id: 'card_emerald_royal', kind: 'card', nameAr: 'الزمرد الملكي', imageUrl: '/yalla-ornaments/card_emerald_royal.png', rarity: 'legendary', price: 600, isFree: false },
   { id: 'card_astronaut', kind: 'card', nameAr: 'حديقة الفضاء', imageUrl: '/yalla-ornaments/card_astronaut.png', rarity: 'epic', price: 500, isFree: false },
   { id: 'card_glow', kind: 'card', nameAr: 'هالة ضوئية', imageUrl: '/yalla-ornaments/card_glow.png', rarity: 'epic', price: 500, isFree: false },
@@ -3596,7 +3598,7 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 2;
+const DECOR_SEED_VERSION = 3;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
