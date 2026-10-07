@@ -20,6 +20,7 @@ interface CatalogItem extends CatalogFrame {
 }
 
 type StoreTab = 'frame' | 'ornament' | 'theme' | 'card';
+type SubFilter = 'all' | 'owned' | 'lux' | 'rare';
 
 interface FrameStoreModalProps {
   open: boolean;
@@ -32,6 +33,13 @@ const STORE_TABS: Array<{ key: StoreTab; label: string }> = [
   { key: 'ornament', label: 'المعلقات' },
   { key: 'theme', label: 'المواضيع' },
   { key: 'card', label: 'البطاقات' },
+];
+
+const SUB_FILTERS: Array<{ key: SubFilter; label: string }> = [
+  { key: 'all', label: 'الكل' },
+  { key: 'owned', label: 'المتاح' },
+  { key: 'lux', label: 'الفاخر' },
+  { key: 'rare', label: 'النادر' },
 ];
 
 const RARITY_LABEL: Record<string, string> = {
@@ -57,6 +65,7 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
   const [ownedDecor, setOwnedDecor] = useState<Set<string>>(new Set());
   const [balance, setBalance] = useState<number | null>(null);
   const [tab, setTab] = useState<StoreTab>('frame');
+  const [sub, setSub] = useState<SubFilter>('all');
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [confirmItem, setConfirmItem] = useState<(CatalogFrame | CatalogItem) | null>(null);
   const [msg, setMsg] = useState('');
@@ -135,13 +144,19 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
     [onBalanceChange]
   );
 
-  const visible: Array<CatalogFrame | CatalogItem> =
-    tab === 'frame'
-      ? frames
-      : decors.filter((d) => d.kind === tab);
-
   const isOwned = (item: CatalogFrame | CatalogItem) =>
     'kind' in item ? ownedDecor.has(item.id) : ownedFrames.has(item.id);
+
+  const visible: Array<CatalogFrame | CatalogItem> =
+    (tab === 'frame'
+      ? frames
+      : decors.filter((d) => d.kind === tab)
+    ).filter((f) => {
+      if (sub === 'owned') return isOwned(f);
+      if (sub === 'lux') return f.rarity === 'legendary' || f.rarity === 'epic';
+      if (sub === 'rare') return f.rarity === 'rare';
+      return true;
+    });
 
   return (
     <AnimatePresence>
@@ -172,15 +187,28 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
               <h2 className="fs-title">المتجر</h2>
             </div>
 
-            {/* التبويبات */}
+            {/* التبويبات الرئيسية */}
             <div className="fs-tabs">
               {STORE_TABS.map((t) => (
                 <button
                   key={t.key}
                   className={`fs-tab${tab === t.key ? ' fs-tab--on' : ''}`}
-                  onClick={() => setTab(t.key)}
+                  onClick={() => { setTab(t.key); setSub('all'); }}
                 >
                   {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* التبويبات الفرعية: الكل / المتاح / الفاخر / النادر */}
+            <div className="fs-subtabs">
+              {SUB_FILTERS.map((s) => (
+                <button
+                  key={s.key}
+                  className={`fs-subtab${sub === s.key ? ' fs-subtab--on' : ''}`}
+                  onClick={() => setSub(s.key)}
+                >
+                  {s.label}
                 </button>
               ))}
             </div>
@@ -225,8 +253,8 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
                       )}
                       {owned && <i className="fs-check"><Check className="w-4 h-4" /></i>}
                     </span>
-                    <span className={f.isFree ? 'fs-price fs-price--free' : 'fs-price'}>
-                      {f.isFree ? 'مجاني' : f.price}
+                    <span className={owned ? 'fs-price fs-price--owned' : f.isFree ? 'fs-price fs-price--free' : 'fs-price'}>
+                      {owned ? '✓ تم الشراء' : f.isFree ? 'مجاني' : f.price}
                     </span>
                     <span className={RARITY_BADGE[f.rarity] || RARITY_BADGE.common}>{RARITY_LABEL[f.rarity] || 'عادي'}</span>
                   </button>

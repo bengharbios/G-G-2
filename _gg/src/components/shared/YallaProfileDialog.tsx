@@ -71,35 +71,14 @@ interface YallaProfileDialogProps {
 
 // ─── Yalla asset catalogs (extracted from APK 1.5.1.0) ────────────────
 
-// Garland banners that drape over the TOP of the profile cover (yalla معلقة جدارية)
-const ORNAMENTS: Array<{ file: string; name: string }> = [
-  { file: '', name: 'لا يوجد' },
-  { file: 'orn_banner', name: 'لافتة الاحتفال' },
-  { file: 'orn_lights', name: 'أضواء البطولة' },
-  { file: 'orn_sparkle', name: 'بريق ذهبي' },
-];
-
-// بطاقات خلف البروفايل وبطاقات الهوية — انقلت إلى كتالوج الزينة في قاعدة البيانات (DecorItem)
+// المعلقات والمواضيع والبطاقات — كلها الآن من كتالوج الزينة في قاعدة البيانات (DecorItem)
+// مع ملكية وأسعار وأقفال بدل القوائم الثابتة
 // بطاقات الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل في جسم البروفايل لا خلفية
 const CARD_IDENTITY: Array<{ file: string; name: string; wide?: boolean }> = [
   { file: 'room_profile_member_bg', name: 'بطاقة العضوية', wide: true },
   { file: 'charge_reward_profile_card', name: 'بطاقة الشحن' },
 ];
 const isIdentityCard = (f: string) => CARD_IDENTITY.some((c) => c.file === f);
-
-const COVERS: Array<{ file: string; name: string }> = [
-  { file: '', name: 'بدون موضوع' },
-  { file: '/yalla-covers/bg_profile_theme_default.webp', name: 'افتراضي' },
-  { file: '/yalla-games/mafia.png', name: 'المافيا' },
-  { file: '/yalla-games/tobol.png', name: 'طبول الحرب' },
-  { file: '/yalla-games/tabot.png', name: 'الهروب من التابوت' },
-  { file: '/yalla-games/prison.png', name: 'السجن' },
-  { file: '/yalla-games/risk.png', name: 'المجازفة' },
-  { file: '/yalla-games/risk2.png', name: 'المجازفة 2' },
-  { file: '/yalla-games/familyfeud.png', name: 'فاميلي فيود' },
-  { file: '/yalla-games/baharharb.png', name: 'بحر و حرب' },
-  { file: '/yalla-games/shifarat.png', name: 'الشيفرات' },
-];
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
