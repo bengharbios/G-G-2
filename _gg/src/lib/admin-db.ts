@@ -3657,7 +3657,7 @@ export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
   const c = getClient();
   const marker = await c.execute({
-    sql: "SELECT framesSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
+    sql: "SELECT decorSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
     args: [],
   });
   const mrow = marker.rows[0] as Record<string, unknown> | undefined;
