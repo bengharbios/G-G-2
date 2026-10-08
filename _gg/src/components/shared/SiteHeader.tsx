@@ -122,7 +122,7 @@ export default function SiteHeader({
                   src={frameImg}
                   alt=""
                   style={{
-                    position: 'absolute', inset: '-50%', width: '200%', height: '200%',
+                    position: 'absolute', inset: '-50%', width: '200%', height: '200%', maxWidth: 'none',
                     objectFit: 'contain', pointerEvents: 'none',
                   }}
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
