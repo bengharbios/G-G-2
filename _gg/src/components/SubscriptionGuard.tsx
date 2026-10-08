@@ -246,18 +246,74 @@ export default function SubscriptionGuard({ children, gameSlug }: SubscriptionGu
   }, [gameSlug]);
 
   // Check localStorage for existing code on mount
+  // أولاً: إذا كان المستخدم مسجلاً — جرّب كل اشتراكاته تلقائياً (أي اشتراك يملكه يكفي)
   useEffect(() => {
-    const savedCode = localStorage.getItem('gg_sub_code');
-    setTimeout(() => {
-      if (!isMountedRef.current) return;
-      if (savedCode) {
-        setCode(savedCode);
-        validateCode(savedCode, false);
-      } else {
-        setGuardState('no_code');
+    let cancelled = false;
+    const init = async () => {
+      try {
+        const res = await fetch('/api/subscription/my-access', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ gameSlug, incrementUsage: false }),
+        });
+        if (cancelled || !isMountedRef.current) return;
+        if (res.status === 401) {
+          // غير مسجل — اسلك مسار الكود المحفوظ
+          const savedCode = localStorage.getItem('gg_sub_code');
+          if (savedCode) {
+            setCode(savedCode);
+            validateCode(savedCode, false);
+          } else {
+            setGuardState('no_code');
+          }
+          return;
+        }
+        const data = await res.json() as Record<string, unknown> & {
+          allowed?: boolean;
+          reason?: string;
+          usedCode?: string;
+          subscriber?: { name: string; subscriptionCode: string; plan: string; isTrial: boolean; endDate: string | null };
+          trialInfo?: TrialInfo;
+        };
+        if (cancelled || !isMountedRef.current) return;
+        if (data.allowed) {
+          // وصل عبر أحد اشتراكاته — خزّن كوده النشط للتوافق مع باقي النظام
+          const usedCode = data.usedCode || '';
+          if (usedCode) localStorage.setItem('gg_sub_code', usedCode);
+          if (data.subscriber) {
+            localStorage.setItem('gg_sub_info', JSON.stringify({
+              name: data.subscriber.name,
+              subscriptionCode: data.subscriber.subscriptionCode,
+              plan: data.subscriber.plan,
+              isTrial: data.subscriber.isTrial,
+              endDate: data.subscriber.endDate,
+            }));
+          }
+          if (data.subscriber?.name) setSubscriberName(data.subscriber.name);
+          if (data.trialInfo) setTrialInfo(data.trialInfo as TrialInfo);
+          setGuardState('allowed');
+          return;
+        }
+        // مسجل لكن لا اشتراك يغطي هذه اللعبة — اعرض شاشة الاشتراك مع إبقاء إدخال الكود اليدوي
+        setDeniedReason((data.reason as string) || 'not_subscribed');
+        if (data.subscriber?.name) setSubscriberName(data.subscriber.name);
+        if (data.trialInfo) setTrialInfo(data.trialInfo as TrialInfo);
+        setGuardState('denied');
+      } catch {
+        if (cancelled || !isMountedRef.current) return;
+        const savedCode = localStorage.getItem('gg_sub_code');
+        if (savedCode) {
+          setCode(savedCode);
+          validateCode(savedCode, false);
+        } else {
+          setGuardState('no_code');
+        }
       }
-    }, 0);
-  }, [validateCode]);
+    };
+    const t = setTimeout(init, 0);
+    return () => { cancelled = true; clearTimeout(t); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameSlug]);
 
   // Fetch site config
   useEffect(() => {
