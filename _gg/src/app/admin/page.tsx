@@ -425,10 +425,10 @@ export default function AdminPage() {
     allowedGames: [] as string[],
   });
   const [subFormLoading, setSubFormLoading] = useState(false);
-  // ربط المشترك بمستخدم موجود (بحث بالاسم/المعرف/البريد)
-  const [subLinkedUser, setSubLinkedUser] = useState<{ id: string; username: string; displayName: string; email: string; numericId: number | null } | null>(null);
+  // ربط المشترك بمستخدم موجود (بحث بالاسم/المعرف/البريد/اسم المستخدم)
+  const [subLinkedUser, setSubLinkedUser] = useState<{ id: string; username: string; displayName: string; email: string; numericId: number | null; phone?: string; avatar?: string; subscriptionId?: string | null; gemsBalance?: number } | null>(null);
   const [subUserQuery, setSubUserQuery] = useState('');
-  const [subUserResults, setSubUserResults] = useState<Array<{ id: string; username: string; displayName: string; email: string; numericId: number | null }>>([]);
+  const [subUserResults, setSubUserResults] = useState<Array<{ id: string; username: string; displayName: string; email: string; numericId: number | null; phone?: string; avatar?: string; subscriptionId?: string | null; gemsBalance?: number }>>([]);
   const [subUserSearching, setSubUserSearching] = useState(false);
   const [expandedSubId, setExpandedSubId] = useState<string | null>(null);
 
@@ -927,6 +927,8 @@ export default function AdminPage() {
         break;
       case 'subscriptions':
         fetchSubscriptions();
+        // بيانات المستخدمين لربط الاشتراكات وعرض المشترك المرتبط
+        fetchUsers();
         // Ensure games are loaded for the subscriber dialog
         if (!gamesLoadedOnce || games.length === 0) {
           fetchGames().then(() => setGamesLoadedOnce(true));
@@ -960,6 +962,8 @@ export default function AdminPage() {
         break;
       case 'users':
         fetchUsers();
+        // لعرض تفاصيل الاشتراك (الكود/الخطة/الانتهاء) في عمود الاشتراك
+        fetchSubscriptions();
         break;
       case 'backgrounds':
         fetchBackgrounds();
@@ -1155,8 +1159,13 @@ export default function AdminPage() {
       ...prev,
       name: u.displayName || u.username,
       email: u.email,
+      phone: u.phone || '',
     }));
   };
+
+  // المستخدم المرتبط باشتراك قائم (للعرض في نافذة التعديل)
+  const subOwnerUser = (subId: string | null | undefined) =>
+    subId ? appUsers.find((u) => u.subscriptionId === subId) ?? null : null;
 
   const openEditSubscriberDialog = async (sub: Subscription) => {
     // Ensure games are loaded before opening dialog
@@ -1217,6 +1226,17 @@ export default function AdminPage() {
       showToast('ابحث عن مستخدم موجود واختره أولاً — لا يمكن إدخال البريد يدوياً', 'error');
       return;
     }
+    // تحذير البيع المزدوج: مستخدم له اشتراك قائم مسبقاً
+    if (!editingSubscriber && subLinkedUser?.subscriptionId) {
+      const prevSub = subscriptions.find((s) => s.id === subLinkedUser.subscriptionId);
+      const prevLabel = prevSub ? ` «${prevSub.subscriptionCode}»` : '';
+      const ok = window.confirm(
+        `⚠️ تنبيه: @${subLinkedUser.username} لديه اشتراك قائم مسبقاً${prevLabel}` +
+        ` (حتى ${prevSub?.endDate ? new Date(prevSub.endDate).toLocaleDateString('ar-EG') : 'غير محدد'}).` +
+        `\nإنشاء اشتراك جديد سينقل ربطه إليه ويترك القديم بلا مستخدم. هل أنت متأكد من بيع اشتراك آخر؟`
+      );
+      if (!ok) return;
+    }
     setSubFormLoading(true);
     try {
       if (editingSubscriber) {
@@ -1239,6 +1259,7 @@ export default function AdminPage() {
           setSubscriptions((prev) => prev.map((s) => (s.id === data.subscription.id ? data.subscription : s)));
           showToast('تم تحديث المشترك بنجاح');
           setSubDialogOpen(false);
+          fetchUsers();
         }
       } else {
         const res = await fetch('/api/admin/subscriptions', {
@@ -1261,6 +1282,7 @@ export default function AdminPage() {
           showToast(`تم إضافة المشترك وربطه بـ @${subLinkedUser?.username} - الكود: ${data.subscription.subscriptionCode}`);
           setSubDialogOpen(false);
           fetchSubscriptions();
+          fetchUsers();
         }
       }
     } catch {
@@ -3687,7 +3709,6 @@ export default function AdminPage() {
                           <TableHead className="text-slate-400 font-semibold text-right">المعرف</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right">البريد</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden md:table-cell">الهاتف</TableHead>
-                          <TableHead className="text-slate-400 font-semibold text-right">الدور</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right">💎 الجواهر</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">🪙 الذهب</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">الاشتراك</TableHead>
@@ -3746,22 +3767,41 @@ export default function AdminPage() {
                                 <span className="text-sm text-amber-400" dir="ltr">{(user.gold ?? 0).toLocaleString('en-US')}</span>
                               </TableCell>
                               <TableCell className="hidden sm:table-cell">
-                                <Badge className={user.subscriptionId ? 'bg-emerald-900/50 text-emerald-300 text-[10px] font-bold' : 'bg-slate-800 text-slate-500 text-[10px]'}>
-                                  {user.subscriptionId ? 'مشترك ✓' : 'غير مشترك'}
-                                </Badge>
+                                {(() => {
+                                  const sub = subscriptions.find((s) => s.id === user.subscriptionId);
+                                  const expired = sub?.endDate && new Date(sub.endDate) < new Date();
+                                  if (!user.subscriptionId) {
+                                    return <Badge className="bg-slate-800 text-slate-500 text-[10px]">غير مشترك</Badge>;
+                                  }
+                                  return (
+                                    <div className="space-y-0.5">
+                                      {sub ? (
+                                        <>
+                                          <button
+                                            className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20"
+                                            onClick={() => copySubscriptionCode(sub.subscriptionCode)}
+                                            title="نسخ كود الاشتراك"
+                                          >
+                                            {sub.subscriptionCode}
+                                            <Copy className="w-2.5 h-2.5" />
+                                          </button>
+                                          <p className="text-[10px] text-slate-400">
+                                            {sub.plan === 'paid' ? 'مدفوع' : sub.plan === 'trial' ? 'تجربة' : 'مجاني'}
+                                            {sub.endDate
+                                              ? expired
+                                                ? <span className="text-amber-400"> · منتهي {new Date(sub.endDate).toLocaleDateString('ar-SA')}</span>
+                                                : <span> · حتى {new Date(sub.endDate).toLocaleDateString('ar-SA')}</span>
+                                              : ''}
+                                          </p>
+                                        </>
+                                      ) : (
+                                        <Badge className="bg-emerald-900/50 text-emerald-300 text-[10px] font-bold">مشترك ✓</Badge>
+                                      )}
+                                    </div>
+                                  );
+                                })()}
                               </TableCell>
                               <TableCell>
-                                <Badge className={`text-[10px] font-bold ${
-                                  user.role === 'admin'
-                                    ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
-                                    : user.role === 'moderator'
-                                      ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                                      : 'bg-slate-500/15 text-slate-300 border-slate-500/30'
-                                } border`}>
-                                  {user.role === 'admin' ? 'مدير' : user.role === 'moderator' ? 'مشرف' : 'مستخدم'}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="hidden sm:table-cell">
                                 <span className={`inline-flex items-center gap-1 text-xs ${user.isActive ? 'text-emerald-400' : 'text-rose-400'}`}>
                                   <span className={`w-1.5 h-1.5 rounded-full ${user.isActive ? 'bg-emerald-400' : 'bg-rose-400'}`} />
                                   {user.isActive ? 'نشط' : 'معطل'}
@@ -4703,38 +4743,80 @@ export default function AdminPage() {
         <DialogContent className="bg-slate-900 border-slate-800/50 max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-white">
-              {editingSubscriber ? 'تعديل المشترك' : 'إضافة مشترك جديد'}
+              {editingSubscriber ? 'تعديل الاشتراك' : 'إضافة اشتراك جديد'}
             </DialogTitle>
             <DialogDescription className="text-slate-400">
-              {editingSubscriber ? `تعديل بيانات ${editingSubscriber.name}` : 'أدخل بيانات المشترك الجديد'}
+              {editingSubscriber
+                ? 'تعديل تفاصيل الاشتراك: التواريخ والألعاب فقط — معلومات المستخدم من الملف الشخصي'
+                : 'ابحث عن المستخدم بالاسم أو الاسم المستعار أو البريد أو المعرف — تُسحب بياناته تلقائياً'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            {/* ربط بمستخدم موجود (إنشاء فقط) */}
-            {!editingSubscriber && (
+            {/* بيانات المستخدم: بحث وسحب تلقائي (إنشاء) أو عرض المرتبط (تعديل) */}
+            {editingSubscriber ? (() => {
+              const owner = subOwnerUser(editingSubscriber.id);
+              return (
+                <div className="p-3 rounded-lg bg-slate-800/40 border border-slate-700/40">
+                  <p className="text-[10px] text-slate-500 mb-2">المستخدم المرتبط (غير قابل للتعديل من هنا)</p>
+                  {owner ? (
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
+                        {owner.avatar
+                          // eslint-disable-next-line @next/next/no-img-element
+                          ? <img src={owner.avatar} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                          : (owner.displayName || owner.username).charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0 text-sm">
+                        <p className="text-white font-medium truncate">{owner.displayName || owner.username}</p>
+                        <p className="text-[11px] text-slate-500" dir="ltr">
+                          @{owner.username}{owner.numericId != null ? ` · #${owner.numericId}` : ''}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500">
+                      لا يوجد مستخدم مرتبط بهذا الاشتراك — البريد: <span dir="ltr">{editingSubscriber.email}</span>
+                    </p>
+                  )}
+                </div>
+              );
+            })() : (
               <div className="space-y-1.5">
                 <Label className="text-slate-300 text-sm">
                   المستخدم <span className="text-red-400">*</span>
                   <span className="text-[10px] text-slate-500 mr-2">ابحث بالاسم أو اسم المستخدم أو المعرف الرقمي</span>
                 </Label>
                 {subLinkedUser ? (
-                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
-                    <div className="text-sm">
-                      <span className="text-emerald-300 font-medium">@{subLinkedUser.username}</span>
-                      <span className="mr-2 text-white">{subLinkedUser.displayName}</span>
-                      {subLinkedUser.numericId != null && (
-                        <span className="mr-2 text-[10px] text-slate-400" dir="ltr">#{subLinkedUser.numericId}</span>
-                      )}
-                      <span className="block text-[10px] text-slate-500 mt-0.5" dir="ltr">{subLinkedUser.email}</span>
-                    </div>
+                  <div className={`p-2.5 rounded-lg border ${subLinkedUser.subscriptionId ? 'bg-amber-500/10 border-amber-500/40' : 'bg-emerald-500/10 border-emerald-500/30'}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm">
+                        <span className="text-emerald-300 font-medium">@{subLinkedUser.username}</span>
+                        <span className="mr-2 text-white">{subLinkedUser.displayName}</span>
+                        {subLinkedUser.numericId != null && (
+                          <span className="mr-2 text-[10px] text-slate-400" dir="ltr">#{subLinkedUser.numericId}</span>
+                        )}
+                        <span className="block text-[10px] text-slate-500 mt-0.5" dir="ltr">{subLinkedUser.email}</span>
+                      </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-red-400 hover:text-red-300 h-7 px-2"
-                      onClick={() => { setSubLinkedUser(null); setSubForm((prev) => ({ ...prev, name: '', email: '' })); }}
+                      onClick={() => { setSubLinkedUser(null); setSubForm((prev) => ({ ...prev, name: '', email: '', phone: '' })); }}
                     >
                       إلغاء الربط
                     </Button>
+                    </div>
+                    {subLinkedUser.subscriptionId && (() => {
+                      const prevSub = subscriptions.find((s) => s.id === subLinkedUser.subscriptionId);
+                      return (
+                        <div className="mt-2 p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-300">
+                          ⚠️ هذا المستخدم لديه اشتراك قائم مسبقاً
+                          {prevSub ? ` «${prevSub.subscriptionCode}»` : ''}
+                          {prevSub?.endDate ? ` — ينتهي ${new Date(prevSub.endDate).toLocaleDateString('ar-EG')}` : ''}
+                          {' '}— سيتم استبدال ربطه إذا أنشأت اشتراكاً جديداً.
+                        </div>
+                      );
+                    })()}
                   </div>
                 ) : (
                   <div className="relative">
@@ -4771,54 +4853,30 @@ export default function AdminPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label className="text-slate-300">الاسم {editingSubscriber && <span className="text-red-400">*</span>}</Label>
-                <Input
-                  value={subForm.name}
-                  onChange={(e) => setSubForm((prev) => ({ ...prev, name: e.target.value }))}
-                  className="bg-slate-800/50 border-slate-700/50 text-white"
-                  placeholder="اسم المشترك"
-                  disabled={!editingSubscriber}
-                />
+            {/* بيانات المستخدم المسحوبة — للقراءة فقط دائماً */}
+            <div className="p-3 rounded-lg bg-slate-800/40 border border-slate-700/40 space-y-2">
+              <p className="text-[10px] text-slate-500">بيانات المستخدم (تُسحب من الملف الشخصي — للقراءة فقط)</p>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <p className="text-[10px] text-slate-500">الاسم</p>
+                  <p className="text-white truncate">{subForm.name || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500">البريد</p>
+                  <p className="text-slate-300 truncate" dir="ltr">{subForm.email || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500">الهاتف</p>
+                  <p className="text-slate-300" dir="ltr">{subForm.phone || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500">📱 تيليجرام</p>
+                  <p className="text-slate-300" dir="ltr">{subForm.telegram || '—'}</p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label className="text-slate-300">البريد {editingSubscriber && <span className="text-red-400">*</span>}</Label>
-                <Input
-                  value={subForm.email}
-                  onChange={(e) => setSubForm((prev) => ({ ...prev, email: e.target.value }))}
-                  className="bg-slate-800/50 border-slate-700/50 text-white"
-                  placeholder="email@example.com"
-                  dir="ltr"
-                  type="email"
-                  disabled={!editingSubscriber}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label className="text-slate-300">الهاتف</Label>
-                <Input
-                  value={subForm.phone}
-                  onChange={(e) => setSubForm((prev) => ({ ...prev, phone: e.target.value }))}
-                  className="bg-slate-800/50 border-slate-700/50 text-white"
-                  placeholder="+965 ..."
-                  dir="ltr"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-slate-300 flex items-center gap-1">
-                  📱 تيليجرام
-                </Label>
-                <Input
-                  value={subForm.telegram}
-                  onChange={(e) => setSubForm((prev) => ({ ...prev, telegram: e.target.value }))}
-                  className="bg-slate-800/50 border-slate-700/50 text-white"
-                  placeholder="@username"
-                  dir="ltr"
-                />
-              </div>
+              {subLinkedUser && (
+                <p className="text-[10px] text-slate-500" dir="ltr">@{subLinkedUser.username}{subLinkedUser.numericId != null ? ` · #${subLinkedUser.numericId}` : ''}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
