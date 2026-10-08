@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { formatCompact } from '@/lib/format';
 import {
   LayoutDashboard,
   Gamepad2,
@@ -3869,10 +3870,10 @@ export default function AdminPage() {
                                 <p className="text-sm text-slate-400" dir="ltr">{user.phone || '—'}</p>
                               </TableCell>
                               <TableCell>
-                                <span className="text-sm font-semibold text-emerald-400" dir="ltr">{(user.gemsBalance ?? 0).toLocaleString('en-US')}</span>
+                                <span className="text-sm font-semibold text-emerald-400" dir="ltr">{formatCompact(user.gemsBalance ?? 0)}</span>
                               </TableCell>
                               <TableCell className="hidden sm:table-cell">
-                                <span className="text-sm text-amber-400" dir="ltr">{(user.gold ?? 0).toLocaleString('en-US')}</span>
+                                <span className="text-sm text-amber-400" dir="ltr">{formatCompact(user.gold ?? 0)}</span>
                               </TableCell>
                               <TableCell className="hidden sm:table-cell">
                                 {(() => {

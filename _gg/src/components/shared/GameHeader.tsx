@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Home as HomeIcon, User, Wrench, Zap } from 'lucide-react';
 import { memo } from 'react';
+import { formatCompact } from '@/lib/format';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -194,7 +195,7 @@ function GameHeader({
               className="flex items-center gap-1 bg-gradient-to-l from-amber-600/80 to-orange-600/80 hover:from-amber-500 hover:to-orange-500 rounded-full px-2.5 py-1 text-[11px] font-black text-white shadow-lg shadow-amber-500/15 transition-all hover:shadow-amber-500/25"
             >
               <span>💎</span>
-              <span className="tabular-nums">{gemsBalance.toLocaleString('ar-SA')}</span>
+              <span className="tabular-nums">{formatCompact(gemsBalance)}</span>
             </button>
           )}
 

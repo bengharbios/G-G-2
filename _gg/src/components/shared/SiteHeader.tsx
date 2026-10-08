@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import FrameStoreModal from './FrameStoreModal';
+import { formatCompact } from '@/lib/format';
 
 interface SiteHeaderUser {
   id: string;
@@ -36,6 +37,7 @@ export default function SiteHeader({
   const authUser = authUserProp !== undefined ? authUserProp : fetchedUser;
   const [storeOpen, setStoreOpen] = useState(false);
   const [gems, setGems] = useState<number | null>(null);
+  const [gold, setGold] = useState<number | null>(null);
 
   useEffect(() => {
     // Only fetch if no prop is provided
@@ -50,7 +52,7 @@ export default function SiteHeader({
       .catch(() => {});
   }, [authUserProp]);
 
-  // رصيد الجواهر للسمع جاهز فقط بعد تكون authUser
+  // رصيد الجواهر والذهب — جاهز فقط بعد تكون authUser
   useEffect(() => {
     if (!authUser) return;
     let cancelled = false;
@@ -58,6 +60,12 @@ export default function SiteHeader({
       .then(r => r.json())
       .then(d => {
         if (!cancelled && d.success) setGems(d.balance);
+      })
+      .catch(() => {});
+    fetch('/api/gold/balance')
+      .then(r => r.json())
+      .then(d => {
+        if (!cancelled && d.success) setGold(d.balance);
       })
       .catch(() => {});
     return () => { cancelled = true; };
@@ -68,6 +76,7 @@ export default function SiteHeader({
     if (!authUser) return;
     const refresh = () => {
       fetch('/api/gems/balance').then(r => r.json()).then(d => { if (d.success) setGems(d.balance); }).catch(() => {});
+      fetch('/api/gold/balance').then(r => r.json()).then(d => { if (d.success) setGold(d.balance); }).catch(() => {});
       fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.success && d.user) setFetchedUser(d.user); }).catch(() => {});
     };
     window.addEventListener('focus', refresh);
@@ -123,17 +132,17 @@ export default function SiteHeader({
           </button>
           <div className="spacer" />
 
-          {/* الذهب — حبة bg_add_coin من main_header.xml */}
+          {/* الذهب — الرصيد الحقيقي من AppUser.gold */}
           <button className="coin-pill" aria-label="الذهب" title="الذهب">
             <img src="/yalla-ui/coin.webp" alt="" />
-            <span>0</span>
+            <span>{gold === null ? '0' : formatCompact(gold)}</span>
             <img className="add-btn" src="/yalla-ui/jia.webp" alt="+" />
           </button>
 
           {/* الجواهر — الرصيد الحقيقي من قاعدة البيانات */}
           <button className="gem-pill" aria-label="الجواهر" title="الجواهر">
             <img src="/yalla-ui/diamonds.webp" alt="" />
-            <span>{gems === null ? '0' : gems.toLocaleString('en-US')}</span>
+            <span>{gems === null ? '0' : formatCompact(gems)}</span>
             <img className="add-btn" src="/yalla-ui/jia.webp" alt="+" />
           </button>
 

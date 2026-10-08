@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { formatCompact } from '@/lib/format';
 import {
   Card,
   CardContent,
@@ -225,7 +226,7 @@ function formatDate(dateStr: string | undefined | null): string {
 }
 
 function formatNumber(num: number): string {
-  return new Intl.NumberFormat('ar-SA').format(num);
+  return formatCompact(num);
 }
 
 // ─── Countdown Timer Hook ─────────────────────────────────────────────

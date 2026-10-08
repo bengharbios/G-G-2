@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { formatCompact } from '@/lib/format';
 import {
   Dialog,
   DialogContent,
@@ -273,7 +274,7 @@ function getDaysRemaining(endDate: string | undefined): number {
 }
 
 function formatNumber(num: number): string {
-  return new Intl.NumberFormat('ar-SA').format(num);
+  return formatCompact(num);
 }
 
 // ─── Motion Variants ──────────────────────────────────────────────────

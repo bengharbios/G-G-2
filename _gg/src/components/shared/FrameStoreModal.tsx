@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, Check } from 'lucide-react';
+import { formatCompact } from '@/lib/format';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -177,7 +178,7 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
               </button>
               <div className="fs-wallet" title="رصيد الجواهر">
                 <img src="/yalla-ui/diamonds.webp" alt="" />
-                <span dir="ltr">{balance === null ? '…' : balance.toLocaleString('en-US')}</span>
+                <span dir="ltr">{balance === null ? '…' : formatCompact(balance)}</span>
                 <img className="fs-wallet-add" src="/yalla-ui/jia.webp" alt="+" />
               </div>
             </div>
@@ -286,7 +287,7 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
                       ? 'مجاني — اضغط للحصول عليه'
                       : `السعر: ${confirmItem.price} جوهرة`}
                     {!confirmItem.isFree && typeof balance === 'number' && (
-                      <span className="fs-confirm-balance"> (رصيدك: {balance.toLocaleString('en-US')})</span>
+                      <span className="fs-confirm-balance"> (رصيدك: {formatCompact(balance)})</span>
                     )}
                   </p>
                   {msgType === 'err' && msg && <p className="fs-confirm-err">{msg}</p>}

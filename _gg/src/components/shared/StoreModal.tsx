@@ -6,6 +6,7 @@ import { X, ShoppingBag, Gem, ChevronRight, Zap, MessageCircle, Phone, CreditCar
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { formatCompact } from '@/lib/format';
 
 // ─── Store Items ─────────────────────────────────────────────────────────
 
@@ -65,7 +66,7 @@ interface StoreModalProps {
 }
 
 function formatNumber(n: number): string {
-  return n.toLocaleString('ar-SA');
+  return formatCompact(n);
 }
 
 export default function StoreModal({ open, onOpenChange, gemsBalance, subscriptionCode, onPurchaseComplete }: StoreModalProps) {
