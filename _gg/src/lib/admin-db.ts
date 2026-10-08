@@ -3651,7 +3651,7 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 5;
+const DECOR_SEED_VERSION = 6;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
