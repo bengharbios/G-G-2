@@ -910,6 +910,8 @@ html.gg-embedded .min-h-screen {
    تحويل رمادي slate إلى أخضر يلا — بلا شرط التضمين */
 html, body {
   background: #041F18 !important;
+  /* منع السكرول الجانبي — إطار الأفاتار يبرز قليلاً خارج الشريط العلوي */
+  overflow-x: hidden;
 }
 .bg-slate-950 { background-color: #03211A !important; }
 .bg-slate-900 { background-color: #06332A !important; }

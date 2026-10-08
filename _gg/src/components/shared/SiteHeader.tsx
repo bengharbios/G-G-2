@@ -92,8 +92,8 @@ export default function SiteHeader({
 
   return (
     <>
-      <header className="yalla-topbar fixed top-0 left-0 right-0 z-50">
-        <div className="yalla-topbar-inner">
+      <header className="yalla-topbar fixed top-0 left-0 right-0 z-50" style={{ overflow: 'visible' }}>
+        <div className="yalla-topbar-inner" style={{ overflow: 'visible' }}>
           {/* أفاتار يسار حسب main_header مع درع الإطار المجهز */}
           <button
             onClick={() => (authUser ? onProfileClick?.() : onLoginClick?.())}
@@ -122,7 +122,7 @@ export default function SiteHeader({
                   src={frameImg}
                   alt=""
                   style={{
-                    position: 'absolute', inset: '-25%', width: '150%', height: '150%', maxWidth: 'none',
+                    position: 'absolute', inset: '-17%', width: '134%', height: '134%', maxWidth: 'none',
                     objectFit: 'contain', pointerEvents: 'none',
                   }}
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
