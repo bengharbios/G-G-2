@@ -425,6 +425,11 @@ export default function AdminPage() {
     allowedGames: [] as string[],
   });
   const [subFormLoading, setSubFormLoading] = useState(false);
+  // ربط المشترك بمستخدم موجود (بحث بالاسم/المعرف/البريد)
+  const [subLinkedUser, setSubLinkedUser] = useState<{ id: string; username: string; displayName: string; email: string; numericId: number | null } | null>(null);
+  const [subUserQuery, setSubUserQuery] = useState('');
+  const [subUserResults, setSubUserResults] = useState<Array<{ id: string; username: string; displayName: string; email: string; numericId: number | null }>>([]);
+  const [subUserSearching, setSubUserSearching] = useState(false);
   const [expandedSubId, setExpandedSubId] = useState<string | null>(null);
 
   // Site config
@@ -1110,6 +1115,9 @@ export default function AdminPage() {
       setGamesLoadedOnce(true);
     }
     setEditingSubscriber(null);
+    setSubLinkedUser(null);
+    setSubUserQuery('');
+    setSubUserResults([]);
     setSubForm({
       name: '',
       email: '',
@@ -1123,6 +1131,33 @@ export default function AdminPage() {
     setSubDialogOpen(true);
   };
 
+  // بحث عن مستخدم موجود لربط الاشتراك به
+  const searchSubUser = async (query: string) => {
+    setSubUserQuery(query);
+    if (!query || query.trim().length < 2) { setSubUserResults([]); return; }
+    setSubUserSearching(true);
+    try {
+      const res = await fetch(`/api/admin/users?search=${encodeURIComponent(query.trim())}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSubUserResults((data.users || []).slice(0, 6));
+      }
+    } catch { /* ignore */ } finally {
+      setSubUserSearching(false);
+    }
+  };
+
+  const selectSubLinkedUser = (u: typeof subUserResults[number]) => {
+    setSubLinkedUser(u);
+    setSubUserResults([]);
+    setSubUserQuery('');
+    setSubForm((prev) => ({
+      ...prev,
+      name: u.displayName || u.username,
+      email: u.email,
+    }));
+  };
+
   const openEditSubscriberDialog = async (sub: Subscription) => {
     // Ensure games are loaded before opening dialog
     if (games.length === 0) {
@@ -1130,6 +1165,9 @@ export default function AdminPage() {
       setGamesLoadedOnce(true);
     }
     setEditingSubscriber(sub);
+    setSubLinkedUser(null);
+    setSubUserQuery('');
+    setSubUserResults([]);
     setSubForm({
       name: sub.name,
       email: sub.email,
@@ -1175,6 +1213,10 @@ export default function AdminPage() {
       showToast('الاسم والبريد مطلوبان', 'error');
       return;
     }
+    if (!editingSubscriber && subLinkedUser === null) {
+      showToast('ابحث عن مستخدم موجود واختره أولاً — لا يمكن إدخال البريد يدوياً', 'error');
+      return;
+    }
     setSubFormLoading(true);
     try {
       if (editingSubscriber) {
@@ -1203,6 +1245,7 @@ export default function AdminPage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            userId: subLinkedUser?.id,
             name: subForm.name,
             email: subForm.email,
             phone: subForm.phone,
@@ -1215,7 +1258,7 @@ export default function AdminPage() {
         });
         if (res.ok) {
           const data = await res.json();
-          showToast(`تم إضافة المشترك - الكود: ${data.subscription.subscriptionCode}`);
+          showToast(`تم إضافة المشترك وربطه بـ @${subLinkedUser?.username} - الكود: ${data.subscription.subscriptionCode}`);
           setSubDialogOpen(false);
           fetchSubscriptions();
         }
@@ -4667,18 +4710,80 @@ export default function AdminPage() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+            {/* ربط بمستخدم موجود (إنشاء فقط) */}
+            {!editingSubscriber && (
+              <div className="space-y-1.5">
+                <Label className="text-slate-300 text-sm">
+                  المستخدم <span className="text-red-400">*</span>
+                  <span className="text-[10px] text-slate-500 mr-2">ابحث بالاسم أو اسم المستخدم أو المعرف الرقمي</span>
+                </Label>
+                {subLinkedUser ? (
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <div className="text-sm">
+                      <span className="text-emerald-300 font-medium">@{subLinkedUser.username}</span>
+                      <span className="mr-2 text-white">{subLinkedUser.displayName}</span>
+                      {subLinkedUser.numericId != null && (
+                        <span className="mr-2 text-[10px] text-slate-400" dir="ltr">#{subLinkedUser.numericId}</span>
+                      )}
+                      <span className="block text-[10px] text-slate-500 mt-0.5" dir="ltr">{subLinkedUser.email}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-400 hover:text-red-300 h-7 px-2"
+                      onClick={() => { setSubLinkedUser(null); setSubForm((prev) => ({ ...prev, name: '', email: '' })); }}
+                    >
+                      إلغاء الربط
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <Input
+                      value={subUserQuery}
+                      onChange={(e) => searchSubUser(e.target.value)}
+                      placeholder="مثال: consol24 أو 100017 أو اسم..."
+                      className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                    />
+                    {subUserSearching && (
+                      <Loader2 className="w-4 h-4 animate-spin absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    )}
+                    {subUserResults.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
+                        {subUserResults.map((u) => (
+                          <button
+                            key={u.id}
+                            className="w-full px-3 py-2 text-right hover:bg-slate-700/50 transition-colors text-sm text-white"
+                            onClick={() => selectSubLinkedUser(u)}
+                          >
+                            {u.numericId != null && <span className="text-slate-500 text-xs" dir="ltr">#{u.numericId} </span>}
+                            <span className="text-emerald-300">@{u.username}</span>
+                            <span className="mr-2">{u.displayName}</span>
+                            <span className="block text-[10px] text-slate-500" dir="ltr">{u.email}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {!subUserSearching && subUserQuery.trim().length >= 2 && subUserResults.length === 0 && (
+                      <p className="text-xs text-amber-400 mt-1">لا نتائج — جرّب اسم المستخدم أو المعرف الرقمي</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">الاسم <span className="text-red-400">*</span></Label>
+                <Label className="text-slate-300">الاسم {editingSubscriber && <span className="text-red-400">*</span>}</Label>
                 <Input
                   value={subForm.name}
                   onChange={(e) => setSubForm((prev) => ({ ...prev, name: e.target.value }))}
                   className="bg-slate-800/50 border-slate-700/50 text-white"
                   placeholder="اسم المشترك"
+                  disabled={!editingSubscriber}
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">البريد <span className="text-red-400">*</span></Label>
+                <Label className="text-slate-300">البريد {editingSubscriber && <span className="text-red-400">*</span>}</Label>
                 <Input
                   value={subForm.email}
                   onChange={(e) => setSubForm((prev) => ({ ...prev, email: e.target.value }))}
@@ -4686,6 +4791,7 @@ export default function AdminPage() {
                   placeholder="email@example.com"
                   dir="ltr"
                   type="email"
+                  disabled={!editingSubscriber}
                 />
               </div>
             </div>

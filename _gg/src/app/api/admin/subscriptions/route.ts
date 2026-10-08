@@ -5,6 +5,8 @@ import {
   createSubscriber,
   updateSubscriber,
   deleteSubscriber,
+  getUserById,
+  linkUserToSubscription,
 } from '@/lib/admin-db';
 
 export async function GET(request: NextRequest) {
@@ -42,9 +44,21 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, email, phone, telegram, plan, allowedGames, startDate, endDate } = body;
+    const { name, email, phone, telegram, plan, allowedGames, startDate, endDate, userId } = body;
 
-    if (!email || !name) {
+    // إذا اختير مستخدم موجود، نجلب بياناته ونعبئ الاسم والبريد منه
+    let linkedUser: Awaited<ReturnType<typeof getUserById>> = null;
+    if (userId) {
+      linkedUser = await getUserById(String(userId));
+      if (!linkedUser) {
+        return NextResponse.json({ error: 'المستخدم المحدد غير موجود' }, { status: 404 });
+      }
+    }
+
+    const finalName = linkedUser ? linkedUser.displayName || linkedUser.username : name;
+    const finalEmail = linkedUser ? linkedUser.email : email;
+
+    if (!finalEmail || !finalName) {
       return NextResponse.json(
         { error: 'البريد الإلكتروني والاسم مطلوبان' },
         { status: 400 }
@@ -52,15 +66,20 @@ export async function POST(request: NextRequest) {
     }
 
     const subscription = await createSubscriber({
-      name,
-      email,
-      phone: phone || '',
+      name: finalName,
+      email: finalEmail,
+      phone: phone || linkedUser?.phone || '',
       telegram: telegram || '',
       plan: plan || 'free',
       allowedGames: allowedGames || [],
       startDate,
       endDate,
     });
+
+    // اربط الاشتراك بالمستخدم المختار (إن وُجد)
+    if (linkedUser) {
+      await linkUserToSubscription(linkedUser.id, subscription.id);
+    }
 
     return NextResponse.json({ subscription }, { status: 201 });
   } catch {
