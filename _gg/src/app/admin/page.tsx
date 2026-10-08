@@ -293,6 +293,89 @@ const gameColorMap: Record<string, string> = {
 
 // ─── Main Component ───────────────────────────────────────────────────
 
+function ImageSourceField({ value, onChange, placeholder, label }: {
+  value: string;
+  onChange: (url: string) => void;
+  placeholder?: string;
+  label?: string;
+}) {
+  const [mode, setMode] = useState<'url' | 'upload'>('url');
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState('');
+
+  const doUpload = async (file: File) => {
+    setUploading(true); setErr('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+      const d = await res.json();
+      if (res.ok && d.success && d.url) {
+        onChange(d.url);
+      } else {
+        setErr(d.error || 'فشل الرفع');
+      }
+    } catch {
+      setErr('تعذر الاتصال بالخادم');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between">
+        <Label className="text-slate-300 text-sm">{label || 'الصورة'}</Label>
+        <div className="flex gap-1 rounded-lg bg-slate-800/60 p-0.5">
+          <button
+            type="button"
+            onClick={() => setMode('url')}
+            className={`px-2 py-0.5 text-xs rounded-md ${mode === 'url' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            رابط
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode('upload')}
+            className={`px-2 py-0.5 text-xs rounded-md ${mode === 'upload' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            رفع صورة
+          </button>
+        </div>
+      </div>
+      {mode === 'url' ? (
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder || '/yalla-ornaments/…'}
+          className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+          dir="ltr"
+        />
+      ) : (
+        <div className="space-y-1">
+          <label className="flex items-center justify-center gap-2 h-9 rounded-md border border-dashed border-slate-600 bg-slate-800/40 text-sm text-slate-300 cursor-pointer hover:bg-slate-800/70 hover:border-emerald-600/60 transition-colors">
+            {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+            <span>{uploading ? 'جارٍ الرفع…' : value ? 'استبدال الصورة' : 'اختر صورة من جهازك'}</span>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              className="hidden"
+              disabled={uploading}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) doUpload(f);
+                e.target.value = '';
+              }}
+            />
+          </label>
+          {value && <p className="text-[11px] text-emerald-400/80 truncate" dir="ltr">{value}</p>}
+        </div>
+      )}
+      {err && <p className="text-xs text-red-400">{err}</p>}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -2891,13 +2974,11 @@ export default function AdminPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label className="text-slate-300 text-sm">رابط الصورة (PNG محلي)</Label>
-                      <Input
+                      <ImageSourceField
+                        label="الصورة (رفع أو رابط)"
                         value={frameForm.imageUrl}
-                        onChange={(e) => setFrameForm(prev => ({ ...prev, imageUrl: e.target.value }))}
+                        onChange={(url) => setFrameForm(prev => ({ ...prev, imageUrl: url }))}
                         placeholder="/yalla-frames/110001.png"
-                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
-                        dir="ltr"
                       />
                     </div>
 
@@ -3296,13 +3377,11 @@ export default function AdminPage() {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label className="text-slate-300 text-sm">رابط الصورة (محلي)</Label>
-                      <Input
+                      <ImageSourceField
+                        label="الصورة (رفع أو رابط)"
                         value={decorForm.imageUrl}
-                        onChange={(e) => setDecorForm(prev => ({ ...prev, imageUrl: e.target.value }))}
+                        onChange={(url) => setDecorForm(prev => ({ ...prev, imageUrl: url }))}
                         placeholder="/yalla-ornaments/orn_banner.png"
-                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
-                        dir="ltr"
                       />
                     </div>
                     <div className="grid grid-cols-3 gap-3">

@@ -588,6 +588,18 @@ export async function ensureAdminTables(): Promise<void> {
     )
   `);
 
+  // MediaAsset: الصور المرفوعة من لوحة الأدمن (بايتاتها في القاعدة — توافق Vercel)
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS MediaAsset (
+      id TEXT PRIMARY KEY,
+      filename TEXT NOT NULL,
+      mime TEXT NOT NULL,
+      size INTEGER DEFAULT 0,
+      data BLOB,
+      createdAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
   // FriendRequest table
   await c.execute(`
     CREATE TABLE IF NOT EXISTS FriendRequest (
