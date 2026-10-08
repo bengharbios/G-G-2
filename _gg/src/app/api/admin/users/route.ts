@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminFromRequest } from '@/lib/admin-auth';
 import { getAllUsers, migrateAssignNumericIds } from '@/lib/admin-db';
-import { createClient } from '@libsql/client';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,20 +13,14 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search')?.trim() || '';
 
     if (search.length >= 2) {
-      // Server-side search by username, displayName, email, or partial ID
-      const dbUrl =
-        process.env.TURSO_DATABASE_URL ||
-        process.env.DATABASE_URL ||
-        'file:db/data.db';
-      const isRemote = dbUrl.startsWith('libsql://');
-      const c = createClient({
-        url: dbUrl,
-        ...(isRemote ? { authToken: process.env.TURSO_AUTH_TOKEN || '' } : {}),
-      });
+      // Server-side search — نفس قاعدة getClient (لا تنحرف عن بقية اللوحة)
+      const { getClient, ensureAdminTables } = await import('@/lib/admin-db');
+      await ensureAdminTables();
+      const c = getClient();
 
       const likePattern = `%${search}%`;
       const result = await c.execute({
-        sql: `SELECT id, username, email, displayName, phone, avatar, role, isActive, subscriptionId, lastLoginAt, createdAt, updatedAt
+        sql: `SELECT id, username, email, displayName, phone, avatar, role, isActive, subscriptionId, lastLoginAt, numericId, createdAt, updatedAt
               FROM AppUser
               WHERE username LIKE ? OR displayName LIKE ? OR email LIKE ? OR id LIKE ? OR CAST(numericId AS TEXT) LIKE ?
               ORDER BY createdAt DESC
@@ -59,6 +52,7 @@ export async function GET(request: NextRequest) {
           isActive: !!(row.isActive && row.isActive !== 0),
           subscriptionId: (row.subscriptionId as string) ?? null,
           lastLoginAt: (row.lastLoginAt as string) ?? null,
+          numericId: row.numericId != null ? Number(row.numericId) : null,
           createdAt: (row.createdAt as string) ?? '',
           updatedAt: (row.updatedAt as string) ?? '',
         };
@@ -75,7 +69,23 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const users = await getAllUsers();
+    const allUsers = await getAllUsers();
+    // الرصيد الحي لكل المستخدمين (جواهر الاشتراك + الذهب) — ترابط كامل مع البروفايل
+    const { getClient, ensureAdminTables } = await import('@/lib/admin-db');
+    await ensureAdminTables();
+    const bc = getClient();
+    const balRes = await bc.execute(
+      `SELECT u.id, COALESCE(s.gemsBalance, 0) AS gems, COALESCE(u.gold, 0) AS gold
+            FROM AppUser u LEFT JOIN Subscription s ON s.id = u.subscriptionId`
+    );
+    const balById = new Map(balRes.rows.map((b) => [String(b.id), {
+      gems: Number(b.gems ?? 0),
+      gold: Number(b.gold ?? 0),
+    }]));
+    const users = allUsers.map((u) => {
+      const bal = balById.get(String(u.id));
+      return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0 };
+    });
 
     return NextResponse.json({
       success: true,

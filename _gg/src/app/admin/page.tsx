@@ -483,6 +483,7 @@ export default function AdminPage() {
     id: string; username: string; email: string; displayName: string;
     phone: string; avatar: string; role: string; isActive: boolean;
     subscriptionId: string | null; lastLoginAt: string | null; createdAt: string;
+    numericId: number | null; gemsBalance: number; gold: number;
   }>>([]);
   const [usersLoading, setUsersLoading] = useState(false);
   const [userSearch, setUserSearch] = useState('');
@@ -3639,16 +3640,18 @@ export default function AdminPage() {
                     <Table>
                       <TableHeader>
                         <TableRow className="border-slate-800/60 hover:bg-transparent">
-                          <TableHead className="text-slate-400 font-semibold">المستخدم</TableHead>
-                          <TableHead className="text-slate-400 font-semibold">البريد</TableHead>
-                          <TableHead className="text-slate-400 font-semibold hidden md:table-cell">الهاتف</TableHead>
-                          <TableHead className="text-slate-400 font-semibold">الدور</TableHead>
-                          <TableHead className="text-slate-400 font-semibold">💎 الجواهر</TableHead>
-                          <TableHead className="text-slate-400 font-semibold hidden sm:table-cell">🪙 الذهب</TableHead>
-                          <TableHead className="text-slate-400 font-semibold hidden sm:table-cell">الحالة</TableHead>
-                          <TableHead className="text-slate-400 font-semibold hidden lg:table-cell">آخر دخول</TableHead>
-                          <TableHead className="text-slate-400 font-semibold hidden lg:table-cell">تاريخ التسجيل</TableHead>
-                          <TableHead className="text-slate-400 font-semibold">إجراءات</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">المستخدم</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">المعرف</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">البريد</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden md:table-cell">الهاتف</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">الدور</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">💎 الجواهر</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">🪙 الذهب</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">الاشتراك</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">الحالة</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden lg:table-cell">آخر دخول</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden lg:table-cell">تاريخ التسجيل</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right">إجراءات</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -3658,22 +3661,21 @@ export default function AdminPage() {
                             const matchesSearch = !search ||
                               u.username.toLowerCase().includes(search) ||
                               u.email.toLowerCase().includes(search) ||
-                              u.displayName.toLowerCase().includes(search);
+                              u.displayName.toLowerCase().includes(search) ||
+                              String((u as { numericId?: number }).numericId ?? '').includes(search) ||
+                              String(u.id).toLowerCase().includes(search);
                             const matchesRole = userRoleFilter === 'all' || u.role === userRoleFilter;
                             return matchesSearch && matchesRole;
                           })
                           .map((user) => (
                             <TableRow key={user.id} className="border-slate-800/40 hover:bg-slate-800/30">
                               <TableCell>
-                                <span className="text-sm font-medium text-emerald-400" dir="ltr">{((user as { gemsBalance?: number }).gemsBalance ?? 0).toLocaleString('en-US')}</span>
-                              </TableCell>
-                              <TableCell className="hidden sm:table-cell">
-                                <span className="text-sm text-amber-400" dir="ltr">{((user as { gold?: number }).gold ?? 0).toLocaleString('en-US')}</span>
-                              </TableCell>
-                              <TableCell>
                                 <div className="flex items-center gap-2.5">
-                                  <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${user.role === 'admin' ? 'from-rose-500 to-orange-500' : user.role === 'moderator' ? 'from-amber-500 to-yellow-500' : 'from-slate-500 to-slate-600'} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
-                                    {(user.displayName || user.username).charAt(0).toUpperCase()}
+                                  <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${user.role === 'admin' ? 'from-rose-500 to-orange-500' : user.role === 'moderator' ? 'from-amber-500 to-yellow-500' : 'from-slate-500 to-slate-600'} flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden`}>
+                                    {user.avatar
+                                      // eslint-disable-next-line @next/next/no-img-element
+                                      ? <img src={user.avatar} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                      : (user.displayName || user.username).charAt(0).toUpperCase()}
                                   </div>
                                   <div className="min-w-0">
                                     <p className="text-sm font-medium text-white truncate">
@@ -3686,10 +3688,24 @@ export default function AdminPage() {
                                 </div>
                               </TableCell>
                               <TableCell>
-                                <p className="text-sm text-slate-300 truncate" dir="ltr">{user.email}</p>
+                                <span className="text-xs font-mono text-slate-400" dir="ltr">{user.numericId ?? '—'}</span>
+                              </TableCell>
+                              <TableCell>
+                                <p className="text-sm text-slate-300 truncate max-w-[180px]" dir="ltr">{user.email}</p>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 <p className="text-sm text-slate-400" dir="ltr">{user.phone || '—'}</p>
+                              </TableCell>
+                              <TableCell>
+                                <span className="text-sm font-semibold text-emerald-400" dir="ltr">{(user.gemsBalance ?? 0).toLocaleString('en-US')}</span>
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                <span className="text-sm text-amber-400" dir="ltr">{(user.gold ?? 0).toLocaleString('en-US')}</span>
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                <Badge className={user.subscriptionId ? 'bg-emerald-900/50 text-emerald-300 text-[10px] font-bold' : 'bg-slate-800 text-slate-500 text-[10px]'}>
+                                  {user.subscriptionId ? 'مشترك ✓' : 'غير مشترك'}
+                                </Badge>
                               </TableCell>
                               <TableCell>
                                 <Badge className={`text-[10px] font-bold ${
@@ -3814,13 +3830,11 @@ export default function AdminPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-slate-400">رابط الصورة</label>
-                      <input
+                      <ImageSourceField
+                        label="صورة المستخدم (رفع أو رابط)"
                         value={editForm.avatar}
-                        onChange={(e) => setEditForm(prev => ({ ...prev, avatar: e.target.value }))}
-                        placeholder="/yalla-avatars/… أو رابط"
-                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
-                        dir="ltr"
+                        onChange={(url) => setEditForm(prev => ({ ...prev, avatar: url }))}
+                        placeholder="/yalla-avatars/defaultPhoto_1.png"
                       />
                     </div>
                     <div className="space-y-1.5">
