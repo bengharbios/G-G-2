@@ -503,6 +503,19 @@ export async function ensureAdminTables(): Promise<void> {
     // Column already exists — ignore
   }
 
+  // Migrate: عمود isSeed لتمييز صفوف البذر عن عناصر الأدمن
+  // (يمنع مسح ما أضيف من لوحة الأدمن عند إعادة زرع الكتالوج)
+  try {
+    await c.execute(`ALTER TABLE PlayerFrame ADD COLUMN isSeed INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+  try {
+    await c.execute(`ALTER TABLE DecorItem ADD COLUMN isSeed INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+
   // PlayerFrame table - frame catalog
   await c.execute(`
     CREATE TABLE IF NOT EXISTS PlayerFrame (
@@ -3488,7 +3501,7 @@ const YALLA_FRAMES: Array<{ id: string; nameAr: string; rarity: PlayerFrame['rar
 
 // زرع كتالوج الإطارات: يزيل القديم (بذور تدرجات CSS/UUID) ويزرع الكتالوج كاملاً بمعرفات مستقرة
 // SEED_VERSION: ارفعه عند أي تغيير في الكتالوج لإعادة الزرع تلقائياً
-const YALLA_FRAMES_SEED_VERSION = 2;
+const YALLA_FRAMES_SEED_VERSION = 3;
 
 async function seedYallaFrames(): Promise<void> {
   await ensureAdminTables();
@@ -3504,16 +3517,17 @@ async function seedYallaFrames(): Promise<void> {
   if (count > 0 && Number(mrow?.framesSeeded ?? 0) >= YALLA_FRAMES_SEED_VERSION) return; // مزروعة فعلاً
   const markupNames = YALLA_FRAMES.map((f) => f.id);
   const placeholders = markupNames.map(() => '?').join(', ');
-  // الحذف بمطابقة المعرف (id) — يزيل صفوف البذور القديمة بمعرفات UUID وغيرها
+  // حذف انتقائي: يزيل فقط صفوف البذر المعروفة (isSeed = 1) التي خرجت من الكتالوج
+  // — الإطارات المضافة من لوحة الأدمن تبقى محفوظة
   await c.execute({
-    sql: `DELETE FROM PlayerFrame WHERE id NOT IN (${placeholders})`,
+    sql: `DELETE FROM PlayerFrame WHERE isSeed = 1 AND id NOT IN (${placeholders})`,
     args: markupNames,
   });
   for (const [i, f] of YALLA_FRAMES.entries()) {
     const isPng = /^\d+$/.test(f.id);
     await c.execute({
-      sql: `INSERT OR REPLACE INTO PlayerFrame (id, name, nameAr, description, imageUrl, rarity, gradientFrom, gradientTo, borderColor, glowColor, pattern, price, isFree, isActive, sortOrder)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT OR REPLACE INTO PlayerFrame (id, name, nameAr, description, imageUrl, rarity, gradientFrom, gradientTo, borderColor, glowColor, pattern, price, isFree, isActive, sortOrder, isSeed)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
       args: [
         f.id, f.id, f.nameAr,
         isPng ? 'إطار حصري للملف الشخصي' : 'إطار مصمم للملف الشخصي',
@@ -3600,7 +3614,7 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 4;
+const DECOR_SEED_VERSION = 5;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
@@ -3611,11 +3625,18 @@ export async function seedDefaultDecor(): Promise<void> {
   });
   const mrow = marker.rows[0] as Record<string, unknown> | undefined;
   if (Number(mrow?.decorSeeded ?? 0) >= DECOR_SEED_VERSION) return;
-  await c.execute('DELETE FROM DecorItem');
+  const seedIds = DECOR_SEED.map((f) => f.id);
+  const seedPh = seedIds.map(() => '?').join(', ');
+  // حذف انتقائي: يزيل فقط صفوف البذر المعروفة (isSeed = 1) التي خرجت من الكتالوج
+  // — المعلقات/المواضيع/البطاقات المضافة من لوحة الأدمن تبقى محفوظة
+  await c.execute({
+    sql: `DELETE FROM DecorItem WHERE isSeed = 1 AND id NOT IN (${seedPh})`,
+    args: seedIds,
+  });
   for (const [i, f] of DECOR_SEED.entries()) {
     await c.execute({
-      sql: `INSERT OR REPLACE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+      sql: `INSERT OR REPLACE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned, isSeed)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, 1)`,
       args: [f.id, f.kind, f.nameAr, f.imageUrl, f.rarity, f.price, f.isFree ? 1 : 0, i, 0],
     });
   }
