@@ -98,7 +98,7 @@ export default function SiteHeader({
           <button
             onClick={() => (authUser ? onProfileClick?.() : onLoginClick?.())}
             className="avatar-hd"
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'visible' }}
             aria-label={authUser ? 'الملف الشخصي' : 'تسجيل الدخول'}
             title={authUser ? 'الملف الشخصي' : 'تسجيل الدخول'}
           >
@@ -109,7 +109,7 @@ export default function SiteHeader({
                   `/yalla-avatars/defaultPhoto_${((parseInt(authUser?.id || '', 10) || 0) % 12) + 1}.png`
                 }
                 alt="اللاعب"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
                 onError={(e) => {
                   const t = e.target as HTMLImageElement;
                   if (!t.src.includes('defaultPhoto_')) {
@@ -122,7 +122,7 @@ export default function SiteHeader({
                   src={frameImg}
                   alt=""
                   style={{
-                    position: 'absolute', inset: '-18%', width: '136%', height: '136%',
+                    position: 'absolute', inset: '-50%', width: '200%', height: '200%',
                     objectFit: 'contain', pointerEvents: 'none',
                   }}
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
