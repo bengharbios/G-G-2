@@ -1226,14 +1226,14 @@ export default function AdminPage() {
       showToast('ابحث عن مستخدم موجود واختره أولاً — لا يمكن إدخال البريد يدوياً', 'error');
       return;
     }
-    // تحذير البيع المزدوج: مستخدم له اشتراك قائم مسبقاً
+    // تنبيه معلوماتي: المستخدم قد يمتلك أكثر من اشتراك — مسموح، فقط تأكيد
     if (!editingSubscriber && subLinkedUser?.subscriptionId) {
       const prevSub = subscriptions.find((s) => s.id === subLinkedUser.subscriptionId);
       const prevLabel = prevSub ? ` «${prevSub.subscriptionCode}»` : '';
       const ok = window.confirm(
-        `⚠️ تنبيه: @${subLinkedUser.username} لديه اشتراك قائم مسبقاً${prevLabel}` +
+        `ℹ️ ملاحظة: @${subLinkedUser.username} لديه اشتراك سابق${prevLabel}` +
         ` (حتى ${prevSub?.endDate ? new Date(prevSub.endDate).toLocaleDateString('ar-EG') : 'غير محدد'}).` +
-        `\nإنشاء اشتراك جديد سينقل ربطه إليه ويترك القديم بلا مستخدم. هل أنت متأكد من بيع اشتراك آخر؟`
+        `\nيمكن للمستخدم امتلاك أكثر من اشتراك — الاشتراك الجديد سيصبح هو النشط لديه والقديم سيبقى محفوظاً. متابعة؟`
       );
       if (!ok) return;
     }
@@ -4809,11 +4809,11 @@ export default function AdminPage() {
                     {subLinkedUser.subscriptionId && (() => {
                       const prevSub = subscriptions.find((s) => s.id === subLinkedUser.subscriptionId);
                       return (
-                        <div className="mt-2 p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-300">
-                          ⚠️ هذا المستخدم لديه اشتراك قائم مسبقاً
+                        <div className="mt-2 p-2 rounded bg-sky-500/10 border border-sky-500/30 text-[11px] text-sky-300">
+                          ℹ️ لديه اشتراك سابق
                           {prevSub ? ` «${prevSub.subscriptionCode}»` : ''}
                           {prevSub?.endDate ? ` — ينتهي ${new Date(prevSub.endDate).toLocaleDateString('ar-EG')}` : ''}
-                          {' '}— سيتم استبدال ربطه إذا أنشأت اشتراكاً جديداً.
+                          {' '}— يمكن امتلاك أكثر من اشتراك، والجديد سيصبح هو النشط.
                         </div>
                       );
                     })()}
