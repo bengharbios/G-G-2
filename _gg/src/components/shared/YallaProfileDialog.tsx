@@ -495,10 +495,21 @@ export default function YallaProfileDialog({
 
   const totalPts = stats.reduce((s, g) => s + g.won, 0);
   const winRate = xp ? Math.round(xp.progress) : 0;
+  // محلّل رابط الصورة من كتالوج الزينة: عناصر البذر معرفها = مسارها، أما المرفوع من الأدمن
+  // فمعرفه UUID وصورته على /api/media/<id> — نحلّل المعرف إلى رابط الصورة الحقيقي
+  const decorUrlById = new Map(decorCatalog.map((d) => [d.id, d.imageUrl]));
   const frameUrl = authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '';
-  const ornamentUrl = authUser?.ornament ? `/yalla-ornaments/${authUser.ornament}.png` : '';
+  const ornamentUrl = authUser?.ornament
+    ? (decorUrlById.get(authUser.ornament) || `/yalla-ornaments/${authUser.ornament}.png`)
+    : '';
   // كل البطاقات بلا استثناء: نفس تموضع حديقة الفضاء (طبقة الغلاف yp-carddecor)
-  const backdropUrl = authUser?.card ? `/yalla-ornaments/${authUser.card}.png` : '';
+  const backdropUrl = authUser?.card
+    ? (decorUrlById.get(authUser.card) || `/yalla-ornaments/${authUser.card}.png`)
+    : '';
+  // موضوع البروفايل: المعرف قد يكون مساراً (بذر) أو UUID (رفع أدمن) — نحلّله دائماً
+  const coverUrl = authUser?.cover
+    ? (decorUrlById.get(authUser.cover) || authUser.cover)
+    : '';
 
   return (
     <AnimatePresence>
@@ -554,7 +565,7 @@ export default function YallaProfileDialog({
             {authUser && (
               <div className="yp-cover" onClick={() => setDecorPanel('themes')}>
                 <img
-                  src={authUser.cover || '/yalla-covers/bg_profile_theme_default.webp'}
+                  src={coverUrl || '/yalla-covers/bg_profile_theme_default.webp'}
                   alt=""
                   onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }}
                 />
@@ -686,7 +697,7 @@ export default function YallaProfileDialog({
               </button>
               <div className="ye-head">
                 <div className="ye-headcard">
-                  <img src={authUser.cover || '/yalla-covers/bg_profile_theme_default.webp'} alt="" onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }} />
+                  <img src={coverUrl || '/yalla-covers/bg_profile_theme_default.webp'} alt="" onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }} />
                 </div>
                 <button className="ye-headbtn" onClick={() => setBasicWin(true)} aria-label="تغيير صورة الملف الشخصي" title="تغيير صورة الملف الشخصي">
                   <img src={eAvatar || avatarSrc(authUser)} alt="" onError={(e) => { e.currentTarget.src = avatarSrc(authUser); }} />
