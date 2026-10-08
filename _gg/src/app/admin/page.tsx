@@ -228,7 +228,7 @@ const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = 
   { id: 'messages', label: 'الرسائل', icon: <MessageSquare className="w-5 h-5" /> },
   { id: 'tables', label: 'الطاولات المباشرة', icon: <Monitor className="w-5 h-5" /> },
   { id: 'events', label: 'الأحداث', icon: <CalendarDays className="w-5 h-5" /> },
-  { id: 'gem-charges', label: 'شحن الجواهر', icon: <Gem className="w-5 h-5" /> },
+  { id: 'gem-charges', label: 'صفحة الشحن', icon: <Gem className="w-5 h-5" /> },
   { id: 'leaderboard', label: 'المتصدرين', icon: <Trophy className="w-5 h-5" /> },
   { id: 'frames', label: 'إدارة الإطارات', icon: <Frame className="w-5 h-5" /> },
   { id: 'ornaments', label: 'المعلقات الجدارية', icon: <ImageIcon className="w-5 h-5" /> },
@@ -479,6 +479,10 @@ export default function AdminPage() {
   const [gemsAmount, setGemsAmount] = useState('');
   const [gemsNote, setGemsNote] = useState('');
   const [gemsGrantLoading, setGemsGrantLoading] = useState(false);
+  // شحن الذهب (نفس اختيار المستخدم)
+  const [goldAmount, setGoldAmount] = useState('');
+  const [goldNote, setGoldNote] = useState('');
+  const [goldGrantLoading, setGoldGrantLoading] = useState(false);
 
   // Leaderboard
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
@@ -495,10 +499,15 @@ export default function AdminPage() {
   const [userRoleFilter, setUserRoleFilter] = useState<string>('all');
   const [editingUser, setEditingUser] = useState<typeof appUsers[number] | null>(null);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [editForm, setEditForm] = useState({ displayName: '', phone: '', role: 'user', isActive: true, avatar: '', bio: '', country: '', gender: '', gold: 0 });
+  const [editForm, setEditForm] = useState({ displayName: '', phone: '', role: 'user', isActive: true, avatar: '', bio: '', country: '', gender: '', birthDate: '', gold: 0 });
   const [savingUser, setSavingUser] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // إنشاء مستخدم يدوياً
+  const [showCreateUserDialog, setShowCreateUserDialog] = useState(false);
+  const [createUserForm, setCreateUserForm] = useState({ username: '', email: '', password: '', displayName: '', phone: '' });
+  const [createUserLoading, setCreateUserLoading] = useState(false);
 
   // Frames management
   const [frames, setFrames] = useState<Array<{
@@ -851,6 +860,7 @@ export default function AdminPage() {
       bio: (user as { bio?: string }).bio || '',
       country: (user as { country?: string }).country || '',
       gender: (user as { gender?: string }).gender || '',
+      birthDate: (user as { birthDate?: string }).birthDate || '',
       gold: (user as { gold?: number }).gold ?? 0,
     });
     setShowEditDialog(true);
@@ -880,6 +890,32 @@ export default function AdminPage() {
       setSavingUser(false);
     }
   }, [editingUser, editForm, fetchUsers, showToast]);
+
+  const handleCreateUser = useCallback(async () => {
+    const { username, email, password, displayName, phone } = createUserForm;
+    if (!username || !email || !password) { showToast('اسم المستخدم والبريد وكلمة المرور مطلوبة', 'error'); return; }
+    setCreateUserLoading(true);
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password, displayName, phone }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message || 'تم إنشاء المستخدم بنجاح');
+        setShowCreateUserDialog(false);
+        setCreateUserForm({ username: '', email: '', password: '', displayName: '', phone: '' });
+        fetchUsers();
+      } else {
+        showToast(data.error || 'فشل إنشاء المستخدم', 'error');
+      }
+    } catch {
+      showToast('تعذر الاتصال بالخادم', 'error');
+    } finally {
+      setCreateUserLoading(false);
+    }
+  }, [createUserForm, fetchUsers, showToast]);
 
   const handleDeleteUser = useCallback((userId: string) => {
     setDeletingUserId(userId);
@@ -1671,6 +1707,32 @@ export default function AdminPage() {
       showToast("حدث خطأ في الاتصال", "error");
     } finally {
       setGemsGrantLoading(false);
+    }
+  };
+
+  // ─── شحن الذهب (صفحة الشحن الموحدة) ─────────────────────────────
+  const handleGoldGrant = async () => {
+    if (!gemsTargetUser) { showToast("اختر المستخدم أولاً", "error"); return; }
+    const amt = parseInt(goldAmount);
+    if (!Number.isFinite(amt) || amt <= 0) { showToast("أدخل مبلغاً صحيحاً أكبر من صفر", "error"); return; }
+    setGoldGrantLoading(true);
+    try {
+      const res = await fetch('/api/admin/gold/grant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: gemsTargetUser.id, amount: amt, note: goldNote }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message || "تم الشحن بنجاح");
+        setGoldAmount(''); setGoldNote('');
+      } else {
+        showToast(data.error || "فشل الشحن", "error");
+      }
+    } catch {
+      showToast("حدث خطأ في الاتصال", "error");
+    } finally {
+      setGoldGrantLoading(false);
     }
   };
 
@@ -3554,6 +3616,7 @@ export default function AdminPage() {
               <Card className="bg-slate-900/50 border-slate-800/60">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2"><Gem className="w-5 h-5 text-emerald-400" /> شحن جواهر مباشر لمستخدم</CardTitle>
+                  {/* عنوان القسم الموحد للشحن (جواهر + ذهب) */}
                   <CardDescription className="text-slate-400">ابحث بالاسم أو اسم المستخدم أو جزء من البريد، ثم أدخل المبلغ</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -3609,6 +3672,42 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
 
+              {/* ─── شحن ذهب مباشر لمستخدم ─── */}
+              <Card className="bg-slate-900/50 border-slate-800/60">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2"><span className="text-lg">🪙</span> شحن ذهب مباشر لمستخدم</CardTitle>
+                  <CardDescription className="text-slate-400">نفس المستخدم المختار أعلاه — أدخل عدد الذهبيات</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {gemsTargetUser ? (
+                    <p className="text-sm text-slate-300">
+                      المستخدم: <span className="text-amber-400 font-bold" dir="ltr">@{gemsTargetUser.username}</span> ({gemsTargetUser.displayName})
+                    </p>
+                  ) : (
+                    <p className="text-sm text-slate-500">اختر المستخدم من بطاقة شحن الجواهر أعلاه أولاً</p>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-slate-300 text-sm">عدد الذهبيات</Label>
+                      <Input type="number" min={1} value={goldAmount} onChange={(e) => setGoldAmount(e.target.value)} placeholder="مثال: 500" className="bg-slate-800/60 border-slate-700/50 text-white text-sm" dir="ltr" />
+                    </div>
+                    <div className="space-y-1.5 sm:col-span-2">
+                      <Label className="text-slate-300 text-sm">ملاحظة (اختياري)</Label>
+                      <Input value={goldNote} onChange={(e) => setGoldNote(e.target.value)} placeholder="سبب الشحن…" className="bg-slate-800/60 border-slate-700/50 text-white text-sm" />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {[100, 500, 1000, 5000].map((amt) => (
+                      <button key={amt} type="button" onClick={() => setGoldAmount(String(amt))} className="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/50 text-xs text-slate-300 hover:border-amber-500/60 hover:text-white transition-colors" dir="ltr">+{amt.toLocaleString('en-US')}</button>
+                    ))}
+                  </div>
+                  <Button onClick={handleGoldGrant} disabled={goldGrantLoading || !gemsTargetUser} className="bg-amber-600 hover:bg-amber-500 text-white">
+                    {goldGrantLoading ? <Loader2 className="w-4 h-4 ml-1 animate-spin" /> : <span>🪙</span>}
+                    شحن الذهب الآن
+                  </Button>
+                </CardContent>
+              </Card>
+
               {/* ─── طلبات الشحن من المستخدمين ─── */}
               <Card className="bg-slate-900/50 border-slate-800/60">
                 <CardHeader>
@@ -3659,15 +3758,24 @@ export default function AdminPage() {
                     {appUsers.length} مستخدم مسجل
                   </p>
                 </div>
-                <Button
-                  onClick={fetchUsers}
-                  disabled={usersLoading}
-                  variant="outline"
-                  className="bg-slate-800/60 border-slate-700/50 text-slate-300 hover:bg-slate-700/60"
-                >
-                  <RefreshCw className={`w-4 h-4 ml-1 ${usersLoading ? 'animate-spin' : ''}`} />
-                  تحديث
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => { setCreateUserForm({ username: '', email: '', password: '', displayName: '', phone: '' }); setShowCreateUserDialog(true); }}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                  >
+                    <UserPlus className="w-4 h-4 ml-1" />
+                    إضافة مستخدم
+                  </Button>
+                  <Button
+                    onClick={fetchUsers}
+                    disabled={usersLoading}
+                    variant="outline"
+                    className="bg-slate-800/60 border-slate-700/50 text-slate-300 hover:bg-slate-700/60"
+                  >
+                    <RefreshCw className={`w-4 h-4 ml-1 ${usersLoading ? 'animate-spin' : ''}`} />
+                    تحديث
+                  </Button>
+                </div>
               </div>
 
               {/* Filters */}
@@ -3943,6 +4051,16 @@ export default function AdminPage() {
                       </select>
                     </div>
                     <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-slate-400">تاريخ الميلاد</label>
+                      <input
+                        type="date"
+                        value={editForm.birthDate}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, birthDate: e.target.value }))}
+                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white focus:border-amber-500/50 focus:outline-none"
+                        dir="ltr"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
                       <label className="text-xs font-medium text-slate-400">الذهب 🪙</label>
                       <input
                         type="number" min={0}
@@ -4029,6 +4147,93 @@ export default function AdminPage() {
                   </div>
                 </div>
               )}
+            </DialogContent>
+          </Dialog>
+
+          {/* ─── Create User Dialog ────────────────────────────── */}
+          <Dialog open={showCreateUserDialog} onOpenChange={setShowCreateUserDialog}>
+            <DialogContent className="bg-slate-900 border-slate-800/60 sm:max-w-md" dir="rtl">
+              <DialogHeader>
+                <DialogTitle className="text-lg font-bold text-white flex items-center gap-2">
+                  <UserPlus className="w-5 h-5 text-emerald-400" />
+                  إضافة مستخدم جديد
+                </DialogTitle>
+                <DialogDescription className="text-slate-400 text-sm">
+                  سيتم إنشاء حساب كامل برقم معرف تلقائي، ويمكن للمستخدم تسجيل الدخول به مباشرة.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3 mt-2">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-400">اسم المستخدم *</label>
+                    <input
+                      value={createUserForm.username}
+                      onChange={(e) => setCreateUserForm(prev => ({ ...prev, username: e.target.value }))}
+                      placeholder="حروف إنجليزية وأرقام فقط"
+                      className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none"
+                      dir="ltr"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-400">كلمة المرور *</label>
+                    <input
+                      type="password"
+                      value={createUserForm.password}
+                      onChange={(e) => setCreateUserForm(prev => ({ ...prev, password: e.target.value }))}
+                      placeholder="6 أحرف على الأقل"
+                      className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-400">البريد الإلكتروني *</label>
+                  <input
+                    type="email"
+                    value={createUserForm.email}
+                    onChange={(e) => setCreateUserForm(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="user@example.com"
+                    className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none"
+                    dir="ltr"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-400">الاسم المعروض</label>
+                  <input
+                    value={createUserForm.displayName}
+                    onChange={(e) => setCreateUserForm(prev => ({ ...prev, displayName: e.target.value }))}
+                    placeholder="مثال: أبو خالد"
+                    className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-400">رقم الهاتف</label>
+                  <input
+                    value={createUserForm.phone}
+                    onChange={(e) => setCreateUserForm(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="اختياري"
+                    className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none"
+                    dir="ltr"
+                  />
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    onClick={handleCreateUser}
+                    disabled={createUserLoading}
+                    className="flex-1 h-10 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold text-sm rounded-lg disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  >
+                    {createUserLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+                    إنشاء المستخدم
+                  </button>
+                  <button
+                    onClick={() => setShowCreateUserDialog(false)}
+                    className="h-10 px-4 bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 font-bold text-sm rounded-lg border border-slate-700/50"
+                  >
+                    إلغاء
+                  </button>
+                </div>
+              </div>
             </DialogContent>
           </Dialog>
 

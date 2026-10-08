@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminFromRequest } from '@/lib/admin-auth';
-import { getAllUsers, migrateAssignNumericIds } from '@/lib/admin-db';
+import { getAllUsers, migrateAssignNumericIds, createUser } from '@/lib/admin-db';
 
 export async function GET(request: NextRequest) {
   try {
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/** POST /api/admin/users - Trigger numeric ID migration for all users missing one */
+/** POST action=migrate-ids — Trigger numeric ID migration for all users missing one */
 export async function POST(request: NextRequest) {
   try {
     const { authorized } = await getAdminFromRequest(request);
@@ -111,6 +111,64 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => ({}));
     const action = (body.action as string) || '';
+
+    // إنشاء مستخدم يدوياً (نفس endpoint الهجرة، نميز بالحقل action أو presence=username)
+    if (action === 'create' || (!action && body.username)) {
+      const { username, email, password, displayName, phone } = body;
+      if (!username || !email || !password) {
+        return NextResponse.json(
+          { error: 'اسم المستخدم والبريد وكلمة المرور مطلوبة', success: false },
+          { status: 400 }
+        );
+      }
+      const uname = String(username).trim().toLowerCase();
+      if (uname.length < 3 || uname.length > 20) {
+        return NextResponse.json(
+          { error: 'اسم المستخدم يجب أن يكون بين 3 و 20 حرفاً', success: false },
+          { status: 400 }
+        );
+      }
+      if (!/^[a-zA-Z0-9_]+$/.test(uname)) {
+        return NextResponse.json(
+          { error: 'اسم المستخدم يجب أن يحتوي على حروف إنجليزية وأرقام فقط', success: false },
+          { status: 400 }
+        );
+      }
+      const emailStr = String(email).trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr)) {
+        return NextResponse.json(
+          { error: 'بريد إلكتروني غير صالح', success: false },
+          { status: 400 }
+        );
+      }
+      const pass = String(password);
+      if (pass.length < 6) {
+        return NextResponse.json(
+          { error: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل', success: false },
+          { status: 400 }
+        );
+      }
+      try {
+        const user = await createUser({
+          username: uname,
+          email: emailStr,
+          password: pass,
+          displayName: String(displayName ?? '').trim(),
+          phone: String(phone ?? '').trim(),
+        });
+        return NextResponse.json({
+          success: true,
+          user,
+          message: `تم إنشاء المستخدم @${user.username} برقم ${user.numericId ?? '—'}`,
+        });
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'فشل إنشاء المستخدم';
+        if (msg.includes('مستخدم بالفعل')) {
+          return NextResponse.json({ error: msg, success: false }, { status: 409 });
+        }
+        throw err;
+      }
+    }
 
     if (action === 'migrate-ids') {
       const result = await migrateAssignNumericIds();

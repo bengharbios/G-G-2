@@ -34,7 +34,14 @@ export async function PUT(
     if (isActive !== undefined) updateData.isActive = isActive;
     if (subscriptionId !== undefined) updateData.subscriptionId = subscriptionId;
     // حقول الملف الكاملة (ترابط لوحة الأدمن مع البروفايل)
-    if (avatar !== undefined) updateData.avatar = String(avatar).trim().slice(0, 200);
+    // الصورة: قد تكون data URL كبيرة أو رابطاً — لا نبتّرها (البتر السابق 200 حرف كان يفسد الصور)
+    if (avatar !== undefined) {
+      const av = String(avatar).trim();
+      if (av.length > 500_000) {
+        return NextResponse.json({ error: 'الصورة كبيرة جداً (الحد 500KB)', success: false }, { status: 400 });
+      }
+      updateData.avatar = av;
+    }
     if (bio !== undefined) updateData.bio = String(bio).trim().slice(0, 300);
     if (country !== undefined) updateData.country = String(country).trim().slice(0, 40);
     if (gender !== undefined) updateData.gender = String(gender).trim().slice(0, 20);
