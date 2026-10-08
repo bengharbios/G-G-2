@@ -467,6 +467,13 @@ export default function AdminPage() {
   // Gem charges
   const [gemCharges, setGemCharges] = useState<GemChargeRequest[]>([]);
   const [gemChargeLoading, setGemChargeLoading] = useState<string | null>(null);
+  // شحن مباشر لمستخدم
+  const [gemsTargetUser, setGemsTargetUser] = useState<{ id: string; username: string; displayName: string } | null>(null);
+  const [gemsUserQuery, setGemsUserQuery] = useState('');
+  const [gemsUserResults, setGemsUserResults] = useState<Array<{ id: string; username: string; displayName: string }>>([]);
+  const [gemsAmount, setGemsAmount] = useState('');
+  const [gemsNote, setGemsNote] = useState('');
+  const [gemsGrantLoading, setGemsGrantLoading] = useState(false);
 
   // Leaderboard
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
@@ -482,7 +489,7 @@ export default function AdminPage() {
   const [userRoleFilter, setUserRoleFilter] = useState<string>('all');
   const [editingUser, setEditingUser] = useState<typeof appUsers[number] | null>(null);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [editForm, setEditForm] = useState({ displayName: '', phone: '', role: 'user', isActive: true });
+  const [editForm, setEditForm] = useState({ displayName: '', phone: '', role: 'user', isActive: true, avatar: '', bio: '', country: '', gender: '', gold: 0 });
   const [savingUser, setSavingUser] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -834,6 +841,11 @@ export default function AdminPage() {
       phone: user.phone || '',
       role: user.role || 'user',
       isActive: user.isActive,
+      avatar: (user as { avatar?: string }).avatar || '',
+      bio: (user as { bio?: string }).bio || '',
+      country: (user as { country?: string }).country || '',
+      gender: (user as { gender?: string }).gender || '',
+      gold: (user as { gold?: number }).gold ?? 0,
     });
     setShowEditDialog(true);
   }, []);
@@ -1557,6 +1569,42 @@ export default function AdminPage() {
       showToast('حدث خطأ في الاتصال', 'error');
     } finally {
       setGemChargeLoading(null);
+    }
+  };
+
+  const searchGemsUsers = async (q: string) => {
+    if (!q || q.length < 2) { setGemsUserResults([]); return; }
+    try {
+      const res = await fetch(`/api/admin/users?search=${encodeURIComponent(q)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setGemsUserResults((data.users || []).slice(0, 6));
+      }
+    } catch { /* ignore */ }
+  };
+
+  const handleGemsGrant = async () => {
+    if (!gemsTargetUser) { showToast("اختر المستخدم أولاً", "error"); return; }
+    const amt = parseInt(gemsAmount);
+    if (!Number.isFinite(amt) || amt <= 0) { showToast("أدخل مبلغاً صحيحاً أكبر من صفر", "error"); return; }
+    setGemsGrantLoading(true);
+    try {
+      const res = await fetch('/api/admin/gems/grant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: gemsTargetUser.id, amount: amt, note: gemsNote }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message || "تم الشحن بنجاح");
+        setGemsTargetUser(null); setGemsUserQuery(''); setGemsAmount(''); setGemsNote('');
+      } else {
+        showToast(data.error || "فشل الشحن", "error");
+      }
+    } catch {
+      showToast("حدث خطأ في الاتصال", "error");
+    } finally {
+      setGemsGrantLoading(false);
     }
   };
 
@@ -3434,6 +3482,104 @@ export default function AdminPage() {
           )}
 
           {/* ─── Users Management ───────────────────────────────── */}
+          {activeSection === 'gem-charges' && (
+            <div className="space-y-4">
+              {/* ─── شحن مباشر لمستخدم ─── */}
+              <Card className="bg-slate-900/50 border-slate-800/60">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2"><Gem className="w-5 h-5 text-emerald-400" /> شحن جواهر مباشر لمستخدم</CardTitle>
+                  <CardDescription className="text-slate-400">ابحث بالاسم أو اسم المستخدم أو جزء من البريد، ثم أدخل المبلغ</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-1.5">
+                    <Label className="text-slate-300 text-sm">المستخدم</Label>
+                    <div className="relative">
+                      <Input
+                        value={gemsTargetUser ? `@${gemsTargetUser.username} (${gemsTargetUser.displayName})` : gemsUserQuery}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setGemsTargetUser(null);
+                          setGemsUserQuery(val);
+                          searchGemsUsers(val);
+                        }}
+                        placeholder="ابحث… مثال: القنصل أو zakou أو 100002"
+                        className="bg-slate-800/60 border-slate-700/50 text-white text-sm"
+                      />
+                      {gemsUserResults.length > 0 && !gemsTargetUser && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
+                          {gemsUserResults.map((u) => (
+                            <button
+                              key={u.id}
+                              className="w-full px-3 py-2 text-right hover:bg-slate-700/50 transition-colors text-sm text-white"
+                              onClick={() => { setGemsTargetUser(u); setGemsUserResults([]); }}
+                            >
+                              <span className="text-slate-400">@{u.username}</span>
+                              <span className="mr-2">{u.displayName}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-slate-300 text-sm">عدد الجواهر</Label>
+                      <Input type="number" min={1} value={gemsAmount} onChange={(e) => setGemsAmount(e.target.value)} placeholder="مثال: 1000" className="bg-slate-800/60 border-slate-700/50 text-white text-sm" dir="ltr" />
+                    </div>
+                    <div className="space-y-1.5 sm:col-span-2">
+                      <Label className="text-slate-300 text-sm">ملاحظة (اختياري)</Label>
+                      <Input value={gemsNote} onChange={(e) => setGemsNote(e.target.value)} placeholder="سبب الشحن…" className="bg-slate-800/60 border-slate-700/50 text-white text-sm" />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {[500, 1000, 5000, 10000].map((amt) => (
+                      <button key={amt} type="button" onClick={() => setGemsAmount(String(amt))} className="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/50 text-xs text-slate-300 hover:border-emerald-600/60 hover:text-white transition-colors" dir="ltr">+{amt.toLocaleString('en-US')}</button>
+                    ))}
+                  </div>
+                  <Button onClick={handleGemsGrant} disabled={gemsGrantLoading || !gemsTargetUser} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+                    {gemsGrantLoading ? <Loader2 className="w-4 h-4 ml-1 animate-spin" /> : <Gem className="w-4 h-4 ml-1" />}
+                    شحن الآن
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* ─── طلبات الشحن من المستخدمين ─── */}
+              <Card className="bg-slate-900/50 border-slate-800/60">
+                <CardHeader>
+                  <CardTitle className="text-white">طلبات شحن الجواهر</CardTitle>
+                  <CardDescription className="text-slate-400">طلبات المستخدمين المعلقة بانتظار الموافقة</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {gemCharges.length === 0 ? (
+                    <p className="text-slate-500 text-sm py-6 text-center">لا توجد طلبات شحن حالياً</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {gemCharges.map((gc) => (
+                        <div key={gc.id} className="flex items-center justify-between gap-3 rounded-lg bg-slate-800/40 border border-slate-700/40 px-3 py-2.5">
+                          <div className="min-w-0">
+                            <p className="text-sm text-white truncate">{gc.subscriberName || gc.subscriptionCode} <span className="text-slate-400" dir="ltr">+{gc.gemsAmount.toLocaleString('en-US')} 💎</span></p>
+                            <p className="text-[11px] text-slate-500">{gc.paymentMethod} • {gc.createdAt?.slice(0, 16).replace('T', ' ')}</p>
+                          </div>
+                          {gc.status === 'pending' ? (
+                            <div className="flex gap-2 shrink-0">
+                              <Button size="sm" onClick={() => handleGemChargeAction(gc.id, 'approve')} disabled={gemChargeLoading === gc.id} className="bg-emerald-600 hover:bg-emerald-500 text-white h-8">
+                                {gemChargeLoading === gc.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                                موافقة
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => handleGemChargeAction(gc.id, 'reject')} disabled={gemChargeLoading === gc.id} className="border-slate-600 text-slate-300 hover:bg-slate-700 h-8">رفض</Button>
+                            </div>
+                          ) : (
+                            <Badge className={gc.status === 'approved' ? 'bg-emerald-900/60 text-emerald-300' : 'bg-slate-800 text-slate-400'}>{gc.status === 'approved' ? 'معتمد' : 'مرفوض'}</Badge>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
           {activeSection === 'users' && (
             <div className="space-y-4">
               {/* Header */}
@@ -3497,6 +3643,8 @@ export default function AdminPage() {
                           <TableHead className="text-slate-400 font-semibold">البريد</TableHead>
                           <TableHead className="text-slate-400 font-semibold hidden md:table-cell">الهاتف</TableHead>
                           <TableHead className="text-slate-400 font-semibold">الدور</TableHead>
+                          <TableHead className="text-slate-400 font-semibold">💎 الجواهر</TableHead>
+                          <TableHead className="text-slate-400 font-semibold hidden sm:table-cell">🪙 الذهب</TableHead>
                           <TableHead className="text-slate-400 font-semibold hidden sm:table-cell">الحالة</TableHead>
                           <TableHead className="text-slate-400 font-semibold hidden lg:table-cell">آخر دخول</TableHead>
                           <TableHead className="text-slate-400 font-semibold hidden lg:table-cell">تاريخ التسجيل</TableHead>
@@ -3516,6 +3664,12 @@ export default function AdminPage() {
                           })
                           .map((user) => (
                             <TableRow key={user.id} className="border-slate-800/40 hover:bg-slate-800/30">
+                              <TableCell>
+                                <span className="text-sm font-medium text-emerald-400" dir="ltr">{((user as { gemsBalance?: number }).gemsBalance ?? 0).toLocaleString('en-US')}</span>
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                <span className="text-sm text-amber-400" dir="ltr">{((user as { gold?: number }).gold ?? 0).toLocaleString('en-US')}</span>
+                              </TableCell>
                               <TableCell>
                                 <div className="flex items-center gap-2.5">
                                   <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${user.role === 'admin' ? 'from-rose-500 to-orange-500' : user.role === 'moderator' ? 'from-amber-500 to-yellow-500' : 'from-slate-500 to-slate-600'} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
@@ -3653,6 +3807,61 @@ export default function AdminPage() {
                     <input
                       value={editForm.displayName}
                       onChange={(e) => setEditForm(prev => ({ ...prev, displayName: e.target.value }))}
+                      className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                      dir="rtl"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-slate-400">رابط الصورة</label>
+                      <input
+                        value={editForm.avatar}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, avatar: e.target.value }))}
+                        placeholder="/yalla-avatars/… أو رابط"
+                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                        dir="ltr"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-slate-400">الدولة</label>
+                      <input
+                        value={editForm.country}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, country: e.target.value }))}
+                        placeholder="مثال: الإمارات"
+                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                        dir="rtl"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-slate-400">النوع</label>
+                      <select
+                        value={editForm.gender}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, gender: e.target.value }))}
+                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white focus:border-amber-500/50 focus:outline-none"
+                      >
+                        <option value="">غير محدد</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium text-slate-400">الذهب 🪙</label>
+                      <input
+                        type="number" min={0}
+                        value={editForm.gold}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, gold: parseInt(e.target.value) || 0 }))}
+                        className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white focus:border-amber-500/50 focus:outline-none"
+                        dir="ltr"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-400">النبذة</label>
+                    <input
+                      value={editForm.bio}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, bio: e.target.value }))}
+                      placeholder="نبذة قصيرة…"
                       className="w-full h-10 bg-slate-800/60 border border-slate-700/50 rounded-lg px-3 text-sm text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
                       dir="rtl"
                     />

@@ -32,7 +32,29 @@ export async function PUT(request: NextRequest) {
 
     // Build update data
     const updateData: Record<string, string> = {};
-    if (displayName !== undefined) updateData.displayName = displayName.trim();
+    if (displayName !== undefined) {
+      const newName = displayName.trim();
+      // حد تغيير الاسم: 3 مرات كحد أقصى في اليوم (يُصفَّر تلقائياً مع بداية يوم جديد)
+      await ensureAdminTables();
+      const cc = getClient();
+      const me = await cc.execute({ sql: 'SELECT displayName, renameCount, renameDate FROM AppUser WHERE id = ? LIMIT 1', args: [userId] });
+      const meRow = me.rows[0] as Record<string, unknown> | undefined;
+      const today = new Date().toISOString().slice(0, 10);
+      const sameDay = String(meRow?.renameDate ?? '') === today;
+      const usedToday = sameDay ? Number(meRow?.renameCount ?? 0) : 0;
+      const oldName = String(meRow?.displayName ?? '');
+      if (newName !== oldName && usedToday >= 3) {
+        return NextResponse.json(
+          { error: 'وصلت للحد الأقصى لتغيير الاسم اليوم (3 مرات) — جرّب غداً', success: false },
+          { status: 429 }
+        );
+      }
+      updateData.displayName = newName;
+      if (newName !== oldName) {
+        updateData.renameCount = String(usedToday + 1);
+        updateData.renameDate = today;
+      }
+    }
     if (phone !== undefined) updateData.phone = phone.trim();
     if (avatar !== undefined) updateData.avatar = avatar.trim();
     if (bio !== undefined) updateData.bio = bio.trim().slice(0, 300);

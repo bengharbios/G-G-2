@@ -29,13 +29,24 @@ export async function GET(request: NextRequest) {
       const result = await c.execute({
         sql: `SELECT id, username, email, displayName, phone, avatar, role, isActive, subscriptionId, lastLoginAt, createdAt, updatedAt
               FROM AppUser
-              WHERE username LIKE ? OR displayName LIKE ? OR email LIKE ? OR id LIKE ?
+              WHERE username LIKE ? OR displayName LIKE ? OR email LIKE ? OR id LIKE ? OR CAST(numericId AS TEXT) LIKE ?
               ORDER BY createdAt DESC
-              LIMIT 10`,
-        args: [likePattern, likePattern, likePattern, likePattern],
+              LIMIT 20`,
+        args: [likePattern, likePattern, likePattern, likePattern, likePattern],
       });
 
-      const users = result.rows.map((r) => {
+      // الرصيد الحي: جواهر الاشتراك + الذهب — يضمن ترابط بيانات لوحة الأدمن مع البروفايل لحظياً
+      const balRes = await c.execute({
+        sql: `SELECT u.id, COALESCE(s.gemsBalance, 0) AS gems, COALESCE(u.gold, 0) AS gold
+              FROM AppUser u LEFT JOIN Subscription s ON s.id = u.subscriptionId`,
+        args: [],
+      });
+      const balById = new Map(balRes.rows.map((b) => [String((b as Record<string, unknown>).id), {
+        gems: Number((b as Record<string, unknown>).gems ?? 0),
+        gold: Number((b as Record<string, unknown>).gold ?? 0),
+      }]));
+
+      const usersRaw = result.rows.map((r) => {
         const row = r as Record<string, unknown>;
         return {
           id: row.id as string,
@@ -51,6 +62,10 @@ export async function GET(request: NextRequest) {
           createdAt: (row.createdAt as string) ?? '',
           updatedAt: (row.updatedAt as string) ?? '',
         };
+      });
+      const users = usersRaw.map((u) => {
+        const bal = balById.get(String(u.id));
+        return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0 };
       });
 
       return NextResponse.json({

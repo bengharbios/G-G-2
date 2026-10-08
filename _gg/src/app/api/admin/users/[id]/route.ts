@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminFromRequest } from '@/lib/admin-auth';
-import { updateUser, deleteUser, getUserById } from '@/lib/admin-db';
+import { updateUser, deleteUser, getUserById, ensureAdminTables, getClient } from '@/lib/admin-db';
 
 // ─── PUT: Update user (role, displayName, phone, isActive, etc.) ───────
 
@@ -16,7 +16,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { role, displayName, phone, isActive, subscriptionId } = body;
+    const { role, displayName, phone, isActive, subscriptionId, avatar, bio, country, gender, birthDate, gold, gemsBalance } = body;
 
     // Validate role
     if (role !== undefined && !['admin', 'moderator', 'user'].includes(role)) {
@@ -33,6 +33,28 @@ export async function PUT(
     if (phone !== undefined) updateData.phone = phone;
     if (isActive !== undefined) updateData.isActive = isActive;
     if (subscriptionId !== undefined) updateData.subscriptionId = subscriptionId;
+    // حقول الملف الكاملة (ترابط لوحة الأدمن مع البروفايل)
+    if (avatar !== undefined) updateData.avatar = String(avatar).trim().slice(0, 200);
+    if (bio !== undefined) updateData.bio = String(bio).trim().slice(0, 300);
+    if (country !== undefined) updateData.country = String(country).trim().slice(0, 40);
+    if (gender !== undefined) updateData.gender = String(gender).trim().slice(0, 20);
+    if (birthDate !== undefined) updateData.birthDate = String(birthDate).trim().slice(0, 20);
+    // الذهب: تعديل مباشر من الأدمن
+    if (gold !== undefined) {
+      const g = Math.max(0, Math.min(1_000_000, Math.floor(Number(gold) || 0)));
+      updateData.gold = g;
+    }
+    // الجواهر: تعديل مباشر على رصيد الاشتراك (يدعم NULL)
+    if (gemsBalance !== undefined) {
+      const g = Math.max(0, Math.min(1_000_000, Math.floor(Number(gemsBalance) || 0)));
+      await ensureAdminTables();
+      const cc = getClient();
+      const cur = await cc.execute({ sql: "SELECT subscriptionId FROM AppUser WHERE id = ?", args: [id] });
+      const subId = (cur.rows[0] as Record<string, unknown> | undefined)?.subscriptionId;
+      if (subId) {
+        await cc.execute({ sql: "UPDATE Subscription SET gemsBalance = ?, updatedAt = datetime('now') WHERE id = ?", args: [g, String(subId)] });
+      }
+    }
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(

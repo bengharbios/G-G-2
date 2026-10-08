@@ -178,6 +178,9 @@ export interface AppUser {
   subscriptionId: string | null;
   lastLoginAt: string | null;
   numericId: number | null;
+  gold: number;
+  renameCount: number;
+  renameDate: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -499,6 +502,25 @@ export async function ensureAdminTables(): Promise<void> {
   // Migrate: علامة زرع كتالوج الزينة في SiteConfig
   try {
     await c.execute(`ALTER TABLE SiteConfig ADD COLUMN decorSeeded INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+
+  // Migrate: رصيد الذهب (قطع الذهب) للمستخدم
+  try {
+    await c.execute(`ALTER TABLE AppUser ADD COLUMN gold INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+
+  // Migrate: عداد تغيير الاسم اليومي (حد 3 مرات/يوم)
+  try {
+    await c.execute(`ALTER TABLE AppUser ADD COLUMN renameCount INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists — ignore
+  }
+  try {
+    await c.execute(`ALTER TABLE AppUser ADD COLUMN renameDate TEXT DEFAULT ''`);
   } catch {
     // Column already exists — ignore
   }
@@ -1485,6 +1507,9 @@ function toAppUser(row: Record<string, unknown>): AppUser {
     subscriptionId: (row.subscriptionId as string) ?? null,
     lastLoginAt: (row.lastLoginAt as string) ?? null,
     numericId: row.numericId != null ? Number(row.numericId) : null,
+    gold: row.gold != null ? Number(row.gold) : 0,
+    renameCount: row.renameCount != null ? Number(row.renameCount) : 0,
+    renameDate: (row.renameDate as string) ?? '',
     createdAt: (row.createdAt as string) ?? new Date().toISOString(),
     updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
   };
