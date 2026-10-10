@@ -574,6 +574,16 @@ export default function YallaProfileDialog({
 
             {/* Card backdrop BEHIND the avatar (بطاقة خلف البروفايل) — بعرض الموضوع، ذائبة الحواف */}
 
+            {/* Card backdrop (بطاقة الملف) — خارج .yp-scroll حتى لا تتمرر: حدها العلوي = نهاية الموضوع */}
+            {authUser && backdropUrl && (
+              <img
+                src={backdropUrl}
+                alt=""
+                className="yp-carddecor"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            )}
+
             {/* Wall garland draped over the cover TOP (معلقة جدارية) */}
             {authUser && ornamentUrl && (
               <img
@@ -626,16 +636,6 @@ export default function YallaProfileDialog({
 
             {/* Scrollable content — avatar head stays above/outside it */}
             <div className="yp-scroll">
-
-              {/* خلفية فنية داخل منطقة الغلاف بالضبط (لكل جزء مكانه) */}
-              {authUser && backdropUrl && (
-                <img
-                  src={backdropUrl}
-                  alt=""
-                  className="yp-carddecor"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-              )}
 
               {/* ── Guest view ── */}
               {!authUser ? (
