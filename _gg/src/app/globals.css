@@ -1035,6 +1035,8 @@ html, body {
   z-index: 1;
 }
 .yp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* البطاقة استثناء داخل الموضوع: بعرضه كاملاً وارتفاعها بنسبتها الأصلية (بدل تمدد الموضوع) */
+.yp-cover .yp-carddecor { height: auto; object-fit: unset; }
 
 /* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع */
 .yp-ornament {
@@ -1050,15 +1052,15 @@ html, body {
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
 }
 
-/* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية = حافة الموضوع السفلية بالضبط، وبعرض الموضوع */
+/* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية والجانبية = حواف الموضوع بالضبط.
+   ملف PNG مقصوص من الشفافية (900×281) فالحدود تبعاً، والارتفاع تلقائي بنسبته الأصلية */
 .yp-carddecor {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: min(230px, 26vh);
-  object-fit: cover;
-  object-position: center bottom;
+  height: auto;
+  display: block;
   z-index: 3;
   pointer-events: none;
 }
