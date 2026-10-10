@@ -359,12 +359,21 @@ function ImageSourceField({ value, onChange, placeholder, label }: {
             <span>{uploading ? 'جارٍ الرفع…' : value ? 'استبدال الصورة' : 'اختر صورة من جهازك'}</span>
             <input
               type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
+              accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,video/mp4"
               className="hidden"
               disabled={uploading}
               onChange={(e) => {
                 const f = e.target.files?.[0];
-                if (f) doUpload(f);
+                if (f) {
+                  // بعض المتصفحات ترسل MP4 كـ application/octet-stream — نعتمد امتداد الاسم
+                  const nameL = f.name.toLowerCase();
+                  const overrideType =
+                    nameL.endsWith('.mp4') ? 'video/mp4'
+                    : nameL.endsWith('.svg') ? 'image/svg+xml'
+                    : f.type;
+                  const fileWithType = new File([f], f.name, { type: overrideType, lastModified: f.lastModified });
+                  doUpload(fileWithType);
+                }
                 e.target.value = '';
               }}
             />

@@ -9,8 +9,11 @@ const ALLOWED_MIME: Record<string, string> = {
   'image/jpeg': '.jpg',
   'image/webp': '.webp',
   'image/gif': '.gif',
+  'image/svg+xml': '.svg',
+  'video/mp4': '.mp4',
 };
-const MAX_SIZE = 4 * 1024 * 1024; // 4MB
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB للصور الثابتة والصور المتحركة (GIF/SVG/APNG)
+const MAX_VIDEO_SIZE = 25 * 1024 * 1024; // 25MB للـ MP4
 
 async function verifyAdminAuth(request: NextRequest) {
   const token = request.cookies.get('admin_token')?.value;
@@ -22,8 +25,9 @@ async function verifyAdminAuth(request: NextRequest) {
   }
 }
 
-// رفع صورة من لوحة الأدمن — تُخزَّن بايتاتها في قاعدة البيانات (توافق Vercel للقراءة فقط)
-// وتُخدَم لاحقاً عبر /api/media/<id> — يعمل للإطارات والمواضيع والمعلقات والبطاقات
+// رفع صورة/فيديو من لوحة الأدمن — تُخزَّن بايتاتها في قاعدة البيانات (توافق Vercel للقراءة فقط)
+// وتُخدَم لاحقاً عبر /api/media/<id> — يعمل للإطارات والمواضيع والمعلقات والبطاقات والفيديوهات
+// ملاحظة: MP4 تُخزَّن كـ BLOB في MediaAsset وتُعرض عبر نفس المسار — تعمل إذا كان الفيديو خفيف (≤25MB)
 export async function POST(request: NextRequest) {
   try {
     const admin = await verifyAdminAuth(request);
@@ -31,16 +35,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
     }
     const form = await request.formData();
-    const file = form.get('file');
+    const file = form.get('file') as File | null;
     if (!(file instanceof File)) {
       return NextResponse.json({ error: 'الملف مطلوب' }, { status: 400 });
     }
     const ext = ALLOWED_MIME[file.type];
     if (!ext) {
-      return NextResponse.json({ error: 'صيغة غير مدعومة (PNG/JPG/WEBP/GIF فقط)' }, { status: 400 });
+      return NextResponse.json({ error: 'صيغة غير مدعومة (PNG/JPG/WEBP/GIF/SVG/MP4)' }, { status: 400 });
     }
-    if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: 'حجم الصورة يتجاوز 4MB' }, { status: 400 });
+    const limit = file.type === 'video/mp4' ? MAX_VIDEO_SIZE : MAX_SIZE;
+    if (file.size > limit) {
+      return NextResponse.json({ error: 'حجم الملف يتجاوز الحد المسموح' }, { status: 400 });
     }
     await ensureAdminTables();
     const c = getClient();
@@ -53,6 +58,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, url: `/api/media/${id}` });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'فشل رفع الصورة' }, { status: 500 });
+    return NextResponse.json({ error: 'فشل رفع الملف' }, { status: 500 });
   }
 }
