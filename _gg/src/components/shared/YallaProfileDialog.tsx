@@ -569,22 +569,19 @@ export default function YallaProfileDialog({
                   alt=""
                   onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }}
                 />
+                {/* بطاقة الملف — طفلة الموضوع: حافتها السفلية = حافة الموضوع السفلية بالضبط وبعرضه */}
+                {backdropUrl && (
+                  <img
+                    src={backdropUrl}
+                    alt=""
+                    className="yp-carddecor"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                )}
               </div>
             )}
 
-            {/* Card backdrop BEHIND the avatar (بطاقة خلف البروفايل) — بعرض الموضوع، ذائبة الحواف */}
-
-            {/* Card backdrop (بطاقة الملف) — خارج .yp-scroll حتى لا تتمرر: حدها العلوي = نهاية الموضوع */}
-            {authUser && backdropUrl && (
-              <img
-                src={backdropUrl}
-                alt=""
-                className="yp-carddecor"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
-            )}
-
-            {/* Wall garland draped over the cover TOP (معلقة جدارية) */}
+            {/* Card backdrop BEHIND the avatar (بطاقة خلف البروفايل) -- */}
             {authUser && ornamentUrl && (
               <img
                 src={ornamentUrl}
