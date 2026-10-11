@@ -2461,7 +2461,10 @@ html, body {
 .yb-framecell:hover { background: rgba(44, 119, 98, .1); }
 .yb-framecell--on { background: rgba(44, 119, 98, .14); box-shadow: inset 0 0 0 1.5px rgba(44, 119, 98, .5); }
 .yb-framecell-imgwrap { display: block; position: relative; aspect-ratio: 1 / 1; }
-.yb-framecell-imgwrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.yb-framecell-imgwrap img,
+.yb-framecell-imgwrap canvas,
+.yb-framecell-imgwrap .svga-wrapper,
+.yb-framecell-imgwrap .yb-framecell-frame { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: contain; pointer-events: none; }
 .yb-framecell-face {
   position: absolute;
   inset: 17%;

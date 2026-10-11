@@ -59,6 +59,7 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   // ملفات SVGA فقط هي التي تحتاج تشغيل canvas
   const isSvga = src.toLowerCase().endsWith('.svga');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<{ stopAnimation: (clear?: boolean) => void; clear?: () => void } | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -67,9 +68,26 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     let cancelled = false;
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
+    // ضبط أبعاد canvas لتملأ الحاوية الأم (مهم: SVGA Player يضبط الأبعاد الداخلية على حجم الفيديو الأصلي)
+    const syncCanvasSize = () => {
+      const c = canvasRef.current;
+      const parent = c?.parentElement;
+      if (!c || !parent) return;
+      const rect = parent.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        c.width = Math.round(rect.width);
+        c.height = Math.round(rect.height);
+        c.style.width = '100%';
+        c.style.height = '100%';
+        c.style.display = 'block';
+      }
+    };
+    syncCanvasSize();
+
     loadSvgaScript()
       .then((SVGA) => {
         if (cancelled || !canvasRef.current) return;
+        syncCanvasSize(); // re-sync بعد تحميل السكريبت
         // إن كان اللاعب موجوداً، نوقفه أولاً
         if (playerRef.current?.stopAnimation) {
           try { playerRef.current.stopAnimation(true); } catch {}
@@ -78,8 +96,10 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         const player = new (SVGA as any).Player(canvasRef.current);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const parser = new (SVGA as any).Parser();
-        parser.load(src, (videoItem: unknown) => {
+        parser.load(src, (videoItem: { videoSize?: { width: number; height: number } }) => {
           if (cancelled) return;
+          // إعادة ضبط أبعاد canvas بناءً على الفيديو + الحاوية
+          syncCanvasSize();
           player.setVideoItem(videoItem);
           player.setContentMode('AspectFit');
           player.setClipsToBounds(true);
@@ -98,8 +118,15 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         onError?.();
       });
 
+    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas
+    const ro = containerRef.current
+      ? new ResizeObserver(() => syncCanvasSize())
+      : null;
+    if (containerRef.current && ro) ro.observe(containerRef.current);
+
     return () => {
       cancelled = true;
+      ro?.disconnect();
       if (localPlayer) {
         try { localPlayer.stopAnimation(true); } catch {}
         try { localPlayer.clear?.(); } catch {}
@@ -126,11 +153,13 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      role="img"
-      aria-label={alt}
-    />
+    <div ref={containerRef} className={`svga-wrapper ${className ?? ''}`} style={{ width: '100%', height: '100%', display: 'block' }}>
+      <canvas
+        ref={canvasRef}
+        role="img"
+        aria-label={alt}
+        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain' }}
+      />
+    </div>
   );
 }

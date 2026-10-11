@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LogOut, X, Shirt } from 'lucide-react';
+import SvgaOrImg from './SvgaOrImg';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -48,9 +49,10 @@ interface CountryRec {
 }
 
 interface FrameRec {
-  id: number;
+  id: number | string;
   name: string;
   png: string;
+  imageUrl?: string;
 }
 
 type DecorPanel = 'ornaments' | 'themes' | 'frames' | 'cards' | null;
@@ -329,14 +331,39 @@ export default function YallaProfileDialog({
     };
   }, [open, subscriberCode]);
 
-  // Load yalla frames catalog (frameConfig + localFrameConfig, Arabic names)
+  // Load yalla frames catalog — ندمج JSON الثابت + الإطارات الديناميكية من قاعدة البيانات (التي تشمل SVGA)
   useEffect(() => {
-    if (!open || frames.length > 0) return;
+    if (!open) return;
+    let cancelled = false;
+    // 1) حمّل الإطارات الثابتة من JSON (PNG frames بأسماء يلا الأصلية)
     fetch('/yalla-frames/frames.json')
       .then((r) => r.json())
-      .then((list) => setFrames(Array.isArray(list) ? list : []))
+      .then((list: FrameRec[]) => {
+        if (cancelled) return;
+        const staticFrames = Array.isArray(list) ? list : [];
+        setFrames(staticFrames);
+        // 2) حمّل الإطارات الديناميكية من DB (تشمل SVGA) وأضفها بدون تكرار
+        fetch('/api/store/frames-catalog')
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d) => {
+            if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
+            const existingIds = new Set(staticFrames.map((f) => String(f.id)));
+            const dbOnlyFrames: FrameRec[] = d.frames
+              .filter((f: { id: string | number; imageUrl: string }) => !existingIds.has(String(f.id)))
+              .map((f: { id: string | number; imageUrl: string; nameAr?: string; name?: string }) => ({
+                id: f.id,
+                name: f.nameAr || f.name || String(f.id),
+                png: f.imageUrl, // backward-compat: نضع imageUrl في png كي يقرأه الكود الحالي
+                imageUrl: f.imageUrl,
+              }));
+            // الإطارات التي في DB فقط (مثل SVGA) تُضاف لنهاية القائمة
+            setFrames((prev) => [...prev, ...dbOnlyFrames]);
+          })
+          .catch(() => { /* silent */ });
+      })
       .catch(() => { /* silent */ });
-  }, [open, frames.length]);
+    return () => { cancelled = true; };
+  }, [open]);
 
   // جلب ملكية الإطارات + أسعار الكتالوج + ملكية الزينة عند فتح النافذة (المصدر: قاعدة بياناتنا)
   useEffect(() => {
@@ -859,7 +886,7 @@ export default function YallaProfileDialog({
                             >
                               <span className="yb-framecell-imgwrap">
                                 <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
-                                <img src={f.png} alt={f.name} />
+                                <SvgaOrImg src={f.imageUrl || f.png} alt={f.name} className="yb-framecell-frame" />
                                 {!owned && <i className="yb-lock">🔒</i>}
                                 {!owned && cat && !cat.isFree && (
                                   <span className="yb-price">{cat.price}<img src="/yalla-ui/diamonds.webp" alt="" /></span>
