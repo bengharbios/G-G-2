@@ -12,6 +12,9 @@ interface SvgaOrImgProps {
   className?: string;
   loading?: 'lazy' | 'eager';
   onError?: () => void;
+  /** إن true، يُحسب ارتفاع canvas تلقائياً من نسبة الفيديو (مناسب للمعلقات العريضة).
+   *  إن false (الافتراضي)، يملأ canvas الحاوية (مناسب للإطارات المربعة في المتجر والهيدر). */
+  autoHeight?: boolean;
 }
 
 // ضمان تحميل سكريبت svga.min.js مرة واحدة
@@ -55,7 +58,7 @@ function loadSvgaScript(): Promise<typeof window.SVGA> {
   return svgaScriptPromise;
 }
 
-export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', onError }: SvgaOrImgProps) {
+export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', onError, autoHeight = false }: SvgaOrImgProps) {
   // ملفات SVGA فقط هي التي تحتاج تشغيل canvas
   const lowerSrc = src.toLowerCase();
   const isSvga = lowerSrc.endsWith('.svga');
@@ -63,6 +66,7 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<{ stopAnimation: (clear?: boolean) => void; clear?: () => void } | null>(null);
+  const videoSizeRef = useRef<{ width: number; height: number } | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -70,27 +74,41 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     let cancelled = false;
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
-    // ضبط canvas بأبعاد الفيديو الأصلية (video.videoSize)
-    // هذا يضمن أن canvas بنسبة عرض إلى ارتفاع مطابقة للفيديو، فلا فراغات جانبية/علوية
-    // CSS يتولى حساب الارتفاع الظاهري تلقائياً عبر height: auto
-    const syncCanvasToVideo = (videoItem: { videoSize?: { width: number; height: number } }) => {
+    // ضبط أبعاد canvas بناءً على الوضع:
+    // - autoHeight=true: canvas بأبعاد الفيديو الأصلية (نسبة مطابقة) + display height = auto
+    //   مناسب للمعلقات العريضة (مثل hanging_meteors 1200×400) — لا فراغات جانبية/علوية
+    // - autoHeight=false (افتراضي): canvas بأبعاد الحاوية (يملأها بالكامل)
+    //   مناسب للإطارات المربعة في المتجر والهيدر (حيث نسبة الحاوية = نسبة الفيديو)
+    const syncCanvasSize = () => {
       const c = canvasRef.current;
-      if (!c || !videoItem?.videoSize) return;
-      const { width, height } = videoItem.videoSize;
-      if (width > 0 && height > 0) {
-        // أبعاد الـ drawing buffer = أبعاد الفيديو الأصلية (نفس نسبة العرض إلى الارتفاع)
+      const parent = c?.parentElement;
+      if (!c || !parent) return;
+      if (autoHeight && videoSizeRef.current) {
+        // الوضع autoHeight: canvas intrinsic = video size، display height: auto
+        const { width, height } = videoSizeRef.current;
         c.width = Math.round(width);
         c.height = Math.round(height);
+        c.style.width = '100%';
+        c.style.height = 'auto';  // المتصفح يحسب الارتفاع من نسبة الفيديو
         c.style.display = 'block';
-        // CSS height: auto يضمن أن الارتفاع الظاهري يُحسب من نسبة العرض إلى الارتباط
-        // (العرض width: 100% من الحاوية، الارتفاع تلقائي)
+      } else {
+        // الوضع الافتراضي: canvas intrinsic = parent dimensions (يملأ الحاوية)
+        const rect = parent.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          c.width = Math.round(rect.width);
+          c.height = Math.round(rect.height);
+          c.style.width = '100%';
+          c.style.height = '100%';
+          c.style.display = 'block';
+        }
       }
     };
+    syncCanvasSize();
 
     loadSvgaScript()
       .then((SVGA) => {
         if (cancelled || !canvasRef.current) return;
-        // إن كان اللاعب موجوداً، نوقفه أولاً
+        syncCanvasSize();
         if (playerRef.current?.stopAnimation) {
           try { playerRef.current.stopAnimation(true); } catch {}
         }
@@ -100,12 +118,14 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         const parser = new (SVGA as any).Parser();
         parser.load(src, (videoItem: { videoSize?: { width: number; height: number } }) => {
           if (cancelled) return;
-          // مهم: ضبط أبعاد canvas لمطابقة أبعاد الفيديو (وليس الحاوية)
-          syncCanvasToVideo(videoItem);
+          if (videoItem?.videoSize) {
+            videoSizeRef.current = { width: videoItem.videoSize.width, height: videoItem.videoSize.height };
+          }
+          syncCanvasSize(); // re-sync بعد معرفة أبعاد الفيديو
           player.setVideoItem(videoItem);
-          player.setContentMode('AspectFit'); // مطابق لنسبة الفيديو فلا فراغات
+          player.setContentMode('AspectFit');
           player.setClipsToBounds(true);
-          player.loops = 0; // تكرار لا نهائي
+          player.loops = 0;
           player.startAnimation();
           localPlayer = player;
           playerRef.current = player;
@@ -119,14 +139,21 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         onError?.();
       });
 
+    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas (مهم للوضع autoHeight وللتجاوب)
+    const ro = containerRef.current
+      ? new ResizeObserver(() => syncCanvasSize())
+      : null;
+    if (containerRef.current && ro) ro.observe(containerRef.current);
+
     return () => {
       cancelled = true;
+      ro?.disconnect();
       if (localPlayer) {
         try { localPlayer.stopAnimation(true); } catch {}
         try { localPlayer.clear?.(); } catch {}
       }
     };
-  }, [isSvga, src, failed, onError]);
+  }, [isSvga, src, failed, onError, autoHeight]);
 
   // للفيديو (MP4/WebM/MOV) — استخدم <video>
   if (isVideo) {
