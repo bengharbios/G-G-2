@@ -1051,22 +1051,39 @@ html, body {
 .yp-cover .yp-carddecor { height: auto; object-fit: unset; }
 
 /* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع */
-.yp-ornament {
+.yp-ornament,
+.yp-ornament.yp-carddecor,
+.yp-ornament > img,
+.yp-ornament > canvas,
+.yp-ornament > .svga-wrapper {
   position: absolute;
   top: -6px;
   left: 0;
   width: 100%;
   height: min(230px, 26vh);
-  object-fit: contain;
+  object-fit: contain !important;
   object-position: center top;
   z-index: 7;
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
 }
+/* عندما يكون العنصر نفسه SvgaOrImg (div.svga-wrapper) ، نُطبّق الأنماط عليه مباشرة */
+.yp-ornament.svga-wrapper {
+  display: block;
+}
+.yp-ornament.svga-wrapper > canvas {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 /* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية والجانبية = حواف الموضوع بالضبط.
    ملف PNG مقصوص من الشفافية (900×281) فالحدود تبعاً، والارتفاع تلقائي بنسبته الأصلية */
-.yp-carddecor {
+.yp-carddecor,
+.yp-carddecor > img,
+.yp-carddecor > canvas,
+.yp-carddecor > .svga-wrapper {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -1075,6 +1092,15 @@ html, body {
   display: block;
   z-index: 3;
   pointer-events: none;
+}
+.yp-carddecor.svga-wrapper {
+  display: block;
+}
+.yp-carddecor.svga-wrapper > canvas {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* بطاقة الهوية (يلا: بطاقة الملف الشخصي) — عنصر مستقل بمنزلة الخاصة تحت الوصف */
