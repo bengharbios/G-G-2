@@ -331,35 +331,39 @@ export default function YallaProfileDialog({
     };
   }, [open, subscriberCode]);
 
-  // Load yalla frames catalog — ندمج JSON الثابت + الإطارات الديناميكية من قاعدة البيانات (التي تشمل SVGA)
+  // Load frames catalog من قاعدة البيانات (المصدر الوحيد للحقيقة — يشمل SVGA و PNG)
+  // أي تعارض في IDs بين JSON الثابت والكتالوج، الكتالوج يفوز لأنه المصدر الذي اشترى منه المستخدم
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
-    // 1) حمّل الإطارات الثابتة من JSON (PNG frames بأسماء يلا الأصلية)
-    fetch('/yalla-frames/frames.json')
-      .then((r) => r.json())
-      .then((list: FrameRec[]) => {
-        if (cancelled) return;
-        const staticFrames = Array.isArray(list) ? list : [];
-        setFrames(staticFrames);
-        // 2) حمّل الإطارات الديناميكية من DB (تشمل SVGA) وأضفها بدون تكرار
-        fetch('/api/store/frames-catalog')
-          .then((r) => (r.ok ? r.json() : null))
-          .then((d) => {
-            if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
-            const existingIds = new Set(staticFrames.map((f) => String(f.id)));
-            const dbOnlyFrames: FrameRec[] = d.frames
-              .filter((f: { id: string | number; imageUrl: string }) => !existingIds.has(String(f.id)))
-              .map((f: { id: string | number; imageUrl: string; nameAr?: string; name?: string }) => ({
-                id: f.id,
-                name: f.nameAr || f.name || String(f.id),
-                png: f.imageUrl, // backward-compat: نضع imageUrl في png كي يقرأه الكود الحالي
-                imageUrl: f.imageUrl,
-              }));
-            // الإطارات التي في DB فقط (مثل SVGA) تُضاف لنهاية القائمة
-            setFrames((prev) => [...prev, ...dbOnlyFrames]);
+    fetch('/api/store/frames-catalog')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
+        // خريطة لتقديم اسم عربي أفضل إن وُجد في JSON الثابت (للأسماء التاريخية)
+        const dbFrames: FrameRec[] = d.frames.map((f: { id: string | number; imageUrl: string; nameAr?: string; name?: string }) => ({
+          id: f.id,
+          name: f.nameAr || f.name || String(f.id),
+          png: f.imageUrl, // backward-compat: يقرأه الكود القديم
+          imageUrl: f.imageUrl,
+        }));
+        // حمّل JSON للاستئناس بالأسماء العربية الأصلية فقط (لا يستبدل الكتالوج)
+        fetch('/yalla-frames/frames.json')
+          .then((r) => r.json())
+          .then((list: FrameRec[]) => {
+            if (cancelled) return;
+            const staticMap = new Map<string, string>();
+            for (const sf of (Array.isArray(list) ? list : [])) {
+              staticMap.set(String(sf.id), sf.name);
+            }
+            // إن وُجد اسم عربي أصل في JSON للإطار نفسه، استخدمه بدل اسم الكتالوج
+            const merged = dbFrames.map((f) => ({
+              ...f,
+              name: staticMap.get(String(f.id)) || f.name,
+            }));
+            setFrames(merged);
           })
-          .catch(() => { /* silent */ });
+          .catch(() => { setFrames(dbFrames); });
       })
       .catch(() => { /* silent */ });
     return () => { cancelled = true; };

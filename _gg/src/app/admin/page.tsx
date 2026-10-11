@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import SvgaOrImg from '@/components/shared/SvgaOrImg';
 import { formatCompact } from '@/lib/format';
 import {
   LayoutDashboard,
@@ -528,6 +529,8 @@ export default function AdminPage() {
   }>>([]);
   const [frameFormOpen, setFrameFormOpen] = useState(false);
   const [editingFrame, setEditingFrame] = useState<typeof frames[number] | null>(null);
+  const [frameSearch, setFrameSearch] = useState('');
+  const [frameFilter, setFrameFilter] = useState<'all' | 'active' | 'inactive' | 'svga'>('all');
   const [frameForm, setFrameForm] = useState({
     name: '', nameAr: '', description: '', imageUrl: '', rarity: 'common' as string,
     gradientFrom: '#f59e0b', gradientTo: '#eab308', borderColor: 'rgba(245, 158, 11, 0.7)',
@@ -2953,6 +2956,9 @@ export default function AdminPage() {
                     <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[10px]">
                       {frames.filter(f => f.isActive).length} نشط
                     </Badge>
+                    <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-[10px]">
+                      {frames.filter(f => f.imageUrl?.endsWith('.svga')).length} متحرك
+                    </Badge>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -2984,6 +2990,33 @@ export default function AdminPage() {
                 </div>
               </div>
 
+              {/* Search + filter */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-900/40 border border-slate-800/40 rounded-lg p-2">
+                <input
+                  type="text"
+                  placeholder="بحث بالاسم أو المعرف (مثل 121020 أو متحرك)…"
+                  className="flex-1 bg-slate-950/70 border border-slate-800/60 rounded-md px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500/50"
+                  value={frameSearch}
+                  onChange={(e) => setFrameSearch(e.target.value)}
+                />
+                <div className="flex items-center gap-1 text-xs">
+                  {(['all', 'active', 'inactive', 'svga'] as const).map((k) => (
+                    <button
+                      key={k}
+                      type="button"
+                      onClick={() => setFrameFilter(k)}
+                      className={`px-3 py-1.5 rounded-md font-semibold transition-colors ${
+                        frameFilter === k
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60'
+                      }`}
+                    >
+                      {k === 'all' ? 'الكل' : k === 'active' ? 'نشط' : k === 'inactive' ? 'معطل' : 'متحرك SVGA'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Frames grid */}
               {frames.length === 0 ? (
                 <Card className="bg-slate-900/50 border-slate-800/50">
@@ -2994,8 +3027,23 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {frames.sort((a, b) => a.sortOrder - b.sortOrder).map((frame) => {
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                  {frames
+                    .filter((frame) => {
+                      // فلتر النوع
+                      if (frameFilter === 'active' && !frame.isActive) return false;
+                      if (frameFilter === 'inactive' && frame.isActive) return false;
+                      if (frameFilter === 'svga' && !frame.imageUrl?.endsWith('.svga')) return false;
+                      // فلتر البحث
+                      if (frameSearch) {
+                        const q = frameSearch.trim().toLowerCase();
+                        const hay = `${frame.id} ${frame.nameAr || ''} ${frame.name || ''}`.toLowerCase();
+                        if (!hay.includes(q)) return false;
+                      }
+                      return true;
+                    })
+                    .sort((a, b) => a.sortOrder - b.sortOrder)
+                    .map((frame) => {
                     const rarityConfig: Record<string, { cls: string; label: string }> = {
                       common: { cls: 'bg-slate-500/10 border-slate-500/30 text-slate-400', label: 'عادي' },
                       rare: { cls: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400', label: 'نادر' },
@@ -3003,40 +3051,47 @@ export default function AdminPage() {
                       legendary: { cls: 'bg-amber-500/10 border-amber-500/30 text-amber-400', label: 'أسطوري' },
                     };
                     const rarity = rarityConfig[frame.rarity] || rarityConfig.common;
+                    const isSvga = frame.imageUrl?.endsWith('.svga');
 
                     return (
                       <Card key={frame.id} className={`bg-slate-900/60 border-slate-800/50 ${!frame.isActive ? 'opacity-50' : ''}`}>
-                        <CardContent className="p-4 space-y-3">
-                          {/* Frame preview */}
-                          <div className="flex justify-center pt-2">
+                        <CardContent className="p-3 space-y-2">
+                          {/* Frame preview — يدعم SVGA */}
+                          <div className="flex justify-center pt-1">
                             <div
-                              className="w-16 h-16 rounded-full mx-auto"
+                              className="w-20 h-20 rounded-full mx-auto relative"
                               style={{
                                 background: `linear-gradient(135deg, ${frame.gradientFrom}, ${frame.gradientTo})`,
                                 padding: '3px',
                                 boxShadow: `0 0 12px ${frame.glowColor}`,
                               }}
                             >
-                              <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
+                              <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden relative">
                                 {frame.imageUrl ? (
-                                  // eslint-disable-next-line @next/next/no-img-element
-                                  <img
+                                  <SvgaOrImg
                                     key={frame.imageUrl}
                                     src={frame.imageUrl}
                                     alt={frame.nameAr || frame.name}
                                     className="w-full h-full object-contain"
-                                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                                   />
                                 ) : (
                                   <User className="w-6 h-6 text-slate-500" />
                                 )}
                               </div>
+                              {isSvga && (
+                                <span className="absolute -top-1 -right-1 bg-amber-500 text-[9px] font-bold text-white px-1.5 py-0.5 rounded-full z-10">
+                                  SVGA
+                                </span>
+                              )}
                             </div>
                           </div>
 
                           {/* Name and rarity */}
                           <div className="text-center space-y-1">
-                            <p className="font-bold text-white text-sm">{frame.nameAr || frame.name}</p>
+                            <p className="font-bold text-white text-xs truncate" title={frame.nameAr || frame.name}>
+                              {frame.nameAr || frame.name}
+                            </p>
+                            <p className="text-[10px] text-slate-500 font-mono" dir="ltr">{frame.id}</p>
                             <Badge variant="outline" className={`text-[10px] ${rarity.cls}`}>
                               {rarity.label}
                             </Badge>
@@ -3110,15 +3165,13 @@ export default function AdminPage() {
                           boxShadow: `0 0 16px ${frameForm.glowColor}`,
                         }}
                       >
-                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden relative">
                           {frameForm.imageUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <SvgaOrImg
                               key={frameForm.imageUrl}
                               src={frameForm.imageUrl}
                               alt="معاينة الإطار"
                               className="w-full h-full object-contain"
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                             />
                           ) : (
                             <User className="w-8 h-8 text-slate-500" />
