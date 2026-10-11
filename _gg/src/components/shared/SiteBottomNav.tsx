@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { User } from 'lucide-react';
 import EventsModal from '@/components/shared/EventsModal';
 
-type BottomTab = 'home' | 'games' | 'events' | 'council' | 'friends';
+type BottomTab = 'games' | 'events' | 'council' | 'friends';
 
 interface SiteBottomNavProps {
   /** Which tab is currently active */
@@ -30,11 +30,11 @@ export default function SiteBottomNav({
   const setEventsOpen = onEventsModalChange ?? setInternalEventsOpen;
 
   // أيقونات يلا لودو الحقيقية (من APK) — select للنشط و unselect للغير نشط
+  // 4 تبويبات فقط — أزلنا الرئيسية، المجلس يأخذ أيقونة الغرف (room_select)
   const tabs: { id: BottomTab; label: string; on?: string; off?: string; icon?: React.ReactNode }[] = [
-    { id: 'home', label: 'الرئيسية', on: '/yalla-ui/room_select.png', off: '/yalla-ui/room_unselect.png' },
     { id: 'games', label: 'الألعاب', on: '/yalla-ui/battle_select.png', off: '/yalla-ui/battle_unselect.png' },
     { id: 'events', label: 'الأحداث', on: '/yalla-ui/event_select.png', off: '/yalla-ui/event_unselect.png' },
-    { id: 'council', label: 'المجلس', on: '/yalla-ui/council_select.webp', off: '/yalla-ui/council_unselect.webp' },
+    { id: 'council', label: 'المجلس', on: '/yalla-ui/room_select.png', off: '/yalla-ui/room_unselect.png' },
     { id: 'friends', label: 'أصدقائي', on: '/yalla-ui/friend_select.png', off: '/yalla-ui/friend_unselect.png' },
   ];
 
@@ -42,9 +42,6 @@ export default function SiteBottomNav({
     setActiveTab(tabId);
 
     switch (tabId) {
-      case 'home':
-        window.location.href = '/';
-        break;
       case 'games':
         window.location.href = '/#games';
         break;
