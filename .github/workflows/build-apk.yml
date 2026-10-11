@@ -28,7 +28,9 @@ jobs:
 
       - name: Sync Capacitor
         working-directory: _gg
-        run: npx cap sync android
+        run: |
+          mkdir -p android/app/src/main/assets
+          npx cap sync android
 
       - name: Accept SDK licenses
         run: yes | sdkmanager --licenses 2>/dev/null || true
