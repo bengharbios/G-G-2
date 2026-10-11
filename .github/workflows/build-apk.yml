@@ -17,19 +17,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          yes | sdkmanager --licenses 2>/dev/null || true
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" 2>/dev/null || true
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses 2>/dev/null || true
 
       - name: Ensure capacitor-cordova-android-plugins exists
         working-directory: _gg/android
         run: |
           mkdir -p capacitor-cordova-android-plugins/src/main/java
           echo 'ext { cdvPluginPostBuildExtras = {} }' > capacitor-cordova-android-plugins/cordova.variables.gradle
-          echo '// empty' > capacitor-cordova-android-plugins/build.gradle
+          cat > capacitor-cordova-android-plugins/build.gradle << 'GEOF'
+          apply plugin: 'com.android.library'
+          android {
+              namespace 'com.bengharbios.ggames.cordova'
+              compileSdk 34
+              defaultConfig { minSdkVersion 23 }
+          }
+          GEOF
 
       - name: Build Debug APK
         working-directory: _gg/android
