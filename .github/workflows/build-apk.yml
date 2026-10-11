@@ -17,22 +17,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        working-directory: _gg
+        run: npm install
+
+      - name: Sync Capacitor
+        working-directory: _gg
+        run: npx cap sync android
+
       - name: Accept SDK licenses
         run: yes | sdkmanager --licenses 2>/dev/null || true
-
-      - name: Ensure capacitor-cordova-android-plugins exists
-        working-directory: _gg/android
-        run: |
-          mkdir -p capacitor-cordova-android-plugins/src/main/java
-          echo 'ext { cdvPluginPostBuildExtras = {} }' > capacitor-cordova-android-plugins/cordova.variables.gradle
-          cat > capacitor-cordova-android-plugins/build.gradle << 'GEOF'
-          apply plugin: 'com.android.library'
-          android {
-              namespace 'com.bengharbios.ggames.cordova'
-              compileSdk 34
-              defaultConfig { minSdkVersion 23 }
-          }
-          GEOF
 
       - name: Build Debug APK
         working-directory: _gg/android
