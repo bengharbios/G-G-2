@@ -9,6 +9,8 @@ let bgMusicAudio: HTMLAudioElement | null = null;
 
 const VOLUME_KEY = 'mafia_volume';
 const MUTED_KEY = 'mafia_muted';
+const MUSIC_ENABLED_KEY = 'yalla-music-enabled'; // تفضيل الموسيقى العام (خارج الألعاب)
+const SOUND_ENABLED_KEY = 'yalla-sound-enabled'; // تفضيل الصوت العام
 
 let globalVolume = 0.5;
 let globalMuted = false;
@@ -184,7 +186,7 @@ export function stopBgMusic() {
   }
 }
 
-// Auto-start background music on first user interaction
+// Auto-start background music on first user interaction (عند فتح الموقع، ليس فقط في الألعاب)
 let autoStartDone = false;
 let autoStartEnabled = false;
 
@@ -199,19 +201,59 @@ export function enableBgMusicAutoStart() {
     document.removeEventListener('click', tryStart);
     document.removeEventListener('touchstart', tryStart);
     document.removeEventListener('keydown', tryStart);
-    playBgMusic();
+    // شغّل الموسيقى فقط إن لم يُعطّل المستخدم تفضيلها
+    if (isMusicEnabled()) playBgMusic();
   };
 
   document.addEventListener('click', tryStart, { once: true });
   document.addEventListener('touchstart', tryStart, { once: true });
   document.addEventListener('keydown', tryStart, { once: true });
 
-  // If music was already initialized (e.g. page was interacted with before this call), try immediately
-  if (bgMusicAudio && bgMusicAudio.paused) {
+  // If music was already initialized, try immediately
+  if (bgMusicAudio && bgMusicAudio.paused && isMusicEnabled()) {
     playBgMusic();
     autoStartDone = true;
     document.removeEventListener('click', tryStart);
     document.removeEventListener('touchstart', tryStart);
     document.removeEventListener('keydown', tryStart);
+  }
+}
+
+// ─── تفضيلات عامة للصوت والموسيقى (خارج الألعاب) ───
+export function isMusicEnabled(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const v = localStorage.getItem(MUSIC_ENABLED_KEY);
+    return v === null ? true : v === 'true'; // افتراضي: مشغل
+  } catch { return true; }
+}
+
+export function setMusicEnabled(enabled: boolean) {
+  if (typeof window === 'undefined') return;
+  try { localStorage.setItem(MUSIC_ENABLED_KEY, String(enabled)); } catch {}
+  if (enabled) {
+    // شغّل فوراً إن كان هناك تفاعل سابق
+    playBgMusic();
+  } else {
+    pauseBgMusic();
+  }
+}
+
+export function isSoundEnabled(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const v = localStorage.getItem(SOUND_ENABLED_KEY);
+    return v === null ? true : v === 'true'; // افتراضي: مشغل
+  } catch { return true; }
+}
+
+export function setSoundEnabled(enabled: boolean) {
+  if (typeof window === 'undefined') return;
+  try { localStorage.setItem(SOUND_ENABLED_KEY, String(enabled)); } catch {}
+  // اربط بحالة الكتم الموجودة
+  if (enabled && getMuted()) {
+    toggleMuted(); // إلغاء الكتم
+  } else if (!enabled && !getMuted()) {
+    toggleMuted(); // كتم
   }
 }

@@ -7,6 +7,9 @@ import {
   getVolume, getMuted, setVolume, toggleMuted,
   playBgMusic, pauseBgMusic, isBgMusicPlaying,
   onVolumeChange, initVolumeFromStorage,
+  isMusicEnabled, setMusicEnabled,
+  isSoundEnabled, setSoundEnabled,
+  enableBgMusicAutoStart,
 } from '@/lib/sounds';
 
 // ─── Types ────────────────────────────────────────────────────────────
@@ -72,17 +75,20 @@ export default function SettingsModal({ open, onOpenChange, authUser, subscriber
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // Init sound settings from localStorage
+  // إعادة تعيين النافذة للرئيسية عند الفتح (حل مشكلة البقاء في آخر نافذة)
+  useEffect(() => {
+    if (open) {
+      setView('main');
+      setDeleteConfirm(false);
+    }
+  }, [open]);
+
+  // Init sound settings from localStorage (تفضيلات عامة، تعمل خارج الألعاب)
   useEffect(() => {
     if (!open) return;
     initVolumeFromStorage();
-    setSoundOn(!getMuted());
-    setMusicOn(isBgMusicPlaying());
-    const unsub = onVolumeChange((vol, muted) => {
-      setSoundOn(!muted);
-    });
-    // Sync music state periodically
-    const interval = setInterval(() => setMusicOn(isBgMusicPlaying()), 1000);
+    setSoundOn(isSoundEnabled());
+    setMusicOn(isMusicEnabled());
     // Load language
     const savedLang = typeof window !== 'undefined' ? (localStorage.getItem('yalla-lang') as 'ar' | 'en' || 'ar') : 'ar';
     setLang(savedLang);
@@ -92,22 +98,18 @@ export default function SettingsModal({ open, onOpenChange, authUser, subscriber
         setSubData({ plan: d.subscription.plan, code: d.subscription.subscriptionCode, endDate: d.subscription.endDate || d.subscription.expiresAt });
       }
     }).catch(() => {});
-    return () => { unsub(); clearInterval(interval); };
   }, [open]);
 
+  // الصوت: تفضيل عام يعمل من أول فتح للموقع
   const handleSoundToggle = useCallback((v: boolean) => {
     setSoundOn(v);
-    if (v) {
-      // unmute
-      if (getMuted()) toggleMuted();
-    } else {
-      if (!getMuted()) toggleMuted();
-    }
+    setSoundEnabled(v);
   }, []);
 
+  // الموسيقى: تفضيل عام يعمل من أول فتح للموقع
   const handleMusicToggle = useCallback((v: boolean) => {
     setMusicOn(v);
-    if (v) playBgMusic(); else pauseBgMusic();
+    setMusicEnabled(v);
   }, []);
 
   const handleLangChange = useCallback((l: 'ar' | 'en') => {

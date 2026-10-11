@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'out',
   // Point to live deployment URL (WebView wrapper mode)
   server: {
-    url: 'https://g-g-brown.vercel.app',
+    url: 'https://ggame3.vercel.app',
     androidScheme: 'https',
   },
   // Splash screen settings

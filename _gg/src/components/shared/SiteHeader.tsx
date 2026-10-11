@@ -5,6 +5,7 @@ import FrameStoreModal from './FrameStoreModal';
 import SettingsModal from './SettingsModal';
 import SvgaOrImg from './SvgaOrImg';
 import { formatCompact } from '@/lib/format';
+import { enableBgMusicAutoStart, initVolumeFromStorage } from '@/lib/sounds';
 
 // ذاكرة مؤقتة للكتالوج — يُحمّل مرة واحدة ويُعيد استخدامه بين عناصر الهيدر
 let _framesCatalogCache: Map<string, string> | null = null;
@@ -72,6 +73,12 @@ export default function SiteHeader({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
+
+  // تهيئة الصوت + تشغيل الموسيقى عند أول تفاعل (يعمل من أول فتح للموقع، ليس فقط في الألعاب)
+  useEffect(() => {
+    initVolumeFromStorage();
+    enableBgMusicAutoStart();
+  }, []);
 
   useEffect(() => {
     // Only fetch if no prop is provided
