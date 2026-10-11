@@ -75,7 +75,7 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
     // ضبط أبعاد canvas بناءً على الوضع:
-    // - autoHeight=true: canvas بأبعاد الفيديو الأصلية (نسبة مطابقة) + display height = auto
+    // - autoHeight=true: canvas بأبعاد الفيديو الأصلية + display height محسوب صراحة بالبيكسل
     //   مناسب للمعلقات العريضة (مثل hanging_meteors 1200×400) — لا فراغات جانبية/علوية
     // - autoHeight=false (افتراضي): canvas بأبعاد الحاوية (يملأها بالكامل)
     //   مناسب للإطارات المربعة في المتجر والهيدر (حيث نسبة الحاوية = نسبة الفيديو)
@@ -84,13 +84,19 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
       const parent = c?.parentElement;
       if (!c || !parent) return;
       if (autoHeight && videoSizeRef.current) {
-        // الوضع autoHeight: canvas intrinsic = video size، display height: auto
-        const { width, height } = videoSizeRef.current;
-        c.width = Math.round(width);
-        c.height = Math.round(height);
-        c.style.width = '100%';
-        c.style.height = 'auto';  // المتصفح يحسب الارتفاع من نسبة الفيديو
-        c.style.display = 'block';
+        // الوضع autoHeight: canvas intrinsic = video size
+        // نحسب الارتفاع الظاهري صراحةً بالبيكسل لأن height: auto للـ canvas غير موثوق في كل المتصفحات
+        const { width: vw, height: vh } = videoSizeRef.current;
+        c.width = Math.round(vw);
+        c.height = Math.round(vh);
+        const parentWidth = parent.getBoundingClientRect().width;
+        if (parentWidth > 0) {
+          // الارتفاع الظاهري = عرض الحاوية × (ارتفاع الفيديو / عرض الفيديو)
+          const displayHeight = Math.round(parentWidth * (vh / vw));
+          c.style.width = '100%';
+          c.style.height = `${displayHeight}px`;
+          c.style.display = 'block';
+        }
       } else {
         // الوضع الافتراضي: canvas intrinsic = parent dimensions (يملأ الحاوية)
         const rect = parent.getBoundingClientRect();

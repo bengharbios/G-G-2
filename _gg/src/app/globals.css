@@ -1064,11 +1064,17 @@ html, body {
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
 }
-.yp-ornament > img,
-.yp-ornament > canvas {
+/* للصور العادية (PNG/JPG/WEBP/GIF/SVG): height: auto يعمل تلقائياً من النسبة */
+.yp-ornament > img {
   display: block !important;
   width: 100% !important;
   height: auto !important;
+}
+/* للـ canvas (SVGA): لا نضع height: auto !important كي لا نتجاوز القيمة التي يضبطها JS
+   — JS يحسب الارتفاع بالبيكسل صراحةً بناءً على عرض الحاوية ونسبة الفيديو */
+.yp-ornament > canvas {
+  display: block !important;
+  width: 100% !important;
 }
 
 /* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية والجانبية = حواف الموضوع بالضبط.
