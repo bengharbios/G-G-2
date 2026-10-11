@@ -557,10 +557,19 @@ export async function ensureAdminTables(): Promise<void> {
       isActive INTEGER DEFAULT 1,
       sortOrder INTEGER DEFAULT 0,
       totalOwned INTEGER DEFAULT 0,
+      isSeed INTEGER DEFAULT 0,
       createdAt TEXT DEFAULT (datetime('now')),
       updatedAt TEXT DEFAULT (datetime('now'))
     )
   `);
+  // Migration: ensure isSeed column on older DBs where it may be missing
+  try {
+    const cols = await c.execute("PRAGMA table_info(PlayerFrame)");
+    const hasIsSeed = cols.rows.some((r) => r.name === 'isSeed');
+    if (!hasIsSeed) {
+      await c.execute('ALTER TABLE PlayerFrame ADD COLUMN isSeed INTEGER DEFAULT 0');
+    }
+  } catch { /* ignore */ }
 
   // UserFrame table - user ownership of frames
   await c.execute(`
@@ -591,10 +600,19 @@ export async function ensureAdminTables(): Promise<void> {
       isActive INTEGER DEFAULT 1,
       sortOrder INTEGER DEFAULT 0,
       totalOwned INTEGER DEFAULT 0,
+      isSeed INTEGER DEFAULT 0,
       createdAt TEXT DEFAULT (datetime('now')),
       updatedAt TEXT DEFAULT (datetime('now'))
     )
   `);
+  // Migration: ensure isSeed column on older DBs
+  try {
+    const cols = await c.execute("PRAGMA table_info(DecorItem)");
+    const hasIsSeed = cols.rows.some((r) => r.name === 'isSeed');
+    if (!hasIsSeed) {
+      await c.execute('ALTER TABLE DecorItem ADD COLUMN isSeed INTEGER DEFAULT 0');
+    }
+  } catch { /* ignore */ }
 
   // UserDecor: ملكية مستخدم لعنصر زينة + المجهز الحالي لكل نوع
   await c.execute(`
@@ -3587,8 +3605,126 @@ async function seedYallaFrames(): Promise<void> {
 
 // ─── Seed default frames (متوافق مع الكود السابق — يعتمد الآن كتالوج الإطارات الحقيقي) ───
 
+// كتالوج الإطارات المتحركة (SVGA) — ملفات محلية في public/yalla-frames/svga/<id>.svga
+// تنظّف السجلات المكسورة السابقة (anim_NNN_v1.x.x__... بأسماء مقصوصة) وتُدرج 45 إطاراً نظيفاً
+const SVGA_FRAMES_SEED_VERSION = 1;
+
+const SVGA_FRAMES_CATALOG: Array<{ id: string; nameAr: string; rarity: PlayerFrame['rarity']; price: number }> = [
+  { id: '110001', nameAr: 'إطار متحرك — البطل العالمي', rarity: 'legendary', price: 10000 },
+  { id: '110002', nameAr: 'إطار متحرك — الوصيف العالمي', rarity: 'legendary', price: 10000 },
+  { id: '110003', nameAr: 'إطار متحرك — الثالث عالمياً', rarity: 'legendary', price: 10000 },
+  { id: '110004', nameAr: 'إطار متحرك — أعلى 100 عالمياً', rarity: 'epic', price: 10000 },
+  { id: '110005', nameAr: 'إطار متحرك — أعلى 500 عالمياً', rarity: 'epic', price: 10000 },
+  { id: '110006', nameAr: 'إطار متحرك — أعلى 1000 عالمياً', rarity: 'epic', price: 10000 },
+  { id: '120009', nameAr: 'إطار متحرك — أسبوعي مميز', rarity: 'rare', price: 10000 },
+  { id: '120011', nameAr: 'إطار متحرك — أسبوعي فريد', rarity: 'rare', price: 10000 },
+  { id: '121003', nameAr: 'إطار متحرك — لؤلؤة الشرق', rarity: 'rare', price: 10000 },
+  { id: '121004', nameAr: 'إطار متحرك — حدائق الياقوت', rarity: 'rare', price: 10000 },
+  { id: '121005', nameAr: 'إطار متحرك — وردة العقيق', rarity: 'rare', price: 10000 },
+  { id: '121006', nameAr: 'إطار متحرك — نافورة النور', rarity: 'rare', price: 10000 },
+  { id: '121007', nameAr: 'إطار متحرك — عجائب الفجر', rarity: 'rare', price: 10000 },
+  { id: '121008', nameAr: 'إطار متحرك — همسات الليل', rarity: 'rare', price: 10000 },
+  { id: '121009', nameAr: 'إطار متحرك — نار النسور', rarity: 'rare', price: 10000 },
+  { id: '121010', nameAr: 'إطار متحرك — أمواج الزبرجد', rarity: 'rare', price: 10000 },
+  { id: '121011', nameAr: 'إطار متحرك — ذهب الشروق', rarity: 'rare', price: 10000 },
+  { id: '121012', nameAr: 'إطار متحرك — قناديل الروح', rarity: 'rare', price: 10000 },
+  { id: '121013', nameAr: 'إطار متحرك — فريق الأكروبات', rarity: 'rare', price: 10000 },
+  { id: '121014', nameAr: 'إطار متحرك — الجزيرة الذهبية', rarity: 'rare', price: 10000 },
+  { id: '121015', nameAr: 'إطار متحرك — تساقط الشهب', rarity: 'rare', price: 10000 },
+  { id: '121016', nameAr: 'إطار متحرك — القلعة المنيعة', rarity: 'rare', price: 10000 },
+  { id: '121017', nameAr: 'إطار متحرك — VIP الفارس', rarity: 'epic', price: 10000 },
+  { id: '121018', nameAr: 'إطار متحرك — VIP اللواء', rarity: 'epic', price: 10000 },
+  { id: '121019', nameAr: 'إطار متحرك — عيد الفطر 2021', rarity: 'common', price: 10000 },
+  { id: '121020', nameAr: 'إطار متحرك — عيد الأضحى 2021', rarity: 'common', price: 10000 },
+  { id: '121023', nameAr: 'إطار متحرك — حصري رويال 1', rarity: 'legendary', price: 10000 },
+  { id: '121024', nameAr: 'إطار متحرك — حصري رويال 2', rarity: 'legendary', price: 10000 },
+  { id: '121025', nameAr: 'إطار متحرك — حصري رويال 3', rarity: 'legendary', price: 10000 },
+  { id: '121026', nameAr: 'إطار متحرك — حصري رويال 4', rarity: 'legendary', price: 10000 },
+  { id: '121027', nameAr: 'إطار متحرك — حصري رويال 5', rarity: 'legendary', price: 10000 },
+  { id: '121028', nameAr: 'إطار متحرك — هدية اللاعبين الجدد', rarity: 'common', price: 10000 },
+  { id: '121031', nameAr: 'إطار متحرك — عجلة الملاهي', rarity: 'rare', price: 10000 },
+  { id: '121032', nameAr: 'إطار متحرك — أضئ البرج ب', rarity: 'common', price: 10000 },
+  { id: '121033', nameAr: 'إطار متحرك — من هو الفائز', rarity: 'common', price: 10000 },
+  { id: '121035', nameAr: 'إطار متحرك — محصول النشاط أ', rarity: 'common', price: 10000 },
+  { id: '121036', nameAr: 'إطار متحرك — عيد الفطر 2023', rarity: 'common', price: 10000 },
+  { id: '121040', nameAr: 'إطار متحرك — إكليل الزهور', rarity: 'rare', price: 10000 },
+  { id: '121041', nameAr: 'إطار متحرك — دعوة الأصدقاء', rarity: 'common', price: 10000 },
+  { id: '121042', nameAr: 'إطار متحرك — رخصة الغرفة الممتازة', rarity: 'common', price: 10000 },
+  { id: '121044', nameAr: 'إطار متحرك — وقت القهوة', rarity: 'common', price: 10000 },
+  { id: '121046', nameAr: 'إطار متحرك — محصول النشاط ب', rarity: 'common', price: 10000 },
+  { id: 'frame_1', nameAr: 'إطار متحرك — الكلاسيكي الذهبي', rarity: 'epic', price: 10000 },
+  { id: 'frame_2', nameAr: 'إطار متحرك — الفضي الملكي', rarity: 'epic', price: 10000 },
+  { id: 'frame_3', nameAr: 'إطار متحرك — البرونزي النبيل', rarity: 'epic', price: 10000 },
+];
+
+async function seedSvgaFrames(): Promise<void> {
+  await ensureAdminTables();
+  const c = getClient();
+
+  // 0) ضمان عمود svgaSeeded في SiteConfig أولاً (قبل أي SELECT له)
+  try {
+    const cols = await c.execute("PRAGMA table_info(SiteConfig)");
+    const hasSvga = cols.rows.some((r) => r.name === 'svgaSeeded');
+    if (!hasSvga) {
+      await c.execute('ALTER TABLE SiteConfig ADD COLUMN svgaSeeded INTEGER DEFAULT 0');
+    }
+  } catch { /* ignore */ }
+  await c.execute(`INSERT OR IGNORE INTO SiteConfig (id) VALUES ('main')`);
+
+  // 1) تنظيف السجلات المكسورة السابقة (مسار /yalla-assets/frames/ القديم بأسماء مقصوصة)
+  await c.execute({
+    sql: `DELETE FROM PlayerFrame WHERE imageUrl LIKE '/yalla-assets/frames/%'`,
+    args: [],
+  });
+  // 2) تنظيف ملكيات المستخدمين لأطر SVGA قديمة لم تعد موجودة
+  await c.execute({
+    sql: `DELETE FROM UserFrame WHERE frameId NOT IN (SELECT id FROM PlayerFrame)`,
+    args: [],
+  });
+
+  // 3) التحقق من علامة الزرع — تجنّب الإعادة في كل طلب
+  const marker = await c.execute({
+    sql: "SELECT svgaSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
+    args: [],
+  });
+  const mrow = marker.rows[0] as Record<string, unknown> | undefined;
+  // إن كانت قد زُرعت بالفعل، تحقّق فقط من أن العدد متطابق (يكفي وجود أي صف svga)
+  const existingCount = await c.execute({
+    sql: "SELECT COUNT(*) as n FROM PlayerFrame WHERE imageUrl LIKE '/yalla-frames/svga/%'",
+    args: [],
+  });
+  const haveSvga = Number(existingCount.rows[0]?.n ?? 0);
+  if (Number(mrow?.svgaSeeded ?? 0) >= SVGA_FRAMES_SEED_VERSION && haveSvga >= SVGA_FRAMES_CATALOG.length) return;
+
+  // 4) إدراج السجلات النظيفة — INSERT OR REPLACE لتفادي التعارض
+  for (let i = 0; i < SVGA_FRAMES_CATALOG.length; i++) {
+    const f = SVGA_FRAMES_CATALOG[i];
+    await c.execute({
+      sql: `INSERT OR REPLACE INTO PlayerFrame (id, name, nameAr, description, imageUrl, rarity, gradientFrom, gradientTo, borderColor, glowColor, pattern, price, isFree, isActive, sortOrder, isSeed)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+      args: [
+        f.id,
+        f.id,
+        f.nameAr,
+        'إطار متحرك حصري — يتطلب مشغل SVGA',
+        `/yalla-frames/svga/${f.id}.svga`,
+        f.rarity,
+        '#f59e0b', '#eab308', 'rgba(245, 158, 11, 0.6)', 'rgba(245, 158, 11, 0.3)',
+        'animated', f.price, 0, 1, 1000 + i,
+      ],
+    });
+  }
+
+  // 5) تحديث علامة الزرع
+  await c.execute({
+    sql: `UPDATE SiteConfig SET svgaSeeded = ?, updatedAt = datetime('now') WHERE id = 'main'`,
+    args: [SVGA_FRAMES_SEED_VERSION],
+  });
+}
+
 export async function seedDefaultFrames(): Promise<void> {
   await seedYallaFrames();
+  await seedSvgaFrames();
   await seedDefaultDecor();
 }
 

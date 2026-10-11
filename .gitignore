@@ -25,3 +25,6 @@ reference/
 # ── OS junk ──
 .DS_Store
 Thumbs.db
+
+# ── Classified raw frames zip (one-time artifact, already extracted to public/yalla-frames/svga) ──
+_gg/classified/

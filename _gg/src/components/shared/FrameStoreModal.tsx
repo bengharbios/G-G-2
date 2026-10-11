@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import { formatCompact } from '@/lib/format';
+import SvgaOrImg from './SvgaOrImg';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -243,11 +244,11 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
                     <span className="fs-card-name">{f.nameAr}</span>
                     <span className={`fs-card-imgwrap ${owned ? 'fs-card-imgwrap--owned' : ''}`}>
                       {f.imageUrl ? (
-                        <img
+                        <SvgaOrImg
                           src={f.imageUrl}
                           alt={f.nameAr}
                           loading="lazy"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          className="fs-card-img"
                         />
                       ) : (
                         <span className="fs-nopic">عنصر مصمم</span>
@@ -278,7 +279,7 @@ export default function FrameStoreModal({ open, onOpenChange, onBalanceChange }:
                   <h3>{confirmItem.isFree ? 'الحصول على العنصر' : 'شراء من المتجر'}</h3>
                   <span className="fs-confirm-img">
                     {confirmItem.imageUrl && (
-                      <img src={confirmItem.imageUrl} alt={confirmItem.nameAr} />
+                      <SvgaOrImg src={confirmItem.imageUrl} alt={confirmItem.nameAr} />
                     )}
                   </span>
                   <p className="fs-confirm-name">{confirmItem.nameAr}</p>
