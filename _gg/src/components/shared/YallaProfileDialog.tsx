@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { LogOut, X, Shirt } from 'lucide-react';
+import { LogOut, X, Shirt, Check } from 'lucide-react';
 import SvgaOrImg from './SvgaOrImg';
 
 // ─── Types ────────────────────────────────────────────────────────────
@@ -181,7 +181,7 @@ export default function YallaProfileDialog({
   // الملكية: معرفات الإطارات التي يملكها المستخدم (مجاني/شراء/نشاط) + بيانات كتالوج الأسعار
   const [ownedFrameIds, setOwnedFrameIds] = useState<Set<string>>(new Set());
   const [framesCatalog, setFramesCatalog] = useState<Map<string, { nameAr: string; price: number; isFree: boolean; rarity: string }>>(new Map());
-  const [frameView, setFrameView] = useState<'all' | 'owned'>('all');
+  const [frameView, setFrameView] = useState<'all' | 'owned'>('owned');
   // ملكية الزينة (معلقات/مواضيع/بطاقات) من قاعدة البيانات + الكتالوج العام
   const [ownedDecor, setOwnedDecor] = useState<Set<string>>(new Set());
   const [decorCatalog, setDecorCatalog] = useState<Array<{ id: string; kind: string; nameAr: string; imageUrl: string; rarity: string; price: number; isFree: boolean }>>([]);
@@ -1178,45 +1178,85 @@ export default function YallaProfileDialog({
                 </div>
               )}
 
-              {/* Frames: owned-only بتصميم المتجر */}
+              {/* Frames — تصميم مطابق للمتجر + فلتر مملوكة/الكل + SvgaOrImg لعرض SVGA */}
               {decorPanel === 'frames' && (
-                <div className="fs-bodygrid fs-bodygrid--panel">
-                  <button
-                    className={`fs-card fs-card--none${!authUser.frame ? ' fs-card--active' : ''}`}
-                    disabled={savingDecor}
-                    onClick={() => applyDecor('frame', '')}
-                  >
-                    <span className="fs-card-name">بدون إطار</span>
-                    <span className="fs-card-imgwrap fs-card-imgwrap--owned"><span className="fs-nopic">بدون</span></span>
-                    <span className="fs-price fs-price--owned">—</span>
-                    {!authUser.frame && <i className="fs-check-check">✓</i>}
-                  </button>
-                  {frames.filter((f) => ownedFrameIds.has(String(f.id))).map((f) => {
-                    const fid = String(f.id);
-                    const active = authUser.frame === fid;
-                    const cat = framesCatalog.get(fid);
-                    return (
-                      <button
-                        key={f.id}
-                        className={`fs-card fs-card--owned${active ? ' fs-card--active' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('frame', fid)}
-                        title={cat?.nameAr || f.name}
-                      >
-                        <span className="fs-card-name">{cat?.nameAr || f.name}</span>
-                        <span className="fs-card-imgwrap fs-card-imgwrap--owned">
-                          <img src={f.png} alt={f.name} loading="lazy" />
-                        </span>
-                        <span className="fs-price fs-price--owned">✓ تم الشراء</span>
-                        <span className={RARITY_BADGEHOLDER[cat?.rarity || 'common']}>{RARITY_LABELHOLDER[cat?.rarity || 'common']}</span>
-                        {active && <i className="fs-check-check">✓</i>}
-                      </button>
-                    );
-                  })}
-                  {frames.filter((f) => ownedFrameIds.has(String(f.id))).length === 0 && (
-                    <div className="fs-empty">لا تملك إطارات بعد — احصل عليها من المتجر</div>
-                  )}
-                </div>
+                <>
+                  {/* شريط الفلاتر */}
+                  <div className="fs-subtabs" style={{ padding: '0 12px 8px' }}>
+                    <button
+                      className={`fs-subtab${frameView === 'owned' ? ' fs-subtab--on' : ''}`}
+                      onClick={() => setFrameView('owned')}
+                    >
+                      مملوكتي ({frames.filter((f) => ownedFrameIds.has(String(f.id))).length})
+                    </button>
+                    <button
+                      className={`fs-subtab${frameView === 'all' ? ' fs-subtab--on' : ''}`}
+                      onClick={() => setFrameView('all')}
+                    >
+                      الكل ({frames.length})
+                    </button>
+                  </div>
+                  <div className="fs-bodygrid fs-bodygrid--panel">
+                    {/* زر "بدون إطار" */}
+                    <button
+                      className={`fs-card${!authUser.frame ? ' fs-card--owned' : ''}`}
+                      disabled={savingDecor}
+                      onClick={() => applyDecor('frame', '')}
+                      title="بدون إطار"
+                    >
+                      <span className="fs-card-name">بدون إطار</span>
+                      <span className="fs-card-imgwrap">
+                        <span className="fs-nopic">بدون</span>
+                        {!authUser.frame && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                      </span>
+                      <span className={`fs-price ${!authUser.frame ? 'fs-price--owned' : 'fs-price--free'}`}>
+                        {!authUser.frame ? 'مجهز' : 'إزالة'}
+                      </span>
+                      <span className="fs-badge fs-badge--common">عادي</span>
+                    </button>
+                    {/* قائمة الإطارات (مملوكة أو الكل حسب الفلتر) */}
+                    {frames
+                      .filter((f) => f.imageUrl) // إخفاء الإطارات بدون صورة
+                      .filter((f) => frameView === 'all' ? true : ownedFrameIds.has(String(f.id)))
+                      .map((f) => {
+                        const fid = String(f.id);
+                        const active = authUser.frame === fid;
+                        const owned = ownedFrameIds.has(fid);
+                        const cat = framesCatalog.get(fid);
+                        const rarity = cat?.rarity || 'common';
+                        const rarityLabel: Record<string, string> = {
+                          legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                        }[rarity] || 'عادي';
+                        const rarityBadge = `fs-badge fs-badge--${rarity}`;
+                        const name = cat?.nameAr || f.name;
+                        return (
+                          <button
+                            key={f.id}
+                            className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                            disabled={savingDecor || !owned}
+                            onClick={() => { if (owned) applyDecor('frame', fid); }}
+                            title={owned ? name : `${name} — من المتجر`}
+                          >
+                            <span className="fs-card-name">{name}</span>
+                            <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                              <SvgaOrImg src={f.imageUrl || f.png} alt={name} className="fs-card-img" loading="lazy" />
+                              {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                              {!owned && <i className="yb-lock">🔒</i>}
+                            </span>
+                            <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                              {active ? 'مجهز' : owned ? 'تجهيز' : (cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة`)}
+                            </span>
+                            <span className={rarityBadge}>{rarityLabel}</span>
+                          </button>
+                        );
+                      })}
+                    {frames.filter((f) => f.imageUrl).filter((f) => frameView === 'all' ? true : ownedFrameIds.has(String(f.id))).length === 0 && (
+                      <div className="fs-empty" style={{ gridColumn: '1 / -1' }}>
+                        {frameView === 'owned' ? 'لا تملك إطارات بعد — اذهب للمتجر لشراء إطار' : 'لا توجد إطارات'}
+                      </div>
+                    )}
+                  </div>
+                </>
               )}
 
               {/* Cards: owned-only بتصميم المتجر — مكان البطاقة الوحيد: خلفية الغلاف */}
