@@ -866,40 +866,68 @@ export default function YallaProfileDialog({
                     <button className={`yb-filter${frameView === 'owned' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('owned')}>المملوكة</button>
                   </div>
                   <div className="yb-body">
-                    <div className="yb-secband">إطارات الصورة</div>
-                    <div className="yb-framegrid">
-                      <button className={`yb-framecell${!authUser.frame ? ' yb-framecell--on' : ''}`} onClick={() => applyDecor('frame', '')}>
-                        <span className="yb-framecell-imgwrap">
-                          <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
+                    <div className="yb-secband">
+                      {frameView === 'owned' ? `إطاراتي المملوكة (${frames.filter(f => ownedFrameIds.has(String(f.id))).length})` : `كل الإطارات (${frames.length})`}
+                    </div>
+                    {/* زر إزالة الإطار (بدون إطار) */}
+                    <div className="fs-bodygrid fs-bodygrid--panel" style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 14, padding: 10, maxHeight: '52vh' }}>
+                      <button
+                        className={`fs-card${!authUser.frame ? ' fs-card--owned' : ''}`}
+                        title="بدون إطار"
+                        onClick={() => applyDecor('frame', '')}
+                        style={{ background: !authUser.frame ? 'rgba(125, 255, 206, 0.12)' : 'rgba(255,255,255,0.05)' }}
+                      >
+                        <span className="fs-card-name">بدون إطار</span>
+                        <span className="fs-card-imgwrap">
+                          <img className="fs-card-img" src={eAvatar || avatarSrc(authUser)} alt="" style={{ width: '60%', height: '60%', objectFit: 'cover', borderRadius: '50%' }} />
+                          {!authUser.frame && <i className="fs-check">✓</i>}
                         </span>
-                        {!authUser.frame && <i className="yb-check">✓</i>}
+                        <span className="fs-price fs-price--owned">{!authUser.frame ? 'مجهز' : 'إزالة'}</span>
+                        <span className="fs-badge fs-badge--common">عادي</span>
                       </button>
                       {frames
-                        .filter((f) => (frameView === 'owned' ? ownedFrameIds.has(String(f.id)) : true))
+                        .filter((f) => {
+                          // فلتر المملوكة
+                          if (frameView === 'owned') return ownedFrameIds.has(String(f.id));
+                          return true;
+                        })
+                        .filter((f) => f.imageUrl) // إخفاء الإطارات بدون صورة
                         .map((f) => {
                           const fid = String(f.id);
                           const active = authUser.frame === fid;
                           const owned = ownedFrameIds.has(fid);
                           const cat = framesCatalog.get(fid);
+                          const rarity = cat?.rarity || 'common';
+                          const rarityLabel: Record<string, string> = {
+                            legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                          }[rarity] || 'عادي';
+                          const rarityBadge = `fs-badge fs-badge--${rarity}`;
+                          const name = cat?.nameAr || f.name;
                           return (
                             <button
                               key={f.id}
-                              className={`yb-framecell${active ? ' yb-framecell--on' : ''}${owned ? '' : ' yb-framecell--locked'}`}
+                              className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                              title={owned ? name : `${name} — من المتجر`}
                               onClick={() => { if (owned) applyDecor('frame', fid); }}
-                              title={owned ? (cat?.nameAr || f.name) : `${cat?.nameAr || f.name} — ${cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة — من المتجر`}`}
                             >
-                              <span className="yb-framecell-imgwrap">
-                                <img className="yb-framecell-face" src={eAvatar || avatarSrc(authUser)} alt="" />
-                                <SvgaOrImg src={f.imageUrl || f.png} alt={f.name} className="yb-framecell-frame" />
+                              <span className="fs-card-name">{name}</span>
+                              <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                                <SvgaOrImg src={f.imageUrl || f.png} alt={name} className="fs-card-img" />
+                                {active && <i className="fs-check">✓</i>}
                                 {!owned && <i className="yb-lock">🔒</i>}
-                                {!owned && cat && !cat.isFree && (
-                                  <span className="yb-price">{cat.price}<img src="/yalla-ui/diamonds.webp" alt="" /></span>
-                                )}
                               </span>
-                              {active && <i className="yb-check">✓</i>}
+                              <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                                {active ? 'مجهز' : owned ? 'تجهيز' : (cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة`)}
+                              </span>
+                              <span className={rarityBadge}>{rarityLabel}</span>
                             </button>
                           );
                         })}
+                      {frames.filter((f) => frameView === 'owned' ? ownedFrameIds.has(String(f.id)) : true).filter((f) => f.imageUrl).length === 0 && (
+                        <div className="fs-empty" style={{ gridColumn: '1 / -1' }}>
+                          {frameView === 'owned' ? 'لا تملك أي إطار بعد — اشترِ إطاراً من المتجر' : 'لا توجد إطارات'}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </>
