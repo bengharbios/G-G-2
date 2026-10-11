@@ -1058,7 +1058,8 @@ html, body {
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  height: auto !important;
+  /* height يُضبط عبر inline style من React state (displayHeight)
+     — لا نضع height: auto !important كي لا نتجاوزه ونسبب circular dependency */
   display: block !important;
   z-index: 2;
   pointer-events: none;
@@ -1070,8 +1071,7 @@ html, body {
   width: 100% !important;
   height: auto !important;
 }
-/* للـ canvas (SVGA): لا نضع height: auto !important كي لا نتجاوز القيمة التي يضبطها JS
-   — JS يحسب الارتفاع بالبيكسل صراحةً بناءً على عرض الحاوية ونسبة الفيديو */
+/* للـ canvas (SVGA): width 100%، height يأتي من inline style (100% أو px من state) */
 .yp-ornament > canvas {
   display: block !important;
   width: 100% !important;
