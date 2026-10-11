@@ -1107,13 +1107,15 @@ export default function YallaProfileDialog({
                 <button className={`yb-tab${decorPanel === 'cards' ? ' yb-tab--on' : ''}`} onClick={() => setDecorPanel('cards')}>البطاقات</button>
               </div>
 
-              {/* فلتر فرعي: مملوكتي / الكل */}
-              {decorPanel !== 'cards' && (
-                <div className="yb-filterbar">
-                  <button className={`yb-filter${frameView === 'owned' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('owned')}>مملوكتي</button>
-                  <button className={`yb-filter${frameView === 'all' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('all')}>الكل</button>
-                </div>
-              )}
+              {/* فلتر فرعي: مملوكتي / الكل — لكل الأقسام */}
+              <div className="yb-filterbar">
+                <button className={`yb-filter${frameView === 'owned' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('owned')}>
+                  مملوكتي
+                </button>
+                <button className={`yb-filter${frameView === 'all' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('all')}>
+                  الكل
+                </button>
+              </div>
 
               <div className="yb-body" style={{ overflowY: 'auto' }}>
 
@@ -1298,6 +1300,7 @@ export default function YallaProfileDialog({
                   </button>
                   {decorCatalog
                     .filter((d) => d.kind === 'card')
+                    .filter((d) => frameView === 'all' ? true : ownedDecor.has(d.id))
                     .map((cb) => {
                       const active = (authUser.card || '') === cb.id;
                       const owned = ownedDecor.has(cb.id);

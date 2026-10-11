@@ -3539,12 +3539,17 @@ export default function AdminPage() {
                       <Card key={item.id} className={`bg-slate-900/60 border-slate-800/50 ${!item.isActive ? 'opacity-50' : ''}`}>
                         <CardContent className="p-4 space-y-3">
                           <div className="flex justify-center pt-2">
-                            <div className="w-24 h-16 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden">
+                            <div className="w-24 h-16 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden relative">
                               {item.imageUrl ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img key={item.imageUrl} src={item.imageUrl} alt={item.nameAr} className="max-w-full max-h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                <SvgaOrImg key={item.imageUrl} src={item.imageUrl} alt={item.nameAr} className="w-full h-full object-contain" />
                               ) : (
                                 <ImageIcon className="w-6 h-6 text-slate-600" />
+                              )}
+                              {item.imageUrl?.endsWith('.svga') && (
+                                <span className="absolute -top-1 -right-1 bg-amber-500 text-[8px] font-bold text-white px-1 py-0.5 rounded-full z-10">SVGA</span>
+                              )}
+                              {item.imageUrl?.endsWith('.mp4') && (
+                                <span className="absolute -top-1 -right-1 bg-violet-500 text-[8px] font-bold text-white px-1 py-0.5 rounded-full z-10">MP4</span>
                               )}
                             </div>
                           </div>
@@ -3597,12 +3602,17 @@ export default function AdminPage() {
                   </DialogHeader>
                   <div className="space-y-4 mt-2">
                     <div className="flex justify-center py-2">
-                      <div className="w-24 h-16 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden">
+                      <div className="w-32 h-20 rounded-lg bg-slate-800/70 border border-slate-700/50 flex items-center justify-center overflow-hidden relative">
                         {decorForm.imageUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img key={decorForm.imageUrl} src={decorForm.imageUrl} alt="معاينة" className="max-w-full max-h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                          <SvgaOrImg key={decorForm.imageUrl} src={decorForm.imageUrl} alt="معاينة" className="w-full h-full object-contain" />
                         ) : (
                           <ImageIcon className="w-6 h-6 text-slate-600" />
+                        )}
+                        {decorForm.imageUrl?.endsWith('.svga') && (
+                          <span className="absolute -top-1 -right-1 bg-amber-500 text-[8px] font-bold text-white px-1 py-0.5 rounded-full z-10">SVGA</span>
+                        )}
+                        {decorForm.imageUrl?.endsWith('.mp4') && (
+                          <span className="absolute -top-1 -right-1 bg-violet-500 text-[8px] font-bold text-white px-1 py-0.5 rounded-full z-10">MP4</span>
                         )}
                       </div>
                     </div>
