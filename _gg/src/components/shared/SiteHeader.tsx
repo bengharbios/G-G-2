@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import FrameStoreModal from './FrameStoreModal';
+import SettingsModal from './SettingsModal';
 import SvgaOrImg from './SvgaOrImg';
 import { formatCompact } from '@/lib/format';
 
@@ -62,11 +63,13 @@ export default function SiteHeader({
   extraContent,
   onProfileClick,
   onLoginClick,
+  onLogout,
 }: SiteHeaderProps) {
   // If no authUser prop provided, fetch from /api/auth/me
   const [fetchedUser, setFetchedUser] = useState<SiteHeaderProps['authUser']>(null);
   const authUser = authUserProp !== undefined ? authUserProp : fetchedUser;
   const [storeOpen, setStoreOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
 
@@ -199,7 +202,7 @@ export default function SiteHeader({
               <img src="/yalla-ui/system.webp" alt="الإعدادات" style={{ filter: 'hue-rotate(120deg)' }} />
             </a>
           ) : (
-            <button className="hd-icon" aria-label="الإعدادات" title="الإعدادات">
+            <button className="hd-icon" aria-label="الإعدادات" title="الإعدادات" onClick={() => setSettingsOpen(true)}>
               <img src="/yalla-ui/system.webp" alt="الإعدادات" />
             </button>
           )}
@@ -211,6 +214,14 @@ export default function SiteHeader({
 
       {/* متجر الإطارات */}
       <FrameStoreModal open={storeOpen} onOpenChange={setStoreOpen} />
+
+      {/* نافذة الإعدادات */}
+      <SettingsModal
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        authUser={authUser}
+        onLogout={onLogout}
+      />
     </>
   );
 }

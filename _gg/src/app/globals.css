@@ -2592,3 +2592,172 @@ html, body {
 .yb-addphoto:hover { background: rgba(255, 255, 255, .85); }
 .yb-addphoto-ico { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #fff; background: linear-gradient(180deg, #43C08E, #1E8560); }
 .yb-empty { padding: 26px 0; text-align: center; font-size: 12.5px; font-weight: 800; color: #55897A; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SettingsModal — تصميم مطابق لـ Yalla Ludo (مستخرج من APK layouts)
+   الأبعاد: صفوف 56dp، نصوص 18sp/14sp، padding 16dp
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Overlay */
+.ys-overlay {
+  position: fixed; inset: 0; z-index: 140;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(7, 25, 19, .65); backdrop-filter: blur(3px);
+}
+
+/* Panel — مثل FrameStoreModal لكن بإطار أخضر فيروزي */
+.ys-panel {
+  position: relative; width: min(480px, 96vw); height: min(680px, 94vh);
+  background: linear-gradient(180deg, #0f1f17 0%, #142820 100%);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5), inset 0 0 0 3px rgba(46, 125, 95, .35);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* Header — عنوان + زر إغلاق */
+.ys-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(46, 125, 95, .15);
+  border-bottom: 1px solid rgba(46, 125, 95, .25);
+}
+.ys-title { font-size: 18px; font-weight: 900; color: #e8f5e9; }
+.ys-close {
+  width: 34px; height: 34px; border: none; border-radius: 50%;
+  background: rgba(12, 46, 34, .6); color: #e8f5e9; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ys-close:hover { background: rgba(12, 46, 34, .85); }
+
+/* Icon bar — Support / Home / Share / Mail */
+.ys-iconbar {
+  display: flex; gap: 8px; padding: 8px 16px;
+  justify-content: center;
+  background: rgba(255, 255, 255, .03);
+  border-bottom: 1px solid rgba(46, 125, 95, .15);
+}
+.ys-iconbtn {
+  width: 36px; height: 36px; border: none; border-radius: 10px;
+  background: rgba(46, 125, 95, .2); color: #80cbc4; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .12s;
+}
+.ys-iconbtn:hover { background: rgba(46, 125, 95, .4); }
+
+/* Body — قابل للتمرير */
+.ys-body { flex: 1; overflow-y: auto; padding: 8px 0 16px; }
+.ys-body::-webkit-scrollbar { width: 5px; }
+.ys-body::-webkit-scrollbar-thumb { background: rgba(46, 125, 95, .3); border-radius: 4px; }
+
+/* Row — 56dp ارتفاع (مثل يلا SettingSwitchRow / SettingNormalRow) */
+.ys-row {
+  display: flex; align-items: center; gap: 12px;
+  height: 56px; padding: 0 16px;
+  cursor: pointer; transition: background .12s;
+  border-bottom: 1px solid rgba(255, 255, 255, .04);
+}
+.ys-row:hover { background: rgba(255, 255, 255, .04); }
+.ys-row-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.ys-row-title { font-size: 18px; font-weight: 600; color: #e8f5e9; flex: 1; }
+.ys-row-value { font-size: 18px; color: #80cbc4; }
+.ys-row-arrow { width: 12px; height: 12px; color: #4a7c6f; flex-shrink: 0; }
+
+/* Badge (شارة بجانب العنوان) */
+.ys-row-badge {
+  font-size: 8px; font-weight: 700; color: #fff;
+  background: #e8923a; padding: 1px 5px; border-radius: 4px;
+  margin-left: 5px;
+}
+
+/* Toggle Switch — مثل SwitchCompat في يلا */
+.ys-toggle {
+  width: 44px; height: 24px; border: none; border-radius: 12px;
+  background: rgba(255, 255, 255, .15);
+  position: relative; cursor: pointer; flex-shrink: 0;
+  transition: background .2s;
+}
+.ys-toggle--on { background: #43C08E; }
+.ys-toggle-knob {
+  position: absolute; top: 2px; right: 2px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; transition: transform .2s;
+}
+.ys-toggle:not(.ys-toggle--on) .ys-toggle-knob { transform: translateX(20px); }
+
+/* Section title */
+.ys-section-title {
+  font-size: 14px; font-weight: 800; color: #80cbc4;
+  padding: 16px 16px 4px; margin-top: 8px;
+}
+
+/* Bottom buttons — Log Out + Account Center */
+.ys-bottom-buttons {
+  display: flex; gap: 10px; padding: 24px 16px;
+}
+.ys-btn {
+  flex: 1; height: 48px; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: transform .1s, opacity .12s;
+}
+.ys-btn:active { transform: scale(.97); }
+.ys-btn--logout { background: #43C08E; color: #0b3b28; }
+.ys-btn--logout:hover { background: #4dd49f; }
+.ys-btn--account { background: #e8923a; color: #3a2406; }
+.ys-btn--account:hover { background: #f0a555; }
+.ys-btn--cancel { background: rgba(255, 255, 255, .1); color: #ccc; }
+.ys-btn--danger { background: #e53935; color: #fff; }
+.ys-btn--danger:hover { background: #f44336; }
+.ys-btn--danger:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Delete confirmation */
+.ys-delete-confirm {
+  margin: 16px; padding: 16px; border-radius: 12px;
+  background: rgba(229, 57, 53, .15);
+  border: 1px solid rgba(229, 57, 53, .3);
+}
+.ys-delete-confirm p { font-size: 14px; color: #ffcdd2; margin-bottom: 12px; }
+.ys-delete-actions { display: flex; gap: 8px; }
+
+/* Account info card */
+.ys-account-info {
+  margin: 12px 16px; padding: 16px;
+  background: rgba(46, 125, 95, .1);
+  border: 1px solid rgba(46, 125, 95, .2);
+  border-radius: 12px;
+}
+.ys-account-name { font-size: 18px; font-weight: 800; color: #e8f5e9; }
+.ys-account-code { font-size: 14px; color: #80cbc4; margin-top: 4px; font-family: monospace; }
+.ys-account-plan { font-size: 14px; color: #e8923a; margin-top: 4px; }
+.ys-account-expiry { font-size: 14px; color: #888; margin-top: 2px; }
+
+/* Back button */
+.ys-back {
+  margin: 8px 16px; padding: 10px 16px;
+  background: none; border: none; color: #80cbc4;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  text-align: right;
+}
+
+/* Device row */
+.ys-device-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; margin: 8px 16px;
+  background: rgba(255, 255, 255, .04);
+  border-radius: 10px;
+}
+.ys-device-info { flex: 1; display: flex; flex-direction: column; }
+.ys-device-name { font-size: 16px; color: #e8f5e9; font-weight: 700; }
+.ys-device-date { font-size: 12px; color: #888; }
+.ys-device-badge { font-size: 10px; color: #43C08E; font-weight: 700; }
+.ys-device-tip { font-size: 14px; color: #888; padding: 12px 16px; }
+
+/* Check mark (language selection) */
+.ys-check { color: #43C08E; font-weight: 900; font-size: 18px; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .ys-panel { width: 100vw; height: 100vh; border-radius: 0; }
+  .ys-row-title { font-size: 16px; }
+  .ys-row-value { font-size: 16px; }
+}
