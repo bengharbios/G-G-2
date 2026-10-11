@@ -12,9 +12,6 @@ interface SvgaOrImgProps {
   className?: string;
   loading?: 'lazy' | 'eager';
   onError?: () => void;
-  /** إن true، يُحسب ارتفاع canvas تلقائياً من نسبة الفيديو (مناسب للمعلقات العريضة).
-   *  إن false (الافتراضي)، يملأ canvas الحاوية (مناسب للإطارات المربعة في المتجر والهيدر). */
-  autoHeight?: boolean;
 }
 
 // ضمان تحميل سكريبت svga.min.js مرة واحدة
@@ -58,7 +55,7 @@ function loadSvgaScript(): Promise<typeof window.SVGA> {
   return svgaScriptPromise;
 }
 
-export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', onError, autoHeight = false }: SvgaOrImgProps) {
+export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', onError }: SvgaOrImgProps) {
   // ملفات SVGA فقط هي التي تحتاج تشغيل canvas
   const lowerSrc = src.toLowerCase();
   const isSvga = lowerSrc.endsWith('.svga');
@@ -66,38 +63,27 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<{ stopAnimation: (clear?: boolean) => void; clear?: () => void } | null>(null);
-  const videoSizeRef = useRef<{ width: number; height: number } | null>(null);
   const [failed, setFailed] = useState(false);
-  // ارتفاع canvas الظاهري بالبيكسل (محسوب من نسبة الفيديو وعرض الحاوية)
-  // مهم: نضعه في React state (لا نعدّل DOM مباشرة) كي لا يُتجاوز عند إعادة الرسم
-  const [displayHeight, setDisplayHeight] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isSvga || !canvasRef.current || failed) return;
     let cancelled = false;
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
-    // ضبط أبعاد canvas بناءً على الوضع:
-    // - autoHeight=true: نحسب الارتفاع الظاهري من نسبة الفيديو ونضعه في React state
-    //   (لا نعدّل DOM مباشرة كي لا يُتجاوز عند إعادة الرسم)
-    // - autoHeight=false (افتراضي): canvas يأخذ أبعاد الحاوية (يملأها بالكامل)
-    const syncCanvasSize = () => {
+    // ضبط canvas بأبعاد الحاوية (يملأها بالكامل)
+    // بعد تحميل الفيديو: نضبط canvas intrinsic على أبعاد الفيديو الأصلية
+    // كي يتمكن CSS object-fit من تحجيم المحتوى لنسبة الفيديو داخل الحاوية
+    const syncCanvasSize = (videoSize?: { width: number; height: number }) => {
       const c = canvasRef.current;
       const parent = c?.parentElement;
       if (!c || !parent) return;
-      if (autoHeight && videoSizeRef.current) {
-        // الوضع autoHeight: canvas intrinsic = video size
-        const { width: vw, height: vh } = videoSizeRef.current;
-        c.width = Math.round(vw);
-        c.height = Math.round(vh);
-        const parentWidth = parent.getBoundingClientRect().width;
-        if (parentWidth > 0) {
-          // نحسب الارتفاع ونضعه في React state (يتجنب تجاوز React عند إعادة الرسم)
-          const dh = Math.round(parentWidth * (vh / vw));
-          setDisplayHeight(dh);
-        }
+      if (videoSize) {
+        // بعد تحميل الفيديو: canvas intrinsic = video size
+        // CSS object-fit: contain يحجم الفيديو داخل الحاوية مع المحافظة على النسبة
+        c.width = Math.round(videoSize.width);
+        c.height = Math.round(videoSize.height);
       } else {
-        // الوضع الافتراضي: canvas intrinsic = parent dimensions (يملأ الحاوية)
+        // قبل تحميل الفيديو: canvas intrinsic = parent dimensions (مؤقتاً)
         const rect = parent.getBoundingClientRect();
         if (rect.width > 0 && rect.height > 0) {
           c.width = Math.round(rect.width);
@@ -110,7 +96,6 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     loadSvgaScript()
       .then((SVGA) => {
         if (cancelled || !canvasRef.current) return;
-        syncCanvasSize();
         if (playerRef.current?.stopAnimation) {
           try { playerRef.current.stopAnimation(true); } catch {}
         }
@@ -120,10 +105,8 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         const parser = new (SVGA as any).Parser();
         parser.load(src, (videoItem: { videoSize?: { width: number; height: number } }) => {
           if (cancelled) return;
-          if (videoItem?.videoSize) {
-            videoSizeRef.current = { width: videoItem.videoSize.width, height: videoItem.videoSize.height };
-          }
-          syncCanvasSize(); // re-sync بعد معرفة أبعاد الفيديو
+          // بعد تحميل الفيديو: اضبط canvas على أبعاد الفيديو الأصلية
+          syncCanvasSize(videoItem?.videoSize);
           player.setVideoItem(videoItem);
           player.setContentMode('AspectFit');
           player.setClipsToBounds(true);
@@ -141,9 +124,12 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         onError?.();
       });
 
-    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas (مهم للوضع autoHeight وللتجاوب)
+    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas (قبل تحميل الفيديو فقط)
     const ro = containerRef.current
-      ? new ResizeObserver(() => syncCanvasSize())
+      ? new ResizeObserver(() => {
+          // فقط قبل تحميل الفيديو — بعده canvas intrinsic = video size (ثابت)
+          if (!playerRef.current) syncCanvasSize();
+        })
       : null;
     if (containerRef.current && ro) ro.observe(containerRef.current);
 
@@ -155,7 +141,7 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         try { localPlayer.clear?.(); } catch {}
       }
     };
-  }, [isSvga, src, failed, onError, autoHeight]);
+  }, [isSvga, src, failed, onError]);
 
   // للفيديو (MP4/WebM/MOV) — استخدم <video>
   if (isVideo) {
@@ -195,22 +181,13 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     <div
       ref={containerRef}
       className={`svga-wrapper ${className ?? ''}`}
-      style={{
-        width: '100%',
-        height: autoHeight && displayHeight ? `${displayHeight}px` : '100%',
-        display: 'block',
-      }}
+      style={{ width: '100%', height: '100%', display: 'block' }}
     >
       <canvas
         ref={canvasRef}
         role="img"
         aria-label={alt}
-        style={{
-          width: '100%',
-          height: autoHeight && displayHeight ? `${displayHeight}px` : '100%',
-          display: 'block',
-          objectFit: 'contain',
-        }}
+        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain' }}
       />
     </div>
   );

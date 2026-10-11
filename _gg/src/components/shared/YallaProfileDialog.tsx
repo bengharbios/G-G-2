@@ -621,7 +621,6 @@ export default function YallaProfileDialog({
                     src={ornamentUrl}
                     alt=""
                     className="yp-ornament"
-                    autoHeight
                   />
                 )}
                 {/* بطاقة الملف — طفلة الموضوع: حافتها السفلية = حافة الموضوع السفلية بالضبط وبعرضه */}

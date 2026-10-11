@@ -1052,14 +1052,13 @@ html, body {
 /* البطاقة استثناء داخل الموضوع: بعرضه كاملاً وارتفاعها بنسبتها الأصلية (بدل تمدد الموضوع) */
 .yp-cover .yp-carddecor { height: auto; object-fit: unset; z-index: 3; }
 
-/* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع */
+/* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع، ارتفاع ثابت مناسب */
 .yp-ornament {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  /* height يُضبط عبر inline style من React state (displayHeight)
-     — لا نضع height: auto !important كي لا نتجاوزه ونسبب circular dependency */
+  height: min(230px, 26vh) !important;
   display: block !important;
   z-index: 2;
   pointer-events: none;
@@ -1069,12 +1068,17 @@ html, body {
 .yp-ornament > img {
   display: block !important;
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: top center !important;
 }
-/* للـ canvas (SVGA): width 100%، height يأتي من inline style (100% أو px من state) */
+/* للـ canvas (SVGA): يملأ الحاوية + object-position: top لضمان عدم وجود فراغ علوي */
 .yp-ornament > canvas {
   display: block !important;
   width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: top center !important;
 }
 
 /* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية والجانبية = حواف الموضوع بالضبط.
