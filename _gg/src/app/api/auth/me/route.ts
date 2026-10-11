@@ -52,6 +52,8 @@ export async function GET(request: NextRequest) {
         frame: user.frame,
         ornament: user.ornament,
         card: user.card,
+        gender: user.gender,
+        birthDate: user.birthDate,
         role: user.role,
         subscriptionId: user.subscriptionId,
         lastLoginAt: user.lastLoginAt,

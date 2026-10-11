@@ -6,13 +6,17 @@ export async function POST() {
     message: 'تم تسجيل الخروج بنجاح',
   });
 
+  // حذف الكوكي بكل الطرق الممكنة (مهم لـ WebView في APK)
   response.cookies.set('auth_token', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: true,
+    sameSite: 'none',
     maxAge: 0,
+    expires: new Date(0),
     path: '/',
   });
+  // حذف إضافي للتأكد
+  response.headers.set('Clear-Site-Data', '"cache", "cookies", "storage"');
 
   return response;
 }

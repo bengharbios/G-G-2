@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Dialog,
@@ -114,7 +114,13 @@ export function LoginModal({ open, onOpenChange, onSwitchToRegister, onLoginSucc
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loginStep, setLoginStep] = useState<'landing' | 'form'>('landing');
   const { toast } = useToast();
+
+  // Reset to landing step when modal opens
+  useEffect(() => {
+    if (open) setLoginStep('landing');
+  }, [open]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,127 +158,203 @@ export function LoginModal({ open, onOpenChange, onSwitchToRegister, onLoginSucc
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[420px] p-0 overflow-hidden border-0 bg-transparent">
         <AnimatePresence mode="wait">
-          {open && (
+          {open && loginStep === 'landing' && (
             <motion.div
-              key="login-modal"
+              key="login-landing"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative flex flex-col"
+              className="relative flex flex-col rounded-2xl overflow-hidden"
               dir="rtl"
             >
-              {/* Top gradient */}
-              <div className="relative h-24 overflow-hidden rounded-t-2xl">
-                <div className="absolute inset-0 bg-gradient-to-bl from-amber-900/60 via-orange-900/40 to-slate-950" />
-                <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-amber-500/10 blur-xl" />
-                <motion.div
-                  className="absolute top-4 right-4"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 4 }}
+              {/* خلفية خضراء متدرجة مثل يلا لودو */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0D8A7A] via-[#0a6b5e] to-[#074a42]" />
+              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 50% 30%, rgba(255,255,255,0.15) 0%, transparent 60%)' }} />
+
+              {/* المحتوى */}
+              <div className="relative z-10 p-6 pt-10 pb-8 flex flex-col items-center">
+                {/* أيقونة مساعدة */}
+                <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white/60" />
+                </div>
+
+                {/* الشعار */}
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center shadow-lg mb-4">
+                  <img src="/platform-logo.png" alt="ألعاب الغريب" className="w-12 h-12 rounded-xl object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                </div>
+                <h1 className="text-2xl font-black text-white mb-1">ألعاب الغريب</h1>
+                <p className="text-white/60 text-sm mb-8">اختر طريقة تسجيل الدخول</p>
+
+                {/* أزرار الدخول المعطّلة (Google, Facebook, Phone) */}
+                <div className="w-full space-y-3 mb-4">
+                  {/* Google — معطّل */}
+                  <div className="w-full h-12 rounded-xl bg-white/10 flex items-center justify-center gap-3 opacity-40 cursor-not-allowed">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22 2.81-2.62z"/></svg>
+                    <span className="text-white/60 text-sm font-bold">تسجيل عبر Google</span>
+                    <span className="text-xs text-white/40 mr-2">قريباً</span>
+                  </div>
+
+                  {/* Facebook — معطّل */}
+                  <div className="w-full h-12 rounded-xl bg-white/10 flex items-center justify-center gap-3 opacity-40 cursor-not-allowed">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <span className="text-white/60 text-sm font-bold">تسجيل عبر فيسبوك</span>
+                    <span className="text-xs text-white/40 mr-2">قريباً</span>
+                  </div>
+
+                  {/* الهاتف — معطّل */}
+                  <div className="w-full h-12 rounded-xl bg-white/10 flex items-center justify-center gap-3 opacity-40 cursor-not-allowed">
+                    <Phone className="w-5 h-5 text-white/60" />
+                    <span className="text-white/60 text-sm font-bold">تسجيل عبر الهاتف</span>
+                    <span className="text-xs text-white/40 mr-2">قريباً</span>
+                  </div>
+                </div>
+
+                {/* فاصل */}
+                <div className="w-full flex items-center gap-3 my-2">
+                  <div className="flex-1 h-px bg-white/15" />
+                  <span className="text-white/40 text-xs">أو</span>
+                  <div className="flex-1 h-px bg-white/15" />
+                </div>
+
+                {/* زر البريد الإلكتروني — المفعل الوحيد */}
+                <button
+                  onClick={() => setLoginStep('form')}
+                  className="w-full h-12 rounded-xl bg-gradient-to-l from-amber-500 to-rose-500 hover:from-amber-400 hover:to-rose-400 text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-500/20"
                 >
-                  <Shield className="w-10 h-10 text-amber-400/60" />
-                </motion.div>
+                  <Mail className="w-5 h-5" />
+                  <span>البريد الإلكتروني</span>
+                  <span className="bg-amber-300 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full mr-1">جديد</span>
+                </button>
+
+                {/* التبديل للتسجيل */}
+                <p className="text-white/50 text-sm mt-6 text-center">
+                  ليس لديك حساب؟{' '}
+                  <button
+                    onClick={() => { onOpenChange(false); setTimeout(() => onSwitchToRegister(), 150); }}
+                    className="text-amber-300 font-bold hover:text-amber-200 transition-colors"
+                  >
+                    سجل الآن
+                  </button>
+                </p>
+
+                {/* الموافقة على الشروط */}
+                <div className="mt-4 text-center">
+                  <p className="text-white/40 text-[11px] leading-tight">
+                    بالمتابعة، أنت توافق على استخدام الخدمة<br />وسياسة الخصوصية الخاصة بنا.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {open && loginStep === 'form' && (
+            <motion.div
+              key="login-form"
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="relative flex flex-col rounded-2xl overflow-hidden"
+              dir="rtl"
+            >
+              {/* هيدر فيروزي مثل صورة 2 */}
+              <div className="relative h-16 flex items-center justify-between px-4 bg-gradient-to-l from-[#15BC83] to-[#0FA070]">
+                <button onClick={() => setLoginStep('landing')} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
+                  <ArrowLeft className="w-4 h-4 text-white" />
+                </button>
+                <h2 className="text-lg font-black text-white">تسجيل الدخول</h2>
+                <div className="w-8" />
               </div>
 
-              {/* Content */}
-              <div className="bg-slate-950 rounded-b-2xl border border-slate-800/60 border-t-0 p-6 sm:p-8">
-                <motion.div variants={fieldVariants} custom={0} className="text-center mb-6">
-                  <h2 className="text-xl font-black text-white mb-1">تسجيل الدخول</h2>
-                  <p className="text-sm text-slate-400">مرحباً بعودتك إلى ألعاب الغريب</p>
-                </motion.div>
-
+              {/* جسم النموذج */}
+              <div className="bg-[#F0F9F4] p-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Email */}
-                  <motion.div variants={fieldVariants} custom={1} className="space-y-2">
-                    <Label className="text-sm text-slate-300">البريد الإلكتروني</Label>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-[#1a3a30]">البريد الإلكتروني</Label>
                     <div className="relative">
-                      <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#15BC83]" />
                       <Input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="example@email.com"
                         dir="ltr"
-                        className="pr-10 bg-slate-900/70 border-slate-700/50 text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-amber-500/20 h-11"
+                        className="pr-10 bg-white border-[#15BC83]/30 text-[#1a3a30] placeholder:text-gray-400 focus:border-[#15BC83] focus:ring-[#15BC83]/20 h-11 rounded-xl"
                         disabled={loading}
                       />
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* Password */}
-                  <motion.div variants={fieldVariants} custom={2} className="space-y-2">
-                    <Label className="text-sm text-slate-300">كلمة المرور</Label>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-[#1a3a30]">كلمة المرور</Label>
                     <div className="relative">
-                      <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#15BC83]" />
                       <Input
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
                         dir="ltr"
-                        className="pr-10 pl-10 bg-slate-900/70 border-slate-700/50 text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-amber-500/20 h-11"
+                        className="pr-10 pl-10 bg-white border-[#15BC83]/30 text-[#1a3a30] placeholder:text-gray-400 focus:border-[#15BC83] focus:ring-[#15BC83]/20 h-11 rounded-xl"
                         disabled={loading}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#15BC83] transition-colors"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* Forgot password */}
-                  <motion.div variants={fieldVariants} custom={3} className="text-left">
+                  <div className="text-left">
                     <button
                       type="button"
                       onClick={() => toast({ title: '🔒 قريباً', description: 'استعادة كلمة المرور ستتوفر قريباً' })}
-                      className="text-xs text-amber-400/70 hover:text-amber-400 transition-colors"
+                      className="text-xs text-[#15BC83]/70 hover:text-[#15BC83] transition-colors"
                     >
                       نسيت كلمة المرور؟
                     </button>
-                  </motion.div>
+                  </div>
 
                   {/* Submit */}
-                  <motion.div variants={fieldVariants} custom={4}>
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full h-12 bg-gradient-to-l from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white font-bold text-base shadow-lg shadow-amber-500/20 rounded-xl"
-                    >
-                      {loading ? (
-                        <div className="flex items-center gap-2">
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>جاري تسجيل الدخول...</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <LogIn className="w-5 h-5" />
-                          <span>تسجيل الدخول</span>
-                        </div>
-                      )}
-                    </Button>
-                  </motion.div>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-12 bg-gradient-to-l from-[#15BC83] to-[#0FA070] hover:from-[#15BC83] hover:to-[#0FA070] text-white font-bold text-base shadow-lg shadow-[#15BC83]/20 rounded-xl"
+                  >
+                    {loading ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>جاري تسجيل الدخول...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <LogIn className="w-5 h-5" />
+                        <span>تسجيل الدخول</span>
+                      </div>
+                    )}
+                  </Button>
                 </form>
 
                 {/* Switch to register */}
-                <motion.div variants={fieldVariants} custom={5} className="mt-6 text-center">
-                  <Separator className="bg-slate-800/60 mb-4" />
-                  <p className="text-sm text-slate-400">
+                <div className="mt-6 text-center">
+                  <Separator className="bg-[#15BC83]/15 mb-4" />
+                  <p className="text-sm text-gray-500">
                     ليس لديك حساب؟{' '}
                     <button
-                      onClick={() => {
-                        onOpenChange(false);
-                        setTimeout(() => onSwitchToRegister(), 150);
-                      }}
-                      className="text-amber-400 font-bold hover:text-amber-300 transition-colors"
+                      onClick={() => { onOpenChange(false); setTimeout(() => onSwitchToRegister(), 150); }}
+                      className="text-[#15BC83] font-bold hover:text-[#0FA070] transition-colors"
                     >
                       سجل الآن
                     </button>
                   </p>
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           )}
