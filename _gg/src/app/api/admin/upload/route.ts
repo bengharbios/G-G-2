@@ -11,8 +11,21 @@ const ALLOWED_MIME: Record<string, string> = {
   'image/gif': '.gif',
   'image/svg+xml': '.svg',
   'video/mp4': '.mp4',
+  'application/octet-stream': '.svga', // SVGA files typically sent as octet-stream
+  'application/x-svga': '.svga',
 };
-const MAX_SIZE = 10 * 1024 * 1024; // 10MB للصور الثابتة والصور المتحركة (GIF/SVG/APNG)
+// فحص إضافي عبر الامتداد للملفات التي لا يعرف المتصفح MIME type لها (مثل .svga)
+const ALLOWED_EXT: Record<string, string> = {
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.mp4': 'video/mp4',
+  '.svga': 'application/x-svga',
+};
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB للصور الثابتة والمتحركة (GIF/SVG/SVGA)
 const MAX_VIDEO_SIZE = 25 * 1024 * 1024; // 25MB للـ MP4
 
 async function verifyAdminAuth(request: NextRequest) {
@@ -39,13 +52,24 @@ export async function POST(request: NextRequest) {
     if (!(file instanceof File)) {
       return NextResponse.json({ error: 'الملف مطلوب' }, { status: 400 });
     }
-    const ext = ALLOWED_MIME[file.type];
+    // استخدم MIME type إن عُرِف، وإلا اعتمد على امتداد الملف (يدعم .svga الذي المتصفحات لا تعرفه)
+    let ext = ALLOWED_MIME[file.type];
+    let resolvedMime = file.type;
     if (!ext) {
-      return NextResponse.json({ error: 'صيغة غير مدعومة (PNG/JPG/WEBP/GIF/SVG/MP4)' }, { status: 400 });
+      // فحص عبر امتداد اسم الملف كنسخة احتياطية
+      const lowerName = (file.name || '').toLowerCase();
+      const extKey = Object.keys(ALLOWED_EXT).find((e) => lowerName.endsWith(e));
+      if (extKey) {
+        ext = extKey;
+        resolvedMime = ALLOWED_EXT[extKey];
+      }
     }
-    const limit = file.type === 'video/mp4' ? MAX_VIDEO_SIZE : MAX_SIZE;
+    if (!ext) {
+      return NextResponse.json({ error: 'صيغة غير مدعومة (PNG/JPG/WEBP/GIF/SVG/SVGA/MP4)' }, { status: 400 });
+    }
+    const limit = resolvedMime === 'video/mp4' ? MAX_VIDEO_SIZE : MAX_SIZE;
     if (file.size > limit) {
-      return NextResponse.json({ error: 'حجم الملف يتجاوز الحد المسموح' }, { status: 400 });
+      return NextResponse.json({ error: 'حجم الملف يتجاوز الحد المسموح (10MB للصور/SVGA، 25MB للفيديو)' }, { status: 400 });
     }
     await ensureAdminTables();
     const c = getClient();
@@ -53,9 +77,9 @@ export async function POST(request: NextRequest) {
     const id = crypto.randomUUID();
     await c.execute({
       sql: 'INSERT INTO MediaAsset (id, filename, mime, size, data) VALUES (?, ?, ?, ?, ?)',
-      args: [id, `upload_${Date.now()}${ext}`, file.type, bytes.byteLength, bytes],
+      args: [id, `upload_${Date.now()}${ext}`, resolvedMime || file.type, bytes.byteLength, bytes],
     });
-    return NextResponse.json({ success: true, url: `/api/media/${id}` });
+    return NextResponse.json({ success: true, url: `/api/media/${id}`, mime: resolvedMime || file.type });
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'فشل رفع الملف' }, { status: 500 });

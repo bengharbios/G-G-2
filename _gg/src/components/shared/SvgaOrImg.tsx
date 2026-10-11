@@ -57,7 +57,9 @@ function loadSvgaScript(): Promise<typeof window.SVGA> {
 
 export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', onError }: SvgaOrImgProps) {
   // ملفات SVGA فقط هي التي تحتاج تشغيل canvas
-  const isSvga = src.toLowerCase().endsWith('.svga');
+  const lowerSrc = src.toLowerCase();
+  const isSvga = lowerSrc.endsWith('.svga');
+  const isVideo = lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm') || lowerSrc.endsWith('.mov');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<{ stopAnimation: (clear?: boolean) => void; clear?: () => void } | null>(null);
@@ -133,6 +135,22 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
       }
     };
   }, [isSvga, src, failed, onError]);
+
+  // للفيديو (MP4/WebM/MOV) — استخدم <video>
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={className}
+        style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+        onError={() => onError?.()}
+      />
+    );
+  }
 
   // للصور العادية أو عند فشل SVGA — استخدم <img>
   if (!isSvga || failed) {
