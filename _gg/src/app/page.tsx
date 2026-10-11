@@ -1342,17 +1342,22 @@ export default function HomePage() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [authUser, setAuthUser] = useState<AuthUserData | null>(null);
+  const [authChecking, setAuthChecking] = useState(true);
 
-  // Check auth session on mount
+  // Check auth session on mount — الدخول الإجباري
   useEffect(() => {
     fetch('/api/auth/me')
       .then((r) => r.json())
       .then((data) => {
         if (data.success && data.user) {
           setAuthUser(data.user);
+        } else {
+          // لم يسجّل دخول — نفتح نافذة الدخول تلقائياً
+          setLoginOpen(true);
         }
       })
-      .catch(() => { /* silent */ });
+      .catch(() => { setLoginOpen(true); })
+      .finally(() => setAuthChecking(false));
   }, []);
 
   // Fetch subscriber profile data on mount
@@ -1387,6 +1392,51 @@ export default function HomePage() {
     setProfileData(null);
     window.location.reload();
   }, []);
+
+  // الدخول الإجباري: لا يظهر المحتوى إلا بعد تسجيل الدخول
+  if (authChecking) {
+    return (
+      <div dir="rtl" className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <img src="/platform-logo.png" alt="ألعاب الغريب" className="w-16 h-16 mx-auto mb-4 rounded-xl animate-pulse" />
+          <p className="text-slate-400 text-sm">جارٍ التحميل...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // غير مسجّل — يرى فقط الخلفية + نافذة الدخول
+  if (!authUser) {
+    return (
+      <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
+        {/* خلفية فقط — لا هيدر ولا أزرار سفلية ولا محتوى */}
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center opacity-40">
+            <img src="/platform-logo.png" alt="ألعاب الغريب" className="w-20 h-20 mx-auto mb-4 rounded-xl" />
+            <p className="text-slate-500 text-sm">سجّل دخولك للمتابعة</p>
+          </div>
+        </div>
+
+        {/* نافذة الدخول — مفتوحة تلقائياً ولا يمكن إغلاقها بدون تسجيل */}
+        <LoginModal
+          open={loginOpen}
+          onOpenChange={(open) => {
+            // منع الإغلاق بدون تسجيل دخول
+            if (!open && !authUser) return;
+            setLoginOpen(open);
+          }}
+          onSwitchToRegister={() => setRegisterOpen(true)}
+          onLoginSuccess={handleAuthSuccess}
+        />
+        <RegisterModal
+          open={registerOpen}
+          onOpenChange={setRegisterOpen}
+          onSwitchToLogin={() => setLoginOpen(true)}
+          onRegisterSuccess={handleAuthSuccess}
+        />
+      </div>
+    );
+  }
 
   return (
     <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
@@ -1429,7 +1479,7 @@ export default function HomePage() {
         <GamesSection />
       </main>
 
-      <SiteBottomNav activeTab="home" />
+      <SiteBottomNav activeTab="events" />
 
       {/* Auth Modals */}
       <LoginModal
