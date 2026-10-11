@@ -71,24 +71,16 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
     // ضبط canvas بأبعاد الحاوية (يملأها بالكامل)
-    // بعد تحميل الفيديو: نضبط canvas intrinsic على أبعاد الفيديو الأصلية
-    // كي يتمكن CSS object-fit من تحجيم المحتوى لنسبة الفيديو داخل الحاوية
-    const syncCanvasSize = (videoSize?: { width: number; height: number }) => {
+    // هذا هو السلوك الأصلي — لا نغير أبعاد canvas إلى أبعاد الفيديو
+    // كي لا تتأثر الإطارات في الهيدر والمتجر
+    const syncCanvasSize = () => {
       const c = canvasRef.current;
       const parent = c?.parentElement;
       if (!c || !parent) return;
-      if (videoSize) {
-        // بعد تحميل الفيديو: canvas intrinsic = video size
-        // CSS object-fit: contain يحجم الفيديو داخل الحاوية مع المحافظة على النسبة
-        c.width = Math.round(videoSize.width);
-        c.height = Math.round(videoSize.height);
-      } else {
-        // قبل تحميل الفيديو: canvas intrinsic = parent dimensions (مؤقتاً)
-        const rect = parent.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          c.width = Math.round(rect.width);
-          c.height = Math.round(rect.height);
-        }
+      const rect = parent.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        c.width = Math.round(rect.width);
+        c.height = Math.round(rect.height);
       }
     };
     syncCanvasSize();
@@ -96,6 +88,7 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     loadSvgaScript()
       .then((SVGA) => {
         if (cancelled || !canvasRef.current) return;
+        syncCanvasSize();
         if (playerRef.current?.stopAnimation) {
           try { playerRef.current.stopAnimation(true); } catch {}
         }
@@ -103,10 +96,8 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         const player = new (SVGA as any).Player(canvasRef.current);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const parser = new (SVGA as any).Parser();
-        parser.load(src, (videoItem: { videoSize?: { width: number; height: number } }) => {
+        parser.load(src, (videoItem: unknown) => {
           if (cancelled) return;
-          // بعد تحميل الفيديو: اضبط canvas على أبعاد الفيديو الأصلية
-          syncCanvasSize(videoItem?.videoSize);
           player.setVideoItem(videoItem);
           player.setContentMode('AspectFit');
           player.setClipsToBounds(true);
@@ -124,12 +115,9 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         onError?.();
       });
 
-    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas (قبل تحميل الفيديو فقط)
+    // مراقب تغيّر حجم الحاوية لإعادة ضبط canvas
     const ro = containerRef.current
-      ? new ResizeObserver(() => {
-          // فقط قبل تحميل الفيديو — بعده canvas intrinsic = video size (ثابت)
-          if (!playerRef.current) syncCanvasSize();
-        })
+      ? new ResizeObserver(() => syncCanvasSize())
       : null;
     if (containerRef.current && ro) ro.observe(containerRef.current);
 

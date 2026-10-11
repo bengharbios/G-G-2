@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LogOut, X, Shirt, Check } from 'lucide-react';
 import SvgaOrImg from './SvgaOrImg';
+import OrnamentSvga from './OrnamentSvga';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -614,14 +615,12 @@ export default function YallaProfileDialog({
                   alt=""
                   onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }}
                 />
-                {/* المعلقة الجدارية — طفلة الموضوع: أعلى الموضوع = أعلى المعلقة */}
+                {/* المعلقة الجدارية — مكوّن مستقل (OrnamentSvga) منفصل عن SvgaOrImg
+                    كي لا تتأثر إطارات الهيدر والمتجر بأي تغييرات على المعلقة */}
                 {ornamentUrl && (
-                  <SvgaOrImg
-                    key={ornamentUrl}
-                    src={ornamentUrl}
-                    alt=""
-                    className="yp-ornament"
-                  />
+                  <div className="yp-ornament" key={ornamentUrl}>
+                    <OrnamentSvga src={ornamentUrl} alt="" className="yp-ornament-canvas" />
+                  </div>
                 )}
                 {/* بطاقة الملف — طفلة الموضوع: حافتها السفلية = حافة الموضوع السفلية بالضبط وبعرضه */}
                 {/* SvgaOrImg يدعم SVG/PNG/SVGA/MP4 ويعيد إنشاء canvas عند تغير الـ src */}

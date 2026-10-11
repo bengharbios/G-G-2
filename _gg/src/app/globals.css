@@ -1052,7 +1052,8 @@ html, body {
 /* البطاقة استثناء داخل الموضوع: بعرضه كاملاً وارتفاعها بنسبتها الأصلية (بدل تمدد الموضوع) */
 .yp-cover .yp-carddecor { height: auto; object-fit: unset; z-index: 3; }
 
-/* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع، ارتفاع ثابت مناسب */
+/* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع، ارتفاع ثابت مناسب
+   مكوّن مستقل (OrnamentSvga) — لا تتأثر إطارات الهيدر والمتجر بهذه القواعد */
 .yp-ornament {
   position: absolute !important;
   top: 0 !important;
@@ -1063,17 +1064,11 @@ html, body {
   z-index: 2;
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
+  overflow: visible;
 }
-/* للصور العادية (PNG/JPG/WEBP/GIF/SVG): height: auto يعمل تلقائياً من النسبة */
-.yp-ornament > img {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: top center !important;
-}
-/* للـ canvas (SVGA): يملأ الحاوية + object-position: top لضمان عدم وجود فراغ علوي */
-.yp-ornament > canvas {
+/* canvas داخل المعلقة — يملأ الحاوية + يضع الفيديو في الأعلى */
+.yp-ornament .yp-ornament-canvas,
+.yp-ornament canvas {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
