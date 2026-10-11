@@ -2609,7 +2609,7 @@ html, body {
 }
 .ys-panel {
   position: relative; width: min(480px, 94vw); height: min(720px, 94vh);
-  border-radius: 20px; overflow: hidden;
+  border-radius: 24px; overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,.4);
   display: flex; flex-direction: column;
   background: #F0F9F4;
@@ -2618,7 +2618,7 @@ html, body {
 .ys-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 18px;
-  background: linear-gradient(180deg, #2EBFA5, #259b87);
+  background: linear-gradient(180deg, #15BC83, #0FA070);
   flex-shrink: 0;
 }
 .ys-title { font-size: 20px; font-weight: 900; color: #fff; flex: 1; text-align: center; }
@@ -2639,8 +2639,8 @@ html, body {
   flex-shrink: 0;
 }
 .ys-iconbtn {
-  width: 52px; height: 52px; border: none; border-radius: 14px;
-  background: linear-gradient(180deg, #2EBFA5, #259b87);
+  width: 52px; height: 52px; border: none; border-radius: 12px;
+  background: linear-gradient(180deg, #15BC83, #0FA070);
   color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 3px 8px rgba(46,191,165,.25);
@@ -2665,7 +2665,7 @@ html, body {
 .ys-row:hover { background: #F8FCFA; }
 .ys-row-icon { width: 22px; height: 22px; flex-shrink: 0; }
 .ys-row-title { font-size: 18px; font-weight: 600; color: #1a3a30; flex: 1; }
-.ys-row-value { font-size: 16px; color: #2EBFA5; }
+.ys-row-value { font-size: 16px; color: #15BC83; }
 .ys-row-arrow { width: 14px; height: 14px; color: #9abab0; flex-shrink: 0; }
 .ys-row-badge { font-size: 8px; font-weight: 700; color: #fff; background: #e8923a; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 
@@ -2675,7 +2675,7 @@ html, body {
   background: #D5E8E0; position: relative; cursor: pointer; flex-shrink: 0;
   transition: background .2s;
 }
-.ys-toggle--on { background: #2EBFA5; }
+.ys-toggle--on { background: #15BC83; }
 .ys-toggle-knob {
   position: absolute; top: 2px; right: 2px;
   width: 22px; height: 22px; border-radius: 50%;
@@ -2685,7 +2685,7 @@ html, body {
 .ys-toggle:not(.ys-toggle--on) .ys-toggle-knob { transform: translateX(20px); }
 
 /* Section title */
-.ys-section-title { font-size: 14px; font-weight: 800; color: #2EBFA5; padding: 14px 18px 4px; margin-top: 6px; }
+.ys-section-title { font-size: 14px; font-weight: 800; color: #15BC83; padding: 14px 18px 4px; margin-top: 6px; }
 
 /* Bottom buttons — خروج (أخضر) + مركز الحساب (ذهبي) */
 .ys-bottom-buttons { display: flex; gap: 10px; padding: 20px 18px; background: #F0F9F4; }
@@ -2696,7 +2696,7 @@ html, body {
   transition: transform .1s;
 }
 .ys-btn:active { transform: scale(.97); }
-.ys-btn--logout { background: linear-gradient(180deg, #2EBFA5, #259b87); color: #fff; }
+.ys-btn--logout { background: linear-gradient(180deg, #15BC83, #0FA070); color: #fff; }
 .ys-btn--account { background: linear-gradient(180deg, #f0c040, #e0a020); color: #4a2e06; }
 .ys-btn--cancel { background: #D5E8E0; color: #666; }
 .ys-btn--danger { background: #e53935; color: #fff; }
@@ -2710,21 +2710,21 @@ html, body {
 /* Account info */
 .ys-account-info { margin: 12px 18px; padding: 16px; background: #E8F5E9; border-radius: 12px; border: 1px solid #C8E6C9; }
 .ys-account-name { font-size: 18px; font-weight: 800; color: #1a3a30; }
-.ys-account-code { font-size: 14px; color: #2EBFA5; margin-top: 4px; font-family: monospace; }
+.ys-account-code { font-size: 14px; color: #15BC83; margin-top: 4px; font-family: monospace; }
 .ys-account-plan { font-size: 14px; color: #e8923a; margin-top: 4px; }
 .ys-account-expiry { font-size: 14px; color: #888; margin-top: 2px; }
 
 /* Back button */
-.ys-back { margin: 8px 18px; padding: 10px 16px; background: none; border: none; color: #2EBFA5; font-size: 14px; font-weight: 700; cursor: pointer; text-align: right; }
+.ys-back { margin: 8px 18px; padding: 10px 16px; background: none; border: none; color: #15BC83; font-size: 14px; font-weight: 700; cursor: pointer; text-align: right; }
 
 /* Device row */
 .ys-device-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; margin: 8px 18px; background: #fff; border-radius: 10px; }
 .ys-device-info { flex: 1; display: flex; flex-direction: column; }
 .ys-device-name { font-size: 16px; color: #1a3a30; font-weight: 700; }
 .ys-device-date { font-size: 12px; color: #999; }
-.ys-device-badge { font-size: 10px; color: #2EBFA5; font-weight: 700; }
+.ys-device-badge { font-size: 10px; color: #15BC83; font-weight: 700; }
 .ys-device-tip { font-size: 14px; color: #888; padding: 12px 18px; }
-.ys-check { color: #2EBFA5; font-weight: 900; font-size: 18px; }
+.ys-check { color: #15BC83; font-weight: 900; font-size: 18px; }
 
 @media (max-width: 480px) {
   .ys-panel { width: 100vw; height: 100vh; border-radius: 0; }

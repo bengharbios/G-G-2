@@ -163,7 +163,7 @@ export default function SettingsModal({ open, onOpenChange, authUser, subscriber
                 {view === 'devices' && 'الأجهزة المرتبطة'}
               </h2>
               <button className="ys-close" onClick={() => onOpenChange(false)} aria-label="إغلاق">
-                <X className="w-5 h-5" />
+                <img src="/yalla-settings/ic_close.webp" alt="إغلاق" style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
