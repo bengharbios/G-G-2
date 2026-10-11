@@ -68,6 +68,9 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   const playerRef = useRef<{ stopAnimation: (clear?: boolean) => void; clear?: () => void } | null>(null);
   const videoSizeRef = useRef<{ width: number; height: number } | null>(null);
   const [failed, setFailed] = useState(false);
+  // ارتفاع canvas الظاهري بالبيكسل (محسوب من نسبة الفيديو وعرض الحاوية)
+  // مهم: نضعه في React state (لا نعدّل DOM مباشرة) كي لا يُتجاوز عند إعادة الرسم
+  const [displayHeight, setDisplayHeight] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isSvga || !canvasRef.current || failed) return;
@@ -75,27 +78,23 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
     let localPlayer: { stopAnimation: (clear?: boolean) => void; clear?: () => void } | null = null;
 
     // ضبط أبعاد canvas بناءً على الوضع:
-    // - autoHeight=true: canvas بأبعاد الفيديو الأصلية + display height محسوب صراحة بالبيكسل
-    //   مناسب للمعلقات العريضة (مثل hanging_meteors 1200×400) — لا فراغات جانبية/علوية
-    // - autoHeight=false (افتراضي): canvas بأبعاد الحاوية (يملأها بالكامل)
-    //   مناسب للإطارات المربعة في المتجر والهيدر (حيث نسبة الحاوية = نسبة الفيديو)
+    // - autoHeight=true: نحسب الارتفاع الظاهري من نسبة الفيديو ونضعه في React state
+    //   (لا نعدّل DOM مباشرة كي لا يُتجاوز عند إعادة الرسم)
+    // - autoHeight=false (افتراضي): canvas يأخذ أبعاد الحاوية (يملأها بالكامل)
     const syncCanvasSize = () => {
       const c = canvasRef.current;
       const parent = c?.parentElement;
       if (!c || !parent) return;
       if (autoHeight && videoSizeRef.current) {
         // الوضع autoHeight: canvas intrinsic = video size
-        // نحسب الارتفاع الظاهري صراحةً بالبيكسل لأن height: auto للـ canvas غير موثوق في كل المتصفحات
         const { width: vw, height: vh } = videoSizeRef.current;
         c.width = Math.round(vw);
         c.height = Math.round(vh);
         const parentWidth = parent.getBoundingClientRect().width;
         if (parentWidth > 0) {
-          // الارتفاع الظاهري = عرض الحاوية × (ارتفاع الفيديو / عرض الفيديو)
-          const displayHeight = Math.round(parentWidth * (vh / vw));
-          c.style.width = '100%';
-          c.style.height = `${displayHeight}px`;
-          c.style.display = 'block';
+          // نحسب الارتفاع ونضعه في React state (يتجنب تجاوز React عند إعادة الرسم)
+          const dh = Math.round(parentWidth * (vh / vw));
+          setDisplayHeight(dh);
         }
       } else {
         // الوضع الافتراضي: canvas intrinsic = parent dimensions (يملأ الحاوية)
@@ -103,9 +102,6 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
         if (rect.width > 0 && rect.height > 0) {
           c.width = Math.round(rect.width);
           c.height = Math.round(rect.height);
-          c.style.width = '100%';
-          c.style.height = '100%';
-          c.style.display = 'block';
         }
       }
     };
@@ -196,12 +192,25 @@ export default function SvgaOrImg({ src, alt = '', className, loading = 'lazy', 
   }
 
   return (
-    <div ref={containerRef} className={`svga-wrapper ${className ?? ''}`} style={{ width: '100%', height: '100%', display: 'block' }}>
+    <div
+      ref={containerRef}
+      className={`svga-wrapper ${className ?? ''}`}
+      style={{
+        width: '100%',
+        height: autoHeight && displayHeight ? `${displayHeight}px` : '100%',
+        display: 'block',
+      }}
+    >
       <canvas
         ref={canvasRef}
         role="img"
         aria-label={alt}
-        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain' }}
+        style={{
+          width: '100%',
+          height: autoHeight && displayHeight ? `${displayHeight}px` : '100%',
+          display: 'block',
+          objectFit: 'contain',
+        }}
       />
     </div>
   );
