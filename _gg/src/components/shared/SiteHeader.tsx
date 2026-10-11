@@ -2,7 +2,35 @@
 
 import { useState, useEffect } from 'react';
 import FrameStoreModal from './FrameStoreModal';
+import SvgaOrImg from './SvgaOrImg';
 import { formatCompact } from '@/lib/format';
+
+// ذاكرة مؤقتة للكتالوج — يُحمّل مرة واحدة ويُعيد استخدامه بين عناصر الهيدر
+let _framesCatalogCache: Map<string, string> | null = null;
+let _framesCatalogPromise: Promise<Map<string, string>> | null = null;
+
+function getFramesCatalogMap(): Promise<Map<string, string>> {
+  if (_framesCatalogCache) return Promise.resolve(_framesCatalogCache);
+  if (_framesCatalogPromise) return _framesCatalogPromise;
+  _framesCatalogPromise = fetch('/api/store/frames-catalog')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      const m = new Map<string, string>();
+      if (d?.success && Array.isArray(d.frames)) {
+        for (const f of d.frames) {
+          if (f.imageUrl) m.set(String(f.id), String(f.imageUrl));
+        }
+      }
+      _framesCatalogCache = m;
+      return m;
+    })
+    .catch(() => {
+      const m = new Map<string, string>();
+      _framesCatalogCache = m;
+      return m;
+    });
+  return _framesCatalogPromise;
+}
 
 interface SiteHeaderUser {
   id: string;
@@ -20,10 +48,13 @@ interface SiteHeaderProps {
   onLogout?: () => void;
 }
 
-// درع الإطار حول صورة الهيدر — نفس مسار صور الإطارات المحلية
-function frameSrc(frameId?: string | null): string | null {
+// درع الإطار حول صورة الهيدر — يبحث عن imageUrl الحقيقي من الكتالوج
+// (قد يكون PNG أو SVGA أو أي صيغة أخرى) ويرجع احتياطياً لمسار PNG الافتراضي
+function frameSrcFallback(frameId?: string | null): string | null {
   const id = (frameId || '').trim();
-  return id && /^\d+$/.test(id) ? `/yalla-frames/${id}.png` : null;
+  if (!id) return null;
+  // احتياطي: مسار PNG الافتراضي للأرقام فقط
+  return /^\d+$/.test(id) ? `/yalla-frames/${id}.png` : null;
 }
 
 export default function SiteHeader({
@@ -88,7 +119,18 @@ export default function SiteHeader({
   }, [authUser]);
 
   const isAdmin = authUser?.role === 'admin';
-  const frameImg = frameSrc(authUser?.frame);
+  // ابحث عن imageUrl الحقيقي للإطار المُجهَّز من الكتالوج (يدعم SVGA وغيرها)
+  const [frameImg, setFrameImg] = useState<string | null>(null);
+  useEffect(() => {
+    if (!authUser?.frame) { setFrameImg(null); return; }
+    let cancelled = false;
+    getFramesCatalogMap().then((m) => {
+      if (cancelled) return;
+      const realUrl = m.get(String(authUser.frame));
+      setFrameImg(realUrl || frameSrcFallback(authUser.frame));
+    });
+    return () => { cancelled = true; };
+  }, [authUser?.frame]);
 
   return (
     <>
@@ -118,14 +160,9 @@ export default function SiteHeader({
                 }}
               />
               {frameImg && (
-                <img
+                <SvgaOrImg
                   src={frameImg}
                   alt=""
-                  style={{
-                    position: 'absolute', inset: '-17%', width: '134%', height: '134%', maxWidth: 'none',
-                    objectFit: 'contain', pointerEvents: 'none',
-                  }}
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
               )}
             </span>

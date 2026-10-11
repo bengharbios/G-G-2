@@ -529,7 +529,11 @@ export default function YallaProfileDialog({
   // محلّل رابط الصورة من كتالوج الزينة: عناصر البذر معرفها = مسارها، أما المرفوع من الأدمن
   // فمعرفه UUID وصورته على /api/media/<id> — نحلّل المعرف إلى رابط الصورة الحقيقي
   const decorUrlById = new Map(decorCatalog.map((d) => [d.id, d.imageUrl]));
-  const frameUrl = authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '';
+  // ابحث عن imageUrl الحقيقي للإطار المُجهَّز من حالة frames (قد يكون SVGA أو PNG أو غيرها)
+  const equippedFrameRec = authUser?.frame
+    ? frames.find((f) => String(f.id) === String(authUser.frame))
+    : null;
+  const frameUrl = equippedFrameRec?.imageUrl || (authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '');
   const ornamentUrl = authUser?.ornament
     ? (decorUrlById.get(authUser.ornament) || `/yalla-ornaments/${authUser.ornament}.png`)
     : '';
@@ -587,7 +591,7 @@ export default function YallaProfileDialog({
                   />
                 </div>
                 {frameUrl && (
-                  <img src={frameUrl} alt="" className="yp-frame" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  <SvgaOrImg src={frameUrl} alt="" className="yp-frame" />
                 )}
               </div>
             )}
@@ -836,7 +840,7 @@ export default function YallaProfileDialog({
                 <span className="yb-avwrap">
                   <img className="yb-avface" src={eAvatar || avatarSrc(authUser)} alt="" />
                   {!!authUser.frame && (
-                    <img src={`/yalla-frames/${authUser.frame}.png`} alt="" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    <SvgaOrImg src={frameUrl} alt="" />
                   )}
                 </span>
                 <div className="yb-xpwrap">
@@ -1048,259 +1052,286 @@ export default function YallaProfileDialog({
           </motion.div>
         </motion.div>
       )}
-      {/* ─── Decoration FULL-SCREEN windows (yalla: room_profile_card_shop / dialog_skin_theme / dialog_head_frame_select) ─── */}
+      {/* ─── Decoration windows — تصميم موحّد مطابق لنافذة المعلومات الأساسية (yb-card) ─── */}
       <AnimatePresence>
         {open && authUser && decorPanel && (
           <motion.div
-            className="yd-overlay"
+            className="yb-overlay"
+            dir="rtl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
+            onClick={() => setDecorPanel(null)}
           >
-            <div className="yd-rays" />
-            <div className="yd-bubbles">
-              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-                <span
-                  key={i}
-                  className="yd-bubble"
-                  style={{
-                    left: `${6 + i * 13.5}%`,
-                    width: 16 + (i % 3) * 10,
-                    height: 16 + (i % 3) * 10,
-                    animationDelay: `${i * 1.7}s`,
-                    animationDuration: `${10 + (i % 3) * 2.5}s`,
-                  }}
-                />
-              ))}
-            </div>
-
-            <div className="yd-scroll" dir="rtl">
-              <button className="yd-close" onClick={() => setDecorPanel(null)} aria-label="إغلاق">
-                <X className="w-6 h-6" />
-              </button>
-
-              <div className="yd-wallet">
-                <img src="/yalla-ui/exp.png" alt="" />
-                <span dir="ltr">3.8M</span>
-                <img src="/yalla-ui/exp.png" alt="" />
-                <span dir="ltr">144</span>
-              </div>
-
-              <div className="yd-titlewrap">
-                <h2 className="yd-title">
+            <div className="yb-card" onClick={(e) => e.stopPropagation()}>
+              <div className="yb-titlebar">
+                <h2 className="yb-title">
+                  {decorPanel === 'frames' && 'إطاراتي وزينتي'}
+                  {decorPanel === 'themes' && 'مواضيع الملف الشخصي'}
                   {decorPanel === 'ornaments' && 'المعلقات الجدارية'}
-                  {decorPanel === 'themes' && 'موضوع الملف الشخصي'}
-                  {decorPanel === 'frames' && 'إطار الصورة'}
-                  {decorPanel === 'cards' && 'بطاقة الملف الشخصي'}
+                  {decorPanel === 'cards' && 'بطاقات الملف الشخصي'}
                 </h2>
+                <button className="yb-x" onClick={() => setDecorPanel(null)} aria-label="إغلاق">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              {/* Ornaments: owned-only بتصميم المتجر */}
+              <div className="yb-headrow">
+                <span className="yb-avwrap">
+                  <img className="yb-avface" src={eAvatar || avatarSrc(authUser)} alt="" />
+                  {!!authUser.frame && (
+                    <SvgaOrImg src={frameUrl} alt="" />
+                  )}
+                </span>
+                <div className="yb-xpwrap">
+                  <div className="yb-xprow">
+                    <span>الخبرة</span>
+                    <b dir="ltr">{xp ? `${new Intl.NumberFormat('en-US').format(xp.currentLevelXP)}/${new Intl.NumberFormat('en-US').format(xp.nextLevelXP)}` : '—'}</b>
+                  </div>
+                  <div className="yb-xptrack">
+                    <div className="yb-xpfill" style={{ width: `${Math.max(4, Math.min(100, xp?.progress ?? 0))}%` }} />
+                  </div>
+                </div>
+                <button className="yb-userpick">
+                  <img src="/yalla-ui/jia.webp" alt="" style={{ width: 16, height: 16 }} />
+                  <span>لدي</span>
+                </button>
+              </div>
+
+              {/* تبويبات: الإطارات / المواضيع / المعلقات / البطاقات */}
+              <div className="yb-tabs">
+                <button className={`yb-tab${decorPanel === 'frames' ? ' yb-tab--on' : ''}`} onClick={() => setDecorPanel('frames')}>الإطارات</button>
+                <button className={`yb-tab${decorPanel === 'themes' ? ' yb-tab--on' : ''}`} onClick={() => setDecorPanel('themes')}>المواضيع</button>
+                <button className={`yb-tab${decorPanel === 'ornaments' ? ' yb-tab--on' : ''}`} onClick={() => setDecorPanel('ornaments')}>المعلقات</button>
+                <button className={`yb-tab${decorPanel === 'cards' ? ' yb-tab--on' : ''}`} onClick={() => setDecorPanel('cards')}>البطاقات</button>
+              </div>
+
+              {/* فلتر فرعي: مملوكتي / الكل */}
+              {decorPanel !== 'cards' && (
+                <div className="yb-filterbar">
+                  <button className={`yb-filter${frameView === 'owned' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('owned')}>مملوكتي</button>
+                  <button className={`yb-filter${frameView === 'all' ? ' yb-filter--on' : ''}`} onClick={() => setFrameView('all')}>الكل</button>
+                </div>
+              )}
+
+              <div className="yb-body" style={{ overflowY: 'auto' }}>
+
+              {/* Ornaments — تصميم موحّد: فلتر + كل العناصر + SvgaOrImg */}
               {decorPanel === 'ornaments' && (
                 <div className="fs-bodygrid fs-bodygrid--panel">
                   <button
-                    className={`fs-card fs-card--none${!authUser.ornament ? ' fs-card--active' : ''}`}
+                    className={`fs-card${!authUser.ornament ? ' fs-card--owned' : ''}`}
                     disabled={savingDecor}
                     onClick={() => applyDecor('ornament', '')}
+                    title="بدون معلقة"
                   >
-                    <span className="fs-card-name">لا يوجد</span>
-                    <span className="fs-card-imgwrap fs-card-imgwrap--owned"><span className="fs-nopic">بدون</span></span>
-                    <span className="fs-price fs-price--owned">—</span>
-                    {!authUser.ornament && <i className="fs-check-check">✓</i>}
+                    <span className="fs-card-name">بدون معلقة</span>
+                    <span className="fs-card-imgwrap">
+                      <span className="fs-nopic">بدون</span>
+                      {!authUser.ornament && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                    </span>
+                    <span className={`fs-price ${!authUser.ornament ? 'fs-price--owned' : 'fs-price--free'}`}>
+                      {!authUser.ornament ? 'مجهز' : 'إزالة'}
+                    </span>
+                    <span className="fs-badge fs-badge--common">عادي</span>
                   </button>
-                  {decorCatalog.filter((d) => d.kind === 'ornament').map((o) => {
-                    const active = (authUser.ornament || '') === o.id;
-                    const owned = ownedDecor.has(o.id);
-                    if (!owned) return null;
-                    return (
-                      <button
-                        key={`orn-${o.id}`}
-                        className={`fs-card fs-card--owned${active ? ' fs-card--active' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('ornament', o.id)}
-                        title={o.nameAr}
-                      >
-                        <span className="fs-card-name">{o.nameAr}</span>
-                        <span className="fs-card-imgwrap fs-card-imgwrap--owned">
-                          <img src={o.imageUrl} alt={o.nameAr} loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        </span>
-                        <span className="fs-price fs-price--owned">✓ تم الشراء</span>
-                        <span className={RARITY_BADGEHOLDER[o.rarity] || RARITY_BADGEHOLDER.common}>{RARITY_LABELHOLDER[o.rarity] || RARITY_LABELHOLDER.common}</span>
-                        {active && <i className="fs-check-check">✓</i>}
-                      </button>
-                    );
-                  })}
-                  {decorCatalog.filter((d) => d.kind === 'ornament' && ownedDecor.has(d.id)).length === 0 && (
-                    <div className="fs-empty">لا تملك معلقات بعد — احصل عليها من المتجر</div>
-                  )}
+                  {decorCatalog
+                    .filter((d) => d.kind === 'ornament')
+                    .filter((d) => frameView === 'all' ? true : ownedDecor.has(d.id))
+                    .map((o) => {
+                      const active = (authUser.ornament || '') === o.id;
+                      const owned = ownedDecor.has(o.id);
+                      const rarityLabel: Record<string, string> = {
+                        legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                      }[o.rarity] || 'عادي';
+                      return (
+                        <button
+                          key={`orn-${o.id}`}
+                          className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                          disabled={savingDecor || !owned}
+                          onClick={() => { if (owned) applyDecor('ornament', o.id); }}
+                          title={owned ? o.nameAr : `${o.nameAr} — من المتجر`}
+                        >
+                          <span className="fs-card-name">{o.nameAr}</span>
+                          <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                            <SvgaOrImg src={o.imageUrl} alt={o.nameAr} className="fs-card-img" loading="lazy" />
+                            {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                            {!owned && <i className="yb-lock">🔒</i>}
+                          </span>
+                          <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                            {active ? 'مجهز' : owned ? 'تجهيز' : (o.isFree ? 'مجاني' : `${o.price} جوهرة`)}
+                          </span>
+                          <span className={`fs-badge fs-badge--${o.rarity}`}>{rarityLabel}</span>
+                        </button>
+                      );
+                    })}
                 </div>
               )}
 
-              {/* Themes/covers: owned-only بتصميم المتجر */}
+              {/* Themes/covers — تصميم موحّد */}
               {decorPanel === 'themes' && (
                 <div className="fs-bodygrid fs-bodygrid--panel">
                   <button
-                    className={`fs-card fs-card--none${!authUser.cover ? ' fs-card--active' : ''}`}
+                    className={`fs-card${!authUser.cover ? ' fs-card--owned' : ''}`}
                     disabled={savingDecor}
                     onClick={() => applyDecor('cover', '')}
+                    title="بدون موضوع"
                   >
                     <span className="fs-card-name">بدون موضوع</span>
-                    <span className="fs-card-imgwrap fs-card-imgwrap--owned"><span className="fs-nopic">بدون</span></span>
-                    <span className="fs-price fs-price--owned">—</span>
-                    {!authUser.cover && <i className="fs-check-check">✓</i>}
+                    <span className="fs-card-imgwrap">
+                      <span className="fs-nopic">بدون</span>
+                      {!authUser.cover && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                    </span>
+                    <span className={`fs-price ${!authUser.cover ? 'fs-price--owned' : 'fs-price--free'}`}>
+                      {!authUser.cover ? 'مجهز' : 'إزالة'}
+                    </span>
+                    <span className="fs-badge fs-badge--common">عادي</span>
                   </button>
-                  {decorCatalog.filter((d) => d.kind === 'theme').map((t) => {
-                    const active = (authUser.cover || '') === t.id;
-                    const owned = ownedDecor.has(t.id);
-                    if (!owned) return null;
-                    return (
-                      <button
-                        key={`cover-${t.id}`}
-                        className={`fs-card fs-card--owned${active ? ' fs-card--active' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('cover', t.id)}
-                        title={t.nameAr}
-                      >
-                        <span className="fs-card-name">{t.nameAr}</span>
-                        <span className="fs-card-imgwrap fs-card-imgwrap--owned">
-                          <img src={t.imageUrl} alt={t.nameAr} loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        </span>
-                        <span className="fs-price fs-price--owned">✓ تم الشراء</span>
-                        <span className={RARITY_BADGEHOLDER[t.rarity] || RARITY_BADGEHOLDER.common}>{RARITY_LABELHOLDER[t.rarity] || RARITY_LABELHOLDER.common}</span>
-                        {active && <i className="fs-check-check">✓</i>}
-                      </button>
-                    );
-                  })}
-                  {decorCatalog.filter((d) => d.kind === 'theme' && ownedDecor.has(d.id)).length === 0 && (
-                    <div className="fs-empty">لا تملك مواضيع بعد — احصل عليها من المتجر</div>
-                  )}
+                  {decorCatalog
+                    .filter((d) => d.kind === 'theme')
+                    .filter((d) => frameView === 'all' ? true : ownedDecor.has(d.id))
+                    .map((t) => {
+                      const active = (authUser.cover || '') === t.id;
+                      const owned = ownedDecor.has(t.id);
+                      const rarityLabel: Record<string, string> = {
+                        legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                      }[t.rarity] || 'عادي';
+                      return (
+                        <button
+                          key={`cover-${t.id}`}
+                          className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                          disabled={savingDecor || !owned}
+                          onClick={() => { if (owned) applyDecor('cover', t.id); }}
+                          title={owned ? t.nameAr : `${t.nameAr} — من المتجر`}
+                        >
+                          <span className="fs-card-name">{t.nameAr}</span>
+                          <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                            <SvgaOrImg src={t.imageUrl} alt={t.nameAr} className="fs-card-img" loading="lazy" />
+                            {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                            {!owned && <i className="yb-lock">🔒</i>}
+                          </span>
+                          <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                            {active ? 'مجهز' : owned ? 'تجهيز' : (t.isFree ? 'مجاني' : `${t.price} جوهرة`)}
+                          </span>
+                          <span className={`fs-badge fs-badge--${t.rarity}`}>{rarityLabel}</span>
+                        </button>
+                      );
+                    })}
                 </div>
               )}
 
-              {/* Frames — تصميم مطابق للمتجر + فلتر مملوكة/الكل + SvgaOrImg لعرض SVGA */}
+              {/* Frames — تصميم موحّد + SvgaOrImg لعرض SVGA */}
               {decorPanel === 'frames' && (
-                <>
-                  {/* شريط الفلاتر */}
-                  <div className="fs-subtabs" style={{ padding: '0 12px 8px' }}>
-                    <button
-                      className={`fs-subtab${frameView === 'owned' ? ' fs-subtab--on' : ''}`}
-                      onClick={() => setFrameView('owned')}
-                    >
-                      مملوكتي ({frames.filter((f) => ownedFrameIds.has(String(f.id))).length})
-                    </button>
-                    <button
-                      className={`fs-subtab${frameView === 'all' ? ' fs-subtab--on' : ''}`}
-                      onClick={() => setFrameView('all')}
-                    >
-                      الكل ({frames.length})
-                    </button>
-                  </div>
-                  <div className="fs-bodygrid fs-bodygrid--panel">
-                    {/* زر "بدون إطار" */}
-                    <button
-                      className={`fs-card${!authUser.frame ? ' fs-card--owned' : ''}`}
-                      disabled={savingDecor}
-                      onClick={() => applyDecor('frame', '')}
-                      title="بدون إطار"
-                    >
-                      <span className="fs-card-name">بدون إطار</span>
-                      <span className="fs-card-imgwrap">
-                        <span className="fs-nopic">بدون</span>
-                        {!authUser.frame && <i className="fs-check"><Check className="w-4 h-4" /></i>}
-                      </span>
-                      <span className={`fs-price ${!authUser.frame ? 'fs-price--owned' : 'fs-price--free'}`}>
-                        {!authUser.frame ? 'مجهز' : 'إزالة'}
-                      </span>
-                      <span className="fs-badge fs-badge--common">عادي</span>
-                    </button>
-                    {/* قائمة الإطارات (مملوكة أو الكل حسب الفلتر) */}
-                    {frames
-                      .filter((f) => f.imageUrl) // إخفاء الإطارات بدون صورة
-                      .filter((f) => frameView === 'all' ? true : ownedFrameIds.has(String(f.id)))
-                      .map((f) => {
-                        const fid = String(f.id);
-                        const active = authUser.frame === fid;
-                        const owned = ownedFrameIds.has(fid);
-                        const cat = framesCatalog.get(fid);
-                        const rarity = cat?.rarity || 'common';
-                        const rarityLabel: Record<string, string> = {
-                          legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
-                        }[rarity] || 'عادي';
-                        const rarityBadge = `fs-badge fs-badge--${rarity}`;
-                        const name = cat?.nameAr || f.name;
-                        return (
-                          <button
-                            key={f.id}
-                            className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
-                            disabled={savingDecor || !owned}
-                            onClick={() => { if (owned) applyDecor('frame', fid); }}
-                            title={owned ? name : `${name} — من المتجر`}
-                          >
-                            <span className="fs-card-name">{name}</span>
-                            <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
-                              <SvgaOrImg src={f.imageUrl || f.png} alt={name} className="fs-card-img" loading="lazy" />
-                              {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
-                              {!owned && <i className="yb-lock">🔒</i>}
-                            </span>
-                            <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
-                              {active ? 'مجهز' : owned ? 'تجهيز' : (cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة`)}
-                            </span>
-                            <span className={rarityBadge}>{rarityLabel}</span>
-                          </button>
-                        );
-                      })}
-                    {frames.filter((f) => f.imageUrl).filter((f) => frameView === 'all' ? true : ownedFrameIds.has(String(f.id))).length === 0 && (
-                      <div className="fs-empty" style={{ gridColumn: '1 / -1' }}>
-                        {frameView === 'owned' ? 'لا تملك إطارات بعد — اذهب للمتجر لشراء إطار' : 'لا توجد إطارات'}
-                      </div>
-                    )}
-                  </div>
-                </>
+                <div className="fs-bodygrid fs-bodygrid--panel">
+                  <button
+                    className={`fs-card${!authUser.frame ? ' fs-card--owned' : ''}`}
+                    disabled={savingDecor}
+                    onClick={() => applyDecor('frame', '')}
+                    title="بدون إطار"
+                  >
+                    <span className="fs-card-name">بدون إطار</span>
+                    <span className="fs-card-imgwrap">
+                      <span className="fs-nopic">بدون</span>
+                      {!authUser.frame && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                    </span>
+                    <span className={`fs-price ${!authUser.frame ? 'fs-price--owned' : 'fs-price--free'}`}>
+                      {!authUser.frame ? 'مجهز' : 'إزالة'}
+                    </span>
+                    <span className="fs-badge fs-badge--common">عادي</span>
+                  </button>
+                  {frames
+                    .filter((f) => f.imageUrl)
+                    .filter((f) => frameView === 'all' ? true : ownedFrameIds.has(String(f.id)))
+                    .map((f) => {
+                      const fid = String(f.id);
+                      const active = authUser.frame === fid;
+                      const owned = ownedFrameIds.has(fid);
+                      const cat = framesCatalog.get(fid);
+                      const rarity = cat?.rarity || 'common';
+                      const rarityLabel: Record<string, string> = {
+                        legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                      }[rarity] || 'عادي';
+                      const name = cat?.nameAr || f.name;
+                      return (
+                        <button
+                          key={f.id}
+                          className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                          disabled={savingDecor || !owned}
+                          onClick={() => { if (owned) applyDecor('frame', fid); }}
+                          title={owned ? name : `${name} — من المتجر`}
+                        >
+                          <span className="fs-card-name">{name}</span>
+                          <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                            <SvgaOrImg src={f.imageUrl || f.png} alt={name} className="fs-card-img" loading="lazy" />
+                            {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                            {!owned && <i className="yb-lock">🔒</i>}
+                          </span>
+                          <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                            {active ? 'مجهز' : owned ? 'تجهيز' : (cat?.isFree ? 'مجاني' : `${cat?.price ?? ''} جوهرة`)}
+                          </span>
+                          <span className={`fs-badge fs-badge--${rarity}`}>{rarityLabel}</span>
+                        </button>
+                      );
+                    })}
+                </div>
               )}
 
-              {/* Cards: owned-only بتصميم المتجر — مكان البطاقة الوحيد: خلفية الغلاف */}
+              {/* Cards — تصميم موحّد */}
               {decorPanel === 'cards' && (
                 <div className="fs-bodygrid fs-bodygrid--panel">
                   <button
-                    key="none"
-                    className={`fs-card fs-card--none${!authUser.card ? ' fs-card--active' : ''}`}
+                    className={`fs-card${!authUser.card ? ' fs-card--owned' : ''}`}
                     disabled={savingDecor}
                     onClick={() => applyDecor('card', '')}
+                    title="بدون بطاقة"
                   >
-                    <span className="fs-card-name">لا يوجد</span>
-                    <span className="fs-card-imgwrap fs-card-imgwrap--owned"><span className="fs-nopic">بدون</span></span>
-                    <span className="fs-price fs-price--owned">—</span>
-                    {!authUser.card && <i className="fs-check-check">✓</i>}
+                    <span className="fs-card-name">بدون بطاقة</span>
+                    <span className="fs-card-imgwrap">
+                      <span className="fs-nopic">بدون</span>
+                      {!authUser.card && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                    </span>
+                    <span className={`fs-price ${!authUser.card ? 'fs-price--owned' : 'fs-price--free'}`}>
+                      {!authUser.card ? 'مجهز' : 'إزالة'}
+                    </span>
+                    <span className="fs-badge fs-badge--common">عادي</span>
                   </button>
-                  {decorCatalog.filter((d) => d.kind === 'card').map((cb) => {
-                    const active = (authUser.card || '') === cb.id;
-                    const owned = ownedDecor.has(cb.id);
-                    if (!owned) return null;
-                    return (
-                      <button
-                        key={`card-${cb.id}`}
-                        className={`fs-card fs-card--owned${active ? ' fs-card--active' : ''}`}
-                        disabled={savingDecor}
-                        onClick={() => applyDecor('card', cb.id)}
-                        title={cb.nameAr}
-                      >
-                        <span className="fs-card-name">{cb.nameAr}</span>
-                        <span className="fs-card-imgwrap fs-card-imgwrap--owned">
-                          <img src={cb.imageUrl} alt={cb.nameAr} loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        </span>
-                        <span className="fs-price fs-price--owned">✓ تم الشراء</span>
-                        <span className={RARITY_BADGEHOLDER[cb.rarity] || RARITY_BADGEHOLDER.common}>{RARITY_LABELHOLDER[cb.rarity] || RARITY_LABELHOLDER.common}</span>
-                        {active && <i className="fs-check-check">✓</i>}
-                      </button>
-                    );
-                  })}
+                  {decorCatalog
+                    .filter((d) => d.kind === 'card')
+                    .map((cb) => {
+                      const active = (authUser.card || '') === cb.id;
+                      const owned = ownedDecor.has(cb.id);
+                      const rarityLabel: Record<string, string> = {
+                        legendary: 'أسطوري', epic: 'ملحمي', rare: 'نادر', common: 'عادي',
+                      }[cb.rarity] || 'عادي';
+                      return (
+                        <button
+                          key={`card-${cb.id}`}
+                          className={`fs-card${active ? ' fs-card--owned' : ''}${owned ? '' : ' fs-card--locked'}`}
+                          disabled={savingDecor || !owned}
+                          onClick={() => { if (owned) applyDecor('card', cb.id); }}
+                          title={owned ? cb.nameAr : `${cb.nameAr} — من المتجر`}
+                        >
+                          <span className="fs-card-name">{cb.nameAr}</span>
+                          <span className={`fs-card-imgwrap${active ? ' fs-card-imgwrap--owned' : ''}`}>
+                            <SvgaOrImg src={cb.imageUrl} alt={cb.nameAr} className="fs-card-img" loading="lazy" />
+                            {active && <i className="fs-check"><Check className="w-4 h-4" /></i>}
+                            {!owned && <i className="yb-lock">🔒</i>}
+                          </span>
+                          <span className={active ? 'fs-price fs-price--owned' : owned ? 'fs-price fs-price--free' : 'fs-price'}>
+                            {active ? 'مجهز' : owned ? 'تجهيز' : (cb.isFree ? 'مجاني' : `${cb.price} جوهرة`)}
+                          </span>
+                          <span className={`fs-badge fs-badge--${cb.rarity}`}>{rarityLabel}</span>
+                        </button>
+                      );
+                    })}
                 </div>
               )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
     </AnimatePresence>
   );
 }

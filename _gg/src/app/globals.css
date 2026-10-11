@@ -823,6 +823,18 @@
   justify-content: center;
   cursor: pointer;
 }
+/* درع الإطار حول أفاتار الهيدر — يدعم SVGA (canvas) و <img> */
+.avatar-frame-wrap > img,
+.avatar-frame-wrap > .svga-wrapper,
+.avatar-frame-wrap > canvas {
+  position: absolute !important;
+  inset: -17% !important;
+  width: 134% !important;
+  height: 134% !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  pointer-events: none;
+}
 .yalla-topbar .coin-pill,
 .yalla-topbar .gem-pill {
   display: flex;
