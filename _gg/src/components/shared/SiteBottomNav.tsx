@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { User } from 'lucide-react';
 import EventsModal from '@/components/shared/EventsModal';
 
-type BottomTab = 'home' | 'games' | 'events' | 'council' | 'profile';
+type BottomTab = 'home' | 'games' | 'events' | 'council' | 'friends';
 
 interface SiteBottomNavProps {
   /** Which tab is currently active */
@@ -34,8 +34,8 @@ export default function SiteBottomNav({
     { id: 'home', label: 'الرئيسية', on: '/yalla-ui/room_select.png', off: '/yalla-ui/room_unselect.png' },
     { id: 'games', label: 'الألعاب', on: '/yalla-ui/battle_select.png', off: '/yalla-ui/battle_unselect.png' },
     { id: 'events', label: 'الأحداث', on: '/yalla-ui/event_select.png', off: '/yalla-ui/event_unselect.png' },
-    { id: 'council', label: 'المجلس', on: '/yalla-ui/friend_select.png', off: '/yalla-ui/friend_unselect.png' },
-    { id: 'profile', label: 'الملف', icon: <User className="w-6 h-6" /> },
+    { id: 'council', label: 'المجلس', on: '/yalla-ui/council_select.webp', off: '/yalla-ui/council_unselect.webp' },
+    { id: 'friends', label: 'أصدقائي', on: '/yalla-ui/friend_select.png', off: '/yalla-ui/friend_unselect.png' },
   ];
 
   const handleTabClick = (tabId: BottomTab) => {
@@ -54,8 +54,8 @@ export default function SiteBottomNav({
       case 'council':
         window.location.href = '/voice-rooms';
         break;
-      case 'profile':
-        window.location.href = '/profile';
+      case 'friends':
+        window.location.href = '/friends';
         break;
     }
   };

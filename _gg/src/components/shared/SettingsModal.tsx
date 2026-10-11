@@ -228,6 +228,8 @@ export default function SettingsModal({ open, onOpenChange, authUser, subscriber
                     {subscriberCode && <p className="ys-account-code" dir="ltr">{subscriberCode}</p>}
                     {subData?.plan && <p className="ys-account-plan">الخطة: {subData.plan}</p>}
                     {subData?.endDate && <p className="ys-account-expiry">ينتهي: {new Date(subData.endDate).toLocaleDateString('ar')}</p>}
+                    {/* تاريخ الانضمام من معلومات المستخدم */}
+                    <p className="ys-account-expiry">الاشتراك: {subscriberPlan || 'مجاني'}</p>
                   </div>
                   <SettingEntryRow icon="/yalla-settings/ic_lock.webp" title="الأجهزة المرتبطة" onClick={() => setView('devices')} />
                   <SettingEntryRow icon="/yalla-settings/ic_delete_account.webp" title="حذف الحساب نهائياً" onClick={handleDeleteAccount} />
