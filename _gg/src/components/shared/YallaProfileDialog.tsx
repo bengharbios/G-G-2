@@ -496,9 +496,14 @@ export default function YallaProfileDialog({
     }
   }, [formName, selectedCountry, formBio, onProfileUpdated]);
 
-  // Apply a decoration immediately (like yalla: uses the item at once)
+  // Apply a decoration immediately (تحديث متفائل: الـ UI يتغير فوراً، الطلب في الخلفية)
+  // إن فشل الطلب، نتراجع عن التحديث للقيمة السابقة.
   const applyDecor = useCallback(async (field: 'cover' | 'frame' | 'ornament' | 'card', value: string) => {
+    // حفظ القيمة الحالية للتراجع عند الفشل
+    const prevValue = String(authUser?.[field] ?? '');
     setSavingDecor(true);
+    // تحديث متفائل فوري — الواجهة تتغير فوراً قبل أي طلب شبكي
+    onProfileUpdated?.({ [field]: value } as Partial<YallaAuthUser>);
     try {
       const res = await fetch('/api/auth/update-profile', {
         method: 'PUT',
@@ -507,14 +512,19 @@ export default function YallaProfileDialog({
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        onProfileUpdated?.({ [field]: data.user?.[field] ?? value });
+        // تحديث نهائي بقيمة الخادم (قد تختلف قليلاً عن المرسلة)
+        onProfileUpdated?.({ [field]: data.user?.[field] ?? value } as Partial<YallaAuthUser>);
+      } else {
+        // تراجع: فشل الطلب — أعد القيمة القديمة
+        onProfileUpdated?.({ [field]: prevValue } as Partial<YallaAuthUser>);
       }
     } catch {
-      // silent
+      // تراجع: خطأ شبكي — أعد القيمة القديمة
+      onProfileUpdated?.({ [field]: prevValue } as Partial<YallaAuthUser>);
     } finally {
       setSavingDecor(false);
     }
-  }, [onProfileUpdated]);
+  }, [onProfileUpdated, authUser]);
 
   const handleCopyCode = useCallback(() => {
     if (!subscriberCode) return;

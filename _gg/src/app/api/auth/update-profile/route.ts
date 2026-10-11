@@ -61,44 +61,52 @@ export async function PUT(request: NextRequest) {
     if (country !== undefined) updateData.country = country.trim().slice(0, 40);
     // زينة الملف (معلق/موضوع/بطاقة): تُقبل القيمة فقط إن كان المستخدم يملك العنصر،
     // والعناصر المجانية تُمنح تلقائياً عند أول اختيار. مصدر الحقيقة: كتالوج DecorItem
+    // تحسين أداء: دمج التحقق من الكتالوج + الملكية في استعلام JOIN واحد بدل استعلامين منفصلين
     const decorFields: Array<{ val: string; kind: 'ornament' | 'theme' | 'card'; key: 'ornament' | 'cover' | 'card' }> = [];
     if (ornament !== undefined) decorFields.push({ val: String(ornament).trim().slice(0, 60), kind: 'ornament', key: 'ornament' });
     if (cover !== undefined) decorFields.push({ val: String(cover).trim().slice(0, 120), kind: 'theme', key: 'cover' });
     if (card !== undefined) decorFields.push({ val: String(card).trim().slice(0, 60), kind: 'card', key: 'card' });
-    for (const df of decorFields) {
-      if (df.val === '') {
-        updateData[df.key] = '';
-        continue;
-      }
+    if (decorFields.length > 0) {
       await ensureAdminTables();
       const c = getClient();
-      const itemRes = await c.execute({
-        sql: 'SELECT id, isFree FROM DecorItem WHERE id = ? AND kind = ? AND isActive = 1 LIMIT 1',
-        args: [df.val, df.kind],
-      });
-      if (itemRes.rows.length === 0) {
-        // القيمة ليست في الكتالوج — لا نقبلها (حماية من التزوير)
-        return NextResponse.json(
-          { error: 'عنصر الزينة غير معروف', success: false },
-          { status: 403 }
-        );
-      }
-      const itemRow = itemRes.rows[0] as Record<string, unknown>;
-      const owned = await c.execute({
-        sql: 'SELECT id FROM UserDecor WHERE userId = ? AND itemId = ? LIMIT 1',
-        args: [userId, df.val],
-      });
-      if (owned.rows.length === 0) {
-        if (Number(itemRow.isFree ?? 0) === 1) {
-          await grantDecorToUser({ userId, itemId: df.val, obtainedFrom: 'gift', obtainedNote: 'عنصر مجاني' });
-        } else {
+      for (const df of decorFields) {
+        if (df.val === '') {
+          updateData[df.key] = '';
+          continue;
+        }
+        // JOIN واحد يجلب بيانات العنصر + ملكية المستخدم في طلب واحد
+        const joined = await c.execute({
+          sql: `SELECT d.id AS itemId, d.isFree AS isFree,
+                  CASE WHEN u.userId IS NULL THEN 0 ELSE 1 END AS owned
+                FROM DecorItem d
+                LEFT JOIN UserDecor u ON u.itemId = d.id AND u.userId = ?
+                WHERE d.id = ? AND d.kind = ? AND d.isActive = 1
+                LIMIT 1`,
+          args: [userId, df.val, df.kind],
+        });
+        if (joined.rows.length === 0) {
+          return NextResponse.json(
+            { error: 'عنصر الزينة غير معروف', success: false },
+            { status: 403 }
+          );
+        }
+        const row = joined.rows[0] as Record<string, unknown>;
+        const isFree = Number(row.isFree ?? 0) === 1;
+        const owned = Number(row.owned ?? 0) === 1;
+        if (!owned && !isFree) {
           return NextResponse.json(
             { error: 'غير مصرح: هذا العنصر غير مملوك لك — يمكنك اقتناؤه من المتجر', success: false },
             { status: 403 }
           );
         }
+        // منح العنصر المجاني تلقائياً عند أول اختيار (في الخلفية، لا يوقف الاستجابة)
+        if (!owned && isFree) {
+          try {
+            await grantDecorToUser({ userId, itemId: df.val, obtainedFrom: 'gift', obtainedNote: 'عنصر مجاني' });
+          } catch { /* silent — لا نوقف التحديث */ }
+        }
+        updateData[df.key] = df.val;
       }
-      updateData[df.key] = df.val;
     }
     // الإطار: يُضبط فقط عبر مسار الملكية (/api/frames equip) — هنا نقبل الإزالة فقط،
     // وأي قيمة غير فارغة تُرفض ما لم يكن المستخدم يملك الإطار فعلاً (حماية من التزوير)
