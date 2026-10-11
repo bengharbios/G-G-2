@@ -614,6 +614,15 @@ export default function YallaProfileDialog({
                   alt=""
                   onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }}
                 />
+                {/* المعلقة الجدارية — طفلة الموضوع: أعلى الموضوع = أعلى المعلقة */}
+                {ornamentUrl && (
+                  <SvgaOrImg
+                    key={ornamentUrl}
+                    src={ornamentUrl}
+                    alt=""
+                    className="yp-ornament"
+                  />
+                )}
                 {/* بطاقة الملف — طفلة الموضوع: حافتها السفلية = حافة الموضوع السفلية بالضبط وبعرضه */}
                 {/* SvgaOrImg يدعم SVG/PNG/SVGA/MP4 ويعيد إنشاء canvas عند تغير الـ src */}
                 {backdropUrl && (
@@ -625,16 +634,6 @@ export default function YallaProfileDialog({
                   />
                 )}
               </div>
-            )}
-
-            {/* Card backdrop BEHIND the avatar (بطاقة خلف البروفايل) -- */}
-            {authUser && ornamentUrl && (
-              <SvgaOrImg
-                key={ornamentUrl}
-                src={ornamentUrl}
-                alt=""
-                className="yp-ornament"
-              />
             )}
 
             {/* Side buttons: square-pencil (edit) + shirt (decoration menu) */}

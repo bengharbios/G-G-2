@@ -1047,8 +1047,10 @@ html, body {
   z-index: 1;
 }
 .yp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* المعلقة فوق صورة الموضوع (z-index أعلى من الصورة) */
+.yp-cover .yp-ornament { z-index: 2; pointer-events: none; }
 /* البطاقة استثناء داخل الموضوع: بعرضه كاملاً وارتفاعها بنسبتها الأصلية (بدل تمدد الموضوع) */
-.yp-cover .yp-carddecor { height: auto; object-fit: unset; }
+.yp-cover .yp-carddecor { height: auto; object-fit: unset; z-index: 3; }
 
 /* المعلقة الجدارية — طبقة بعرض كامل أعلى الموضوع */
 .yp-ornament,
@@ -1056,26 +1058,30 @@ html, body {
 .yp-ornament > img,
 .yp-ornament > canvas,
 .yp-ornament > .svga-wrapper {
-  position: absolute;
-  top: -6px;
-  left: 0;
-  width: 100%;
-  height: min(230px, 26vh);
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: min(230px, 26vh) !important;
+  max-height: min(230px, 26vh) !important;
   object-fit: contain !important;
-  object-position: center top;
+  object-position: center top !important;
   z-index: 7;
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
 }
 /* عندما يكون العنصر نفسه SvgaOrImg (div.svga-wrapper) ، نُطبّق الأنماط عليه مباشرة */
 .yp-ornament.svga-wrapper {
-  display: block;
+  display: block !important;
+  top: 0 !important;
+  height: min(230px, 26vh) !important;
 }
 .yp-ornament.svga-wrapper > canvas {
   position: static !important;
   inset: auto !important;
   width: 100% !important;
   height: 100% !important;
+  display: block !important;
 }
 
 /* بطاقة خلف البروفايل — طفلة .yp-cover: حافتها السفلية والجانبية = حواف الموضوع بالضبط.
