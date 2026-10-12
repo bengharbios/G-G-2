@@ -1,5 +1,6 @@
 package com.bengharbios.ggames.plugins;
 
+import com.bengharbios.ggames.R;
 import android.content.Intent;
 import android.webkit.WebView;
 import com.getcapacitor.JSObject;

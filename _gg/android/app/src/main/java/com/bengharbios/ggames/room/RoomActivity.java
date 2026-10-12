@@ -1,5 +1,7 @@
 package com.bengharbios.ggames.room;
 
+import com.bengharbios.ggames.R;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
