@@ -47,6 +47,7 @@ import {
   User,
   ImageIcon,
   Upload,
+  KeyRound,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -509,6 +510,9 @@ export default function AdminPage() {
   const [userSearch, setUserSearch] = useState('');
   const [userRoleFilter, setUserRoleFilter] = useState<string>('all');
   const [editingUser, setEditingUser] = useState<typeof appUsers[number] | null>(null);
+  const [resetPwdUser, setResetPwdUser] = useState<typeof appUsers[number] | null>(null);
+  const [resetPwdValue, setResetPwdValue] = useState('');
+  const [resetPwdLoading, setResetPwdLoading] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editForm, setEditForm] = useState({ displayName: '', phone: '', role: 'user', isActive: true, avatar: '', bio: '', country: '', gender: '', birthDate: '', gold: 0 });
   const [savingUser, setSavingUser] = useState(false);
@@ -878,6 +882,27 @@ export default function AdminPage() {
     });
     setShowEditDialog(true);
   }, []);
+
+  const handleResetPassword = useCallback(async () => {
+    if (!resetPwdUser || !resetPwdValue || resetPwdValue.length < 4) return;
+    setResetPwdLoading(true);
+    try {
+      const res = await fetch('/api/admin/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: resetPwdUser.id, newPassword: resetPwdValue }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setToast({ type: 'success', message: `تم تغيير كلمة مرور ${resetPwdUser.displayName || resetPwdUser.username} إلى: ${resetPwdValue}` });
+        setResetPwdUser(null);
+        setResetPwdValue('');
+      } else {
+        setToast({ type: 'error', message: data.error || 'فشل' });
+      }
+    } catch { setToast({ type: 'error', message: 'تعذر الاتصال' }); }
+    setResetPwdLoading(false);
+  }, [resetPwdUser, resetPwdValue]);
 
   const handleSaveUser = useCallback(async () => {
     if (!editingUser) return;
@@ -4010,6 +4035,13 @@ export default function AdminPage() {
                                     <Edit className="w-3.5 h-3.5" />
                                   </button>
                                   <button
+                                    onClick={() => { setResetPwdUser(user); setResetPwdValue(''); }}
+                                    className="w-8 h-8 rounded-lg bg-slate-800/60 border border-slate-700/40 flex items-center justify-center text-slate-400 hover:text-sky-400 hover:border-sky-500/30 hover:bg-sky-500/10 transition-all"
+                                    title="إعادة تعيين كلمة المرور"
+                                  >
+                                    <KeyRound className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
                                     onClick={() => handleDeleteUser(user.id)}
                                     className="w-8 h-8 rounded-lg bg-slate-800/60 border border-slate-700/40 flex items-center justify-center text-slate-400 hover:text-rose-400 hover:border-rose-500/30 hover:bg-rose-500/10 transition-all"
                                     title="تعطيل"
@@ -4220,6 +4252,37 @@ export default function AdminPage() {
                   </div>
                 </div>
               )}
+            </DialogContent>
+          </Dialog>
+
+          {/* ─── Reset Password Dialog ─────────────────────────── */}
+          <Dialog open={!!resetPwdUser} onOpenChange={(open) => { if (!open) { setResetPwdUser(null); setResetPwdValue(''); } }}>
+            <DialogContent className="bg-slate-900 border-slate-800/60 sm:max-w-md" dir="rtl">
+              <DialogHeader>
+                <DialogTitle className="text-white flex items-center gap-2"><KeyRound className="w-4 h-4 text-sky-400" /> إعادة تعيين كلمة المرور</DialogTitle>
+                <DialogDescription className="text-slate-400">
+                  {resetPwdUser ? `المستخدم: ${resetPwdUser.displayName || resetPwdUser.username} (${resetPwdUser.email})` : ''}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <label className="text-sm text-slate-300">كلمة المرور الجديدة</label>
+                  <Input
+                    type="text"
+                    value={resetPwdValue}
+                    onChange={(e) => setResetPwdValue(e.target.value)}
+                    placeholder="أدخل كلمة المرور الجديدة (4 أحرف على الأقل)"
+                    className="bg-slate-800/60 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Button variant="outline" onClick={() => { setResetPwdUser(null); setResetPwdValue(''); }} className="bg-slate-800/60 border-slate-700/50 text-slate-300">إلغاء</Button>
+                  <Button onClick={handleResetPassword} disabled={resetPwdLoading || resetPwdValue.length < 4} className="bg-sky-600 hover:bg-sky-500 text-white">
+                    {resetPwdLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تغيير كلمة المرور'}
+                  </Button>
+                </div>
+              </div>
             </DialogContent>
           </Dialog>
 
