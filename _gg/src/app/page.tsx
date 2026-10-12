@@ -1381,6 +1381,9 @@ export default function HomePage() {
 
   const handleAuthSuccess = useCallback((user: AuthUserData) => {
     setAuthUser(user);
+    // إغلاق نوافذ الدخول/التسجيل فوراً (يحل مشكلة بقاء النافذة معلقة)
+    setLoginOpen(false);
+    setRegisterOpen(false);
   }, []);
 
   const handleLogout = useCallback(async () => {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, X } from 'lucide-react';
+import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, X, Loader2 } from 'lucide-react';
 import SiteHeader from '@/components/shared/SiteHeader';
 import SiteBottomNav from '@/components/shared/SiteBottomNav';
 
@@ -17,49 +17,62 @@ interface FriendItem {
   game?: string;
 }
 
-interface NotificationItem {
-  id: string;
-  type: 'friend_request' | 'game_invite' | 'message' | 'gift';
-  from: string;
-  avatar: string;
-  message: string;
-  time: string;
-}
-
 export default function FriendsPage() {
   const [tab, setTab] = useState<FriendTab>('notifications');
   const [searchQuery, setSearchQuery] = useState('');
   const [friends, setFriends] = useState<FriendItem[]>([]);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [chatOpen, setChatOpen] = useState<string | null>(null);
   const [chatMessages, setChatMessages] = useState<Record<string, Array<{ text: string; from: 'me' | 'them'; time: string }>>>({});
+  const [addFriendId, setAddFriendId] = useState('');
+  const [adding, setAdding] = useState(false);
+  const [addMsg, setAddMsg] = useState('');
 
-  // Load friends and notifications from localStorage (محلي على هاتف اللاعب)
+  // Load friends and chats from localStorage (محلي على هاتف اللاعب)
   useEffect(() => {
     try {
       const savedFriends = localStorage.getItem('gg_friends');
       if (savedFriends) setFriends(JSON.parse(savedFriends));
-      const savedNotifs = localStorage.getItem('gg_notifications');
-      if (savedNotifs) setNotifications(JSON.parse(savedNotifs));
       const savedChats = localStorage.getItem('gg_chats');
       if (savedChats) setChatMessages(JSON.parse(savedChats));
     } catch {}
   }, []);
 
-  // Save to localStorage whenever data changes
-  useEffect(() => {
-    localStorage.setItem('gg_friends', JSON.stringify(friends));
-  }, [friends]);
-  useEffect(() => {
-    localStorage.setItem('gg_notifications', JSON.stringify(notifications));
-  }, [notifications]);
-  useEffect(() => {
-    localStorage.setItem('gg_chats', JSON.stringify(chatMessages));
-  }, [chatMessages]);
+  useEffect(() => { localStorage.setItem('gg_friends', JSON.stringify(friends)); }, [friends]);
+  useEffect(() => { localStorage.setItem('gg_chats', JSON.stringify(chatMessages)); }, [chatMessages]);
 
-  const filteredFriends = friends.filter(f =>
-    f.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // إضافة صديق بالمعرّف (numericId)
+  const handleAddFriend = async () => {
+    if (!addFriendId.trim()) return;
+    setAdding(true);
+    setAddMsg('');
+    try {
+      const res = await fetch(`/api/user/lookup?id=${encodeURIComponent(addFriendId.trim())}`);
+      const data = await res.json();
+      if (data.success && data.user) {
+        // هل هو موجود بالفعل؟
+        if (friends.some(f => f.id === data.user.id)) {
+          setAddMsg('هذا الصديق موجود بالفعل');
+          return;
+        }
+        const newFriend: FriendItem = {
+          id: data.user.id,
+          name: data.user.displayName || data.user.username,
+          avatar: data.user.avatar || '/yalla-avatars/defaultPhoto_1.png',
+          status: 'offline',
+          lastSeen: 'الآن',
+        };
+        setFriends(prev => [...prev, newFriend]);
+        setAddFriendId('');
+        setAddMsg(`تمت إضافة ${newFriend.name} ✓`);
+      } else {
+        setAddMsg(data.error || 'لم يتم العثور على مستخدم بهذا المعرّف');
+      }
+    } catch {
+      setAddMsg('تعذر الاتصال بالخادم');
+    } finally {
+      setAdding(false);
+    }
+  };
 
   const sendChatMessage = (friendId: string, text: string) => {
     const now = new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' });
@@ -69,19 +82,22 @@ export default function FriendsPage() {
     }));
   };
 
+  const filteredFriends = friends.filter(f =>
+    f.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const tabs = [
     { id: 'notifications' as FriendTab, label: 'الإشعارات', icon: Bell },
-    { id: 'nearby' as FriendTab, label: 'أصدقاء قريبين', icon: Users },
-    { id: 'wishes' as FriendTab, label: 'أمنيات اللعب', icon: Gamepad2 },
+    { id: 'nearby' as FriendTab, label: 'أصدقاء', icon: Users },
+    { id: 'wishes' as FriendTab, label: 'أمنيات', icon: Gamepad2 },
     { id: 'recent' as FriendTab, label: 'مؤخراً', icon: Clock },
   ];
 
   return (
     <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
-      <SiteHeader authUser={null} />
+      <SiteHeader />
       <div className="h-14" />
 
-      {/* خلفية خضراء داكنة مثل صورة 8 */}
       <div className="fixed inset-0 bg-gradient-to-b from-[#0a4a3a] to-[#062318] -z-10" />
 
       {/* تبويبات */}
@@ -98,67 +114,79 @@ export default function FriendsPage() {
             >
               <Icon className="w-5 h-5" />
               <span className="text-[10px] font-bold">{t.label}</span>
-              {t.id === 'notifications' && notifications.length > 0 && (
-                <span className="absolute -mt-6 ml-4 w-2 h-2 bg-red-500 rounded-full" />
-              )}
             </button>
           );
         })}
       </div>
 
-      {/* محتوى التبويب */}
       <div className="max-w-lg mx-auto p-3 pb-24 min-h-[calc(100vh-200px)]">
+        {/* إضافة صديق */}
+        {tab === 'nearby' && (
+          <div className="mb-4 bg-[#15BC83]/10 rounded-xl p-3">
+            <p className="text-xs text-white/50 mb-2">أضف صديقاً بمعرّفه (ID)</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={addFriendId}
+                onChange={e => setAddFriendId(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleAddFriend()}
+                placeholder="أدخل معرّف الصديق (مثل 100002)"
+                dir="ltr"
+                className="flex-1 bg-white/5 border border-[#15BC83]/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/30"
+                disabled={adding}
+              />
+              <button
+                onClick={handleAddFriend}
+                disabled={adding || !addFriendId.trim()}
+                className="w-10 h-10 rounded-xl bg-[#15BC83] flex items-center justify-center disabled:opacity-40"
+              >
+                {adding ? <Loader2 className="w-4 h-4 text-white animate-spin" /> : <UserPlus className="w-4 h-4 text-white" />}
+              </button>
+            </div>
+            {addMsg && <p className="text-xs mt-2 text-white/60">{addMsg}</p>}
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           {tab === 'notifications' && (
             <motion.div key="notifs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              {notifications.length === 0 ? (
-                <div className="text-center text-white/40 py-20">
-                  <Bell className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                  <p>لا توجد إشعارات</p>
-                </div>
-              ) : (
-                notifications.map(n => (
-                  <div key={n.id} className="bg-[#15BC83]/10 rounded-xl p-3 mb-2 flex items-center gap-3">
-                    <img src={n.avatar || '/yalla-avatars/defaultPhoto_1.png'} alt="" className="w-10 h-10 rounded-full" />
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-white">{n.from}</p>
-                      <p className="text-xs text-white/60">{n.message}</p>
-                    </div>
-                    <span className="text-[10px] text-white/40">{n.time}</span>
-                  </div>
-                ))
-              )}
+              <div className="text-center text-white/40 py-20">
+                <Bell className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                <p>لا توجد إشعارات</p>
+              </div>
             </motion.div>
           )}
 
           {tab === 'nearby' && (
             <motion.div key="nearby" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="relative mb-4">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  placeholder="ابحث عن صديق..."
-                  className="w-full bg-[#15BC83]/10 border border-[#15BC83]/20 rounded-xl pr-10 pl-4 py-2.5 text-sm text-white placeholder:text-white/40"
-                />
-              </div>
+              {friends.length > 1 && (
+                <div className="relative mb-4">
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder="ابحث عن صديق..."
+                    className="w-full bg-[#15BC83]/10 border border-[#15BC83]/20 rounded-xl pr-10 pl-4 py-2.5 text-sm text-white placeholder:text-white/40"
+                  />
+                </div>
+              )}
               {filteredFriends.length === 0 ? (
-                <div className="text-center text-white/40 py-20">
+                <div className="text-center text-white/40 py-16">
                   <UserPlus className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>لا توجد أصدقاء بعد</p>
-                  <p className="text-xs mt-1">أضف أصدقاء عبر معرّفهم</p>
+                  <p className="text-xs mt-1">أضف أصدقاء عبر معرّفهم بالأعلى</p>
                 </div>
               ) : (
                 filteredFriends.map(f => (
                   <div key={f.id} className="bg-[#15BC83]/10 rounded-xl p-3 mb-2 flex items-center gap-3">
                     <div className="relative">
-                      <img src={f.avatar || '/yalla-avatars/defaultPhoto_1.png'} alt="" className="w-10 h-10 rounded-full" />
-                      <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#0a4a3a] ${f.status === 'online' ? 'bg-green-400' : f.status === 'in-game' ? 'bg-amber-400' : 'bg-gray-500'}`} />
+                      <img src={f.avatar} alt="" className="w-10 h-10 rounded-full" />
+                      <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#0a4a3a] ${f.status === 'online' ? 'bg-green-400' : 'bg-gray-500'}`} />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-bold text-white">{f.name}</p>
-                      <p className="text-xs text-white/50">{f.status === 'online' ? 'متصل' : f.status === 'in-game' ? `في لعبة ${f.game || ''}` : f.lastSeen || 'غير متصل'}</p>
+                      <p className="text-xs text-white/50">ID: {f.id}</p>
                     </div>
                     <button onClick={() => setChatOpen(f.id)} className="w-9 h-9 rounded-full bg-[#15BC83]/20 flex items-center justify-center hover:bg-[#15BC83]/40">
                       <MessageCircle className="w-4 h-4 text-[#15BC83]" />
@@ -180,15 +208,15 @@ export default function FriendsPage() {
 
           {tab === 'recent' && (
             <motion.div key="recent" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              {friends.filter(f => f.status !== 'online').length === 0 ? (
+              {friends.length === 0 ? (
                 <div className="text-center text-white/40 py-20">
                   <Clock className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>لا يوجد نشاط مؤخر</p>
                 </div>
               ) : (
-                friends.filter(f => f.status !== 'online').map(f => (
+                friends.map(f => (
                   <div key={f.id} className="bg-[#15BC83]/10 rounded-xl p-3 mb-2 flex items-center gap-3">
-                    <img src={f.avatar || '/yalla-avatars/defaultPhoto_1.png'} alt="" className="w-10 h-10 rounded-full opacity-60" />
+                    <img src={f.avatar} alt="" className="w-10 h-10 rounded-full opacity-60" />
                     <div className="flex-1">
                       <p className="text-sm font-bold text-white/80">{f.name}</p>
                       <p className="text-xs text-white/40">{f.lastSeen || 'غير متصل'}</p>
@@ -201,7 +229,7 @@ export default function FriendsPage() {
         </AnimatePresence>
       </div>
 
-      {/* نافذة الدردشة — محلية على هاتف اللاعب */}
+      {/* نافذة الدردشة */}
       <AnimatePresence>
         {chatOpen && (
           <motion.div
@@ -214,7 +242,6 @@ export default function FriendsPage() {
               initial={{ y: 300 }} animate={{ y: 0 }} exit={{ y: 300 }}
               onClick={e => e.stopPropagation()}
             >
-              {/* رأس الدردشة */}
               <div className="flex items-center gap-3 p-3 border-b border-[#15BC83]/20">
                 <button onClick={() => setChatOpen(null)} className="text-white/60">
                   <X className="w-5 h-5" />
@@ -223,7 +250,6 @@ export default function FriendsPage() {
                 <span className="text-sm font-bold text-white">{friends.find(f => f.id === chatOpen)?.name || 'محادثة'}</span>
               </div>
 
-              {/* الرسائل */}
               <div className="flex-1 overflow-y-auto p-3 space-y-2 min-h-[200px]">
                 {(chatMessages[chatOpen] || []).map((msg, i) => (
                   <div key={i} className={`flex ${msg.from === 'me' ? 'justify-start' : 'justify-end'}`}>
@@ -238,7 +264,6 @@ export default function FriendsPage() {
                 )}
               </div>
 
-              {/* حقل الإرسال */}
               <ChatInput onSend={(text) => sendChatMessage(chatOpen, text)} />
             </motion.div>
           </motion.div>
