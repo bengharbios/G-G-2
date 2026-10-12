@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, X, Loader2, ChevronLeft, Gift, Smile, MoreVertical, Trash2, Flag } from 'lucide-react';
+import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, Send, X, Loader2, ChevronLeft, Gift, Smile, MoreVertical, Trash2, Flag } from 'lucide-react';
 // NOTE: الهيدر (SiteHeader) والأزرار السفلية (SiteBottomNav) الآن تُدار في AppShell
 // (src/components/shared/AppShell.tsx) — تُحمّل مرة واحدة وتشاركها كل الصفحات.
 import YallaProfileDialog from '@/components/shared/YallaProfileDialog';
@@ -346,15 +346,28 @@ export default function FriendsPage() {
 
           <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-3 space-y-2 bg-[#062318]">
             {chatMessages.length === 0 && <p className="text-center text-white/30 text-xs py-8">{isStillFriend ? 'لا توجد رسائل — ابدأ المحادثة' : 'أصبح هذا المستخدم غير صديق — أعد إضافته لإرسال رسائل جديدة'}</p>}
-            {chatMessages.map((msg, i) => (
-              <div key={msg.id || i} className={`flex ${msg.fromUserId === chatFriend.userId ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[75%] rounded-2xl px-4 py-2 ${msg.fromUserId === chatFriend.userId ? 'bg-white/10 text-white/90 border border-[#15BC83]/20' : 'bg-[#15BC83] text-white'}`}>
-                  {msg.type === 'gift' && <span className="text-2xl block text-center">{msg.text}</span>}
-                  {msg.type !== 'gift' && <p className="text-sm">{msg.text}</p>}
-                  <p className="text-[9px] opacity-50 mt-1">{new Date(msg.createdAt).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })}</p>
+            {chatMessages.map((msg, i) => {
+              // في RTL: justify-start = جهة اليمين (الصديق), justify-end = جهة اليسار (أنا)
+              // مثل واتساب: رسائلي على اليسار، رسائل الصديق على اليمين
+              const isMine = msg.fromUserId !== chatFriend.userId;
+              return (
+                <div key={msg.id || i} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`relative max-w-[75%] px-3 py-2 shadow-sm ${
+                      isMine
+                        ? 'bg-[#15BC83] text-white rounded-2xl rounded-bl-sm'
+                        : 'bg-[#1a3a30] text-white/90 border border-[#15BC83]/20 rounded-2xl rounded-br-sm'
+                    }`}
+                  >
+                    {msg.type === 'gift' && <span className="text-2xl block text-center">{msg.text}</span>}
+                    {msg.type !== 'gift' && <p className="text-sm break-words">{msg.text}</p>}
+                    <p className={`text-[9px] mt-1 ${isMine ? 'text-white/70' : 'text-white/40'} text-left`}>
+                      {new Date(msg.createdAt).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* زر الإدخال إن كان صديقاً — أو زر "إضافة صديق" الأصفر إن لم يعد صديقاً */}
@@ -364,7 +377,7 @@ export default function FriendsPage() {
                 <button onClick={() => { setShowGifts(!showGifts); setShowEmoji(false); }} className="w-9 h-9 rounded-full bg-[#15BC83]/20 flex items-center justify-center"><Gift className="w-4 h-4 text-[#15BC83]" /></button>
                 <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="اكتب رسالة..." className="flex-1 bg-white/5 border border-[#15BC83]/20 rounded-2xl px-4 py-2 text-sm text-white placeholder:text-white/30" />
                 <button onClick={() => { setShowEmoji(!showEmoji); setShowGifts(false); }} className="w-9 h-9 rounded-full bg-[#15BC83]/20 flex items-center justify-center"><Smile className="w-4 h-4 text-[#15BC83]" /></button>
-                <button onClick={sendMessage} className="w-9 h-9 rounded-full bg-[#15BC83] flex items-center justify-center"><MessageCircle className="w-4 h-4 text-white" /></button>
+                <button onClick={sendMessage} className="w-9 h-9 rounded-full bg-[#15BC83] flex items-center justify-center hover:bg-[#13a374] transition-colors" aria-label="إرسال"><Send className="w-4 h-4 text-white" /></button>
               </div>
               {showEmoji && <div className="bg-[#0a4a3a] p-3 border-t border-[#15BC83]/20 grid grid-cols-8 gap-2">{['😀','😂','😍','🥰','😎','🤔','😢','😡','👍','👎','❤️','🔥','🎉','🎁','💀','👻'].map(e => <button key={e} onClick={() => setChatInput(prev => prev + e)} className="text-2xl">{e}</button>)}</div>}
               {showGifts && <div className="bg-[#0a4a3a] p-3 border-t border-[#15BC83]/20"><div className="grid grid-cols-4 gap-2">{['🌹','🍫','💎','🏆','🎂','🎈','⭐','🎁'].map(g => <button key={g} onClick={async () => { setShowGifts(false); await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toUserId: chatFriend.userId, text: g, type: 'gift' }) }); const msgRes = await fetch(`/api/chat?friendId=${chatFriend.userId}`); const msgData = await msgRes.json(); if (msgData.success) setChatMessages(msgData.messages || []); }} className="text-3xl p-2 rounded-xl bg-[#15BC83]/10 hover:bg-[#15BC83]/20">{g}</button>)}</div></div>}

@@ -779,3 +779,41 @@ Stage Summary:
 - Friends page shows per-friend red unread badges on avatar AND on 'مراسلة' button.
 - Top tabs show badges: 'الإشعارات' = pending requests count, 'أصدقاء' = total unread messages.
 - 'مراسلة' button is now a green pill with text + icon, replaces the icon-only circle button.
+
+---
+Task ID: 1
+Agent: main
+Task: Ant overlay no longer blocks input + only shows when network REALLY bad
+
+Work Log:
+- User reported: (1) ant blocks email/password input during login, (2) back/logout buttons stacked on top of each other, (3) ant appears too frequently — only show when network is VERY VERY weak.
+
+- Root cause #1: AntLoaderOverlay used z-[9998], which is ABOVE shadcn Dialog (z-50). When login modal opened, the ant overlay was rendered on top, blocking all input. Also overlay triggered on pathname change (4s) and slow fetches (>6s) — too aggressive.
+
+- Root cause #3: Overlay triggered on: pathname change (4s), fetch >6s, effectiveType 2g/slow-2g, single ping failure. Way too aggressive — user wants only at "most extreme weak level".
+
+- Fixes:
+  1. AntLoaderOverlay.tsx: z-index lowered from z-[9998] to z-30 (BELOW modals at z-50). pointer-events-none always so even if visible, it never blocks clicks/typing.
+  
+  2. NetworkStatusProvider.tsx — much less aggressive:
+     - REMOVED pathname-change trigger entirely (was showing on every navigation — most annoying)
+     - Slow-fetch threshold raised from 6s to 15s (only really slow fetches)
+     - Network type check: only slow-2g triggers overlay (NOT 2g anymore). Also requires RTT > 3000ms OR downlink < 25kbps as additional criteria.
+     - Ping interval raised from 30s to 60s (less polling)
+     - Intermittent disconnection now requires 3+ consecutive ping failures before showing overlay (was 1 failure → ~3 minutes of confirmed disconnection before showing)
+     - Added hasOpenModal() helper — checks for ANY open modal/dialog or focused input/textarea. If any is open, overlay is suppressed.
+     - Added 500ms interval check — if a modal opens, immediately hide overlay
+     - showOverlay() API also checks hasOpenModal() before showing
+  
+  3. SettingsModal CSS (.ys-bottom-buttons): Added flex-wrap: nowrap explicitly, white-space: nowrap, overflow: hidden, text-overflow: ellipsis on .ys-btn to prevent text wrapping. Added min-width: 0 to allow flex shrink. Reduced font-size from 16px to 14px for safer fit on narrow screens.
+
+- Verified: npx next build ✓ (24.5s), ESLint ✓.
+
+- Committed as 21f75de and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 4 files changed (AntLoaderOverlay, NetworkStatusProvider, globals.css, worklog), 142 insertions, 102 deletions.
+- Ant overlay no longer blocks login form input (z-index lowered below modals + pointer-events-none).
+- Ant overlay now only shows when network is REALLY bad: slow-2g, OR RTT > 3000ms, OR downlink < 25kbps, OR fetch > 15s, OR 3+ ping failures in a row (3+ minutes of confirmed disconnection).
+- Ant overlay is suppressed entirely when ANY modal/dialog is open OR when an input/textarea has focus.
+- SettingsModal bottom buttons (logout + account center) have defensive CSS to prevent text wrapping and stacking on narrow screens.
