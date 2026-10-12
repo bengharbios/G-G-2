@@ -4,10 +4,10 @@
  * OfflineModal — نافذة في وسط الشاشة عند انقطاع الإنترنت الكامل.
  *
  * تحتوي على:
- *   - أيقونة النملة الجارية
+ *   - أيقونة النملة الجارية في الوسط بالضبط (بدون خلفية)
  *   - رسالة "انقطع الاتصال بالإنترنت"
  *   - زرّان:
- *       1. إغلاق اللعبة (يقفل التطبيق أو يُحوّل لصفحة فارغة)
+ *       1. إغلاق اللعبة (يقفل التطبيق على Android عبر @capacitor/app)
  *       2. إعادة الاتصال (يختبر الشبكة ويعيد التحميل)
  */
 
@@ -19,6 +19,63 @@ interface OfflineModalProps {
   open: boolean;
   onClose: () => void;
   onReconnect?: () => void;
+}
+
+/**
+ * إغلاق التطبيق على Android (Capacitor) — لا يفتح متصفح.
+ * - إن كنا داخل Capacitor native (التطبيق)، نستدعي App.exitApp()
+ * - إن كنا في متصفح عادي، نُحاول window.close() ثم نُحوّل لصفحة "الوداع"
+ *   المحلية بدلاً من about:blank (التي تفتح Chrome)
+ */
+async function closeApp() {
+  try {
+    // Capacitor native bridge
+    const Capacitor = (window as any).Capacitor;
+    if (Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
+      // استدعاء App plugin مباشرة عبر الـ bridge
+      const App = Capacitor.Plugins?.App || (await import('@capacitor/app')).App;
+      if (App && App.exitApp) {
+        App.exitApp();
+        return;
+      }
+    }
+  } catch (e) {
+    // تجاهل — نحاول طرق أخرى
+  }
+
+  // طريقة قديمة على Android WebView
+  try {
+    const nav = navigator as any;
+    if (nav.app && nav.app.exitApp) {
+      nav.app.exitApp();
+      return;
+    }
+  } catch (e) { /* ignore */ }
+
+  // متصفح عادي: window.close() يعمل فقط للنوافذ المفتوحة بـ script
+  try {
+    window.close();
+  } catch (e) { /* ignore */ }
+
+  // fallback أخير: صفحة وداع محلية (لا تفتح Chrome)
+  // نُحاول أولاً إعادة التحميل بعد فترة قصيرة
+  setTimeout(() => {
+    try {
+      // استخدم نفس الصفحة مع hash حتى لا يُحمّل شيئاً جديداً
+      window.location.hash = 'closed';
+      // أو صفحة فارغة محلياً (لا تفتح Chrome)
+      // ملاحظة: about:blank قد يُفتح Chrome في بعض الـ WebViews
+      // لذا نُفضل استخدام نفس الصفحة مع hash
+      document.body.innerHTML = `
+        <div dir="rtl" style="font-family:sans-serif;text-align:center;padding:3rem;background:#062318;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div style="font-size:2rem;margin-bottom:1rem">👋</div>
+          <h1 style="font-size:1.25rem;font-weight:900;margin-bottom:0.5rem">تم إغلاق الجلسة</h1>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.875rem">يمكنك إغلاق التطبيق يدوياً الآن.</p>
+          <button onclick="window.location.reload()" style="margin-top:2rem;padding:0.75rem 1.5rem;background:#15BC83;color:#fff;border:none;border-radius:0.75rem;font-weight:700;font-family:inherit;font-size:0.875rem">إعادة الفتح</button>
+        </div>
+      `;
+    } catch (e) { /* ignore */ }
+  }, 100);
 }
 
 export default function OfflineModal({ open, onClose, onReconnect }: OfflineModalProps) {
@@ -42,7 +99,6 @@ export default function OfflineModal({ open, onClose, onReconnect }: OfflineModa
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 8000);
-      // استخدم cache-busting + mode no-cors حتى نتجاوز CORS ولا نأخذ من الكاش
       const res = await fetch('/api/auth/me?_t=' + Date.now(), {
         method: 'HEAD',
         signal: ctrl.signal,
@@ -61,19 +117,6 @@ export default function OfflineModal({ open, onClose, onReconnect }: OfflineModa
     } finally {
       setTesting(false);
     }
-  };
-
-  // إغلاق اللعبة: في WebView (Capacitor/Android) نحاول إغلاق النافذة،
-  // وإلا نُحوّل المستخدم إلى صفحة "الوداع" المضمنة
-  const handleClose = () => {
-    try {
-      // بعض تطبيقات الـ WebView توفّر window.close()
-      window.close();
-    } catch {}
-    // fallback: حوّل إلى صفحة فارغة
-    setTimeout(() => {
-      window.location.href = 'about:blank';
-    }, 100);
   };
 
   return (
@@ -96,7 +139,7 @@ export default function OfflineModal({ open, onClose, onReconnect }: OfflineModa
         </button>
 
         <div className="flex flex-col items-center justify-center px-6 py-8">
-          {/* النملة الجارية */}
+          {/* النملة الجارية في الوسط بالضبط — بدون خلفية */}
           <div className="mb-2">
             <GazelleLoader size={88} label="" color="#F5B841" />
           </div>
@@ -128,7 +171,7 @@ export default function OfflineModal({ open, onClose, onReconnect }: OfflineModa
           {/* الأزرار */}
           <div className="flex gap-3 w-full mt-5">
             <button
-              onClick={handleClose}
+              onClick={closeApp}
               className="flex-1 px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-bold border border-white/10 transition-colors flex items-center justify-center gap-2"
               disabled={testing}
             >

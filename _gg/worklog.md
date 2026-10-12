@@ -648,3 +648,38 @@ Stage Summary:
 - Bug fixed: clicking profile avatar in SiteHeader now opens YallaProfileDialog on EVERY shell route (was broken on /friends).
 - New loading animation: animated running gazelle (GazelleLoader) replaces generic spinner for both auth-checking state and Next.js route loading.
 - Dead code: BottomNavigation function in src/app/page.tsx is still defined but unused (pre-existing dead code from earlier refactor) — left alone to minimize risk.
+
+---
+Task ID: 1
+Agent: main
+Task: Ant overlay above pages + offline modal + prevent 'page web non disponible'
+
+Work Log:
+- Analyzed user's screenshot: Android device showing browser's "Page Web non disponible" page (net::ERR_INTERNET_DISCONNECTED) when trying to access /voice-rooms offline.
+- User wants: (1) running ant animation as floating overlay above pages (not a separate page), (2) show on every loading across all pages, (3) slow internet → show ant, (4) intermittent disconnection → show ant moving above pages, (5) full offline → modal in middle with 2 buttons (close game + reconnect), (6) NEVER show browser's "page web non disponible" page.
+
+- Created `src/components/shared/AntLoaderOverlay.tsx` — floating bottom-center pill above SiteBottomNav, contains GazelleLoader size=56 + label. Uses CSS opacity/transform for show/hide (no setState in effect — complies with react-hooks rules). 4 reasons: navigation/slow-fetch/slow-network/intermittent with auto-labels.
+
+- Created `src/components/shared/OfflineModal.tsx` — modal in middle shown when fully offline. Two buttons: "إغلاق اللعبة" (tries window.close(), fallback to about:blank) and "إعادة الاتصال" (HEAD /api/auth/me ping, reload on success). Includes ant animation, "still offline" message, status indicator.
+
+- Created `src/components/shared/NetworkStatusProvider.tsx` — wraps AppShell in root layout. Listens to window online/offline events. Periodic 30s ping to verify server reachability. Uses navigator.connection.effectiveType for slow 2G/3G detection. Monkey-patches window.fetch to detect slow fetches (>2s threshold) — auto-shows overlay. Detects Next.js route transitions via usePathname(). Provides useNetworkStatus() hook.
+
+- Created `public/offline.html` — standalone HTML page (no React, no JS framework) with inline SVG ant animation + offline modal. Served by Service Worker when navigation fetch fails. Auto-reconnect on 'online' event + periodic 30s ping. Includes Google Fonts CDN with font fallback.
+
+- Updated `public/sw.js` — added fetch event listener that intercepts navigation requests (mode === 'navigate'). On network failure (ERR_INTERNET_DISCONNECTED, ERR_NAME_NOT_RESOLVED, ERR_NETWORK_CHANGED, etc.), serves cached /offline.html instead of letting browser show "Page Web non disponible". Non-navigation requests pass through. Pre-caches /offline.html in 'ggames-offline-v1' cache during install.
+
+- Updated `capacitor.config.ts` — added `server.errorPath: 'offline.html'`. For Android WebView wrapping remote URL: when remote load fails, Capacitor serves local /offline.html instead of system browser error page. This handles the very first load when offline (before SW is registered).
+
+- Updated `src/app/layout.tsx` — wrapped AppShell with <NetworkStatusProvider>. Bumped sw-clr-v5 → sw-clr-v6 to force cleanup of any stale SW and ensure new SW with fetch interceptor gets registered on next session.
+
+- Updated `src/app/loading.tsx` — uses GazelleLoader fullScreen for initial route load (before React hydrates). After hydration, NetworkStatusProvider's overlay takes over.
+
+- Verified: npx next build ✓ (19.0s), ESLint ✓ (after refactor to remove set-state-in-effect), no TS errors in new files.
+
+- Committed as 6c8c770 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 9 files changed, 1064 insertions, 21 deletions.
+- 4 new files: AntLoaderOverlay, OfflineModal, NetworkStatusProvider, public/offline.html.
+- 4 modified files: capacitor.config.ts, public/sw.js, src/app/layout.tsx, src/app/loading.tsx.
+- Architecture: NetworkStatusProvider wraps AppShell in root layout — overlay floats above all pages. SW + Capacitor errorPath handle the offline-page case for both PWA and Android WebView.
