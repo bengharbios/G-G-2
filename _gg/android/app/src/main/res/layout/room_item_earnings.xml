@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.AutoPageGifImageView android:id="@7F0A0693" android:layout_width="43.000000dip" android:layout_height="43.000000dip" app:play_on_attach="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="@7F060544" android:ellipsize="3" android:layout_width="-2" android:layout_height="-2" android:text="@7F110900" android:lines="1"/>
+</LinearLayout>

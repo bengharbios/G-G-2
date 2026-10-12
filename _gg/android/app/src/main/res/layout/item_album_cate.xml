@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+  <ImageView android:id="@7F0A095E" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:layout_marginLeft="10.000000dip" android:layout_marginRight="12.000000dip" android:scaleType="6"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+    <TextView android:textAppearance="?android:01010041" android:textSize="14.000000dip" android:textColor="#FF58C980" android:ellipsize="3" android:gravity="0x00000010" android:id="@7F0A15FA" android:layout_width="-2" android:layout_height="-2" android:text="File Name (1)" android:maxLines="1" android:layout_centerVertical="true"/>
+    <View android:id="@7F0A033B" android:background="@7F060112" android:layout_width="-1" android:layout_height="0.500000dip" android:layout_alignParentBottom="true" android:layout_marginStart="2.000000dip" android:layout_marginEnd="2.000000dip"/>
+  </RelativeLayout>
+</LinearLayout>

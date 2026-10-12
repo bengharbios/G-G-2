@@ -1,47 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_include_room_sofa.xml — الأريكة (Sofa) - حاوية المستمعين (مطابق لـ Yalla Ludo)
-  ارتفاع 51dp، تظهر في أسفل منطقة المقاعد
--->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sofa_container"
-    android:layout_width="match_parent"
-    android:layout_height="51dp">
-
-    <!-- عداد المستمعين على اليسار -->
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_gravity="start|center_vertical"
-        android:orientation="horizontal"
-        android:id="@+id/ll_sofa_count"
-        android:background="@drawable/sofa_count_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_room_top_sound" />
-
-        <com.bengharbios.ggames.view.CustomTextView
-            android:textSize="11dp"
-            android:textColor="#FFFFFF"
-            android:id="@+id/tv_sofa_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:text="0 مستمع" />
-    </LinearLayout>
-
-    <!-- قائمة المستمعين الأفقي -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_sofa_listeners"
-        android:layout_gravity="end|center_vertical"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginEnd="40dp" />
-
-</FrameLayout>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <View android:id="@7F0A10E7" android:background="@7F080C6F" android:layout_width="0.000000dip" android:layout_height="32.000000dip" android:layout_marginTop="73.000000dip" android:layout_marginEnd="16777196.000000dip" app:layout_constraintEnd_toStartOf="@7F0A0731" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <ImageView android:id="@7F0A071F" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:src="@7F080C62" android:scaleType="5" android:layout_centerVertical="true" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="@7F06006F" android:id="@7F0A165F" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="7.000000dip" android:layout_toEndOf="@7F0A071F" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintStart_toEndOf="@7F0A071F" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+  <ImageView android:id="@7F0A0731" android:layout_width="10.000000dip" android:layout_height="32.000000dip" android:src="@7F080C63" android:scaleType="7" android:layout_marginStart="4.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintStart_toEndOf="@7F0A165F" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A0591" android:visibility="1" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="ivRank,sofaViewParameters,tv_rank_diamond_num,ivRight,roomSofaList"/>
+  <ImageView android:id="@7F0A0724" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:src="@7F080C7B" android:scaleType="5" android:layout_centerVertical="true" android:layout_marginStart="4.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A0590" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="ivRankBirthdayStyle"/>
+  <com.yalla.ludochat.view.FixedRecyclerView android:orientation="0" android:id="@7F0A0FDC" android:layout_width="-2" android:layout_height="36.000000dip" android:paddingEnd="1.000000dip" android:layout_marginEnd="49.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="@7F0A10E7" app:maxWidth="185.000000dip"/>
+  <View android:layout_width="10.000000dip" android:layout_height="36.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintEnd_toStartOf="@7F0A0FDE" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="8.000000dip" android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00800015" android:id="@7F0A0FDE" android:background="@7F0806F2" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:includeFontPadding="false" android:layout_marginEnd="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A10E7" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="@7F0A10E7"/>
+</merge>

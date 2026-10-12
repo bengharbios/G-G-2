@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:id="@7F0A0435" android:layout_width="262.000000dip" android:layout_height="360.000000dip">
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A1209" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="20.000000dip"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A111F" android:layout_width="70.000000dip" android:layout_height="70.000000dip" android:scaleType="3"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="@7F0807C6" android:stateListAnimator="@7F01003A"/>
+</FrameLayout>

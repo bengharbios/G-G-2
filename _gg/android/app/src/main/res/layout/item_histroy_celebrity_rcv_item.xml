@@ -1,0 +1,16 @@
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:layout_width="360.000000dip" android:layout_height="50.000000dip">
+  <LinearLayout android:orientation="0" android:layout_width="360.000000dip" android:layout_height="45.000000dip">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:gravity="0x00000011" android:id="@7F0A1190" android:layout_width="70.000000dip" android:layout_height="-1" android:layout_marginStart="10.000000dip" app:stroke_color="#FF893B21" app:stroke_width="1.500000dip"/>
+    <com.yalla.games.common.view.HeadView android:id="@7F0A092F" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:layout_marginTop="1.000000dip" android:layout_toEndOf="@7F0A1659"/>
+    <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="25.000000dip" android:layout_weight="1.000000" android:layout_marginEnd="2.000000dip">
+      <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginEnd="2.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0CB2" android:layout_width="-2" android:layout_height="-2">
+          <com.yalla.games.common.view.LoopGradientTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:id="@7F0A116E" android:layout_width="-2" android:layout_height="-2" android:maxLines="1" android:includeFontPadding="false" android:layout_weight="1.000000" app:stroke_color="#FF673000" app:stroke_width="1.500000dip"/>
+          <com.yalla.games.common.view.PrivilegeFlagView android:id="@7F0A0B61" android:visibility="0" android:layout_width="-2" android:layout_height="-2"/>
+        </LinearLayout>
+      </FrameLayout>
+      <ImageView android:id="@7F0A0888" android:layout_width="24.000000dip" android:layout_height="16.000000dip" android:scaleType="1" android:layout_marginEnd="30.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+  <ImageView android:layout_gravity="0x00000051" android:id="@7F0A09A1" android:layout_width="322.000000dip" android:layout_height="5.000000dip" android:src="@7F080405"/>
+</FrameLayout>

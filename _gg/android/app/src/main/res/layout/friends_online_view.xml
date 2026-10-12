@@ -1,0 +1,13 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0C81" android:layout_width="-2" android:layout_height="-2">
+  <RelativeLayout android:id="@7F0A0F1C" android:background="@7F080190" android:layout_width="308.000000dip" android:layout_height="-2" android:layout_marginTop="3.000000dip" android:layout_marginBottom="3.000000dip" android:minHeight="101.000000dip" android:layout_marginStart="3.000000dip" android:layout_marginEnd="3.000000dip">
+    <ImageView android:id="@7F0A09A9" android:layout_width="67.000000dip" android:layout_height="67.000000dip" android:layout_marginTop="5.000000dip" android:src="@7F08068D" android:layout_marginStart="4.000000dip"/>
+    <RelativeLayout android:gravity="0x00000010" android:id="@7F0A0F5A" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:layout_alignTop="@7F0A09A9" android:layout_marginStart="3.000000dip" android:layout_toEndOf="@7F0A09A9">
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF32675F" android:id="@7F0A14F8" android:layout_width="190.000000dip" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:includeFontPadding="false"/>
+    </RelativeLayout>
+    <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="23.000000dip" android:layout_marginBottom="12.000000dip" android:layout_below="@7F0A0F5A" android:layout_alignStart="@7F0A0F5A">
+      <Button android:textSize="13.000000sp" android:textColor="#FF51AA85" android:id="@7F0A0151" android:background="@7F080344" android:layout_width="82.000000dip" android:layout_height="25.000000dip" android:text="@7F111E31"/>
+      <Button android:textSize="13.000000sp" android:textColor="#FF5DBD96" android:id="@7F0A0174" android:background="@7F080345" android:layout_width="82.000000dip" android:layout_height="25.000000dip" android:text="@7F110DD8" android:textAllCaps="false" android:layout_marginStart="32.000000dip"/>
+    </LinearLayout>
+  </RelativeLayout>
+  <ImageView android:id="@7F0A0968" android:layout_width="52.000000dip" android:layout_height="52.000000dip" android:layout_marginEnd="16777213.000000dip" android:layout_alignEnd="@7F0A0F1C"/>
+</RelativeLayout>

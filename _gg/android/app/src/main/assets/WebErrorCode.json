@@ -1,0 +1,536 @@
+﻿[
+  {
+    "Code": "1000",
+    "MessgeEn": "Success",
+    "MessgeME": "تم",
+    "MessgeUr": "کامیابی"
+  },
+  {
+    "Code": "100",
+    "MessgeEn": "Server error",
+    "MessgeME": "خطأ في الخادم",
+    "MessgeUr": "سرور میں خرابی"
+  },
+  {
+    "Code": "101",
+    "MessgeEn": "Parameter error",
+    "MessgeME": "خطأ في المعلمة",
+    "MessgeUr": "پیرامیٹر کی خرابی"
+  },
+  {
+    "Code": "104",
+    "MessgeEn": "The content you entered contains banned words.",
+    "MessgeME": "المحتوى الذي أدخلته يحتوي على كلمات غير مقبولة.",
+    "MessgeUr": "آپ کے درج کردہ مواد میں ناقابل قبول الفاظ ہیں۔"
+  },
+  {
+    "Code": "500",
+    "MessgeEn": "Connection failed",
+    "MessgeME": "فشل الاتصال ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "1005",
+    "MessgeEn": "Your account is locked",
+    "MessgeME": "تم حظر حسابك",
+    "MessgeUr": "آپ کا اکاؤنٹ بند کر دیا گیا ہے."
+  },
+  {
+    "Code": "1401",
+    "MessgeEn": "Your account has been forced to log out",
+    "MessgeME": "لقد تم إجبار حسابك على تسجيل الخروج",
+    "MessgeUr": "آپ کے اکاؤنٹ کو لاگ آؤٹ ہونے پر مجبور کیا گیا ہے"
+  },
+  {
+    "Code": "1057",
+    "MessgeEn": "Invalid user",
+    "MessgeME": "مستخدم غير صالح",
+    "MessgeUr": "غلط صارف"
+  },
+  {
+    "Code": "3000",
+    "MessgeEn": "Operation failed",
+    "MessgeME": "فشل في العملية",
+    "MessgeUr": "آپریشن ناکام ہوا"
+  },
+  {
+    "Code": "3001",
+    "MessgeEn": "Please update to the latest version",
+    "MessgeME": "الرجاء التحديث إلى الإصدار الأخير",
+    "MessgeUr": "تازہ ترین ورژن کے لیئےاپ ڈیٹ کریں"
+  },
+  {
+    "Code": "2003",
+    "MessgeEn": "Insufficient golds",
+    "MessgeME": "كمية القطع الذهبية غير كافية.",
+    "MessgeUr": "ناکافی گولڈز"
+  },
+  {
+    "Code": "2001",
+    "MessgeEn": "Insufficient diamonds",
+    "MessgeME": "كمية الماس غير كافية",
+    "MessgeUr": "ناکافی ہیرے"
+  },
+  {
+    "Code": "1055",
+    "MessgeEn": "You're unable to downgrade your room level.",
+    "MessgeME": "لا يمكن خفض مستوى غرفتك",
+    "MessgeUr": "آپ اپنے روم کے درجے کو کم کرنے کے قابل نہیں ہیں."
+  },
+  {
+    "Code": "1054",
+    "MessgeEn": "You have no authority.",
+    "MessgeME": "غير المفوض.",
+    "MessgeUr": "آپ کے پاس کوئی اختیار نہیں ہے."
+  },
+  {
+    "Code": "1050",
+    "MessgeEn": "You have created your own room, refresh the page to check it out!",
+    "MessgeME": "لقد قمت بإنشاء غرفتك الخاصة ، قم بتحديث الصفحة للتحقق من ذلك!",
+    "MessgeUr": "آپ نے پہلے سے ہی ایک روم بنا لیا ہے. "
+  },
+  {
+    "Code": "1033",
+    "MessgeEn": "Not followed",
+    "MessgeME": "لم يتم المتابعة بعد",
+    "MessgeUr": "پیروی نہیں کر رہے"
+  },
+  {
+    "Code": "1032",
+    "MessgeEn": "Followed",
+    "MessgeME": "تم المتابعة",
+    "MessgeUr": "پیروی کر رہے"
+  },
+  {
+    "Code": "5001",
+    "MessgeEn": "Your golds/diamonds are frozen.",
+    "MessgeME": "تم تجميد قطعك الذهبية / الماس.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "5002",
+    "MessgeEn": "The item is not available.",
+    "MessgeME": "العنصر غير متاح ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "100501",
+    "MessgeEn": "No access for audience",
+    "MessgeME": "لا وصول للزائر",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2020",
+    "MessgeEn": "You are already the best bid for this or another Pin on Top card.",
+    "MessgeME": "أنت بالفعل أفضل عرض مناقصة لهذه البطاقة أو بطاقة أخرى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2021",
+    "MessgeEn": "Your bid can't be less than the current bid.",
+    "MessgeME": "لا يمكن أن يكون عرض المناقصة الخاص بك أقل من العطاء الحالي.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2022",
+    "MessgeEn": "This auction has finished.",
+    "MessgeME": "انتهى هذا المزاد.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2023",
+    "MessgeEn": "You have won the auction or your room has been pinned on the top.",
+    "MessgeME": "لقد فزت بالمزاد أو تم تثبيت غرفتك في الأعلى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2024",
+    "MessgeEn": "This Pin on Top card has been bought.",
+    "MessgeME": "تم شراء بطاقة التثبيت في الأعلى هذه.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2025",
+    "MessgeEn": "You can't buy or bid for this Pin on Top card while your room is already pinned on the top.",
+    "MessgeME": "لا يمكنك شراء أو المزايدة على بطاقة التثبيت في الأعلى هذه بينما غرفتك مثبتة بالفعل في الأعلى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "2026",
+    "MessgeEn": "Another user is bidding.",
+    "MessgeME": "مستخدم آخر يقوم بالمزايدة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4001",
+    "MessgeEn": "Room photo has been reset and forbidden to change within a certain period.",
+    "MessgeME": "تمت إعادة تعيين صورة الغرفة ومنع تغييرها خلال فترة معينة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4002",
+    "MessgeEn": "Room name has been reset and forbidden to change within a certain period.",
+    "MessgeME": "تم إعادة تعيين اسم الغرفة ومنع تغييره خلال فترة معينة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4003",
+    "MessgeEn": "Room announcement has been reset and forbidden to change within a certain period.",
+    "MessgeME": "تم إعادة تعيين إعلان الغرفة ومنع تغييره خلال فترة معينة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4004",
+    "MessgeEn": "You have reported this user. Please do not submit reports repeatedly.",
+    "MessgeME": "لقد اشتكيت على هذا المستخدم بالفعل. من فضلك يرجى عدم تقديم الاشتكاءات بشكل متكرر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4005",
+    "MessgeEn": "Sorry, due to local laws and regulations, the Room Lock feature is not available in your country or region.",
+    "MessgeME": "عذراً، نظراً للقوانين واللوائح المحلية، فإن ميزة قفل الغرفة غير متوفرة في بلدك أو منطقتك.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4006",
+    "MessgeEn": "Sorry, due to the local laws and regulations, the Room Lock feature is not available in your country or region.",
+    "MessgeME": "عذراً، نظراً للقوانين واللوائح المحلية، فإن ميزة قفل الغرفة غير متوفرة في بلدك أو منطقتك.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4007",
+    "MessgeEn": "You have reported this room. Please do not submit reports repeatedly.",
+    "MessgeME": "لقد اشتكيت على هذه الغرفة بالفعل. من فضلك يرجى عدم تقديم الاشتكاءات بشكل متكرر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4008",
+    "MessgeEn": "You've already reported this user profile.",
+    "MessgeME": "لقد اشتكيت بالفعل على ملف تعريف المستخدم من قبل.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4009",
+    "MessgeEn": "You've already reported this room profile.",
+    "MessgeME": "لقد اشتكيت بالفعل على ملف تعريف الغرفة من قبل.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4010",
+    "MessgeEn": "Please try again later",
+    "MessgeME": "يرجى المحاولة مرة أخرى لاحقا",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4011",
+    "MessgeEn": "Please create a room and try again",
+    "MessgeME": "يرجى إنشاء غرفة والمحاولة مرة أخرى",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4012",
+    "MessgeEn": "This feature is not available now",
+    "MessgeME": "هذه الميزة غير متوفرة الآن",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4013",
+    "MessgeEn": "Only Baron is allowed to use it.",
+    "MessgeME": "اشترك في اللواء لاستخدامه",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4014",
+    "MessgeEn": "Operation failed. You have been forbidden from entering the room. Please contact the room owner if you have any questions.",
+    "MessgeME": "فشل في العملية. لقد تم حظرك من دخول الغرفة. يرجى التواصل مع مالك الغرفة إذا كان لديك أي أسئلة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4015",
+    "MessgeEn": "Report failed. No chat message in the room, please choose the right report type.",
+    "MessgeME": "فشل الاشتكاء. لا يوجد رسالة دردشة في الغرفة، يرجى اختيار نوع الاشتكاء الصحيح.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4016",
+    "MessgeEn": "Save failed. The content you tried to save contains sensitive characters, please modify and try again.",
+    "MessgeME": "فشل عملية الحفظ. المحتوى الذي حاولت حفظه يحتوي على كلمات غير ملائمة، يرجى تعديلها والمحاولة مرة أخرى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4017",
+    "MessgeEn": "Please do not submit sound feedback repeatedly.",
+    "MessgeME": "من فضلك لا ترسل انطباعات مشكلات الصوت بشكل متكرر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4018",
+    "MessgeEn": "You're not allowed to create this activity.",
+    "MessgeME": "ير مسموح لك بإنشاء هذا النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4019",
+    "MessgeEn": "You are banned from chatting temporarily.",
+    "MessgeME": "تم إصماتك من الدردشة مؤقتا.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4020",
+    "MessgeEn": "The activity has been created.",
+    "MessgeME": "تم إنشاء النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4021",
+    "MessgeEn": "The activity has been closed.",
+    "MessgeME": "تم إغلاق النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4022",
+    "MessgeEn": "You are a guest player.",
+    "MessgeME": "أنت لاعب زائر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4023",
+    "MessgeEn": "Report failed, the activity slogan is empty",
+    "MessgeME": "فشل الاشتكاء، شعار النشاط فارغ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4024",
+    "MessgeEn": "No suitable rooms. Please try again later.",
+    "MessgeME": "لا يوجد غرف مناسبة. يرجى إعادة المحاولة في وقت لاحق.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4025",
+    "MessgeEn": "The discount card has expired or is used.",
+    "MessgeME": "بطاقة الخصم منتهية الصلاحية أو مستخدمة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4026",
+    "MessgeEn": "Price error",
+    "MessgeME": "خطأ في السعر ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4027",
+    "MessgeEn": "You have sent your wish. You can only send 1 birthday wish to each user during the birthday period.",
+    "MessgeME": "لقد أرسلت تهنئتك. يمكنك فقط إرسال تهنئة عيد ميلاد واحدة لكل مستخدم خلال فترة عيد الميلاد.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4028",
+    "MessgeEn": "The Pass for this season is unavailable.",
+    "MessgeME": "رخصة هذا الموسم غير متوفرة. ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4029",
+    "MessgeEn": "The Pass for this season has expired.",
+    "MessgeME": "انتهت صلاحية رخصة هذا الموسم. ",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4030",
+    "MessgeEn": "Collected successfully but failed to receive the rewards",
+    "MessgeME": "تم الاستلام بنجاح، لكن فشل الحصول على المكافآت",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4031",
+    "MessgeEn": "Sorry, the activity time conflicts with another activity. Please re-select the time.",
+    "MessgeME": "عذرا، وقت النشاط يتعارض مع نشاط آخر. يرجى إعادة تحديد الوقت.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4032",
+    "MessgeEn": "You can create 7 activity notices at most each day.",
+    "MessgeME": "يمكنك إنشاء 7 معاينات نشاط على الأكثر كل يوم.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4033",
+    "MessgeEn": "You can't create an activity notice as you are currently banned from chat.",
+    "MessgeME": "لا يمكنك إنشاء معاينة نشاط لأنه تم إصماتك حاليا في غرفة الدردشة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4034",
+    "MessgeEn": "Operation failed. The activity has ended.",
+    "MessgeME": "فشلت العملية. انتهى النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4035",
+    "MessgeEn": "Operation failed. The activity has been deleted.",
+    "MessgeME": "فشلت العملية. تم حذف النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4036",
+    "MessgeEn": "Operation failed. The activity has started.",
+    "MessgeME": "فشلت العملية. بدأ النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4037",
+    "MessgeEn": "Submission failed. The poster you submitted contains banned content. Please submit another one.",
+    "MessgeME": "فشل التقديم. الملصق الذي قدمته يحتوي على محتوى محظور. يرجى تقديم ملصق آخر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4038",
+    "MessgeEn": "The number of removed members reached the daily limit.",
+    "MessgeME": "وصل عدد الأعضاء الذين تمت إزالتهم إلى الحد اليومي.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4039",
+    "MessgeEn": "Exclusive for Royal 2 and above",
+    "MessgeME": "حصري لرويال 2 وما فوق",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4040",
+    "MessgeEn": "Please search by ID.",
+    "MessgeME": "يرجى البحث عن المعرف.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4041",
+    "MessgeEn": "Sorry, the Pin on Top card feature is disabled in the current version. Please update to the latest version to enable the service.",
+    "MessgeME": "عذرا، تم تعطيل ميزة بطاقة التثبيت في الأعلى في الإصدار الحالي. يرجى التحديث إلى أحدث إصدار لتفعيل الميزة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4042",
+    "MessgeEn": "Sorry, the Pin on Top card feature is under maintenance and temporarily unavailable.",
+    "MessgeME": "عذرا، ميزة بطاقة التثبيت في الأعلى قيد الصيانة وغير متاحة مؤقتا.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4043",
+    "MessgeEn": "The operation failed. Please provide your country info on the profile page.",
+    "MessgeME": "فشلت العملية. يرجى إضافة معلومات بلدك على صفحة الملف الشخصي.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4044",
+    "MessgeEn": "Due to the service adjustment, yesterday's daily bonus will be issued around 10:00 (GMT+3).",
+    "MessgeME": "بسبب تعديل الخدمة، سيتم إصدار المكافأة اليومية للأمس حوالي الساعة 10:00 (GMT+3).",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4045",
+    "MessgeEn": "Recommend failed",
+    "MessgeME": "فشلت التوصية",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4046",
+    "MessgeEn": "Sorry, you can recommend 2 rooms at most within 10 minutes.",
+    "MessgeME": "عذرا، يمكنك التوصية بغرفتين على الأكثر خلال 10 دقائق.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4047",
+    "MessgeEn": "The item is unavailable.",
+    "MessgeME": "العنصر غير متوفر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4048",
+    "MessgeEn": "You cannot submit the report as the room is locked.",
+    "MessgeME": "لا يمكنك تقديم الاشتكاء لأن الغرفة مقفلة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4049",
+    "MessgeEn": "You are unable to browse rooms as your account is frozen.",
+    "MessgeME": "لا يمكنك تصفح الغرف لأن حسابك في حالة تجميد.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4050",
+    "MessgeEn": "",
+    "MessgeME": "",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4051",
+    "MessgeEn": "You have been removed from the members of this room, so you cannot pin the room.",
+    "MessgeME": "لقد تمت إزالتك من أعضاء هذه الغرفة، لذلك لا يمكنك تثبيت الغرفة في الأعلى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4052",
+    "MessgeEn": "You can gather members once every 30 minutes.",
+    "MessgeME": "يمكنك استدعاء الأعضاء مرة كل 30 دقيقة.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4053",
+    "MessgeEn": "Too many rooms are currently using the Room Boosting Card. Please try again later.",
+    "MessgeME": "هناك عدد كبير من الغرف تستخدم بطاقة تعزيز الغرفة حاليا. يرجى المحاولة مرة أخرى لاحقا.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4055",
+    "MessgeEn": "You are currently using a Pin on Top Card.",
+    "MessgeME": "أنت تستخدم حاليا بطاقة التثبيت في الأعلى.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4056",
+    "MessgeEn": "The image violates rules. Please re-upload.",
+    "MessgeME": "الصورة تنتهك القواعد. يرجى إعادة تحميلها.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4057",
+    "MessgeEn": "The activity has expired.",
+    "MessgeME": "لقد انتهى النشاط.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4058",
+    "MessgeEn": "This keyword already exists",
+    "MessgeME": "هذه الكلمة المفتاحية موجودة بالفعل",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4059",
+    "MessgeEn": "Maximum number of keywords reached",
+    "MessgeME": "تم الوصول إلى الحد الأقصى لعدد الكلمات المفتاحية",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4060",
+    "MessgeEn": "No permission.",
+    "MessgeME": "ليس لديك صلاحية.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4061",
+    "MessgeEn": "Activity-reward coupon cannot be used for this item.",
+    "MessgeME": "لا يمكن استخدام كوبون مكافآت النشاط لهذا العنصر.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4062",
+    "MessgeEn": "This activity-reward coupon has expired.",
+    "MessgeME": "لقد انتهت صلاحية كوبون مكافآت النشاط هذا.",
+    "MessgeUr": ""
+  },
+  {
+    "Code": "4063",
+    "MessgeEn": "You have reported this video. Please do not submit the report repeatedly.",
+    "MessgeME": "لقد اشتكيت على هذا الفيديو بالفعل. يرجى عدم تقديم الاشتكاء بشكل متكرر.",
+    "MessgeUr": ""
+  }
+]

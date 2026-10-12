@@ -1,0 +1,1 @@
+<com.yalla.games.common.view.svga.LudoSVGAView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0906" android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:src="@7F080972" app:play_on_attach="true" app:source="app/frame_img/110001.svga"/>

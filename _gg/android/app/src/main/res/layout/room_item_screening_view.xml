@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:layout_width="-1" android:layout_height="30.000000dip" android:layout_marginTop="10.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="@7F06040F" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A12F6" android:layout_width="138.000000dip" android:layout_height="30.000000dip" android:shadowColor="#80000000" android:shadowDx="0.000000" android:shadowDy="0.000000" android:shadowRadius="3.000000"/>
+</FrameLayout>

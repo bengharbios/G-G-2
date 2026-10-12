@@ -1,0 +1,13 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F080D79" android:layout_width="-1" android:layout_height="-1" android:adjustViewBounds="true" app:layout_constraintTop_toTopOf="0"/>
+  <RelativeLayout android:orientation="0" android:id="@7F0A0BF6" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="6.000000dip" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="@7F0A0749" android:layout_width="-2" android:layout_height="-2" android:src="@7F080D7C" android:layout_marginStart="9.000000dip"/>
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F080D7E" android:layout_centerHorizontal="true" android:layout_toStartOf="@7F0A067A" android:layout_toEndOf="@7F0A0749"/>
+    <ImageView android:id="@7F0A067A" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BF1" android:background="@7F080D7D" android:layout_width="256.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="16777206.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0BF6">
+    <TextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FFE8F4FF" android:gravity="0x00000011" android:layout_width="128.000000dip" android:layout_height="-1" android:text="@7F110150" android:shadowColor="#6B073145" android:shadowDx="0.000000" android:shadowDy="1.000000" android:shadowRadius="3.000000"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF6EABCF" android:gravity="0x00000011" android:background="@7F080D7B" android:layout_width="128.000000dip" android:layout_height="-1" android:text="@7F11014E" android:shadowColor="#6B0C334C" android:shadowDx="0.000000" android:shadowDy="1.000000" android:shadowRadius="3.000000"/>
+  </LinearLayout>
+  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A0E8A" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A0BF1"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1">
+  <include android:layout_gravity="0x00000010" android:id="@7F0A055D" android:layout_width="-1" android:layout_height="-2" layout="@7F0D05AA"/>
+  <include android:layout_gravity="0x00000010" android:id="@7F0A0084" android:visibility="1" android:layout_width="-1" android:layout_height="-2" android:alpha="0.000000" android:rotationY="180.000000" layout="@7F0D05A9"/>
+</merge>

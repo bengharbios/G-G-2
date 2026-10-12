@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="38.000000dip">
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0C9C" android:background="@7F08039A" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <ImageView android:id="@7F0A09B5" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:src="@7F080800"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textColor="@7F060544" android:id="@7F0A15D0" android:layout_width="-2" android:layout_height="-2" android:layout_margin="8.000000dip" android:text="@7F111D8D"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0C87" android:background="@7F080399" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <ImageView android:id="@7F0A096D" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:src="@7F0805DA"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textColor="#FF75CFB0" android:id="@7F0A158D" android:layout_width="-2" android:layout_height="-2" android:layout_margin="1.000000dip" android:text="@7F1114BF"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0C44" android:background="@7F080399" android:layout_width="0.000000px" android:layout_height="-1" android:layout_weight="1.000000">
+      <ImageView android:id="@7F0A08BD" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:src="@7F080523"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textColor="#FF75CFB0" android:id="@7F0A150C" android:layout_width="-2" android:layout_height="-2" android:layout_margin="8.000000dip" android:text="@7F111C27"/>
+    </LinearLayout>
+  </LinearLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18B7" android:background="#FF1F8968" android:layout_width="-1" android:layout_height="126.000000dip"/>
+</LinearLayout>

@@ -1,113 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_include_room_input.xml — الشريط السفلي (مطابق لـ Yalla Ludo v1.5.1.0)
-  
-  منطق Yalla Ludo الأصلي:
-  - visibility=visible  (room_ic_input_sound)  - يظهر دائماً عند عدم الجلوس
-  - visibility=gone     (room_ic_input_mic)     - يظهر فقط عند الجلوس على المايك
-  - visibility=gone     (room_ic_input_mic_emoji) - يظهر فقط عند الجلوس
--->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:id="@+id/ll_room_input"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="50dp"
-    android:background="#B3000000">
-
-    <!-- أيقونة موجات الصوت (تظهر فقط عند عدم الجلوس) -->
-    <ImageView
-        android:id="@+id/iv_input_sound"
-        android:visibility="visible"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:src="@drawable/room_ic_input_sound"
-        android:layout_marginStart="8dp" />
-
-    <!-- أيقونة المايك (تظهر فقط عند الجلوس على المايك) -->
-    <ImageView
-        android:id="@+id/iv_input_mic"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:src="@drawable/room_ic_input_mic"
-        android:layout_marginStart="8dp" />
-
-    <!-- مايك إيموجي (يظهر فقط عند الجلوس) -->
-    <ImageView
-        android:id="@+id/iv_input_mic_emoji"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:src="@drawable/room_mic_emoji_icon"
-        android:layout_marginStart="8dp" />
-
-    <!-- حقل النص -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <com.bengharbios.ggames.view.FixedEmojiEditText
-            android:textSize="13sp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#8FFFFFFF"
-            android:gravity="center_vertical|start"
-            android:id="@+id/et_message"
-            android:background="@drawable/room_input_bg"
-            android:padding="8dp"
-            android:focusableInTouchMode="true"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:maxHeight="93dp"
-            android:minHeight="50dp"
-            android:hint="@string/room_say_something"
-            android:includeFontPadding="false"
-            android:drawablePadding="4dp"
-            android:layout_weight="1"
-            android:inputType="textMultiLine|textAutoCorrect"
-            android:layout_marginStart="11dp"
-            android:layout_marginEnd="5dp" />
-    </LinearLayout>
-
-    <!-- زر الإيموجي (تبديل) -->
-    <com.bengharbios.ggames.view.CheckedImageView
-        android:id="@+id/iv_input_emoji"
-        android:visibility="gone"
-        android:layout_width="37dp"
-        android:layout_height="50dp"
-        android:src="@drawable/room_mic_emoji_icon"
-        android:paddingEnd="13dp" />
-
-    <!-- زر الهدية -->
-    <ImageView
-        android:id="@+id/iv_input_gift"
-        android:visibility="visible"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:src="@drawable/room_gift_default"
-        android:paddingEnd="13dp" />
-
-    <!-- زر ألعاب/مزيد -->
-    <ImageView
-        android:id="@+id/iv_input_more"
-        android:visibility="gone"
-        android:layout_width="37dp"
-        android:layout_height="50dp"
-        android:src="@drawable/room_icon_room_top_more"
-        android:paddingEnd="13dp" />
-
-    <!-- زر الهدية المتحركة (SVGA) -->
-    <com.bengharbios.ggames.view.LudoSVGAView
-        android:id="@+id/svga_input_gift"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:play_on_attach="true" />
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BDC" android:layout_width="-1" android:layout_height="-2" android:minHeight="56.000000dip">
+  <ImageView android:id="@7F0A0771" android:visibility="0" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080B63" android:layout_marginStart="8.000000dip"/>
+  <ImageView android:id="@7F0A06D7" android:visibility="2" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080B4B" android:layout_marginStart="8.000000dip"/>
+  <ImageView android:id="@7F0A06D9" android:visibility="2" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080DA1" android:layout_marginStart="8.000000dip"/>
+  <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+    <com.yalla.ludochat.view.FixedEmojiEditText android:enabled="false" android:textSize="13.000000dip" android:textColor="@7F0603CF" android:textColorHint="@7F06036F" android:gravity="0x00800013" android:id="@7F0A0373" android:background="@7F080A1E" android:padding="8.000000dip" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:maxHeight="36.000000dip" android:minHeight="36.000000dip" android:hint="@7F11212F" android:includeFontPadding="false" android:drawablePadding="4.000000dip" android:layout_weight="1.000000" android:inputType="0x00020001" android:drawableStart="@7F080678" android:textDirection="2" android:textAlignment="5" android:layout_marginStart="12.000000dip"/>
+  </LinearLayout>
+  <com.yalla.ludochat.view.CheckedImageView android:id="@7F0A0694" android:visibility="2" android:layout_width="-2" android:layout_height="56.000000dip" android:src="@7F080E81" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip" android:layout_marginStart="6.000000dip" android:layout_marginEnd="1.000000dip" app:checked="false"/>
+  <ImageView android:id="@7F0A075F" android:visibility="0" android:layout_width="-2" android:layout_height="56.000000dip" android:src="@7F080C56" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip" android:layout_marginEnd="6.000000dip"/>
+  <ImageView android:id="@7F0A075C" android:paddingTop="17.000000dip" android:paddingBottom="17.000000dip" android:visibility="2" android:layout_width="38.000000dip" android:layout_height="56.000000dip" android:src="@7F080E88" android:scaleType="7" android:layout_marginEnd="6.000000dip"/>
+  <ImageView android:id="@7F0A0768" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080E1D" android:layout_marginStart="8.000000dip"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A06A0" android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:layout_marginBottom="3.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip" app:play_on_attach="true" app:source="room_gift.svga"/>
 </LinearLayout>

@@ -1,0 +1,12 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.shop.uniqueid.view.MyUniqueIdView android:layout_gravity="0x00000001" android:id="@7F0A0DE9" android:layout_width="-2" android:layout_height="57.000000dip" android:layout_marginTop="13.000000dip"/>
+  <FrameLayout android:id="@7F0A0439" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="12.000000dip">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF1CB988" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="@7F0A1707" android:visibility="2" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginBottom="30.000000dip" android:text="@7F111145"/>
+  </FrameLayout>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A1835" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:id="@7F0A08F1" android:layout_width="121.000000dip" android:layout_height="121.000000dip" android:layout_marginTop="128.000000dip" android:src="@7F0811EA" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF75CFB0" android:gravity="0x00000011" android:id="@7F0A14F1" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginTop="30.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A08F1"/>
+    <com.yalla.game.base.view.StrokeButton android:gravity="0x00000011" android:id="@7F0A013A" android:background="@7F080301" android:layout_width="144.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="50.000000dip" android:text="@7F1110C8" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A14F1" style="@7F120191"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

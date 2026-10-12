@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip">
+  <FrameLayout android:layout_width="75.000000dip" android:layout_height="75.000000dip">
+    <ImageView android:id="@7F0A0821" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:src="@7F080600"/>
+    <com.yalla.games.common.view.CircleImageView android:layout_gravity="0x00000011" android:id="@7F0A17AD" android:visibility="0" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:src="@7F06002F"/>
+    <ImageView android:layout_gravity="0x00000035" android:id="@7F0A0847" android:visibility="2" android:layout_width="21.000000dip" android:layout_height="16.000000dip" android:layout_marginTop="6.000000dip" android:layout_marginRight="6.000000dip" android:src="@7F0805FF"/>
+  </FrameLayout>
+</LinearLayout>

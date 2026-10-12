@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:clipChildren="false" android:layout_width="-1" android:layout_height="-2">
+  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000011" android:id="@7F0A106C" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2"/>
+</FrameLayout>

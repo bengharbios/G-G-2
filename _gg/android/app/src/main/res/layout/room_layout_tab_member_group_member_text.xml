@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:id="@7F0A0528" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:layout_gravity="0x00000011" android:id="@7F0A1290" android:visibility="1" android:layout_width="-2" android:layout_height="-2"/>
+  <com.yalla.games.common.view.CustomTextView android:layout_gravity="0x00000011" android:id="@7F0A128F" android:visibility="1" android:layout_width="-2" android:layout_height="-2"/>
+</FrameLayout>

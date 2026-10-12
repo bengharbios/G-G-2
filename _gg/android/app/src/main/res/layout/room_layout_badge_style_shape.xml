@@ -1,0 +1,19 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="14.000000dip">
+  <FrameLayout android:id="@7F0A0414" android:visibility="2" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A00A6" android:layout_width="13.000000dip" android:layout_height="13.000000dip"/>
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="5.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1131" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" android:includeFontPadding="false" app:stroke_color="@7F06002F" app:stroke_width="0.500000dip"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0415" android:visibility="2" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A00A7" android:layout_width="13.000000dip" android:layout_height="13.000000dip"/>
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="5.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1133" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" android:includeFontPadding="false" app:stroke_color="@7F06002F" app:stroke_width="0.500000dip"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0416" android:visibility="2" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A00A8" android:layout_width="13.000000dip" android:layout_height="13.000000dip"/>
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="5.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1135" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" android:includeFontPadding="false" app:stroke_color="@7F06002F" app:stroke_width="0.500000dip"/>
+  </FrameLayout>
+  <FrameLayout android:id="@7F0A0417" android:visibility="2" android:layout_width="-2" android:layout_height="-2">
+    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A00A9" android:layout_width="13.000000dip" android:layout_height="13.000000dip"/>
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="5.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1136" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" android:includeFontPadding="false" app:stroke_color="@7F06002F" app:stroke_width="0.500000dip"/>
+  </FrameLayout>
+  <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:layout_gravity="0x00000010" android:id="@7F0A1138" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" app:stroke_color="@7F06039D" app:stroke_width="0.500000dip"/>
+</merge>

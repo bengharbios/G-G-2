@@ -1,0 +1,1 @@
+<com.yalla.games.common.view.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A13A5" android:background="@7F080E6F" android:layout_width="101.000000dip" android:layout_height="33.000000dip" android:layout_marginTop="18.000000dip" android:layout_marginStart="4.000000dip"/>

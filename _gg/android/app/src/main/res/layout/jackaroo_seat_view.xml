@@ -1,0 +1,11 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0F89" android:layout_width="91.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+  <com.yalla.games.common.view.CustomTextView android:textColor="#FF6DD7FF" android:gravity="0x00000051" android:id="@7F0A166E" android:background="@7F08093D" android:paddingBottom="17.000000dip" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="110.000000dip" android:text="@7F111F0F" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="@7F0A0813" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="45.000000dip" android:src="@7F0805FD" android:layout_centerHorizontal="true"/>
+  <FrameLayout android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.HeadView android:id="@7F0A0944" android:layout_width="83.000000dip" android:layout_height="83.000000dip" app:head_face_margin="7.000000dip"/>
+  </FrameLayout>
+  <ImageView android:id="@7F0A0967" android:layout_width="73.000000dip" android:layout_height="73.000000dip" android:layout_marginTop="5.000000dip" android:src="@7F080766" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="@7F060544" android:layout_gravity="0x00000001" android:id="@7F0A1587" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="85.000000dip" android:text="@7F111D28" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.LoopGradientTextView android:textColor="@7F06025F" android:ellipsize="3" android:layout_gravity="0x00000001" android:id="@7F0A1641" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="88.000000dip" android:maxLines="1" android:maxEms="4" android:includeFontPadding="false" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="@7F0A0975" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:src="@7F080357" android:layout_alignEnd="@7F0A0813"/>
+</merge>

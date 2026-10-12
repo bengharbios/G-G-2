@@ -1,139 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_include_room_top.xml — الهيدر العلوي (مطابق لـ Yalla Ludo v1.5.1.0)
-  البنية:
-  - LinearLayout أفقي
-    - ConstraintLayout (بطاقة المالك)
-      - RoundImageView (صورة المالك - 40dp)
-      - MarqueeTextView (اسم الغرفة - 13sp)
-      - LinearLayout (مستوى + VIP)
-    - Space (مرن)
-    - ImageView (follow - 40dp)
-    - ImageView (share - 40dp)
-    - ImageView (close - 40dp)
--->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingTop="2dp"
-    android:focusable="false"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_marginTop="8dp">
-
-    <!-- بطاقة المالك -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
-        android:background="@drawable/room_top_owner_bg"
-        android:focusable="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:paddingEnd="10dp">
-
-        <!-- صورة المالك (40dp دائري) -->
-        <com.bengharbios.ggames.view.RoundImageView
-            android:id="@+id/riv_room_top_header"
-            android:layout_gravity="center"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/room_default"
-            android:scaleType="centerCrop"
-            app:cornerRadius="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- تاج المالك فوق الصورة -->
-        <com.bengharbios.ggames.view.RoundImageView
-            android:id="@+id/iv_room_owner_badge"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/room_icon_room_top_close_king"
-            android:scaleType="centerInside"
-            app:isCircle="true"
-            app:layout_constraintBottom_toBottomOf="@id/riv_room_top_header"
-            app:layout_constraintEnd_toEndOf="@id/riv_room_top_header"
-            app:layout_constraintStart_toStartOf="@id/riv_room_top_header"
-            app:layout_constraintTop_toTopOf="@id/riv_room_top_header" />
-
-        <!-- اسم الغرفة (Marquee) -->
-        <com.bengharbios.ggames.view.MarqueeTextView
-            android:id="@+id/tv_room_top_name"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:maxWidth="92dp"
-            android:singleLine="true"
-            android:includeFontPadding="false"
-            android:marqueeRepeatLimit="-1"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@id/riv_room_top_header"
-            app:layout_constraintTop_toTopOf="@id/riv_room_top_header" />
-
-        <!-- مستوى المالك -->
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:id="@+id/ll_room_owner_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@id/riv_room_top_header"
-            app:layout_constraintBottom_toBottomOf="@id/riv_room_top_header">
-
-            <com.bengharbios.ggames.view.CustomTextView
-                android:id="@+id/tv_room_top_level"
-                android:textSize="12dp"
-                android:textColor="#FFFFFF"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Lv.1" />
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- مساحة مرنة -->
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- زر المتابعة -->
-    <ImageView
-        android:id="@+id/iv_room_top_follow"
-        android:visibility="gone"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icon_room_top_follow"
-        android:scaleType="centerInside" />
-
-    <!-- زر المشاركة -->
-    <ImageView
-        android:id="@+id/iv_room_top_share"
-        android:visibility="visible"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/room_icon_room_top_more"
-        android:scaleType="centerInside" />
-
-    <!-- زر الإغلاق -->
-    <ImageView
-        android:id="@+id/iv_room_top_close"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/room_icon_room_top_close"
-        android:scaleType="centerInside" />
-
-</LinearLayout>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2">
+  <View android:id="@7F0A17C9" android:background="@7F0809F1" android:focusable="false" android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="8.000000dip" android:animateLayoutChanges="true" android:layout_marginEnd="16777211.000000dip" app:layout_constrainedWidth="true" app:layout_constraintEnd_toEndOf="@7F0A0744" app:layout_constraintHorizontal_bias="1.000000" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A0685" android:visibility="2" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:layout_marginStart="10.000000dip" android:layout_marginEnd="8.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintDimensionRatio="23:30" app:layout_constraintEnd_toStartOf="@7F0A0FE2" app:layout_constraintTop_toTopOf="@7F0A17C9" app:play_on_attach="true" app:source="room_data_card_flame.svga"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A0EE6" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:scaleType="6" android:contentDescription="@00000000" app:cornerRadius="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0747" app:layout_constraintEnd_toEndOf="@7F0A0747" app:layout_constraintStart_toStartOf="@7F0A0747" app:layout_constraintTop_toTopOf="@7F0A0747" app:srcCompat="@7F080A87"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A0745" android:background="@7F080F05" android:visibility="2" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:src="@7F080EF9" android:scaleType="5" android:contentDescription="@00000000" app:cornerRadius="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0747" app:layout_constraintEnd_toEndOf="@7F0A0747" app:layout_constraintStart_toStartOf="@7F0A0747" app:layout_constraintTop_toTopOf="@7F0A0747"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A0746" android:background="@7F080F05" android:visibility="2" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:src="@7F080B37" android:scaleType="5" android:contentDescription="@00000000" app:cornerRadius="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0747" app:layout_constraintEnd_toEndOf="@7F0A0747" app:layout_constraintStart_toStartOf="@7F0A0747" app:layout_constraintTop_toTopOf="@7F0A0747"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A0747" android:visibility="1" android:layout_width="44.000000dip" android:layout_height="44.000000dip" android:src="@7F080703" android:scaleType="3" android:contentDescription="@00000000" app:cornerRadius="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+  <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="7.000000sp" android:textColor="@7F06009F" android:gravity="0x00000011" android:id="@7F0A1400" android:layout_width="0.000000dip" android:layout_height="24.000000dip" android:singleLine="true" android:scaleX="0.700000" android:scaleY="0.700000" app:layout_constraintCircle="@7F0A0EE6" app:layout_constraintCircleAngle="135.000000" app:layout_constraintCircleRadius="24.000000dip" app:layout_constraintDimensionRatio="98:89" app:stroke_color="@7F0604D4" app:stroke_width="0.500000dip"/>
+  <View android:id="@7F0A0FE1" android:layout_width="-1" android:layout_height="1.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="0" android:gravity="0x00800013" android:id="@7F0A1401" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="-2" android:layout_height="20.000000dip" android:maxWidth="92.000000dip" android:scrollHorizontally="true" android:singleLine="true" android:includeFontPadding="false" android:marqueeRepeatLimit="-1" android:layout_marginStart="4.000000dip" app:layout_constrainedWidth="true" app:layout_constraintBottom_toTopOf="@7F0A0FE1" app:layout_constraintHorizontal_bias="0.000000" app:layout_constraintStart_toEndOf="@7F0A0747" app:layout_constraintWidth_max="92.000000dip"/>
+  <com.yalla.ludochat.view.LikeAndIdxViewSwitcher android:id="@7F0A0B96" android:layout_width="-2" android:layout_height="-2" android:animateFirstView="false" android:paddingStart="1.000000px" app:layout_constraintStart_toEndOf="@7F0A0747" app:layout_constraintTop_toTopOf="@7F0A0FE1"/>
+  <androidx.constraintlayout.widget.Barrier android:id="@7F0A008E" android:layout_width="-2" android:layout_height="-2" app:barrierDirection="6" app:constraint_referenced_ids="tvRoomTopName ,likeAndIdxViewSwitcher"/>
+  <com.yalla.ludochat.view.RoomTopMemberLevelView android:id="@7F0A0744" android:visibility="0" android:layout_width="36.000000dip" android:layout_height="36.000000dip" android:contentDescription="@00000000" android:layout_marginStart="8.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintStart_toEndOf="@7F0A008E" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+  <androidx.constraintlayout.widget.Barrier android:id="@7F0A0361" android:layout_width="-2" android:layout_height="-2" app:barrierDirection="5" app:constraint_referenced_ids="ivDataCard,roomTopic,iv_more,ivMoreActionRed"/>
+  <ImageView android:id="@7F0A0FE2" android:visibility="0" android:layout_width="-2" android:layout_height="40.000000dip" android:src="@7F080F0B" android:scaleType="5" android:adjustViewBounds="true" android:scaleX="1.400000" android:scaleY="1.400000" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintEnd_toStartOf="@7F0A09DB" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+  <ImageView android:id="@7F0A09DB" android:layout_width="-2" android:layout_height="40.000000dip" android:src="@7F080CBB" android:scaleType="5" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintEnd_toStartOf="@7F0A0743" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+  <ImageView android:id="@7F0A06E3" android:visibility="2" android:layout_width="7.000000dip" android:layout_height="7.000000dip" android:layout_marginTop="3.000000dip" android:src="@7F080945" android:layout_marginEnd="5.000000dip" app:layout_constraintEnd_toEndOf="@7F0A09DB" app:layout_constraintTop_toTopOf="@7F0A09DB"/>
+  <ImageView android:id="@7F0A0743" android:layout_width="-2" android:layout_height="40.000000dip" android:src="@7F080CAF" android:scaleType="5" android:paddingStart="8.000000dip" android:paddingEnd="10.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A17C9" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="@7F0A17C9"/>
+</merge>

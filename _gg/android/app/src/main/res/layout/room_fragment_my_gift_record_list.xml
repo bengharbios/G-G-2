@@ -1,0 +1,5 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A10E2" android:layout_width="-1" android:layout_height="-1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EBA" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A069C" android:layout_width="-2" android:layout_height="33.000000dip" android:layout_marginBottom="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+  <androidx.constraintlayout.widget.ConstraintLayout android:background="@7F080AC5" android:layout_width="-1" android:layout_height="-2">
+    <ImageView android:id="@7F0A0762" android:layout_width="-2" android:layout_height="-2" android:src="@7F080AE6" android:layout_marginStart="20.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A170B" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="@7F0A170B"/>
+    <ImageView android:id="@7F0A067A" android:padding="4.000000dip" android:layout_width="-2" android:layout_height="-2" android:src="@7F080742" android:layout_marginEnd="20.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A170B" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="@7F0A170B"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="#FFD2E9F2" android:gravity="0x00000011" android:id="@7F0A170B" android:layout_width="-2" android:layout_height="30.000000dip" android:layout_marginTop="16.000000dip" android:text="@7F11202E" android:layout_centerHorizontal="true" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <androidx.core.widget.NestedScrollView android:layout_gravity="0x00000001" android:id="@7F0A10A9" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="14.000000dip" app:layout_constrainedHeight="true" app:layout_constraintHeight_max="460.000000dip" app:layout_constraintHeight_min="180.000000dip" app:layout_constraintTop_toBottomOf="@7F0A170B">
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1079" android:paddingBottom="36.000000dip" android:layout_width="-1" android:layout_height="-2"/>
+    </androidx.core.widget.NestedScrollView>
+    <ImageView android:background="@7F080E29" android:layout_width="-1" android:layout_height="56.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

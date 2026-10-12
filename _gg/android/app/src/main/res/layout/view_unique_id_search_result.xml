@@ -1,0 +1,12 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-2" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginBottom="10.000000dip" app:layout_constrainedHeight="true" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A05F9">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF1CB988" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A16E9" android:background="@7F0802AA" android:visibility="2" android:layout_width="307.000000dip" android:layout_height="19.000000dip" android:layout_marginBottom="10.000000dip"/>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A123D" android:layout_width="-1" android:layout_height="-1">
+      <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0CBE" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toBottomOf="@7F0A05F9">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0AE3" android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:src="@7F080867"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF70BA89" android:layout_gravity="0x00000011" android:id="@7F0A16CE" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F1122AF"/>
+  </LinearLayout>
+</merge>

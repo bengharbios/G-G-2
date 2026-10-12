@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0BC4" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:layout_marginStart="24.000000dip" android:layout_marginEnd="24.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F06051C" android:layout_width="-2" android:layout_height="-2" android:text="@7F111FED"/>
+    <com.yalla.ludochat.view.IdentityImageView android:id="@7F0A0609" android:visibility="2" android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="2.000000dip" android:layout_marginBottom="2.000000dip" android:src="@7F080BC6" android:layout_marginStart="10.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F060086" android:gravity="0x00000011" android:id="@7F0A0607" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="4.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textStyle="0x00000001" android:textColor="@7F060080" android:layout_gravity="0x00000011" android:id="@7F0A0608" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F112061" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+  <LinearLayout android:orientation="0" android:id="@7F0A0D1C" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:layout_marginBottom="8.000000dip" android:paddingStart="25.000000dip" android:layout_marginEnd="25.000000dip">
+    <com.yalla.ludochat.view.SetRoleView android:id="@7F0A16BD" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000"/>
+    <android.widget.Space android:layout_width="20.000000dip" android:layout_height="-1"/>
+    <com.yalla.ludochat.view.SetRoleView android:id="@7F0A1599" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000"/>
+  </LinearLayout>
+</LinearLayout>

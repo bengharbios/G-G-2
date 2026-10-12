@@ -1,0 +1,1 @@
+<com.yalla.games.common.view.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android" android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="#FF428171" android:id="@7F0A14C8" android:layout_width="-1" android:layout_height="-2" android:includeFontPadding="false" android:paddingStart="11.000000dip" android:paddingEnd="11.000000dip"/>

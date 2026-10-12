@@ -1,0 +1,6 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A09C4" android:layout_width="35.000000dip" android:layout_height="35.000000dip"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0A18" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:src="@7F080833"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A07EC" android:layout_width="31.000000dip" android:layout_height="31.000000dip" android:src="@7F08082D"/>
+  <com.yalla.game.base.view.StrokeTextView android:textColor="@7F060544" android:gravity="0x00000051" android:layout_gravity="0x00000051" android:id="@7F0A1571" android:layout_width="38.000000dip" android:layout_height="-2" android:maxLines="1" app:strokeAutoSizeMaxTextSize="12.000000sp" app:strokeAutoSizeMinTextSize="4.000000sp" app:strokeAutoSizeStepGranularity="1.000000dip" app:strokeAutoSizeTextType="uniform" app:stroke_color="#FF2C7762" app:stroke_width="1.000000dip"/>
+</merge>

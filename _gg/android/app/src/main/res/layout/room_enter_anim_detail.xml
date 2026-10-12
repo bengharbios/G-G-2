@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:id="@7F0A0435" android:layout_width="200.000000dip" android:layout_height="50.000000dip">
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A111F" android:layout_width="-1" android:layout_height="50.000000dip"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A1209" android:layout_width="-1" android:layout_height="50.000000dip"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:visibility="2" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:src="@7F0807C6" android:stateListAnimator="@7F01003A"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A079E" android:layout_width="19.500002dip" android:layout_height="19.500002dip" android:layout_marginTop="19.500002dip" android:src="@7F0812D6" android:scaleType="6" android:layout_marginStart="10.000000dip" app:bordTrimSrc="false" app:borderColor="@7F0600C4" app:borderWidth="1.000000dip" app:isCircle="true" app:layout_constraintBottom_toBottomOf="@7F0A0699" app:layout_constraintStart_toStartOf="@7F0A0699" app:layout_constraintTop_toTopOf="@7F0A0699" app:layout_constraintVertical_bias="0.630000"/>
+</FrameLayout>

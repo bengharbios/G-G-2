@@ -1,0 +1,6 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0F67" android:background="#65000000" android:layout_width="200.000000dip" android:layout_height="260.000000dip" android:layout_marginTop="150.000000dip">
+  <ScrollView android:id="@7F0A10A1" android:clickable="false" android:layout_width="-1" android:layout_height="0.000000dip" android:alpha="0.400000" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="#FFFF66FF" android:id="@7F0A15CD" android:clickable="false" android:layout_width="-1" android:layout_height="-2"/>
+  </ScrollView>
+  <TextView android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A14BD" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:text="X" app:layout_constraintEnd_toEndOf="0" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

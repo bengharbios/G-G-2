@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A061F" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.ludochat.view.ReferenceReplyView android:id="@7F0A0EBF" android:background="@7F060544" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+  <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BDC" android:background="@7F060503" android:layout_width="-1" android:layout_height="-2" android:minHeight="56.000000dip">
+    <com.yalla.ludochat.view.FixedEmojiEditText android:textSize="13.000000dip" android:textColor="@7F0603CF" android:textColorHint="@7F06036F" android:gravity="0x00800013" android:id="@7F0A0371" android:background="@7F080AA4" android:padding="8.000000dip" android:focusable="true" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:maxHeight="96.000000dip" android:minHeight="36.000000dip" android:hint="@7F11212F" android:includeFontPadding="false" android:layout_weight="1.000000" android:inputType="0x00020001" android:textDirection="2" android:textAlignment="5" android:layout_marginStart="12.000000dip"/>
+    <com.yalla.ludochat.view.CheckedImageView android:id="@7F0A0694" android:layout_width="-2" android:layout_height="56.000000dip" android:src="@7F080E81" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip" android:layout_marginStart="6.000000dip" android:layout_marginEnd="1.000000dip" app:checked="false"/>
+    <ImageView android:id="@7F0A075F" android:visibility="0" android:layout_width="-2" android:layout_height="56.000000dip" android:src="@7F080C56" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip" android:layout_marginEnd="6.000000dip"/>
+    <ImageView android:id="@7F0A075C" android:paddingTop="17.000000dip" android:paddingBottom="17.000000dip" android:visibility="2" android:layout_width="38.000000dip" android:layout_height="56.000000dip" android:src="@7F080E88" android:scaleType="7" android:layout_marginEnd="6.000000dip"/>
+  </LinearLayout>
+  <FrameLayout android:background="@7F060503" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.ludochat.view.FacePanelView android:id="@7F0A03A9" android:visibility="1" android:layout_width="-1" android:layout_height="0.000000dip"/>
+  </FrameLayout>
+</LinearLayout>

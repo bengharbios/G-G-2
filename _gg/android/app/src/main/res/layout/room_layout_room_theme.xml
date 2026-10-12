@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0F9C" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
+  <View android:background="@7F081148" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="42.000000dip"/>
+  <com.yalla.ludochat.view.TitleView android:id="@7F0A128E" android:background="@7F08021D" android:layout_width="-1" android:layout_height="53.000000dip"/>
+  <net.lucode.hackware.magicindicator.MagicIndicator android:id="@7F0A1249" android:layout_width="-1" android:layout_height="45.000000dip" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A128E" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip"/>
+  <View android:id="@7F0A033B" android:background="@7F081158" android:layout_width="-1" android:layout_height="10.000000dip" android:layout_marginTop="14.000000dip" android:layout_below="@7F0A1249"/>
+  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@7F0A18CA" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A033B"/>
+</RelativeLayout>

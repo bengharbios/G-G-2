@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="360.000000dip" android:layout_height="-1">
+  <View android:background="@7F0801EE" android:layout_width="-1" android:layout_height="167.800003dip" android:layout_marginTop="5.000000dip"/>
+  <View android:id="@7F0A184C" android:background="@7F0810E7" android:visibility="2" android:layout_width="-1" android:layout_height="9.000000dip"/>
+  <FrameLayout android:id="@7F0A051E" android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:orientation="0" android:id="@7F0A0E86" android:layout_width="-1" android:layout_height="39.599979dip" android:layout_centerHorizontal="true">
+      <FrameLayout android:id="@7F0A0522" android:background="@7F0810D7" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800005" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A02A7" android:layout_width="-2" android:layout_height="-2" android:text="@7F111D48" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="@7F0810D4"/>
+        </FrameLayout>
+      </FrameLayout>
+      <FrameLayout android:id="@7F0A051F" android:background="@7F0810D8" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
+        <FrameLayout android:layout_gravity="0x00800003" android:layout_width="120.000000dip" android:layout_height="-1">
+          <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0274" android:layout_width="-2" android:layout_height="-2" android:text="@7F111B45" android:includeFontPadding="false" android:drawablePadding="7.000000dip" android:drawableStart="@7F0810D1"/>
+        </FrameLayout>
+      </FrameLayout>
+    </LinearLayout>
+  </FrameLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18C2" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A051E"/>
+  <FrameLayout android:id="@7F0A0544" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentEnd="true">
+    <ImageView android:layout_width="21.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="15.000000dip" android:layout_marginBottom="5.000000dip" android:src="@7F080902" android:layout_marginStart="11.000000dip" android:layout_marginEnd="8.000000dip"/>
+  </FrameLayout>
+  <ImageView android:id="@7F0A0B67" android:paddingTop="15.000000dip" android:paddingBottom="5.000000dip" android:visibility="1" android:layout_width="37.000000dip" android:layout_height="40.000000dip" android:src="@7F081316" android:paddingStart="7.000000dip" android:paddingEnd="8.000000dip"/>
+  <FrameLayout android:id="@7F0A0545" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="@7F0A0D56" android:background="@7F081313" android:layout_width="217.000000dip" android:layout_height="-2" android:layout_marginTop="36.000000dip" android:layout_marginStart="2.000000dip">
+      <FrameLayout android:id="@7F0A0546" android:layout_width="-1" android:layout_height="60.000000dip">
+        <ImageView android:layout_gravity="0x00800013" android:id="@7F0A0B68" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F08100D" android:layout_marginStart="12.000000dip"/>
+        <LinearLayout android:layout_gravity="0x00000010" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF428371" android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:text="@7F1117BE" android:drawablePadding="6.000000dip" android:drawableEnd="@7F081317" android:layout_marginStart="44.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:textColor="#FF88A89F" android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="@7F1117BF" android:layout_marginStart="44.000000dip" android:layout_marginEnd="5.000000dip"/>
+        </LinearLayout>
+      </FrameLayout>
+      <View android:layout_gravity="0x00000001" android:background="@7F08131A" android:layout_width="195.000000dip" android:layout_height="1.000000dip"/>
+      <FrameLayout android:id="@7F0A0547" android:layout_width="-1" android:layout_height="60.000000dip">
+        <ImageView android:layout_gravity="0x00800013" android:id="@7F0A0B69" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F08100E" android:layout_marginStart="12.000000dip"/>
+        <LinearLayout android:layout_gravity="0x00000010" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+          <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF428371" android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:text="@7F1117C0" android:drawablePadding="6.000000dip" android:drawableEnd="@7F081319" android:layout_marginStart="44.000000dip"/>
+          <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:textColor="#FF88A89F" android:layout_gravity="0x00800013" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="@7F1117C1" android:layout_marginStart="44.000000dip" android:layout_marginEnd="5.000000dip"/>
+        </LinearLayout>
+      </FrameLayout>
+    </LinearLayout>
+  </FrameLayout>
+</RelativeLayout>

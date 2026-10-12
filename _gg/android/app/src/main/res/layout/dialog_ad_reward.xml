@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="360.000000dip" android:layout_height="-2" android:layoutDirection="0">
+  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0861" android:layout_width="49.000000dip" android:layout_height="45.000000dip" android:src="@7F08044D" android:layoutDirection="3"/>
+  <ImageView android:layout_width="-1" android:layout_height="109.000000dip" android:src="@7F08007B"/>
+  <RelativeLayout android:background="@7F0800E7" android:layout_width="-1" android:layout_height="100.000000dip" android:layout_marginTop="16777183.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF3DAB5F" android:gravity="0x00000011" android:layout_width="130.000000dip" android:layout_height="-2" android:layout_marginLeft="43.000000dip" android:layout_marginTop="28.000000dip" android:text="@7F110C09" android:rotation="-10.000000"/>
+  </RelativeLayout>
+  <LinearLayout android:orientation="1" android:background="@7F0800E2" android:layout_width="-1" android:layout_height="350.000000dip">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="300.000000dip" android:layout_marginBottom="16777166.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:layout_gravity="0x00000001" android:id="@7F0A1702" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip"/>
+    <com.yalla.games.common.view.AdWatchBtn android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A0D59" android:layout_width="188.000000dip" android:layout_height="61.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginBottom="10.000000dip"/>
+  </LinearLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:text="@7F110F08" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip"/>
+</LinearLayout>

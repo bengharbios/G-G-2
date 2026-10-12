@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A0F1C" android:layout_width="-1" android:layout_height="565.000000dip" android:layout_centerInParent="true">
+    <View android:id="@7F0A181D" android:layout_width="-1" android:layout_height="524.000000dip" android:layout_marginTop="110.000000dip" android:layout_centerInParent="true"/>
+    <ImageView android:layout_gravity="0x00000001" android:layout_width="320.000000dip" android:layout_height="253.000000dip" android:layout_marginTop="16777166.000000dip" android:src="@7F0812C7" android:layout_alignTop="@7F0A181D" android:layout_centerHorizontal="true"/>
+    <FrameLayout android:id="@7F0A0439" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="100.000000dip" android:layout_centerHorizontal="true">
+      <FrameLayout android:background="@7F0812C6" android:layout_width="360.000000dip" android:layout_height="424.000000dip" android:layout_marginTop="35.000000dip">
+        <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0C8D" android:background="@7F0804F1" android:visibility="2" android:layout_width="293.000000dip" android:layout_height="27.000000dip" android:layout_marginTop="32.000000dip">
+          <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF75B5A3" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="@7F111045" android:layout_weight="1.000000"/>
+          <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08F6" android:layout_width="35.000000dip" android:layout_height="27.000000dip" android:src="@7F080901" android:paddingStart="7.000000dip" android:paddingEnd="9.000000dip"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="32.000000dip" android:layout_marginBottom="38.000000dip" android:layout_marginStart="18.000000dip" android:layout_marginEnd="18.000000dip"/>
+      </FrameLayout>
+    </FrameLayout>
+    <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+    <ImageView android:id="@7F0A099A" android:layout_width="320.000000dip" android:layout_height="121.000000dip" android:layout_marginTop="16777159.000000dip" android:src="@7F0812C9" android:layout_alignTop="@7F0A0439" android:layout_centerHorizontal="true"/>
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="59.000000dip" android:src="@7F0812C8" android:layout_alignTop="@7F0A099A" android:layout_centerHorizontal="true"/>
+  </RelativeLayout>
+</RelativeLayout>

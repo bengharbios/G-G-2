@@ -1,0 +1,7 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0CBD" android:layout_width="-1" android:layout_height="-2">
+    <ImageView android:id="@7F0A09F6" android:layout_width="106.000000dip" android:layout_height="107.000000dip" android:src="@7F0805AF"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF85A3B9" android:id="@7F0A1707" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="30.000000dip"/>
+  </LinearLayout>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

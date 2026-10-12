@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0D86" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.ludochat.view.SimpleTopBar android:id="@7F0A10D4" android:layout_width="-1" android:layout_height="-2"/>
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A10E2" android:layout_width="-1" android:layout_height="-1">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EBA" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

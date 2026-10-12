@@ -1,0 +1,11 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" style="@7F120480">
+  <LinearLayout android:id="@7F0A1766" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_alignParentStart="true" style="@7F120473">
+    <TextView android:id="@7F0A177C" style="@7F120482"/>
+    <TextView android:id="@7F0A177D" style="@7F12048D"/>
+  </LinearLayout>
+  <TextView android:id="@7F0A1782" android:layout_below="@7F0A1766" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="@7F120490"/>
+  <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout android:id="@7F0A1765" android:layout_below="@7F0A1782" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="@7F120489">
+    <com.twitter.sdk.android.tweetui.internal.TweetMediaView android:id="@7F0A1788" style="@7F120486"/>
+    <com.twitter.sdk.android.tweetui.internal.MediaBadgeView android:id="@7F0A177F" style="@7F12047D"/>
+  </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
+</merge>

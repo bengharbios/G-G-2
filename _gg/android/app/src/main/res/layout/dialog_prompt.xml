@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:layout_width="300.000000dip" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="21.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A0A39" android:background="@7F081329" android:layout_width="-1" android:layout_height="45.000000dip" android:text="@7F111E50" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:src="@7F08044E" android:layout_marginEnd="12.000000dip" android:layout_alignParentEnd="true"/>
+  <LinearLayout android:orientation="1" android:background="@7F0807D2" android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A0861">
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="@7F06001E" android:layout_gravity="0x00000001" android:id="@7F0A16F3" android:padding="20.000000dip" android:layout_width="-2" android:layout_height="-2" android:text="@7F111D82" android:singleLine="false" android:lineSpacingExtra="14.000000dip"/>
+    <Button android:textColor="@7F060544" android:layout_gravity="0x00000001" android:id="@7F0A087F" android:background="@7F080300" android:paddingTop="5.000000dip" android:paddingBottom="5.000000dip" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip" android:text="@7F111BF5" android:textAllCaps="false" android:paddingStart="15.000000dip" android:paddingEnd="15.000000dip"/>
+  </LinearLayout>
+</RelativeLayout>

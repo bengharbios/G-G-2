@@ -1,0 +1,13 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="100.000000dip" android:layout_height="120.000000dip">
+  <LinearLayout android:layout_gravity="0x00000031" android:orientation="1" android:id="@7F0A0CA7" android:layout_width="80.000000dip" android:layout_height="-2">
+    <com.yalla.games.common.view.CustomTextView android:id="@7F0A15FA" android:layout_width="-2" android:layout_height="-2"/>
+    <com.yalla.games.common.view.BadgeDynamicView android:id="@7F0A09C4" android:layout_width="80.000000dip" android:layout_height="80.000000dip" app:isUseSmallBadge="false"/>
+  </LinearLayout>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:layout_gravity="0x00000051" android:id="@7F0A1571" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="11.000000dip" app:end_color="#FFFFDF0F" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFFFFF" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+  <ImageView android:layout_gravity="0x00800035" android:id="@7F0A0898" android:visibility="2" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:layout_marginTop="30.000000dip" android:src="@7F0804BB" android:layout_marginEnd="15.000000dip"/>
+  <FrameLayout android:layout_gravity="0x00000050" android:layout_width="100.000000dip" android:layout_height="100.000000dip">
+    <ImageView android:layout_gravity="0x00000051" android:id="@7F0A085A" android:visibility="1" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:layout_marginBottom="2.000000dip" android:src="@7F08082C"/>
+    <ImageView android:layout_gravity="0x00000051" android:id="@7F0A07EC" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F080850"/>
+  </FrameLayout>
+  <ImageView android:layout_gravity="0x00000051" android:id="@7F0A0A09" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F080896"/>
+</merge>

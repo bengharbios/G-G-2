@@ -1,0 +1,6 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@7F0801A9"/>
+  <item android:top="16777066.000000dip">
+    <bitmap android:gravity="0x00000011" android:src="@7F08118F" android:tileMode="-1"/>
+  </item>
+</layer-list>

@@ -1,0 +1,1 @@
+<com.yalla.game.base.view.StrokeButton xmlns:android="http://schemas.android.com/apk/res/android" android:textSize="17.000000dip" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A0162" android:background="@7F080301" android:layout_width="200.000000dip" android:layout_height="55.000000dip" style="@7F120191"/>

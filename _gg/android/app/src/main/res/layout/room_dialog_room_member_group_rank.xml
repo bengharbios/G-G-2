@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.tabs.TabLayout android:id="@7F0A1246" android:background="@7F0809D2" android:layout_width="-1" android:layout_height="40.000000dip" app:tabGravity="0" app:tabIndicator="@00000000" app:tabIndicatorColor="@android:0106000D" app:tabIndicatorHeight="0.000000dip" app:tabMaxWidth="0.000000dip" app:tabMode="1" app:tabRippleColor="@00000000"/>
+  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A1804" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+</LinearLayout>

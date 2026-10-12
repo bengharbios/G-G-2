@@ -1,0 +1,18 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" style="@7F120480">
+  <TextView android:id="@7F0A1780" android:layout_alignLeft="@7F0A1766" android:layout_alignStart="@7F0A1766" style="@7F12048B"/>
+  <ImageView android:id="@7F0A177B" android:layout_below="@7F0A1780" style="@7F12047C"/>
+  <LinearLayout android:id="@7F0A1766" android:layout_toRightOf="@7F0A177B" android:layout_below="@7F0A1780" android:layout_toEndOf="@7F0A177B" style="@7F12046A">
+    <TextView android:id="@7F0A177C" style="@7F120482"/>
+    <TextView android:id="@7F0A177D" style="@7F12048D"/>
+    <TextView android:id="@7F0A1783" style="@7F120492"/>
+  </LinearLayout>
+  <ImageView android:id="@7F0A1784" android:layout_below="@7F0A1780" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="@7F120494"/>
+  <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout android:id="@7F0A1765" android:layout_below="@7F0A1766" android:layout_alignLeft="@7F0A1766" android:layout_alignStart="@7F0A1766" style="@7F120488">
+    <com.twitter.sdk.android.tweetui.internal.TweetMediaView android:id="@7F0A1788" style="@7F120486"/>
+    <com.twitter.sdk.android.tweetui.internal.MediaBadgeView android:id="@7F0A177F" style="@7F12047D"/>
+  </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
+  <TextView android:id="@7F0A1782" android:layout_toRightOf="@7F0A177B" android:layout_below="@7F0A1765" android:layout_toEndOf="@7F0A177B" style="@7F12048F"/>
+  <FrameLayout android:id="@7F0A0E81" android:layout_toRightOf="@7F0A177B" android:layout_below="@7F0A1782" android:layout_toEndOf="@7F0A177B" style="@7F120475"/>
+  <include android:layout_width="-1" android:layout_height="-2" android:layout_toRightOf="@7F0A177B" android:layout_below="@7F0A0E81" android:layout_toEndOf="@7F0A177B" layout="@7F0D05F8" style="@7F12047A"/>
+  <View android:id="@7F0A00CF" android:layout_width="-1" android:layout_height="@7F070272" android:layout_below="@7F0A0E81"/>
+</merge>

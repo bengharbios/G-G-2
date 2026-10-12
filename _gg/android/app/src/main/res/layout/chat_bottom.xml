@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:id="@7F0A0F98" android:background="#FFF5F5F5" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_above="@7F0A0382">
+    <TextView android:textSize="12.000000dip" android:textColor="#FFB7B7B7" android:id="@7F0A1683" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="5.000000dip"/>
+    <FrameLayout android:id="@7F0A04E0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A1683" android:layoutDirection="3" android:layout_marginStart="10.000000dip"/>
+    <ImageView android:id="@7F0A0A6A" android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F08096F" android:layout_centerVertical="true" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <com.yalla.games.friends.view.chat.ChatInputView android:id="@7F0A0192" android:layout_width="-1" android:layout_height="-2"/>
+  <com.yalla.games.friends.view.chat.EmojiSelectView android:id="@7F0A0195" android:background="#FFFFFFFF" android:visibility="2" android:layout_width="-1" android:layout_height="0.000000dip"/>
+</LinearLayout>

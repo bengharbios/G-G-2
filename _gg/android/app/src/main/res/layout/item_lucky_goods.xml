@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2">
+  <RelativeLayout android:id="@7F0A1858" android:layout_width="70.000000dip" android:layout_height="80.000000dip" android:layout_marginTop="11.000000dip">
+    <RelativeLayout android:id="@7F0A0F6C" android:layout_width="65.000000dip" android:layout_height="65.000000dip" android:layout_centerHorizontal="true">
+      <View android:id="@7F0A1810" android:background="@7F080258" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_marginTop="5.000000dip" android:layout_centerHorizontal="true"/>
+      <ImageView android:id="@7F0A0924" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:layout_centerInParent="true"/>
+      <ImageView android:id="@7F0A0902" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F08059E" android:layout_alignParentBottom="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+      <View android:id="@7F0A1879" android:background="@7F08025B" android:layout_width="65.000000dip" android:layout_height="65.000000dip" android:layout_centerInParent="true"/>
+      <com.yalla.game.base.view.StrokeTextView android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A172E" android:layout_width="42.000000dip" android:layout_height="13.000000dip" android:layout_marginBottom="8.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" app:strokeAutoSizeMaxTextSize="12.000000sp" app:strokeAutoSizeMinTextSize="7.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp" app:stroke_color="#80000000" app:stroke_width="1.500000dip"/>
+    </RelativeLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF4FC973" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A15FA" android:layout_width="-1" android:layout_height="13.000000dip" android:layout_marginTop="1.000000dip" android:text="@7F1115DB" android:maxLines="1" android:includeFontPadding="false" android:layout_below="@7F0A0F6C" android:layout_centerHorizontal="true"/>
+  </RelativeLayout>
+</FrameLayout>

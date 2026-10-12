@@ -1,0 +1,11 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A095F" android:layout_width="-1" android:layout_height="-1" android:scaleType="1"/>
+  <com.google.android.material.appbar.AppBarLayout android:orientation="1" android:id="@7F0A0072" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-2" app:elevation="0.000000dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
+    <com.google.android.material.appbar.CollapsingToolbarLayout android:id="@7F0A026D" android:layout_width="-1" android:layout_height="-2" app:layout_scrollFlags="0x0000000B" app:scrimAnimationDuration="150">
+      <include android:id="@7F0A0616" layout="@7F0D054C"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    <com.google.android.material.tabs.TabLayout android:id="@7F0A123F" android:background="@7F080D80" android:layout_width="-1" android:layout_height="38.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginStart="30.000000dip" android:layout_marginEnd="30.000000dip" app:tabGravity="0" app:tabIndicator="@00000000" app:tabIndicatorColor="@android:0106000D" app:tabIndicatorHeight="0.000000dip" app:tabMaxWidth="0.000000dip" app:tabMode="1" app:tabRippleColor="@00000000"/>
+  </com.google.android.material.appbar.AppBarLayout>
+  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A1804" android:layout_width="-1" android:layout_height="-1" app:layout_behavior="@7F111B33"/>
+  <com.yalla.ludochat.view.adapter.PageStatusView android:id="@7F0A0E39" android:background="#FF0F1D24" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

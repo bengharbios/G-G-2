@@ -1,0 +1,11 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2" android:maxWidth="194.000000dip" android:maxHeight="194.000000dip" android:layoutDirection="0">
+  <FrameLayout android:id="@7F0A047F" android:layout_width="-2" android:layout_height="-2" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:id="@7F0A0962" android:layout_width="-2" android:layout_height="-2" app:isRoundRect="true" app:roundRectRadius="4.000000dip"/>
+    <TextView android:textSize="13.000000dip" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000055" android:id="@7F0A154A" android:background="@7F080690" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:text="GIF"/>
+  </FrameLayout>
+  <View android:id="@7F0A1859" android:background="@7F080211" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="@7F0A047F" app:layout_constraintEnd_toEndOf="@7F0A047F" app:layout_constraintStart_toStartOf="@7F0A047F" app:layout_constraintTop_toTopOf="@7F0A047F"/>
+  <FrameLayout android:id="@7F0A051B" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="@7F0A047F" app:layout_constraintEnd_toEndOf="@7F0A047F" app:layout_constraintStart_toStartOf="@7F0A047F" app:layout_constraintTop_toTopOf="@7F0A047F">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0A13" android:focusable="false" android:clickable="false" android:layout_width="18.000000dip" android:layout_height="18.000000dip"/>
+  </FrameLayout>
+  <ImageView android:id="@7F0A0966" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:layout_marginRight="5.000000dip" android:src="@7F0811A7" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintRight_toLeftOf="@7F0A047F" app:layout_constraintTop_toTopOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

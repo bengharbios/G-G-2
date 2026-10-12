@@ -1,0 +1,6 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@android:01020000" android:drawable="@7F08008B"/>
+  <item android:id="@android:0102000D" android:left="2.000000dip" android:top="2.000000dip" android:right="2.000000dip" android:bottom="2.000000dip">
+    <clip android:drawable="@7F08008C"/>
+  </item>
+</layer-list>

@@ -1,0 +1,13 @@
+<com.yalla.games.common.view.TouchListenLinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="@7F0A0CA5" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_width="-1" android:layout_height="53.000000dip">
+    <com.yalla.games.common.view.TitleWithDiamondView android:id="@7F0A128E" android:background="@7F08021D" android:layout_width="-1" android:layout_height="53.000000dip"/>
+    <ImageView android:layout_gravity="0x00800003" android:id="@7F0A0A48" android:visibility="1" android:layout_width="28.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="10.000000dip" android:src="@7F0812B0" android:layout_marginStart="51.000000dip"/>
+    <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0AB4" android:visibility="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="11.000000dip" android:src="@7F0804D4" android:paddingStart="10.000000dip" android:layout_marginEnd="50.000000dip"/>
+  </FrameLayout>
+  <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="343.000000dip" android:layout_height="42.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:gravity="0x00000011" android:id="@7F0A158C" android:layout_width="171.500015dip" android:layout_height="-1" android:text="@7F111141"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:gravity="0x00000011" android:id="@7F0A158B" android:layout_width="171.500015dip" android:layout_height="-1" android:text="@7F111142"/>
+  </LinearLayout>
+  <View android:id="@7F0A1822" android:background="@7F08127C" android:layout_width="-1" android:layout_height="12.000000dip" android:layout_marginTop="11.000000dip"/>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A1867" android:background="@7F0812AF" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777211.000000dip"/>
+</com.yalla.games.common.view.TouchListenLinearLayout>

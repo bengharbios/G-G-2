@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:id="@7F0A0D38" android:clipChildren="false" android:clipToPadding="false" android:layout_width="336.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="5.000000dip" android:layout_centerHorizontal="true">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF666263" android:gravity="0x00000011" android:layout_width="85.000000dip" android:layout_height="30.000000dip" android:text="@7F111235" app:autoSizeMaxTextSize="12.000000sp" app:autoSizeMinTextSize="5.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF666263" android:gravity="0x00000011" android:id="@7F0A1679" android:layout_width="106.000000dip" android:layout_height="-1" android:lines="1" android:layout_marginStart="16777203.000000dip" android:layout_marginEnd="16777203.000000dip"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF666263" android:gravity="0x00000011" android:layout_width="88.000000dip" android:layout_height="-1" android:text="@7F111237"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF666263" android:gravity="0x00000011" android:layout_width="53.000000dip" android:layout_height="-1" android:text="@7F111238" android:layout_marginStart="16777211.000000dip"/>
+  </LinearLayout>
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A0ECB" android:layout_width="328.000000dip" android:layout_height="-1" android:layout_below="@7F0A0D38" android:layout_centerHorizontal="true">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EA2" android:layout_width="-1" android:layout_height="-1"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0CC2" android:paddingBottom="30.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A0D38" android:layout_centerHorizontal="true">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0AE3" android:layout_width="93.000000dip" android:layout_height="93.000000dip" android:src="@7F08085E"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FFABD8CB" android:layout_gravity="0x00000011" android:id="@7F0A16CE" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:text="@7F111E3E"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="47.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:id="@7F0A1443" android:layout_width="-2" android:layout_height="-2" android:maxWidth="260.000000dip" android:maxLines="1" android:singleLine="true"/>
+  <com.yalla.games.common.view.AutoMirrorImageView android:id="@7F0A0786" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="5.000000dip" app:srcCompat="@7F080D9B"/>
+</merge>

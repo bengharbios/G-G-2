@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="-1">
+  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A05E0" android:layout_width="21.000000dip" android:layout_height="21.000000dip" android:indeterminateDrawable="@7F0808F8" android:indeterminateBehavior="1"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="17.000000dip" android:textStyle="0x00000001" android:textColor="#B2FFFFFF" android:id="@7F0A167C" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="25.000000dip"/>
+</merge>

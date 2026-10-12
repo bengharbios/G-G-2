@@ -1,0 +1,4 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A050B" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1091" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  <com.yalla.ludochat.view.adapter.PageStatusView android:id="@7F0A0E38" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

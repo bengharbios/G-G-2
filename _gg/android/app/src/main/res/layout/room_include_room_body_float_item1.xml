@@ -1,0 +1,1 @@
+<com.yalla.ludochat.view.broadcast.RoomRunwayView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A05D0" android:scrollbars="0x00000000" android:clickable="false" android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2" app:scrollable="false"/>

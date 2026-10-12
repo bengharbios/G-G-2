@@ -1,0 +1,15 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0211" android:layout_width="-1" android:layout_height="-1">
+  <View android:id="@7F0A1008" android:background="@7F080EEE" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A100A" app:layout_constraintTop_toTopOf="0"/>
+  <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:id="@7F0A0A8D" android:layout_width="-1" android:layout_height="32.000000dip" android:scaleType="1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A1008" app:play_on_attach="true" app:source="star_light.svga"/>
+  <ImageView android:visibility="2" android:layout_width="-1" android:layout_height="115.000000dip" android:src="@7F080B24" android:scaleType="1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A1008"/>
+  <View android:id="@7F0A1009" android:background="@7F080EEF" android:layout_width="-1" android:layout_height="4.000000dip" app:layout_constraintTop_toBottomOf="@7F0A1008"/>
+  <RelativeLayout android:id="@7F0A100A" android:clipChildren="false" android:layout_width="-2" android:layout_height="51.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <com.yalla.games.common.view.UserHeadView android:id="@7F0A17AD" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:layout_centerVertical="true" android:layout_marginStart="5.000000dip"/>
+  </RelativeLayout>
+  <FrameLayout android:id="@7F0A0ABC" android:layout_width="28.000000dip" android:layout_height="51.000000dip" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true" app:layout_constraintBottom_toBottomOf="@7F0A100A" app:layout_constraintEnd_toEndOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:layout_width="28.000000dip" android:layout_height="28.000000dip" android:src="@7F080D5D"/>
+  </FrameLayout>
+  <com.yalla.ludochat.view.indicator.YlTableLayout android:id="@7F0A1248" android:layout_width="0.000000dip" android:layout_height="51.000000dip" android:layout_marginBottom="16777210.000000dip" android:layout_marginEnd="4.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A1008" app:layout_constraintEnd_toStartOf="@7F0A0ABC" app:layout_constraintStart_toEndOf="@7F0A100A"/>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18C6" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A1009"/>
+  <ViewStub android:id="@7F0A18D2" android:layout="@7F0D05B4" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="4.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

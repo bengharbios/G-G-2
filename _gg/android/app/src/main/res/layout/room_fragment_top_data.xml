@@ -1,0 +1,11 @@
+<com.yalla.ludochat.view.recyclerview.Vp2ChildSmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0EC2" android:layout_width="-1" android:layout_height="-1">
+  <androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@7F0A10A9" android:clipChildren="false" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2">
+    <com.google.android.material.appbar.AppBarLayout android:orientation="1" android:id="@7F0A0073" android:background="@7F06052B" android:clipChildren="false" android:layout_width="-1" android:layout_height="-2" app:elevation="0.000000dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
+      <com.google.android.material.appbar.CollapsingToolbarLayout android:clipChildren="false" android:layout_width="-1" android:layout_height="-2" app:layout_scrollFlags="0x0000000B" app:scrimAnimationDuration="150">
+        <include android:id="@7F0A129F" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" layout="@7F0D0596"/>
+      </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1098" android:background="@7F080260" android:padding="8.000000dip" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2" android:layout_marginStart="9.000000dip" android:layout_marginEnd="9.000000dip" app:layout_behavior="@7F111B33"/>
+    <com.yalla.ludochat.view.RankRoomLastHourThree android:id="@7F0A0E8B" android:visibility="2" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="16777196.000000dip" app:layout_behavior="@7F111B33" app:layout_constraintBottom_toBottomOf="@7F0A129F" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</com.yalla.ludochat.view.recyclerview.Vp2ChildSmartRefreshLayout>

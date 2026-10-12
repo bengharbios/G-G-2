@@ -1,53 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_include_room_body.xml — منطقة الجسم الرئيسية (مطابق لـ Yalla Ludo)
-  تجمع: سكرة المايك + الأريكة + الشريط الجانبي + الرسائل العائمة
--->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/room_body_container"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1">
-
-    <!-- المنطقة اليسرى: مقاعد + أريكة + دردشة -->
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="55dp">
-
-        <!-- مقاعد المايك -->
-        <include layout="@layout/room_include_room_mic" />
-
-        <!-- الأريكة (Sofa) -->
-        <include layout="@layout/room_include_room_sofa" />
-
-        <!-- منطقة الرسائل -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#40000000">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_chat_messages"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:clipToPadding="false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <!-- الشريط الجانبي الأيمن -->
-    <include
-        layout="@layout/room_include_room_body_sidebar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical" />
-
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03F2" android:layout_width="-1" android:layout_height="0.000000dip">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1057" android:paddingTop="3.000000dip" android:paddingBottom="20.000000dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:overScrollMode="2" app:stackFromEnd="true"/>
+  <include android:layout_gravity="0x00800055" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="36.000000dip" layout="@7F0D043D"/>
+  <ViewStub android:layout_gravity="0x00000050" android:id="@7F0A18D0" android:visibility="2" android:layout="@7F0D0542" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="10.000000dip"/>
+  <include android:layout_gravity="0x00800053" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="12.000000dip" layout="@7F0D03C6"/>
+  <com.yalla.ludochat.view.ReturnRoomView android:layout_gravity="0x00800053" android:id="@7F0A0ED6" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="32.000000dip"/>
+  <com.yalla.ludochat.view.GrowthBonusTipView android:layout_gravity="0x00800053" android:id="@7F0A05A5" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip" android:layout_marginStart="15.000000dip"/>
+  <View android:id="@7F0A17C1" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
 </FrameLayout>

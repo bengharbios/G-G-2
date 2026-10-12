@@ -1,0 +1,3 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:id="@7F0A0D14" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="@7F060544" android:id="@7F0A16A8" android:layout_width="-2" android:layout_height="-2"/>
+</LinearLayout>

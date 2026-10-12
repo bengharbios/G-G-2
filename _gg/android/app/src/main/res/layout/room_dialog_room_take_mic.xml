@@ -1,76 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
-    android:padding="20dp"
-    android:gravity="center_horizontal">
-
-    <com.bengharbios.ggames.view.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:text="الجلوس على المايك" />
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/room_ic_input_mic"
-        android:layout_marginTop="12dp" />
-
-    <com.bengharbios.ggames.view.CustomTextView
-        android:id="@+id/tv_take_mic_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="#B3FFFFFF"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="هل تريد الجلوس على هذا المايك؟" />
-
-    <com.bengharbios.ggames.view.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:textColor="#80FFFFFF"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="عند الجلوس، سيمكنك التحدث مع باقي المايكات" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
-        <com.bengharbios.ggames.view.CustomTextView
-            android:id="@+id/btn_take_mic_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:background="@drawable/dialog_action_bg"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:text="إلغاء" />
-
-        <com.bengharbios.ggames.view.CustomTextView
-            android:id="@+id/btn_take_mic_join"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/dialog_action_confirm"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="انضم للمايك" />
-    </LinearLayout>
-
-</LinearLayout>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:background="@7F080177" android:layout_width="280.000000dip" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F060072" android:gravity="0x00000011" android:id="@7F0A125A" android:layout_width="-2" android:layout_height="69.000000dip" android:text="@7F112166" android:drawablePadding="10.000000dip" android:drawableStart="@7F080C0D" app:layout_constraintBottom_toTopOf="@7F0A17DB" app:layout_constraintStart_toStartOf="@7F0A0621" app:layout_constraintTop_toTopOf="0"/>
+  <View android:id="@7F0A17DB" android:background="@7F0604D8" android:layout_width="-1" android:layout_height="1.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A125A"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F060072" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A0D71" android:layout_width="-2" android:layout_height="69.000000dip" android:text="@7F11207C" android:includeFontPadding="false" android:drawablePadding="10.000000dip" android:drawableStart="@7F080C0A" app:layout_constraintStart_toStartOf="@7F0A0621" app:layout_constraintTop_toBottomOf="@7F0A17DB"/>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A0D72" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="lockMic,v_dialog_mic"/>
+  <View android:id="@7F0A17C3" android:background="@7F0604D8" android:layout_width="-1" android:layout_height="1.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0D71"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textStyle="0x00000001" android:textColor="@7F060072" android:gravity="0x00000010" android:layout_gravity="0x00000001" android:id="@7F0A0621" android:layout_width="-2" android:layout_height="69.000000dip" android:text="@7F11042C" android:includeFontPadding="false" android:drawablePadding="10.000000dip" android:drawableStart="@7F080A8B" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A17C3"/>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A0622" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="inviteMic,vLine2"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

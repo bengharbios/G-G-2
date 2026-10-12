@@ -1,0 +1,7 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0F6C" android:layout_width="360.000000dip" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0E96" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip" android:layout_marginBottom="15.000000dip"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0CBA" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0AE3" android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:src="@7F0811EA"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF196D51" android:layout_gravity="0x00000011" android:id="@7F0A16CE" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F111E34"/>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="322.000000dip" android:layout_height="500.000000dip">
+  <RelativeLayout android:id="@7F0A0FBE" android:layout_width="-1" android:layout_height="38.000000dip">
+    <ImageView android:layout_width="-1" android:layout_height="-2" android:src="@7F080743"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="@7F060544" android:id="@7F0A170B" android:layout_width="-2" android:layout_height="-2" android:text="@7F1122F1" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    <ImageView android:id="@7F0A07F0" android:layout_width="-2" android:layout_height="-2" android:src="@7F08044E" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <FrameLayout android:background="@7F0808EE" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A18EB" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="12.000000dip" android:layout_marginBottom="24.000000dip" android:layout_marginStart="16.000000dip" android:layout_marginEnd="16.000000dip"/>
+  </FrameLayout>
+</LinearLayout>

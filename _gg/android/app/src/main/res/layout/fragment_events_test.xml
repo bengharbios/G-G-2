@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.bannerpager.BannerPager android:id="@7F0A00D9" android:visibility="0" android:layout_width="-1" android:layout_height="-2" app:aspectRate="0.241000" app:banner_empty_img="@7F0803BF" app:is_need_trun="true" app:place_holder_img="@7F0803BF" app:point_normal_color="#80FFFFFF" app:point_radius="3.000000dip" app:point_selected_color="@android:0106000B" app:points_marginBottom="10.000000dip" app:points_marginStart="7.000000dip" app:points_space_size="6.000000dip"/>
+    <ScrollView android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1">
+      <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="@7F0A0C2B" android:paddingTop="4.000000dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2"/>
+    </ScrollView>
+  </LinearLayout>
+  <RelativeLayout android:clickable="true" android:layout_width="-1" android:layout_height="150.000000dip" android:layout_alignParentTop="true">
+    <EditText android:id="@7F0A1265" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="10.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginRight="10.000000dip" android:hint="输入活动地址"/>
+    <Button android:id="@7F0A1264" android:layout_width="150.000000dip" android:layout_height="50.000000dip" android:text="确定" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+</RelativeLayout>

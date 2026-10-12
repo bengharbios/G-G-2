@@ -1,0 +1,13 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="395.500024dip">
+  <LinearLayout android:orientation="1" android:id="@7F0A0C38" android:layout_width="-1" android:layout_height="-1">
+    <RelativeLayout android:orientation="0" android:id="@7F0A0D18" android:background="@7F0805A7" android:visibility="2" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginTop="5.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="15.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip">
+      <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FF626262" android:layout_width="-2" android:layout_height="-2" android:text="@7F1113F2" android:layout_centerVertical="true"/>
+      <ImageView android:id="@7F0A07F5" android:layout_width="37.500003dip" android:layout_height="23.000000dip" android:layout_centerVertical="true" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A055A" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="5.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0CC6" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:layout_width="106.000000dip" android:layout_height="107.000000dip" android:src="@7F08085E"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="#FFABD8CB" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="30.000000dip" android:text="@7F111E35"/>
+  </LinearLayout>
+</RelativeLayout>

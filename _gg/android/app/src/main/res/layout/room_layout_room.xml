@@ -1,47 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_layout_room.xml — الغرفة الرئيسية (مطابق لـ Yalla Ludo v1.5.1.0)
-  
-  البنية:
-  - FrameLayout (الجذر)
-    - ImageView (خلفية الغرفة)
-    - LinearLayout (محتوى عمودي)
-      - LinearLayout (هيدر علوي: مالك + أزرار)
-      - room_include_room_body (مقاعد + أريكة + دردشة + شريط جانبي)
-      - ConstraintLayout
-        - room_include_room_input (شريط إدخال سفلي)
--->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/roomRoot"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0D8A7A">
-
-    <!-- خلفية الغرفة (تدرج لوني) -->
-    <ImageView
-        android:id="@+id/iv_room_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/room_bg_default" />
-
-    <!-- المحتوى الرئيسي -->
-    <LinearLayout
-        android:id="@+id/ll_room_content"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- الهيدر العلوي -->
-        <include layout="@layout/room_include_room_top" />
-
-        <!-- منطقة الجسم: مقاعد + أريكة + دردشة + شريط جانبي -->
-        <include layout="@layout/room_include_room_body" />
-
-        <!-- الشريط السفلي (إدخال + مايك + هدية) -->
-        <include layout="@layout/room_include_room_input" />
-
-    </LinearLayout>
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0253" android:background="@7F080161" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+  <com.common.videoplayer.view.VideoBackgroundWrapper android:id="@7F0A0FE4" android:layout_width="-1" android:layout_height="-1"/>
+  <ImageView android:id="@7F0A0A8C" android:layout_width="-1" android:layout_height="-1" android:src="@7F080161" android:scaleType="1"/>
+  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A0BDD" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1">
+    <androidx.constraintlayout.widget.ConstraintLayout android:orientation="1" android:id="@7F0A0BE1" android:clipChildren="false" android:layout_width="-1" android:layout_height="-2" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+      <include android:layout_width="-1" android:layout_height="50.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" layout="@7F0D0444"/>
+      <include android:layout_width="-1" android:layout_height="50.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" layout="@7F0D0442"/>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1059" android:paddingTop="5.000000dip" android:paddingBottom="3.000000dip" android:focusableInTouchMode="false" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="110.000000dip" android:overScrollMode="2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include android:id="@7F0A03F2" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toTopOf="@7F0A00CE" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0BE1" layout="@7F0D0438"/>
+    <include android:id="@7F0A0FF7" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toTopOf="@7F0A00CE" app:layout_constraintTop_toBottomOf="@7F0A0BE1" layout="@7F0D0439"/>
+    <com.yalla.ludochat.view.svga.RocketChestSVGAView android:id="@7F0A0FD2" android:layout_width="56.000000dip" android:layout_height="56.000000dip" android:layout_marginBottom="32.000000dip" android:layout_marginEnd="60.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A03F2" app:layout_constraintBottom_toTopOf="@7F0A00CE" app:layout_constraintEnd_toEndOf="0"/>
+    <com.yalla.ludochat.view.RedPacketEntryView android:id="@7F0A0EBB" android:visibility="2" android:layout_width="65.000000dip" android:layout_height="-2" android:layout_marginEnd="55.000000dip" app:layout_constraintBottom_toTopOf="@7F0A0FD2" app:layout_constraintEnd_toEndOf="0" app:layout_goneMarginBottom="38.000000dip"/>
+    <com.yalla.ludochat.view.likeview.diverge.LikeDivergeView android:id="@7F0A0B97" android:layout_width="60.000000dip" android:layout_height="135.000000dip" android:layout_marginBottom="15.000000dip" android:layout_marginEnd="50.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A03F2" app:layout_constraintBottom_toTopOf="@7F0A111C" app:layout_constraintEnd_toEndOf="0"/>
+    <com.yalla.ludochat.view.likeview.doubleclick.DoubleClickLikePanel android:id="@7F0A033F" android:layout_width="-1" android:layout_height="-1" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <com.yalla.ludochat.view.StaticRoomBottomView android:id="@7F0A111C" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+    <com.yalla.ludochat.view.RoomBottomInputView android:id="@7F0A0FD4" android:visibility="2" android:layout_width="-1" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
+    <androidx.constraintlayout.widget.Barrier android:id="@7F0A00CE" android:layout_width="-2" android:layout_height="-2" app:barrierDirection="2" app:constraint_referenced_ids="staticRoomBottomView,roomBottomInputView"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  <com.yalla.ludochat.view.CountdownTimeView android:id="@7F0A0259" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <com.yalla.ludochat.view.StopwatchView android:id="@7F0A1122" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
+  <com.yalla.ludochat.view.ScoreboardSlideView android:id="@7F0A10A4" android:visibility="2" android:layout_width="-2" android:layout_height="44.000000dip"/>
+  <com.yalla.ludochat.view.GuessWhatSlideView android:id="@7F0A05A6" android:visibility="2" android:layout_width="-2" android:layout_height="-2" app:isSnapToEdge="false"/>
+  <com.yalla.ludochat.view.RoomTopicFloatingView android:layout_gravity="0x00000001" android:id="@7F0A0FE3" android:focusable="true" android:focusableInTouchMode="true" android:visibility="0" android:clickable="true" android:layout_width="254.000000dip" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:minHeight="72.000000dip"/>
+  <com.yalla.ludochat.view.SafeWebFloatingView android:layout_gravity="0x00800053" android:id="@7F0A109A" android:visibility="2" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:layout_marginBottom="115.000000dip" android:layout_marginStart="12.000000dip"/>
+  <com.yalla.ludochat.view.ThunderControlView android:layout_gravity="0x00000051" android:id="@7F0A1284" android:visibility="2" android:layout_width="90.000000dip" android:layout_height="90.000000dip" android:layout_marginBottom="60.000000dip"/>
+  <com.common.videoplayer.view.AlphaVideoView android:id="@7F0A0DCC" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yy.yyeva.view.EvaAnimViewV3 android:id="@7F0A0301" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.ludochat.view.likeview.particle.FallingSurfaceView android:id="@7F0A03AB" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.ludochat.view.CustomStrokeTextView android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00800053" android:id="@7F0A10DC" android:background="@7F0809FC" android:visibility="2" android:layout_width="60.000000dip" android:layout_height="25.000000dip" android:layout_marginBottom="55.000000dip" android:text="@7F1105EF" android:layout_marginStart="12.000000dip" app:stroke_color="@7F060327" app:stroke_width="1.000000dip"/>
+  <FrameLayout android:layout_gravity="0x00800055" android:id="@7F0A03D2" android:visibility="2" android:layout_width="120.000000dip" android:layout_height="120.000000dip" android:layout_marginBottom="60.000000dip" android:layout_marginEnd="60.000000dip">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A067C" android:layout_width="120.000000dip" android:layout_height="120.000000dip"/>
+    <com.yalla.games.common.view.NumberFrameLayout android:id="@7F0A0241" android:layout_width="-2" android:layout_height="22.000000dip" android:layout_marginTop="20.000000dip" android:layout_marginStart="15.000000dip"/>
+    <ImageView android:layout_width="15.000000dip" android:layout_height="15.000000dip" android:layout_marginTop="27.000000dip" android:src="@7F0806CD" android:scaleType="3" android:layout_marginEnd="2.000000dip"/>
+  </FrameLayout>
+  <com.yalla.ludochat.view.h5.RoomWebViewWrapper android:id="@7F0A0FE7" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
 </FrameLayout>

@@ -1,0 +1,11 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F080213" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A0F6C" android:layout_width="-1" android:layout_height="-1">
+    <androidx.viewpager.widget.ViewPager android:id="@7F0A1867" android:layout_width="-1" android:layout_height="-1"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0C47" android:padding="16.000000dip" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+    <View android:id="@7F0A1892" android:layout_width="-2" android:layout_height="0.000000dip"/>
+    <FrameLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:layout_below="@7F0A1892">
+      <ImageView android:layout_gravity="0x00800003" android:id="@7F0A097E" android:layout_width="29.000000dip" android:layout_height="29.000000dip" android:src="@7F080747" android:layout_marginStart="18.000000dip"/>
+      <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0A78" android:layout_width="29.000000dip" android:layout_height="29.000000dip" android:src="@7F080745" android:layout_marginEnd="18.000000dip"/>
+    </FrameLayout>
+  </RelativeLayout>
+</FrameLayout>

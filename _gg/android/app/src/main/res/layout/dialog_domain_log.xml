@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:id="@7F0A1650" android:layout_width="-1" android:layout_height="100.000000dip" android:layout_marginTop="70.000000dip"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A1650"/>
+  <Button android:id="@7F0A012D" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="关闭" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
+  <Button android:id="@7F0A0131" android:layout_width="-2" android:layout_height="-2" android:text="复制" android:layout_alignTop="@7F0A012D" android:layout_marginEnd="10.000000dip" android:layout_toStartOf="@7F0A012D"/>
+  <Button android:id="@7F0A012C" android:layout_width="-2" android:layout_height="-2" android:text="清空" android:layout_alignTop="@7F0A0131" android:layout_marginEnd="10.000000dip" android:layout_toStartOf="@7F0A0131"/>
+  <ScrollView android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="80.000000dip" android:layout_alignParentEnd="true">
+    <LinearLayout android:orientation="1" android:id="@7F0A0C12" android:layout_width="-2" android:layout_height="-1" android:alpha="0.400000"/>
+  </ScrollView>
+</RelativeLayout>

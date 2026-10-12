@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:id="@7F0A176A" android:layout_width="-1" android:layout_height="-2">
+    <ImageButton android:id="@7F0A1769" android:layout_centerVertical="true" style="@7F12046E"/>
+    <ImageView android:id="@7F0A1784" android:layout_width="@7F07028F" android:layout_height="@7F07028E" android:src="?7F0405A6" android:layout_centerInParent="true"/>
+    <ImageView android:id="@7F0A1767" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_alignParentEnd="true" style="@7F12046B"/>
+  </RelativeLayout>
+  <View android:id="@7F0A176B" android:visibility="1" style="@7F12046F"/>
+  <com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView android:id="@7F0A176C" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+      <EditText android:id="@7F0A1772" style="@7F120472"/>
+      <ImageView android:id="@7F0A1775" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_margin="@7F070290" android:adjustViewBounds="true"/>
+    </LinearLayout>
+  </com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView>
+  <View android:id="@7F0A176E" style="@7F12046F"/>
+  <LinearLayout android:id="@7F0A176D" style="@7F120470">
+    <TextView android:id="@7F0A1768" style="@7F12046C"/>
+    <Button android:id="@7F0A1776" style="@7F120471"/>
+  </LinearLayout>
+</LinearLayout>

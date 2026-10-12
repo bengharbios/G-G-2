@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A04C3" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_gravity="0x00800053" android:layout_width="308.000000dip" android:layout_height="-2" android:layout_marginBottom="45.000000dip">
+    <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A0EA0" android:background="@7F08028D" android:layout_width="-2" android:layout_height="-2"/>
+  </FrameLayout>
+</FrameLayout>

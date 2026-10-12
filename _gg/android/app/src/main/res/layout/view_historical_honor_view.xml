@@ -1,0 +1,7 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0803DE" android:paddingTop="12.000000dip" android:layout_width="-1" android:layout_height="-1">
+  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A0E9C" android:scrollbars="0x00000000" android:clipToPadding="false" android:layout_width="360.000000dip" android:layout_height="-1" android:layout_marginTop="28.000000dip"/>
+  <FrameLayout android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="333.000000dip" android:layout_height="15.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginStart="27.000000dip">
+    <ImageView android:layout_gravity="0x00800013" android:id="@7F0A0AB9" android:layout_width="20.000000dip" android:layout_height="15.000000dip"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFF993" android:layout_gravity="0x00800013" android:id="@7F0A11A0" android:layout_width="-2" android:layout_height="-2" android:shadowColor="#FFC5702A" android:shadowDx="0.000000" android:shadowDy="0.000000" android:shadowRadius="3.000000" android:layout_marginStart="16.000000dip"/>
+  </FrameLayout>
+</FrameLayout>

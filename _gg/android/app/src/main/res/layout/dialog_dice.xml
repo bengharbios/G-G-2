@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:orientation="0" android:id="@7F0A0CA5" android:layout_width="-1" android:layout_height="-1">
+    <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18C8" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true"/>
+    <ImageView android:id="@7F0A0803" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F081146" android:scaleType="7" android:layout_centerVertical="true" android:layout_alignParentStart="true"/>
+    <ImageView android:id="@7F0A0806" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F081147" android:scaleType="7" android:layout_centerVertical="true" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+  <ImageView android:id="@7F0A0861" android:layout_width="45.000000dip" android:layout_height="41.000000dip" android:layout_marginTop="32.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

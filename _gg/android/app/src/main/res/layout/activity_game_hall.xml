@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0D88" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A049A" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:id="@7F0A0CA5" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
+      <FrameLayout android:id="@7F0A049C" android:background="@7F0805B4" android:layout_width="-2" android:layout_height="-2">
+        <com.yalla.yallagames.main.MainHeaderView android:id="@7F0A0D89" android:layout_width="-1" android:layout_height="51.000000dip"/>
+      </FrameLayout>
+      <com.yalla.yallagames.main.MainRtlViewPager android:id="@7F0A1803" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000"/>
+      <include android:id="@7F0A0563" android:layout_width="-1" android:layout_height="75.000000dip" layout="@7F0D05E0"/>
+    </LinearLayout>
+  </FrameLayout>
+  <com.yalla.games.common.view.CoverView android:id="@7F0A03B2" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000053" android:id="@7F0A0845" android:visibility="2" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:layout_marginBottom="25.000000dip" android:src="@7F08058F" android:rotation="-110.000000" android:layout_marginEnd="72.000000dip"/>
+  <FrameLayout android:id="@7F0A0473" android:layout_width="-1" android:layout_height="-1">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF9B9B9B" android:gravity="0x00000011" android:layout_gravity="0x00000005" android:id="@7F0A16CA" android:background="@7F081187" android:paddingLeft="7.000000dip" android:visibility="2" android:layout_width="89.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="16.000000dip" android:text="@7F11224B" android:includeFontPadding="false"/>
+    <include android:id="@7F0A05B0" android:visibility="2" layout="@7F0D01FF"/>
+  </FrameLayout>
+</FrameLayout>

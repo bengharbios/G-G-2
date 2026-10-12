@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A024B" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.ludochat.view.GiftViewPage android:layout_gravity="0x00000050" android:id="@7F0A18AB" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="4.000000dip"/>
+</FrameLayout>

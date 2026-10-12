@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:id="@7F0A0CA5" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D0214"/>
+  <LinearLayout android:orientation="1" android:background="#FFE0F9F3" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777206.000000dip" android:layout_below="@7F0A061A">
+    <LinearLayout android:gravity="0x00000010" android:id="@7F0A0D37" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip">
+      <ImageView android:layout_width="15.000000dip" android:layout_height="18.000000dip" android:src="@7F080083"/>
+      <TextView android:textSize="11.000000sp" android:textColor="#FF65706C" android:id="@7F0A1279" android:layout_width="0.000000dip" android:layout_height="-2" android:text="@7F111487" android:layout_weight="1.000000" android:layout_marginStart="3.500000dip"/>
+      <com.yalla.game.base.view.StrokeButton android:textSize="12.000000sp" android:gravity="0x00000011" android:id="@7F0A0161" android:background="@7F080300" android:layout_width="91.000000dip" android:layout_height="36.000000dip" android:text="@7F111488" style="@7F120191"/>
+    </LinearLayout>
+    <View android:id="@7F0A1823" android:background="#FF000000" android:layout_width="-1" android:layout_height="1.000000dip" android:alpha="0.100000"/>
+    <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+      <com.yalla.games.common.album.view.ViewSelect android:id="@7F0A1879" android:background="#FF184C35" android:layout_width="-1" android:layout_height="120.000000dip" android:layout_alignParentBottom="true"/>
+      <androidx.recyclerview.widget.RecyclerView android:gravity="0x00000011" android:id="@7F0A0069" android:visibility="0" android:layout_width="-1" android:layout_height="-1" android:layout_above="@7F0A1879"/>
+      <LinearLayout android:id="@7F0A0C1C" android:background="#7F000000" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:onClick="onGoneListView">
+        <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0068" android:background="#FFFFFFFF" android:scrollbars="0x00000200" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="180.000000dip"/>
+      </LinearLayout>
+      <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0C4E" android:visibility="2" android:layout_width="303.000000dip" android:layout_height="163.000000dip" android:layout_centerInParent="true">
+        <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08F1" android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:src="@7F0811EA"/>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF75CFB0" android:layout_gravity="0x00000011" android:id="@7F0A1707" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F110BFD"/>
+      </LinearLayout>
+    </RelativeLayout>
+  </LinearLayout>
+</RelativeLayout>

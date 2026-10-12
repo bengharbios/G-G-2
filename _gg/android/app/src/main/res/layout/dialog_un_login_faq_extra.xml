@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="6.000000dip" android:layout_marginBottom="6.000000dip">
+    <RelativeLayout android:layout_gravity="0x00000011" android:id="@7F0A03B3" android:background="@7F080584" android:layout_width="156.000000dip" android:layout_height="46.500004dip" android:layout_marginEnd="8.000000dip">
+      <ImageView android:layout_gravity="0x00000010" android:layout_width="33.000000dip" android:layout_height="28.000000dip" android:layout_marginLeft="12.000000dip" android:src="@7F080585" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1531" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="43.000000dip" android:layout_marginRight="10.000000dip" android:text="@7F111BF1" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+      <ImageView android:id="@7F0A08C8" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginRight="7.000000dip" android:src="@7F080945" android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_gravity="0x00000011" android:id="@7F0A03BB" android:background="@7F080584" android:layout_width="156.000000dip" android:layout_height="46.500004dip">
+      <ImageView android:layout_gravity="0x00000010" android:layout_width="29.000000dip" android:layout_height="27.000000dip" android:layout_marginLeft="12.000000dip" android:src="@7F080586" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1604" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="42.000000dip" android:layout_marginRight="10.000000dip" android:text="@7F111E28" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
+    </RelativeLayout>
+  </LinearLayout>
+</FrameLayout>

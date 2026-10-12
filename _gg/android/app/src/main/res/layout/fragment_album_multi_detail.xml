@@ -1,0 +1,5 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0CA5" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0D0213"/>
+  <com.yalla.games.common.album.view.ViewSelect android:id="@7F0A1879" android:background="#FF184C35" android:layout_width="-1" android:layout_height="120.000000dip" android:layout_alignParentBottom="true"/>
+  <androidx.viewpager.widget.ViewPager android:id="@7F0A18C8" android:layout_width="-1" android:layout_height="-1" android:layout_above="@7F0A1879" android:layout_below="@7F0A061A"/>
+</RelativeLayout>

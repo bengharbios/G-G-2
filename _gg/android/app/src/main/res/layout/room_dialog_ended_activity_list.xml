@@ -1,0 +1,6 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0EC2" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1030" android:layout_width="-1" android:layout_height="-1"/>
+    <com.yalla.ludochat.view.EmptyActivityView android:id="@7F0A035D" android:layout_width="-1" android:layout_height="-1"/>
+  </FrameLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

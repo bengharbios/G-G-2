@@ -1,0 +1,13 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_pressed="false" android:drawable="@android:0106000D">
+    <shape>
+      <corners android:bottomLeftRadius="5.000000dip" android:bottomRightRadius="5.000000dip"/>
+    </shape>
+  </item>
+  <item android:state_pressed="true">
+    <shape>
+      <solid android:color="@7F0600AF"/>
+      <corners android:bottomLeftRadius="5.000000dip" android:bottomRightRadius="5.000000dip"/>
+    </shape>
+  </item>
+</selector>

@@ -1,0 +1,8 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="50.000000dip" android:layout_height="40.000000dip">
+  <RelativeLayout android:layout_gravity="0x00000011" android:layout_width="38.000000dip" android:layout_height="40.000000dip">
+    <ImageView android:layout_width="38.000000dip" android:layout_height="38.000000dip" android:src="@7F080F68" android:layout_centerHorizontal="true"/>
+    <ImageView android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="5.000000dip" android:src="@7F080FE1" android:layout_centerHorizontal="true"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1618" android:background="@7F080F69" android:layout_width="38.000000dip" android:layout_height="11.000000dip" android:layout_marginTop="29.000000dip" android:layout_centerHorizontal="true" android:textDirection="3"/>
+    <ImageView android:id="@7F0A08C8" android:visibility="2" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_marginTop="2.000000dip" android:src="@7F080945" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+</merge>

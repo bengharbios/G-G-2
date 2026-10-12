@@ -1,0 +1,8 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:paddingTop="14.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <View android:layout_gravity="0x00000001" android:background="@7F080A40" android:layout_width="360.000000dip" android:layout_height="24.000000dip" android:layout_marginTop="172.000000dip"/>
+  <LinearLayout android:layout_gravity="0x00000011" android:orientation="0" android:layout_width="326.000000dip" android:layout_height="170.000000dip" android:layout_marginStart="17.000000dip" android:layout_marginEnd="17.000000dip">
+    <com.yalla.ludochat.view.ThemeItemView android:gravity="0x00000011" android:id="@7F0A1280" android:layout_width="-2" android:layout_height="-1" android:layout_weight="1.000000" android:layout_marginEnd="3.000000dip"/>
+    <com.yalla.ludochat.view.ThemeItemView android:gravity="0x00000011" android:id="@7F0A1281" android:visibility="1" android:layout_width="-2" android:layout_height="-1" android:layout_weight="1.000000" android:layout_marginStart="3.000000dip" android:layout_marginEnd="3.000000dip"/>
+    <com.yalla.ludochat.view.ThemeItemView android:gravity="0x00000011" android:id="@7F0A1282" android:visibility="1" android:layout_width="-2" android:layout_height="-1" android:layout_weight="1.000000" android:layout_marginStart="3.000000dip"/>
+  </LinearLayout>
+</FrameLayout>

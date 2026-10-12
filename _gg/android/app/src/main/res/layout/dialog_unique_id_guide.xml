@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:background="@7F0802A4" android:layout_width="-1" android:layout_height="226.000000dip" android:layoutDirection="0">
+  <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000dip" android:textColor="@7F060544" android:id="@7F0A1707" android:layout_width="186.000000dip" android:layout_height="58.000000dip" android:layout_marginTop="20.000000dip" android:layout_marginStart="127.000000dip" android:layout_marginEnd="35.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:stroke_color="#FF1B6E77" app:stroke_width="1.000000dip"/>
+  <ScrollView android:layout_width="168.000000dip" android:layout_height="90.000000dip" android:layout_marginStart="154.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A1707">
+    <LinearLayout android:orientation="1" android:id="@7F0A0C79" android:layout_width="-1" android:layout_height="-2"/>
+  </ScrollView>
+  <RelativeLayout android:id="@7F0A0F80" android:layout_width="210.000000dip" android:layout_height="-2" android:layout_marginBottom="12.000000dip" android:layout_marginStart="128.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toStartOf="0">
+    <com.yalla.game.base.view.StrokeButton android:textSize="17.000000sp" android:gravity="0x00000011" android:id="@7F0A0173" android:background="@7F080300" android:layout_width="95.000000dip" android:layout_height="37.000000dip" android:text="@7F111CD3" android:layout_centerInParent="true" android:textAllCaps="false" style="@7F120191"/>
+  </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

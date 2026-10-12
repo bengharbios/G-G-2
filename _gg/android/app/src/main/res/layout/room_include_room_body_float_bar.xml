@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="0.000000dip">
+  <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2">
+    <ViewStub android:id="@7F0A18D1" android:background="@7F060544" android:layout="@7F0D043A" android:layout_width="-1" android:layout_height="-2"/>
+    <ViewStub android:id="@7F0A18D3" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D043E" android:layout_width="-1" android:layout_height="-2"/>
+  </FrameLayout>
+  <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A036A" android:layout_width="-1" android:layout_height="245.000000dip" android:layout_marginTop="35.000000dip"/>
+    <LinearLayout android:orientation="1" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="180.000000dip">
+      <ViewStub android:id="@7F0A18CC" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D043B" android:layout_width="-2" android:layout_height="-2" android:minHeight="50.000000dip"/>
+      <ViewStub android:id="@7F0A18CD" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D04F9" android:layout_width="-1" android:layout_height="-2"/>
+      <ViewStub android:id="@7F0A18CE" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D04F9" android:layout_width="-1" android:layout_height="-2"/>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

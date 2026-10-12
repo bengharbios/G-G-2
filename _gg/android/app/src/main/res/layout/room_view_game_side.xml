@@ -1,0 +1,5 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:id="@7F0A06B6" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:src="@7F080ABF" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+  <Chronometer android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000001" android:id="@7F0A130C" android:layout_width="-1" android:layout_height="-2" android:text="@7F11202A" android:lines="1" app:layout_constraintTop_toBottomOf="@7F0A06B6"/>
+  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A0E49" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:indeterminateTint="@7F060544" app:layout_constraintBottom_toBottomOf="@7F0A06B6" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+</merge>

@@ -1,0 +1,13 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <ImageView android:id="@7F0A0A48" android:layout_width="25.000000dip" android:layout_height="30.000000dip" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.HeadView android:id="@7F0A05E3" android:layout_width="64.000000dip" android:layout_height="64.000000dip" android:layout_marginTop="50.000000dip" android:layout_centerHorizontal="true"/>
+  <com.yalla.games.common.view.LoopGradientTextView android:textSize="10.000000sp" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A1860" android:layout_width="70.000000dip" android:layout_height="12.000000dip" android:layout_marginTop="1.000000dip" android:maxLines="1" android:layout_below="@7F0A05E3" android:layout_centerHorizontal="true" app:autoSizeMaxTextSize="10.000000sp" app:autoSizeMinTextSize="6.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
+  <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0C5D" android:layout_width="-2" android:layout_height="15.000000dip" android:layout_marginTop="1.000000dip" android:layout_below="@7F0A1860" android:layout_centerHorizontal="true"/>
+  <RelativeLayout android:id="@7F0A0FC8" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+    <ImageView android:id="@7F0A0900" android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:src="@7F080663"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:id="@7F0A172E" android:layout_width="50.000000dip" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="16777211.000000dip" android:layout_toEndOf="@7F0A0900" android:translationZ="16777215.000000dip"/>
+    <ImageView android:id="@7F0A0AB8" android:layout_width="15.000000dip" android:layout_height="14.000000dip" android:src="@7F0803E9" android:layout_centerVertical="true" android:layout_marginStart="16777211.000000dip" android:layout_toEndOf="@7F0A172E"/>
+  </RelativeLayout>
+  <View android:id="@7F0A1891" android:layout_width="-1" android:layout_height="-1" android:layout_above="@7F0A0FC8"/>
+  <View android:id="@7F0A1813" android:layout_width="-1" android:layout_height="-1" android:layout_alignTop="@7F0A0FC8"/>
+</merge>

@@ -1,0 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0F6C" android:layout_width="360.000000dip" android:layout_height="-1">
+  <FrameLayout android:orientation="1" android:id="@7F0A0D87" android:background="@7F080FF0" android:layout_width="360.000000dip" android:layout_height="400.000000dip" android:layout_centerVertical="true">
+    <ImageView android:layout_gravity="0x00000001" android:layout_width="280.000000dip" android:layout_height="55.000000dip" android:layout_marginTop="25.000000dip" android:src="@7F080F93"/>
+    <com.yalla.game.base.view.StrokeButton android:textSize="22.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A016E" android:background="@7F080300" android:layout_width="168.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="310.000000dip" android:text="@7F111292" app:need_press_status="true" style="@7F120191"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A11E6" android:visibility="0" android:clickable="false" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true"/>
+  <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="34.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

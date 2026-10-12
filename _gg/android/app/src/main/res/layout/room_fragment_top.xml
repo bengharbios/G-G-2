@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.tabs.TabLayout android:id="@7F0A1246" android:layout_width="-1" android:layout_height="40.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:tabGravity="0" app:tabIndicator="@00000000" app:tabIndicatorColor="@android:0106000D" app:tabIndicatorHeight="0.000000dip" app:tabMaxWidth="0.000000dip" app:tabMode="1" app:tabRippleColor="@00000000"/>
+  <com.yalla.ludochat.view.viewpager.base.vp2.NestedScrollableHost android:id="@7F0A0DF4" android:layout_width="-1" android:layout_height="-1">
+    <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A18BF" android:layout_width="-1" android:layout_height="-1"/>
+  </com.yalla.ludochat.view.viewpager.base.vp2.NestedScrollableHost>
+</LinearLayout>

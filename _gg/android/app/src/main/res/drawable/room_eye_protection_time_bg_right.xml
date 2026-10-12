@@ -1,0 +1,3 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android" android:fromDegrees="180.000000" android:pivotX="50.000001%" android:pivotY="50.000001%">
+  <bitmap android:gravity="0x00000011" android:src="@7F080AB3"/>
+</rotate>

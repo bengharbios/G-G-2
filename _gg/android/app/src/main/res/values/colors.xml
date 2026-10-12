@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="room_color_012">#FFFFFFFF</color>
+    <color name="room_color_082">#CCFFFFFF</color>
+    <color name="room_color_7ba">#FF7BA3D4</color>
+    <color name="room_color_bdd">#FFBDD7F0</color>
+    <color name="room_color_dff">#FFDFF0F5</color>
+    <color name="room_color_ff012">#FFFF0123</color>
+    <color name="room_color_ff123">#FFFF1234</color>
+    <color name="color_grey_f5">#FFF5F5F5</color>
+    <color name="gray_stroke_color">#FF808080</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_60">#99000000</color>
+</resources>

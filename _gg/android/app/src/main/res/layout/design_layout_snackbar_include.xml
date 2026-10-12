@@ -1,0 +1,4 @@
+<view xmlns:android="http://schemas.android.com/apk/res/android" android:theme="@7F120285" android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="-2" class="com.google.android.material.snackbar.SnackbarContentLayout">
+  <TextView android:textAppearance="@7F1201DF" android:ellipsize="3" android:layout_gravity="0x00800013" android:id="@7F0A10E4" android:paddingLeft="@7F07009A" android:paddingTop="@7F07009B" android:paddingRight="@7F07009A" android:paddingBottom="@7F07009B" android:layout_width="-2" android:layout_height="-2" android:maxLines="@7F0B0007" android:layout_weight="1.000000" android:textAlignment="5"/>
+  <Button android:textColor="?7F04010A" android:layout_gravity="0x00800015" android:id="@7F0A10E3" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="@7F070097" android:minWidth="48.000000dip" android:layout_marginStart="@7F070097" style="?7F040081"/>
+</view>

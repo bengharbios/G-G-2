@@ -1,0 +1,4 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000010">
+  <ImageView android:id="@7F0A099F" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F080639"/>
+  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FFFFFFFF" android:id="@7F0A1605" android:layout_width="-2" android:layout_height="-2" android:text="+1" android:layout_marginStart="2.000000dip" app:stroke_color="#FF0CC295" app:stroke_width="2.000000dip"/>
+</merge>

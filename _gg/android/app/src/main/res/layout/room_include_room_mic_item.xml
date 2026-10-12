@@ -1,128 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  room_include_room_mic_item.xml — مقعد مايك فردي (مطابق لـ Yalla Ludo v1.5.1.0)
-  البنية الأصلية:
-  - LinearLayout عمودي
-    - ConstraintLayout (الحاوية)
-      - WaveMicView (موجات صوتية)
-      - ImageView (إطار المقعد - room_ic_room_mic_free)
-      - RoundImageView (صورة المستخدم)
-      - LudoSVGAView (on_mic.svga - أنيميشن عند الجلوس)
-      - ContributionRankLabelView (شارة المساهمة)
-      - LudoSVGAView (إيموجي المايك)
-      - VipView (شارة VIP)
-      - ImageView (شارة المالك/الأدمن)
-    - CustomTextView (اسم المستخدم)
--->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mic_item_container"
-        android:clipChildren="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- موجات الصوت (تظهر عند الكلام) -->
-        <com.bengharbios.ggames.view.WaveMicView
-            android:id="@+id/mic_wave_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- خلفية المقعد (إطار المايك) -->
-        <ImageView
-            android:id="@+id/mic_bg"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/room_ic_room_mic_free"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- صورة المستخدم (دائرية) -->
-        <com.bengharbios.ggames.view.RoundImageView
-            android:id="@+id/mic_user_avatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop"
-            app:isCircle="true"
-            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
-            app:layout_constraintEnd_toEndOf="@id/mic_bg"
-            app:layout_constraintStart_toStartOf="@id/mic_bg"
-            app:layout_constraintTop_toTopOf="@id/mic_bg" />
-
-        <!-- إيموجي المايك (SVG/GIF) -->
-        <com.bengharbios.ggames.view.LudoSVGAView
-            android:id="@+id/mic_emoji_view"
-            android:visibility="gone"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
-            app:layout_constraintEnd_toEndOf="@id/mic_bg"
-            app:layout_constraintStart_toStartOf="@id/mic_bg"
-            app:layout_constraintTop_toTopOf="@id/mic_bg" />
-
-        <!-- شارة المساهمة (ContributionRankLabelView) -->
-        <com.bengharbios.ggames.view.ContributionRankLabelView
-            android:id="@+id/mic_rank_label"
-            android:visibility="invisible"
-            android:layout_width="26dp"
-            android:layout_height="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
-            app:layout_constraintStart_toStartOf="@id/mic_bg" />
-
-        <!-- شارة المالك/الأدمن -->
-        <ImageView
-            android:id="@+id/mic_role_badge"
-            android:visibility="gone"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/room_icon_room_top_close_king"
-            app:layout_constraintBottom_toTopOf="@id/mic_rank_label"
-            app:layout_constraintEnd_toEndOf="@id/mic_bg"
-            app:layout_constraintTop_toTopOf="@id/mic_bg" />
-
-        <!-- شارة VIP -->
-        <com.bengharbios.ggames.view.VipView
-            android:id="@+id/mic_vip_badge"
-            android:visibility="gone"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            app:layout_constraintBottom_toTopOf="@id/mic_rank_label"
-            app:layout_constraintEnd_toEndOf="@id/mic_bg"
-            app:layout_constraintTop_toTopOf="@id/mic_bg" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- اسم المستخدم تحت المقعد -->
-    <com.bengharbios.ggames.view.CustomTextView
-        android:id="@+id/mic_user_name"
-        android:textSize="11dp"
-        android:textColor="#FFFFFF"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mic_name_bg"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="5dp"
-        android:visibility="gone"
-        android:singleLine="true"
-        android:includeFontPadding="false" />
-
-</LinearLayout>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A021C" android:layout_width="70.000000dip" android:layout_height="-2">
+  <com.yalla.ludochat.view.WaveMicView android:id="@7F0A1000" android:layout_width="70.000000dip" android:layout_height="70.000000dip" app:layout_constraintBottom_toTopOf="@7F0A0FFF" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:layout_constraintVertical_chainStyle="2"/>
+  <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A134A" android:visibility="2" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toTopOf="@7F0A0FFC" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:stroke_color="@7F0603A1" app:stroke_width="1.000000dip"/>
+  <ImageView android:id="@7F0A0FFC" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F080B89" android:scaleType="6" app:layout_constraintBottom_toBottomOf="@7F0A1000" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toTopOf="@7F0A1000"/>
+  <com.yalla.ludochat.view.RoundImageView android:id="@7F0A0FFE" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:scaleType="1" app:isCircle="true" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A0FFC"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A0FFD" android:visibility="2" android:layout_width="70.000000dip" android:layout_height="0.000000dip" app:clearsAfterStop="false" app:layout_constraintBottom_toBottomOf="@7F0A1000" app:layout_constraintDimensionRatio="1:1" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toTopOf="@7F0A1000" app:play_on_attach="true" app:source="room_mic_music.svga"/>
+  <android.widget.Space android:id="@7F0A05BE" android:layout_width="1.000000px" android:layout_height="1.000000px" android:layout_marginBottom="7.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="0"/>
+  <android.widget.Space android:id="@7F0A17DE" android:layout_width="1.000000px" android:layout_height="1.000000px" android:layout_marginStart="10.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC"/>
+  <android.widget.Space android:id="@7F0A17E3" android:layout_width="1.000000px" android:layout_height="1.000000px" android:layout_marginEnd="10.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintEnd_toEndOf="@7F0A0FFC"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A074C" android:background="#00000000" android:layout_width="68.000000dip" android:layout_height="68.000000dip" android:layout_marginBottom="3.500000dip" app:clearsAfterStop="false" app:layout_constraintBottom_toBottomOf="@7F0A1000" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toTopOf="@7F0A1000" app:play_on_attach="true"/>
+  <com.yalla.ludochat.view.ContributionRankLabelView android:id="@7F0A0260" android:visibility="1" android:layout_width="26.000000dip" android:layout_height="14.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintEnd_toEndOf="@7F0A17DE" app:layout_constraintStart_toStartOf="@7F0A17DE"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A1016" android:visibility="2" android:layout_width="24.000000dip" android:layout_height="24.000000dip" app:layout_constraintBottom_toTopOf="@7F0A05BE" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A05BE" app:play_on_attach="true"/>
+  <com.yalla.ludochat.view.VipView android:id="@7F0A18A3" android:visibility="2" android:layout_width="24.000000dip" android:layout_height="24.000000dip" app:layout_constraintBottom_toTopOf="@7F0A05BE" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A05BE" app:play_on_attach="true"/>
+  <ImageView android:id="@7F0A09FA" android:visibility="1" android:layout_width="0.000000dip" android:layout_height="14.000000dip" android:src="@7F080C50" app:layout_constraintBottom_toTopOf="@7F0A05BE" app:layout_constraintDimensionRatio="120:57" app:layout_constraintEnd_toEndOf="@7F0A17E3" app:layout_constraintStart_toStartOf="@7F0A17E3" app:layout_constraintTop_toTopOf="@7F0A05BE"/>
+  <com.yalla.ludochat.view.svga.MicEmojiSVGAView android:id="@7F0A06D9" android:background="#00000000" android:layout_width="70.000000dip" android:layout_height="0.000000dip" app:clearsAfterStop="false" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintDimensionRatio="1:1" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A0FFC" app:loopCount="2" app:page_aware_mode="1" app:play_on_attach="false"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A11E3" android:background="#00000000" android:layout_width="70.000000dip" android:layout_height="0.000000dip" app:clearsAfterStop="false" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintDimensionRatio="1:1" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A0FFC" app:loopCount="1" app:page_aware_mode="1" app:play_on_attach="false"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A06DB" android:background="#00000000" android:layout_width="70.000000dip" android:layout_height="0.000000dip" app:clearsAfterStop="false" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintDimensionRatio="1:1" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A0FFC" app:loopCount="1" app:page_aware_mode="1" app:play_on_attach="false"/>
+  <com.yalla.ludochat.view.LoopSyncStrokeDirectionGradientTextView android:textSize="11.000000dip" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A0FFF" android:visibility="0" android:layout_width="-2" android:layout_height="20.000000dip" android:maxLines="1" android:includeFontPadding="false" android:paddingStart="6.000000dip" android:paddingEnd="6.000000dip" app:layout_constraintBottom_toTopOf="@7F0A140A" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toBottomOf="@7F0A1000" app:layout_constraintWidth_max="70.000000dip" app:layout_constraintWidth_min="50.000000dip"/>
+  <androidx.constraintlayout.widget.Group android:id="@7F0A10A3" android:layout_width="-2" android:layout_height="-2" app:constraint_referenced_ids="llScoreboardView,ivScore,tvScoreboard"/>
+  <View android:id="@7F0A0BE4" android:layout_width="0.000000dip" android:layout_height="0.000000dip" android:layout_marginStart="16777212.000000dip" android:layout_marginEnd="16777212.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A140A" app:layout_constraintEnd_toEndOf="@7F0A140A" app:layout_constraintStart_toStartOf="@7F0A0750" app:layout_constraintTop_toTopOf="@7F0A140A" app:layout_constraintWidth_min="36.000000dip"/>
+  <ImageView android:layout_gravity="0x00000010" android:id="@7F0A0750" android:layout_width="9.000000dip" android:layout_height="10.000000dip" android:src="@7F080E6B" android:adjustViewBounds="true" app:layout_constraintBottom_toBottomOf="@7F0A140A" app:layout_constraintEnd_toStartOf="@7F0A140A" app:layout_constraintHorizontal_chainStyle="2" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toTopOf="@7F0A140A"/>
+  <TextSwitcher android:id="@7F0A140A" android:paddingTop="1.000000px" android:paddingBottom="1.000000px" android:layout_width="-2" android:layout_height="16.000000dip" android:layout_marginTop="2.000000dip" android:measureAllChildren="false" android:inAnimation="@7F010035" android:outAnimation="@7F010036" android:layout_marginStart="2.000000dip" app:layout_constrainedWidth="true" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toEndOf="@7F0A0750" app:layout_constraintTop_toBottomOf="@7F0A0FFF"/>
+  <ImageView android:id="@7F0A0FFB" android:background="@7F080C3C" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F080B89" android:scaleType="6" app:layout_constraintBottom_toBottomOf="@7F0A1000" app:layout_constraintEnd_toEndOf="@7F0A1000" app:layout_constraintStart_toStartOf="@7F0A1000" app:layout_constraintTop_toTopOf="@7F0A1000"/>
+  <com.yalla.games.common.view.svga.AutoPageSVGAView android:layout_gravity="0x00000011" android:id="@7F0A09CC" android:visibility="2" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginBottom="4.500000dip" android:src="@7F08058F" android:layout_marginEnd="507.500044dip" app:layout_constraintBottom_toBottomOf="@7F0A0FFB" app:layout_constraintEnd_toEndOf="@7F0A0FFB" app:play_on_attach="true" app:source="finger_guide.svga"/>
+  <com.yalla.ludochat.view.svga.MicThunderView android:id="@7F0A0DBB" android:visibility="2" android:layout_width="70.000000dip" android:layout_height="70.000000dip" android:scaleType="3" app:layout_constraintBottom_toBottomOf="@7F0A0FFC" app:layout_constraintEnd_toEndOf="@7F0A0FFC" app:layout_constraintStart_toStartOf="@7F0A0FFC" app:layout_constraintTop_toTopOf="@7F0A0FFC"/>
+</merge>

@@ -1,0 +1,6 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@7F0804A7"/>
+  <item android:left="16777180.000000dip">
+    <bitmap android:gravity="0x00000013" android:src="@7F0805F1"/>
+  </item>
+</layer-list>

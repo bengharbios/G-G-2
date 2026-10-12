@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000001" android:layout_width="360.000000dip" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A0F1C" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true">
+    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0B23" android:layout_width="331.000000dip" android:layout_height="104.000000dip" android:src="@7F0800D5"/>
+    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0B22" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:src="@7F0800D6"/>
+    <FrameLayout android:id="@7F0A0439" android:background="@7F0808AA" android:layout_width="331.000000dip" android:layout_height="453.000000dip" android:layout_marginTop="51.000000dip">
+      <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="18.000000dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FF67A58E" android:ellipsize="3" android:gravity="0x00800005" android:layout_gravity="0x00000010" android:id="@7F0A0283" android:layout_width="-2" android:layout_height="-2" android:maxWidth="270.000000dip" android:lines="1" android:paddingStart="20.000000dip"/>
+        <ImageView android:id="@7F0A0A41" android:paddingTop="8.000000dip" android:paddingBottom="8.000000dip" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:src="@7F080901" android:paddingStart="8.000000dip" android:paddingEnd="8.000000dip"/>
+      </LinearLayout>
+      <com.yalla.games.events.pass.PassTaskProgressView android:layout_gravity="0x00000001" android:id="@7F0A0E7E" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="35.000000dip" android:layout_marginStart="16777206.000000dip"/>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1095" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="97.000000dip"/>
+    </FrameLayout>
+  </FrameLayout>
+  <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="12.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

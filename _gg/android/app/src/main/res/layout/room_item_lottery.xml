@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="110.000000dip">
+  <FrameLayout android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000011" android:id="@7F0A06B1" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:src="@7F080A87" app:isCircle="true"/>
+    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0683" android:visibility="1" android:layout_width="60.000000dip" android:layout_height="60.000000dip" android:src="@7F080D46"/>
+  </FrameLayout>
+  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FFFFFFFF" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A1393" android:layout_width="74.000000dip" android:layout_height="26.000000dip" android:text="Mmmmm" android:lines="1"/>
+  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A075C" android:visibility="1" android:layout_width="24.000000dip" android:layout_height="24.000000dip" android:src="@7F080B14"/>
+</LinearLayout>

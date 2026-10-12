@@ -1,0 +1,5 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <ImageView android:id="@7F0A110D" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginRight="20.000000dip" android:layout_toLeftOf="@7F0A1110" android:layout_centerVertical="true" android:contentDescription="@android:0104000F" android:layout_marginEnd="20.000000dip" android:layout_toStartOf="@7F0A1110"/>
+  <ImageView android:id="@7F0A110F" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginRight="20.000000dip" android:layout_toLeftOf="@7F0A1110" android:layout_centerVertical="true" android:contentDescription="@android:0104000F" android:layout_marginEnd="20.000000dip" android:layout_toStartOf="@7F0A1110"/>
+  <TextView android:textSize="15.000000sp" android:textColor="#FF666666" android:id="@7F0A1110" android:layout_width="-2" android:layout_height="-2" android:text="@7F11225D" android:maxLines="1" android:layout_centerInParent="true"/>
+</merge>

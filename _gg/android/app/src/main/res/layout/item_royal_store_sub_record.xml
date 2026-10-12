@@ -1,0 +1,11 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="328.000000dip" android:layout_height="-2">
+  <View android:layout_gravity="0x00000001" android:background="#FFE4D0EC" android:layout_width="324.000000dip" android:layout_height="55.000000dip"/>
+  <View android:layout_gravity="0x00000001" android:id="@7F0A184C" android:background="@7F0807B4" android:layout_width="314.000000dip" android:layout_height="2.000000dip"/>
+  <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0C30" android:layout_width="328.000000dip" android:layout_height="55.000000dip">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFB192C0" android:ellipsize="3" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="@7F0A02DA" android:layout_width="85.000000dip" android:layout_height="55.000000dip" android:paddingStart="3.000000dip" android:paddingEnd="3.000000dip" app:autoSizeMaxTextSize="12.000000sp" app:autoSizeMinTextSize="5.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFB192C0" android:ellipsize="3" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="@7F0A02FC" android:layout_width="80.000000dip" android:layout_height="55.000000dip" android:paddingStart="3.000000dip" android:paddingEnd="3.000000dip" app:autoSizeMaxTextSize="12.000000sp" app:autoSizeMinTextSize="5.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
+    <FrameLayout android:id="@7F0A0446" android:layout_width="80.000000dip" android:layout_height="-1">
+      <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08A4" android:layout_width="40.000000dip" android:layout_height="40.000000dip"/>
+    </FrameLayout>
+  </LinearLayout>
+</FrameLayout>

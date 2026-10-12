@@ -1,0 +1,8 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.games.friends.view.ViewShareTab android:id="@7F0A1247" android:layout_width="120.000000dip" android:layout_height="-2"/>
+    <com.yalla.games.friends.view.ViewShareTab android:id="@7F0A1245" android:layout_width="120.000000dip" android:layout_height="-2"/>
+    <com.yalla.games.friends.view.ViewShareTab android:id="@7F0A1244" android:layout_width="120.000000dip" android:layout_height="-2"/>
+  </LinearLayout>
+  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18BB" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip"/>
+</merge>

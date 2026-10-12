@@ -1,0 +1,4 @@
+<com.yalla.ludochat.view.WebInternalContainer xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0401" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0FE5" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.LoadingView android:id="@7F0A0FE6" android:background="@7F0604F2" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+</com.yalla.ludochat.view.WebInternalContainer>

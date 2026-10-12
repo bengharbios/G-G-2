@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@android:01020000">
+    <shape android:shape="0">
+      <corners android:radius="1.500000dip"/>
+      <solid android:color="#4DFFFFFF"/>
+    </shape>
+  </item>
+  <item android:id="@android:0102000D">
+    <clip android:gravity="0x00800003" android:drawable="@7F080A0B" android:clipOrientation="0x00000001"/>
+  </item>
+</layer-list>

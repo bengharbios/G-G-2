@@ -1,0 +1,9 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A10E2" android:layout_width="-1" android:layout_height="-1" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EBA" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:id="@7F0A0BD7" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+    <ImageView android:id="@7F0A0674" android:layout_width="56.000000dip" android:layout_height="64.000000dip" android:layout_marginTop="80.000000dip" android:src="@7F080C2E"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000dip" android:textColor="#FF81898D" android:id="@7F0A12E2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="35.000000dip" android:text="@7F110840"/>
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

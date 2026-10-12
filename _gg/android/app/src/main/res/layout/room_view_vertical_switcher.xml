@@ -1,0 +1,4 @@
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A180A" android:layout_width="-1" android:layout_height="-2">
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000001" android:id="@7F0A1438" android:layout_width="-2" android:layout_height="-2" android:text="@7F110215" android:lines="1"/>
+  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000001" android:id="@7F0A1439" android:layout_width="-2" android:layout_height="-2" android:text="@7F110683" android:lines="1"/>
+</ViewSwitcher>

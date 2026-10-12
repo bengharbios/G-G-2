@@ -78,3 +78,6 @@ android/capacitor-cordova-android-plugins/
 # Run: python3 scripts/download_gifts.py
 public/gifts/thumbs/
 public/gifts/videos/
+node_modules/
+_gg/node_modules/
+*.log

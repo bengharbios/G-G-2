@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0CA5" android:background="@7F0800F5" android:layout_width="174.000000dip" android:layout_height="68.000000dip">
+  <com.yalla.games.common.view.CustomTextView android:textSize="8.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="@7F1110C4"/>
+</FrameLayout>

@@ -1,12 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+<com.yalla.yallagames.ui.view.ScrollContainerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <FrameLayout android:id="@7F0A03B1" android:layout_width="-1" android:layout_height="-1"/>
+  <FrameLayout android:id="@7F0A03B5" android:layout_width="-1" android:layout_height="-1"/>
+  <com.yalla.games.common.view.NoticeView android:textSize="13.000000sp" android:textColor="@7F060544" android:id="@7F0A0E0D" android:background="@7F0800EC" android:visibility="1" android:layout_width="-1" android:layout_height="22.000000dip" android:layout_marginTop="70.000000dip" android:layout_below="@7F0A0861"/>
+  <TextView android:textSize="12.000000dip" android:textColor="#FFFF66FF" android:layout_gravity="0x00000035" android:id="@7F0A0366" android:visibility="2" android:layout_width="-2" android:layout_height="30.000000dip" android:layout_marginTop="120.000000dip" android:layout_marginRight="10.000000dip"/>
+</com.yalla.yallagames.ui.view.ScrollContainerFrameLayout>

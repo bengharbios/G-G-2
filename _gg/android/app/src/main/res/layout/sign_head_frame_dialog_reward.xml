@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000010" android:id="@7F0A03AE" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:id="@7F0A0439" android:background="@7F081115" android:layout_width="-1" android:layout_height="-2">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:textColor="#FFFFEE61" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:text="@7F110E79" app:end_color="#FFFFFFFF" app:gradient="true" app:start_color="#FFFFEE61"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF0B4438" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A170B" android:background="@7F081116" android:layout_width="-2" android:layout_height="22.000000dip" android:layout_marginTop="39.000000dip" app:stroke_color="#FFFFFFFF" app:stroke_width="1.000000dip"/>
+    <com.yalla.games.common.view.HeadFrameView android:layout_gravity="0x00000011" android:id="@7F0A05DA" android:visibility="2" android:layout_width="77.000000dip" android:layout_height="77.000000dip"/>
+  </FrameLayout>
+  <LinearLayout android:layout_gravity="0x00000051" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="230.000000dip" android:layout_alignTop="@7F0A0439" android:layout_centerHorizontal="true">
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="@7F0A0152" android:background="@7F0802FA" android:layout_width="129.000000dip" android:layout_height="44.000000dip" android:text="@7F111E62" app:need_press_status="true" style="@7F120190"/>
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:gravity="0x00000011" android:id="@7F0A016E" android:background="@7F080300" android:layout_width="129.000000dip" android:layout_height="44.000000dip" android:text="@7F1122EC" android:layout_marginStart="43.000000dip" app:need_press_status="true" style="@7F120191"/>
+  </LinearLayout>
+</RelativeLayout>

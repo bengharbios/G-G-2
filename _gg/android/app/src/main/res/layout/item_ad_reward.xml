@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:id="@7F0A0F6C" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="16777184.000000dip" android:layoutDirection="0">
+  <FrameLayout android:id="@7F0A0533" android:layout_width="130.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="4.000000dip">
+    <RelativeLayout android:layout_gravity="0x00000055" android:id="@7F0A0FBC" android:background="@7F0800E3" android:layout_width="127.000000dip" android:layout_height="47.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF267A5F" android:gravity="0x00000011" android:id="@7F0A1709" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="Watch an ad 2 time" android:layout_centerHorizontal="true"/>
+      <LinearLayout android:gravity="0x00000011" android:id="@7F0A0C24" android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A1709" android:layout_centerVertical="true" android:layout_marginStart="20.000000dip" android:layout_marginEnd="10.000000dip">
+        <ImageView android:id="@7F0A0B4C" android:layout_width="35.000000dip" android:layout_height="30.000000dip"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:gravity="0x00000013" android:id="@7F0A171B" android:layout_width="45.000000dip" android:layout_height="25.000000dip" android:lines="1" android:layout_marginStart="3.000000dip" app:strokeAutoSizeMaxTextSize="23.000000sp" app:strokeAutoSizeMinTextSize="8.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp" app:strokeAutoSizeTextType="uniform" app:stroke_color="#80000000" app:stroke_width="1.000000dip"/>
+      </LinearLayout>
+    </RelativeLayout>
+    <ImageView android:layout_gravity="0x00000033" android:id="@7F0A0B6D" android:layout_width="27.000000dip" android:layout_height="27.000000dip" android:src="@7F0804B1"/>
+  </FrameLayout>
+  <ImageView android:id="@7F0A0A36" android:layout_width="28.000000dip" android:layout_height="45.000000dip" android:layout_marginTop="23.000000dip" android:layout_toRightOf="@7F0A0533"/>
+  <FrameLayout android:id="@7F0A0534" android:layout_width="130.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="4.000000dip" android:layout_toRightOf="@7F0A0A36">
+    <RelativeLayout android:layout_gravity="0x00000053" android:id="@7F0A0FBD" android:background="@7F0800E5" android:layout_width="127.000000dip" android:layout_height="47.000000dip">
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FF267A5F" android:gravity="0x00000011" android:id="@7F0A170A" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="4.000000dip" android:text="Watch an ad 2 time" android:layout_centerHorizontal="true"/>
+      <LinearLayout android:gravity="0x00000011" android:id="@7F0A0C26" android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A170A" android:layout_centerVertical="true" android:layout_marginStart="17.000000dip" android:layout_marginEnd="10.000000dip">
+        <ImageView android:id="@7F0A0B4D" android:layout_width="35.000000dip" android:layout_height="30.000000dip"/>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="23.000000sp" android:gravity="0x00000013" android:id="@7F0A171D" android:layout_width="45.000000dip" android:layout_height="25.000000dip" android:lines="1" android:layout_marginStart="3.000000dip" app:strokeAutoSizeMaxTextSize="23.000000sp" app:strokeAutoSizeMinTextSize="8.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp" app:strokeAutoSizeTextType="uniform" app:stroke_color="#80000000" app:stroke_width="1.000000dip"/>
+      </LinearLayout>
+    </RelativeLayout>
+    <ImageView android:layout_gravity="0x00000035" android:id="@7F0A0B6E" android:visibility="1" android:layout_width="27.000000dip" android:layout_height="27.000000dip" android:src="@7F0804B1"/>
+  </FrameLayout>
+</RelativeLayout>

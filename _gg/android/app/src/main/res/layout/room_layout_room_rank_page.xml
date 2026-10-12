@@ -1,0 +1,6 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <com.google.android.material.tabs.TabLayout android:id="@7F0A1246" android:layout_width="-1" android:layout_height="35.000000dip" android:layout_marginTop="5.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0" app:tabIndicator="@7F080ED1" app:tabIndicatorColor="@android:0106000B" app:tabIndicatorFullWidth="true" app:tabIndicatorGravity="0" app:tabMode="0" app:tabRippleColor="@00000000"/>
+  <com.yalla.ludochat.view.viewpager.base.vp2.NestedScrollableHost android:id="@7F0A0DF4" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A1246">
+    <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A18BF" android:layout_width="-1" android:layout_height="-1"/>
+  </com.yalla.ludochat.view.viewpager.base.vp2.NestedScrollableHost>
+</androidx.constraintlayout.widget.ConstraintLayout>

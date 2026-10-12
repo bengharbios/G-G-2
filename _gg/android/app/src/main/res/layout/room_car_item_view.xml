@@ -1,0 +1,10 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
+  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000dip" android:textColor="@7F0604CF" android:ellipsize="3" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A12D9" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="21.000000dip" android:lines="1" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip" style="@7F120191"/>
+  <ImageView android:layout_gravity="0x00000001" android:id="@7F0A066E" android:layout_width="146.000000dip" android:layout_height="68.000000dip" android:layout_marginTop="45.000000dip" android:src="@7F080A2F" android:scaleType="3"/>
+  <View android:id="@7F0A006A" android:background="@7F080A3E" android:visibility="0" android:layout_width="-1" android:layout_height="-2" app:cornerRadius="11.000000dip" app:isSquare="true"/>
+  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A06C0" android:layout_width="32.000000dip" android:layout_height="22.000000dip" android:layout_marginTop="37.000000dip" android:src="@7F080A3F" android:layout_marginStart="10.000000dip" app:clearsAfterStop="false" app:play_on_attach="true"/>
+  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000051" android:orientation="0" android:id="@7F0A0BC7" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip">
+    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F080D17"/>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000dip" android:textColor="@7F060544" android:id="@7F0A135C" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:layout_marginStart="2.000000dip" app:stroke_color="@7F0603BA" app:stroke_width="1.500000dip"/>
+  </LinearLayout>
+</merge>

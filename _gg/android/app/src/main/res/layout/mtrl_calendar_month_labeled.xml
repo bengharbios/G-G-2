@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:gravity="0x00800013" android:id="@7F0A0DCA" android:focusable="true" android:layout_width="-1" android:layout_height="@7F0701AF" style="?7F04033A"/>
+  <include layout="@7F0D02F8"/>
+</LinearLayout>
