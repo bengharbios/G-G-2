@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
    VOICE ROOMS — Types, Interfaces, Constants, Helpers & Design Tokens
-   Color system matching Yalla Ludo voice room design
+   Color system matching our voice room design
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { Globe, Key, EyeOff } from 'lucide-react';
@@ -77,7 +77,7 @@ export interface Gift {
   giftImageUrl?: string;
   animationResourceUrl?: string;
   animation?: 'none' | 'particles' | 'fireworks' | 'hearts' | 'stars' | 'confetti';
-  // NEW fields (matching 17ae.com design)
+  // NEW fields (matching our design design)
   grade: number;          // 0-4, determines effect intensity
   bmType: number;         // 0=none, 1=fullscreen, 2=halfscreen
   bgColor?: string;       // Background color for gift preview
@@ -151,7 +151,7 @@ export interface MicMenuSheetState {
 // ─── TUILiveKit Exact Design Tokens ──────────────────────────────────────────
 
 export const TUI = {
-  // ── Primary Brand Colors (Yalla Ludo style) ──
+  // ── Primary Brand Colors (our style) ──
   colors: {
     // ── Teal Green (lobby, settings, sheets) ──
     teal: '#0D8A7A',              // Primary teal — headers, active tabs
@@ -391,7 +391,7 @@ export const ROLE_PILL_BG: Record<RoomRole, string> = {
   visitor: 'bg-[rgba(124,133,166,0.15)] text-[#D1D9EC]',
 };
 
-// Gift Grade Configuration (matching 17ae.com 5-tier system)
+// Gift Grade Configuration (matching our design 5-tier system)
 export const GIFT_GRADES = {
   0: { name: 'مجاني', nameEn: 'Free', color: '#8F9AB2', particleCount: 0, effect: 'none' as const },
   1: { name: 'أساسي', nameEn: 'Basic', color: '#34C759', particleCount: 15, effect: 'hearts' as const },
@@ -400,7 +400,7 @@ export const GIFT_GRADES = {
   4: { name: 'فاخر', nameEn: 'Luxury', color: '#FFD700', particleCount: 60, effect: 'fullScreen' as const },
 } as const;
 
-// Expanded Gift Categories (matching 17ae.com)
+// Expanded Gift Categories (matching our design)
 export const GIFT_CATEGORIES = [
   { id: 'popular', name: 'الأكثر شعبية', icon: '🔥' },
   { id: 'romance', name: 'رومانسية', icon: '💕' },
@@ -416,54 +416,45 @@ export const GIFT_CATEGORIES = [
 // ─── Gift Asset URLs (TUILiveKit Source) ────────────────────────────────────
 // Gift item icons in TUILiveKit are server-managed via GiftStore.refreshUsableGifts().
 // They are NOT bundled or publicly hosted on CDN — they require Tencent RTC Gift API auth.
-// Below: raw GitHub URLs for bundled assets + fallback emoji-rendered PNGs.
-// See: https://github.com/Tencent-RTC/TUILiveKit/tree/main/Flutter/live_uikit_gift/assets
+// Below: ALL assets are LOCAL — no external CDN dependencies.
+// Gift heart frames are bundled in public/gifts/
+// SVGA animations are bundled in public/gifts/svga/gifts-live/
+// Emoji PNGs are bundled in public/emojis/
 
-const TUI_GIFT_ASSETS_BASE =
-  'https://raw.githubusercontent.com/Tencent-RTC/TUILiveKit/main/Flutter/live_uikit_gift/assets/images';
-
-const TUI_LIVEKIT_ASSETS_BASE =
-  'https://raw.githubusercontent.com/Tencent-RTC/TUILiveKit/main/Flutter/livekit/assets/images';
-
-const TUI_SVGA_BASE =
-  'https://raw.githubusercontent.com/Tencent-RTC/TUILiveKit/main/Flutter/live_uikit_gift/assets/svga';
-
-const TUI_SVGA_CAR = `${TUI_SVGA_BASE}/car.svga`;
-const TUI_SVGA_CAT = `${TUI_SVGA_BASE}/cat.svga`;
-const TUI_SVGA_SPORTS_CAR = `${TUI_SVGA_BASE}/sports_car.svga`;
-
-/** Shared TUILiveKit CDN / asset URLs for gift-related resources */
+/** Gift assets — ALL LOCAL, no external CDN */
 export const GIFT_ASSETS: { [key: string]: string | string[] | ((emoji: string) => string) } = {
-  // ── Gift UI Icons (from TUILiveKit repo) ──
-  giftButtonIcon: `${TUI_LIVEKIT_ASSETS_BASE}/live_function_gift.png`,
-  likeButtonIcon: `${TUI_LIVEKIT_ASSETS_BASE}/live_function_like.png`,
-  giftSendIcon: `${TUI_GIFT_ASSETS_BASE}/gift_send_icon.png`,
-  likeSendIcon: `${TUI_GIFT_ASSETS_BASE}/like_send_icon.png`,
-  giftIcon: `${TUI_GIFT_ASSETS_BASE}/gift_send_icon.png`,
-  giftDefaultAvatar: `${TUI_GIFT_ASSETS_BASE}/gift_default_avatar.png`,
+  // ── Gift UI Icons (local) ──
+  giftButtonIcon: '/yalla-ui/cart.png',
+  likeButtonIcon: '/yalla-ui/exp.png',
+  giftSendIcon: '/gifts/gift_heart0.png',
+  likeSendIcon: '/gifts/gift_heart0.png',
+  giftIcon: '/gifts/gift_heart0.png',
+  giftDefaultAvatar: '/yalla-avatars/defaultPhoto_1.png',
 
-  // ── Heart Like Animation (9 frames, bundled in TUILiveKit) ──
-  heartFrames: Array.from({ length: 9 }, (_, i) => `${TUI_GIFT_ASSETS_BASE}/gift_heart${i}.png`),
+  // ── Heart Like Animation (9 frames, local) ──
+  heartFrames: Array.from({ length: 9 }, (_, i) => `/gifts/gift_heart${i}.png`),
 
-  // ── SVGA Gift Animations (bundled examples from TUILiveKit) ──
-  svgaCar: TUI_SVGA_CAR,
-  svgaCat: TUI_SVGA_CAT,
-  svgaSportsCar: TUI_SVGA_SPORTS_CAR,
+  // ── SVGA Gift Animations (local) ──
+  svgaCar: '/gifts/svga/gifts-live/红色跑车.svga',
+  svgaCat: '/gifts/svga/gifts-live/爱心熊熊.svga',
+  svgaSportsCar: '/gifts/svga/gifts-live/红色跑车.svga',
 
-  // ── Tencent CDN (public, confirmed working) ──
-  cdnAvatarDefault: 'https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar1.png',
-  cdnBackground1: 'https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_background1.png',
-  cdnBackground2: 'https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_background2.png',
-  cdnBackground3: 'https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_background3.png',
+  // ── Default avatar + backgrounds (local) ──
+  cdnAvatarDefault: '/yalla-avatars/defaultPhoto_1.png',
+  cdnBackground1: '/backgrounds/IMG_20171029_004004.webp',
+  cdnBackground2: '/backgrounds/IMG_20171103_222225.webp',
+  cdnBackground3: '/backgrounds/IMG_20171109_123836.webp',
 
-  // ── Emoji-to-PNG helper (uses GitHub's emoji CDN) ──
+  // ── Emoji-to-PNG helper (LOCAL — no GitHub CDN) ──
   emojiPng: (emoji: string) => {
+    const cleaned = emoji.replace(/[\uFE0E\uFE0F]/g, '');
     const codePoints: string[] = [];
-    for (let i = 0; i < emoji.length; i++) {
-      const cp = emoji.codePointAt(i);
+    for (let i = 0; i < cleaned.length; i++) {
+      const cp = cleaned.codePointAt(i);
       if (cp !== undefined) codePoints.push(cp.toString(16));
+      if (cp !== undefined && cp > 0xFFFF) i++;
     }
-    return `https://github.githubassets.com/images/icons/emoji/unicode/${codePoints.join('-')}.png?v=8`;
+    return `/emojis/${codePoints.join('-').toLowerCase()}.png`;
   },
 };
 

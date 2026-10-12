@@ -6,7 +6,7 @@ import { Send, Gem, Sparkles, UsersRound, Mic, UserCheck } from 'lucide-react';
 import { TUI, GIFT_CATEGORIES, DEFAULT_GIFTS, GIFT_GRADES, type Gift } from '../../types';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   GiftSheet — 17ae.com Professional Gift Store Design
+   GiftSheet — Professional Gift Store Design
    
    Dark background (#10111A), 4-column gift grid, horizontal category tabs,
    quantity selector, grade badges, NEW/FX badges.

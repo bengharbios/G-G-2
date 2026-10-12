@@ -119,11 +119,12 @@ export const ALL_EMOJIS: string[] = EMOJI_CATEGORIES.flatMap(c => c.emojis);
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /**
- * يحوّل رمز إيموجي إلى رابط PNG من GitHub emoji CDN.
+ * يحوّل رمز إيموجي إلى رابط PNG محلي من public/emojis/.
  * يضمن一致性 العرض بين كل الأجهزة والمتصفّحات (لا يعتمد على خط النظام).
+ * كل ملفات PNG محلية — لا أي ارتباط بأي CDN خارجي.
  */
 export function emojiToPng(emoji: string): string {
-  // أزل المعدّلات/المُنتِجات المركّبة (variations selectors) حتى لا تُكسر رابط CDN
+  // أزل المعدّلات/المُنتِجات المركّبة (variations selectors) حتى لا تُكسر اسم الملف
   const cleaned = emoji.replace(/[\uFE0E\uFE0F]/g, '');
   const codePoints: string[] = [];
   for (let i = 0; i < cleaned.length; i++) {
@@ -133,7 +134,7 @@ export function emojiToPng(emoji: string): string {
     // تخطّي البايت الثاني للأحرف المركّبة (surrogate pairs)
     if (cp > 0xFFFF) i++;
   }
-  return `https://github.githubassets.com/images/icons/emoji/unicode/${codePoints.join('-').toLowerCase()}.png?v=8`;
+  return `/emojis/${codePoints.join('-').toLowerCase()}.png`;
 }
 
 /** يبحث عن هدية بمعرّفها في DEFAULT_GIFTS */

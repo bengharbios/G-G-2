@@ -5,7 +5,7 @@ import type { ActiveGiftAnimation } from '../types';
 import { GIFT_GRADES } from '../types';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   GiftAnimations — 5-Tier Canvas-Based Gift Effects (matching 17ae.com)
+   GiftAnimations — 5-Tier Canvas-Based Gift Effects (matching our design)
 
    Grade 0 (Free):    No particle effect, just banner slide-in
    Grade 1 (Basic):   Small heart particles float up, simple banner
@@ -15,7 +15,7 @@ import { GIFT_GRADES } from '../types';
 
    SVGA Gifts: Full animation rendered in center of screen (like video)
 
-   Banner design (matching 17ae.com notification):
+   Banner design (matching our design notification):
    - Rounded rectangle with gradient background (grade color)
    - Sender info + gift emoji + name + receiver name
    - Price in gold text

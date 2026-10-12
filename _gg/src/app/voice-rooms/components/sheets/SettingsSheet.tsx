@@ -29,7 +29,7 @@ import { usePushNotification } from '@/hooks/usePushNotification';
 import { TUI, type VoiceRoom } from '../../types';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SettingsSheet — Yalla Ludo-Style Room Settings
+   SettingsSheet — Style Room Settings
 
    Teal-green gradient background, white setting cards with icons,
    chevron arrows, and two sub-dialogs (MicMode, AdminPermission).

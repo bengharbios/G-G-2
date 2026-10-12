@@ -28,3 +28,8 @@ Thumbs.db
 
 # ── Classified raw frames zip (one-time artifact, already extracted to public/yalla-frames/svga) ──
 _gg/classified/
+
+# Gift assets — too large for git (832 MB), downloaded locally via script
+# Run: python3 scripts/download_gifts.py
+_gg/public/gifts/thumbs/
+_gg/public/gifts/videos/

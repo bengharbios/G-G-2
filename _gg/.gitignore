@@ -73,3 +73,8 @@ android/capacitor-cordova-android-plugins/
 !android/gradle.properties
 !android/gradle/
 !android/capacitor.settings.gradle
+
+# Gift assets — too large for git (832 MB), downloaded locally via script
+# Run: python3 scripts/download_gifts.py
+public/gifts/thumbs/
+public/gifts/videos/
