@@ -683,3 +683,31 @@ Stage Summary:
 - 4 new files: AntLoaderOverlay, OfflineModal, NetworkStatusProvider, public/offline.html.
 - 4 modified files: capacitor.config.ts, public/sw.js, src/app/layout.tsx, src/app/loading.tsx.
 - Architecture: NetworkStatusProvider wraps AppShell in root layout — overlay floats above all pages. SW + Capacitor errorPath handle the offline-page case for both PWA and Android WebView.
+
+---
+Task ID: 1
+Agent: main
+Task: Friend profile shows full info + 3-dot menu respects friend status
+
+Work Log:
+- User reported 2 issues: (1) Friend profile dialog was incomplete (missing ID, country, birthdate, gender, level, frame, ornament, card, cover). (2) 3-dot menu on a friend's profile still showed "إضافة صديق" (Add Friend) even though the user is already a friend.
+
+- Root cause #1: /api/user/lookup only returned basic fields (id, username, displayName, avatar, numericId). The YallaProfileDialog never fetched the full profile in viewOnly mode — just used whatever was in authUser prop (which was passed basic info only).
+
+- Root cause #2: openUserProfile in friends/page.tsx was checking `friends.some(f => f.userId === user.id)`, but FriendItem uses 'userId' (not 'id'). When passing FriendItem directly to openUserProfile(f), user.id was undefined, so the check failed, friendStatus stayed 'none', and the menu showed "Add Friend".
+
+- Fixes:
+  1. src/app/api/user/lookup/route.ts: extended to support `full=1` query param that returns ALL profile fields (bio, country, cover, frame, ornament, card, gender, birthDate, level, role, createdAt). Also supports UUID lookup (not just numericId/username search). Returns single user when isNumeric or isUuid + full=1, otherwise returns array.
+  
+  2. src/app/friends/page.tsx (openUserProfile): now accepts both 'id' and 'userId' keys (FriendItem uses userId, UserResult uses id). Falls back user.id || user.userId. friendStatus check now correctly matches friends.
+  
+  3. src/components/shared/YallaProfileDialog.tsx: added fullUser state — when viewOnly=true, fetches /api/user/lookup?id=<UUID>&full=1 and merges into fullUser. Added effectiveUser = viewOnly ? (fullUser || authUser) : authUser. All display parts (avatar, frame, ornament, card, cover, name, ID, country, bio, gender icon) now use effectiveUser. Gender icon is now dynamic (male/female based on effectiveUser.gender). Added birthDate display (🎂 row) under info strip when birthDate exists. Profile level populated from fetched user.level → xp.level. Edit windows (editWin, basicWin) now hidden in viewOnly mode. Guest view check changed from authUser to effectiveUser.
+
+- Verified: npx next build ✓ (21.8s), ESLint ✓. Pre-existing TS warnings (framer-motion Variants + authUser null check in edit windows — all in non-viewOnly code paths) remain but don't block build.
+
+- Committed as f08e70b and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 3 files changed, 191 insertions, 47 deletions.
+- Friend profile now shows full info: ID, country flag, gender icon (dynamic), birthdate, level flag, bio, frame (equipped), ornament (pendant), card (backdrop), cover (profile theme).
+- 3-dot menu now correctly shows "مراسلة + حذف صديق" for existing friends, "إضافة صديق" only for non-friends.
