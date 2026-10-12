@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getClient, ensureAdminTables } from '@/lib/admin-db';
-import { crypto as nodeCrypto } from 'crypto';
+import { randomUUID } from 'crypto';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'gg-platform-secret-key-2024');
 
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     await ensureAdminTables();
     const c = getClient();
-    const id = nodeCrypto.randomUUID();
+    const id = randomUUID();
     await c.execute({
       sql: `INSERT INTO ChatMessage (id, fromUserId, toUserId, text, type, isRead, createdAt)
             VALUES (?, ?, ?, ?, ?, 0, datetime('now'))`,

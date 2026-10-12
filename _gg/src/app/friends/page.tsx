@@ -31,6 +31,7 @@ export default function FriendsPage() {
   const [pendingReqs, setPendingReqs] = useState<FriendReq[]>([]);
   const [chatFriend, setChatFriend] = useState<FriendItem | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([]);
+  const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const [chatInput, setChatInput] = useState('');
   const [showEmoji, setShowEmoji] = useState(false);
   const [showGifts, setShowGifts] = useState(false);
@@ -63,6 +64,11 @@ export default function FriendsPage() {
     return () => { if (chatPollRef.current) clearInterval(chatPollRef.current); };
   }, [view, chatFriend]);
 
+  // Auto-scroll to bottom when messages update
+  useEffect(() => {
+    if (chatScrollRef.current) chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+  }, [chatMessages]);
+
   // Open ANY user's profile in YallaProfileDialog (نفس نافذة بروفايلي)
   const openUserProfile = (user: { id: string; username: string; displayName?: string; avatar?: string; numericId?: number | null }) => {
     setSelectedUser({
@@ -70,7 +76,9 @@ export default function FriendsPage() {
       displayName: user.displayName || user.username,
       avatar: user.avatar || '', numericId: user.numericId ?? null,
     });
-    setFriendStatus(friends.some(f => f.userId === user.id) ? 'friends' : 'none');
+    // تحقق من حالة الصداقة: صديق أم لا
+    const isFriend = friends.some(f => f.userId === user.id);
+    setFriendStatus(isFriend ? 'friends' : 'none');
     setProfileDialogOpen(true);
   };
 
@@ -212,7 +220,7 @@ export default function FriendsPage() {
 
       {/* === CHAT === */}
       {view === 'chat' && chatFriend && (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-[calc(100vh-3.5rem)]">
           <div className="flex items-center gap-3 p-3 bg-[#0a4a3a] border-b border-[#15BC83]/20">
             <button onClick={() => setView('list')} className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"><X className="w-4 h-4 text-white" /></button>
             {/* الضغط على صورة/اسم الصديق → يفتح بروفايله (نفس نافذة بروفايلي) */}
@@ -246,7 +254,7 @@ export default function FriendsPage() {
             </div>
           )}
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-[#062318]">
+          <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-3 space-y-2 bg-[#062318]">
             {chatMessages.length === 0 && <p className="text-center text-white/30 text-xs py-8">لا توجد رسائل — ابدأ المحادثة</p>}
             {chatMessages.map((msg, i) => (
               <div key={msg.id || i} className={`flex ${msg.fromUserId === chatFriend.userId ? 'justify-end' : 'justify-start'}`}>
