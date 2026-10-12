@@ -1,0 +1,71 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
+import { getClient, ensureAdminTables } from '@/lib/admin-db';
+import { crypto as nodeCrypto } from 'crypto';
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'gg-platform-secret-key-2024');
+
+async function getUserId(request: NextRequest): Promise<string | null> {
+  const token = request.cookies.get('auth_token')?.value;
+  if (!token) return null;
+  try { const { payload } = await jwtVerify(token, JWT_SECRET); return payload.userId as string; }
+  catch { return null; }
+}
+
+// GET messages between current user and a friend
+export async function GET(request: NextRequest) {
+  try {
+    const userId = await getUserId(request);
+    if (!userId) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    const { searchParams } = new URL(request.url);
+    const friendId = searchParams.get('friendId');
+    const after = searchParams.get('after'); // ISO timestamp for polling
+    if (!friendId) return NextResponse.json({ error: 'friendId مطلوب' }, { status: 400 });
+
+    await ensureAdminTables();
+    const c = getClient();
+    const result = await c.execute({
+      sql: `SELECT id, fromUserId, toUserId, text, type, isRead, createdAt
+            FROM ChatMessage
+            WHERE ((fromUserId = ? AND toUserId = ?) OR (fromUserId = ? AND toUserId = ?))
+            ${after ? 'AND createdAt > ?' : ''}
+            ORDER BY createdAt ASC LIMIT 200`,
+      args: after ? [userId, friendId, friendId, userId, after] : [userId, friendId, friendId, userId],
+    });
+
+    // Mark messages from friend as read
+    await c.execute({
+      sql: `UPDATE ChatMessage SET isRead = 1 WHERE fromUserId = ? AND toUserId = ? AND isRead = 0`,
+      args: [friendId, userId],
+    });
+
+    return NextResponse.json({ success: true, messages: result.rows });
+  } catch (error) {
+    console.error('[Chat GET]', error);
+    return NextResponse.json({ error: 'حدث خطأ' }, { status: 500 });
+  }
+}
+
+// POST send a message
+export async function POST(request: NextRequest) {
+  try {
+    const userId = await getUserId(request);
+    if (!userId) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    const { toUserId, text, type } = await request.json();
+    if (!toUserId || !text) return NextResponse.json({ error: 'البيانات ناقصة' }, { status: 400 });
+
+    await ensureAdminTables();
+    const c = getClient();
+    const id = nodeCrypto.randomUUID();
+    await c.execute({
+      sql: `INSERT INTO ChatMessage (id, fromUserId, toUserId, text, type, isRead, createdAt)
+            VALUES (?, ?, ?, ?, ?, 0, datetime('now'))`,
+      args: [id, userId, toUserId, text.slice(0, 2000), type || 'text'],
+    });
+
+    return NextResponse.json({ success: true, id, createdAt: new Date().toISOString() });
+  } catch (error) {
+    console.error('[Chat POST]', error);
+    return NextResponse.json({ error: 'حدث خطأ' }, { status: 500 });
+  }
+}

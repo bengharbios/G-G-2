@@ -647,6 +647,30 @@ export async function ensureAdminTables(): Promise<void> {
       status TEXT DEFAULT 'pending', createdAt TEXT DEFAULT (datetime('now')), updatedAt TEXT DEFAULT (datetime('now')))
   `);
 
+  // ChatMessage table — رسائل الدردشة بين الأصدقاء (مخزّنة في قاعدة البيانات)
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS ChatMessage (
+      id TEXT PRIMARY KEY,
+      fromUserId TEXT NOT NULL,
+      toUserId TEXT NOT NULL,
+      text TEXT NOT NULL,
+      type TEXT DEFAULT 'text',
+      isRead INTEGER DEFAULT 0,
+      createdAt TEXT DEFAULT (datetime('now')))
+  `);
+
+  // UserNotification table — إشعارات للمستخدمين (من الأدمن أو النظام)
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS UserNotification (
+      id TEXT PRIMARY KEY,
+      userId TEXT NOT NULL,
+      title TEXT NOT NULL,
+      body TEXT DEFAULT '',
+      type TEXT DEFAULT 'info',
+      isRead INTEGER DEFAULT 0,
+      createdAt TEXT DEFAULT (datetime('now')))
+  `);
+
   // VoiceRoom table
   await c.execute(`
     CREATE TABLE IF NOT EXISTS VoiceRoom (
