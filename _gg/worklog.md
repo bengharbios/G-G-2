@@ -747,3 +747,35 @@ Stage Summary:
 - Delete friend works from any view (list or chat) — confirmation modal is global.
 - After delete in chat: stays in chat, replaces input/smiles/gifts with yellow 'add friend' button.
 - After re-adding as friend: button shows 'pending' state, and once accepted the chat input returns (isStillFriend becomes true again).
+
+---
+Task ID: 1
+Agent: main
+Task: Notifications badges + 'مراسلة' text button
+
+Work Log:
+- User requested: (1) Enable notifications — show badge on Friends button in bottom nav when receiving friend request, friend accept, or message from friend. When entering friends page: badge on 'friends' tab for messages, badge on requests section for pending requests, badge on sender name for unread messages. (2) Change the icon in front of friend in friends list to a 'مراسلة' text button.
+
+- Implementation:
+  1. NEW endpoint /api/notifications/summary (src/app/api/notifications/summary/route.ts): returns pendingFriendRequests count, unreadMessages total, unreadByFriend array (per-friend count + last message + last timestamp), and totalBadge. Single GROUP BY query for unread messages.
+  
+  2. SiteBottomNav.tsx: polls /api/notifications/summary every 30s + on focus + on visibilitychange. Shows red badge on the 'friends' tab icon with count = pendingCount + totalUnread. Badge shows '99+' for values > 99.
+  
+  3. Friends page (src/app/friends/page.tsx):
+     - New state: unreadByFriend (Record<friendId, {count, lastMessage, lastMessageAt}>), pendingCount
+     - loadSummary() polls every 15s (faster than bottom nav for snappier UI)
+     - Re-fetches summary when view changes (chat opened/closed)
+     - Top tab bar badges: 'notifications' tab = pendingCount, 'friends' tab = totalUnread
+     - Friend list item redesigned: avatar (with red unread badge), name (bold if unread) + green dot indicator + level + last message preview (truncated to 30 chars) if unread, 'مراسلة' text button (green pill with MessageCircle icon + text 'مراسلة' + red unread badge on corner)
+     - Replaced the old icon-only MessageCircle button (w-9 h-9 rounded-full) with the new 'مراسلة' text button
+
+- Verified: npx next build ✓ (23.8s), ESLint ✓, no TS errors in modified files.
+
+- Committed as a698dea and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 4 files changed (new summary endpoint + friends page + SiteBottomNav + worklog), 244 insertions, 10 deletions.
+- Bottom nav Friends button now shows red badge with total notifications count (pending reqs + unread msgs).
+- Friends page shows per-friend red unread badges on avatar AND on 'مراسلة' button.
+- Top tabs show badges: 'الإشعارات' = pending requests count, 'أصدقاء' = total unread messages.
+- 'مراسلة' button is now a green pill with text + icon, replaces the icon-only circle button.

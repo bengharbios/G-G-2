@@ -6,14 +6,16 @@
  * خصائص:
  *   - تظهر في وسط الشاشة بالضبط (fixed inset-0 flex items-center justify-center)
  *   - بدون خلفية، بدون حدود، بدون نص — فقط النملة
- *   - عائمة فوق كل الصفحات (z-[9998])
+ *   - z-index منخفض (z-30) حتى لا تحجب النوافذ المنبثقة (modals) والإدخالات
  *   - تظهر وتختفي بسرعة عبر CSS opacity/transform
  *
  * تستخدم في:
- *   - التنقل بين الصفحات (route transition) — تختفي بعد 50% من التحميل
- *   - بطء الشبكة (slow 2G فقط)
- *   - بطء fetch (أكثر من 6 ثوانٍ)
- *   - انقطاع مؤقت في الشبكة
+ *   - بطء شبكة شديد جداً (slow-2g أو RTT > 3000ms)
+ *   - بطء fetch شديد جداً (أكثر من 15 ثانية)
+ *   - انقطاع مؤقت مؤكد (3+ ping failures متتالية)
+ *
+ * ملاحظة: لا تظهر على التنقل بين الصفحات ولا على fetches البطيئة العادية
+ *        لأنها مزعجة للمستخدمين. فقط في الحالات الحادة.
  */
 
 import GazelleLoader from './GazelleLoader';
@@ -36,14 +38,15 @@ export default function AntLoaderOverlay({
 }: AntLoaderOverlayProps) {
   // نُبقي العنصر مُركّباً دائماً ونتحكّم بالرؤية عبر CSS — هذا أسرع
   // ويلتزم بقواعد React (no set-state-in-effect).
+  // z-30: أقل من النوافذ المنبثقة (z-50) حتى لا تحجب الإدخال
   const visibilityClass = visible
-    ? 'opacity-100 scale-100 pointer-events-auto'
+    ? 'opacity-100 scale-100 pointer-events-none'
     : 'opacity-0 scale-90 pointer-events-none';
 
   return (
     <div
       dir="rtl"
-      className={`fixed inset-0 z-[9998] flex items-center justify-center transition-all duration-200 ${visibilityClass}`}
+      className={`fixed inset-0 z-30 flex items-center justify-center transition-all duration-200 ${visibilityClass}`}
       role="status"
       aria-live="polite"
       aria-hidden={!visible}

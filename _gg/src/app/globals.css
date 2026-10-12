@@ -2687,13 +2687,16 @@ html, body {
 /* Section title */
 .ys-section-title { font-size: 14px; font-weight: 800; color: #15BC83; padding: 14px 18px 4px; margin-top: 6px; }
 
-/* Bottom buttons — خروج (أخضر) + مركز الحساب (ذهبي) */
-.ys-bottom-buttons { display: flex; gap: 10px; padding: 20px 18px; background: #F0F9F4; }
+/* Bottom buttons — خروج (أخضر) + مركز الحساب (ذهبي) — جنباً إلى جنب دائماً */
+.ys-bottom-buttons { display: flex; flex-wrap: nowrap; gap: 10px; padding: 20px 18px; background: #F0F9F4; }
 .ys-btn {
-  flex: 1; height: 50px; border: none; border-radius: 14px;
-  font-size: 16px; font-weight: 800; cursor: pointer;
+  flex: 1 1 0; min-width: 0; height: 50px; border: none; border-radius: 14px;
+  font-size: 14px; font-weight: 800; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 6px;
   transition: transform .1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ys-btn:active { transform: scale(.97); }
 .ys-btn--logout { background: linear-gradient(180deg, #15BC83, #0FA070); color: #fff; }
