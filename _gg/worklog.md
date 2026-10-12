@@ -623,3 +623,28 @@ Stage Summary:
 - The problem was in the signaling layer - offer/answer exchange itself
 - Glare fix: rollback local offer when receiving incoming offer in have-local-offer state
 - Render will auto-deploy or user can manual deploy
+
+---
+Task ID: 1
+Agent: main
+Task: Persistent header + bottom nav across main pages (Games/Council/Friends) + gazelle loader for internal pages
+
+Work Log:
+- Analyzed the architecture: SiteHeader + SiteBottomNav were duplicated in src/app/page.tsx and src/app/friends/page.tsx, causing them to remount on every navigation between bottom-nav tabs. Also found a bug — on Friends page, `onProfileClick` was a no-op, so clicking the profile picture did nothing.
+- Created `src/components/shared/AppShellContext.tsx` — context exposing authUser, openProfile, openLogin, openRegister, handleLogout, subscriberProfile to all child pages.
+- Created `src/components/shared/AppShell.tsx` — client component placed in the root layout (`src/app/layout.tsx`). For shell routes (/, /friends, /voice-rooms), it renders SiteHeader + SiteBottomNav + YallaProfileDialog + AuthModals ONCE — they stay mounted across navigations. For non-shell routes (game lobbies), it just renders children. Handles auth gating: forced on / and /friends, /voice-rooms keeps guest mode.
+- Created `src/components/shared/GazelleLoader.tsx` — pure CSS/SVG animated running gazelle (legs alternating, body bob, tail wiggle, moving ground, dust particles). Used for auth-checking screen and as the global loading.tsx.
+- Updated `src/app/layout.tsx` to wrap {children} with <AppShell>.
+- Refactored `src/app/page.tsx` — removed all auth state, SiteHeader, SiteBottomNav, LoginModal, RegisterModal, YallaProfileDialog, SubscriberProfileData fetch, handleLogout, handleAuthSuccess (all moved to AppShell). HomePage is now slim: just logo header + GamesSection.
+- Refactored `src/app/friends/page.tsx` — removed SiteHeader (was broken with no-op onProfileClick), removed SiteBottomNav (now provided by AppShell). Kept the local YallaProfileDialog for viewing OTHER users' profiles (viewOnly mode) — that's distinct from AppShell's profile dialog which opens MY profile.
+- Refactored `src/app/voice-rooms/components/RoomListView.tsx` via Python script (`/home/z/my-project/scripts/refactor_roomlistview.py`) — removed the internal "Top Row" (avatar + profile popover + search button, ~5230 chars) and the internal BOTTOM_NAV `<nav>` (~2500 chars, was purely decorative with no onClick handlers). Root div changed from `fixed inset-0 flex flex-col overflow-hidden` to `relative flex flex-col min-h-screen` so it flows inside AppShell's spacer. Header no longer needs paddingTop env(safe-area-inset-top) since AppShell's SiteHeader handles the top.
+- Updated `src/app/loading.tsx` to use GazelleLoader fullScreen instead of generic spinner — applies to all routes' initial load.
+- Verified build: `npx next build` compiles successfully (✓ in 19.1s). Pre-existing TS errors in unrelated files (familyfeud, profile, etc.) — not introduced by this change.
+- Committed as f90160f and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 8 files changed, 498 insertions, 397 deletions.
+- New persistent architecture: ONE SiteHeader + ONE SiteBottomNav for /, /friends, /voice-rooms — they mount in AppShell (root layout) and stay mounted across tab switches. Only page content changes.
+- Bug fixed: clicking profile avatar in SiteHeader now opens YallaProfileDialog on EVERY shell route (was broken on /friends).
+- New loading animation: animated running gazelle (GazelleLoader) replaces generic spinner for both auth-checking state and Next.js route loading.
+- Dead code: BottomNavigation function in src/app/page.tsx is still defined but unused (pre-existing dead code from earlier refactor) — left alone to minimize risk.

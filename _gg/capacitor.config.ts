@@ -8,6 +8,10 @@ const config: CapacitorConfig = {
   server: {
     url: 'https://ggame3.vercel.app',
     androidScheme: 'https',
+    // عند انقطاع الإنترنت أو فشل تحميل الرابط الأساسي، يعرض WebView
+    // صفحة /offline.html المضمنة محلياً بدلاً من صفحة المتصفح
+    // "Page Web non disponible" — النملة الجارية + زر إعادة الاتصال
+    errorPath: 'offline.html',
   },
   // Splash screen settings
   plugins: {

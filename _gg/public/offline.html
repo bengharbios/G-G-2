@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>انقطع الاتصال — ألعاب الغريب</title>
+  <style>
+    /* خط Cairo من Google Fonts — لكن في وضع offline نُوفّر احتياطياً */
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(180deg, #0D8A7A 0%, #0A6B5E 30%, #074a42 100%);
+      color: #fff;
+    }
+
+    .root {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 24rem;
+      background: linear-gradient(180deg, rgba(10,74,58,0.85) 0%, rgba(6,35,24,0.95) 100%);
+      border: 1px solid rgba(21,188,131,0.4);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+      overflow: hidden;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* ── النملة الجارية ── */
+    .ant-container {
+      width: 88px;
+      height: 88px;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    .ground {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 2px;
+      background-image: linear-gradient(90deg, rgba(245,184,65,0.4) 0 8px, transparent 8px 40px);
+      background-size: 40px 4px;
+      background-repeat: repeat-x;
+      animation: ground-move 0.4s linear infinite;
+    }
+    @keyframes ground-move {
+      0%   { background-position: 0 0; }
+      100% { background-position: -40px 0; }
+    }
+
+    .dust {
+      position: absolute;
+      bottom: 6px; right: 0;
+      display: flex; gap: 4px;
+    }
+    .dust span {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(245,184,65,0.5);
+      animation: dust-fly 0.8s ease-out infinite;
+    }
+    .dust span:nth-child(2) { animation-delay: 0.2s; }
+    .dust span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dust-fly {
+      0%   { transform: translateX(0) scaleX(1); opacity: 0.7; }
+      100% { transform: translateX(-40px) scaleX(0.5); opacity: 0; }
+    }
+
+    .ant-svg {
+      width: 100%;
+      height: 100%;
+      animation: body-bob 0.5s ease-in-out infinite;
+      transform-origin: 30% 70%;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes body-bob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      25%      { transform: translateY(-3px) rotate(0deg); }
+      50%      { transform: translateY(0) rotate(1deg); }
+      75%      { transform: translateY(-2px) rotate(0deg); }
+    }
+
+    .leg-f {
+      animation: leg-front 0.25s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+    .leg-b {
+      animation: leg-back 0.25s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+    @keyframes leg-front {
+      0%, 100% { transform: rotate(20deg); }
+      50%      { transform: rotate(-25deg); }
+    }
+    @keyframes leg-back {
+      0%, 100% { transform: rotate(-25deg); }
+      50%      { transform: rotate(20deg); }
+    }
+
+    .tail {
+      animation: tail-wiggle 0.4s ease-in-out infinite;
+      transform-origin: left center;
+    }
+    @keyframes tail-wiggle {
+      0%, 100% { transform: rotate(-5deg); }
+      50%      { transform: rotate(8deg); }
+    }
+
+    .title {
+      font-size: 1.125rem;
+      font-weight: 900;
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+    .desc {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .err-box {
+      margin-top: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 0.75rem;
+      width: 100%;
+      text-align: center;
+    }
+    .err-box p {
+      font-size: 0.75rem;
+      color: #fca5a5;
+      font-weight: 700;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+      margin-top: 1.25rem;
+    }
+    .btn {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .btn-close {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-color: rgba(255,255,255,0.1);
+    }
+    .btn-close:hover { background: rgba(255,255,255,0.15); }
+    .btn-reconnect {
+      background: #15BC83;
+      color: #fff;
+      box-shadow: 0 10px 25px -5px rgba(21,188,131,0.4);
+    }
+    .btn-reconnect:hover { background: #13a374; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.625rem;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .status-dot.testing {
+      background: #fbbf24;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="root">
+    <div class="card">
+      <!-- النملة الجارية -->
+      <div class="ant-container">
+        <div class="dust">
+          <span></span><span></span><span></span>
+        </div>
+        <svg class="ant-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#F5B841" stroke-width="3" stroke-linecap="round" fill="none">
+            <path d="M 78 22 Q 84 8 92 6" />
+            <path d="M 84 22 Q 92 10 100 10" />
+          </g>
+          <ellipse cx="80" cy="30" rx="14" ry="11" fill="#F5B841" />
+          <ellipse cx="74" cy="22" rx="3" ry="5" fill="#F5B841" transform="rotate(-20 74 22)" />
+          <circle cx="86" cy="28" r="1.8" fill="#062318" />
+          <circle cx="92" cy="34" r="2" fill="#062318" opacity="0.6" />
+          <path d="M 70 36 Q 60 40 56 50" stroke="#F5B841" stroke-width="10" stroke-linecap="round" fill="none" />
+          <ellipse cx="48" cy="58" rx="26" ry="14" fill="#F5B841" />
+          <g class="tail" style="transform-origin: 24px 56px;">
+            <path d="M 24 56 Q 14 52 12 60" stroke="#F5B841" stroke-width="4" stroke-linecap="round" fill="none" />
+          </g>
+          <g class="leg-f" style="transform-origin: 60px 60px;">
+            <path d="M 60 60 L 64 90" stroke="#F5B841" stroke-width="5" stroke-linecap="round" fill="none" />
+            <path d="M 64 90 L 70 92" stroke="#F5B841" stroke-width="4" stroke-linecap="round" fill="none" />
+          </g>
+          <g class="leg-b" style="transform-origin: 52px 60px;">
+            <path d="M 52 60 L 48 90" stroke="#F5B841" stroke-width="5" stroke-linecap="round" fill="none" />
+            <path d="M 48 90 L 42 92" stroke="#F5B841" stroke-width="4" stroke-linecap="round" fill="none" />
+          </g>
+          <g class="leg-b" style="transform-origin: 40px 62px; opacity: 0.6;">
+            <path d="M 40 62 L 36 88" stroke="#F5B841" stroke-width="4" stroke-linecap="round" fill="none" />
+            <path d="M 36 88 L 30 90" stroke="#F5B841" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <g class="leg-f" style="transform-origin: 68px 62px; opacity: 0.6;">
+            <path d="M 68 62 L 72 88" stroke="#F5B841" stroke-width="4" stroke-linecap="round" fill="none" />
+            <path d="M 72 88 L 78 90" stroke="#F5B841" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+        </svg>
+        <div class="ground"></div>
+      </div>
+
+      <h1 class="title">انقطع الاتصال بالإنترنت</h1>
+      <p class="desc">
+        لا يمكننا الوصول إلى السيرفر. تأكد من اتصالك بالإنترنت ثم اضغط
+        "إعادة الاتصال" للمحاولة مرة أخرى.
+      </p>
+
+      <div class="err-box" id="errBox" style="display: none;">
+        <p id="errMsg"></p>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-close" id="btnClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          إغلاق اللعبة
+        </button>
+        <button class="btn btn-reconnect" id="btnReconnect">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.67a7 7 0 0 1 12-4.83L20 10"/><path d="M19 11.33a7 7 0 0 1-12 4.83L4 14"/><path d="M20 6v4h-4"/><path d="M4 18v-4h4"/></svg>
+          <span id="btnReconnectText">إعادة الاتصال</span>
+        </button>
+      </div>
+
+      <div class="status-row">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">الشبكة غير متصلة</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var btnClose = document.getElementById('btnClose');
+      var btnReconnect = document.getElementById('btnReconnect');
+      var btnReconnectText = document.getElementById('btnReconnectText');
+      var statusDot = document.getElementById('statusDot');
+      var statusText = document.getElementById('statusText');
+      var errBox = document.getElementById('errBox');
+      var errMsg = document.getElementById('errMsg');
+
+      var testing = false;
+
+      function setTesting(t) {
+        testing = t;
+        if (t) {
+          statusDot.className = 'status-dot testing';
+          statusText.textContent = 'يختبر الاتصال...';
+          btnReconnect.disabled = true;
+          btnReconnectText.innerHTML = '<span class="spinner"></span>';
+        } else {
+          statusDot.className = 'status-dot';
+          statusText.textContent = 'الشبكة غير متصلة';
+          btnReconnect.disabled = false;
+          btnReconnectText.textContent = 'إعادة الاتصال';
+        }
+      }
+
+      function showErr(msg) {
+        errBox.style.display = 'block';
+        errMsg.textContent = msg;
+      }
+      function hideErr() {
+        errBox.style.display = 'none';
+      }
+
+      function ping() {
+        return new Promise(function(resolve) {
+          var ctrl = new AbortController();
+          var timer = setTimeout(function() { ctrl.abort(); }, 8000);
+          fetch('/api/auth/me?_t=' + Date.now(), {
+            method: 'HEAD',
+            signal: ctrl.signal,
+            cache: 'no-store'
+          }).then(function(res) {
+            clearTimeout(timer);
+            resolve(res.ok || res.status === 401 || res.status === 405);
+          }).catch(function() {
+            clearTimeout(timer);
+            resolve(false);
+          });
+        });
+      }
+
+      btnReconnect.addEventListener('click', function() {
+        if (testing) return;
+        hideErr();
+        setTesting(true);
+        ping().then(function(ok) {
+          if (ok) {
+            statusText.textContent = 'تم استعادة الاتصال ✓';
+            setTimeout(function() { window.location.reload(); }, 300);
+          } else {
+            setTesting(false);
+            showErr('لا يزال الاتصال مقطوعاً — حاول مرة أخرى');
+          }
+        });
+      });
+
+      btnClose.addEventListener('click', function() {
+        try { window.close(); } catch(e) {}
+        setTimeout(function() { window.location.href = 'about:blank'; }, 100);
+      });
+
+      // إذا عاد الاتصال تلقائياً، أعد التحميل
+      window.addEventListener('online', function() {
+        statusText.textContent = 'عاد الاتصال، نُعيد التحميل...';
+        setTimeout(function() { window.location.reload(); }, 600);
+      });
+
+      // فحص دوري كل 30 ثانية
+      setInterval(function() {
+        if (testing || !navigator.onLine) return;
+        ping().then(function(ok) {
+          if (ok) {
+            statusText.textContent = 'تم استعادة الاتصال ✓';
+            setTimeout(function() { window.location.reload(); }, 600);
+          }
+        });
+      }, 30000);
+
+      // محاولة أولى بعد ثانيتين
+      setTimeout(function() {
+        if (!testing) btnReconnect.click();
+      }, 2000);
+    })();
+  </script>
+</body>
+</html>

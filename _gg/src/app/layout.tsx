@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import AppShell from "@/components/shared/AppShell";
+import NetworkStatusProvider from "@/components/shared/NetworkStatusProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -38,7 +39,7 @@ export default function RootLayout({
             strategy fetches HTML from network first, so this fresh script WILL execute. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(sessionStorage.getItem("sw-clr-v5"))return;if("serviceWorker"in navigator){navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}).then(function(){if("caches"in window){return caches.keys().then(function(k){return Promise.all(k.map(function(c){return caches.delete(c)}))})}}).then(function(){sessionStorage.setItem("sw-clr-v5","1")}).catch(function(){})}}catch(e){}})();`,
+            __html: `(function(){try{if(sessionStorage.getItem("sw-clr-v6"))return;if("serviceWorker"in navigator){navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}).then(function(){if("caches"in window){return caches.keys().then(function(k){return Promise.all(k.map(function(c){return caches.delete(c)}))})}}).then(function(){sessionStorage.setItem("sw-clr-v6","1")}).catch(function(){})}}catch(e){}})();`,
           }}
         />
         {/* وضع التضمين: داخل إطار يلا لودو نخفي هيدر اللعبة ونبلّغ الأصل بالجواهر */}
@@ -51,9 +52,13 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} font-sans antialiased bg-background text-foreground`}
       >
-        {/* AppShell — يوفر هيدر وقائمة سفلية موحّدة للصفحات الرئيسية
-            (/، /friends، /voice-rooms) — تُحمّل مرة واحدة عند التنقل بينها */}
-        <AppShell>{children}</AppShell>
+        {/* NetworkStatusProvider — يكشف حالة الشبكة ويُظهر النملة العائمة
+            ونافذة الانقطاع فوق كل الصفحات */}
+        <NetworkStatusProvider>
+          {/* AppShell — يوفر هيدر وقائمة سفلية موحّدة للصفحات الرئيسية
+              (/، /friends، /voice-rooms) — تُحمّل مرة واحدة عند التنقل بينها */}
+          <AppShell>{children}</AppShell>
+        </NetworkStatusProvider>
         <Toaster />
         <ServiceWorkerRegistrar />
       </body>
