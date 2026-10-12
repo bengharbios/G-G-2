@@ -28,8 +28,20 @@ export async function POST(request: NextRequest) {
   try {
     const userId = await getUserId(request);
     if (!userId) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
-    const { toUsername } = await request.json();
-    if (!toUsername) return NextResponse.json({ error: 'اسم المستخدم مطلوب' }, { status: 400 });
-    const result = await sendFriendRequest(userId, toUsername); return NextResponse.json(result);
+    const { toUsername, toUserId } = await request.json();
+    if (!toUsername && !toUserId) return NextResponse.json({ error: 'اسم المستخدم أو المعرّف مطلوب' }, { status: 400 });
+
+    // إن أُرسل toUserId (من صفحة بروفايل المستخدم) نبحث عن اسم المستخدم منه
+    let targetUsername = toUsername;
+    if (!targetUsername && toUserId) {
+      const { getClient, ensureAdminTables } = await import('@/lib/admin-db');
+      await ensureAdminTables();
+      const c = getClient();
+      const r = await c.execute({ sql: 'SELECT username FROM AppUser WHERE id = ?', args: [toUserId] });
+      if (r.rows.length === 0) return NextResponse.json({ success: false, error: 'المستخدم غير موجود' });
+      targetUsername = r.rows[0].username as string;
+    }
+    const result = await sendFriendRequest(userId, targetUsername);
+    return NextResponse.json(result);
   } catch (error) { console.error('[Friends POST]', error); return NextResponse.json({ error: 'حدث خطأ' }, { status: 500 }); }
 }

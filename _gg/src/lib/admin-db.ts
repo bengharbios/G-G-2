@@ -4237,11 +4237,19 @@ export async function getPendingRequests(userId: string): Promise<FriendRequest[
   }));
 }
 
-export async function searchUsers(query: string, currentUserId: string): Promise<{ id: string; username: string; displayName: string; avatar: string }[]> {
+export async function searchUsers(query: string, currentUserId: string): Promise<{ id: string; username: string; displayName: string; avatar: string; numericId: number | null }[]> {
   const c = getClient();
   await ensureAdminTables();
-  const result = await c.execute({ sql: `SELECT id, username, COALESCE(displayName, username) as displayName, avatar FROM AppUser WHERE (username LIKE ? OR displayName LIKE ?) AND id != ? LIMIT 20`, args: [`%${query}%`, `%${query}%`, currentUserId] });
-  return result.rows.map(row => ({ id: row.id as string, username: row.username as string, displayName: row.displayName as string, avatar: (row.avatar as string) || '' }));
+  const isNumeric = /^\d+$/.test(query.trim());
+  let result;
+  if (isNumeric) {
+    // بحث بـ numericId (مطابق تماماً)
+    result = await c.execute({ sql: `SELECT id, username, COALESCE(displayName, username) as displayName, avatar, numericId FROM AppUser WHERE numericId = ? AND id != ? LIMIT 20`, args: [parseInt(query.trim()), currentUserId] });
+  } else {
+    // بحث بـ username أو displayName
+    result = await c.execute({ sql: `SELECT id, username, COALESCE(displayName, username) as displayName, avatar, numericId FROM AppUser WHERE (username LIKE ? OR displayName LIKE ?) AND id != ? LIMIT 20`, args: [`%${query}%`, `%${query}%`, currentUserId] });
+  }
+  return result.rows.map(row => ({ id: row.id as string, username: row.username as string, displayName: row.displayName as string, avatar: (row.avatar as string) || '', numericId: row.numericId as number | null }));
 }
 
 // ─── Voice Rooms functions ────────────────────────────────────────────
