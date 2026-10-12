@@ -426,7 +426,7 @@ export default function RoomInteriorView({ room, onExit, authUser, onRoomUpdate 
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendChat(); } }}
-            placeholder="room_say_something"
+            placeholder="قل شيئاً..."
             disabled={vr.isRoomMuted || !authUser}
             className="flex-1 rounded-full"
             style={{
@@ -683,7 +683,7 @@ function SeatCircle({
 
         {/* ── الحالة الفارغة ── */}
         {isEmpty && (
-          <img src="/room-icons/room_default.webp" alt="فارغ"
+          <img src="/room-icons/room_ic_room_mic_free.webp" alt="فارغ"
             style={{ width: 24, height: 24, opacity: 0.4 }}
             onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
         )}
