@@ -1030,3 +1030,27 @@ Stage Summary:
 - 1 file changed (RoomInteriorView.tsx), 2 insertions, 2 deletions.
 - Z-index fix: RoomInteriorView now covers the full screen (z-[60]) above AppShell header (z-50) and bottom nav (z-50).
 - Asset usage audit: identified that MicSeat, BottomBar, and header need to use actual Yalla Ludo image assets instead of lucide-react icons.
+
+---
+Task ID: 1
+Agent: main
+Task: Extract voice room icons from Yalla Ludo v1.5.1.0 APK
+
+Work Log:
+- User provided MediaFire download link for Yalla+Ludo+-+Ludo&Jackaroo_1.5.1.0_APKPure.xapk (320MB).
+- Downloaded XAPK successfully via curl from MediaFire.
+- XAPK is a ZIP containing: com.yalla.yallagames.apk (219MB), appAssetPack.apk (65MB), config.arm64_v8a.apk (35MB), manifest.json.
+- Extracted main APK (com.yalla.yallagames.apk) from XAPK.
+- Listed all room_* resources: 2493 files total (1680 in res/drawable*, 100 in assets/).
+- The main drawable folder is res/drawable-xxhdpi-v4 (3600 files total, not v17 as expected).
+- Extracted 1265 room icons from res/drawable-xxhdpi-v4 + 328 from res/drawable-ldrtl-xxhdpi-v17 + 2 SVGA from assets/ = 1267 total.
+- Copied all to public/room-icons/ (20MB total).
+- Key icons verified: room_icon_room_top_close, room_icon_room_top_more, room_icon_share, room_ic_input_sound, room_ic_input_mic, room_mic_emoji_icon, room_icon_picture, room_icon_room_music, room_default, room_center_small_treasure_chest, room_fruit_small_icon, icon_room_top_sound, room_gift.svga, room_coin.svga, room_ic_message_send, room_ic_message_send_off, room_chat_icon_emoji, room_gift_send_icon, room_prop_icon, room_icon_back.
+- Each icon has 12 VIP-level variants (default, blue, coffee, diamond, fame, gold, grand, king, legend, leopard, love, purple).
+- Build verified: npx next build ✓ (22.0s).
+- Committed as 0e133ce and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 1267 new files (public/room-icons/), 20MB total.
+- ALL voice room interior icons from Yalla Ludo v1.5.1.0 are now available locally.
+- Next step: update MicSeat, RoomInteriorView, BottomBar to use these real icons instead of lucide-react or settings-page icons.
