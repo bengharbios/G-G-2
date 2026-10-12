@@ -11,13 +11,37 @@ android {
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    // Signing config — uses release keystore if available, falls back to debug
+    signingConfigs {
+        release {
+            if (System.getenv("KEYSTORE_BASE64") != null) {
+                // CI with secrets
+                storeFile file("release.keystore")
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            } else if (file("../ggames-release.keystore").exists()) {
+                // Local keystore
+                storeFile file("../ggames-release.keystore")
+                storePassword "ggames2024"
+                keyAlias "ggames-key"
+                keyPassword "ggames2024"
+            }
+        }
+    }
+
     buildTypes {
         release {
+            // Use release keystore if available, otherwise use debug signing
+            if (file("../ggames-release.keystore").exists() || System.getenv("KEYSTORE_BASE64") != null) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

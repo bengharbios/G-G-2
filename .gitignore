@@ -33,3 +33,9 @@ _gg/classified/
 # Run: python3 scripts/download_gifts.py
 _gg/public/gifts/thumbs/
 _gg/public/gifts/videos/
+
+# Keystore (never commit!)
+_gg/android/ggames-release.keystore
+_gg/android/keystore-base64.txt
+_gg/android/app/release.keystore
+

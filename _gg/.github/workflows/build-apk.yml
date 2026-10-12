@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -27,13 +27,35 @@ jobs:
           echo 'ext { cdvPluginPostBuildExtras = {} }' > capacitor-cordova-android-plugins/cordova.variables.gradle
           echo '// empty' > capacitor-cordova-android-plugins/build.gradle
 
-      - name: Build Debug APK
+      - name: Decode keystore from secret
+        working-directory: _gg/android/app
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          ls -la release.keystore
+
+      - name: Build Release APK (signed)
+        working-directory: _gg/android
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - name: Build Debug APK (unsigned)
         working-directory: _gg/android
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: ggames-debug.apk
+          name: ggames-v1.2-release.apk
+          path: _gg/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ggames-v1.2-debug.apk
           path: _gg/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
