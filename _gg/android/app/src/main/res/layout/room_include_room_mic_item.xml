@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_include_room_mic_item.xml — مقعد مايك فردي (مطابق لـ Yalla Ludo v1.5.1.0)
+  البنية الأصلية:
+  - LinearLayout عمودي
+    - ConstraintLayout (الحاوية)
+      - WaveMicView (موجات صوتية)
+      - ImageView (إطار المقعد - room_ic_room_mic_free)
+      - RoundImageView (صورة المستخدم)
+      - LudoSVGAView (on_mic.svga - أنيميشن عند الجلوس)
+      - ContributionRankLabelView (شارة المساهمة)
+      - LudoSVGAView (إيموجي المايك)
+      - VipView (شارة VIP)
+      - ImageView (شارة المالك/الأدمن)
+    - CustomTextView (اسم المستخدم)
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mic_item_container"
+        android:clipChildren="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- موجات الصوت (تظهر عند الكلام) -->
+        <com.bengharbios.ggames.view.WaveMicView
+            android:id="@+id/mic_wave_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- خلفية المقعد (إطار المايك) -->
+        <ImageView
+            android:id="@+id/mic_bg"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/room_ic_room_mic_free"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- صورة المستخدم (دائرية) -->
+        <com.bengharbios.ggames.view.RoundImageView
+            android:id="@+id/mic_user_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            app:isCircle="true"
+            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
+            app:layout_constraintEnd_toEndOf="@id/mic_bg"
+            app:layout_constraintStart_toStartOf="@id/mic_bg"
+            app:layout_constraintTop_toTopOf="@id/mic_bg" />
+
+        <!-- إيموجي المايك (SVG/GIF) -->
+        <com.bengharbios.ggames.view.LudoSVGAView
+            android:id="@+id/mic_emoji_view"
+            android:visibility="gone"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
+            app:layout_constraintEnd_toEndOf="@id/mic_bg"
+            app:layout_constraintStart_toStartOf="@id/mic_bg"
+            app:layout_constraintTop_toTopOf="@id/mic_bg" />
+
+        <!-- شارة المساهمة (ContributionRankLabelView) -->
+        <com.bengharbios.ggames.view.ContributionRankLabelView
+            android:id="@+id/mic_rank_label"
+            android:visibility="invisible"
+            android:layout_width="26dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="@id/mic_bg"
+            app:layout_constraintStart_toStartOf="@id/mic_bg" />
+
+        <!-- شارة المالك/الأدمن -->
+        <ImageView
+            android:id="@+id/mic_role_badge"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/room_icon_room_top_close_king"
+            app:layout_constraintBottom_toTopOf="@id/mic_rank_label"
+            app:layout_constraintEnd_toEndOf="@id/mic_bg"
+            app:layout_constraintTop_toTopOf="@id/mic_bg" />
+
+        <!-- شارة VIP -->
+        <com.bengharbios.ggames.view.VipView
+            android:id="@+id/mic_vip_badge"
+            android:visibility="gone"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:layout_constraintBottom_toTopOf="@id/mic_rank_label"
+            app:layout_constraintEnd_toEndOf="@id/mic_bg"
+            app:layout_constraintTop_toTopOf="@id/mic_bg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- اسم المستخدم تحت المقعد -->
+    <com.bengharbios.ggames.view.CustomTextView
+        android:id="@+id/mic_user_name"
+        android:textSize="11dp"
+        android:textColor="#FFFFFF"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mic_name_bg"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        android:singleLine="true"
+        android:includeFontPadding="false" />
+
+</LinearLayout>

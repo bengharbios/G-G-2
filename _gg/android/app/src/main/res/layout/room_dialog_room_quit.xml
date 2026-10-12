@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <com.bengharbios.ggames.view.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:text="مغادرة الغرفة" />
+
+    <com.bengharbios.ggames.view.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#B3FFFFFF"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="هل تريد مغادرة الغرفة؟" />
+
+    <com.bengharbios.ggames.view.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="#80FFFFFF"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="سيتم تسجيل خروجك من الغرفة الحالية" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <com.bengharbios.ggames.view.CustomTextView
+            android:id="@+id/btn_quit_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:background="@drawable/dialog_action_bg"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="إلغاء" />
+
+        <com.bengharbios.ggames.view.CustomTextView
+            android:id="@+id/btn_quit_minimize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/dialog_action_bg_blue"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="تصغير" />
+
+        <com.bengharbios.ggames.view.CustomTextView
+            android:id="@+id/btn_quit_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/dialog_action_bg_red"
+            android:textColor="#FFFF5252"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="مغادرة" />
+    </LinearLayout>
+
+</LinearLayout>

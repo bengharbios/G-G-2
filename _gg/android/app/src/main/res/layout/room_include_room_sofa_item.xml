@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_include_room_sofa_item.xml — عنصر مستمع في الأريكة (مطابق لـ Yalla Ludo)
+  حجم 36dp، صورة دائرية 33dp + شارة VIP
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sofa_item_container"
+    android:layout_width="36dp"
+    android:layout_height="36dp">
+
+    <!-- صورة المستمع (دائرية) -->
+    <com.bengharbios.ggames.view.RoundImageView
+        android:id="@+id/sofa_user_avatar"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:scaleType="centerCrop"
+        app:isCircle="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- شارة VIP -->
+    <com.bengharbios.ggames.view.VipView
+        android:id="@+id/sofa_vip_badge"
+        android:visibility="gone"
+        android:layout_width="11dp"
+        android:layout_height="11dp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

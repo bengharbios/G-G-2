@@ -1,287 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_layout_room.xml — الغرفة الرئيسية (مطابق لـ Yalla Ludo v1.5.1.0)
+  
+  البنية:
+  - FrameLayout (الجذر)
+    - ImageView (خلفية الغرفة)
+    - LinearLayout (محتوى عمودي)
+      - LinearLayout (هيدر علوي: مالك + أزرار)
+      - room_include_room_body (مقاعد + أريكة + دردشة + شريط جانبي)
+      - ConstraintLayout
+        - room_include_room_input (شريط إدخال سفلي)
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/roomRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#0D8A7A">
 
-    <!-- Background image -->
+    <!-- خلفية الغرفة (تدرج لوني) -->
     <ImageView
-        android:id="@+id/iv_room_theme"
+        android:id="@+id/iv_room_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/room_bg_default" />
 
-    <!-- Main content -->
+    <!-- المحتوى الرئيسي -->
     <LinearLayout
-        android:id="@+id/llRoomContent"
+        android:id="@+id/ll_room_content"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- Top section: header + mic seats + sofa -->
-        <LinearLayout
-            android:id="@+id/llRoomTop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <!-- الهيدر العلوي -->
+        <include layout="@layout/room_include_room_top" />
 
-            <!-- Room header: avatar + name + ID + share + more + close -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp"
-                android:paddingTop="2dp">
+        <!-- منطقة الجسم: مقاعد + أريكة + دردشة + شريط جانبي -->
+        <include layout="@layout/room_include_room_body" />
 
-                <!-- Room avatar (40dp) -->
-                <ImageView
-                    android:id="@+id/rivRoomTopHeader"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/room_default"
-                    android:scaleType="centerCrop" />
+        <!-- الشريط السفلي (إدخال + مايك + هدية) -->
+        <include layout="@layout/room_include_room_input" />
 
-                <!-- Room name + ID -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="4dp">
-
-                    <TextView
-                        android:id="@+id/tvRoomTopName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:singleLine="true"
-                        android:ellipsize="marquee"
-                        android:maxWidth="92dp" />
-
-                    <TextView
-                        android:id="@+id/tvRoomTopId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textColor="#FFFFFF"
-                        android:singleLine="true"
-                        android:maxWidth="100dp" />
-                </LinearLayout>
-
-                <!-- Share button (40dp) -->
-                <ImageView
-                    android:id="@+id/iv_share"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/room_icon_share"
-                    android:scaleType="centerInside" />
-
-                <!-- More button (40dp) -->
-                <ImageView
-                    android:id="@+id/iv_more"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/room_icon_room_top_more"
-                    android:scaleType="centerInside" />
-
-                <!-- Close button (40dp) -->
-                <ImageView
-                    android:id="@+id/ivRoomTopClose"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/room_icon_room_top_close"
-                    android:scaleType="centerInside" />
-            </LinearLayout>
-
-            <!-- Mic seats container (horizontal) -->
-            <LinearLayout
-                android:id="@+id/rvRoomMic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:paddingTop="5dp"
-                android:paddingBottom="3dp" />
-
-            <!-- Sofa / audience row (51dp) -->
-            <LinearLayout
-                android:id="@+id/clRoomSofa"
-                android:layout_width="match_parent"
-                android:layout_height="51dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <!-- Rank display -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/room_icon_rank" />
-
-                    <TextView
-                        android:id="@+id/tv_rank_diamond_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="11sp"
-                        android:textColor="#33DEEE"
-                        android:layout_marginStart="7dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/room_icon_rank_arrow"
-                        android:layout_marginStart="4dp" />
-                </LinearLayout>
-
-                <!-- Listener count -->
-                <TextView
-                    android:id="@+id/roomSofaNumber"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:textSize="8sp"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center"
-                    android:background="@drawable/icon_room_sofa_people_label"
-                    android:layout_marginEnd="5dp" />
-
-                <!-- Audience avatars (will be filled dynamically) -->
-                <LinearLayout
-                    android:id="@+id/roomSofaList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:orientation="horizontal" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Chat area (flex weight 1) -->
-        <FrameLayout
-            android:id="@+id/flRoomBody"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <!-- Chat messages -->
-            <ListView
-                android:id="@+id/rvRoomChat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="70dp"
-                android:layout_marginTop="10dp" />
-
-            <!-- Right sidebar (music + chest + fruit + messages) -->
-            <LinearLayout
-                android:id="@+id/roomBodySidebar"
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="10dp">
-
-                <!-- Music button -->
-                <ImageView
-                    android:id="@+id/iv_room_music"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
-                    android:src="@drawable/room_icon_room_music"
-                    android:layout_marginTop="6dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textColor="#FFFFFF"
-                    android:text="@string/room_music" />
-            </LinearLayout>
-        </FrameLayout>
-
-        <!-- Bottom input bar -->
-        <LinearLayout
-            android:id="@+id/llRoomBottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <!-- Sound toggle (38dp) -->
-            <ImageView
-                android:id="@+id/ivSound"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:src="@drawable/room_ic_input_sound"
-                android:layout_marginStart="8dp" />
-
-            <!-- Mic toggle (38dp) -->
-            <ImageView
-                android:id="@+id/ivMic"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:src="@drawable/room_ic_input_mic"
-                android:layout_marginStart="8dp" />
-
-            <!-- Mic emoji (38dp) -->
-            <ImageView
-                android:id="@+id/ivMicEmoji"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:src="@drawable/room_mic_emoji_icon"
-                android:layout_marginStart="8dp" />
-
-            <!-- Chat input (flex 1) -->
-            <EditText
-                android:id="@+id/etMessage"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_weight="1"
-                android:textSize="13sp"
-                android:textColor="#442"
-                android:hint="@string/room_say_something"
-                android:background="@drawable/room_bottom_input"
-                android:padding="8dp"
-                android:layout_marginStart="11dp"
-                android:layout_marginEnd="5dp"
-                android:singleLine="true" />
-
-            <!-- Emoji toggle (37x50dp) -->
-            <ImageView
-                android:id="@+id/ivEmoji"
-                android:layout_width="37dp"
-                android:layout_height="50dp"
-                android:src="@drawable/room_selector_input_panel_emoji_key" />
-
-            <!-- Picture send (38dp) -->
-            <ImageView
-                android:id="@+id/ivSendPicture"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:src="@drawable/room_icon_picture"
-                android:paddingEnd="13dp" />
-
-            <!-- Send button (37x50dp) -->
-            <ImageView
-                android:id="@+id/ivSend"
-                android:layout_width="37dp"
-                android:layout_height="50dp"
-                android:src="@drawable/room_ic_message_send" />
-
-            <!-- Gift button (45x45dp) -->
-            <ImageView
-                android:id="@+id/ivGift"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/room_gift_send_icon"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="3dp" />
-        </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

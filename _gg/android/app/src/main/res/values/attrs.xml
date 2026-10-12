@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- RoundImageView -->
+    <declare-styleable name="RoundImageView">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="isCircle" format="boolean" />
+    </declare-styleable>
+
+    <!-- LudoSVGAView -->
+    <declare-styleable name="LudoSVGAView">
+        <attr name="play_on_attach" format="boolean" />
+        <attr name="clearsAfterStop" format="boolean" />
+        <attr name="loopCount" format="integer" />
+        <attr name="source" format="string" />
+    </declare-styleable>
+
+    <!-- WaveMicView -->
+    <declare-styleable name="WaveMicView">
+        <attr name="waveColor" format="color" />
+        <attr name="waveAmplitude" format="float" />
+        <attr name="waveCount" format="integer" />
+    </declare-styleable>
+
+    <!-- CheckedImageView -->
+    <declare-styleable name="CheckedImageViewAttr">
+        <attr name="checked" format="boolean" />
+    </declare-styleable>
+</resources>

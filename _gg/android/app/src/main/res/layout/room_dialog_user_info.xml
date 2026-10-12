@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_dialog_user_info.xml — حوارية معلومات المستخدم
+  تظهر عند النقر على مستخدم في المايك أو الأريكة
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_user_info_root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <!-- زر إغلاق -->
+    <ImageView
+        android:id="@+id/iv_dialog_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:src="@drawable/room_icon_room_top_close"
+        android:scaleType="centerInside" />
+
+    <!-- الصورة الرمزية -->
+    <com.bengharbios.ggames.view.RoundImageView
+        android:id="@+id/iv_user_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/room_default"
+        app:isCircle="true"
+        android:layout_marginTop="8dp" />
+
+    <!-- الاسم -->
+    <com.bengharbios.ggames.view.CustomTextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="8dp" />
+
+    <!-- المستوى + الجنس -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="4dp">
+
+        <com.bengharbios.ggames.view.CustomTextView
+            android:id="@+id/tv_user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#FFC107"
+            android:text="Lv.10" />
+
+        <com.bengharbios.ggames.view.CustomTextView
+            android:id="@+id/tv_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#B3FFFFFF"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- التوقيع -->
+    <com.bengharbios.ggames.view.CustomTextView
+        android:id="@+id/tv_user_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="#B3FFFFFF"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center" />
+
+    <!-- الإجراءات -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- متابعة -->
+        <LinearLayout
+            android:id="@+id/btn_user_follow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:background="@drawable/dialog_action_bg">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_room_top_follow" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="2dp"
+                android:text="متابعة" />
+        </LinearLayout>
+
+        <!-- رسالة -->
+        <LinearLayout
+            android:id="@+id/btn_user_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/dialog_action_bg">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_room_top_follow" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="2dp"
+                android:text="رسالة" />
+        </LinearLayout>
+
+        <!-- هدية -->
+        <LinearLayout
+            android:id="@+id/btn_user_gift"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/dialog_action_bg">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/room_gift_default" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="2dp"
+                android:text="هدية" />
+        </LinearLayout>
+
+        <!-- دعوة للمايك -->
+        <LinearLayout
+            android:id="@+id/btn_user_invite_mic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/dialog_action_bg">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/room_ic_input_mic" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="2dp"
+                android:text="ادعُ للمايك" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- أزرار الإدارة (تظهر للأدمن) -->
+    <LinearLayout
+        android:id="@+id/ll_admin_actions"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:paddingTop="12dp"
+        android:background="@drawable/dialog_admin_divider">
+
+        <!-- كتم -->
+        <LinearLayout
+            android:id="@+id/btn_user_mute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:background="@drawable/dialog_action_bg_red">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/room_ic_input_mic_off" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFF5252"
+                android:layout_marginTop="2dp"
+                android:text="كتم" />
+        </LinearLayout>
+
+        <!-- طرد -->
+        <LinearLayout
+            android:id="@+id/btn_user_kick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/dialog_action_bg_red">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/room_icon_room_top_close" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFF5252"
+                android:layout_marginTop="2dp"
+                android:text="طرد" />
+        </LinearLayout>
+
+        <!-- حظر -->
+        <LinearLayout
+            android:id="@+id/btn_user_ban"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/dialog_action_bg_red">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/room_icon_room_top_close" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#FFFF5252"
+                android:layout_marginTop="2dp"
+                android:text="حظر" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

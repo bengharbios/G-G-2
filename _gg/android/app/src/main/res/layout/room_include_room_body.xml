@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_include_room_body.xml — منطقة الجسم الرئيسية (مطابق لـ Yalla Ludo)
+  تجمع: سكرة المايك + الأريكة + الشريط الجانبي + الرسائل العائمة
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/room_body_container"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1">
+
+    <!-- المنطقة اليسرى: مقاعد + أريكة + دردشة -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="55dp">
+
+        <!-- مقاعد المايك -->
+        <include layout="@layout/room_include_room_mic" />
+
+        <!-- الأريكة (Sofa) -->
+        <include layout="@layout/room_include_room_sofa" />
+
+        <!-- منطقة الرسائل -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#40000000">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_chat_messages"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- الشريط الجانبي الأيمن -->
+    <include
+        layout="@layout/room_include_room_body_sidebar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical" />
+
+</FrameLayout>

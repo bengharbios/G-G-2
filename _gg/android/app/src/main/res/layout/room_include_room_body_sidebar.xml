@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  room_include_room_body_sidebar.xml — الشريط الجانبي الأيمن (مطابق لـ Yalla Ludo v1.5.1.0)
+  بعرض 45dp، يحتوي على 8 أيقونات:
+  - معلومات الغرفة
+  - الرسائل (مع بادج)
+  - تصنيف الهدايا
+  - مركز المرح
+  - المتجر
+  - الموسيقى
+  - الألعاب (مع رقم)
+  - التصنيف الأسبوعي
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="45dp"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/ll_sidebar"
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:layout_marginEnd="10dp">
+
+        <!-- معلومات الغرفة -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_info"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/room_icon_room_top_more" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="معلومات" />
+        </LinearLayout>
+
+        <!-- الرسائل -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <FrameLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <ImageView
+                    android:id="@+id/iv_sidebar_message"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:src="@drawable/icon_room_top_follow" />
+
+                <com.bengharbios.ggames.view.CustomTextView
+                    android:id="@+id/tv_sidebar_message_badge"
+                    android:visibility="gone"
+                    android:layout_gravity="end|top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="14dp"
+                    android:minHeight="14dp"
+                    android:padding="2dp"
+                    android:background="@drawable/badge_red"
+                    android:textColor="#FFFFFF"
+                    android:textSize="9sp"
+                    android:gravity="center" />
+            </FrameLayout>
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="الرسائل" />
+        </LinearLayout>
+
+        <!-- تصنيف الهدايا -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_gift_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_gift_rank"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/room_gift_default" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="التصنيف" />
+        </LinearLayout>
+
+        <!-- مركز المرح -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_fun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_fun"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/room_mic_emoji_icon" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="مركز المرح" />
+        </LinearLayout>
+
+        <!-- المتجر -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_shop"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/room_gift_default" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="المتجر" />
+        </LinearLayout>
+
+        <!-- الموسيقى -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_music"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/icon_room_top_sound" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="موسيقى" />
+        </LinearLayout>
+
+        <!-- الألعاب -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <FrameLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <ImageView
+                    android:id="@+id/iv_sidebar_game"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:src="@drawable/room_mic_emoji_icon" />
+
+                <com.bengharbios.ggames.view.CustomTextView
+                    android:id="@+id/tv_sidebar_game_badge"
+                    android:visibility="visible"
+                    android:layout_gravity="end|top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="14dp"
+                    android:minHeight="14dp"
+                    android:padding="2dp"
+                    android:background="@drawable/badge_red"
+                    android:textColor="#FFFFFF"
+                    android:textSize="9sp"
+                    android:gravity="center"
+                    android:text="3" />
+            </FrameLayout>
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="ألعاب" />
+        </LinearLayout>
+
+        <!-- التصنيف الأسبوعي -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sidebar_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:id="@+id/iv_sidebar_rank"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@drawable/icon_room_top_follow" />
+
+            <com.bengharbios.ggames.view.CustomTextView
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="الأسبوعية" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
