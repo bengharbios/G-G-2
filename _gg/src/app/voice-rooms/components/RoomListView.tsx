@@ -735,6 +735,10 @@ function EmptyState({
 }) {
   const isMine = mainTab === 'mine';
 
+  // إن كان المستخدم لديه غرفة بالفعل، لا نُظهر زر "أنشئ غرفتك الأولى"
+  // بل رسالة مختلفة حسب التبويب
+  const showCreateCta = !hasMyRoom;
+
   return (
     <div className="flex flex-col items-center justify-center py-10 gap-4 px-6">
       {/* House Illustration */}
@@ -752,7 +756,9 @@ function EmptyState({
       >
         {isMine
           ? 'لم تزر أي غرفة مؤخراً'
-          : 'لا توجد غرف صوتية حالياً'}
+          : hasMyRoom
+            ? 'لا توجد غرف رائجة حالياً'
+            : 'لا توجد غرف صوتية حالياً'}
       </p>
 
       <p
@@ -764,23 +770,27 @@ function EmptyState({
       >
         {isMine
           ? 'ابدأ باستكشاف الغرف المتاحة وابقَ على اطلاع'
-          : 'كن أول من ينشئ غرفة وابدأ المحادثة'}
+          : hasMyRoom
+            ? 'حاول لاحقاً أو استكشف الغرف الأخرى'
+            : 'كن أول من ينشئ غرفة وابدأ المحادثة'}
       </p>
 
-      {/* CTA Button (yellow, matching screenshot) */}
-      <button
-        onClick={onCreateRoom}
-        className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-white font-bold transition-all active:scale-95 mt-2"
-        style={{
-          backgroundColor: '#F59E0B',
-          fontSize: 'clamp(14px, 3.8vw, 16px)',
-          boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
-          minHeight: 48,
-        }}
-      >
-        <Search size={18} />
-        {isMine ? 'ابحث عن غرف' : 'أنشئ غرفتك الأولى'}
-      </button>
+      {/* CTA Button — فقط إن لم يكن لدى المستخدم غرفة بالفعل */}
+      {showCreateCta && (
+        <button
+          onClick={onCreateRoom}
+          className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-white font-bold transition-all active:scale-95 mt-2"
+          style={{
+            backgroundColor: '#F59E0B',
+            fontSize: 'clamp(14px, 3.8vw, 16px)',
+            boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
+            minHeight: 48,
+          }}
+        >
+          <Search size={18} />
+          {isMine ? 'ابحث عن غرف' : 'أنشئ غرفتك الأولى'}
+        </button>
+      )}
     </div>
   );
 }

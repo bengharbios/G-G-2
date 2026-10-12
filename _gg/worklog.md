@@ -969,3 +969,37 @@ Stage Summary:
 - 3 files changed (AppShell, RoomListView, worklog), 57 insertions, 8 deletions.
 - Every page now starts from the top when navigated to (scroll-to-top on pathname change).
 - Council page (voice-rooms) now uses natural body scroll — rooms at the bottom are reachable. Layout matches Games/Friends pattern (max-w-lg mx-auto, pb-100 for bottom nav clearance).
+
+---
+Task ID: 1
+Agent: main
+Task: Redesign Council page to match Games/Friends visual style
+
+Work Log:
+- User reported: "لا أرى أي تحديث او تصميم جديد صفحة المجلس كما هي" — don't see any new design, Council page is the same as before. Previous commit only made structural changes (scroll behavior, layout flow) but the VISUAL design was unchanged.
+
+- Redesigned RoomListView.tsx with substantial visual changes:
+
+1. NEW page header — matches Games page logo pattern: 11x11 rounded gradient box (from-[#15BC83] to-[#0FA070]) with Radio icon, 'المجلس' title (text-xl font-black text-white), gradient divider line below (matches Games page).
+
+2. Main tabs redesigned — matches Friends page tab style: was pill-shaped centered buttons with inline styles, now full-width rectangular tabs with icons + labels. Active tab: bg-[#15BC83] text-white shadow-md. Inactive: text-white/50. Icons added: Compass (اكتشف), Flame (رائج), Home (غرفي). Sticky top-14 (below SiteHeader spacer).
+
+3. Create Room CTA redesigned — matches Friends search button style: was white card with green plus icon and 'إنشاء غرفتي' text, now green pill button (bg-[#15BC83]) with: White/20 circle with Plus icon, 'إنشاء غرفتي' bold + 'ابدأ بثّك الصوتي الآن' subtitle, ChevronLeft arrow on the left.
+
+4. Sub-tabs simplified — cleaner Tailwind classes: was inline styles with clamp() font sizes, now text-xs font-bold, bg-white for active / bg-white/10 for inactive, overflow-x-auto for horizontal scroll on small screens.
+
+5. My Room banner — uses Tailwind classes (bg-[#15BC83]/15 border-[#15BC83]/30) instead of inline styles for consistency with Friends page.
+
+6. Added imports: Compass, Flame, Radio from lucide-react.
+
+- Verified: npx next build ✓ (22.8s), ESLint ✓.
+
+- Committed as ce0c522 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 2 files changed (RoomListView, worklog), 83 insertions, 75 deletions.
+- Council page now has a prominent page header with 'المجلس' title + Radio icon.
+- Main tabs (اكتشف/رائج/غرفي) are now full-width rectangular with icons — matches Friends page tab style.
+- Create Room CTA is now a prominent green pill button with subtitle.
+- Sub-tabs are cleaner with consistent Tailwind classes.
+- All existing functionality preserved: main tabs, sub-tabs, my-room section, search, room cards.

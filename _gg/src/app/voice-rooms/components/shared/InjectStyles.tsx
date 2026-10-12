@@ -9,8 +9,9 @@ export default function InjectStyles() {
       @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
 
       /* ── Base Reset ── */
+      /* ملاحظة: لا نضع overflow: hidden على html/body — يمنع التمرير في الـ lobby.
+         الـ RoomInteriorView يدير تمريره الداخلي بنفسه عبر panels/scrollable areas. */
       html, body {
-        overflow: hidden;
         background: ${TUI.colors.G1};
         color: ${TUI.colors.G7};
         font-family: 'Cairo', sans-serif;
