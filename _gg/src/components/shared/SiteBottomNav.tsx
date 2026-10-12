@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User } from 'lucide-react';
 import EventsModal from '@/components/shared/EventsModal';
 
 type BottomTab = 'games' | 'events' | 'council' | 'friends';
@@ -15,6 +14,12 @@ interface SiteBottomNavProps {
   onEventsModalChange?: (open: boolean) => void;
 }
 
+interface SummaryData {
+  pendingFriendRequests: number;
+  unreadMessages: number;
+  totalBadge: number;
+}
+
 export default function SiteBottomNav({
   activeTab: controlledTab,
   eventsModalOpen: controlledEventsOpen,
@@ -24,12 +29,49 @@ export default function SiteBottomNav({
     controlledTab || 'events'
   );
   const [internalEventsOpen, setInternalEventsOpen] = useState(false);
+  const [summary, setSummary] = useState<SummaryData | null>(null);
   const router = useRouter();
 
   const activeTab = controlledTab ?? internalActiveTab;
   const setActiveTab = controlledTab ? () => {} : setInternalActiveTab;
   const eventsOpen = controlledEventsOpen ?? internalEventsOpen;
   const setEventsOpen = onEventsModalChange ?? setInternalEventsOpen;
+
+  // استطلاع ملخّص الإشعارات كل 30 ثانية — يُظهر شارة على زر "أصدقائي"
+  // عند وجود طلبات صداقة أو رسائل غير مقروءة
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchSummary() {
+      try {
+        const res = await fetch('/api/notifications/summary', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled || !data.success) return;
+        setSummary({
+          pendingFriendRequests: data.pendingFriendRequests ?? 0,
+          unreadMessages: data.unreadMessages ?? 0,
+          totalBadge: data.totalBadge ?? 0,
+        });
+      } catch { /* silent */ }
+    }
+
+    fetchSummary();
+    const timer = setInterval(fetchSummary, 30000);
+
+    // أيضاً أعد الجلب عند عودة التركيز للنافذة (المستخدم يعود من تبويب آخر)
+    const onFocus = () => fetchSummary();
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') fetchSummary();
+    });
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, []);
 
   // أيقونات يلا لودو الحقيقية (من APK) — select للنشط و unselect للغير نشط
   // 4 تبويبات بالترتيب المطلوب: أحداث - ألعاب - مجلس - أصدقاء
@@ -39,6 +81,9 @@ export default function SiteBottomNav({
     { id: 'council', label: 'المجلس', on: '/yalla-ui/room_select.png', off: '/yalla-ui/room_unselect.png' },
     { id: 'friends', label: 'أصدقائي', on: '/yalla-ui/friend_select.png', off: '/yalla-ui/friend_unselect.png' },
   ];
+
+  // الشارة على زر "أصدقائي" = عدد الطلبات + الرسائل غير المقروءة
+  const friendsBadge = summary?.totalBadge ?? 0;
 
   const handleTabClick = (tabId: BottomTab) => {
     setActiveTab(tabId);
@@ -66,6 +111,7 @@ export default function SiteBottomNav({
         <div className="max-w-lg mx-auto flex items-stretch justify-around h-full">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
+            const badge = tab.id === 'friends' ? friendsBadge : 0;
             return (
               <button
                 key={tab.id}
@@ -74,11 +120,20 @@ export default function SiteBottomNav({
                   isActive ? 'active' : ''
                 }`}
               >
-                <span className="yalla-tab-ic">
+                <span className="yalla-tab-ic relative">
                   {tab.on && tab.off ? (
                     <img src={isActive ? tab.on : tab.off} alt={tab.label} draggable={false} />
                   ) : (
                     <span className="block w-6 h-6 leading-6 text-center">{tab.icon}</span>
+                  )}
+                  {/* شارة الإشعارات */}
+                  {badge > 0 && (
+                    <span
+                      className="absolute -top-1 -left-1 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold px-1 border-2 border-[#074a42] leading-[14px]"
+                      aria-label={`${badge} إشعارات`}
+                    >
+                      {badge > 99 ? '99+' : badge}
+                    </span>
                   )}
                 </span>
                 <span className="yalla-tab-tl">{tab.label}</span>

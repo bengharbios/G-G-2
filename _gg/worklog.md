@@ -711,3 +711,39 @@ Stage Summary:
 - 3 files changed, 191 insertions, 47 deletions.
 - Friend profile now shows full info: ID, country flag, gender icon (dynamic), birthdate, level flag, bio, frame (equipped), ornament (pendant), card (backdrop), cover (profile theme).
 - 3-dot menu now correctly shows "مراسلة + حذف صديق" for existing friends, "إضافة صديق" only for non-friends.
+
+---
+Task ID: 1
+Agent: main
+Task: Fix chat view height + delete friend stays in chat with add-friend button
+
+Work Log:
+- User reported 3 issues: (1) chat input hidden under bottom nav (chat view larger than screen), (2) delete friend from profile 3-dot menu didn't work, (3) wanted: when deleted, friend should be removed from friends page; if chat stays, input/smiles/gifts should be replaced with yellow 'add friend' button.
+
+- Root cause #1: chat view height was h-[calc(100vh-3.5rem)] = 100vh-56px, but AppShell adds top spacer (56-64px) AND bottom nav (~75px). Chat view extended 75px below visible area.
+
+- Root cause #2: delete confirmation modal was inside {view === 'chat' && ...} block. When user opened profile from friends LIST (not chat) and clicked delete, view was 'list' so the modal never rendered — delete silently failed because no confirmation.
+
+- Root cause #3: handleDeleteFriend redirected to list view (setView('list'); setChatFriend(null);) instead of staying in chat with the add-friend UI.
+
+- Fixes in src/app/friends/page.tsx:
+  1. Chat view height: h-[calc(100dvh-3.5rem-75px)] — uses dynamic viewport height and subtracts both top spacer (3.5rem) and bottom nav (75px). Input now visible above bottom nav.
+  2. Delete confirmation modal moved OUTSIDE the chat view block — now global, renders whenever showDeleteConfirm && chatFriend are set, regardless of current view. Z-index raised to z-[10000].
+  3. handleDeleteFriend: removed redirect-to-list. Now calls DELETE API with proper error handling (checks res.ok + data.success), removes friend from local state, sets friendStatus='none', stays in current view.
+  4. Chat view: added inline IIFE computing isStillFriend = friends.some(f => f.userId === chatFriend.userId). Bottom row is conditional:
+     - If still friend: normal input + smile + gifts
+     - If NOT still friend: yellow 'إعادة إضافة كصديق' button (amber-400 bg) that calls handleReAddFriend()
+  5. 3-dot menu in chat adapts: shows 'حذف صديق' if friend, 'إعادة إرسال طلب صداقة' if not.
+  6. Empty state message adapts based on isStillFriend.
+  7. handleReAddFriend: new function that POSTs to /api/friends with toUserId = chatFriend.userId, sets friendStatus='pending' on success.
+
+- Verified: npx next build ✓ (24.8s), ESLint ✓.
+
+- Committed as dfc8d21 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 2 files changed (src/app/friends/page.tsx + worklog.md), 111 insertions, 29 deletions.
+- Chat input box now visible above bottom nav.
+- Delete friend works from any view (list or chat) — confirmation modal is global.
+- After delete in chat: stays in chat, replaces input/smiles/gifts with yellow 'add friend' button.
+- After re-adding as friend: button shows 'pending' state, and once accepted the chat input returns (isStillFriend becomes true again).

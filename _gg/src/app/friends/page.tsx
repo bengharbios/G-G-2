@@ -40,7 +40,38 @@ export default function FriendsPage() {
   const [toast, setToast] = useState('');
   const chatPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // ملخّص الإشعارات: شارات على كل صديق + تبويب الأصدقاء + زر "أصدقائي" السفلي
+  const [unreadByFriend, setUnreadByFriend] = useState<Record<string, { count: number; lastMessage?: string; lastMessageAt?: string }>>({});
+  const [pendingCount, setPendingCount] = useState(0);
+
   useEffect(() => { setView('list'); }, [tab]);
+
+  // جلب ملخّص الإشعارات بشكل دوري كل 15 ثانية (أسرع من الشارة السفلية)
+  const loadSummary = useCallback(async () => {
+    try {
+      const res = await fetch('/api/notifications/summary', { cache: 'no-store' });
+      const data = await res.json();
+      if (!data.success) return;
+      setPendingCount(data.pendingFriendRequests ?? 0);
+      const m: Record<string, { count: number; lastMessage?: string; lastMessageAt?: string }> = {};
+      for (const u of (data.unreadByFriend || [])) {
+        m[String(u.friendId)] = { count: Number(u.count) || 0, lastMessage: u.lastMessage || '', lastMessageAt: u.lastMessageAt || '' };
+      }
+      setUnreadByFriend(m);
+    } catch {}
+  }, []);
+  useEffect(() => {
+    loadSummary();
+    const t = setInterval(loadSummary, 15000);
+    const onFocus = () => loadSummary();
+    window.addEventListener('focus', onFocus);
+    return () => { clearInterval(t); window.removeEventListener('focus', onFocus); };
+  }, [loadSummary]);
+
+  // إعادة جلب الملخّص بعد فتح الدردشة وإغلاقها (لتحديث الشارات)
+  useEffect(() => {
+    if (view !== 'chat') { loadSummary(); }
+  }, [view, loadSummary]);
 
   const loadData = useCallback(async () => {
     try {
@@ -50,6 +81,8 @@ export default function FriendsPage() {
       ]);
       if (fr.success) setFriends(fr.friends || []);
       if (pr.success) setPendingReqs(pr.requests || []);
+      // حدّث عدد الطلبات المعلّقة في ملخّص الإشعارات
+      setPendingCount(pr.requests?.length || 0);
     } catch {}
   }, []);
   useEffect(() => { loadData(); }, [loadData]);
@@ -154,9 +187,12 @@ export default function FriendsPage() {
     } catch {}
   };
 
+  // حساب عدد الرسائل غير المقروءة الإجمالي عبر كل الأصدقاء
+  const totalUnread = Object.values(unreadByFriend).reduce((s, v) => s + (v.count || 0), 0);
+
   const tabs = [
-    { id: 'notifications' as FriendTab, label: 'الإشعارات', icon: Bell, badge: pendingReqs.length },
-    { id: 'nearby' as FriendTab, label: 'أصدقاء', icon: Users, badge: 0 },
+    { id: 'notifications' as FriendTab, label: 'الإشعارات', icon: Bell, badge: pendingCount },
+    { id: 'nearby' as FriendTab, label: 'أصدقاء', icon: Users, badge: totalUnread },
     { id: 'wishes' as FriendTab, label: 'أمنيات', icon: Gamepad2, badge: 0 },
     { id: 'recent' as FriendTab, label: 'مؤخراً', icon: Clock, badge: 0 },
   ];
@@ -192,13 +228,49 @@ export default function FriendsPage() {
             {tab === 'nearby' && (
               <>
                 {friends.length === 0 ? <div className="text-center text-white/40 py-20"><UserPlus className="w-12 h-12 mx-auto mb-3 opacity-30" /><p>لا توجد أصدقاء</p><button onClick={() => setView('search')} className="text-[#15BC83] text-sm mt-2">ابحث عن أصدقاء</button></div>
-                : friends.map(f => (
+                : friends.map(f => {
+                  const unread = unreadByFriend[f.userId];
+                  const unreadCount = unread?.count || 0;
+                  return (
                   <div key={f.friendshipId} className="bg-[#15BC83]/10 rounded-xl p-3 mb-2 flex items-center gap-3">
-                    <button onClick={() => openUserProfile(f)}><img src={f.avatar || '/yalla-avatars/defaultPhoto_1.png'} alt="" className="w-10 h-10 rounded-full" /></button>
-                    <button onClick={() => openUserProfile(f)} className="flex-1 text-right"><p className="text-sm font-bold text-white">{f.displayName}</p><p className="text-xs text-white/50">مستوى {f.level}</p></button>
-                    <button onClick={() => openChat(f)} className="w-9 h-9 rounded-full bg-[#15BC83]/20 flex items-center justify-center hover:bg-[#15BC83]/40"><MessageCircle className="w-4 h-4 text-[#15BC83]" /></button>
+                    <button onClick={() => openUserProfile(f)} className="relative">
+                      <img src={f.avatar || '/yalla-avatars/defaultPhoto_1.png'} alt="" className="w-10 h-10 rounded-full" />
+                      {/* شارة الرسائل غير المقروءة على الأفاتار */}
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold px-1 border-2 border-[#062318] leading-[14px]">
+                          {unreadCount > 99 ? '99+' : unreadCount}
+                        </span>
+                      )}
+                    </button>
+                    <button onClick={() => openUserProfile(f)} className="flex-1 text-right min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className={`text-sm font-bold ${unreadCount > 0 ? 'text-white' : 'text-white/90'} truncate`}>{f.displayName}</p>
+                        {unreadCount > 0 && <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#15BC83] flex-shrink-0" />}
+                      </div>
+                      <p className="text-xs text-white/50">مستوى {f.level}</p>
+                      {unread && unread.lastMessage && unreadCount > 0 && (
+                        <p className="text-[11px] text-[#15BC83]/80 truncate mt-0.5">
+                          {unread.lastMessage.length > 30 ? unread.lastMessage.slice(0, 30) + '…' : unread.lastMessage}
+                        </p>
+                      )}
+                    </button>
+                    {/* زر "مراسلة" النصي بدلاً من أيقونة فقط — يظهر الشارة إن وُجدت */}
+                    <button
+                      onClick={() => openChat(f)}
+                      className="relative flex items-center gap-1.5 px-3 h-9 rounded-full bg-[#15BC83] hover:bg-[#13a374] text-white text-xs font-bold shadow-md shadow-[#15BC83]/30 transition-colors"
+                      aria-label={`مراسلة ${f.displayName}`}
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>مراسلة</span>
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -left-1 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-red-500 text-white text-[9px] font-bold px-1 border-2 border-[#062318] leading-[12px]">
+                          {unreadCount > 99 ? '99+' : unreadCount}
+                        </span>
+                      )}
+                    </button>
                   </div>
-                ))}
+                  );
+                })}
               </>
             )}
             {tab === 'wishes' && <div className="text-center text-white/40 py-20"><Gamepad2 className="w-12 h-12 mx-auto mb-3 opacity-30" /><p>لا توجد أمنيات</p></div>}
