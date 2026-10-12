@@ -7,6 +7,16 @@ import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, Send, X,
 // NOTE: الهيدر (SiteHeader) والأزرار السفلية (SiteBottomNav) الآن تُدار في AppShell
 // (src/components/shared/AppShell.tsx) — تُحمّل مرة واحدة وتشاركها كل الصفحات.
 import YallaProfileDialog from '@/components/shared/YallaProfileDialog';
+import {
+  EMOJI_CATEGORIES,
+  DEFAULT_GIFTS,
+  GIFT_CATEGORIES,
+  emojiToPng,
+  getGiftById,
+  isGiftMessage,
+  parseGiftId,
+  getGiftImageUrl,
+} from '@/lib/chat-emojis-gifts';
 
 type FriendTab = 'notifications' | 'nearby' | 'wishes' | 'recent';
 type View = 'list' | 'search' | 'requests' | 'chat';
@@ -35,6 +45,8 @@ export default function FriendsPage() {
   const [chatInput, setChatInput] = useState('');
   const [showEmoji, setShowEmoji] = useState(false);
   const [showGifts, setShowGifts] = useState(false);
+  const [emojiCategory, setEmojiCategory] = useState(EMOJI_CATEGORIES[0].id);
+  const [giftCategory, setGiftCategory] = useState(GIFT_CATEGORIES[0].id);
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [toast, setToast] = useState('');
@@ -387,6 +399,14 @@ export default function FriendsPage() {
               // في RTL: justify-start = جهة اليمين (الصديق), justify-end = جهة اليسار (أنا)
               // مثل واتساب: رسائلي على اليسار، رسائل الصديق على اليمين
               const isMine = msg.fromUserId !== chatFriend.userId;
+              // كشف إن كانت رسالة هدية (text يبدأ بـ 'gift:')
+              const isGift = msg.type === 'gift' && isGiftMessage(msg.text);
+              const giftId = isGift ? parseGiftId(msg.text) : null;
+              const gift = giftId ? getGiftById(giftId) : null;
+              const giftImgUrl = gift ? getGiftImageUrl(gift) : null;
+              // كشف إن كانت رسالة نصية تحتوي إيموجي فقط (نعرضها كصورة كبيرة)
+              const isPureEmoji = msg.type !== 'gift' && /^[\p{Emoji}\s]+$/u.test(msg.text) && msg.text.trim().length > 0;
+              const emojiPngUrl = isPureEmoji ? emojiToPng(msg.text.trim()) : null;
               return (
                 <div key={msg.id || i} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                   <div
@@ -396,8 +416,59 @@ export default function FriendsPage() {
                         : 'bg-[#1a3a30] text-white/90 border border-[#15BC83]/20 rounded-2xl rounded-br-sm'
                     }`}
                   >
-                    {msg.type === 'gift' && <span className="text-2xl block text-center">{msg.text}</span>}
-                    {msg.type !== 'gift' && <p className="text-sm break-words">{msg.text}</p>}
+                    {isGift && gift && giftImgUrl ? (
+                      // عرض الهدية كصورة + اسم + سعر
+                      <div className="flex flex-col items-center gap-1 min-w-[120px]">
+                        <img
+                          src={giftImgUrl}
+                          alt={gift.nameAr || gift.name}
+                          className="w-16 h-16 object-contain"
+                          onError={(e) => {
+                            // احتياطي: إن فشل تحميل الصورة، اعرض الإيموجي كصورة
+                            const t = e.currentTarget;
+                            if (!t.src.includes('github')) {
+                              t.src = emojiToPng(gift.emoji);
+                            }
+                          }}
+                        />
+                        <p className="text-xs font-bold text-center">{gift.nameAr || gift.name}</p>
+                        {gift.price > 0 && (
+                          <p className="text-[10px] flex items-center gap-1 justify-center">
+                            <img src="/yalla-ui/diamonds.webp" alt="" className="w-3 h-3" />
+                            {gift.price}
+                          </p>
+                        )}
+                      </div>
+                    ) : isPureEmoji && emojiPngUrl ? (
+                      // عرض الإيموجي كصورة PNG كبيرة (ضمان一致性 عبر الأجهزة)
+                      <img
+                        src={emojiPngUrl}
+                        alt={msg.text.trim()}
+                        className="w-12 h-12 object-contain"
+                        onError={(e) => {
+                          // احتياطي: إن فشل تحميل PNG، اعرض كنص
+                          const t = e.currentTarget as HTMLImageElement;
+                          t.style.display = 'none';
+                          const parent = t.parentElement;
+                          if (parent) {
+                            const fallback = document.createElement('p');
+                            fallback.className = 'text-3xl';
+                            fallback.textContent = msg.text.trim();
+                            parent.appendChild(fallback);
+                          }
+                        }}
+                      />
+                    ) : msg.type === 'gift' ? (
+                      // هدية قديمة بصيغة إيموجي فقط (backward-compat) — اعرض كصورة
+                      <img
+                        src={emojiToPng(msg.text)}
+                        alt={msg.text}
+                        className="w-12 h-12 object-contain mx-auto"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    ) : (
+                      <p className="text-sm break-words whitespace-pre-wrap">{msg.text}</p>
+                    )}
                     <p className={`text-[9px] mt-1 ${isMine ? 'text-white/70' : 'text-white/40'} text-left`}>
                       {new Date(msg.createdAt).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })}
                     </p>
@@ -416,8 +487,124 @@ export default function FriendsPage() {
                 <button onClick={() => { setShowEmoji(!showEmoji); setShowGifts(false); }} className="w-9 h-9 rounded-full bg-[#15BC83]/20 flex items-center justify-center"><Smile className="w-4 h-4 text-[#15BC83]" /></button>
                 <button onClick={sendMessage} className="w-9 h-9 rounded-full bg-[#15BC83] flex items-center justify-center hover:bg-[#13a374] transition-colors" aria-label="إرسال"><Send className="w-4 h-4 text-white" /></button>
               </div>
-              {showEmoji && <div className="bg-[#0a4a3a] p-3 border-t border-[#15BC83]/20 grid grid-cols-8 gap-2">{['😀','😂','😍','🥰','😎','🤔','😢','😡','👍','👎','❤️','🔥','🎉','🎁','💀','👻'].map(e => <button key={e} onClick={() => setChatInput(prev => prev + e)} className="text-2xl">{e}</button>)}</div>}
-              {showGifts && <div className="bg-[#0a4a3a] p-3 border-t border-[#15BC83]/20"><div className="grid grid-cols-4 gap-2">{['🌹','🍫','💎','🏆','🎂','🎈','⭐','🎁'].map(g => <button key={g} onClick={async () => { setShowGifts(false); await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toUserId: chatFriend.userId, text: g, type: 'gift' }) }); const msgRes = await fetch(`/api/chat?friendId=${chatFriend.userId}`); const msgData = await msgRes.json(); if (msgData.success) setChatMessages(msgData.messages || []); }} className="text-3xl p-2 rounded-xl bg-[#15BC83]/10 hover:bg-[#15BC83]/20">{g}</button>)}</div></div>}
+              {showEmoji && (
+                <div className="bg-[#0a4a3a] border-t border-[#15BC83]/20 max-h-[40vh] flex flex-col">
+                  {/* تبويبات فئات الإيموجي */}
+                  <div className="flex gap-1 p-2 overflow-x-auto border-b border-[#15BC83]/20 flex-shrink-0">
+                    {EMOJI_CATEGORIES.map(cat => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setEmojiCategory(cat.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                          emojiCategory === cat.id
+                            ? 'bg-[#15BC83] text-white'
+                            : 'bg-[#15BC83]/10 text-white/60 hover:text-white'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+                  {/* شبكة الإيموجي للفئة المحدّدة — نعرضها كصور PNG لضمان一致性 */}
+                  <div className="flex-1 overflow-y-auto p-2 grid grid-cols-8 gap-1">
+                    {(EMOJI_CATEGORIES.find(c => c.id === emojiCategory)?.emojis || []).map((e, idx) => (
+                      <button
+                        key={`${e}-${idx}`}
+                        onClick={() => setChatInput(prev => prev + e)}
+                        className="aspect-square flex items-center justify-center rounded-lg hover:bg-[#15BC83]/15 transition-colors p-1"
+                        title={e}
+                      >
+                        <img
+                          src={emojiToPng(e)}
+                          alt={e}
+                          className="w-7 h-7 object-contain"
+                          loading="lazy"
+                          onError={(ev) => {
+                            // احتياطي: عرض الإيموجي كنص إن فشل تحميل الصورة
+                            const t = ev.currentTarget as HTMLImageElement;
+                            t.style.display = 'none';
+                            const parent = t.parentElement;
+                            if (parent && !parent.querySelector('span')) {
+                              const sp = document.createElement('span');
+                              sp.className = 'text-2xl';
+                              sp.textContent = e;
+                              parent.appendChild(sp);
+                            }
+                          }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {showGifts && (
+                <div className="bg-[#0a4a3a] border-t border-[#15BC83]/20 max-h-[45vh] flex flex-col">
+                  {/* تبويبات فئات الهدايا */}
+                  <div className="flex gap-1 p-2 overflow-x-auto border-b border-[#15BC83]/20 flex-shrink-0">
+                    {GIFT_CATEGORIES.map(cat => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setGiftCategory(cat.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+                          giftCategory === cat.id
+                            ? 'bg-[#15BC83] text-white'
+                            : 'bg-[#15BC83]/10 text-white/60 hover:text-white'
+                        }`}
+                      >
+                        <span className="ml-1">{cat.icon}</span>
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                  {/* شبكة الهدايا للفئة المحدّدة — مع الصور والأسعار */}
+                  <div className="flex-1 overflow-y-auto p-2 grid grid-cols-4 gap-2">
+                    {DEFAULT_GIFTS.filter(g => g.category === giftCategory).map(gift => {
+                      const imgUrl = getGiftImageUrl(gift);
+                      return (
+                        <button
+                          key={gift.id}
+                          onClick={async () => {
+                            setShowGifts(false);
+                            // أرسل الهدية بصيغة 'gift:<id>' حتى يعرضها المستقبل بشكل صحيح
+                            await fetch('/api/chat', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                toUserId: chatFriend.userId,
+                                text: `gift:${gift.id}`,
+                                type: 'gift',
+                              }),
+                            });
+                            const msgRes = await fetch(`/api/chat?friendId=${chatFriend.userId}`);
+                            const msgData = await msgRes.json();
+                            if (msgData.success) setChatMessages(msgData.messages || []);
+                          }}
+                          className="flex flex-col items-center gap-1 p-2 rounded-xl bg-[#15BC83]/10 hover:bg-[#15BC83]/20 transition-colors"
+                          title={gift.nameAr || gift.name}
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={gift.nameAr || gift.name}
+                            className="w-10 h-10 object-contain"
+                            loading="lazy"
+                            onError={(ev) => {
+                              const t = ev.currentTarget as HTMLImageElement;
+                              if (!t.src.includes('github')) t.src = emojiToPng(gift.emoji);
+                            }}
+                          />
+                          <p className="text-[10px] font-bold text-white text-center truncate w-full">{gift.nameAr || gift.name}</p>
+                          {gift.price > 0 && (
+                            <p className="text-[9px] flex items-center gap-0.5 text-[#F5B841]">
+                              <img src="/yalla-ui/diamonds.webp" alt="" className="w-2.5 h-2.5" />
+                              {gift.price}
+                            </p>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <div className="p-3 bg-[#0a4a3a] border-t border-[#15BC83]/20">

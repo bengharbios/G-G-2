@@ -855,3 +855,47 @@ Stage Summary:
 - Send button is now a paper-airplane/arrow icon (Send from lucide-react).
 - Messages now properly differentiated: my messages on LEFT (green bubbles), friend's messages on RIGHT (dark green bubbles with border) — like WhatsApp/Telegram.
 - Tail effect via asymmetric border-radius (rounded-bl-sm for mine, rounded-br-sm for friend's).
+
+---
+Task ID: 1
+Agent: main
+Task: Two-sided friend deletion + faster notifications + chat layout gap fix
+
+Work Log:
+- User reported 4 issues:
+  1. When deleting a friend, they remained on the friend's side and could still send messages. The 'add friend' button didn't appear for the friend until late.
+  2. When on friends page and a friend sends a message, notification badge should appear immediately, even while on the friends page.
+  3. Notifications should show counts: bottom nav = total (messages + reqs), friends page tab = total messages, per-friend badge = msgs from that specific person.
+  4. When opening a chat and scrolling, there's a gap at the bottom between the input frame and the bottom nav buttons.
+
+- Root causes:
+  - removeFriend() deletes the single FriendRequest record, so BOTH sides lose the friendship at the DB level. BUT the friend's CLIENT state still has them as a friend (cached 'friends' array). The chat POST endpoint didn't validate friendship before accepting messages.
+  - Summary polling was 15s — too slow for new messages.
+  - Counts are already correct (bottom nav = total, friends tab = messages sum, per-friend = individual count). Just needed faster updates.
+  - Chat view used h-[calc(100dvh-3.5rem-75px)]. 'dvh' is dynamic — when mobile URL bar shows/hides during scroll, viewport height changes but the calculated height doesn't update → gap or overlap.
+
+- Fixes:
+  1. admin-db.ts: added areFriends(userIdA, userIdB) — checks if an accepted FriendRequest exists between two users. Single indexed query.
+  
+  2. chat/route.ts POST: validates friendship before inserting message. Returns 403 with friendshipStatus='none' if not friends. This prevents a former friend from sending messages after being deleted.
+  
+  3. chat/route.ts GET: includes friendshipStatus ('friends' | 'none') in response. Friend's UI can detect they've been deleted and immediately show 'add friend' button. Also: only marks messages as read if still friends (so deleted friends see unread badges on old messages).
+  
+  4. friends/page.tsx:
+     - Polls /api/chat GET every 3s during chat — reads friendshipStatus from response and updates friendStatus. If 'none', reloads friends list and shows 'add friend' button.
+     - Periodically reloads /api/friends?type=friends every 20s while page is visible — detects remote deletions even when not in chat.
+     - loadSummary polling increased from 15s to 10s (faster notifications for new messages while on friends page).
+     - Added visibilitychange listener — re-fetches summary when user returns to the tab.
+     - sendMessage() now handles 403 response (not friends anymore) — shows toast, sets friendStatus='none', reloads friends list.
+  
+  5. Chat view layout: replaced h-[calc(100dvh-3.5rem-75px)] with position:fixed + top:14 + bottom:[75px]. This pins the chat view between the AppShell top spacer and SiteBottomNav, regardless of dynamic viewport height changes. No more gap when scrolling.
+
+- Verified: npx next build ✓ (22.9s), ESLint ✓ (only pre-existing warnings about unused eslint-disable directives).
+
+- Committed as 4b2d937 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 4 files changed (admin-db, chat/route.ts, friends/page.tsx, worklog), 131 insertions, 14 deletions.
+- Friend deletion is now two-sided: when A deletes B, B's chat GET response returns friendshipStatus='none', B's UI immediately shows 'add friend' button. If B tries to send a message, POST returns 403 and shows toast 'لم تعودا أصدقاء'.
+- Notifications are faster: summary polls every 10s while page visible (was 15s). Friends list re-polls every 20s to detect remote deletions. visibilitychange listener triggers immediate re-fetch when user returns to tab.
+- Chat view uses fixed positioning (top:14, bottom:75px) instead of dynamic viewport height calc — no more gap when scrolling.
