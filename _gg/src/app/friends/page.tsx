@@ -46,7 +46,7 @@ export default function FriendsPage() {
 
   useEffect(() => { setView('list'); }, [tab]);
 
-  // جلب ملخّص الإشعارات بشكل دوري كل 15 ثانية (أسرع من الشارة السفلية)
+  // جلب ملخّص الإشعارات بشكل دوري كل 10 ثوانٍ (أسرع الآن) عندما تكون الصفحة مرئية
   const loadSummary = useCallback(async () => {
     try {
       const res = await fetch('/api/notifications/summary', { cache: 'no-store' });
@@ -62,9 +62,10 @@ export default function FriendsPage() {
   }, []);
   useEffect(() => {
     loadSummary();
-    const t = setInterval(loadSummary, 15000);
+    const t = setInterval(() => { if (document.visibilityState === 'visible') loadSummary(); }, 10000);
     const onFocus = () => loadSummary();
     window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadSummary(); });
     return () => { clearInterval(t); window.removeEventListener('focus', onFocus); };
   }, [loadSummary]);
 
@@ -87,15 +88,37 @@ export default function FriendsPage() {
   }, []);
   useEffect(() => { loadData(); }, [loadData]);
 
+  // إعادة جلب قائمة الأصدقاء كل 20 ثانية — للكشف عن الحذف من الطرف الآخر
+  useEffect(() => {
+    const t = setInterval(() => { if (document.visibilityState === 'visible') loadData(); }, 20000);
+    const onFocus = () => loadData();
+    window.addEventListener('focus', onFocus);
+    return () => { clearInterval(t); window.removeEventListener('focus', onFocus); };
+  }, [loadData]);
+
   useEffect(() => {
     if (view !== 'chat' || !chatFriend) { if (chatPollRef.current) clearInterval(chatPollRef.current); return; }
     const poll = async () => {
-      try { const res = await fetch(`/api/chat?friendId=${chatFriend.userId}`); const data = await res.json(); if (data.success) setChatMessages(data.messages || []); } catch {}
+      try {
+        const res = await fetch(`/api/chat?friendId=${chatFriend.userId}`, { cache: 'no-store' });
+        const data = await res.json();
+        if (data.success) {
+          setChatMessages(data.messages || []);
+          // حدّث حالة الصداقة من الاستجابة إن وُجدت
+          if (data.friendshipStatus === 'none') {
+            // الطرف الآخر حذفني — أعد تحميل قائمة الأصدقاء وحدّث الحالة
+            loadData();
+            setFriendStatus('none');
+          } else if (data.friendshipStatus === 'friends') {
+            setFriendStatus('friends');
+          }
+        }
+      } catch {}
     };
     poll();
     chatPollRef.current = setInterval(poll, 3000);
     return () => { if (chatPollRef.current) clearInterval(chatPollRef.current); };
-  }, [view, chatFriend]);
+  }, [view, chatFriend, loadData]);
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
@@ -180,10 +203,21 @@ export default function FriendsPage() {
     if (!chatInput.trim() || !chatFriend) return;
     const text = chatInput.trim(); setChatInput('');
     try {
-      await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toUserId: chatFriend.userId, text }) });
+      const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ toUserId: chatFriend.userId, text }) });
+      // إن ردّ السيرفر 403 → لم تعودا أصدقاء، حدّث الحالة وأظهر زر "إضافة صديق"
+      if (res.status === 403) {
+        const data = await res.json().catch(() => ({}));
+        setFriendStatus('none');
+        loadData();
+        setToast(data.error || 'لم تعودا أصدقاء'); setTimeout(() => setToast(''), 3000);
+        return;
+      }
       const msgRes = await fetch(`/api/chat?friendId=${chatFriend.userId}`);
       const msgData = await msgRes.json();
-      if (msgData.success) setChatMessages(msgData.messages || []);
+      if (msgData.success) {
+        setChatMessages(msgData.messages || []);
+        if (msgData.friendshipStatus === 'none') { setFriendStatus('none'); loadData(); }
+      }
     } catch {}
   };
 
@@ -321,7 +355,10 @@ export default function FriendsPage() {
         // تحقق من حالة الصداقة الحالية: إن لم يعد صديقاً، اظهر زر "إضافة صديق"
         const isStillFriend = friends.some(f => f.userId === chatFriend.userId);
         return (
-        <div className="flex flex-col h-[calc(100dvh-3.5rem-75px)]">
+        // تخطيط ثابت (fixed) بين الهيدر العلوي والأزرار السفلية —
+        // أفضل من h-[calc(100dvh-...)] لأنه لا يتأثر بتغيّر حجم viewport
+        // (مثل إظهار/إخفاء شريط URL في المتصفّح) — لا فجوات ولا تداخل
+        <div className="fixed top-14 left-0 right-0 bottom-[75px] flex flex-col z-30">
           <div className="flex items-center gap-3 p-3 bg-[#0a4a3a] border-b border-[#15BC83]/20">
             <button onClick={() => setView('list')} className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"><X className="w-4 h-4 text-white" /></button>
             {/* الضغط على صورة/اسم الصديق → يفتح بروفايله (نفس نافذة بروفايلي) */}

@@ -4235,6 +4235,23 @@ export async function removeFriend(friendshipId: string, userId: string): Promis
   return result.rowsAffected > 0;
 }
 
+/**
+ * التحقق من وجود صداقة مقبولة بين مستخدمَين.
+ * يُستخدم في chat POST لمنع الإرسال بعد الحذف، وفي chat GET لإعلام الطرف الآخر.
+ */
+export async function areFriends(userIdA: string, userIdB: string): Promise<boolean> {
+  const c = getClient();
+  await ensureAdminTables();
+  const result = await c.execute({
+    sql: `SELECT 1 FROM FriendRequest
+          WHERE status = 'accepted'
+          AND ((fromUserId = ? AND toUserId = ?) OR (fromUserId = ? AND toUserId = ?))
+          LIMIT 1`,
+    args: [userIdA, userIdB, userIdB, userIdA],
+  });
+  return result.rows.length > 0;
+}
+
 export async function getFriendsList(userId: string): Promise<FriendWithUser[]> {
   const c = getClient();
   await ensureAdminTables();

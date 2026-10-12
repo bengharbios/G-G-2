@@ -817,3 +817,41 @@ Stage Summary:
 - Ant overlay now only shows when network is REALLY bad: slow-2g, OR RTT > 3000ms, OR downlink < 25kbps, OR fetch > 15s, OR 3+ ping failures in a row (3+ minutes of confirmed disconnection).
 - Ant overlay is suppressed entirely when ANY modal/dialog is open OR when an input/textarea has focus.
 - SettingsModal bottom buttons (logout + account center) have defensive CSS to prevent text wrapping and stacking on narrow screens.
+
+---
+Task ID: 1
+Agent: main
+Task: WhatsApp-style chat bubbles + Send arrow button
+
+Work Log:
+- User requested: (1) Send button should be arrow-shaped (not MessageCircle). (2) Messages should differentiate between mine and friend's like WhatsApp/Telegram — not all on one side.
+
+- Investigation: current code had REVERSED alignment. In RTL layout, friend's messages were on visual LEFT (justify-end) and my messages on visual RIGHT (justify-start). This is OPPOSITE of WhatsApp Arabic convention where my messages are on LEFT and friend's on RIGHT.
+
+- Fixes in src/app/friends/page.tsx:
+  1. Send button: replaced MessageCircle with Send icon (lucide-react). Send is paper-airplane/arrow shaped, matches WhatsApp/Telegram send buttons. Added hover effect and aria-label='إرسال'.
+  
+  2. Message alignment flipped to match WhatsApp/Telegram convention:
+     - isMine = msg.fromUserId !== chatFriend.userId (clarified logic)
+     - My messages: justify-end = visual LEFT in RTL (was justify-start)
+     - Friend's messages: justify-start = visual RIGHT in RTL (was justify-end)
+     - In WhatsApp Arabic: my msgs on LEFT, friend's on RIGHT ✓
+  
+  3. Message bubble styling improved:
+     - My messages: bg-[#15BC83] (green) + rounded-2xl + rounded-bl-sm (smaller bottom-left radius = visual 'tail' effect like WhatsApp)
+     - Friend's messages: bg-[#1a3a30] (dark green) + border + rounded-2xl + rounded-br-sm (smaller bottom-right radius for tail effect)
+     - Added shadow-sm for depth
+     - Time text color: white/70 for mine, white/40 for friend's
+     - Added break-words for long messages
+  
+  4. Simplified message rendering using IIFE with return statement for cleaner conditional logic.
+
+- Verified: npx next build ✓ (23.3s), ESLint ✓.
+
+- Committed as 513638b and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 2 files changed (src/app/friends/page.tsx + worklog), 61 insertions, 10 deletions.
+- Send button is now a paper-airplane/arrow icon (Send from lucide-react).
+- Messages now properly differentiated: my messages on LEFT (green bubbles), friend's messages on RIGHT (dark green bubbles with border) — like WhatsApp/Telegram.
+- Tail effect via asymmetric border-radius (rounded-bl-sm for mine, rounded-br-sm for friend's).
