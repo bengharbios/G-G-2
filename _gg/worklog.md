@@ -899,3 +899,42 @@ Stage Summary:
 - Friend deletion is now two-sided: when A deletes B, B's chat GET response returns friendshipStatus='none', B's UI immediately shows 'add friend' button. If B tries to send a message, POST returns 403 and shows toast 'لم تعودا أصدقاء'.
 - Notifications are faster: summary polls every 10s while page visible (was 15s). Friends list re-polls every 20s to detect remote deletions. visibilitychange listener triggers immediate re-fetch when user returns to tab.
 - Chat view uses fixed positioning (top:14, bottom:75px) instead of dynamic viewport height calc — no more gap when scrolling.
+
+---
+Task ID: 1
+Agent: main
+Task: Consistent emoji PNGs + full gift catalog with prices in chat
+
+Work Log:
+- User reported: (1) emojis sent don't look like emojis that appear in chat (inconsistent rendering). (2) Didn't pull all emojis from sources — need comprehensive list. (3) Need to pull all gifts with prices.
+
+- Root causes:
+  1. Emojis were rendered as Unicode text in both picker and chat. Different CSS (text-2xl vs text-sm) caused different rendering on some devices.
+  2. Only 16 emojis in the picker.
+  3. Only 8 gift emojis (no images, no prices) in the gift picker.
+
+- Fixes:
+  1. NEW src/lib/chat-emojis-gifts.ts: EMOJI_CATEGORIES (7 categories: smileys, gestures, hearts, animals, food, activities, symbols) with 120+ emojis total. Re-exports DEFAULT_GIFTS (50+ gifts) and GIFT_CATEGORIES (9 cats) from voice-rooms/types. emojiToPng(emoji): converts Unicode emoji to GitHub emoji CDN PNG URL for consistent rendering. getGiftById(id), isGiftMessage(text), parseGiftId(text), getGiftImageUrl(gift).
+
+  2. Friends chat emoji picker — completely redesigned: 7 category tabs (horizontally scrollable), 8-column grid of emojis rendered as PNG images, max height 40vh, scrollable, fallback to Unicode text on PNG failure.
+
+  3. Friends chat gift picker — completely redesigned: 9 category tabs (popular, romance, luxury, special, ramadan, birthday, vip, zodiac, fantasy), 4-column grid of gifts with thumbnail image + Arabic name + price (with diamonds icon), max height 45vh, scrollable. Gifts sent as 'gift:<id>' format for proper lookup.
+
+  4. Chat message display — 4 cases:
+     a) Gift message (type=gift, text starts with 'gift:'): parse giftId, look up gift, render gift thumbnail + name + price with diamonds icon
+     b) Pure emoji message (text matches emoji regex): render as 12x12 PNG image for consistency
+     c) Old gift message (type=gift, no 'gift:' prefix — backward compat): render emoji as PNG image
+     d) Regular text: render as text with whitespace-pre-wrap
+
+  5. Gift send format changed from '🌹' to 'gift:g1' — allows proper gift lookup with image, name, and price display.
+
+- Verified: npx next build ✓ (23.5s), ESLint ✓.
+
+- Committed as 7a08143 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 3 files changed (NEW chat-emojis-gifts.ts, friends/page.tsx, worklog), 400 insertions, 4 deletions.
+- Emojis now render consistently as PNG images (from GitHub emoji CDN) in both picker and chat — no more font-dependent rendering.
+- Emoji picker now has 7 categories with 120+ emojis (was 16).
+- Gift picker now has 9 categories with 50+ gifts, each showing thumbnail image + Arabic name + price (with diamonds icon).
+- Gifts sent as 'gift:<id>' format — chat displays the gift's image, name, and price.

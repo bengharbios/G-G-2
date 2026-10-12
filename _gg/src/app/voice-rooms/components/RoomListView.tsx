@@ -251,7 +251,7 @@ export default function RoomListView({
 
   return (
     <div
-      className="relative flex flex-col min-h-screen"
+      className="relative min-h-screen"
       dir="rtl"
       style={{
         background: `linear-gradient(180deg, #0D8A7A 0%, #0A6B5E 30%, #074a42 100%)`,
@@ -262,10 +262,11 @@ export default function RoomListView({
       <DiamondPattern />
 
       {/* ══════════════════════════════════════════════════════════════
-          HEADER — Avatar+Badge | Main Tabs | Search
+          HEADER — Main Tabs (اكتشف | رائج | غرفي)
+          الهيدر العلوي (الأفاتار + بحث) يُقدَّم الآن من AppShell عبر SiteHeader
           ══════════════════════════════════════════════════════════════ */}
-      <header className="relative z-10 flex flex-col pt-3">
-{/* ── Main Tabs: اكتشف | رائج | غرفي ── */}
+      <header className="relative z-10 flex flex-col pt-3 max-w-lg mx-auto w-full">
+        {/* ── Main Tabs: اكتشف | رائج | غرفي ── */}
         <div className="flex items-center justify-center gap-2 px-4 pb-2">
           {MAIN_TABS.map((tab) => {
             const isActive = mainTab === tab.id;
@@ -392,7 +393,7 @@ export default function RoomListView({
       {/* ══════════════════════════════════════════════════════════════
           SUB-TABS (pill-shaped, always visible)
           ══════════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 flex items-center justify-center gap-2 px-4 py-2">
+      <div className="relative z-10 flex items-center justify-center gap-2 px-4 py-2 max-w-lg mx-auto w-full">
         {SUB_TABS.map((tab) => {
           const isActive = subTab === tab.id;
           return (
@@ -416,12 +417,12 @@ export default function RoomListView({
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
-          ROOM LIST (scrollable area)
+          ROOM LIST — natural body scroll (matches Games/Friends pattern)
           ══════════════════════════════════════════════════════════════ */}
       <div
         ref={scrollRef}
-        className="relative z-10 flex-1 overflow-y-auto px-3 pt-1"
-        style={{ paddingBottom: 85 }}
+        className="relative z-10 px-3 pt-1 max-w-lg mx-auto w-full"
+        style={{ paddingBottom: 100 }}
       >
         {/* Loading State */}
         {loading && (

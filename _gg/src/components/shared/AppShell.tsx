@@ -65,6 +65,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [subscriberProfile, setSubscriberProfile] = useState<SubscriberProfile | null>(null);
 
+  // ── التمرير لأعلى عند تغيير المسار — كل صفحة تبدأ من أعلاها ──
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    // أيضاً: إن كان هناك عنصر بقى عليه scroll (مثل overflow-y-auto) نُصفّره
+    const scrollables = document.querySelectorAll('[data-scrollable="true"]');
+    scrollables.forEach(el => { (el as HTMLElement).scrollTop = 0; });
+  }, [pathname]);
+
   // ── Fetch /api/auth/me once on mount ──
   useEffect(() => {
     let cancelled = false;
