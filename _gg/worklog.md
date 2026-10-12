@@ -938,3 +938,34 @@ Stage Summary:
 - Emoji picker now has 7 categories with 120+ emojis (was 16).
 - Gift picker now has 9 categories with 50+ gifts, each showing thumbnail image + Arabic name + price (with diamonds icon).
 - Gifts sent as 'gift:<id>' format — chat displays the gift's image, name, and price.
+
+---
+Task ID: 1
+Agent: main
+Task: Scroll-to-top on route change + Council page natural body scroll
+
+Work Log:
+- User reported: (1) pages should start from top when opened (not from middle). (2) Council page should match Games/Friends layout, rooms don't scroll at the bottom.
+
+- Root causes:
+  1. Next.js App Router does NOT auto-scroll-to-top when navigating between routes that share the same layout (our AppShell wraps all shell routes). Browser preserves scroll position.
+  2. RoomListView root was 'flex flex-col min-h-screen' with rooms area using 'flex-1 overflow-y-auto'. Since parent (min-h-screen) doesn't constrain height to a specific value, flex-1 has no defined height to fill — the scrollable div just expands to fit all content. Body itself doesn't scroll because content is fully rendered. Result: rooms at the bottom are clipped or unreachable.
+
+- Fixes:
+  1. AppShell.tsx: added useEffect that watches pathname and calls window.scrollTo({top:0, behavior:'auto'}) on every route change. Also resets scrollTop on any element with data-scrollable='true'.
+  
+  2. RoomListView.tsx: redesigned to match Games/Friends layout pattern:
+     - Root changed from 'flex flex-col min-h-screen' to 'min-h-screen' (removed flex-col — natural document flow)
+     - Header (main tabs) and sub-tabs now use 'max-w-lg mx-auto w-full' for centered, mobile-friendly width (matches Friends page pattern)
+     - Rooms area changed from 'flex-1 overflow-y-auto' to natural flow (no overflow, no flex-1) — body scrolls naturally like Games/Friends
+     - paddingBottom increased from 85 to 100 to clear the bottom nav
+     - All existing functionality preserved: main tabs (اكتشف/رائج/غرفي), sub-tabs (مؤخراً/منضم/متابَع/أصدقاء), my-room section, search bar, room cards, loading state, empty state.
+
+- Verified: npx next build ✓ (22.0s), ESLint ✓.
+
+- Committed as 3543ef5 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 3 files changed (AppShell, RoomListView, worklog), 57 insertions, 8 deletions.
+- Every page now starts from the top when navigated to (scroll-to-top on pathname change).
+- Council page (voice-rooms) now uses natural body scroll — rooms at the bottom are reachable. Layout matches Games/Friends pattern (max-w-lg mx-auto, pb-100 for bottom nav clearance).

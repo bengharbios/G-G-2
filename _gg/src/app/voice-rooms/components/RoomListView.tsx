@@ -41,6 +41,9 @@ import {
   TrendingUp,
   Clock,
   Filter,
+  Compass,
+  Flame,
+  Radio,
 } from 'lucide-react';
 import {
   TUI,
@@ -61,17 +64,17 @@ interface RoomListViewProps {
   loading: boolean;
 }
 
-// ─── Main Tabs ───────────────────────────────────────────────────────────────
+// ─── Main Tabs (with icons matching Friends page tab style) ──────────────────
 
 const MAIN_TABS = [
-  { id: 'explore', label: 'اكتشف' },
-  { id: 'hot', label: 'رائج' },
-  { id: 'mine', label: 'غرفي' },
+  { id: 'explore', label: 'اكتشف', icon: Compass },
+  { id: 'hot', label: 'رائج', icon: Flame },
+  { id: 'mine', label: 'غرفي', icon: Home },
 ] as const;
 
 type MainTab = (typeof MAIN_TABS)[number]['id'];
 
-// ─── Sub Tabs (always visible) ────────────────────────────────────────────────
+// ─── Sub Tabs (always visible, subtle pills) ─────────────────────────────────
 
 const SUB_TABS = [
   { id: 'recent', label: 'مؤخراً' },
@@ -262,49 +265,47 @@ export default function RoomListView({
       <DiamondPattern />
 
       {/* ══════════════════════════════════════════════════════════════
-          HEADER — Main Tabs (اكتشف | رائج | غرفي)
-          الهيدر العلوي (الأفاتار + بحث) يُقدَّم الآن من AppShell عبر SiteHeader
+          PAGE HEADER — شعار المجلس (يطابق نمط صفحة الألعاب)
           ══════════════════════════════════════════════════════════════ */}
-      <header className="relative z-10 flex flex-col pt-3 max-w-lg mx-auto w-full">
-        {/* ── Main Tabs: اكتشف | رائج | غرفي ── */}
-        <div className="flex items-center justify-center gap-2 px-4 pb-2">
-          {MAIN_TABS.map((tab) => {
-            const isActive = mainTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setMainTab(tab.id)}
-                className="flex-shrink-0 px-5 py-2 rounded-full transition-all active:scale-95"
-                style={{
-                  fontSize: 'clamp(13px, 3.5vw, 15px)',
-                  fontWeight: isActive ? 700 : 500,
-                  backgroundColor: isActive ? 'rgba(255,255,255,0.95)' : 'transparent',
-                  color: isActive ? '#0D8A7A' : 'rgba(255,255,255,0.7)',
-                  minHeight: 38,
-                  boxShadow: isActive ? '0 2px 12px rgba(0,0,0,0.15)' : 'none',
-                }}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+      <header className="relative z-10 pt-6 pb-3 flex flex-col items-center gap-2 max-w-lg mx-auto w-full px-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#15BC83] to-[#0FA070] flex items-center justify-center shadow-lg shadow-[#15BC83]/20">
+            <Radio className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-xl font-black text-white drop-shadow-md">المجلس</span>
         </div>
+        <div className="w-28 h-px bg-gradient-to-r from-transparent via-[#15BC83]/40 to-transparent" />
       </header>
+
+      {/* ══════════════════════════════════════════════════════════════
+          MAIN TABS — تصميم مطابق لتبويبات صفحة الأصدقاء (مستطيلة بأيقونات)
+          ══════════════════════════════════════════════════════════════ */}
+      <div className="relative z-10 flex gap-1 p-2 bg-[#0D8A7A]/20 border-b border-[#15BC83]/20 sticky top-14 max-w-lg mx-auto w-full">
+        {MAIN_TABS.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = mainTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setMainTab(tab.id)}
+              className={`flex-1 flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all relative ${isActive ? 'bg-[#15BC83] text-white shadow-md' : 'text-white/50'}`}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-bold">{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
 
       {/* ══════════════════════════════════════════════════════════════
           MY ROOM SECTION (visible on "غرفي" tab)
           ══════════════════════════════════════════════════════════════ */}
       {mainTab === 'mine' && (
-        <div className="relative z-10 px-4 pt-1 pb-1">
+        <div className="relative z-10 px-3 pt-2 pb-1 max-w-lg mx-auto w-full">
           {myRoom ? (
             /* ── My Room Banner ── */
             <div
-              className="flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.98]"
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-              }}
+              className="flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] bg-[#15BC83]/15 border border-[#15BC83]/30"
               onClick={() => onRoomClick(myRoom)}
             >
               {/* Room avatar */}
@@ -356,59 +357,35 @@ export default function RoomListView({
               </div>
             </div>
           ) : (
-            /* ── Create My Room Card (white card with green plus) ── */
-            <div
-              className="flex flex-col items-center justify-center py-4 rounded-xl transition-all cursor-pointer active:scale-[0.98]"
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-              }}
+            /* ── Create My Room Card — يطابق نمط زر البحث في صفحة الأصدقاء ── */
+            <button
               onClick={onCreateRoom}
+              className="w-full bg-[#15BC83] hover:bg-[#13a374] text-white rounded-xl p-3 flex items-center gap-3 transition-colors shadow-md shadow-[#15BC83]/30"
             >
-              {/* Green plus icon in rounded square */}
-              <div
-                className="flex items-center justify-center rounded-xl mb-2"
-                style={{
-                  width: 44,
-                  height: 44,
-                  backgroundColor: '#E0F7FA',
-                }}
-              >
-                <Plus size={24} style={{ color: TUI.colors.teal }} strokeWidth={2.5} />
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                <Plus className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <p
-                style={{
-                  fontSize: 'clamp(13px, 3.5vw, 15px)',
-                  fontWeight: 600,
-                  color: '#757575',
-                }}
-              >
-                إنشاء غرفتي
-              </p>
-            </div>
+              <div className="flex-1 text-right">
+                <p className="text-sm font-black">إنشاء غرفتي</p>
+                <p className="text-[11px] text-white/70">ابدأ بثّك الصوتي الآن</p>
+              </div>
+              <ChevronLeft className="w-5 h-5 text-white/60" />
+            </button>
           )}
         </div>
       )}
 
       {/* ══════════════════════════════════════════════════════════════
-          SUB-TABS (pill-shaped, always visible)
+          SUB-TABS (pill-shaped, always visible) — أصغر وأكثر إشراقاً
           ══════════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 flex items-center justify-center gap-2 px-4 py-2 max-w-lg mx-auto w-full">
+      <div className="relative z-10 flex items-center justify-center gap-1.5 px-3 py-2 max-w-lg mx-auto w-full overflow-x-auto">
         {SUB_TABS.map((tab) => {
           const isActive = subTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setSubTab(tab.id)}
-              className="flex-shrink-0 px-4 py-1.5 rounded-full transition-all active:scale-95"
-              style={{
-                fontSize: 'clamp(11px, 3vw, 13px)',
-                fontWeight: isActive ? 600 : 400,
-                backgroundColor: isActive ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.12)',
-                color: isActive ? '#0D8A7A' : 'rgba(255,255,255,0.65)',
-                minHeight: 34,
-                boxShadow: isActive ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
-              }}
+              className={`flex-shrink-0 px-4 py-1.5 rounded-full transition-all text-xs font-bold whitespace-nowrap ${isActive ? 'bg-white text-[#0D8A7A] shadow-md' : 'bg-white/10 text-white/60'}`}
             >
               {tab.label}
             </button>
