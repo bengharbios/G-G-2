@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { User } from 'lucide-react';
 import EventsModal from '@/components/shared/EventsModal';
 
@@ -23,6 +24,7 @@ export default function SiteBottomNav({
     controlledTab || 'events'
   );
   const [internalEventsOpen, setInternalEventsOpen] = useState(false);
+  const router = useRouter();
 
   const activeTab = controlledTab ?? internalActiveTab;
   const setActiveTab = controlledTab ? () => {} : setInternalActiveTab;
@@ -43,16 +45,16 @@ export default function SiteBottomNav({
 
     switch (tabId) {
       case 'games':
-        window.location.href = '/#games';
+        router.push('/#games');
         break;
       case 'events':
         setEventsOpen(true);
         break;
       case 'council':
-        window.location.href = '/voice-rooms';
+        router.push('/voice-rooms');
         break;
       case 'friends':
-        window.location.href = '/friends';
+        router.push('/friends');
         break;
     }
   };
