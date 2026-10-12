@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { getClient, ensureAdminTables, validateToken } from '@/lib/admin-db';
+import { getClient, ensureAdminTables } from '@/lib/admin-db';
+import { validateToken } from '@/lib/admin-auth';
 import crypto from 'crypto';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'gg-platform-secret-key-2024');
