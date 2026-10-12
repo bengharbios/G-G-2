@@ -295,8 +295,13 @@ export default function YallaProfileDialog({
   // Copy code state
   const [copied, setCopied] = useState(false);
 
+  // في وضع viewOnly (عرض ملف صديق)، نستخدم fullUser المجلوب من السيرفر
+  // بدلاً من authUser المُمرّر (الذي قد يكون ناقصاً)
+  const [fullUser, setFullUser] = useState<YallaAuthUser | null>(null);
+  const effectiveUser = viewOnly ? (fullUser || authUser) : authUser;
+
   const plan = planInfo(subscriberPlan, isTrial);
-  const hasCover = !!authUser?.cover;
+  const hasCover = !!effectiveUser?.cover;
 
   // Fetch XP + game stats when dialog opens
   useEffect(() => {
@@ -343,6 +348,60 @@ export default function YallaProfileDialog({
       cancelled = true;
     };
   }, [open, subscriberCode]);
+
+  // في وضع viewOnly (عرض ملف صديق): اجلب البروفايل الكامل من السيرفر
+  // ليتضمن: country, gender, birthDate, frame, ornament, card, cover, level, bio
+  // ملاحظة: authUser المُمرّر من friends/page.tsx يحتوي فقط على id/username/displayName/avatar
+  // لذلك نُجلب البيانات الكاملة ونُحدّث fullUser لاستخدامها في العرض
+  useEffect(() => {
+    if (!open || !viewOnly || !authUser?.id) {
+      setFullUser(null);
+      return;
+    }
+    let cancelled = false;
+    setLoadingData(true);
+    fetch(`/api/user/lookup?id=${encodeURIComponent(authUser.id)}&full=1`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.success || !d.user) return;
+        const u = d.user;
+        // ادمج البيانات المجلوبة مع authUser الأصلي (لا نُفرط في أي شيء)
+        const merged: YallaAuthUser = {
+          ...(authUser || {}),
+          id: String(u.id),
+          username: String(u.username || authUser.username),
+          displayName: String(u.displayName || authUser.displayName || u.username || ''),
+          avatar: String(u.avatar || authUser.avatar || ''),
+          bio: String(u.bio || ''),
+          country: String(u.country || ''),
+          cover: String(u.cover || ''),
+          frame: String(u.frame || ''),
+          ornament: String(u.ornament || ''),
+          card: String(u.card || ''),
+          gender: String(u.gender || ''),
+          // birthDate غير موجود في YallaAuthUser — لكنه مطلوب في النموذج
+          // نخزّنه في state окلاً ثم نستخدمه في عرض الملف
+          numericId: (u.numericId as number | null) ?? authUser.numericId ?? null,
+          role: String(u.role || authUser.role || 'user'),
+        } as YallaAuthUser;
+        // نشمل birthDate بشكل غير رسمي عبر any
+        (merged as any).birthDate = String(u.birthDate || '');
+        setFullUser(merged);
+        // عيّن المستوى إن أمكن (نُحدث xp.level من بيانات المستخدم)
+        const lvl = Number(u.level ?? 1);
+        if (Number.isFinite(lvl) && lvl > 0) {
+          setXp((prev) => prev ? { ...prev, level: lvl } : {
+            total: 0, level: lvl, currentLevelXP: 0, nextLevelXP: 100,
+            progress: 0, isMaxLevel: false,
+          });
+        }
+      })
+      .catch(() => { /* silent */ })
+      .finally(() => {
+        if (!cancelled) setLoadingData(false);
+      });
+    return () => { cancelled = true; };
+  }, [open, viewOnly, authUser?.id]);
 
   // Load frames catalog من قاعدة البيانات (المصدر الوحيد للحقيقة — يشمل SVGA و PNG)
   // أي تعارض في IDs بين JSON الثابت والكتالوج، الكتالوج يفوز لأنه المصدر الذي اشترى منه المستخدم
@@ -552,21 +611,22 @@ export default function YallaProfileDialog({
   // محلّل رابط الصورة من كتالوج الزينة: عناصر البذر معرفها = مسارها، أما المرفوع من الأدمن
   // فمعرفه UUID وصورته على /api/media/<id> — نحلّل المعرف إلى رابط الصورة الحقيقي
   const decorUrlById = new Map(decorCatalog.map((d) => [d.id, d.imageUrl]));
+  // في وضع viewOnly: استخدم effectiveUser (البيانات المجلوبة الكاملة)
   // ابحث عن imageUrl الحقيقي للإطار المُجهَّز من حالة frames (قد يكون SVGA أو PNG أو غيرها)
-  const equippedFrameRec = authUser?.frame
-    ? frames.find((f) => String(f.id) === String(authUser.frame))
+  const equippedFrameRec = effectiveUser?.frame
+    ? frames.find((f) => String(f.id) === String(effectiveUser.frame))
     : null;
-  const frameUrl = equippedFrameRec?.imageUrl || (authUser?.frame ? `/yalla-frames/${authUser.frame}.png` : '');
-  const ornamentUrl = authUser?.ornament
-    ? (decorUrlById.get(authUser.ornament) || `/yalla-ornaments/${authUser.ornament}.png`)
+  const frameUrl = equippedFrameRec?.imageUrl || (effectiveUser?.frame ? `/yalla-frames/${effectiveUser.frame}.png` : '');
+  const ornamentUrl = effectiveUser?.ornament
+    ? (decorUrlById.get(effectiveUser.ornament) || `/yalla-ornaments/${effectiveUser.ornament}.png`)
     : '';
   // كل البطاقات بلا استثناء: نفس تموضع حديقة الفضاء (طبقة الغلاف yp-carddecor)
-  const backdropUrl = authUser?.card
-    ? (decorUrlById.get(authUser.card) || `/yalla-ornaments/${authUser.card}.png`)
+  const backdropUrl = effectiveUser?.card
+    ? (decorUrlById.get(effectiveUser.card) || `/yalla-ornaments/${effectiveUser.card}.png`)
     : '';
   // موضوع البروفايل: المعرف قد يكون مساراً (بذر) أو UUID (رفع أدمن) — نحلّله دائماً
-  const coverUrl = authUser?.cover
-    ? (decorUrlById.get(authUser.cover) || authUser.cover)
+  const coverUrl = effectiveUser?.cover
+    ? (decorUrlById.get(effectiveUser.cover) || effectiveUser.cover)
     : '';
 
   return (
@@ -601,12 +661,12 @@ export default function YallaProfileDialog({
             )}
 
             {/* Avatar head (with yalla frame overlay) */}
-            {authUser && (
+            {effectiveUser && (
               <div className={`yp-headwrap${hasCover ? ' yp-headwrap--cover' : ''}`}>
                 <div className={`yp-head${frameUrl ? '' : ' yp-head--plain'}`}>
                   <img
-                    src={avatarSrc(authUser)}
-                    alt={authUser.displayName || authUser.username}
+                    src={avatarSrc(effectiveUser)}
+                    alt={effectiveUser.displayName || effectiveUser.username}
                     className="yp-head-img"
                     onError={(e) => {
                       const t = e.currentTarget;
@@ -621,7 +681,7 @@ export default function YallaProfileDialog({
             )}
 
             {/* Profile cover strip (yalla موضوع الملف الشخصي) — الافتراضي الأخضر دائم كما في يلا */}
-            {authUser && (
+            {effectiveUser && (
               <div className="yp-cover" onClick={() => setDecorPanel('themes')}>
                 <img
                   src={coverUrl || '/yalla-covers/bg_profile_theme_default.webp'}
@@ -741,7 +801,7 @@ export default function YallaProfileDialog({
             <div className="yp-scroll">
 
               {/* ── Guest view ── */}
-              {!authUser ? (
+              {!effectiveUser ? (
                 <div className="yp-body yp-body--guest">
                   <h2 className="yp-name">الملف الشخصي</h2>
                   <p className="yp-guest-txt">
@@ -755,13 +815,13 @@ export default function YallaProfileDialog({
               ) : (
                 <div className="yp-body">
                   {/* Player name */}
-                  <h2 className="yp-name">{authUser.displayName || authUser.username || 'لاعب'}</h2>
+                  <h2 className="yp-name">{effectiveUser.displayName || effectiveUser.username || 'لاعب'}</h2>
 
                   {/* ID pill (يلا: ID: 9805432347) */}
                   <div className="yp-idrow">
                     <span className="yp-idpill">
                       <span className="yp-idico" />
-                      <span dir="ltr">ID: {authUser.numericId ?? '—'}</span>
+                      <span dir="ltr">ID: {effectiveUser.numericId ?? '—'}</span>
                     </span>
                   </div>
 
@@ -778,21 +838,56 @@ export default function YallaProfileDialog({
                       title={`العضوية: ${plan.label}`}
                     />
                     <span className="yp-sep" />
-                    <img className="yp-mflag" src="/yalla-ui/gender_male.webp" alt="ذكر" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    {(function () {
+                      const g = (effectiveUser as YallaAuthUser & { gender?: string }).gender || '';
+                      const isFemale = g === 'أنثى' || g === 'female';
+                      const isMale = g === 'ذكر' || g === 'male';
+                      if (!isFemale && !isMale) return null; // لا نُظهر أيقونة إن لم يُحدّد الجنس
+                      const src = isFemale ? '/yalla-ui/gender_female.webp' : '/yalla-ui/gender_male.webp';
+                      const alt = isFemale ? 'أنثى' : 'ذكر';
+                      return (
+                        <img
+                          className="yp-mflag"
+                          src={src}
+                          alt={alt}
+                          title={alt}
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                      );
+                    })()}
                     <img
                       className="yp-flag-lg"
-                      src={flagUrlFor(authUser.country, countries)}
-                      alt={authUser.country || 'دولة'}
+                      src={flagUrlFor(effectiveUser.country, countries)}
+                      alt={effectiveUser.country || 'دولة'}
                       onError={(e) => { e.currentTarget.src = '/yalla-flags/NO_COUNTRY.png'; }}
                     />
                   </div>
 
+                  {/* تاريخ الميلاد — إن وُجد */}
+                  {(function () {
+                    const bd = (effectiveUser as YallaAuthUser & { birthDate?: string }).birthDate || '';
+                    if (!bd) return null;
+                    // عرض التاريخ بصيغة عربية مختصرة
+                    let pretty = bd;
+                    try {
+                      const d = new Date(bd);
+                      if (!isNaN(d.getTime())) {
+                        pretty = d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+                      }
+                    } catch { /* keep raw */ }
+                    return (
+                      <p className="yp-idrow" style={{ marginTop: 6, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>
+                        🎂 تاريخ الميلاد: {pretty}
+                      </p>
+                    );
+                  })()}
+
                   {/* Bio (max 5 lines, like CustomTextView) */}
                   <p className="yp-bio">
-                    {authUser.bio || 'لا يوجد وصف شخصي بعد — أضف وصفك من زر التعديل'}
+                    {effectiveUser.bio || (viewOnly ? 'لا يوجد وصف شخصي' : 'لا يوجد وصف شخصي بعد — أضف وصفك من زر التعديل')}
                   </p>
 
-    {editWin && (
+    {editWin && !viewOnly && (
       <div className="ye-overlay" dir="rtl" onClick={() => setEditWin(false)}>
         <div className="ye-scroll" onClick={(e) => e.stopPropagation()}>
             <button className="ye-close" onClick={() => setEditWin(false)} aria-label="إغلاق">
@@ -803,7 +898,7 @@ export default function YallaProfileDialog({
                   <img src={coverUrl || '/yalla-covers/bg_profile_theme_default.webp'} alt="" onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }} />
                 </div>
                 <button className="ye-headbtn" onClick={() => !viewOnly && setBasicWin(true)} aria-label="تغيير صورة الملف الشخصي" title="تغيير صورة الملف الشخصي" disabled={viewOnly}>
-                  <img src={eAvatar || avatarSrc(authUser)} alt="" onError={(e) => { e.currentTarget.src = avatarSrc(authUser); }} />
+                  <img src={eAvatar || avatarSrc(effectiveUser)} alt="" onError={(e) => { e.currentTarget.src = avatarSrc(effectiveUser); }} />
                 </button>
               </div>
               <div className="ye-body">
@@ -897,7 +992,7 @@ export default function YallaProfileDialog({
         )}
 
         {/* ─── Basic info window (edit_avatar / dialog_avatar_edit) ─── */}
-    {basicWin && (
+    {basicWin && !viewOnly && (
           <div className="yb-overlay" dir="rtl" onClick={() => setBasicWin(false)}>
             <div className="yb-card" onClick={(e) => e.stopPropagation()}>
               <div className="yb-titlebar">

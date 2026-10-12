@@ -70,14 +70,17 @@ export default function FriendsPage() {
   }, [chatMessages]);
 
   // Open ANY user's profile in YallaProfileDialog (نفس نافذة بروفايلي)
-  const openUserProfile = (user: { id: string; username: string; displayName?: string; avatar?: string; numericId?: number | null }) => {
+  // يدعم كلًّا من الكائنات التي تستخدم `id` (UserResult) أو `userId` (FriendItem)
+  const openUserProfile = (user: { id?: string; userId?: string; username: string; displayName?: string; avatar?: string; numericId?: number | null }) => {
+    const id = user.id || user.userId || '';
     setSelectedUser({
-      id: user.id, username: user.username,
+      id, username: user.username,
       displayName: user.displayName || user.username,
       avatar: user.avatar || '', numericId: user.numericId ?? null,
     });
     // تحقق من حالة الصداقة: صديق أم لا
-    const isFriend = friends.some(f => f.userId === user.id);
+    // استخدم `id` (UUID) للمقارنة مع friends[].userId
+    const isFriend = friends.some(f => f.userId === id);
     setFriendStatus(isFriend ? 'friends' : 'none');
     setProfileDialogOpen(true);
   };
