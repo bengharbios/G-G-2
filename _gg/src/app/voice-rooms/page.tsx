@@ -173,12 +173,38 @@ export default function VoiceRoomsPage() {
         setLoginDialogOpen(true);
         return;
       }
-      // Owner always bypasses password — server-side will handle it
+      
+      // إذا كنا داخل تطبيق Capacitor الأصلي → افتح RoomActivity الأصلية
+      // (تصميم يلا لودو الحقيقي من XML)
+      const isNative = typeof window !== 'undefined' && 
+        (window as any).Capacitor?.isNativePlatform?.();
+      
+      if (isNative) {
+        const Capacitor = (window as any).Capacitor;
+        const RoomPlugin = Capacitor.Plugins?.RoomPlugin;
+        if (RoomPlugin) {
+          RoomPlugin.openRoom({
+            roomId: String(room.id),
+            roomName: room.name,
+            roomImage: room.roomImage || '',
+            micSeatCount: room.micSeatCount || 5,
+            hostName: room.hostName || '',
+            authToken: '',
+          }).then(() => {
+            console.log('[RoomPlugin] Room opened natively');
+          }).catch((err: any) => {
+            console.error('[RoomPlugin] Error:', err);
+            handleJoinRoom(room);
+          });
+          return;
+        }
+      }
+      
+      // في المتصفح أو إذا فشل RoomPlugin → استعمل الكود القديم
       if (room.hostId === authUser?.id) {
         handleJoinRoom(room);
         return;
       }
-      // Non-owner: show password dialog for key-mode rooms
       if (room.roomMode === 'key') {
         setPendingPasswordRoom(room);
       } else {

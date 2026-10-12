@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.getcapacitor.BridgeActivity;
+import com.bengharbios.ggames.plugins.RoomPlugin;
 
 import java.lang.reflect.Method;
 
@@ -19,6 +20,9 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // تسجيل RoomPlugin قبل super.onCreate
+        this.registerPlugin(RoomPlugin.class);
+        
         super.onCreate(savedInstanceState);
 
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
