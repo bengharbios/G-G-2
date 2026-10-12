@@ -9,37 +9,23 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.FrameLayout;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 
 /**
- * RoomActivity — يحمّل room_layout_room.xml من يلا لودو v1.5.1.0 كما هو.
- *
- * البيانات تأتي من Intent extras:
- *   - room_id: معرّف الغرفة
- *   - room_name: اسم الغرفة
- *   - room_image: خلفية الغرفة (URL أو فارغ للتدرّج الافتراضي)
- *   - mic_seat_count: عدد المقاعد (5 افتراضياً)
- *   - host_name: اسم المضيف
- *   - auth_token: رمز المصادقة (لـ WebSocket)
+ * RoomActivity — يحمّل room_layout_room.xml (نسخة نظيفة بـ Android views قياسية)
+ * كل الأيقونات من res/drawable-xxhdpi (من يلا لودو v1.5.1.0)
  */
 public class RoomActivity extends Activity {
-
-    private String roomId = "";
-    private String roomName = "";
-    private String roomImage = "";
-    private int micSeatCount = 5;
-    private String hostName = "";
-    private String authToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // إخفاء شريط الحالة — ملء الشاشة
+        // ملء الشاشة
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -50,70 +36,50 @@ public class RoomActivity extends Activity {
 
         // قراءة البيانات من Intent
         Intent intent = getIntent();
-        roomId = intent.getStringExtra("room_id");
-        roomName = intent.getStringExtra("room_name");
-        roomImage = intent.getStringExtra("room_image");
-        hostName = intent.getStringExtra("host_name");
-        authToken = intent.getStringExtra("auth_token");
-        micSeatCount = intent.getIntExtra("mic_seat_count", 5);
+        String roomId = intent.getStringExtra("room_id");
+        String roomName = intent.getStringExtra("room_name");
+        int micSeatCount = intent.getIntExtra("mic_seat_count", 5);
 
-        // تحميل XML الأصلي من يلا لودو
+        // تحميل XML النظيف
         setContentView(R.layout.room_layout_room);
 
-        // تطبيق خلفية الغرفة
+        // خلفية الغرفة (تدرّج أخضر يلا لودو)
         View root = findViewById(R.id.roomRoot);
-        if (root != null) {
-            if (roomImage != null && !roomImage.isEmpty()) {
-                // TODO: تحميل صورة الخلفية من URL باستخدام Glide/Picasso
-                // مؤقتاً: تدرّج أخضر يلا لودو
-                root.setBackgroundColor(Color.parseColor("#0D8A7A"));
-            } else {
-                // التدرّج الافتراضي: #0D8A7A → #0A6B5E → #074a42
-                GradientDrawable gradient = new GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    new int[]{0xFF0D8A7A, 0xFF0A6B5E, 0xFF074A42}
-                );
-                root.setBackground(gradient);
-            }
-        }
+        GradientDrawable gradient = new GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            new int[]{0xFF0D8A7A, 0xFF0A6B5E, 0xFF074A42}
+        );
+        root.setBackground(gradient);
 
-        // تعيين اسم الغرفة
-        TextView tvRoomName = findViewById(R.id.tvRoomTopName); // من room_include_room_top
+        // اسم الغرفة
+        TextView tvRoomName = findViewById(R.id.tvRoomTopName);
         if (tvRoomName != null && roomName != null) {
             tvRoomName.setText(roomName);
         }
 
-        // تعيين معرّف الغرفة
-        // tvRoomTopId قد يكون داخل llPretty — نبحث عنه
+        // معرّف الغرفة
         TextView tvRoomId = findViewById(R.id.tvRoomTopId);
         if (tvRoomId != null && roomId != null) {
-            tvRoomId.setText("ID:" + roomId);
+            tvRoomId.setText("ID: " + roomId);
         }
 
         // زر الإغلاق
         ImageView ivClose = findViewById(R.id.ivRoomTopClose);
         if (ivClose != null) {
-            ivClose.setOnClickListener(v -> {
-                finish(); // إغلاق Activity والعودة للـ WebView
-            });
+            ivClose.setOnClickListener(v -> finish());
         }
 
         // زر المشاركة
         ImageView ivShare = findViewById(R.id.iv_share);
         if (ivShare != null) {
-            ivShare.setVisibility(View.VISIBLE);
             ivShare.setOnClickListener(v -> {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "انضم لغرفتي: https://ggame3.vercel.app/voice-rooms");
-                startActivity(Intent.createChooser(shareIntent, "مشاركة"));
+                Toast.makeText(this, "مشاركة", Toast.LENGTH_SHORT).show();
             });
         }
 
-        // زر المزيد (للمشرف)
+        // زر المزيد
         ImageView ivMore = findViewById(R.id.iv_more);
         if (ivMore != null) {
-            ivMore.setVisibility(View.VISIBLE);
             ivMore.setOnClickListener(v -> {
                 Toast.makeText(this, "الإعدادات", Toast.LENGTH_SHORT).show();
             });
@@ -122,14 +88,13 @@ public class RoomActivity extends Activity {
         // إنشاء مقاعد المايك
         LinearLayout micContainer = findViewById(R.id.rvRoomMic);
         if (micContainer != null) {
-            // إنشاء مقاعد ديناميكياً (سيتم استبدالها بـ RecyclerView)
             for (int i = 0; i < micSeatCount; i++) {
-                View seatView = createSeatView(i);
+                View seat = createSeatView(i);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f
                 );
-                seatView.setLayoutParams(params);
-                micContainer.addView(seatView);
+                seat.setLayoutParams(params);
+                micContainer.addView(seat);
             }
         }
 
@@ -147,24 +112,31 @@ public class RoomActivity extends Activity {
             });
         }
 
-        // زر الهدية (SVGA)
-        // ivGift موجود في room_include_room_input — لكنه LudoSVGAView
-        // يحتاج مشغل SVGA (مكتبة svgaplayerweb للويب، أو SVGAPlayer للـ Android)
-
         // زر الموسيقى (في القائمة الجانبية)
-        // iv_room_music موجود في room_include_room_body_sidebar
+        ImageView ivMusic = findViewById(R.id.iv_room_music);
+        if (ivMusic != null) {
+            ivMusic.setOnClickListener(v -> {
+                Toast.makeText(this, "الموسيقى", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        // زر الهدية
+        ImageView ivGift = findViewById(R.id.ivGift);
+        if (ivGift != null) {
+            ivGift.setOnClickListener(v -> {
+                Toast.makeText(this, "هدايا", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
-    /**
-     * إنشاء مقعد مايك (دائرة + رقم + أيقونة)
-     */
+    /** إنشاء مقعد مايك (دائرة + رقم) */
     private View createSeatView(int index) {
         LinearLayout seat = new LinearLayout(this);
         seat.setOrientation(LinearLayout.VERTICAL);
         seat.setGravity(Gravity.CENTER_HORIZONTAL);
-        seat.setPadding(4, 4, 4, 4);
+        seat.setPadding(8, 8, 8, 8);
 
-        // الدائرة
+        // الدائرة (44dp) مع أيقونة المايك
         ImageView circle = new ImageView(this);
         LinearLayout.LayoutParams circleParams = new LinearLayout.LayoutParams(
             dp(44), dp(44)
@@ -180,23 +152,12 @@ public class RoomActivity extends Activity {
         number.setTextSize(10);
         number.setGravity(Gravity.CENTER);
 
-        // الاسم (فارغ)
-        TextView name = new TextView(this);
-        name.setText("");
-        name.setTextColor(Color.WHITE);
-        name.setTextSize(10);
-        name.setGravity(Gravity.CENTER);
-        name.setMaxWidth(dp(55));
-        name.setMaxLines(1);
-
         seat.addView(circle);
         seat.addView(number);
-        seat.addView(name);
 
         return seat;
     }
 
-    /** تحويل dip إلى px */
     private int dp(int dip) {
         float density = getResources().getDisplayMetrics().density;
         return (int) (dip * density + 0.5f);
@@ -204,7 +165,6 @@ public class RoomActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        // عند الضغط على زر الرجوع، أغلق الغرفة
         finish();
     }
 }
