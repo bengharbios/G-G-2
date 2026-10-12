@@ -220,7 +220,7 @@ export default function RoomInteriorView({ room, onExit, authUser, onRoomUpdate 
                 key={i}
                 seat={seat}
                 isMySeat={seat.participant?.userId === authUser?.id}
-                isSpeaking={voiceRTC.speakingPeers.has(seat.participant?.userId || '') || (seat.participant?.userId === authUser?.id && voiceRTC.localSpeaking)}
+                isSpeaking={voiceRTC.speakingPeers.current?.has(seat.participant?.userId || '') || (seat.participant?.userId === authUser?.id && voiceRTC.localSpeaking)}
                 onClick={() => vr.handleSeatClick(seat.seatIndex)}
                 authUserId={authUser?.id || ''}
               />
