@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { LogOut, X, Shirt, Check } from 'lucide-react';
+import { LogOut, X, Shirt, Check, MoreVertical, UserPlus, Trash2, Flag, MessageCircle } from 'lucide-react';
 import SvgaOrImg from './SvgaOrImg';
 import OrnamentSvga from './OrnamentSvga';
 
@@ -70,6 +70,12 @@ interface YallaProfileDialogProps {
   onRegisterClick?: () => void;
   onLogout?: () => void;
   onProfileUpdated?: (u: Partial<YallaAuthUser>) => void;
+  /** إن true: وضع العرض لملف مستخدم آخر — يخفي تعديل/قميص/خروج ويظهر 3-dot menu */
+  viewOnly?: boolean;
+  onAddFriend?: () => void;
+  onDeleteFriend?: () => void;
+  onSendMessage?: () => void;
+  friendStatus?: 'none' | 'pending' | 'friends';
 }
 
 // ─── Yalla asset catalogs (extracted from APK 1.5.1.0) ────────────────// المعلقات والمواضيع والبطاقات — كلها الآن من كتالوج الزينة في قاعدة البيانات (DecorItem)
@@ -141,6 +147,11 @@ export default function YallaProfileDialog({
   onRegisterClick,
   onLogout,
   onProfileUpdated,
+  viewOnly = false,
+  onAddFriend,
+  onDeleteFriend,
+  onSendMessage,
+  friendStatus = 'none',
 }: YallaProfileDialogProps) {
   const [xp, setXp] = useState<XPInfo | null>(null);
   const [stats, setStats] = useState<GameStat[]>([]);
@@ -160,6 +171,7 @@ export default function YallaProfileDialog({
 
   // Decoration state (shirt menu: ornaments/themes/frames/card)
   const [menuOpen, setMenuOpen] = useState(false);
+  const [viewMenuOpen, setViewMenuOpen] = useState(false);
   const [decorPanel, setDecorPanel] = useState<DecorPanel>(null);
   const [frames, setFrames] = useState<FrameRec[]>([]);
   const [savingDecor, setSavingDecor] = useState(false);
@@ -581,7 +593,8 @@ export default function YallaProfileDialog({
             <button className="yp-iconbtn yp-iconbtn--close" onClick={() => onOpenChange(false)} aria-label="إغلاق">
               <X className="w-4 h-4" />
             </button>
-            {authUser && onLogout && (
+            {/* زر الخروج يظهر فقط في بروفايلي (وليس في بروفايل صديق) */}
+            {authUser && onLogout && !viewOnly && (
               <button className="yp-iconbtn yp-iconbtn--logout" onClick={onLogout} aria-label="تسجيل الخروج" title="تسجيل الخروج">
                 <LogOut className="w-3.5 h-3.5" />
               </button>
@@ -635,8 +648,8 @@ export default function YallaProfileDialog({
               </div>
             )}
 
-            {/* Side buttons: square-pencil (edit) + shirt (decoration menu) */}
-            {authUser && (
+            {/* Side buttons: pencil (edit) + shirt (decoration) — تظهر فقط في بروفايلي */}
+            {authUser && !viewOnly && (
               <>
                 <button
                   className="yp-sidebtn yp-sidebtn--edit"
@@ -669,6 +682,55 @@ export default function YallaProfileDialog({
                       <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('themes'); }}>تعديل موضوع الملف الشخصي</button>
                       <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('cards'); }}>تعيين بطاقة الملف الشخصي</button>
                       <button className="yp-menuitem" onClick={() => { setMenuOpen(false); setDecorPanel('frames'); }}>تعيين إطار صورة الملف الشخصي</button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+
+            {/* 3-dot menu — يظهر فقط عند عرض ملف مستخدم آخر (viewOnly) */}
+            {authUser && viewOnly && (
+              <>
+                <button
+                  className="yp-sidebtn yp-sidebtn--shirt"
+                  onClick={() => setViewMenuOpen((v) => !v)}
+                  aria-label="خيارات"
+                  title="خيارات"
+                >
+                  <MoreVertical className="w-5 h-5" />
+                </button>
+                <AnimatePresence>
+                  {viewMenuOpen && (
+                    <motion.div
+                      className="yp-menu"
+                      initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      {friendStatus === 'none' && onAddFriend && (
+                        <button className="yp-menuitem" onClick={() => { setViewMenuOpen(false); onAddFriend(); }}>
+                          <UserPlus className="w-4 h-4 inline ml-1" /> إضافة صديق
+                        </button>
+                      )}
+                      {friendStatus === 'pending' && (
+                        <button className="yp-menuitem" disabled style={{ opacity: 0.5 }}>
+                          طلب مرسل — في انتظار الموافقة
+                        </button>
+                      )}
+                      {friendStatus === 'friends' && onSendMessage && (
+                        <button className="yp-menuitem" onClick={() => { setViewMenuOpen(false); onSendMessage(); }}>
+                          <MessageCircle className="w-4 h-4 inline ml-1" /> مراسلة
+                        </button>
+                      )}
+                      {friendStatus === 'friends' && onDeleteFriend && (
+                        <button className="yp-menuitem" onClick={() => { setViewMenuOpen(false); onDeleteFriend(); }} style={{ color: '#ef4444' }}>
+                          <Trash2 className="w-4 h-4 inline ml-1" /> حذف صديق
+                        </button>
+                      )}
+                      <button className="yp-menuitem" onClick={() => { setViewMenuOpen(false); }}>
+                        <Flag className="w-4 h-4 inline ml-1" /> إبلاغ
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -740,7 +802,7 @@ export default function YallaProfileDialog({
                 <div className="ye-headcard">
                   <img src={coverUrl || '/yalla-covers/bg_profile_theme_default.webp'} alt="" onError={(e) => { e.currentTarget.src = '/yalla-covers/bg_profile_theme_default.webp'; }} />
                 </div>
-                <button className="ye-headbtn" onClick={() => setBasicWin(true)} aria-label="تغيير صورة الملف الشخصي" title="تغيير صورة الملف الشخصي">
+                <button className="ye-headbtn" onClick={() => !viewOnly && setBasicWin(true)} aria-label="تغيير صورة الملف الشخصي" title="تغيير صورة الملف الشخصي" disabled={viewOnly}>
                   <img src={eAvatar || avatarSrc(authUser)} alt="" onError={(e) => { e.currentTarget.src = avatarSrc(authUser); }} />
                 </button>
               </div>

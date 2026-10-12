@@ -91,13 +91,19 @@ export default function FriendsPage() {
 
   const handleDeleteFriend = async () => {
     if (!chatFriend) return;
-    setShowDeleteConfirm(false); setShowMenu(false);
+    setShowDeleteConfirm(false); setShowMenu(false); setProfileDialogOpen(false);
     try {
       await fetch(`/api/friends/${chatFriend.friendshipId}`, { method: 'DELETE' });
       setFriends(prev => prev.filter(f => f.friendshipId !== chatFriend.friendshipId));
       setToast('تم حذف الصديق'); setTimeout(() => setToast(''), 3000);
       setView('list'); setChatFriend(null); loadData();
     } catch {}
+  };
+  // Wrapper for delete from profile dialog (finds friendshipId from selectedUser)
+  const handleDeleteFriendWrapper = async () => {
+    if (!chatFriend) return;
+    setProfileDialogOpen(false);
+    setShowDeleteConfirm(true);
   };
 
   const openChat = (friend: FriendItem) => { setChatFriend(friend); setView('chat'); setChatMessages([]); };
@@ -264,7 +270,7 @@ export default function FriendsPage() {
         </div>
       )}
 
-      {/* === YallaProfileDialog — نفس نافذة بروفايلي تُستخدم لأي مستخدم === */}
+      {/* === YallaProfileDialog — نفس نافذة بروفايلي لكن بوضع العرض (viewOnly) === */}
       <YallaProfileDialog
         open={profileDialogOpen}
         onOpenChange={setProfileDialogOpen}
@@ -275,6 +281,24 @@ export default function FriendsPage() {
           avatar: selectedUser.avatar,
           numericId: selectedUser.numericId,
         } : null}
+        viewOnly
+        friendStatus={friendStatus}
+        onAddFriend={handleAddFriend}
+        onDeleteFriend={() => {
+          if (chatFriend) handleDeleteFriendWrapper();
+          else if (selectedUser) {
+            // Find friendshipId from friends list
+            const f = friends.find(fr => fr.userId === selectedUser.id);
+            if (f) { setChatFriend(f); handleDeleteFriendWrapper(); }
+          }
+        }}
+        onSendMessage={() => {
+          if (chatFriend) { setProfileDialogOpen(false); setView('chat'); }
+          else if (selectedUser) {
+            const f = friends.find(fr => fr.userId === selectedUser.id);
+            if (f) { setProfileDialogOpen(false); setChatFriend(f); setView('chat'); setChatMessages([]); }
+          }
+        }}
       />
 
       {view === 'list' && <SiteBottomNav activeTab="friends" />}
