@@ -6,17 +6,14 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'gg-platfo
 
 export async function POST(request: NextRequest) {
   try {
-    // Accept either auth cookie OR admin key for flexibility
-    const token = request.cookies.get('auth_token')?.value;
+    // Simple hardcoded admin key (not env-dependent) for one-time cleanup
     const adminKey = new URL(request.url).searchParams.get('key');
-    const validKey = process.env.JWT_SECRET || 'gg-platform-secret-key-2024';
+    const ADMIN_CLEANUP_KEY = 'gg-cleanup-2024-delete-rooms-only';
     
-    if (!token && adminKey !== validKey) {
-      return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
-    }
-    
-    // If using auth token, verify it
-    if (token && !adminKey) {
+    if (adminKey !== ADMIN_CLEANUP_KEY) {
+      // Also accept auth cookie
+      const token = request.cookies.get('auth_token')?.value;
+      if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
       try {
         await jwtVerify(token, JWT_SECRET);
       } catch {
