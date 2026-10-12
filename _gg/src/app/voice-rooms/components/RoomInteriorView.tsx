@@ -977,7 +977,7 @@ export default function RoomInteriorView({
   if (vr.loading) {
     return (
       <div
-        className="fixed inset-0 flex flex-col items-center justify-center"
+        className="fixed inset-0 z-[60] flex flex-col items-center justify-center"
         style={{ ...bgStyle }}
       >
         <Loader2 size={40} className="animate-spin mb-4" style={{ color: TUI.colors.white }} />
@@ -995,7 +995,7 @@ export default function RoomInteriorView({
           Background: teal-green gradient (matching lobby & WAFA Ludo design)
           ═══════════════════════════════════════════════════════════════════════ */}
       <div
-        className="fixed inset-0 flex flex-col"
+        className="fixed inset-0 z-[60] flex flex-col"
         style={{ ...bgStyle }}>
         {/* Dark overlay for readability when background image is set */}
         {currentBgImage && (
