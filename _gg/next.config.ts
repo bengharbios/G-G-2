@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
-  serverExternalPackages: ["@libsql/client", "@prisma/adapter-libsql", "sharp", "web-push"],
+  serverExternalPackages: ["@libsql/client", "@prisma/adapter-libsql", "sharp", "web-push", "@capacitor/core", "@capacitor/app", "@capacitor/android", "@capacitor/splash-screen"],
   allowedDevOrigins: [
     "preview-chat-65a97ec3-575b-4b4d-987f-8fa06df6cbf7.space.z.ai",
     "*.space.z.ai",
