@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Users, Gamepad2, Clock, Search, UserPlus, MessageCircle, X, Loader2, ChevronLeft, Gift, Smile, MoreVertical, Trash2, Flag } from 'lucide-react';
-import SiteHeader from '@/components/shared/SiteHeader';
-import SiteBottomNav from '@/components/shared/SiteBottomNav';
+// NOTE: الهيدر (SiteHeader) والأزرار السفلية (SiteBottomNav) الآن تُدار في AppShell
+// (src/components/shared/AppShell.tsx) — تُحمّل مرة واحدة وتشاركها كل الصفحات.
 import YallaProfileDialog from '@/components/shared/YallaProfileDialog';
 
 type FriendTab = 'notifications' | 'nearby' | 'wishes' | 'recent';
@@ -136,8 +136,7 @@ export default function FriendsPage() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
-      <SiteHeader onProfileClick={() => { /* يتم معالجته في الهيدر */ }} />
-      <div className="h-14" />
+      {/* خلفية متدرّجة — الهيدر والأزرار السفلية تُقدّم من AppShell */}
       <div className="fixed inset-0 bg-gradient-to-b from-[#0a4a3a] to-[#062318] -z-10" />
 
       {toast && <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#15BC83] text-white px-4 py-2 rounded-xl shadow-lg text-sm font-bold">{toast}</div>}
@@ -309,7 +308,7 @@ export default function FriendsPage() {
         }}
       />
 
-      {view === 'list' && <SiteBottomNav activeTab="friends" />}
+      {/* SiteBottomNav يُقدَّم الآن من AppShell على كل الصفحات */}
     </div>
   );
 

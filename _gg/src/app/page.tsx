@@ -8,10 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import EventsModal from '@/components/shared/EventsModal';
-import YallaProfileDialog from '@/components/shared/YallaProfileDialog';
-import SiteHeader from '@/components/shared/SiteHeader';
-import SiteBottomNav from '@/components/shared/SiteBottomNav';
-import { LoginModal, RegisterModal } from '@/components/AuthModals';
 import {
   Dialog,
   DialogContent,
@@ -1335,124 +1331,13 @@ interface AuthUserData {
   numericId?: number | null;
 }
 
+// NOTE: الهيدر والأزرار السفلية ونوافذ الدخول/البروفايل تُدار الآن في AppShell
+// (src/components/shared/AppShell.tsx) — تُحمّل مرة واحدة عند التنقل بين
+// الألعاب/الأصدقاء/المجلس. هذه الصفحة تعرض فقط المحتوى المخصّص للألعاب.
+
 export default function HomePage() {
-  const [eventsModalOpen, setEventsModalOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [profileData, setProfileData] = useState<SubscriberProfileData | null>(null);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const [authUser, setAuthUser] = useState<AuthUserData | null>(null);
-  const [authChecking, setAuthChecking] = useState(true);
-
-  // Check auth session on mount — الدخول الإجباري
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.success && data.user) {
-          setAuthUser(data.user);
-        } else {
-          // لم يسجّل دخول — نفتح نافذة الدخول تلقائياً
-          setLoginOpen(true);
-        }
-      })
-      .catch(() => { setLoginOpen(true); })
-      .finally(() => setAuthChecking(false));
-  }, []);
-
-  // Fetch subscriber profile data on mount
-  useEffect(() => {
-    const subCode = localStorage.getItem('gg_sub_code');
-    if (!subCode) return;
-
-    fetch('/api/subscription/profile', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: subCode }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.success && data.subscriber) {
-          setProfileData(data);
-        }
-      })
-      .catch(() => { /* silent fail */ });
-  }, []);
-
-  const handleAuthSuccess = useCallback((user: AuthUserData) => {
-    setAuthUser(user);
-    // إغلاق نوافذ الدخول/التسجيل فوراً (يحل مشكلة بقاء النافذة معلقة)
-    setLoginOpen(false);
-    setRegisterOpen(false);
-  }, []);
-
-  const handleLogout = useCallback(async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-    } catch { /* silent */ }
-    localStorage.removeItem('gg_sub_code');
-    setAuthUser(null);
-    setProfileData(null);
-    window.location.reload();
-  }, []);
-
-  // الدخول الإجباري: لا يظهر المحتوى إلا بعد تسجيل الدخول
-  if (authChecking) {
-    return (
-      <div dir="rtl" className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-center">
-          <img src="/platform-logo.png" alt="ألعاب الغريب" className="w-16 h-16 mx-auto mb-4 rounded-xl animate-pulse" />
-          <p className="text-slate-400 text-sm">جارٍ التحميل...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // غير مسجّل — يرى فقط الخلفية + نافذة الدخول
-  if (!authUser) {
-    return (
-      <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
-        {/* خلفية فقط — لا هيدر ولا أزرار سفلية ولا محتوى */}
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center opacity-40">
-            <img src="/platform-logo.png" alt="ألعاب الغريب" className="w-20 h-20 mx-auto mb-4 rounded-xl" />
-            <p className="text-slate-500 text-sm">سجّل دخولك للمتابعة</p>
-          </div>
-        </div>
-
-        {/* نافذة الدخول — مفتوحة تلقائياً ولا يمكن إغلاقها بدون تسجيل */}
-        <LoginModal
-          open={loginOpen}
-          onOpenChange={(open) => {
-            // منع الإغلاق بدون تسجيل دخول
-            if (!open && !authUser) return;
-            setLoginOpen(open);
-          }}
-          onSwitchToRegister={() => setRegisterOpen(true)}
-          onLoginSuccess={handleAuthSuccess}
-        />
-        <RegisterModal
-          open={registerOpen}
-          onOpenChange={setRegisterOpen}
-          onSwitchToLogin={() => setLoginOpen(true)}
-          onRegisterSuccess={handleAuthSuccess}
-        />
-      </div>
-    );
-  }
-
   return (
     <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
-      <SiteHeader
-        authUser={authUser}
-        onProfileClick={() => setProfileOpen(true)}
-        onLoginClick={() => setLoginOpen(true)}
-        onLogout={handleLogout}
-      />
-
-      {/* Spacer for fixed header */}
-      <div className="h-14 sm:h-16" />
-
       {/* الشعار أعلى الصفحة (منقول من الفوتر) */}
       <header className="pt-7 pb-3 flex flex-col items-center gap-3">
         <div className="flex items-center gap-2.5">
@@ -1481,37 +1366,6 @@ export default function HomePage() {
         {/* Games */}
         <GamesSection />
       </main>
-
-      <SiteBottomNav activeTab="events" />
-
-      {/* Auth Modals */}
-      <LoginModal
-        open={loginOpen}
-        onOpenChange={setLoginOpen}
-        onSwitchToRegister={() => setRegisterOpen(true)}
-        onLoginSuccess={handleAuthSuccess}
-      />
-      <RegisterModal
-        open={registerOpen}
-        onOpenChange={setRegisterOpen}
-        onSwitchToLogin={() => setLoginOpen(true)}
-        onRegisterSuccess={handleAuthSuccess}
-      />
-
-      {/* Yalla-styled Profile Dialog (dialog_user_info_v2) */}
-      <YallaProfileDialog
-        open={profileOpen}
-        onOpenChange={setProfileOpen}
-        authUser={authUser}
-        subscriberCode={profileData?.subscriber?.subscriptionCode}
-        subscriberPlan={profileData?.subscriber?.plan}
-        isTrial={profileData?.subscriber?.isTrial}
-        allowedGames={profileData?.subscriber?.allowedGames}
-        onLoginClick={() => { setProfileOpen(false); setTimeout(() => setLoginOpen(true), 150); }}
-        onRegisterClick={() => { setProfileOpen(false); setTimeout(() => setRegisterOpen(true), 150); }}
-        onLogout={handleLogout}
-        onProfileUpdated={(patch) => setAuthUser((u) => (u ? { ...u, ...patch } : u))}
-      />
 
       {/* CSS keyframe for animated gradient border on cards */}
       <style jsx global>{`

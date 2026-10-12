@@ -99,14 +99,8 @@ function getRoomGradient(theme: string): string {
   return THEME_GRADIENTS[theme] || THEME_GRADIENTS.default;
 }
 
-// ─── Bottom Nav Items ─────────────────────────────────────────────────────────
-
-const BOTTOM_NAV = [
-  { id: 'events', label: 'فعاليات', icon: PartyPopper, color: '#00B894', bgColor: 'rgba(0, 184, 148, 0.15)', badge: 2 },
-  { id: 'battle', label: 'تحدي', icon: Swords, color: '#FDCB6E', bgColor: 'rgba(253, 203, 110, 0.15)', badge: 0 },
-  { id: 'chat', label: 'محادثة', icon: Home, color: '#00B894', bgColor: 'rgba(0, 184, 148, 0.15)', badge: 5 },
-  { id: 'social', label: 'اجتماعي', icon: Gift, color: '#E17055', bgColor: 'rgba(225, 112, 85, 0.15)', badge: 1 },
-] as const;
+// Bottom Nav Items — موقوف: AppShell يوفر SiteBottomNav موحّد على كل الصفحات
+// (الأحداث / الألعاب / المجلس / أصدقائي). القائمة الداخلية القديمة أُزيلت.
 
 // ─── Diamond pattern SVG (inline) ─────────────────────────────────────────────
 
@@ -174,24 +168,12 @@ export default function RoomListView({
   const [subTab, setSubTab] = useState<SubTab>('recent');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // ── Profile popup state ──
-  const [showProfile, setShowProfile] = useState(false);
-
-  // Close profile on outside click
-  useEffect(() => {
-    if (!showProfile) return;
-    const handler = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('[data-profile-popover]')) setShowProfile(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [showProfile]);
+  // موقوف: عرض بروفايل المستخدم يُدار الآن في AppShell عبر SiteHeader.
+  // const [showProfile, setShowProfile] = useState(false);
+  // useEffect(() => { ... }, [showProfile]);
+  // const avatarPalette = authUser ? getAvatarColorFromPalette(authUser.id) : ...;
 
   // ── Avatar palette for user ──
-  const avatarPalette = authUser
-    ? getAvatarColorFromPalette(authUser.id)
-    : { bg: '#E0F7FA', text: '#0D8A7A' };
 
   // ── Filter rooms by main tab ──
   const displayRooms = rooms.filter((room) => {
@@ -269,7 +251,7 @@ export default function RoomListView({
 
   return (
     <div
-      className="fixed inset-0 flex flex-col overflow-hidden"
+      className="relative flex flex-col min-h-screen"
       dir="rtl"
       style={{
         background: `linear-gradient(180deg, #0D8A7A 0%, #0A6B5E 30%, #074a42 100%)`,
@@ -282,136 +264,8 @@ export default function RoomListView({
       {/* ══════════════════════════════════════════════════════════════
           HEADER — Avatar+Badge | Main Tabs | Search
           ══════════════════════════════════════════════════════════════ */}
-      <header
-        className="relative z-10 flex flex-col"
-        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
-      >
-        {/* ── Top Row: Avatar | Search ── */}
-        <div className="flex items-center justify-between px-4 pt-3 pb-2">
-          {/* User Avatar + Badge — Click to show profile */}
-          <div className="relative flex-shrink-0">
-            <button
-              className="flex items-center justify-center rounded-full overflow-hidden active:scale-95 transition-transform"
-              onClick={() => setShowProfile((v) => !v)}
-              style={{
-                width: 42,
-                height: 42,
-                border: `2px solid ${TUI.colors.gold}`,
-              }}
-              aria-label="الملف الشخصي"
-            >
-              {authUser?.avatar ? (
-                <img
-                  src={authUser.avatar}
-                  alt={authUser.displayName || ''}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div
-                  className="w-full h-full flex items-center justify-center text-sm font-bold"
-                  style={{ backgroundColor: avatarPalette.bg, color: avatarPalette.text }}
-                >
-                  {(authUser?.displayName || 'م')[0]}
-                </div>
-              )}
-            </button>
-            {/* Notification badge */}
-            <div
-              className="absolute -top-1 -left-1 flex items-center justify-center rounded-full pointer-events-none"
-              style={{
-                width: 18,
-                height: 18,
-                backgroundColor: TUI.colors.red,
-                border: `2px solid #0A6B5E`,
-                fontSize: 9,
-                fontWeight: 700,
-                color: TUI.colors.white,
-                lineHeight: '14px',
-              }}
-            >
-              1
-            </div>
-
-            {/* Profile popover */}
-            {showProfile && authUser && (
-              <div
-                data-profile-popover
-                className="absolute top-12 right-0 z-50 rounded-2xl shadow-2xl overflow-hidden"
-                style={{
-                  width: 240,
-                  backgroundColor: '#1a1a2e',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                }}
-              >
-                {/* Header: avatar + name + numericId */}
-                <div className="flex items-center gap-3 p-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div
-                    className="shrink-0 rounded-full overflow-hidden"
-                    style={{
-                      width: 48, height: 48,
-                      border: `2px solid ${TUI.colors.gold}`,
-                    }}
-                  >
-                    {authUser.avatar ? (
-                      <img src={authUser.avatar} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-base font-bold"
-                        style={{ backgroundColor: avatarPalette.bg, color: avatarPalette.text }}>
-                        {(authUser.displayName || 'م')[0]}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="truncate font-bold text-sm" style={{ color: '#f0f0f8' }}>
-                      {authUser.displayName || authUser.username}
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="font-mono text-xs px-1.5 py-0.5 rounded"
-                        style={{ backgroundColor: 'rgba(13,138,122,0.2)', color: '#0D8A7A' }}>
-                        ID: {authUser.numericId || '---'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                {/* Actions */}
-                <div className="p-2">
-                  <button
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs transition-colors"
-                    style={{ color: TUI.colors.G4 }}
-                    onClick={() => {
-                      if (authUser.numericId) {
-                        navigator.clipboard.writeText(String(authUser.numericId));
-                      }
-                    }}
-                  >
-                    <Copy size={14} /> نسخ الأيدي
-                  </button>
-                  <button
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs transition-colors"
-                    style={{ color: TUI.colors.G4 }}
-                    onClick={() => setShowProfile(false)}
-                  >
-                    <UserIcon size={14} /> الملف الشخصي
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Search Icon */}
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-full transition-colors active:scale-95"
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.15)',
-              color: TUI.colors.white,
-            }}
-            aria-label="بحث"
-          >
-            <Search size={20} />
-          </button>
-        </div>
-
-        {/* ── Main Tabs: اكتشف | رائج | غرفي ── */}
+      <header className="relative z-10 flex flex-col pt-3">
+{/* ── Main Tabs: اكتشف | رائج | غرفي ── */}
         <div className="flex items-center justify-center gap-2 px-4 pb-2">
           {MAIN_TABS.map((tab) => {
             const isActive = mainTab === tab.id;
@@ -681,73 +535,7 @@ export default function RoomListView({
         )}
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          BOTTOM NAV BAR (fixed, rounded-square icon containers)
-          ══════════════════════════════════════════════════════════════ */}
-      <nav
-        className="fixed bottom-0 left-0 right-0 z-20 flex items-start justify-around"
-        style={{
-          height: 72,
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-          paddingTop: 8,
-          background: 'linear-gradient(180deg, rgba(10,107,94,0.95) 0%, rgba(7,74,66,0.98) 100%)',
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(12px)',
-        }}
-      >
-        {BOTTOM_NAV.map((item) => {
-          const Icon = item.icon;
-          const hasBadge = item.badge > 0;
-          return (
-            <button
-              key={item.id}
-              className="relative flex flex-col items-center justify-center gap-1.5 flex-1 transition-transform active:scale-95"
-              style={{ minHeight: 50 }}
-              aria-label={item.label}
-            >
-              {/* Icon container (rounded square) */}
-              <div className="relative">
-                <div
-                  className="flex items-center justify-center rounded-xl"
-                  style={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: item.bgColor,
-                  }}
-                >
-                  <Icon size={20} style={{ color: item.color }} />
-                </div>
-                {hasBadge && (
-                  <span
-                    className="absolute -top-1.5 -right-2.5 flex items-center justify-center rounded-full text-white"
-                    style={{
-                      minWidth: 16,
-                      height: 16,
-                      padding: '0 4px',
-                      backgroundColor: TUI.colors.red,
-                      fontSize: 9,
-                      fontWeight: 700,
-                      lineHeight: '16px',
-                    }}
-                  >
-                    {item.badge > 99 ? '99+' : item.badge}
-                  </span>
-                )}
-              </div>
-              {/* Label */}
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.5)',
-                }}
-              >
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
+
     </div>
   );
 }

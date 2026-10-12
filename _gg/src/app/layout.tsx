@@ -3,6 +3,7 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
+import AppShell from "@/components/shared/AppShell";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -50,7 +51,9 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} font-sans antialiased bg-background text-foreground`}
       >
-        {children}
+        {/* AppShell — يوفر هيدر وقائمة سفلية موحّدة للصفحات الرئيسية
+            (/، /friends، /voice-rooms) — تُحمّل مرة واحدة عند التنقل بينها */}
+        <AppShell>{children}</AppShell>
         <Toaster />
         <ServiceWorkerRegistrar />
       </body>
