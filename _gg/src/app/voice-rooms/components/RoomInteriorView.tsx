@@ -1108,7 +1108,7 @@ export default function RoomInteriorView({
                     }}
                     aria-label="الإعدادات"
                   >
-                    <Settings2 size={16} style={{ color: TUI.colors.white }} />
+                    <img src="/yalla-settings/ic_settings.webp" alt="إعدادات" style={{ width: 18, height: 18 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                   </button>
                 )}
                 {/* Share button */}
@@ -1126,7 +1126,7 @@ export default function RoomInteriorView({
                   }}
                   aria-label="مشاركة الغرفة"
                 >
-                  <Share2 size={16} style={{ color: TUI.colors.white }} />
+                  <img src="/yalla-settings/ic_share.webp" alt="مشاركة" style={{ width: 18, height: 18 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                 </button>
 
                 {/* Exit button with dropdown */}
@@ -1146,8 +1146,8 @@ export default function RoomInteriorView({
                     aria-label="خروج"
                   >
                     {isOwner
-                      ? <X size={16} style={{ color: TUI.colors.red }} strokeWidth={2.5} />
-                      : <LogIn size={16} style={{ color: TUI.colors.white }} />
+                      ? <img src="/yalla-settings/ic_close.webp" alt="إغلاق" style={{ width: 16, height: 16 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                      : <img src="/yalla-settings/ic_arrow.webp" alt="خروج" style={{ width: 16, height: 16, transform: 'rotate(180deg)' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     }
                   </button>
 
@@ -1688,7 +1688,7 @@ export default function RoomInteriorView({
         </div>
 
         {/* ════════════════════════════════════════════════════════════════════
-            LEFT SIDE VERTICAL MENU — TUILiveKit-style floating function buttons
+            LEFT SIDE VERTICAL MENU — floating function buttons with REAL icons
             ════════════════════════════════════════════════════════════════════ */}
         <div
           className="fixed flex-col items-center"
@@ -1700,18 +1700,18 @@ export default function RoomInteriorView({
             gap: 8,
           }}
         >
-          {/* Chat / Messages */}
+          {/* Chat / Messages — real icon */}
           <button
             className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
             onClick={() => inputRef.current?.focus()}
             aria-label="الرسائل"
           >
             <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
-              <MessageSquare size={16} style={{ color: 'rgba(255,255,255,0.55)' }} />
+              <img src="/yalla-settings/ic_support.webp" alt="رسائل" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
             </div>
           </button>
 
-          {/* Seat Management (admin only) */}
+          {/* Seat Management (admin only) — real icon */}
           {isAdmin && (
             <button
               className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none relative"
@@ -1719,7 +1719,7 @@ export default function RoomInteriorView({
               aria-label="إدارة المقاعد"
             >
               <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
-                <UserCog size={16} style={{ color: 'rgba(255,255,255,0.55)' }} />
+                <img src="/yalla-settings/ic_settings.webp" alt="مقاعد" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
               </div>
               {pendingSeatRequests > 0 && (
                 <span
@@ -1732,14 +1732,94 @@ export default function RoomInteriorView({
             </button>
           )}
 
-          {/* Share */}
+          {/* Music toggle — real icon */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => { /* TODO: toggle bg music */ }}
+            aria-label="الموسيقى"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <img src="/yalla-settings/ic_music.webp" alt="موسيقى" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            </div>
+          </button>
+
+          {/* Sound effects toggle — real icon */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => { /* TODO: toggle sound effects */ }}
+            aria-label="الصوت"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <img src="/yalla-settings/ic_sound.webp" alt="صوت" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            </div>
+          </button>
+
+          {/* Games button — opens games list */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => { /* TODO: open games modal */ }}
+            aria-label="الألعاب"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <img src="/yalla-ui/battle_select.png" alt="ألعاب" style={{ width: 20, height: 20, opacity: 0.8 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            </div>
+          </button>
+
+          {/* Share — real icon */}
           <button
             className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
             onClick={handleShare}
             aria-label="مشاركة"
           >
             <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
-              <Share2 size={16} style={{ color: 'rgba(255,255,255,0.55)' }} />
+              <img src="/yalla-settings/ic_share.webp" alt="مشاركة" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            </div>
+          </button>
+        </div>
+
+        {/* ════════════════════════════════════════════════════════════════════
+            RIGHT SIDE VERTICAL MENU — emoji/sticker + quick gift
+            ════════════════════════════════════════════════════════════════════ */}
+        <div
+          className="fixed flex flex-col items-center"
+          style={{
+            right: 6,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 20,
+            gap: 8,
+          }}
+        >
+          {/* Quick emoji/sticker */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => { /* TODO: open emoji picker */ }}
+            aria-label="إيموجي"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <span style={{ fontSize: 20 }}>😊</span>
+            </div>
+          </button>
+
+          {/* Quick gift */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => vr.setGiftSheetOpen(true)}
+            aria-label="هدية سريعة"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <img src="/yalla-ui/cart.png" alt="هدية" style={{ width: 20, height: 20, opacity: 0.8 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            </div>
+          </button>
+
+          {/* Settings/Support */}
+          <button
+            className="flex flex-col items-center cursor-pointer touch-manipulation bg-transparent border-none"
+            onClick={() => setShowDotsMenu(true)}
+            aria-label="الإعدادات"
+          >
+            <div className="flex items-center justify-center" style={{ ...menuBtnStyle, borderRadius: 12 }}>
+              <img src="/yalla-ui/system.webp" alt="إعدادات" style={{ width: 18, height: 18, opacity: 0.7 }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
             </div>
           </button>
         </div>

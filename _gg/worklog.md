@@ -1003,3 +1003,30 @@ Stage Summary:
 - Create Room CTA is now a prominent green pill button with subtitle.
 - Sub-tabs are cleaner with consistent Tailwind classes.
 - All existing functionality preserved: main tabs, sub-tabs, my-room section, search, room cards.
+
+---
+Task ID: 1
+Agent: main
+Task: Fix RoomInteriorView z-index + audit asset usage
+
+Work Log:
+- User reported: (1) header and bottom nav block the top and bottom of the room interior. (2) Haven't used the icons, images, windows, mic shapes, and features pulled from Yalla Ludo sources.
+
+- Fix #1 (z-index): RoomInteriorView root div was 'fixed inset-0 flex flex-col' without z-index. AppShell's SiteHeader (z-50) and SiteBottomNav (z-50) came AFTER RoomInteriorView in DOM order, so they stacked on top. Changed RoomInteriorView root to z-[60] — now covers the header/nav entirely. Also applied to loading state container.
+
+- Audit #2 (asset usage): Checked what Yalla Ludo assets are actually used in RoomInteriorView:
+  - TUI.colors: 58 references ✓ (color system IS used)
+  - LikeAnimation: uses /gifts/gift_heart0-8.png ✓
+  - GiftAnimations: uses SVGA player ✓
+  - MicSeat: uses lucide-react icons (Crown, Lock, Mic, MicOff) instead of actual images ❌
+  - BottomBar: no image assets ❌
+  - Room header: no yalla-ui icons ❌
+  - MicSeat VIP badges: no room_ic_flag_member_*.webp ❌
+  - Level badges: no level_big_*.png ❌
+
+- Committed as 6cb9d17 and pushed to GitHub main → Vercel will auto-deploy.
+
+Stage Summary:
+- 1 file changed (RoomInteriorView.tsx), 2 insertions, 2 deletions.
+- Z-index fix: RoomInteriorView now covers the full screen (z-[60]) above AppShell header (z-50) and bottom nav (z-50).
+- Asset usage audit: identified that MicSeat, BottomBar, and header need to use actual Yalla Ludo image assets instead of lucide-react icons.

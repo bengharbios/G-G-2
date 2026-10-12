@@ -1,22 +1,25 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Mic, Lock, Crown, MicOff } from 'lucide-react';
+import { Mic, MicOff } from 'lucide-react';
 import type { SeatData } from '../types';
 import { TUI, getAvatarColorFromPalette } from '../types';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   MicSeat — Single voice seat matching TUILiveKit VoiceRoomRootWidget
+   MicSeat — Single voice seat using actual Yalla Ludo image assets
 
    States:
-     • Empty (open)       — faint circle + mic icon
-     • Locked             — faint circle + lock icon
+     • Empty (open)       — faint circle + mic icon (lucide)
+     • Locked             — faint circle + ic_lock.webp image
      • Occupied           — avatar + optional badges
        – Speaking         — animated ripple ring (#29CC6A)
        – Muted            — red MicOff badge (bottom-right)
-       – Owner            — crown badge (top-right)
+       – Owner            — room_ic_flag_member_king.webp badge (top-right)
+       – Admin            — room_ic_flag_member_purple.webp badge
+       – Level            — level_big_*.png badge below name
 
-   Responsive: clamp() for seat, avatar, icon, name — works on 320px+
+   All decorative badges use real Yalla Ludo PNG/WEBP images.
+   Functional icons (mic on/off) stay as lucide-react for clarity.
    ═══════════════════════════════════════════════════════════════════════ */
 
 interface MicSeatProps {
@@ -31,6 +34,27 @@ function truncate(str: string, maxLen: number): string {
   return str.length > maxLen ? str.slice(0, maxLen) + '\u2026' : str;
 }
 
+/** Get the membership badge image based on role */
+function getRoleBadge(role?: string): string | null {
+  if (!role) return null;
+  switch (role) {
+    case 'owner': return '/yalla-ornaments/room_ic_flag_member_king.webp';
+    case 'coowner': return '/yalla-ornaments/room_ic_flag_member_gold.webp';
+    case 'admin': return '/yalla-ornaments/room_ic_flag_member_purple.webp';
+    default: return '/yalla-ornaments/room_ic_flag_member.webp';
+  }
+}
+
+/** Get level badge image based on level number */
+function getLevelBadge(level: number): string {
+  if (level >= 50) return '/yalla-ui/level_big_50_60_ic.png';
+  if (level >= 40) return '/yalla-ui/level_big_40_49_ic.png';
+  if (level >= 30) return '/yalla-ui/level_big_30_39_ic.png';
+  if (level >= 20) return '/yalla-ui/level_big_20_29_ic.png';
+  if (level >= 10) return '/yalla-ui/level_big_10_19_ic.png';
+  return '/yalla-ui/level_big_1_9_ic.png';
+}
+
 export default function MicSeat({
   seatData,
   isOwner,
@@ -43,8 +67,10 @@ export default function MicSeat({
   const isOccupied = !!participant;
   const isMySeat = isOwner;
 
-  // Determine if the user on this seat is the owner (for crown badge)
-  const isSeatOwner = isOccupied && participant?.role === 'owner';
+  // Role badge image
+  const roleBadge = isOccupied ? getRoleBadge(participant?.role) : null;
+  // Level badge image
+  const levelBadge = isOccupied && participant?.vipLevel ? getLevelBadge(participant.vipLevel) : null;
 
   // Determine if muted
   const isMuted = isOccupied && (participant?.isMuted || participant?.micFrozen);
@@ -72,39 +98,22 @@ export default function MicSeat({
         {/* ── Speaking Ripple Animation ── */}
         {isOccupied && isSpeaking && (
           <>
-            {/* Primary ripple */}
             <motion.div
               className="absolute inset-0 rounded-full pointer-events-none"
               style={{ border: `2px solid ${TUI.colors.green}` }}
-              animate={{
-                scale: [1, 1.8],
-                opacity: [0.6, 0],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: 'easeOut',
-              }}
+              animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
             />
-            {/* Secondary ripple (staggered) */}
             <motion.div
               className="absolute inset-0 rounded-full pointer-events-none"
               style={{ border: `2px solid ${TUI.colors.green}` }}
-              animate={{
-                scale: [1, 1.8],
-                opacity: [0.6, 0],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: 'easeOut',
-                delay: 0.6,
-              }}
+              animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut', delay: 0.6 }}
             />
           </>
         )}
 
-        {/* ── Seat Number Badge (top-left pill) — responsive ── */}
+        {/* ── Seat Number Badge (top-left pill) ── */}
         <span
           className="absolute -top-0.5 -left-0.5 flex items-center justify-center rounded-full z-10 pointer-events-none select-none"
           style={{
@@ -125,10 +134,12 @@ export default function MicSeat({
         {!isOccupied && (
           <>
             {isLocked ? (
-              <Lock
-                size="clamp(20px, 6vw, 28px)"
-                style={{ color: TUI.colors.G5 }}
-                strokeWidth={1.5}
+              // أيقونة القفل الحقيقية من يلا لودو
+              <img
+                src="/yalla-settings/ic_lock.webp"
+                alt="مقفل"
+                style={{ width: 'clamp(18px, 5vw, 24px)', height: 'clamp(18px, 5vw, 24px)', opacity: 0.6 }}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
             ) : (
               <Mic
@@ -143,7 +154,7 @@ export default function MicSeat({
         {/* ── Occupied State — Avatar ── */}
         {isOccupied && (
           <>
-            {/* Avatar circle (responsive: 32–40px) */}
+            {/* Avatar circle */}
             <div
               className="relative flex items-center justify-center rounded-full overflow-hidden"
               style={{
@@ -176,7 +187,7 @@ export default function MicSeat({
               )}
             </div>
 
-            {/* ── Muted Badge (bottom-right, red) ── */}
+            {/* ── Muted Badge (bottom-right, red) — lucide MicOff ── */}
             {isMuted && (
               <span
                 className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center rounded-full z-10"
@@ -190,23 +201,25 @@ export default function MicSeat({
               </span>
             )}
 
-            {/* ── Owner Crown Badge (top-right) ── */}
-            {isSeatOwner && (
-              <span
-                className="absolute -top-0.5 -right-0.5 flex items-center justify-center z-10"
+            {/* ── Role Badge (top-right) — real Yalla Ludo image ── */}
+            {roleBadge && (
+              <img
+                src={roleBadge}
+                alt=""
+                className="absolute -top-1 -right-1 z-10 pointer-events-none"
                 style={{
-                  width: 'clamp(14px, 3.5vw, 16px)',
-                  height: 'clamp(14px, 3.5vw, 16px)',
+                  width: 'clamp(16px, 4vw, 20px)',
+                  height: 'clamp(16px, 4vw, 20px)',
+                  objectFit: 'contain',
                 }}
-              >
-                <Crown size={14} fill="#f59e0b" stroke="#f59e0b" strokeWidth={1} />
-              </span>
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
             )}
           </>
         )}
       </div>
 
-      {/* ── User Name Below Seat (responsive max-width) ── */}
+      {/* ── User Name Below Seat ── */}
       <span
         className="text-center leading-tight select-none"
         style={{
@@ -221,6 +234,21 @@ export default function MicSeat({
       >
         {isOccupied ? truncate(participant.displayName, 6) : '\u00A0'}
       </span>
+
+      {/* ── Level Badge below name — real Yalla Ludo image ── */}
+      {isOccupied && levelBadge && (
+        <img
+          src={levelBadge}
+          alt=""
+          className="pointer-events-none"
+          style={{
+            width: 'clamp(24px, 7vw, 30px)',
+            height: 'auto',
+            marginTop: -2,
+          }}
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+      )}
     </button>
   );
 }
