@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.bengharbios.ggames',
-  appName: 'G-Games',
+  appName: 'ألعاب الغريب',
   webDir: 'out',
   // Point to live deployment URL (WebView wrapper mode)
   server: {
@@ -13,10 +13,10 @@ const config: CapacitorConfig = {
     // "Page Web non disponible" — النملة الجارية + زر إعادة الاتصال
     errorPath: 'offline.html',
   },
-  // Splash screen settings
+  // Splash screen — يظهر لمدة 2.5 ثانية ثم يختفي
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2000,
+      launchShowDuration: 2500,
       launchAutoHide: true,
       backgroundColor: '#0D8A7A',
       showSpinner: false,

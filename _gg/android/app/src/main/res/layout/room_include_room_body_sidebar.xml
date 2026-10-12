@@ -1,0 +1,29 @@
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2" android:overScrollMode="2">
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="roomBodySidebar" android:layout_width="45.000000dip" android:layout_height="-2" android:animateLayoutChanges="true" android:layout_marginEnd="10.000000dip">
+    <LinearLayout android:orientation="1" android:id="fl_activities" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="6.000000dip">
+      <ImageView android:id="iv_activities" android:layout_width="43.000000dip" android:layout_height="43.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="white" android:ellipsize="3" android:gravity="0x00000001" android:id="tv_room_activity" android:layout_width="-1" android:layout_height="-2" android:lines="1"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="1" android:id="fl_activities2" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="6.000000dip">
+      <ImageView android:id="iv_activities2" android:layout_width="43.000000dip" android:layout_height="43.000000dip"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="white" android:ellipsize="3" android:gravity="0x00000001" android:id="tv_room_activity2" android:layout_width="-1" android:layout_height="-2" android:lines="1"/>
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="flChest" android:visibility="2" android:layout_width="-1" android:layout_height="-2">
+      <ImageView android:id="ivChest" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:src="room_center_small_treasure_chest" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="white" android:ellipsize="3" android:gravity="0x00000001" android:layout_width="-1" android:layout_height="-2" android:text="room_side_chest" android:lines="1" app:layout_constraintTop_toBottomOf="ivChest"/>
+      <ProgressBar android:layout_gravity="0x00000011" android:id="chestLoading" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:indeterminateTint="white" app:layout_constraintBottom_toBottomOf="ivChest" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="flFruit" android:visibility="2" android:layout_width="-1" android:layout_height="-2">
+      <ImageView android:id="ivFruit" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:src="room_fruit_small_icon" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+      <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="white" android:ellipsize="3" android:gravity="0x00000001" android:layout_width="-1" android:layout_height="-2" android:text="room_fruit_fight" android:lines="1" app:layout_constraintTop_toBottomOf="ivFruit"/>
+      <ProgressBar android:layout_gravity="0x00000011" android:id="fruitLoading" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:indeterminateTint="white" app:layout_constraintBottom_toBottomOf="ivFruit" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout android:id="fl_message_box" android:visibility="2" android:layout_width="45.000000dip" android:layout_height="48.000000dip">
+      <ImageView android:layout_gravity="0x00800053" android:id="ivMessagesBox" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:src="icon_message_box"/>
+      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="white" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="tv_num" android:background="bg_num_red" android:layout_width="-2" android:layout_height="-2"/>
+    </FrameLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="white" android:ellipsize="3" android:id="tv_message_box" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="room_message_box" android:lines="1"/>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="iv_room_music" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:layout_marginTop="6.000000dip" android:src="room_icon_room_music"/>
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.000000dip" android:textColor="white" android:id="tv_room_music" android:layout_width="-2" android:layout_height="-2" android:text="room_music"/>
+  </LinearLayout>
+</ScrollView>
