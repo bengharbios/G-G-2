@@ -248,143 +248,6 @@ public class RoomActivity extends Activity {
 
         startSpeakingSimulation();
         Toast.makeText(this, "تم فتح الغرفة", Toast.LENGTH_SHORT).show();
-
-        // ===== تشخيص مؤقت على الشاشة =====
-        showDiagnosticOverlay();
-    }
-
-    /**
-     * تشخيص مؤقت: TextView أحمر يعرض حالة rvRoomMic والأخطاء
-     */
-    private void showDiagnosticOverlay() {
-        try {
-            // اجمع الأخطاء الملتقطة
-            final StringBuilder diag = new StringBuilder();
-
-            // rvRoomMic
-            if (rvRoomMic != null) {
-                diag.append("rvRoomMic:\n");
-                diag.append("  vis=").append(rvRoomMic.getVisibility()).append("\n");
-                diag.append("  w=").append(rvRoomMic.getWidth());
-                diag.append(" h=").append(rvRoomMic.getHeight()).append("\n");
-                diag.append("  adapter=").append(rvRoomMic.getAdapter() != null ? "set" : "NULL").append("\n");
-                diag.append("  itemCount=").append(micAdapter != null ? micAdapter.getItemCount() : -1).append("\n");
-                diag.append("  childCount=").append(rvRoomMic.getChildCount()).append("\n");
-                // أبعاد أول child بعد post
-                rvRoomMic.post(() -> {
-                    try {
-                        StringBuilder d2 = new StringBuilder(diag);
-                        d2.append("  post-childCount=").append(rvRoomMic.getChildCount()).append("\n");
-                        if (rvRoomMic.getChildCount() > 0) {
-                            View child = rvRoomMic.getChildAt(0);
-                            d2.append("  child0: w=").append(child.getWidth());
-                            d2.append(" h=").append(child.getHeight());
-                            d2.append(" vis=").append(child.getVisibility()).append("\n");
-                            // أبناء الـ child
-                            if (child instanceof ViewGroup) {
-                                ViewGroup vg = (ViewGroup) child;
-                                d2.append("  child0.childCount=").append(vg.getChildCount()).append("\n");
-                                for (int i = 0; i < vg.getChildCount() && i < 5; i++) {
-                                    View sub = vg.getChildAt(i);
-                                    d2.append("    sub").append(i).append(": vis=").append(sub.getVisibility());
-                                    d2.append(" w=").append(sub.getWidth()).append(" h=").append(sub.getHeight()).append("\n");
-                                }
-                            }
-                        }
-                        updateDiagText(d2.toString());
-                    } catch (Exception e) {
-                        updateDiagText("post error: " + e.getMessage());
-                    }
-                });
-            } else {
-                diag.append("rvRoomMic: NULL (fallback used)\n");
-            }
-
-            // llRoomTop
-            int llRoomTopId = getId("llRoomTop");
-            if (llRoomTopId != 0) {
-                View llRoomTop = findViewById(llRoomTopId);
-                if (llRoomTop != null) {
-                    llRoomTop.post(() -> {
-                        try {
-                            StringBuilder d3 = new StringBuilder(diag);
-                            d3.append("llRoomTop:\n");
-                            d3.append("  w=").append(llRoomTop.getWidth());
-                            d3.append(" h=").append(llRoomTop.getHeight()).append("\n");
-                            d3.append("  vis=").append(llRoomTop.getVisibility()).append("\n");
-                            d3.append("  y=").append(llRoomTop.getY()).append("\n");
-                            updateDiagText(d3.toString());
-                        } catch (Exception e) {}
-                    });
-                }
-            }
-
-            // أنشئ TextView تشخيص
-            final TextView diagView = new TextView(this);
-            diagView.setId(View.generateViewId());
-            diagView.setText(diag.toString());
-            diagView.setTextColor(Color.WHITE);
-            diagView.setBackgroundColor(0xCC000000);
-            diagView.setTextSize(10);
-            diagView.setPadding(8, 8, 8, 8);
-            diagView.setMaxLines(25);
-
-            // أضفه فوق كل شيء
-            ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
-            if (contentView != null && contentView.getChildCount() > 0) {
-                FrameLayout overlay = new FrameLayout(this);
-                FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                );
-                flp.gravity = Gravity.TOP;
-                overlay.addView(diagView, flp);
-                ((ViewGroup) contentView.getChildAt(0)).addView(overlay);
-                diagView.setTag("diag_overlay");
-            }
-
-            // اجعل rvRoomMic خلفية حمراء شفافة
-            if (rvRoomMic != null) {
-                rvRoomMic.setBackgroundColor(0x44FF0000);
-                rvRoomMic.bringToFront();
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, "showDiagnosticOverlay error", e);
-        }
-    }
-
-    private void updateDiagText(final String text) {
-        try {
-            runOnUiThread(() -> {
-                ViewGroup content = (ViewGroup) findViewById(android.R.id.content);
-                if (content != null && content.getChildCount() > 0) {
-                    View root = content.getChildAt(0);
-                    if (root instanceof ViewGroup) {
-                        ViewGroup vg = (ViewGroup) root;
-                        for (int i = 0; i < vg.getChildCount(); i++) {
-                            View child = vg.getChildAt(i);
-                            if (child instanceof ViewGroup) {
-                                ViewGroup overlay = (ViewGroup) child;
-                                for (int j = 0; j < overlay.getChildCount(); j++) {
-                                    View v = overlay.getChildAt(j);
-                                    if (v instanceof TextView && "diag_overlay".equals(v.getTag())) {
-                                        ((TextView) v).setText(text);
-                                        return;
-                                    }
-                                }
-                            }
-                            if (child instanceof TextView && "diag_overlay".equals(child.getTag())) {
-                                ((TextView) child).setText(text);
-                                return;
-                            }
-                        }
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG, "updateDiagText error", e);
-        }
     }
 
     // ============================================
@@ -991,7 +854,7 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
-    // MicAdapter — يستخدم room_include_room_mic_item.xml الأصلي
+    // MicAdapter — مقاعد برمجية بسيطة
     // ============================================
     class MicAdapter extends RecyclerView.Adapter<MicAdapter.MicViewHolder> {
         private List<MicSeat> seats;
@@ -1001,21 +864,38 @@ public class RoomActivity extends Activity {
         @NonNull
         @Override
         public MicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // الملف يبدأ بـ <merge> — نحتاج FrameLayout wrapper
-            FrameLayout wrapper = new FrameLayout(parent.getContext());
-            int widthPx = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 80,
+            // مقعد بسيط برمجي (لا يعتمد على XML معقد)
+            int sizePx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 70,
                 parent.getResources().getDisplayMetrics());
-            wrapper.setLayoutParams(new ViewGroup.LayoutParams(
-                widthPx, ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            try {
-                LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.room_include_room_mic_item, wrapper, true);
-            } catch (Exception e) {
-                Log.e(TAG, "[A] Failed to inflate mic_item", e);
-            }
-            return new MicViewHolder(wrapper);
+            LinearLayout seat = new LinearLayout(parent.getContext());
+            seat.setOrientation(LinearLayout.VERTICAL);
+            seat.setGravity(Gravity.CENTER_HORIZONTAL);
+            seat.setPadding(8, 8, 8, 8);
+            seat.setLayoutParams(new ViewGroup.LayoutParams(sizePx, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            ImageView avatar = new ImageView(parent.getContext());
+            LinearLayout.LayoutParams avatarParams = new LinearLayout.LayoutParams(sizePx, sizePx);
+            avatar.setLayoutParams(avatarParams);
+            avatar.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            seat.addView(avatar);
+
+            TextView name = new TextView(parent.getContext());
+            name.setGravity(Gravity.CENTER);
+            name.setTextColor(Color.WHITE);
+            name.setTextSize(10);
+            name.setMaxLines(1);
+            name.setIncludeFontPadding(false);
+            seat.addView(name);
+
+            seat.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    onSeatClicked(seats.get(pos));
+                }
+            });
+
+            return new MicViewHolder(seat);
         }
 
         @Override
@@ -1032,67 +912,41 @@ public class RoomActivity extends Activity {
         public int getItemCount() { return seats.size(); }
 
         class MicViewHolder extends RecyclerView.ViewHolder {
+            LinearLayout container;
             ImageView head;
-            ImageView mute;
             TextView name;
 
             MicViewHolder(@NonNull View itemView) {
                 super(itemView);
-                head = itemView.findViewById(getId("room_mic_item_head"));
-                mute = itemView.findViewById(getId("room_mic_item_mute"));
-                name = itemView.findViewById(getId("room_mic_item_name"));
-                itemView.setOnClickListener(v -> {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        onSeatClicked(seats.get(pos));
-                    }
-                });
+                container = (LinearLayout) itemView;
+                head = (ImageView) container.getChildAt(0);
+                name = (TextView) container.getChildAt(1);
             }
 
             void bind(MicSeat seat) {
                 try {
-                    // إخفاء الكل افتراضياً
-                    if (mute != null) mute.setVisibility(View.GONE);
-
                     if (seat.isLocked) {
                         // مقعد مقفل
-                        if (head != null) {
-                            head.setVisibility(View.VISIBLE);
-                            head.setImageResource(R.drawable.room_ic_room_mic_lock);
-                        }
-                        if (name != null) {
-                            name.setText("مقفل");
-                            name.setVisibility(View.VISIBLE);
-                        }
+                        head.setVisibility(View.VISIBLE);
+                        head.setImageResource(R.drawable.room_ic_room_mic_lock);
+                        name.setText("مقفل");
+                        name.setVisibility(View.VISIBLE);
                     } else if (seat.user != null) {
                         // مقعد مشغول
-                        if (head != null) {
-                            head.setVisibility(View.VISIBLE);
-                            // صورة افتراضية: دائرة ملونة
-                            GradientDrawable circle = new GradientDrawable();
-                            circle.setShape(GradientDrawable.OVAL);
-                            circle.setColor(0xFF0D8A7A);
-                            circle.setStroke(2, seat.isSpeaking ? Color.GREEN : Color.WHITE);
-                            head.setImageDrawable(circle);
-                        }
-                        if (mute != null && seat.isMuted) {
-                            mute.setVisibility(View.VISIBLE);
-                            mute.setImageResource(R.drawable.room_ic_input_mic_off);
-                        }
-                        if (name != null) {
-                            name.setText(seat.user.name);
-                            name.setVisibility(View.VISIBLE);
-                        }
+                        head.setVisibility(View.VISIBLE);
+                        GradientDrawable circle = new GradientDrawable();
+                        circle.setShape(GradientDrawable.OVAL);
+                        circle.setColor(0xFF0D8A7A);
+                        circle.setStroke(2, seat.isSpeaking ? Color.GREEN : Color.WHITE);
+                        head.setImageDrawable(circle);
+                        name.setText(seat.user.name);
+                        name.setVisibility(View.VISIBLE);
                     } else {
                         // مقعد فارغ — أيقونة مايك
-                        if (head != null) {
-                            head.setVisibility(View.VISIBLE);
-                            head.setImageResource(R.drawable.room_ic_room_mic_free);
-                        }
-                        if (name != null) {
-                            name.setText(String.valueOf(seat.index + 1));
-                            name.setVisibility(View.VISIBLE);
-                        }
+                        head.setVisibility(View.VISIBLE);
+                        head.setImageResource(R.drawable.room_ic_room_mic_free);
+                        name.setText(String.valueOf(seat.index + 1));
+                        name.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "[A] MicViewHolder bind error", e);
