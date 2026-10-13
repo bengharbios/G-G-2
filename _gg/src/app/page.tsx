@@ -940,15 +940,23 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
           <div className="relative z-10 p-4 sm:p-5 flex flex-col min-h-[200px] sm:min-h-[230px]">
             {/* Top: Badge + Emoji */}
             <div className="flex items-start justify-between mb-2">
-              <Badge
-                className={`${game.themeBadge} text-[9px] sm:text-[10px] font-bold backdrop-blur-sm ${isComingSoon ? 'animate-pulse' : ''}`}
-              >
-                {isAvailable
-                  ? game.isFree
-                    ? '🟢 متاحة'
-                    : '💎 VIP'
-                  : '✨ قريباً'}
-              </Badge>
+              <div className="flex flex-col gap-1">
+                <Badge
+                  className={`${game.themeBadge} text-[9px] sm:text-[10px] font-bold backdrop-blur-sm ${isComingSoon ? 'animate-pulse' : ''}`}
+                >
+                  {isAvailable
+                    ? game.isFree
+                      ? '🟢 متاحة'
+                      : '💎 VIP'
+                    : '✨ قريباً'}
+                </Badge>
+                {/* شارة الفئة (Category) — من الأدمن */}
+                {game.category && game.category !== 'other' && (
+                  <span className="text-[8px] sm:text-[9px] text-slate-400/80 bg-slate-900/40 backdrop-blur-sm px-1.5 py-0.5 rounded-md border border-slate-700/40 w-fit">
+                    {game.category}
+                  </span>
+                )}
+              </div>
               <motion.div
                 className="text-3xl sm:text-4xl"
                 whileHover={isAvailable ? { scale: 1.3, rotate: [0, -10, 10, 0] } : {}}
@@ -1017,6 +1025,7 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
 
 function GamesSection() {
   const { configs, loaded } = useAdminGameConfigs();
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
   const displayGames = loaded && configs.length > 0
     ? (() => {
@@ -1043,6 +1052,8 @@ function GamesSection() {
               description: adminCfg.description || g.description,
               icon: adminCfg.icon || g.emoji,
               players: adminCfg.playerRange ? `${adminCfg.playerRange} لاعب` : g.players,
+              // الأولوية لـ category من الأدمن، وإلا نأخذ من static data
+              category: (adminCfg as { category?: string }).category || g.category,
             };
           }
           return g;
@@ -1055,6 +1066,12 @@ function GamesSection() {
         });
       })()
     : games;
+
+  // قائمة الفئات الفريدة المتاحة
+  const categories = ['all', ...Array.from(new Set(displayGames.map((g) => g.category)))];
+  const filteredGames = categoryFilter === 'all'
+    ? displayGames
+    : displayGames.filter((g) => g.category === categoryFilter);
 
   return (
     <section id="games" className="relative py-6 sm:py-10 bg-slate-950">
@@ -1080,6 +1097,28 @@ function GamesSection() {
           </span>
         </motion.div>
 
+        {/* Category Filter — شريط فلاتر الفئات */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto scrollbar-none pb-1"
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategoryFilter(cat)}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                categoryFilter === cat
+                  ? 'bg-amber-500 text-slate-900 shadow-lg shadow-amber-500/20'
+                  : 'bg-slate-900/60 text-slate-400 border border-slate-800/40 hover:bg-slate-800/60 hover:text-white'
+              }`}
+            >
+              {cat === 'all' ? '🎯 الكل' : cat}
+            </button>
+          ))}
+        </motion.div>
+
         {/* Games Grid */}
         <motion.div
           variants={staggerContainer}
@@ -1087,7 +1126,7 @@ function GamesSection() {
           animate="visible"
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4"
         >
-          {displayGames.map((game, i) => (
+          {filteredGames.map((game, i) => (
             <GameCard key={game.id} game={game} index={i} />
           ))}
         </motion.div>
