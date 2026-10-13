@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+    <FrameLayout android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rvMember" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    </View>
-    <View android:textSize="18.0sp" android:textColor="#ffab6f0f" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btDelete" android:background="@drawable/room_btn_yellow_bg" android:layout_width="162.0dip" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginBottom="12.0dip" android:text="Delete (2)" />
+    </FrameLayout>
+    <TextView android:textSize="18.0sp" android:textColor="#ffab6f0f" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btDelete" android:background="@drawable/room_btn_yellow_bg" android:layout_width="162.0dip" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginBottom="12.0dip" android:text="Delete (2)" />
 </LinearLayout>

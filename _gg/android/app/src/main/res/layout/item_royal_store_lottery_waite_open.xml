@@ -2,7 +2,7 @@
 <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="70.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:layout_gravity="center" android:background="@drawable/royal_story_lottery_item_bg" android:layout_width="340.0dip" android:layout_height="350.0dip">
-        <View android:textSize="15.0sp" android:textColor="#ff66af46" android:gravity="center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginTop="60.0dip" android:text="@string/G_1460_0029" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
+        <TextView android:textSize="15.0sp" android:textColor="#ff66af46" android:gravity="center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginTop="60.0dip" android:text="@string/G_1460_0029" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
         <ImageView android:layout_gravity="center_horizontal" android:layout_width="103.0dip" android:layout_height="103.0dip" android:layout_marginTop="106.0dip" android:src="@drawable/royal_story_lottery_wait_ic" />
     </FrameLayout>
 </FrameLayout>

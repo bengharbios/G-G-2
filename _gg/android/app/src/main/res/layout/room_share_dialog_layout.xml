@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:background="@color/room_color_012" android:layout_width="fill_parent" android:layout_height="205.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/room_f57" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="29.0dip" android:text="@string/room_share_to" />
+    <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/room_f57" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="29.0dip" android:text="@string/room_share_to" />
     <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/llShareFriends" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="69.0dip" android:layout_marginEnd="80.0dip">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_share_friends" />
-        <View android:textSize="13.0dip" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/room_friends" />
+        <TextView android:textSize="13.0dip" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/room_friends" />
     </LinearLayout>
     <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/llShareLink" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="69.0dip" android:layout_marginStart="80.0dip">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_share_link" />
-        <View android:textSize="13.0dip" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/room_link" />
+        <TextView android:textSize="13.0dip" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/room_link" />
     </LinearLayout>
 </FrameLayout>

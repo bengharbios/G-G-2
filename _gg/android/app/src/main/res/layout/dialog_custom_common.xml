@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_base_dialog" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content">
+    <FrameLayout android:background="@drawable/bg_second_level" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ViewStub android:id="@id/dialog_detail_content" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </FrameLayout>
     <ViewStub android:id="@id/dialog_detail_content_extra" android:layout_width="fill_parent" android:layout_height="wrap_content" />

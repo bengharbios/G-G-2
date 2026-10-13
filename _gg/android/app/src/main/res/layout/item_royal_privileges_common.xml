@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_privilege_item" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginStart="6.0dip" android:layout_marginEnd="6.0dip">
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_privilege" android:layout_width="40.0dip" android:layout_height="40.0dip" />
-        <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@id/ctv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:lines="2" />
+        <TextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@id/ctv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:lines="2" />
     </LinearLayout>
     <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="28.0dip" android:layout_height="15.0dip" android:layout_marginTop="13.0dip" android:layout_marginRight="22.0dip" android:src="@drawable/royal_pri_item_tag_new" />
 </FrameLayout>

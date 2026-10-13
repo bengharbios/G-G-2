@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View android:textSize="12.0sp" android:textColor="@color/white2" android:gravity="center" android:id="@id/tvLang" android:background="@drawable/room_profile_language_bg" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="7.0dip" android:paddingStart="8.0dip" android:paddingEnd="8.0dip" android:layout_marginStart="6.0dip"
+<TextView android:textSize="12.0sp" android:textColor="@color/white2" android:gravity="center" android:id="@id/tvLang" android:background="@drawable/room_profile_language_bg" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="7.0dip" android:paddingStart="8.0dip" android:paddingEnd="8.0dip" android:layout_marginStart="6.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" />

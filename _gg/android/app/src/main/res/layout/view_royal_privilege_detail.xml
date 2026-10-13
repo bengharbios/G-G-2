@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <FrameLayout android:id="@id/fl_royal_title_change" android:background="@drawable/room_default" android:layout_width="267.0dip" android:layout_height="32.0dip" android:layout_marginTop="45.0dip" android:layout_centerHorizontal="true">
+    <View android:background="@drawable/shop_privileges_detail_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <FrameLayout android:id="@id/fl_royal_title_change" android:background="@drawable/royal_current_level_bg" android:layout_width="267.0dip" android:layout_height="32.0dip" android:layout_marginTop="45.0dip" android:layout_centerHorizontal="true">
         <LinearLayout android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
             <ImageView android:id="@id/iv_royal_level_change" android:layout_width="30.0dip" android:layout_height="23.0dip" />
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <View android:textSize="17.0sp" android:textStyle="bold" android:textColor="@android:color/transparent" android:gravity="center_vertical" android:id="@id/ctv_current_level_shadow" android:layout_width="wrap_content" android:layout_height="23.0dip" android:shadowColor="@color/black_50" android:shadowDy="4.0" android:shadowRadius="2.0" android:layout_marginStart="3.0dip" />
-                <View android:textSize="17.0sp" android:textStyle="bold" android:textColor="#ffffb310" android:gravity="center_vertical" android:id="@id/ctv_current_level" android:layout_width="wrap_content" android:layout_height="23.0dip" android:layout_marginStart="3.0dip" app:end_color="#ffffc000" app:gradient="true" app:start_color="#ffffff75" />
+                <TextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="@android:color/transparent" android:gravity="center_vertical" android:id="@id/ctv_current_level_shadow" android:layout_width="wrap_content" android:layout_height="23.0dip" android:shadowColor="@color/black_50" android:shadowDy="4.0" android:shadowRadius="2.0" android:layout_marginStart="3.0dip" />
+                <TextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="#ffffb310" android:gravity="center_vertical" android:id="@id/ctv_current_level" android:layout_width="wrap_content" android:layout_height="23.0dip" android:layout_marginStart="3.0dip" app:end_color="#ffffc000" app:gradient="true" app:start_color="#ffffff75" />
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>
@@ -17,5 +17,5 @@
     <FrameLayout android:id="@id/fl_change_right" android:visibility="invisible" android:layout_width="38.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:layout_alignTop="@id/fl_royal_title_change" android:layout_alignParentRight="true">
         <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/royal_change_level_right_ic" />
     </FrameLayout>
-    <View android:id="@id/vp_privilege" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_change_right" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" />
+    <androidx.viewpager.widget.ViewPager android:id="@id/vp_privilege" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_change_right" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" />
 </RelativeLayout>

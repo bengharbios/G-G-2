@@ -2,5 +2,5 @@
 <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_prop_plus_one_container" android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:id="@id/iv_room_props_plus_one" android:layout_width="29.0dip" android:layout_height="29.0dip" android:src="@drawable/icon_room_props_plus_one" />
-    <View android:textSize="10.0sp" android:textColor="@color/room_eee" android:ellipsize="end" android:id="@id/tv_room_props_plus_one_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:maxLines="1" android:drawablePadding="0.5dip" />
+    <TextView android:textSize="10.0sp" android:textColor="@color/room_eee" android:ellipsize="end" android:id="@id/tv_room_props_plus_one_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:maxLines="1" android:drawablePadding="0.5dip" />
 </LinearLayout>

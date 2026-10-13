@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:orientation="vertical" android:clipChildren="false" android:layout_width="45.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:layout_gravity="center_horizontal" android:id="@id/img" android:layout_width="45.0dip" android:layout_height="wrap_content" android:src="@drawable/icn_roompass_rukou" android:scaleType="fitCenter" android:adjustViewBounds="true" android:maxHeight="60.0dip" />
-    <View android:textSize="9.0sp" android:textStyle="bold" android:ellipsize="end" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/textView" android:layout_width="45.0dip" android:layout_height="wrap_content" android:text="@string/C_1370_001" android:lines="1" />
+    <ImageView android:layout_gravity="center_horizontal" android:id="@id/img" android:layout_width="45.0dip" android:layout_height="wrap_content" android:src="@drawable/icn_roompass_rukou" android:scaleType="fitCenter" android:adjustViewBounds="true" android:maxHeight="60.0dip" />
+    <TextView android:textSize="9.0sp" android:textStyle="bold" android:ellipsize="end" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/textView" android:layout_width="45.0dip" android:layout_height="wrap_content" android:text="@string/C_1370_001" android:lines="1" />
 </merge>

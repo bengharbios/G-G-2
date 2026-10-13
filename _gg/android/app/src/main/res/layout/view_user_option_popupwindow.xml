@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent"
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/bg_user_option_popupwindow" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/tv_remark" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/G_1390_25" />
+    <TextView android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/tv_remark" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/G_1390_25" />
     <View android:background="@drawable/bg_white_divider_line" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
-    <View android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/btn_report" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/G_1390_26" />
+    <TextView android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/btn_report" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/G_1390_26" />
     <View android:background="@drawable/bg_white_divider_line" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
-    <View android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/btn_delete" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/delete" />
+    <TextView android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:id="@id/btn_delete" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/delete" />
 </LinearLayout>

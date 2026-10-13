@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/verification_fail" />
-        <View android:textSize="16.0dip" android:textColor="#ff5a9983" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/account_verification_fail" android:layout_marginStart="5.0dip" />
+        <TextView android:textSize="16.0dip" android:textColor="#ff5a9983" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/account_verification_fail" android:layout_marginStart="5.0dip" />
     </LinearLayout>
-    <View android:textSize="13.0dip" android:textColor="#ff777777" android:gravity="center" android:id="@id/tv_result" android:layout_width="270.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" />
+    <TextView android:textSize="13.0dip" android:textColor="#ff777777" android:gravity="center" android:id="@id/tv_result" android:layout_width="270.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" />
 </LinearLayout>

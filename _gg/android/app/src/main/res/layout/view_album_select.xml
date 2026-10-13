@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View android:textSize="17.0dip" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_send" android:background="@drawable/bn_yes_big" android:layout_width="200.0dip" android:layout_height="55.0dip" style="@style/StrokeTextStyle_Yes"
+<TextView android:textSize="17.0dip" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_send" android:background="@drawable/bn_yes_big" android:layout_width="200.0dip" android:layout_height="55.0dip" style="@style/StrokeTextStyle_Yes"
   xmlns:android="http://schemas.android.com/apk/res/android" />

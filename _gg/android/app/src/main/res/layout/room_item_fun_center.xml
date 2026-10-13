@@ -6,9 +6,9 @@
         <ImageView android:layout_gravity="end|center|top" android:id="@id/ivWarring" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:src="@drawable/room_warring_icon" android:layout_marginEnd="8.0dip" />
         <ProgressBar android:layout_gravity="center" android:id="@id/loading" android:layout_width="40.0dip" android:layout_height="40.0dip" android:indeterminateTint="@color/white" />
     </FrameLayout>
-    <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:gravity="center" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="2.0dip" android:paddingEnd="2.0dip" />
+    <TextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:gravity="center" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="2.0dip" android:paddingEnd="2.0dip" />
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_price" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:id="@id/ivPrice" android:layout_width="8.0dip" android:layout_height="10.0dip" android:src="@drawable/diamonds" />
-        <View android:textSize="7.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:id="@id/tv_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" android:layout_marginStart="2.0dip" />
+        <TextView android:textSize="7.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:id="@id/tv_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" android:layout_marginStart="2.0dip" />
     </LinearLayout>
 </LinearLayout>

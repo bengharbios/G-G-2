@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:gravity="center" android:layout_gravity="center" android:id="@id/ff_guide_description" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="223.0dip" android:layout_height="wrap_content"
+<FrameLayout android:gravity="center" android:layout_gravity="center" android:id="@id/ff_guide_description" android:background="@drawable/heade_guide_bg" android:visibility="gone" android:layout_width="223.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:textSize="13.0sp" android:textColor="#ff626262" android:gravity="start|center" android:layout_gravity="bottom" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="80.0dip" android:layout_marginLeft="13.0dip" android:layout_marginRight="13.0dip" android:layout_marginBottom="5.0dip" />
+    <TextView android:textSize="13.0sp" android:textColor="#ff626262" android:gravity="start|center" android:layout_gravity="bottom" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="80.0dip" android:layout_marginLeft="13.0dip" android:layout_marginRight="13.0dip" android:layout_marginBottom="5.0dip" />
 </FrameLayout>

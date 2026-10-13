@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/list_country" android:layout_width="fill_parent" android:layout_height="240.0dip" android:layout_marginTop="15.0dip" android:layout_below="@id/tv_phone_login" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
-        <View android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ffaa6e1f" android:gravity="center" android:id="@id/bt_area_confirm" android:layout_width="198.0dip" android:layout_height="54.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="20.0dip" android:text="@string/confirm" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" app:stroke_color="#fffee641" app:stroke_width="1.0dip" />
+        <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ffaa6e1f" android:gravity="center" android:id="@id/bt_area_confirm" android:layout_width="198.0dip" android:layout_height="54.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="20.0dip" android:text="@string/confirm" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" app:stroke_color="#fffee641" app:stroke_width="1.0dip" />
     </LinearLayout>
 </merge>

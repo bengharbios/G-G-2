@@ -2,29 +2,29 @@
 <merge android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_user_info2" android:layout_width="322.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="80.0dip">
-        <View android:id="@id/iv_photo" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/default_photo" android:layout_centerVertical="true" />
+        <FrameLayout android:id="@id/iv_photo" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/default_photo" android:layout_centerVertical="true" />
         <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/iv_photo">
-            <View android:textSize="11.0sp" android:textColor="#ff717171" android:gravity="start" android:layout_gravity="start" android:id="@id/tv_description" android:layout_width="123.0dip" android:layout_height="wrap_content" android:text="Win Global Ranking To Obtain" />
-            <View android:textSize="9.0sp" android:textColor="#ff6bd5b7" android:id="@id/tv_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="0 Day 0 H" android:drawablePadding="2.0dip" android:drawableStart="@drawable/clock_green" />
+            <TextView android:textSize="11.0sp" android:textColor="#ff717171" android:gravity="start" android:layout_gravity="start" android:id="@id/tv_description" android:layout_width="123.0dip" android:layout_height="wrap_content" android:text="Win Global Ranking To Obtain" />
+            <TextView android:textSize="9.0sp" android:textColor="#ff6bd5b7" android:id="@id/tv_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="0 Day 0 H" android:drawablePadding="2.0dip" android:drawableStart="@drawable/clock_green" />
         </LinearLayout>
         <FrameLayout android:id="@id/fl_option" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="12.0dip" android:layout_alignParentEnd="true">
-            <View android:gravity="center" android:id="@id/tv_active" android:background="@drawable/active" android:layout_width="75.0dip" android:layout_height="42.0dip" />
+            <TextView android:gravity="center" android:id="@id/tv_active" android:background="@drawable/active" android:layout_width="75.0dip" android:layout_height="42.0dip" />
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/btn_buy" android:background="@drawable/bn_yes" android:visibility="gone" android:layout_width="91.0dip" android:layout_height="41.0dip">
                 <ImageView android:layout_gravity="center_vertical" android:id="@id/iv_spent_type" android:layout_width="16.0dip" android:layout_height="17.0dip" android:src="@drawable/coin" />
-                <View android:layout_gravity="center_vertical" android:id="@id/tv_spent_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15k" android:layout_marginStart="2.0dip" style="@style/StrokeTextStyle_Yes" />
+                <TextView android:layout_gravity="center_vertical" android:id="@id/tv_spent_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15k" android:layout_marginStart="2.0dip" style="@style/StrokeTextStyle_Yes" />
             </LinearLayout>
         </FrameLayout>
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_upload" android:background="@drawable/bn_yes" android:layout_width="92.0dip" android:layout_height="39.0dip" android:layout_centerVertical="true" android:layout_marginEnd="16.0dip" android:layout_alignParentEnd="true">
             <ImageView android:layout_width="23.0dip" android:layout_height="20.0dip" android:layout_marginBottom="3.0dip" android:src="@drawable/camera_small" />
-            <View android:textSize="11.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" android:text="@string/upload" style="@style/StrokeTextStyle_Yes" />
+            <TextView android:textSize="11.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" android:text="@string/upload" style="@style/StrokeTextStyle_Yes" />
         </LinearLayout>
-        <View android:textSize="15.0sp" android:textColor="#ff458371" android:gravity="center" android:id="@id/tv_select_photo" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/select_your_profile_picture" android:layout_centerVertical="true" android:layout_marginEnd="24.0dip" android:layout_toStartOf="@id/ll_upload" android:layout_toEndOf="@id/iv_photo" />
+        <TextView android:textSize="15.0sp" android:textColor="#ff458371" android:gravity="center" android:id="@id/tv_select_photo" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/select_your_profile_picture" android:layout_centerVertical="true" android:layout_marginEnd="24.0dip" android:layout_toStartOf="@id/ll_upload" android:layout_toEndOf="@id/iv_photo" />
     </RelativeLayout>
     <RelativeLayout android:layout_gravity="center_horizontal" android:layout_width="330.0dip" android:layout_height="wrap_content">
-        <androidx.viewpager.widget.ViewPager android:layout_gravity="center_horizontal" android:id="@id/vp_head" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="258.0dip" android:layout_marginTop="31.5dip" android:layout_marginBottom="14.0dip" />
+        <androidx.viewpager.widget.ViewPager android:layout_gravity="center_horizontal" android:id="@id/vp_head" android:background="@drawable/bg_head" android:layout_width="fill_parent" android:layout_height="258.0dip" android:layout_marginTop="31.5dip" android:layout_marginBottom="14.0dip" />
         <LinearLayout android:orientation="horizontal" android:id="@id/ll_head" android:layout_width="fill_parent" android:layout_height="33.0dip">
-            <View android:textSize="15.0sp" android:textColor="#ff6bd5b7" android:gravity="center" android:id="@id/tv_head_frame" android:layout_width="0.0px" android:layout_height="fill_parent" android:text="@string/avatar_frame" android:layout_weight="1.0" />
-            <View android:textSize="15.0sp" android:textColor="#ff676364" android:gravity="center" android:id="@id/tv_head" android:layout_width="0.0px" android:layout_height="fill_parent" android:text="@string/profile_head" android:layout_weight="1.0" android:layout_marginStart="5.0dip" />
+            <TextView android:textSize="15.0sp" android:textColor="#ff6bd5b7" android:gravity="center" android:id="@id/tv_head_frame" android:layout_width="0.0px" android:layout_height="fill_parent" android:text="@string/avatar_frame" android:layout_weight="1.0" />
+            <TextView android:textSize="15.0sp" android:textColor="#ff676364" android:gravity="center" android:id="@id/tv_head" android:layout_width="0.0px" android:layout_height="fill_parent" android:text="@string/profile_head" android:layout_weight="1.0" android:layout_marginStart="5.0dip" />
         </LinearLayout>
     </RelativeLayout>
 </merge>

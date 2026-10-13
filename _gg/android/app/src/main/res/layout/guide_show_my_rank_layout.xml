@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:background="@drawable/room_default" android:layout_width="207.0dip" android:layout_height="94.0dip">
-        <View android:textSize="13.0sp" android:textColor="#ff626262" android:layout_gravity="center" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="It’s your current ranking." />
+    <FrameLayout android:background="@drawable/rank_guide_bg_down" android:layout_width="207.0dip" android:layout_height="94.0dip">
+        <TextView android:textSize="13.0sp" android:textColor="#ff626262" android:layout_gravity="center" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="It’s your current ranking." />
     </FrameLayout>
-    <View android:layout_gravity="center_horizontal" android:id="@id/iv_finger" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginTop="4.0dip" android:src="@drawable/finger" app:play_on_attach="true" app:source="finger_guide.svga" />
+    <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_finger" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginTop="4.0dip" android:src="@drawable/finger" app:play_on_attach="true" app:source="finger_guide.svga" />
 </LinearLayout>

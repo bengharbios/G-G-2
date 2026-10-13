@@ -2,11 +2,11 @@
 <FrameLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:layout_gravity="center" android:layout_width="75.0dip" android:layout_height="wrap_content" android:layout_marginBottom="1.0dip">
-        <FrameLayout android:id="@id/rl_bg" android:background="@drawable/room_default" android:layout_width="57.0dip" android:layout_height="58.0dip" android:layout_marginTop="9.0dip" android:layout_centerHorizontal="true">
+        <FrameLayout android:id="@id/rl_bg" android:background="@drawable/common_regard_bubble_ic" android:layout_width="57.0dip" android:layout_height="58.0dip" android:layout_marginTop="9.0dip" android:layout_centerHorizontal="true">
             <ImageView android:layout_gravity="center" android:id="@id/iv_icon" android:layout_width="40.0dip" android:layout_height="36.0dip" />
-            <View android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="36.0dip" />
+            <ImageView android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="36.0dip" />
         </FrameLayout>
-        <View android:textSize="13.0sp" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center" android:id="@id/stv_num" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines="1" android:layout_below="@id/rl_bg" android:paddingStart="1.0dip" android:paddingEnd="1.0dip" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
+        <TextView android:textSize="13.0sp" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center" android:id="@id/stv_num" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines="1" android:layout_below="@id/rl_bg" android:paddingStart="1.0dip" android:paddingEnd="1.0dip" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
         <ImageView android:id="@id/iv_reward_tag" android:visibility="invisible" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginStart="10.0dip" />
     </RelativeLayout>
 </FrameLayout>

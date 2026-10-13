@@ -4,7 +4,7 @@
     <RelativeLayout android:id="@id/fl_elite_regard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="24.0dip">
         <ImageView android:layout_gravity="center" android:id="@id/iv_elite_regard" android:layout_width="60.0dip" android:layout_height="45.0dip" />
         <ImageView android:layout_gravity="center" android:id="@id/iv_elite_regard_net" android:layout_width="54.0dip" android:layout_height="50.0dip" />
-        <View android:layout_gravity="center" android:id="@id/chest_iv_frame_elite" android:layout_width="54.0dip" android:layout_height="54.0dip" />
-        <View android:textSize="12.0sp" android:textColor="#ff87efcc" android:gravity="start|center" android:layout_width="160.0dip" android:layout_height="50.0dip" android:text="Hahahahahahahahahaha hahahahahaha" android:layout_marginEnd="24.0dip" android:layout_alignParentEnd="true" app:stroke_color="#ff0b6546" app:stroke_width="1.0dip" />
+        <FrameLayout android:layout_gravity="center" android:id="@id/chest_iv_frame_elite" android:layout_width="54.0dip" android:layout_height="54.0dip" />
+        <TextView android:textSize="12.0sp" android:textColor="#ff87efcc" android:gravity="start|center" android:layout_width="160.0dip" android:layout_height="50.0dip" android:text="Hahahahahahahahahaha hahahahahaha" android:layout_marginEnd="24.0dip" android:layout_alignParentEnd="true" app:stroke_color="#ff0b6546" app:stroke_width="1.0dip" />
     </RelativeLayout>
 </FrameLayout>

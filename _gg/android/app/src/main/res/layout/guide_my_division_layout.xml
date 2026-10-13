@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:background="@drawable/head_pop_bg" android:layout_width="41.0dip" android:layout_height="36.0dip" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:layout_gravity="center|right" android:id="@id/iv_head" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="2.5dip" android:src="@drawable/default_photo" />
+    <ImageView android:layout_gravity="center|right" android:id="@id/iv_head" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="2.5dip" android:src="@drawable/default_photo" />
 </FrameLayout>

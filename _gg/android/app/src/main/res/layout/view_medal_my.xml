@@ -2,10 +2,10 @@
 <merge android:layout_width="100.0dip" android:layout_height="120.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:layout_gravity="center|top" android:orientation="vertical" android:id="@id/ll_medal" android:layout_width="80.0dip" android:layout_height="wrap_content">
-        <View android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-        <View android:id="@id/iv_medal" android:layout_width="80.0dip" android:layout_height="80.0dip" app:isUseSmallBadge="false" />
+        <TextView android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <FrameLayout android:id="@id/iv_medal" android:layout_width="80.0dip" android:layout_height="80.0dip" app:isUseSmallBadge="false" />
     </LinearLayout>
-    <View android:textSize="17.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="11.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+    <TextView android:textSize="17.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="11.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
     <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_cut" android:visibility="gone" android:layout_width="19.0dip" android:layout_height="19.0dip" android:layout_marginTop="30.0dip" android:src="@drawable/cut" android:layout_marginEnd="15.0dip" />
     <FrameLayout android:layout_gravity="bottom" android:layout_width="100.0dip" android:layout_height="100.0dip">
         <ImageView android:layout_gravity="bottom|center" android:id="@id/iv_circle_light" android:visibility="invisible" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginBottom="2.0dip" android:src="@drawable/medal_add_circle_light" />

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/rl_match" android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
-    <View android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
-    <View android:id="@id/svgaImage" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
+    <ImageView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
+    <ImageView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
+    <ImageView android:id="@id/svgaImage" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
     <ImageView android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentTop="true" android:layout_alignParentEnd="true" />
     <ImageView android:id="@id/iv_rules" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/team_create_rule_ic" android:layout_alignParentTop="true" android:layout_marginStart="10.0dip" android:layout_alignParentStart="true" />
     <RelativeLayout android:id="@id/rl_game_select" android:layout_width="fill_parent" android:layout_height="90.0dip" android:layout_marginTop="75.0dip">
         <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="59.0dip">
             <ImageView android:id="@id/iv_team" android:layout_width="108.0dip" android:layout_height="wrap_content" />
-            <View android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_team" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="@string/team" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+            <TextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_team" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="@string/team" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
         </FrameLayout>
         <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="59.0dip" android:layout_alignParentEnd="true">
             <ImageView android:id="@id/iv_4p" android:layout_width="108.0dip" android:layout_height="wrap_content" />
-            <View android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_4p" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="@string/players_4" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+            <TextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_4p" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="@string/players_4" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
         </FrameLayout>
     </RelativeLayout>
-    <View android:id="@id/vp_team_4p" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_below="@id/rl_game_select" />
+    <androidx.viewpager.widget.ViewPager android:id="@id/vp_team_4p" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_below="@id/rl_game_select" />
 </RelativeLayout>

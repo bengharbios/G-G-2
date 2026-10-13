@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:id="@id/rl_play2" android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:id="@id/head_view" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_centerInParent="true" />
+    <FrameLayout android:id="@id/head_view" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_centerInParent="true" />
     <ImageView android:id="@id/iv_kick" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/btn_live" android:layout_alignEnd="@id/head_view" />
-    <View android:textSize="10.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center" android:id="@id/tv_name" android:layout_width="52.0dip" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:lines="1" android:layout_below="@id/head_view" android:layout_centerHorizontal="true" />
+    <TextView android:textSize="10.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center" android:id="@id/tv_name" android:layout_width="52.0dip" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:lines="1" android:layout_below="@id/head_view" android:layout_centerHorizontal="true" />
     <ImageView android:id="@id/iv_invite" android:layout_width="37.0dip" android:layout_height="37.0dip" android:layout_centerInParent="true" />
-    <View android:textSize="9.0sp" android:textColor="#fffff298" android:gravity="center" android:id="@id/tv_left" android:background="@drawable/room_default" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="12.0dip" android:text="@string/left" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
+    <TextView android:textSize="9.0sp" android:textColor="#fffff298" android:gravity="center" android:id="@id/tv_left" android:background="@drawable/notice_frame" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="12.0dip" android:text="@string/left" android:includeFontPadding="false" android:layout_centerVertical="true" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
 </merge>

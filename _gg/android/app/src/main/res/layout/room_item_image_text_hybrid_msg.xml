@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/clRoomMember" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="70.0dip"
+<LinearLayout android:orientation="vertical" android:id="@id/clRoomMember" android:background="@drawable/bg_system" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="70.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="12.0dip" android:textColor="@color/white" android:gravity="center_vertical" android:id="@id/tvHybridText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
+    <TextView android:textSize="12.0dip" android:textColor="@color/room_color_4EBCA1" android:gravity="center_vertical" android:id="@id/tvHybridText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
     <ImageView android:id="@id/ivHybridImage" android:layout_width="134.0dip" android:layout_height="161.0dip" android:layout_marginTop="9.0dip" android:layout_marginBottom="8.0dip" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
 </LinearLayout>

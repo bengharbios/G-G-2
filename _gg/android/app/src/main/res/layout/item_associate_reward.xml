@@ -5,8 +5,8 @@
         <ImageView android:layout_gravity="center" android:id="@id/iv_bg" android:layout_width="55.0dip" android:layout_height="55.0dip" />
         <ImageView android:layout_gravity="center" android:id="@id/iv_icon" android:layout_width="30.0dip" android:layout_height="30.0dip" />
         <ImageView android:layout_gravity="start|center|top" android:id="@id/iv_corner_icon" android:layout_width="25.0dip" android:layout_height="25.0dip" />
-        <View android:layout_gravity="center" android:id="@id/svga_icon" android:layout_width="40.0dip" android:layout_height="40.0dip" />
-        <ImageView android:layout_gravity="bottom|center|right" android:id="@id/iv_bottom_icon" android:layout_width="22.0dip" android:layout_height="22.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/room_default" />
+        <ImageView android:layout_gravity="center" android:id="@id/svga_icon" android:layout_width="40.0dip" android:layout_height="40.0dip" />
+        <ImageView android:layout_gravity="bottom|center|right" android:id="@id/iv_bottom_icon" android:layout_width="22.0dip" android:layout_height="22.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/fragment_skin_icon" />
     </FrameLayout>
-    <View android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/tv_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" app:stroke_color="#ffab6b17" app:stroke_width="1.0dip" />
+    <TextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/tv_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" app:stroke_color="#ffab6b17" app:stroke_width="1.0dip" />
 </LinearLayout>

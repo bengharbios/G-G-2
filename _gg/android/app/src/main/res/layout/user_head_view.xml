@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="60.0dip" android:layout_height="60.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:id="@id/iv_user_head" android:layout_width="51.0dip" android:layout_height="51.0dip" android:layout_centerVertical="true" app:head_face_margin="6.0dip" />
+    <FrameLayout android:id="@id/iv_user_head" android:layout_width="51.0dip" android:layout_height="51.0dip" android:layout_centerVertical="true" app:head_face_margin="6.0dip" />
     <ImageView android:id="@id/iv_head_red_dot" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:src="@drawable/reddot" android:layout_alignTop="@id/iv_user_head" android:layout_marginEnd="1.0dip" android:layout_alignEnd="@id/iv_user_head" />
-    <View android:textSize="8.0sp" android:id="@id/tv_level" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" android:includeFontPadding="false" android:layout_alignParentBottom="true" android:layout_marginEnd="2.0dip" android:layout_alignParentEnd="true" app:isSameWidth="true" />
+    <TextView android:textSize="8.0sp" android:id="@id/tv_level" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" android:includeFontPadding="false" android:layout_alignParentBottom="true" android:layout_marginEnd="2.0dip" android:layout_alignParentEnd="true" app:isSameWidth="true" />
 </merge>

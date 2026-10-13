@@ -2,19 +2,19 @@
 <FrameLayout android:layout_width="fill_parent" android:layout_height="210.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_time_down" android:background="@drawable/royal_store_new_goods_num_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip">
-        <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down_pre" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
-        <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
+        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down_pre" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
+        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
     </LinearLayout>
     <View android:layout_gravity="bottom" android:background="@drawable/royal_store_new_item_bar" android:layout_width="fill_parent" android:layout_height="110.0dip" />
     <FrameLayout android:id="@id/fl_empty_new" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageView android:layout_gravity="center_horizontal" android:layout_width="107.0dip" android:layout_height="107.0dip" android:src="@drawable/royal_store_empty_item_ic" />
-        <View android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="115.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
+        <TextView android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="115.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
     </FrameLayout>
     <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rcv_new" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_marginTop="23.0dip" />
     <FrameLayout android:layout_gravity="left" android:id="@id/fl_arrow_left" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60.0dip">
-        <ImageView android:id="@id/iv_arrow_left" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="5.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/room_default" />
+        <ImageView android:id="@id/iv_arrow_left" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="5.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/skin_arrow_left" />
     </FrameLayout>
     <FrameLayout android:layout_gravity="right" android:id="@id/fl_arrow_right" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60.0dip">
-        <ImageView android:id="@id/iv_arrow_right" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/room_default" />
+        <ImageView android:id="@id/iv_arrow_right" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/skin_arrow_right" />
     </FrameLayout>
 </FrameLayout>

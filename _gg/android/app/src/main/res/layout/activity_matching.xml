@@ -2,9 +2,9 @@
 <RelativeLayout android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="26.0dip" android:src="@drawable/close" android:layout_marginEnd="16.0dip" android:layout_alignParentEnd="true" />
-    <ImageView android:id="@id/iv_logo" android:layout_width="wrap_content" android:layout_height="105.0dip" android:layout_marginTop="55.0dip" android:src="@drawable/room_default" android:layout_centerHorizontal="true" />
+    <ImageView android:id="@id/iv_logo" android:layout_width="wrap_content" android:layout_height="105.0dip" android:layout_marginTop="55.0dip" android:src="@drawable/icon_ludo" android:layout_centerHorizontal="true" />
     <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_logo">
         <include android:id="@id/match_room" layout="@layout/match_room_ludo" />
-        <Button android:textSize="24.0sp" android:textColor="@color/white" android:id="@id/bt_ludo" android:background="@drawable/room_default" android:layout_width="202.0dip" android:layout_height="54.0dip" android:layout_marginTop="15.0dip" android:text="start" android:layout_below="@id/match_room" android:layout_centerHorizontal="true" />
+        <Button android:textSize="24.0sp" android:textColor="@color/white" android:id="@id/bt_ludo" android:background="@drawable/btn_start" android:layout_width="202.0dip" android:layout_height="54.0dip" android:layout_marginTop="15.0dip" android:text="start" android:layout_below="@id/match_room" android:layout_centerHorizontal="true" />
     </LinearLayout>
 </RelativeLayout>

@@ -2,13 +2,13 @@
 <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="306.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:layout_width="16.0dip" android:layout_height="wrap_content">
-        <View android:layout_gravity="center_horizontal" android:id="@id/view_time_line" android:background="@drawable/room_default" android:layout_width="12.0dip" android:layout_height="100.0dip" />
+        <View android:layout_gravity="center_horizontal" android:id="@id/view_time_line" android:background="@drawable/item_celebrity_historical_time_line_middle" android:layout_width="12.0dip" android:layout_height="100.0dip" />
     </FrameLayout>
     <FrameLayout android:layout_width="300.0dip" android:layout_height="93.0dip" android:layout_marginTop="3.0dip">
         <ImageView android:id="@id/iv_red_bg" android:layout_width="300.0dip" android:layout_height="93.0dip" android:src="@drawable/cerbrity_history_month_item_bg" />
         <ImageView android:layout_gravity="end|center" android:id="@id/iv_arrow" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/cerbrity_thrid_rank_detal_arrow_ic" android:layout_marginEnd="11.0dip" />
         <ImageView android:layout_gravity="start|center" android:id="@id/view_month_pic" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_marginStart="40.0dip" />
-        <View android:textSize="10.0sp" android:textStyle="bold" android:textColor="#ffdeba5d" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/stv_rank_title" android:layout_width="160.0dip" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:lines="1" android:layout_marginStart="115.0dip" app:end_color="#ffdeba5d" app:gradient="true" app:start_color="#fffff8d4" app:stroke_color="#ff752c15" app:stroke_width="1.0dip" />
+        <TextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="#ffdeba5d" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/stv_rank_title" android:layout_width="160.0dip" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:lines="1" android:layout_marginStart="115.0dip" app:end_color="#ffdeba5d" app:gradient="true" app:start_color="#fffff8d4" app:stroke_color="#ff752c15" app:stroke_width="1.0dip" />
         <LinearLayout android:orientation="horizontal" android:id="@id/ll_common_rank_type" android:visibility="invisible" android:layout_width="160.0dip" android:layout_height="55.0dip" android:layout_marginTop="25.0dip" android:layout_marginStart="115.0dip">
             <FrameLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
                 <ImageView android:layout_gravity="center" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/celebrity_history_item_empty_ic" />
@@ -30,7 +30,7 @@
             <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <ImageView android:id="@id/iv_2_ac_first_wing" android:layout_width="34.0dip" android:layout_height="49.0dip" android:src="@drawable/celebrity_item_head_wing_left_ic" />
                 <FrameLayout android:layout_width="47.0dip" android:layout_height="wrap_content" android:layout_marginStart="18.0dip">
-                    <View android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_first_head" android:background="@drawable/bg_celebrity_history_head_bottom" android:layout_width="33.0dip" android:layout_height="33.0dip" android:layout_marginTop="9.0dip" android:scaleType="centerCrop" />
+                    <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_first_head" android:background="@drawable/bg_celebrity_history_head_bottom" android:layout_width="33.0dip" android:layout_height="33.0dip" android:layout_marginTop="9.0dip" android:scaleType="centerCrop" />
                     <ImageView android:layout_gravity="center_horizontal" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_marginTop="14.0dip" android:src="@drawable/celebrity_history_item_empty_ic" />
                     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_frame_1" android:layout_width="47.0dip" android:layout_height="47.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/cerbrity_first_rank_common_head_bg" />
                     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_frame_1_rank" android:layout_width="9.0dip" android:layout_height="9.0dip" android:layout_marginTop="32.0dip" android:src="@drawable/celebrity_history_first_1_tag" />
@@ -39,7 +39,7 @@
             <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="52.0dip">
                 <ImageView android:id="@id/iv_2_ac_second_wing" android:layout_width="34.0dip" android:layout_height="49.0dip" android:src="@drawable/celebrity_item_head_wing_right_ic" android:layout_marginStart="30.0dip" />
                 <FrameLayout android:layout_width="47.0dip" android:layout_height="wrap_content">
-                    <View android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_second_head" android:background="@drawable/bg_celebrity_history_head_bottom" android:layout_width="33.0dip" android:layout_height="33.0dip" android:layout_marginTop="9.0dip" android:scaleType="centerCrop" />
+                    <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_second_head" android:background="@drawable/bg_celebrity_history_head_bottom" android:layout_width="33.0dip" android:layout_height="33.0dip" android:layout_marginTop="9.0dip" android:scaleType="centerCrop" />
                     <ImageView android:layout_gravity="center_horizontal" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_marginTop="14.0dip" android:src="@drawable/celebrity_history_item_empty_ic" />
                     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_frame_2" android:layout_width="47.0dip" android:layout_height="47.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/cerbrity_first_rank_common_head_bg" />
                     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_2_ac_frame_2_rank" android:layout_width="9.0dip" android:layout_height="9.0dip" android:layout_marginTop="32.0dip" android:src="@drawable/celebrity_history_first_1_tag" />
@@ -69,7 +69,7 @@
             </FrameLayout>
         </LinearLayout>
         <FrameLayout android:background="@drawable/cerbrity_histroy_rank_progress_type_tip_ic" android:layout_width="162.0dip" android:layout_height="wrap_content" android:layout_marginTop="38.0dip" android:layout_marginStart="117.0dip">
-            <View android:textSize="8.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/stv_tips" android:layout_width="162.0dip" android:layout_height="15.0dip" android:lines="1" app:autoSizeMaxTextSize="8.0sp" app:autoSizeMinTextSize="4.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+            <TextView android:textSize="8.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/stv_tips" android:layout_width="162.0dip" android:layout_height="15.0dip" android:lines="1" app:autoSizeMaxTextSize="8.0sp" app:autoSizeMinTextSize="4.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
         </FrameLayout>
     </FrameLayout>
 </FrameLayout>

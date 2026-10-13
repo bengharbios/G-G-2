@@ -4,7 +4,7 @@
     <ImageView android:id="@id/iv_reward_bg" android:layout_width="48.0dip" android:layout_height="48.0dip" android:src="@drawable/coin_bottom" />
     <ImageView android:layout_gravity="center" android:id="@id/iv_net_icon" android:visibility="gone" android:layout_width="43.0dip" android:layout_height="34.0dip" />
     <ImageView android:layout_gravity="center" android:id="@id/iv_local_icon" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="34.0dip" />
-    <View android:layout_gravity="center" android:id="@id/chest_iv_frame" android:visibility="visible" android:layout_width="38.0dip" android:layout_height="38.0dip" />
-    <View android:textSize="10.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:layout_gravity="end|bottom|center" android:id="@id/tv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:lines="1" android:shadowColor="#ff000000" android:shadowDy="2.0" android:shadowRadius="3.0" android:paddingStart="2.0dip" android:paddingEnd="5.0dip" />
+    <FrameLayout android:layout_gravity="center" android:id="@id/chest_iv_frame" android:visibility="visible" android:layout_width="38.0dip" android:layout_height="38.0dip" />
+    <TextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:layout_gravity="end|bottom|center" android:id="@id/tv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:lines="1" android:shadowColor="#ff000000" android:shadowDy="2.0" android:shadowRadius="3.0" android:paddingStart="2.0dip" android:paddingEnd="5.0dip" />
     <View android:layout_gravity="center" android:id="@id/iv_checked" android:background="@drawable/event_signed_ic" android:visibility="gone" android:layout_width="34.0dip" android:layout_height="34.0dip" />
 </FrameLayout>

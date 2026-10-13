@@ -2,29 +2,29 @@
 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:id="@id/rl_bg" android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <View android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
-        <View android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
-        <View android:id="@id/svga_image" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
+        <ImageView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
+        <ImageView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
+        <ImageView android:id="@id/svga_image" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
         <ImageView android:id="@id/iv_logo_two_match" android:layout_width="wrap_content" android:layout_height="105.0dip" android:layout_marginTop="64.0dip" android:layout_centerHorizontal="true" />
         <RelativeLayout android:id="@id/rl_rank" android:layout_width="310.0dip" android:layout_height="100.0dip" android:layout_marginTop="43.0dip" android:layout_below="@id/iv_logo_two_match" android:layout_centerHorizontal="true">
-            <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_marginLeft="50.0dip" android:layout_centerVertical="true" />
+            <View android:background="@drawable/bg_cup" android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_marginLeft="50.0dip" android:layout_centerVertical="true" />
             <ImageView android:id="@id/iv_coin" android:layout_width="100.0dip" android:layout_height="77.0dip" android:layout_marginLeft="30.0dip" android:src="@drawable/match_coin" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
             <LinearLayout android:gravity="left" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="135.0dip" android:layout_centerVertical="true">
-                <View android:textSize="16.0dip" android:textColor="@color/color_ffdd3c" android:id="@id/iv1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/rank1" android:includeFontPadding="false" />
+                <TextView android:textSize="16.0dip" android:textColor="@color/color_ffdd3c" android:id="@id/iv1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/rank1" android:includeFontPadding="false" />
                 <View android:layout_width="10.0dip" android:layout_height="1.0dip" />
-                <View android:textSize="20.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_rank" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="900.0M" android:includeFontPadding="false" />
+                <TextView android:textSize="20.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_rank" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="900.0M" android:includeFontPadding="false" />
             </LinearLayout>
         </RelativeLayout>
-        <View android:id="@id/svg_coin" android:layout_width="180.0dip" android:layout_height="180.0dip" android:layout_marginLeft="-20.0dip" android:layout_marginTop="-60.0dip" android:layout_alignLeft="@id/rl_rank" android:layout_alignTop="@id/rl_rank" />
-        <View android:textSize="20.0sp" android:textColor="#ffa6f1ff" android:id="@id/tv_sup" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/match_text" android:layout_below="@id/rl_rank" android:layout_centerHorizontal="true" />
+        <ImageView android:id="@id/svg_coin" android:layout_width="180.0dip" android:layout_height="180.0dip" android:layout_marginLeft="-20.0dip" android:layout_marginTop="-60.0dip" android:layout_alignLeft="@id/rl_rank" android:layout_alignTop="@id/rl_rank" />
+        <TextView android:textSize="20.0sp" android:textColor="#ffa6f1ff" android:id="@id/tv_sup" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/match_text" android:layout_below="@id/rl_rank" android:layout_centerHorizontal="true" />
         <RelativeLayout android:id="@id/rl3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tv_sup" android:layout_centerHorizontal="true">
-            <View android:textSize="23.0dip" android:textColor="@color/color_ffdd3c" android:gravity="center" android:id="@id/iv_bets2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/G_1472_0012" android:includeFontPadding="false" />
-            <View android:textSize="20.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_money" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="33333" android:includeFontPadding="false" android:layout_alignTop="@id/iv_bets2" android:layout_alignBottom="@id/iv_bets2" android:layout_marginStart="10.0dip" android:layout_toEndOf="@id/iv_bets2" />
+            <TextView android:textSize="23.0dip" android:textColor="@color/color_ffdd3c" android:gravity="center" android:id="@id/iv_bets2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/G_1472_0012" android:includeFontPadding="false" />
+            <TextView android:textSize="20.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_money" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="33333" android:includeFontPadding="false" android:layout_alignTop="@id/iv_bets2" android:layout_alignBottom="@id/iv_bets2" android:layout_marginStart="10.0dip" android:layout_toEndOf="@id/iv_bets2" />
         </RelativeLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="19.0dip" android:layout_below="@id/rl3" android:layout_centerHorizontal="true">
-            <View android:id="@id/match_two_view_1" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-            <ImageView android:layout_gravity="center_vertical" android:id="@id/iv0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_default" android:layout_marginStart="30.0dip" />
-            <View android:id="@id/match_two_view_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="30.0dip" />
+            <FrameLayout android:id="@id/match_two_view_1" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <ImageView android:layout_gravity="center_vertical" android:id="@id/iv0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/vs" android:layout_marginStart="30.0dip" />
+            <FrameLayout android:id="@id/match_two_view_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="30.0dip" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

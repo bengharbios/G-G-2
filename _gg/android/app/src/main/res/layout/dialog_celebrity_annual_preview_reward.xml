@@ -6,13 +6,13 @@
         <FrameLayout android:layout_gravity="start|center" android:id="@id/fl_rank" android:layout_width="75.0dip" android:layout_height="wrap_content">
             <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_common" android:visibility="gone" android:layout_width="50.0dip" android:layout_height="47.0dip">
                 <ImageView android:layout_width="50.0dip" android:layout_height="45.0dip" android:src="@drawable/celebrity_preview_bg_common" />
-                <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff9f5518" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Top" app:stroke_color="#ffd0b68a" app:stroke_width="2.0dip" />
-                <View android:textSize="12.0sp" android:textColor="#ffffbc6c" android:layout_gravity="bottom|center" android:id="@id/stv_common_rank_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" app:stroke_color="#ff8b590a" app:stroke_width="1.5dip" />
+                <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff9f5518" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Top" app:stroke_color="#ffd0b68a" app:stroke_width="2.0dip" />
+                <TextView android:textSize="12.0sp" android:textColor="#ffffbc6c" android:layout_gravity="bottom|center" android:id="@id/stv_common_rank_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" app:stroke_color="#ff8b590a" app:stroke_width="1.5dip" />
             </FrameLayout>
             <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_special" android:visibility="gone" android:layout_width="50.0dip" android:layout_height="60.0dip">
                 <ImageView android:id="@id/iv_rank_special_tag" android:layout_width="50.0dip" android:layout_height="60.0dip" />
-                <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff9f5518" android:layout_gravity="center" android:id="@id/stv_special_top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Top" app:stroke_color="#fff0d062" app:stroke_width="2.0dip" />
-                <View android:textSize="10.0sp" android:textColor="#ffffbc6c" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/stv_special_rank_num" android:layout_width="wrap_content" android:layout_height="18.0dip" android:layout_marginBottom="6.0dip" app:stroke_color="#ff8b590a" app:stroke_width="1.5dip" />
+                <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff9f5518" android:layout_gravity="center" android:id="@id/stv_special_top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Top" app:stroke_color="#fff0d062" app:stroke_width="2.0dip" />
+                <TextView android:textSize="10.0sp" android:textColor="#ffffbc6c" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/stv_special_rank_num" android:layout_width="wrap_content" android:layout_height="18.0dip" android:layout_marginBottom="6.0dip" app:stroke_color="#ff8b590a" app:stroke_width="1.5dip" />
             </FrameLayout>
         </FrameLayout>
     </FrameLayout>

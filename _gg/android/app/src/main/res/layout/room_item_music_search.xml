@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_music_folder" android:layout_marginStart="16.0dip" />
     <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" android:maxWidth="189.0dip" android:layout_marginStart="16.0dip">
-        <View android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/room_color_487" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tvFolderName" android:layout_width="wrap_content" android:layout_height="22.0dip" android:layout_marginTop="9.0dip" android:includeFontPadding="false" android:layout_marginEnd="16.0dip" />
-        <View android:textSize="9.0dip" android:textStyle="bold" android:textColor="@color/color_3b7" android:ellipsize="end" android:layout_gravity="bottom" android:id="@id/tvFolderPath" android:layout_width="wrap_content" android:layout_height="18.0dip" android:singleLine="true" android:layout_marginEnd="16.0dip" />
+        <TextView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/room_color_487" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tvFolderName" android:layout_width="wrap_content" android:layout_height="22.0dip" android:layout_marginTop="9.0dip" android:includeFontPadding="false" android:layout_marginEnd="16.0dip" />
+        <TextView android:textSize="9.0dip" android:textStyle="bold" android:textColor="@color/color_3b7" android:ellipsize="end" android:layout_gravity="bottom" android:id="@id/tvFolderPath" android:layout_width="wrap_content" android:layout_height="18.0dip" android:singleLine="true" android:layout_marginEnd="16.0dip" />
     </LinearLayout>
 </LinearLayout>

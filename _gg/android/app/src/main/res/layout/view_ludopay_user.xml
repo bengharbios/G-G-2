@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="251.0dip" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:textSize="13.0dip" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" />
-    <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="251.0dip" android:layout_height="125.0dip" android:layout_marginTop="13.0dip">
-        <View android:id="@id/iv_head" android:layout_width="53.0dip" android:layout_height="53.0dip" android:layout_marginTop="2.0dip" />
-        <View android:textSize="14.0dip" android:textColor="#ff08846b" android:ellipsize="end" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:maxLines="1" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+    <TextView android:textSize="13.0dip" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/yalla_pay_info_bg" android:layout_width="251.0dip" android:layout_height="125.0dip" android:layout_marginTop="13.0dip">
+        <FrameLayout android:id="@id/iv_head" android:layout_width="53.0dip" android:layout_height="53.0dip" android:layout_marginTop="2.0dip" />
+        <TextView android:textSize="14.0dip" android:textColor="#ff08846b" android:ellipsize="end" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:maxLines="1" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
         <LinearLayout android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layoutDirection="ltr">
-            <View android:textSize="12.0dip" android:textColor="#ff84c6b4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ID:" android:textDirection="ltr" />
-            <View android:textSize="12.0dip" android:textColor="#ffffffff" android:id="@id/tv_id" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff30876d" app:stroke_width="1.0dip" />
+            <TextView android:textSize="12.0dip" android:textColor="#ff84c6b4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ID:" android:textDirection="ltr" />
+            <TextView android:textSize="12.0dip" android:textColor="#ffffffff" android:id="@id/tv_id" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff30876d" app:stroke_width="1.0dip" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

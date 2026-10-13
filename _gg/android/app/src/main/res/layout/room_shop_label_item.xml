@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View android:textSize="9.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tvLabelName" android:background="@drawable/room_shop_label_unselected_bg" android:layout_width="wrap_content" android:layout_height="23.0dip" android:minWidth="66.0dip" android:soundEffectsEnabled="false" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" android:layout_marginEnd="8.0dip"
+<TextView android:textSize="9.0sp" android:textColor="@color/room_color_0A5F45" android:gravity="center" android:id="@id/tvLabelName" android:background="@drawable/room_shop_label_unselected_bg" android:layout_width="wrap_content" android:layout_height="23.0dip" android:minWidth="66.0dip" android:soundEffectsEnabled="false" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" android:layout_marginEnd="8.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" />

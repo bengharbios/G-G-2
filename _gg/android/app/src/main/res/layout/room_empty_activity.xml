@@ -2,6 +2,6 @@
 <merge android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_no_data" android:layout_marginStart="24.0dip" android:layout_marginEnd="24.0dip" />
-    <View android:textSize="15.0sp" android:textColor="#ff86a3ba" android:gravity="center" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="28.0dip" android:text="@string/C_1380_036" android:layout_marginStart="24.0dip" android:layout_marginEnd="24.0dip" />
-    <View android:textSize="12.0sp" android:textColor="#ffaaaaaa" android:gravity="center" android:id="@id/tvContent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/C_1380_037" android:layout_marginStart="24.0dip" android:layout_marginEnd="24.0dip" />
+    <TextView android:textSize="15.0sp" android:textColor="#ff86a3ba" android:gravity="center" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="28.0dip" android:text="@string/C_1380_036" android:layout_marginStart="24.0dip" android:layout_marginEnd="24.0dip" />
+    <TextView android:textSize="12.0sp" android:textColor="#ffaaaaaa" android:gravity="center" android:id="@id/tvContent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/C_1380_037" android:layout_marginStart="24.0dip" android:layout_marginEnd="24.0dip" />
 </merge>

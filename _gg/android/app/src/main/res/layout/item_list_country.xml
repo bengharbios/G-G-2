@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@id/rl_item_area_code" android:background="@drawable/rounded_edittext" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginBottom="5.0dip">
         <ImageView android:id="@id/iv_country" android:layout_width="24.0dip" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="15.0dip" />
-        <View android:textSize="16.0sp" android:textColor="@color/phone_area_code" android:id="@id/tv_country_item" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CH" android:layout_centerVertical="true" android:layout_marginStart="12.0dip" android:layout_toEndOf="@id/iv_country" />
-        <View android:textSize="16.0sp" android:textColor="@color/phone_area_code" android:id="@id/tv_area_code" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+86" android:layout_centerVertical="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" />
+        <TextView android:textSize="16.0sp" android:textColor="@color/phone_area_code" android:id="@id/tv_country_item" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CH" android:layout_centerVertical="true" android:layout_marginStart="12.0dip" android:layout_toEndOf="@id/iv_country" />
+        <TextView android:textSize="16.0sp" android:textColor="@color/phone_area_code" android:id="@id/tv_area_code" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+86" android:layout_centerVertical="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </LinearLayout>

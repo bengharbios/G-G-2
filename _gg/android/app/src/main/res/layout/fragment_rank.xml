@@ -2,18 +2,18 @@
 <RelativeLayout android:orientation="vertical" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <RelativeLayout android:id="@id/rl_title" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip">
-            <ImageView android:id="@id/iv_rules" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/room_default" android:paddingStart="10.0dip" android:layout_alignParentStart="true" />
-            <View android:textSize="25.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
-            <ImageView android:id="@id/iv_close" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_default" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
+        <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip">
+            <ImageView android:id="@id/iv_rules" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/description_rule" android:paddingStart="10.0dip" android:layout_alignParentStart="true" />
+            <TextView android:textSize="25.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
+            <ImageView android:id="@id/iv_close" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/skin_close" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
         </RelativeLayout>
-        <View android:id="@id/view_rank_my" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-9.0dip" android:layout_below="@id/rl_title" />
+        <RelativeLayout android:id="@id/view_rank_my" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-9.0dip" android:layout_below="@id/rl_title" />
     </RelativeLayout>
     <FrameLayout android:id="@id/fl_receive_notice" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <View android:id="@id/ff_cover" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <FrameLayout android:id="@id/ff_cover" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <FrameLayout android:id="@id/fl_guide" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <FrameLayout android:id="@id/fl_cover_head" android:background="@drawable/cover" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="50.0dip" />
-        <View android:textSize="10.0sp" android:textColor="#ff9b9b9b" android:gravity="center" android:layout_gravity="right" android:id="@id/tv_skip" android:background="@drawable/skip_tutorial" android:paddingLeft="7.0dip" android:visibility="gone" android:layout_width="89.0dip" android:layout_height="28.0dip" android:layout_marginTop="16.0dip" android:text="@string/skip_tutorial" android:includeFontPadding="false" />
+        <TextView android:textSize="10.0sp" android:textColor="#ff9b9b9b" android:gravity="center" android:layout_gravity="right" android:id="@id/tv_skip" android:background="@drawable/skip_tutorial" android:paddingLeft="7.0dip" android:visibility="gone" android:layout_width="89.0dip" android:layout_height="28.0dip" android:layout_marginTop="16.0dip" android:text="@string/skip_tutorial" android:includeFontPadding="false" />
         <include android:id="@id/guide_rank_1" android:visibility="gone" layout="@layout/guide_show_rank_rules_layout" />
         <include android:id="@id/guide_rank_2" android:visibility="gone" layout="@layout/guide_show_all_division_layout" />
         <include android:id="@id/guide_rank_3" android:visibility="gone" layout="@layout/guide_show_finish_layout" />

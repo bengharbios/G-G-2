@@ -2,9 +2,9 @@
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <View android:id="@id/tab_recent" android:layout_width="120.0dip" android:layout_height="wrap_content" />
-        <View android:id="@id/tab_game" android:layout_width="120.0dip" android:layout_height="wrap_content" />
-        <View android:id="@id/tab_fb" android:layout_width="120.0dip" android:layout_height="wrap_content" />
+        <RelativeLayout android:id="@id/tab_recent" android:layout_width="120.0dip" android:layout_height="wrap_content" />
+        <RelativeLayout android:id="@id/tab_game" android:layout_width="120.0dip" android:layout_height="wrap_content" />
+        <RelativeLayout android:id="@id/tab_fb" android:layout_width="120.0dip" android:layout_height="wrap_content" />
     </LinearLayout>
-    <View android:id="@id/vp_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" />
+    <androidx.viewpager.widget.ViewPager android:id="@id/vp_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" />
 </merge>

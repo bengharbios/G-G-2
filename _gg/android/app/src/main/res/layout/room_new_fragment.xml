@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/fl_explore_container" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:id="@id/fragment_new_refresh" android:descendantFocusability="blocksDescendants" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
-        <View android:id="@id/rv_room_new" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="never" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
-    </View>
+    <FrameLayout android:id="@id/fragment_new_refresh" android:descendantFocusability="blocksDescendants" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rv_room_new" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="never" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
+    </FrameLayout>
 </RelativeLayout>

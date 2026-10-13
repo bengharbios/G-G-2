@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:gravity="bottom" android:layout_gravity="bottom" android:layout_width="120.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_medal_name" android:layout_width="115.0dip" android:layout_height="wrap_content" android:maxLines="2" android:layout_centerHorizontal="true" />
+    <TextView android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_medal_name" android:layout_width="115.0dip" android:layout_height="wrap_content" android:maxLines="2" android:layout_centerHorizontal="true" />
     <FrameLayout android:layout_width="115.0dip" android:layout_height="115.0dip" android:layout_below="@id/tv_medal_name" android:layout_centerHorizontal="true">
         <ImageView android:id="@id/iv_circle_light" android:layout_width="115.0dip" android:layout_height="115.0dip" android:src="@drawable/medal_add_circle_light" />
-        <View android:layout_gravity="bottom|center" android:id="@id/iv_medal_dynamic" android:layout_width="102.0dip" android:layout_height="95.0dip" android:layout_marginBottom="13.0dip" app:isUseSmallBadge="false" />
+        <FrameLayout android:layout_gravity="bottom|center" android:id="@id/iv_medal_dynamic" android:layout_width="102.0dip" android:layout_height="95.0dip" android:layout_marginBottom="13.0dip" app:isUseSmallBadge="false" />
         <ImageView android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/medal_new_show_ic" />
         <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_add" android:layout_width="26.0dip" android:layout_height="26.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/medal_add" android:layout_marginEnd="10.0dip" />
-        <View android:textSize="22.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="14.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
-        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_check" android:layout_width="23.0dip" android:layout_height="25.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/room_default" android:layout_marginEnd="12.0dip" />
+        <TextView android:textSize="22.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="14.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_check" android:layout_width="23.0dip" android:layout_height="25.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/skin_check" android:layout_marginEnd="12.0dip" />
     </FrameLayout>
 </RelativeLayout>

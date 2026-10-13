@@ -3,8 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:orientation="vertical" android:id="@id/main_detail" android:background="@drawable/rpyal_open_treasure_close_ic" android:layout_width="360.0dip" android:layout_height="400.0dip" android:layout_centerVertical="true">
         <ImageView android:layout_gravity="center_horizontal" android:layout_width="280.0dip" android:layout_height="55.0dip" android:layout_marginTop="25.0dip" android:src="@drawable/royal_open_treasure_title" />
-        <View android:textSize="22.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btn_use" android:background="@drawable/bn_yes" android:layout_width="168.0dip" android:layout_height="54.0dip" android:layout_marginTop="310.0dip" android:text="@string/G_1410_40" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+        <TextView android:textSize="22.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btn_use" android:background="@drawable/bn_yes" android:layout_width="168.0dip" android:layout_height="54.0dip" android:layout_marginTop="310.0dip" android:text="@string/G_1410_40" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
     </FrameLayout>
-    <View android:layout_gravity="center" android:id="@id/svgaOpen" android:visibility="visible" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" app:play_on_attach="true" />
+    <ImageView android:layout_gravity="center" android:id="@id/svgaOpen" android:visibility="visible" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" app:play_on_attach="true" />
     <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="34.0dip" android:src="@drawable/close" android:layout_alignParentEnd="true" />
 </RelativeLayout>

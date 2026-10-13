@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewSwitcher android:id="@id/viewSwitcher" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="10.0sp" android:textColor="#ffffffff" android:layout_gravity="center_horizontal" android:id="@id/tvText1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1370_191" android:lines="1" />
-    <View android:textSize="10.0sp" android:textColor="#ffffffff" android:layout_gravity="center_horizontal" android:id="@id/tvText2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1410_056" android:lines="1" />
+    <TextView android:textSize="10.0sp" android:textColor="#ffffffff" android:layout_gravity="center_horizontal" android:id="@id/tvText1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1370_191" android:lines="1" />
+    <TextView android:textSize="10.0sp" android:textColor="#ffffffff" android:layout_gravity="center_horizontal" android:id="@id/tvText2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1410_056" android:lines="1" />
 </ViewSwitcher>

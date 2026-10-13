@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/room_default" android:layout_width="131.0dip" android:layout_height="37.0dip"
+<LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/bg_text_msg_reply" android:layout_width="131.0dip" android:layout_height="37.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="13.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_copy" android:layout_width="65.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_225" />
+    <TextView android:textSize="13.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_copy" android:layout_width="65.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_225" />
     <View android:background="#ff747474" android:layout_width="1.0dip" android:layout_height="30.0dip" />
-    <View android:textSize="13.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_reply" android:layout_width="65.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_131" />
+    <TextView android:textSize="13.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_reply" android:layout_width="65.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_131" />
 </LinearLayout>

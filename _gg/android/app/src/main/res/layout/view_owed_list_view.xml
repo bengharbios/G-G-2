@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:id="@id/refresh_layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <FrameLayout android:id="@id/refresh_layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_business_list" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    </View>
+    </FrameLayout>
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_record" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/rl_coin" android:layout_centerHorizontal="true">
         <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="93.0dip" android:layout_height="93.0dip" android:src="@drawable/no_data" />
-        <View android:textSize="16.0sp" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/no_record" />
+        <TextView android:textSize="16.0sp" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/no_record" />
     </LinearLayout>
 </merge>

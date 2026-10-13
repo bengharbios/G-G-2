@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_down_image" android:background="@drawable/room_bg_save_image" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/room_save_to_album" />
+    <TextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_down_image" android:background="@drawable/room_bg_save_image" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/room_save_to_album" />
     <View android:background="@color/color_grey_f5" android:layout_width="fill_parent" android:layout_height="5.0dip" />
-    <View android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_cancel_down" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/cancel" />
+    <TextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_cancel_down" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/cancel" />
 </LinearLayout>

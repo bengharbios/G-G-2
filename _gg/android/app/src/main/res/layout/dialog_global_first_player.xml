@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:orientation="vertical" android:id="@id/rl_main" android:background="@color/black_20" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:id="@id/svga_royal_upgrade" android:layout_width="360.0dip" android:layout_height="384.0dip" android:layout_centerInParent="true" />
+    <ImageView android:id="@id/svga_royal_upgrade" android:layout_width="360.0dip" android:layout_height="384.0dip" android:layout_centerInParent="true" />
     <FrameLayout android:id="@id/fl_photo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
-        <View android:id="@id/iv_photo" android:layout_width="131.0dip" android:layout_height="131.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/default_photo" app:head_face_margin="15.0dip" />
+        <FrameLayout android:id="@id/iv_photo" android:layout_width="131.0dip" android:layout_height="131.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/default_photo" app:head_face_margin="15.0dip" />
     </FrameLayout>
     <FrameLayout android:layout_width="160.0dip" android:layout_height="32.0dip" android:layout_marginTop="279.0dip" android:layout_alignTop="@id/svga_royal_upgrade" android:layout_centerHorizontal="true">
-        <View android:textSize="15.0sp" android:textColor="@color/White" android:gravity="center" android:layout_gravity="center" android:id="@id/ctv_nickname" android:layout_width="150.0dip" android:layout_height="32.0dip" android:lines="1" app:autoSizeMaxTextSize="15.0sp" app:autoSizeMinTextSize="1.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <TextView android:textSize="15.0sp" android:textColor="@color/White" android:gravity="center" android:layout_gravity="center" android:id="@id/ctv_nickname" android:layout_width="150.0dip" android:layout_height="32.0dip" android:lines="1" app:autoSizeMaxTextSize="15.0sp" app:autoSizeMinTextSize="1.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
     </FrameLayout>
 </RelativeLayout>

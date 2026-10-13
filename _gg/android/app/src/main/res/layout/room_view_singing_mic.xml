@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:layout_gravity="center" android:id="@id/singingWaveMicView" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <FrameLayout android:layout_gravity="center" android:id="@id/singingWaveMicView" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <ImageView android:layout_gravity="center" android:id="@id/ivSingingHead" android:focusable="true" android:focusableInTouchMode="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="14.0dip" />
-    <View android:layout_gravity="center" android:id="@id/singingSVGAView" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" app:clearsAfterStop="false" app:play_on_attach="true" app:source="room_mic_singing.svga" />
+    <ImageView android:layout_gravity="center" android:id="@id/singingSVGAView" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" app:clearsAfterStop="false" app:play_on_attach="true" app:source="room_mic_singing.svga" />
 </merge>

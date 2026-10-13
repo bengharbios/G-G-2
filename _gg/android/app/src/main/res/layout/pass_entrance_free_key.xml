@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View android:layout_width="63.0dip" android:layout_height="64.0dip" app:default_static_source="@drawable/pass_entrance_free_static_ic" app:play_on_attach="true" app:source="pass/pass_task_free_small_key.svga"
+<ImageView android:layout_width="63.0dip" android:layout_height="64.0dip" app:default_static_source="@drawable/pass_entrance_free_static_ic" app:play_on_attach="true" app:source="pass/pass_task_free_small_key.svga"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

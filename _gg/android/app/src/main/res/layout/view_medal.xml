@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_medal" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:id="@id/iv_medal" android:layout_width="69.0dip" android:layout_height="64.0dip" />
-        <View android:textSize="12.0sp" android:textColor="#ff28cf9c" android:ellipsize="end" android:gravity="center" android:id="@id/tv_name" android:layout_width="69.0dip" android:layout_height="30.0dip" android:layout_marginTop="4.0dip" android:maxLines="2" />
+        <TextView android:textSize="12.0sp" android:textColor="#ff28cf9c" android:ellipsize="end" android:gravity="center" android:id="@id/tv_name" android:layout_width="69.0dip" android:layout_height="30.0dip" android:layout_marginTop="4.0dip" android:maxLines="2" />
     </LinearLayout>
-    <View android:textSize="23.0sp" android:layout_gravity="end|bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" app:end_color="#ffffffff" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffdf0f" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+    <TextView android:textSize="23.0sp" android:layout_gravity="end|bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" app:end_color="#ffffffff" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffdf0f" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
     <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_medal_add" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:id="@id/iv_add" android:layout_width="69.0dip" android:layout_height="64.0dip" android:src="@drawable/medal_add_icon" />
-        <View android:textSize="11.0sp" android:textColor="#ffc5e3db" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/click_add_badge" />
+        <TextView android:textSize="11.0sp" android:textColor="#ffc5e3db" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/click_add_badge" />
     </LinearLayout>
     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_other_void" android:layout_width="69.0dip" android:layout_height="64.0dip" android:src="@drawable/medal_other_void" />
 </merge>

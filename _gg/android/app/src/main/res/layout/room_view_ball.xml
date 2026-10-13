@@ -2,5 +2,5 @@
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ProgressBar android:layout_gravity="center" android:id="@id/pbLoad" android:layout_width="24.0dip" android:layout_height="24.0dip" android:indeterminateDrawable="@drawable/room_gif_load_animal" android:indeterminateDuration="500" android:indeterminateBehavior="repeat" />
-    <View android:id="@id/ballView" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" app:fillMode="Forward" app:logName="ballView" app:loopCount="1" app:page_aware_mode="event" app:play_on_attach="true" />
+    <ImageView android:id="@id/ballView" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" app:fillMode="Forward" app:logName="ballView" app:loopCount="1" app:page_aware_mode="event" app:play_on_attach="true" />
 </merge>

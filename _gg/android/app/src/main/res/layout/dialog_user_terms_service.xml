@@ -2,11 +2,11 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="322.0dip" android:layout_height="500.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@id/rl_title" android:layout_width="fill_parent" android:layout_height="38.0dip">
-        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/room_default" />
-        <View android:textSize="15.0sp" android:textColor="@color/white" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/user_agreement" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/image_bg_title" />
+        <TextView android:textSize="15.0sp" android:textColor="@color/white" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/user_agreement" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
         <ImageView android:id="@id/iv_agreement_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>
     <FrameLayout android:background="@drawable/policy_bg" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <View android:id="@id/web_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="12.0dip" android:layout_marginBottom="24.0dip" android:layout_marginStart="16.0dip" android:layout_marginEnd="16.0dip" />
+        <WebView android:id="@id/web_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="12.0dip" android:layout_marginBottom="24.0dip" android:layout_marginStart="16.0dip" android:layout_marginEnd="16.0dip" />
     </FrameLayout>
 </LinearLayout>

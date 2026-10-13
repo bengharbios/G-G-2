@@ -2,8 +2,8 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/view_main" android:layout_width="360.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ViewStub android:id="@id/dialog_top_extra" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_base_dialog" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip">
-        <View android:id="@id/common_header" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="38.0dip" android:layout_marginTop="6.0dip" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip" app:end_icon="@drawable/close_click" app:title="@string/rule" app:title_color="@color/white" app:title_size="22.0sp" />
+    <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_base_dialog" android:background="@drawable/image_bg_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip">
+        <RelativeLayout android:id="@id/common_header" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="38.0dip" android:layout_marginTop="6.0dip" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip" app:end_icon="@drawable/close_click" app:title="@string/rule" app:title_color="@color/white" app:title_size="22.0sp" />
         <ViewStub android:id="@id/dialog_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" android:layout_marginStart="1.0dip" android:layout_marginEnd="1.0dip" />
     </LinearLayout>
     <ViewStub android:id="@id/dialog_extra" android:layout_width="fill_parent" android:layout_height="wrap_content" />
