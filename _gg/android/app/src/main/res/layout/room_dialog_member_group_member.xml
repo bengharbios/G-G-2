@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:background="@color/room_color_0E2035" android:layout_width="fill_parent" android:layout_height="fill_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:background="@color/whiteE2035" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:id="@id/iv_image_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" />
     <com.google.android.material.appbar.AppBarLayout android:orientation="vertical" android:id="@id/aplMemberGroup" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" app:elevation="0.0dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
@@ -12,5 +12,5 @@
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager2.widget.ViewPager2 android:id="@id/viewPager2" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <androidx.constraintlayout.widget.Group android:id="@id/contentGroup" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" app:constraint_referenced_ids="aplMemberGroup,viewPager2" />
-    <View.PageStatusView android:id="@id/pageStateView" android:background="@color/room_color_0E2035" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View.PageStatusView android:id="@id/pageStateView" android:background="@color/whiteE2035" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

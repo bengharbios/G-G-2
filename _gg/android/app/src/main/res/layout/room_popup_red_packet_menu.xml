@@ -3,11 +3,11 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llRuleItem" android:layout_width="fill_parent" android:layout_height="36.0dip" android:paddingStart="10.0dip" android:paddingEnd="15.0dip">
         <ImageView android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/room_icon_red_packet_rule" android:layout_marginEnd="5.0dip" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/room_color_E8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0018" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/whiteE8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0018" />
     </LinearLayout>
     <View android:background="@drawable/room_divider_red_packet_menu" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llSendRecordItem" android:layout_width="fill_parent" android:layout_height="36.0dip" android:paddingStart="10.0dip" android:paddingEnd="15.0dip">
         <ImageView android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/room_icon_red_packet_send_record" android:layout_marginEnd="5.0dip" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/room_color_E8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0019" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/whiteE8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0019" />
     </LinearLayout>
 </LinearLayout>

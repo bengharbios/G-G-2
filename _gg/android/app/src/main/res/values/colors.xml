@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">#0D8A7A</color>
+    <color name="colorPrimaryDark">#0A6B5E</color>
+    <color name="ic_launcher_foreground">#FFFFFF</color>
+    <color name="ic_launcher_background">#0D8A7A</color>
     <color name="White">#ffffffff</color>
     <color name="abc_decor_view_status_guard">#ff000000</color>
     <color name="abc_decor_view_status_guard_light">#ffffffff</color>
