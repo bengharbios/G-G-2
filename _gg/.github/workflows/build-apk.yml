@@ -6,7 +6,43 @@ on:
   workflow_dispatch:
 
 jobs:
+  aapt2-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: aapt2 link check
+        run: |
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          JAR=$(ls -d $ANDROID_HOME/platforms/android-3* | sort -V | tail -1)/android.jar
+          echo "Build tools: $BT"
+          echo "Android jar: $JAR"
+          mkdir -p /tmp/aapt2out
+          $BT/aapt2 compile --dir _gg/android/app/src/main/res -o /tmp/res.zip 2>&1 | tee /tmp/compile.log || true
+          $BT/aapt2 link -I $JAR --manifest _gg/android/app/src/main/AndroidManifest.xml \
+            -o /tmp/out.apk /tmp/res.zip --no-auto-version \
+            --warn-manifest-validation 2>&1 | tee /tmp/link.log || true
+          echo "== counts =="
+          echo "not found: $(grep -c 'not found' /tmp/link.log || true)"
+          echo "duplicate: $(grep -c 'duplicate\|Duplicate' /tmp/link.log || true)"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aapt2-logs
+          path: /tmp/*.log
+
   build:
+    needs: aapt2-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

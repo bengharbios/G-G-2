@@ -517,6 +517,19 @@
     <style name="TestThemeWithLineHeightDisabled" parent="@style/TestThemeWithLineHeight">
         <item name="textAppearanceLineHeightEnabled">false</item>
     </style>
+    <style name="TextAppearance.Compat.Notification.Line2" parent="@style/TextAppearance.Compat.Notification.Info" />
+    <style name="TextAppearance.Compat.Notification.Line2.Media" parent="@style/TextAppearance.Compat.Notification.Info.Media" />
+    <style name="TextAppearance.Compat.Notification.Media" parent="@style/TextAppearance.Compat.Notification">
+        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+    </style>
+    <style name="TextAppearance.Compat.Notification.Time" parent="@android:style/TextAppearance.Material.Notification.Time" />
+    <style name="TextAppearance.Compat.Notification.Time.Media" parent="@style/TextAppearance.Compat.Notification.Time">
+        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
+    </style>
+    <style name="TextAppearance.Compat.Notification.Title" parent="@android:style/TextAppearance.Material.Notification.Title" />
+    <style name="TextAppearance.Compat.Notification.Title.Media" parent="@style/TextAppearance.Compat.Notification.Title">
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+    </style>
     <style name="TextAppearance.M3.Sys.Typescale.BodyLarge" parent="@style/TextAppearance.AppCompat.Body2">
         <item name="android:textSize">16.0sp</item>
         <item name="android:textStyle">normal</item>
@@ -1161,19 +1174,9 @@
         <item name="android:shadowDy">-1.0</item>
         <item name="android:shadowRadius">0.25</item>
     </style>
+    
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/room_default</item>
+        <item name="android:background">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="Widget.Design.Snackbar" parent="Widget.AppCompat.TextView">
-        <item name="android:background">#CC000000</item>
-        <item name="android:textColor">#FFFFFFFF</item>
-    </style>
-    <style name="TextAppearance.Design.Snackbar.Message" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">#FFFFFFFF</item>
-    </style>
-    <style name="com_facebook_auth_dialog_instructions_textview" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">#FFFFFFFF</item>
     </style>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/background" android:drawable="@drawable/room_default" />
+    <item android:id="@android:id/background" android:drawable="@drawable/arriva_bous_progress_bg" />
     <item android:id="@android:id/progress" android:left="2.0dip" android:top="2.0dip" android:right="2.0dip" android:bottom="2.0dip">
-        <clip android:drawable="@drawable/room_default" />
+        <clip android:drawable="@drawable/arriva_bous_progress_fron" />
     </item>
 </layer-list>
