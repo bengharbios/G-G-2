@@ -76,8 +76,7 @@ public class RoomActivity extends Activity {
     // عناصر إضافية للصورة 21
     // (تم حذف ownerTagView — غير مطلوب في الأصل)
     // (تم حذف leftChatBtn/leftMusicBtn — هما في الأصل موجودان في rightScrollView)
-    // overlay لوحة الإدخال فوق الكيبورد (مطابقة للسورس الأصلي room_bottom_input.xml)
-    private View inputOverlayView;     // الحاوية العلوية للـ overlay
+    // (تم حذف inputOverlayView — استبدل بتبديل visibility بين staticRoomBottomView و roomBottomInputView)
 
     // Data
     private List<MicSeat> micSeats = new ArrayList<>();
@@ -295,7 +294,8 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
-    // البند A: المقاعد (مع إصلاح ارتفاع rvRoomMic)
+    // البند A: المقاعد — استخدم قيم XML الأصلية (wrap_content + marginTop=110dp)
+    // إن غابت المقاعد بسبب تبعية دائرية، احسب ارتفاع llRoomTop فقط
     // ============================================
     private void setupMicSeats() {
         try {
@@ -306,50 +306,47 @@ public class RoomActivity extends Activity {
                 return;
             }
 
-            // إصلاح ارتفاع rvRoomMic (تبعية دائرية → 0)
-            int heightPx = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 100,
-                getResources().getDisplayMetrics());
-            ViewGroup.LayoutParams params = rvRoomMic.getLayoutParams();
-            if (params != null) {
-                params.height = heightPx;
-                rvRoomMic.setLayoutParams(params);
-                Log.i(TAG, "[A] rvRoomMic height set to 100dp");
-            }
-
-            // أيضاً اضبط llRoomTop ارتفاع ثابت
-            int llRoomTopId = getId("llRoomTop");
-            if (llRoomTopId != 0) {
-                View llRoomTop = findViewById(llRoomTopId);
-                if (llRoomTop != null) {
-                    int topHeightPx = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 220,
-                        getResources().getDisplayMetrics());
-                    ViewGroup.LayoutParams topParams = llRoomTop.getLayoutParams();
-                    if (topParams != null) {
-                        topParams.height = topHeightPx;
-                        llRoomTop.setLayoutParams(topParams);
-                        Log.i(TAG, "[A] llRoomTop height set to 220dp");
-                    }
-                }
-            }
+            // [المرحلة 2 - البند 4] لا نضبط ارتفاع rvRoomMic ولا llRoomTop برمجياً
+            // XML الأصلي: rvRoomMic height=wrap_content + marginTop=110dp
+            //             llRoomTop height=wrap_content + داخله 50dp + 50dp
+            // لا padding برمجي — XML يحدد كل شيء
 
             rvRoomMic.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-            // مركزة المقاعد في الوسط (5 × 70dp = 350dp)
-            int totalWidthPx = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 350,
-                getResources().getDisplayMetrics());
-            int screenWidth = getResources().getDisplayMetrics().widthPixels;
-            int padding = Math.max(0, (screenWidth - totalWidthPx) / 2);
-            rvRoomMic.setPadding(padding, 0, padding, 0);
-            rvRoomMic.setClipToPadding(false);
-            Log.i(TAG, "[A] rvRoomMic centered, padding=" + padding + "px");
 
             initMicSeats();
             micAdapter = new MicAdapter(micSeats);
             rvRoomMic.setAdapter(micAdapter);
             Log.i(TAG, "[A] rvRoomMic adapter set with " + micSeats.size() + " seats");
+
+            // تحقق إن كانت المقاعد مرئية (ارتفاع rvRoomMic > 0)
+            rvRoomMic.post(() -> {
+                try {
+                    if (rvRoomMic.getHeight() == 0) {
+                        Log.w(TAG, "[A] rvRoomMic height==0 — fallback: set llRoomTop height");
+                        // fallback: احسب ارتفاع llRoomTop فقط (لا تغير rvRoomMic)
+                        // llRoomTop = 50dp (top) + 50dp (sofa) + 100dp (rvRoomMic) = 200dp تقريباً
+                        int llRoomTopId = getId("llRoomTop");
+                        if (llRoomTopId != 0) {
+                            View llRoomTop = findViewById(llRoomTopId);
+                            if (llRoomTop != null) {
+                                int topHeightPx = (int) TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP, 200,
+                                    getResources().getDisplayMetrics());
+                                ViewGroup.LayoutParams topParams = llRoomTop.getLayoutParams();
+                                if (topParams != null) {
+                                    topParams.height = topHeightPx;
+                                    llRoomTop.setLayoutParams(topParams);
+                                    Log.i(TAG, "[A] llRoomTop height fallback set to 200dp");
+                                }
+                            }
+                        }
+                    } else {
+                        Log.i(TAG, "[A] rvRoomMic height OK = " + rvRoomMic.getHeight());
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "[A] post-check error", e);
+                }
+            });
         } catch (Exception e) {
             Log.e(TAG, "[A] setupMicSeats error", e);
             createMicRecyclerViewFallback();
@@ -592,45 +589,64 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
-    // البند D: الشريط الجانبي الأيمن
+    // البند D: الشريط الجانبي الأيمن (rightScrollView)
+    // مطابقة للسورس الأصلي: layout_gravity="end|bottom|center" (يمين الشاشة)
+    // فقط الرسائل والموسيقى بـ VISIBLE — البانرات تبقى كما هي (فارغة/gone)
     // ============================================
     private void setupSidebar() {
         try {
-            // rightScrollView
+            // rightScrollView: VISIBLE (مكانه على اليمين في XML الأصلي)
             int scrollId = getId("rightScrollView");
             if (scrollId != 0) {
                 View rightScroll = findViewById(scrollId);
                 if (rightScroll != null) {
                     rightScroll.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "[D] rightScrollView -> VISIBLE");
+                    Log.i(TAG, "[D] rightScrollView -> VISIBLE (موضع: end|bottom)");
                 }
             }
 
-            // Treasure / Activity / Music
-            String[] sidebarIds = {"operations_activity_banner", "eventAndGameBannerView",
-                "activesBannerView", "ivRoomMusic", "ivMessagesBox"};
-            String[] sidebarNames = {"الكنز", "النشاط", "البانر", "الموسيقى", "الرسائل"};
+            // [المرحلة 3 - البند 7] فقط ivMessagesBox + ivRoomMusic بـ VISIBLE
+            // البانرات (operations_activity_banner, eventAndGameBannerView, activesBannerView)
+            // تبقى فارغة افتراضياً كما في السورس — لا نفعّلها
 
-            for (int i = 0; i < sidebarIds.length; i++) {
-                final int sid = getId(sidebarIds[i]);
-                if (sid == 0) continue;
-                final String name = sidebarNames[i];
-                View v = findViewById(sid);
-                if (v != null) {
-                    v.setVisibility(View.VISIBLE);
-                    v.setOnClickListener(btn ->
-                        Toast.makeText(this, "📋 " + name, Toast.LENGTH_SHORT).show());
-                    Log.i(TAG, "[D] " + name + " -> VISIBLE + Toast");
-                }
-            }
-
-            // fl_message_box (gone) -> VISIBLE
+            // fl_message_box (gone) -> VISIBLE + اظهر ivMessagesBox
             int msgBoxId = getId("fl_message_box");
             if (msgBoxId != 0) {
                 View msgBox = findViewById(msgBoxId);
                 if (msgBox != null) {
                     msgBox.setVisibility(View.VISIBLE);
                     Log.i(TAG, "[D] fl_message_box -> VISIBLE");
+                }
+            }
+            int ivMessagesId = getId("ivMessagesBox");
+            if (ivMessagesId != 0) {
+                ImageView ivMessages = findViewById(ivMessagesId);
+                if (ivMessages != null) {
+                    ivMessages.setVisibility(View.VISIBLE);
+                    ivMessages.setOnClickListener(v ->
+                        Toast.makeText(this, "💬 الرسائل", Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[D] ivMessagesBox -> VISIBLE + Toast");
+                }
+            }
+
+            // ivRoomMusic: VISIBLE + Toast
+            int ivRoomMusicId = getId("ivRoomMusic");
+            if (ivRoomMusicId != 0) {
+                ImageView ivRoomMusic = findViewById(ivRoomMusicId);
+                if (ivRoomMusic != null) {
+                    ivRoomMusic.setVisibility(View.VISIBLE);
+                    ivRoomMusic.setOnClickListener(v ->
+                        Toast.makeText(this, "🎵 الموسيقى", Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[D] ivRoomMusic -> VISIBLE + Toast");
+                }
+            }
+
+            // tv_room_music: VISIBLE (النص "الموسيقى" تحت أيقونة الموسيقى)
+            int tvRoomMusicId = getId("tv_room_music");
+            if (tvRoomMusicId != 0) {
+                TextView tvRoomMusic = findViewById(tvRoomMusicId);
+                if (tvRoomMusic != null) {
+                    tvRoomMusic.setVisibility(View.VISIBLE);
                 }
             }
         } catch (Exception e) {
@@ -650,26 +666,18 @@ public class RoomActivity extends Activity {
 
     // ============================================
     // البند E: الشريط السفلي + لوحة الإدخال فوق الكيبورد
-    // مطابقة للسورس الأصلي Yalla Ludo:
-    //  - الشريط السفلي (room_include_room_input.xml) دائم
-    //  - لوحة إدخال (room_bottom_input.xml) تظهر كـ overlay فوق الكيبورد عند النقر على etMessage
+    // مطابقة للسورس الأصلي Yalla Ludo بتبديل visibility فقط:
+    //  - staticRoomBottomView (يحمل room_include_room_input.xml) — VISIBLE افتراضياً
+    //  - roomBottomInputView (يحمل room_bottom_input.xml) — GONE افتراضياً
+    //  - عند النقر على etMessage: نبدّل visibility بينهما
     // ============================================
     private void setupBottomBar() {
         try {
-            // roomBottomInputView (gone) -> VISIBLE
-            int inputViewId = getId("roomBottomInputView");
-            if (inputViewId != 0) {
-                View roomBottomInputView = findViewById(inputViewId);
-                if (roomBottomInputView != null) {
-                    roomBottomInputView.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "[E] roomBottomInputView -> VISIBLE");
-                }
-            }
-
-            // staticRoomBottomView -> VISIBLE + inflate input if empty
+            // ===== 1) staticRoomBottomView: VISIBLE + inflate room_include_room_input.xml بداخله =====
             int staticBottomId = getId("staticRoomBottomView");
+            View staticRoomBottomView = null;
             if (staticBottomId != 0) {
-                View staticRoomBottomView = findViewById(staticBottomId);
+                staticRoomBottomView = findViewById(staticBottomId);
                 if (staticRoomBottomView != null) {
                     staticRoomBottomView.setVisibility(View.VISIBLE);
                     if (staticRoomBottomView instanceof ViewGroup) {
@@ -679,7 +687,7 @@ public class RoomActivity extends Activity {
                                 View inputBar = LayoutInflater.from(this)
                                     .inflate(R.layout.room_include_room_input, container, false);
                                 container.addView(inputBar);
-                                Log.i(TAG, "[E] Inflated room_include_room_input");
+                                Log.i(TAG, "[E] Inflated room_include_room_input into staticRoomBottomView");
                             } catch (Exception e) {
                                 Log.e(TAG, "[E] Failed to inflate room_include_room_input", e);
                             }
@@ -688,7 +696,31 @@ public class RoomActivity extends Activity {
                 }
             }
 
-            // اربط عناصر الشريط السفلي (من room_include_room_input.xml)
+            // ===== 2) roomBottomInputView: يبقى GONE + inflate room_bottom_input.xml بداخله =====
+            // مطابقة للسورس الأصلي: GONE افتراضياً، يظهر فقط عند النقر على etMessage
+            int inputViewId = getId("roomBottomInputView");
+            View roomBottomInputView = null;
+            if (inputViewId != 0) {
+                roomBottomInputView = findViewById(inputViewId);
+                if (roomBottomInputView != null) {
+                    // يبقى GONE كما في XML الأصلي — لا نغيّره هنا
+                    if (roomBottomInputView instanceof ViewGroup) {
+                        ViewGroup container = (ViewGroup) roomBottomInputView;
+                        if (container.getChildCount() == 0) {
+                            try {
+                                View inputPanel = LayoutInflater.from(this)
+                                    .inflate(R.layout.room_bottom_input, container, false);
+                                container.addView(inputPanel);
+                                Log.i(TAG, "[E] Inflated room_bottom_input into roomBottomInputView (still GONE)");
+                            } catch (Exception e) {
+                                Log.e(TAG, "[E] Failed to inflate room_bottom_input", e);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ===== 3) اربط عناصر الشريط السفلي (من room_include_room_input.xml داخل staticRoomBottomView) =====
             ivSound = findViewById(getId("ivSound"));
             ivMic = findViewById(getId("ivMic"));
             ivMicEmoji = findViewById(getId("ivMicEmoji"));
@@ -698,8 +730,8 @@ public class RoomActivity extends Activity {
             ivShowGameCenter = findViewById(getId("ivShowGameCenter"));
             etMessage = findViewById(getId("etMessage"));
 
-            // ===== استبدال ivGift (الذي كان svga) بصورة gift_default.webp الثابتة =====
-            // (svga تحتاج مكتبة SVGAPlayer غير متوفرة — استخدم gift_default.webp من الموارد الأصلية)
+            // ===== 4) ivGift: استبدل svga (غير مدعوم) بـ gift_default.webp من السورس =====
+            // الأبعاد والموضع من XML الأصلي (45dp + marginBottom 3dp + marginStart/End 8dp)
             try {
                 if (ivGift != null) {
                     int giftResId = getResources().getIdentifier("gift_default", "drawable", getPackageName());
@@ -709,44 +741,41 @@ public class RoomActivity extends Activity {
                         Log.i(TAG, "[E] ivGift = gift_default.webp");
                     } else {
                         ivGift.setVisibility(View.VISIBLE);
-                        Log.w(TAG, "[E] gift_default not found, keeping svga placeholder");
+                        Log.w(TAG, "[E] gift_default not found");
                     }
                 }
             } catch (Exception giftEx) {
                 Log.e(TAG, "[E] ivGift setup error", giftEx);
             }
 
-            // ===== عطّل etMessage (لن يستقبل الكتابة) — النقر عليه يفتح overlay =====
-            // مطابقة للسورس الأصلي Yalla Ludo: enabled=false + focusable=false في XML
+            // ===== 5) etMessage: معطّل (enabled=false + focusable=false كما في XML الأصلي) =====
+            // النقر عليه يبدّل visibility بين staticRoomBottomView و roomBottomInputView
             try {
                 if (etMessage != null) {
-                    // أبقِه معطّل (كما في XML الأصلي) — النقر عليه يفتح overlay
                     etMessage.setEnabled(false);
                     etMessage.setFocusable(false);
                     etMessage.setFocusableInTouchMode(false);
                     etMessage.setClickable(true);
                     etMessage.setLongClickable(false);
                     etMessage.setCursorVisible(false);
-                    etMessage.setHint("قل شيئاً...");
-                    etMessage.setTextColor(Color.WHITE);
-                    etMessage.setHintTextColor(0xFFB0B0B0);
-                    // النقر على etMessage يفتح الـ overlay
+                    // hint يأتي من XML الأصلي (@string/room_say_something) — لا نغيّره
+                    // النقر على etMessage يبدّل الشريط السفلي
                     etMessage.setOnClickListener(v -> {
                         try {
-                            openInputOverlay();
+                            switchToInputPanel();
                         } catch (Exception e) {
                             Log.e(TAG, "[E] etMessage click error", e);
                         }
                     });
-                    Log.i(TAG, "[E] etMessage disabled (opens overlay on click)");
+                    Log.i(TAG, "[E] etMessage disabled (switches to input panel on click)");
                 }
             } catch (Exception etEx) {
                 Log.e(TAG, "[E] etMessage setup error", etEx);
             }
 
-            // ===== حالة افتراضية للشريط السفلي (مطابقة للصورة 23: يدخل الروم) =====
+            // ===== 6) حالة افتراضية للشريط السفلي (مطابقة للصورة 23: يدخل الروم) =====
             // VISIBLE:  ivSound, ivGift, ivShowGameCenter, etMessage (hint)
-            // GONE:      ivMic, ivMicEmoji, ivSendPicture, ivSend, ivEmoji  (تظهر لاحقاً)
+            // GONE:      ivMic, ivMicEmoji, ivSendPicture, ivSend, ivEmoji
             try {
                 if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
                 if (ivGift != null) ivGift.setVisibility(View.VISIBLE);
@@ -765,7 +794,57 @@ public class RoomActivity extends Activity {
                 Log.e(TAG, "[E] default state error", visEx);
             }
 
-            // WindowInsets
+            // ===== 7) اربط عناصر لوحة الإدخال (من room_bottom_input.xml داخل roomBottomInputView) =====
+            // etInputMessage له نفس اسم XML الأصلي لكنه معرّف برمجياً لأنه قد لا يكون في findViewById
+            // مباشرة إذا لم يتم نفخه بعد — لكننا نفخناه في الخطوة 2
+            try {
+                etInputMessage = findViewById(getId("etInputMessage"));
+                ImageView inputEmojiBtn = (ImageView) findViewById(getId("ivEmoji"));
+                ImageView inputPicBtn = (ImageView) findViewById(getId("ivSendPicture"));
+                ImageView inputSendBtn = (ImageView) findViewById(getId("ivSend"));
+                // ملاحظة: ids في room_bottom_input.xml هي نفسها في room_include_room_input.xml
+                // لكن الـ findViewById قد يرجع الأول فقط — سنبحث في roomBottomInputView بدلاً من ذلك
+                if (roomBottomInputView instanceof ViewGroup) {
+                    ViewGroup inputPanel = (ViewGroup) roomBottomInputView;
+                    if (inputPanel.getChildCount() > 0) {
+                        View firstChild = inputPanel.getChildAt(0);
+                        if (firstChild instanceof ViewGroup) {
+                            // ابحث داخل اللوحة السفلية (llRoomBottom)
+                            searchInputPanelElements((ViewGroup) firstChild);
+                        }
+                    }
+                }
+
+                // اربط etInputMessage (إن وجد في roomBottomInputView) بـ listeners
+                if (etInputMessage != null) {
+                    // TextWatcher على etInputMessage: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
+                    etInputMessage.addTextChangedListener(new android.text.TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        @Override
+                        public void afterTextChanged(android.text.Editable s) {
+                            try {
+                                boolean hasText = s != null && s.toString().trim().length() > 0;
+                                ImageView pic = (ImageView) ((ViewGroup) roomBottomInputView)
+                                    .findViewById(getId("ivSendPicture"));
+                                ImageView send = (ImageView) ((ViewGroup) roomBottomInputView)
+                                    .findViewById(getId("ivSend"));
+                                if (pic != null) pic.setVisibility(hasText ? View.GONE : View.VISIBLE);
+                                if (send != null) send.setVisibility(hasText ? View.VISIBLE : View.GONE);
+                            } catch (Exception e) {
+                                Log.e(TAG, "[E] TextWatcher error", e);
+                            }
+                        }
+                    });
+                    Log.i(TAG, "[E] etInputMessage bound + TextWatcher set");
+                }
+            } catch (Exception inputEx) {
+                Log.e(TAG, "[E] input panel elements bind error", inputEx);
+            }
+
+            // ===== 8) WindowInsets للـ edge-to-edge + padding شريط النظام =====
             View contentView = findViewById(android.R.id.content);
             if (contentView != null) {
                 ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
@@ -778,251 +857,167 @@ public class RoomActivity extends Activity {
             Log.i(TAG, "[E] Bottom bar IDs: ivSound=" + (ivSound != null)
                 + " ivMic=" + (ivMic != null)
                 + " ivGift=" + (ivGift != null)
-                + " etMessage=" + (etMessage != null));
+                + " etMessage=" + (etMessage != null)
+                + " etInputMessage=" + (etInputMessage != null));
         } catch (Exception e) {
             Log.e(TAG, "[E] setupBottomBar error", e);
         }
     }
 
-    // ============================================
-    // لوحة الإدخال فوق الكيبورد (overlay)
-    // مطابقة للسورس الأصلي Yalla Ludo:
-    //  - تُنشأ برمجياً من room_bottom_input.xml
-    //  - تُضاف إلى content_view (FrameLayout) فوق الشريط السفلي
-    //  - تُحاكي ظهورها فوق الكيبورد
-    // ============================================
-    private void openInputOverlay() {
+    /** يبحث عن etInputMessage وأزرار الإدخال داخل لوحة room_bottom_input */
+    private void searchInputPanelElements(ViewGroup root) {
         try {
-            // إذا كانت مفتوحة، لا تفعل شيئاً
-            if (inputOverlayView != null && inputOverlayView.isShown()) {
-                Log.i(TAG, "[InputOverlay] already open");
-                // ركز على الحقل لفتح الكيبورد
-                focusInputMessage();
-                return;
-            }
-
-            int rootId = getId("content_view");
-            ViewGroup rootView = (ViewGroup) findViewById(rootId);
-            if (rootView == null) {
-                Log.w(TAG, "[InputOverlay] content_view not found");
-                return;
-            }
-
-            // === الحاوية الرئيسية (overlay frame) — شفافة بالكامل ===
-            // تستقبل لمس خارج اللوحة السفلية → closeInputOverlay
-            FrameLayout overlayFrame = new FrameLayout(this);
-            overlayFrame.setLayoutParams(new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
-            // خلفية شفافة (لا تظهر) — لكنها تستقبل النقرات
-            overlayFrame.setBackgroundColor(0x00000000);
-            // النقر على الحاوية يغلق الـ overlay (لمس خارج اللوحة)
-            overlayFrame.setOnClickListener(v -> closeInputOverlay());
-
-            // === اللوحة السفلية (room_bottom_input.xml) ===
-            // انفخ room_bottom_input.xml كـ view منفصلة
-            View overlay;
-            try {
-                overlay = LayoutInflater.from(this).inflate(R.layout.room_bottom_input, overlayFrame, false);
-            } catch (Exception inflateEx) {
-                Log.e(TAG, "[InputOverlay] inflate room_bottom_input failed", inflateEx);
-                return;
-            }
-
-            // خصائص اللوحة السفلية: عرض كامل، ارتفاع تلقائي، أسفل الشاشة
-            int overlayWidth = FrameLayout.LayoutParams.MATCH_PARENT;
-            int overlayHeight = FrameLayout.LayoutParams.WRAP_CONTENT;
-            FrameLayout.LayoutParams overlayLp = new FrameLayout.LayoutParams(overlayWidth, overlayHeight);
-            overlayLp.gravity = Gravity.BOTTOM;
-            overlay.setLayoutParams(overlayLp);
-            // خلفية غامقة (مطابقة للسورس: room_f5f5f6 لكن مع خلفية غامقة ليلاً)
-            overlay.setBackgroundColor(0xFF1A1F2A);
-            // اللوحة السفلية تستهلك النقر (لا تغلق عند لمسها)
-            overlay.setOnClickListener(v -> { /* consume click */ });
-
-            // اربط عناصر الـ overlay
-            EditText etInput = (EditText) overlay.findViewById(getId("etInputMessage"));
-            ImageView emojiBtn = (ImageView) overlay.findViewById(getId("ivEmoji"));
-            ImageView picBtn = (ImageView) overlay.findViewById(getId("ivSendPicture"));
-            ImageView sendBtn = (ImageView) overlay.findViewById(getId("ivSend"));
-
-            // اظهر ivSendPicture (مرئية افتراضياً) وأخفِ ivSend
-            if (picBtn != null) picBtn.setVisibility(View.VISIBLE);
-            if (sendBtn != null) sendBtn.setVisibility(View.GONE);
-
-            // انسخ النص من etMessage إلى etInputMessage
-            if (etMessage != null && etInput != null) {
-                String prevText = etMessage.getText() != null ? etMessage.getText().toString() : "";
-                if (!prevText.isEmpty()) {
-                    etInput.setText(prevText);
-                    etInput.setSelection(prevText.length());
+            for (int i = 0; i < root.getChildCount(); i++) {
+                View child = root.getChildAt(i);
+                if (child instanceof EditText) {
+                    int childId = child.getId();
+                    int targetId = getId("etInputMessage");
+                    if (targetId != 0 && childId == targetId) {
+                        etInputMessage = (EditText) child;
+                    }
+                }
+                if (child instanceof ViewGroup) {
+                    searchInputPanelElements((ViewGroup) child);
                 }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "[E] searchInputPanelElements error", e);
+        }
+    }
 
-            // TextWatcher على etInputMessage: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
-            if (etInput != null) {
-                etInput.addTextChangedListener(new android.text.TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                    @Override
-                    public void afterTextChanged(android.text.Editable s) {
-                        try {
-                            boolean hasText = s != null && s.toString().trim().length() > 0;
-                            if (picBtn != null) picBtn.setVisibility(hasText ? View.GONE : View.VISIBLE);
-                            if (sendBtn != null) sendBtn.setVisibility(hasText ? View.VISIBLE : View.GONE);
-                        } catch (Exception e) {
-                            Log.e(TAG, "[InputOverlay] TextWatcher error", e);
-                        }
-                    }
-                });
+    /** يبدّل الشريط السفلي إلى لوحة الإدخال (طريقة السورس الأصلية بتبديل visibility) */
+    private void switchToInputPanel() {
+        try {
+            int staticBottomId = getId("staticRoomBottomView");
+            int inputViewId = getId("roomBottomInputView");
+            View staticRoomBottomView = findViewById(staticBottomId);
+            View roomBottomInputView = findViewById(inputViewId);
+
+            // أخفِ الشريط السفلي الأصلي
+            if (staticRoomBottomView != null) {
+                staticRoomBottomView.setVisibility(View.GONE);
+                Log.i(TAG, "[InputSwitch] staticRoomBottomView -> GONE");
             }
-
-            // ربط ivSend: إرسال الرسالة + إغلاق الـ overlay
-            if (sendBtn != null) {
-                sendBtn.setOnClickListener(v -> {
+            // أظهر لوحة الإدخال
+            if (roomBottomInputView != null) {
+                roomBottomInputView.setVisibility(View.VISIBLE);
+                Log.i(TAG, "[InputSwitch] roomBottomInputView -> VISIBLE");
+            }
+            // ابحث عن etInputMessage داخل لوحة الإدخال وركّز عليه لفتح الكيبورد
+            // etInputMessage مع focusable=true + enabled=true في XML الأصلي → يفتح الكيبورد تلقائياً
+            if (etInputMessage == null && roomBottomInputView instanceof ViewGroup) {
+                searchInputPanelElements((ViewGroup) roomBottomInputView);
+            }
+            if (etInputMessage != null) {
+                // requestFocus داخل post() لضمان تركيز الحقل بعد ظهور اللوحة
+                etInputMessage.post(() -> {
                     try {
-                        if (etInput != null) {
-                            String text = etInput.getText() != null ? etInput.getText().toString().trim() : "";
-                            if (!text.isEmpty()) {
-                                // أرسل الرسالة
-                                addChatMessage(new ChatMessage(
-                                    ChatMessage.TYPE_TEXT,
-                                    new RoomUser("me", currentUserName, 0, 1, "member"),
-                                    text, null));
-                                etInput.setText("");
-                                // أخفِ الـ overlay بعد الإرسال
-                                closeInputOverlay();
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "[InputOverlay] send error", e);
-                    }
-                });
-            }
-
-            // ربط ivEmoji: Toast (لم يتم تنفيذ panel حقيقي)
-            if (emojiBtn != null) {
-                emojiBtn.setOnClickListener(v ->
-                    Toast.makeText(this, "😊 الإيموجي", Toast.LENGTH_SHORT).show());
-            }
-
-            // ربط ivSendPicture: Toast
-            if (picBtn != null) {
-                picBtn.setOnClickListener(v ->
-                    Toast.makeText(this, "📷 صورة", Toast.LENGTH_SHORT).show());
-            }
-
-            // أضف اللوحة السفلية إلى الحاوية
-            overlayFrame.addView(overlay);
-
-            // أضف الحاوية إلى content_view
-            rootView.addView(overlayFrame);
-            inputOverlayView = overlayFrame;
-            etInputMessage = etInput;
-            Log.i(TAG, "[InputOverlay] opened");
-
-            // أنميشن بسيط: slide up للوحة السفلية فقط (الحاوية تظهر فوراً)
-            try {
-                overlay.setTranslationY(200);
-                overlay.animate().translationY(0).setDuration(200).start();
-            } catch (Exception animEx) {
-                Log.e(TAG, "[InputOverlay] anim error", animEx);
-            }
-
-            // === المرحلة 1 - البند 1: requestFocus + showSoftInput داخل post() ===
-            // لا WindowInsets listener للإغلاق التلقائي (حسب طلب المستخدم)
-            // الإغلاق يتم فقط بـ: زر الإرسال / زر الرجوع / لمس خارج الـ overlay
-            if (etInput != null) {
-                etInput.post(() -> {
-                    try {
-                        etInput.requestFocus();
+                        etInputMessage.requestFocus();
+                        etInputMessage.setSelection(etInputMessage.getText() != null
+                            ? etInputMessage.getText().length() : 0);
                         android.view.inputmethod.InputMethodManager imm =
                             (android.view.inputmethod.InputMethodManager)
                                 getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
                         if (imm != null) {
-                            // SHOW_FORCED يضمن ظهور الكيبورد حتى لو لم يكن هناك تركيز كامل
-                            imm.showSoftInput(etInput,
-                                android.view.inputmethod.InputMethodManager.SHOW_FORCED);
-                            Log.i(TAG, "[InputOverlay] keyboard shown via post()");
+                            imm.showSoftInput(etInputMessage,
+                                android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
                         }
+                        Log.i(TAG, "[InputSwitch] etInputMessage focused via post()");
                     } catch (Exception e) {
-                        Log.e(TAG, "[InputOverlay] post focus/keyboard error", e);
+                        Log.e(TAG, "[InputSwitch] focus error", e);
                     }
                 });
             }
 
-            // ملاحظة: لا نضيف WindowInsets listener للإغلاق التلقائي
-            // الإغلاق يتم فقط بـ: زر الإرسال / زر الرجوع / لمس خارج الـ overlay
+            // اربط ivSend داخل لوحة الإدخال (إرسال + عودة للشريط الأصلي)
+            if (roomBottomInputView instanceof ViewGroup) {
+                ImageView sendBtn = (ImageView) ((ViewGroup) roomBottomInputView)
+                    .findViewById(getId("ivSend"));
+                if (sendBtn != null) {
+                    sendBtn.setOnClickListener(v -> {
+                        try {
+                            if (etInputMessage != null) {
+                                String text = etInputMessage.getText() != null
+                                    ? etInputMessage.getText().toString().trim() : "";
+                                if (!text.isEmpty()) {
+                                    addChatMessage(new ChatMessage(
+                                        ChatMessage.TYPE_TEXT,
+                                        new RoomUser("me", currentUserName, 0, 1, "member"),
+                                        text, null));
+                                    etInputMessage.setText("");
+                                    switchBackToStaticBottom();
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[InputSwitch] send error", e);
+                        }
+                    });
+                }
+                // ivEmoji + ivSendPicture داخل اللوحة
+                ImageView emojiBtn = (ImageView) ((ViewGroup) roomBottomInputView)
+                    .findViewById(getId("ivEmoji"));
+                if (emojiBtn != null) {
+                    emojiBtn.setOnClickListener(v ->
+                        Toast.makeText(this, "😊 الإيموجي", Toast.LENGTH_SHORT).show());
+                }
+                ImageView picBtn = (ImageView) ((ViewGroup) roomBottomInputView)
+                    .findViewById(getId("ivSendPicture"));
+                if (picBtn != null) {
+                    picBtn.setOnClickListener(v ->
+                        Toast.makeText(this, "📷 صورة", Toast.LENGTH_SHORT).show());
+                }
+            }
         } catch (Exception e) {
-            Log.e(TAG, "[InputOverlay] open error", e);
+            Log.e(TAG, "[InputSwitch] switchToInputPanel error", e);
         }
     }
 
-    /** يغلق لوحة الإدخال فوق الكيبورد + ينسخ النص إلى etMessage */
-    private void closeInputOverlay() {
+    /** يعيد الشريط السفلي الأصلي (طريقة السورس الأصلية بتبديل visibility) */
+    private void switchBackToStaticBottom() {
         try {
-            if (inputOverlayView == null) return;
-
-            // انسخ النص من etInputMessage إلى etMessage
-            if (etInputMessage != null && etMessage != null) {
-                String text = etInputMessage.getText() != null ? etInputMessage.getText().toString() : "";
-                // استخدم hint فقط (etMessage معطّل — فقط لعرض النص)
-                if (text.isEmpty()) {
-                    etMessage.setText("");
-                    etMessage.setHint("قل شيئاً...");
-                } else {
-                    etMessage.setText(text);
-                }
-            }
+            int staticBottomId = getId("staticRoomBottomView");
+            int inputViewId = getId("roomBottomInputView");
+            View staticRoomBottomView = findViewById(staticBottomId);
+            View roomBottomInputView = findViewById(inputViewId);
 
             // أخفِ الكيبورد
             if (etInputMessage != null) {
-                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
-                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                android.view.inputmethod.InputMethodManager imm =
+                    (android.view.inputmethod.InputMethodManager)
+                        getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(etInputMessage.getWindowToken(), 0);
                 }
                 etInputMessage.clearFocus();
             }
-
-            // أزل الـ overlay
-            ViewGroup parent = (ViewGroup) inputOverlayView.getParent();
-            if (parent != null) {
-                parent.removeView(inputOverlayView);
+            // أخفِ لوحة الإدخال
+            if (roomBottomInputView != null) {
+                roomBottomInputView.setVisibility(View.GONE);
+                Log.i(TAG, "[InputSwitch] roomBottomInputView -> GONE");
             }
-            inputOverlayView = null;
-            etInputMessage = null;
-            Log.i(TAG, "[InputOverlay] closed");
+            // أظهر الشريط السفلي الأصلي
+            if (staticRoomBottomView != null) {
+                staticRoomBottomView.setVisibility(View.VISIBLE);
+                Log.i(TAG, "[InputSwitch] staticRoomBottomView -> VISIBLE");
+            }
         } catch (Exception e) {
-            Log.e(TAG, "[InputOverlay] close error", e);
+            Log.e(TAG, "[InputSwitch] switchBackToStaticBottom error", e);
         }
     }
 
-    /** يركّز على etInputMessage لفتح الكيبورد (عندما الـ overlay مفتوح) */
-    private void focusInputMessage() {
-        try {
-            if (etInputMessage == null) return;
-            etInputMessage.requestFocus();
-            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
-                getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(etInputMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "[InputOverlay] focus error", e);
-        }
-    }
+    // ============================================
+    // [محذوف] openInputOverlay / closeInputOverlay / focusInputMessage — استبدلت بـ
+    // switchToInputPanel() و switchBackToStaticBottom() (تبديل visibility فقط، مطابقة للسورس)
+    // ============================================
 
-    /** يُستدعى عند focus على etMessage: مُهمل — استخدم openInputOverlay() بدلاً منه */
+    /** يُستدعى عند focus على etMessage: مُهمل */
     private void onInputFocused() {
-        // تُستدعى عبر overlay الآن — مُهمل
+        // تُستدعى عبر switchToInputPanel الآن — مُهمل
     }
 
-    /** يُستدعى عند فقدان focus من etMessage: مُهمل — استخدم closeInputOverlay() بدلاً منه */
+    /** يُستدعى عند فقدان focus من etMessage: مُهمل */
     private void onInputUnfocused() {
-        // تُستدعى عبر overlay الآن — مُهمل
+        // تُستدعى عبر switchBackToStaticBottom الآن — مُهمل
     }
 
     // ============================================
@@ -1415,7 +1410,12 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
-    // الدردشة
+    // الدردشة — فعّل rvRoomChat برسائل ترحيب + زر "جديد" (llNewMessage)
+    // مطابقة للسورس الأصلي:
+    //  - rvRoomChat: RecyclerView عمودي
+    //  - llNewMessage (room_dialog_new_message_layout.xml): GONE افتراضياً،
+    //    يظهر عند وصول رسالة جديدة + المستخدم ليس في أسفل القائمة،
+    //    يختفي عند scroll للأسفل أو الضغط عليه
     // ============================================
     private void setupChat() {
         try {
@@ -1428,12 +1428,81 @@ public class RoomActivity extends Activity {
             chatAdapter = new ChatAdapter(chatMessages);
             rvChat.setAdapter(chatAdapter);
 
+            // [المرحلة 3 - البند 8] رسائل ترحيب قليلة (3 رسائل)
             addChatMessage(new ChatMessage(
                 ChatMessage.TYPE_SYSTEM, null,
-                "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً وتحدث بأدب.", null));
-            Log.i(TAG, "[Chat] rvRoomChat adapter set");
+                "مرحباً بكم في الغرفة! الرجاء احترام بعضكم بعضاً.", null));
+            addChatMessage(new ChatMessage(
+                ChatMessage.TYPE_SYSTEM, null,
+                "أولاً: عدم التحدث بصوت عالٍ أثناء المباراة.", null));
+            addChatMessage(new ChatMessage(
+                ChatMessage.TYPE_SYSTEM, null,
+                "ثانياً: إغلاق الميكروفون عند عدم التحدث.", null));
+            Log.i(TAG, "[Chat] rvRoomChat adapter set + 3 welcome messages");
+
+            // [المرحلة 3 - البند 5] زر "جديد" (llNewMessage)
+            setupNewMessageButton();
         } catch (Exception e) {
             Log.e(TAG, "[Chat] setupChat error", e);
+        }
+    }
+
+    /** يفعّل زر "جديد" (llNewMessage) — مطابقة للسورس الأصلي */
+    private void setupNewMessageButton() {
+        try {
+            int llNewMsgId = getId("llNewMessage");
+            int newMsgPopupId = getId("newMessagePopup");
+            int ivNewMsgId = getId("ivNewMsg");
+            int tvTipScrollId = getId("tvTipScroll");
+
+            View llNewMessage = findViewById(llNewMsgId);
+            if (llNewMessage == null) {
+                Log.w(TAG, "[NewMsg] llNewMessage not found");
+                return;
+            }
+
+            // GONE افتراضياً (مطابقة للسورس: يكون مختفياً حتى تأتي رسالة جديدة)
+            llNewMessage.setVisibility(View.GONE);
+
+            // النقر على الزر ينتقل لأسفل القائمة + يخفيه
+            llNewMessage.setOnClickListener(v -> {
+                try {
+                    if (rvChat != null && chatAdapter != null) {
+                        rvChat.scrollToPosition(chatMessages.size() - 1);
+                    }
+                    llNewMessage.setVisibility(View.GONE);
+                    Log.i(TAG, "[NewMsg] clicked -> scroll to bottom + GONE");
+                } catch (Exception e) {
+                    Log.e(TAG, "[NewMsg] click error", e);
+                }
+            });
+
+            // استمع لـ scroll على rvChat لإخفاء الزر عند الوصول للأسفل
+            if (rvChat != null) {
+                rvChat.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        try {
+                            LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                            if (lm == null) return;
+                            int lastVisible = lm.findLastVisibleItemPosition();
+                            int total = chatAdapter != null ? chatAdapter.getItemCount() : 0;
+                            // إن كان في أسفل القائمة → اخفِ زر "جديد"
+                            if (lastVisible >= total - 1) {
+                                if (llNewMessage.getVisibility() == View.VISIBLE) {
+                                    llNewMessage.setVisibility(View.GONE);
+                                    Log.i(TAG, "[NewMsg] at bottom -> GONE");
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[NewMsg] scroll error", e);
+                        }
+                    }
+                });
+            }
+            Log.i(TAG, "[NewMsg] llNewMessage setup done (GONE default, scroll listener set)");
+        } catch (Exception e) {
+            Log.e(TAG, "[NewMsg] setupNewMessageButton error", e);
         }
     }
 
@@ -1441,7 +1510,37 @@ public class RoomActivity extends Activity {
         chatMessages.add(msg);
         try {
             if (chatAdapter != null) chatAdapter.notifyItemInserted(chatMessages.size() - 1);
-            if (rvChat != null) rvChat.scrollToPosition(chatMessages.size() - 1);
+
+            // [المرحلة 3 - البند 5] تحقق إن كان المستخدم في أسفل القائمة
+            boolean atBottom = true;
+            if (rvChat != null) {
+                LinearLayoutManager lm = (LinearLayoutManager) rvChat.getLayoutManager();
+                if (lm != null) {
+                    int lastVisible = lm.findLastVisibleItemPosition();
+                    atBottom = (lastVisible >= chatMessages.size() - 2);
+                }
+            }
+            // لو في الأسفل → scroll للأسفل + أخفِ زر "جديد"
+            if (atBottom && rvChat != null) {
+                rvChat.scrollToPosition(chatMessages.size() - 1);
+                // أخفِ زر "جديد" (إن كان ظاهراً)
+                int llNewMsgId = getId("llNewMessage");
+                if (llNewMsgId != 0) {
+                    View llNewMessage = findViewById(llNewMsgId);
+                    if (llNewMessage != null && llNewMessage.getVisibility() == View.VISIBLE) {
+                        llNewMessage.setVisibility(View.GONE);
+                    }
+                }
+            } else {
+                // المستخدم ليس في الأسفل → اظهر زر "جديد"
+                int llNewMsgId = getId("llNewMessage");
+                if (llNewMsgId != 0) {
+                    View llNewMessage = findViewById(llNewMsgId);
+                    if (llNewMessage != null) {
+                        llNewMessage.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         } catch (Exception e) {
             Log.e(TAG, "addChatMessage error", e);
         }
@@ -1538,10 +1637,12 @@ public class RoomActivity extends Activity {
                 return;
             }
         } catch (Exception e) {}
-        // أغلق overlay الإدخال إن كان مفتوحاً
+        // أغلق لوحة الإدخال إن كانت مفتوحة (طريقة السورس: تبديل visibility)
         try {
-            if (inputOverlayView != null && inputOverlayView.isShown()) {
-                closeInputOverlay();
+            int inputViewId = getId("roomBottomInputView");
+            View roomBottomInputView = findViewById(inputViewId);
+            if (roomBottomInputView != null && roomBottomInputView.getVisibility() == View.VISIBLE) {
+                switchBackToStaticBottom();
                 return;
             }
         } catch (Exception e) {}
