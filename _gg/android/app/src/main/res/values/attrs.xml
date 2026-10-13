@@ -788,14 +788,6 @@
     <attr name="iconSize" format="dimension" />
     <attr name="iconStartPadding" format="dimension" />
     <attr name="iconTint" format="color" />
-    <attr name="iconTintMode">
-        <enum name="src_over" value="3" />
-        <enum name="src_in" value="5" />
-        <enum name="src_atop" value="9" />
-        <enum name="multiply" value="14" />
-        <enum name="screen" value="15" />
-        <enum name="add" value="16" />
-    </attr>
     <attr name="iconifiedByDefault" format="boolean" />
     <attr name="idHigh" format="dimension" />
     <attr name="idLevel" format="integer" />
@@ -1297,16 +1289,6 @@
         <enum name="sharedValueSet" value="4" />
         <enum name="sharedValueUnset" value="5" />
     </attr>
-    <attr name="onTouchUp">
-        <enum name="autoComplete" value="0" />
-        <enum name="autoCompleteToStart" value="1" />
-        <enum name="autoCompleteToEnd" value="2" />
-        <enum name="stop" value="3" />
-        <enum name="decelerate" value="4" />
-        <enum name="decelerateAndComplete" value="5" />
-        <enum name="neverCompleteToStart" value="6" />
-        <enum name="neverCompleteToEnd" value="7" />
-    </attr>
     <attr name="out_duration" format="integer" />
     <attr name="overlapAnchor" format="boolean" />
     <attr name="overlay" format="boolean" />
@@ -1471,12 +1453,6 @@
         <flag name="end" value="0x00000004" />
     </attr>
     <attr name="showDividerVertical">
-        <flag name="none" value="0x00000000" />
-        <flag name="beginning" value="0x00000001" />
-        <flag name="middle" value="0x00000002" />
-        <flag name="end" value="0x00000004" />
-    </attr>
-    <attr name="showDividers">
         <flag name="none" value="0x00000000" />
         <flag name="beginning" value="0x00000001" />
         <flag name="middle" value="0x00000002" />
@@ -1914,14 +1890,6 @@
     <attr name="trackHeight" format="dimension" />
     <attr name="trackThickness" format="dimension" />
     <attr name="trackTint" format="color" />
-    <attr name="trackTintMode">
-        <enum name="src_over" value="3" />
-        <enum name="src_in" value="5" />
-        <enum name="src_atop" value="9" />
-        <enum name="multiply" value="14" />
-        <enum name="screen" value="15" />
-        <enum name="add" value="16" />
-    </attr>
     <attr name="transformPivotTarget" format="reference" />
     <attr name="transitionDisable" format="boolean" />
     <attr name="transitionEasing" format="string">
