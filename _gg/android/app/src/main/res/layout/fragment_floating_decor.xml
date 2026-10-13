@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:orientation="vertical" android:id="@id/rl_container" android:background="@drawable/bg_hall" android:layout_width="360.0dip" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:background="@drawable/skin_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="44.0dip" />
+    <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="44.0dip" />
     <View android:id="@id/title_view" android:layout_width="fill_parent" android:layout_height="53.0dip" />
     <View android:id="@id/iv_coupon" android:visibility="visible" android:layout_width="38.0dip" android:layout_height="40.0dip" android:layout_marginEnd="38.0dip" android:layout_alignParentEnd="true" />
     <com.bengharbios.ggames.view.LudoSVGAView android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginTop="37.0dip" app:play_on_attach="true" app:source="star_light.svga" />

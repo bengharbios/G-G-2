@@ -10,184 +10,184 @@
     <transition android:toId="@id/heart_on" android:fromId="@id/heart_off">
         <animation-list>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00000" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00001" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00002" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00003" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00004" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00005" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00006" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00007" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00008" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00009" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00010" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00011" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00012" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00013" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00014" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00015" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00016" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00017" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00018" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00019" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00020" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00021" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00022" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00023" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00024" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00025" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00026" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00027" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00028" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00029" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00030" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00031" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00032" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00033" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00034" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00035" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00036" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00037" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00038" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00039" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00040" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00041" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00042" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00043" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00044" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00045" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00046" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00047" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00048" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00049" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00050" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00051" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00052" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00053" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00054" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00055" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00056" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00057" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00058" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
             <item android:duration="15">
-                <bitmap android:src="@drawable/tw__heart_animation_detail_60fps_00059" />
+                <bitmap android:src="@drawable/room_default" />
             </item>
         </animation-list>
     </transition>

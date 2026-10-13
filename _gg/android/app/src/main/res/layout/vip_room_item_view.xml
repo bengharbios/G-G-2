@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge android:layout_gravity="center_horizontal" android:background="@drawable/vip_room_bg" android:layout_width="342.0dip" android:layout_height="114.0dip" android:layout_marginTop="8.0dip"
+<merge android:layout_gravity="center_horizontal" android:background="@drawable/room_default" android:layout_width="342.0dip" android:layout_height="114.0dip" android:layout_marginTop="8.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0sp" android:textColor="#fffff298" android:id="@id/tv_bet" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/G_1472_0017" android:layout_marginStart="11.0dip" />
     <com.bengharbios.ggames.view.CustomTextView android:textColor="#ffffffff" android:id="@id/tv_bet_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="500" android:layout_marginStart="7.0dip" android:layout_toEndOf="@id/tv_bet" />

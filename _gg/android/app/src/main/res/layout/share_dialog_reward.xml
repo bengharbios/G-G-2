@@ -2,7 +2,7 @@
 <RelativeLayout android:id="@id/ff_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:id="@id/iv_award_title" android:visibility="gone" android:layout_width="280.0dip" android:layout_height="120.0dip" android:src="@drawable/award_title" android:layout_centerHorizontal="true" />
-    <FrameLayout android:background="@drawable/bg_award" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_award_title">
+    <FrameLayout android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_award_title">
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ffb36900" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:text="@string/congratulations" app:stroke_color="#fffff3a0" app:stroke_width="1.0dip" />
         <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll1" android:layout_width="wrap_content" android:layout_height="wrap_content">
             <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_re_zuanshi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/re_diamonds" />

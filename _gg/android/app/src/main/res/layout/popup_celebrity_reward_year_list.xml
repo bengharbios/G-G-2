@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/bg_celebrity_reward_pop" android:layout_width="137.0dip" android:layout_height="wrap_content"
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="137.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@id/rl_current_year" android:layout_width="fill_parent" android:layout_height="18.0dip">
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="#ffffefcc" android:id="@id/tv_current_year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />

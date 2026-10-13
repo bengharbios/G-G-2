@@ -2,6 +2,6 @@
 <FrameLayout android:id="@id/fl_preview" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout android:layout_gravity="start|bottom|center" android:layout_width="308.0dip" android:layout_height="wrap_content" android:layout_marginBottom="45.0dip">
-        <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rcv_preview" android:background="@drawable/bg_task_gift_review_2" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rcv_preview" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </FrameLayout>
 </FrameLayout>

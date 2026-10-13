@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:orientation="vertical" android:id="@id/rl_main" android:background="#ff154d3c" android:layout_width="360.0dip" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip">
+    <RelativeLayout android:id="@id/rl_title" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip">
         <FrameLayout android:id="@id/fl_rules" android:layout_width="50.0dip" android:layout_height="40.0dip">
-            <ImageView android:id="@id/iv_rules" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/description_rule" android:layout_marginStart="7.0dip" android:layout_alignParentStart="true" />
+            <ImageView android:id="@id/iv_rules" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/room_default" android:layout_marginStart="7.0dip" android:layout_alignParentStart="true" />
         </FrameLayout>
         <com.bengharbios.ggames.view.CustomTextView android:textSize="25.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:text="@string/badge" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
         <FrameLayout android:id="@id/fl_close" android:layout_width="50.0dip" android:layout_height="40.0dip" android:layout_alignParentEnd="true">
-            <ImageView android:layout_gravity="end" android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:src="@drawable/skin_close" android:layout_marginEnd="10.0dip" />
+            <ImageView android:layout_gravity="end" android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:src="@drawable/room_default" android:layout_marginEnd="10.0dip" />
         </FrameLayout>
     </RelativeLayout>
     <View android:background="@drawable/bg_medal_detail_title" android:layout_width="fill_parent" android:layout_height="129.0dip" android:layout_marginTop="44.0dip" android:layout_alignTop="@id/rl_title" />
@@ -41,7 +41,7 @@
         <com.booking.rtlviewpager.RtlViewPager android:layout_gravity="center" android:id="@id/vp_medal" android:layout_width="350.0dip" android:layout_height="fill_parent" />
     </FrameLayout>
     <FrameLayout android:background="@drawable/bg_point" android:layout_width="350.0dip" android:layout_height="40.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
-        <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_points" android:background="@drawable/point_bg" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="5.0dip">
+        <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_points" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="5.0dip">
             <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="#ffffffff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/on_top_stars" android:layout_marginStart="14.0dip" />
             <ImageView android:id="@id/iv_point_star" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/point_star" android:layout_marginStart="5.0dip" />
             <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#fffff65d" android:id="@id/tv_points" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="3.0dip" />

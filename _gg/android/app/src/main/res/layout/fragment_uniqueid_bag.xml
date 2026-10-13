@@ -2,14 +2,14 @@
 <View android:orientation="vertical" android:id="@id/ll_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:layout_width="fill_parent" android:layout_height="53.0dip">
-        <View android:id="@id/title_view" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip" />
+        <View android:id="@id/title_view" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip" />
         <ImageView android:layout_gravity="start" android:id="@id/iv_rank" android:visibility="invisible" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/unique_id_rank" android:layout_marginStart="51.0dip" />
-        <ImageView android:layout_gravity="end" android:id="@id/iv_rules_id" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/description_rule" android:paddingStart="10.0dip" android:layout_marginEnd="50.0dip" />
+        <ImageView android:layout_gravity="end" android:id="@id/iv_rules_id" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/room_default" android:paddingStart="10.0dip" android:layout_marginEnd="50.0dip" />
     </FrameLayout>
     <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="343.0dip" android:layout_height="42.0dip">
         <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0dip" android:gravity="center" android:id="@id/tv_item_user" android:layout_width="171.5dip" android:layout_height="fill_parent" android:text="@string/G_1393_80" />
         <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0dip" android:gravity="center" android:id="@id/tv_item_room" android:layout_width="171.5dip" android:layout_height="fill_parent" android:text="@string/G_1393_81" />
     </LinearLayout>
-    <View android:id="@id/view_div" android:background="@drawable/unique_id_divider" android:layout_width="fill_parent" android:layout_height="12.0dip" android:layout_marginTop="11.0dip" />
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/view_pager" android:background="@drawable/unique_id_page_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-5.0dip" />
+    <View android:id="@id/view_div" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="12.0dip" android:layout_marginTop="11.0dip" />
+    <com.booking.rtlviewpager.RtlViewPager android:id="@id/view_pager" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-5.0dip" />
 </View>

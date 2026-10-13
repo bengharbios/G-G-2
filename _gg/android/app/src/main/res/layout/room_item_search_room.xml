@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:id="@id/rl_item_search_room_layout" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/item_bg_search_room" android:background="@drawable/bg_room_search_result_item" android:layout_width="fill_parent" android:layout_height="72.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/item_bg_search_room" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="72.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip">
         <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:layout_marginStart="5.0dip">
             <com.bengharbios.ggames.view.RoundImageView android:id="@id/sdv_header" android:layout_width="58.0dip" android:layout_height="58.0dip" android:scaleType="centerCrop" app:cornerRadius="4.0dip" app:isSquare="true" />
             <com.bengharbios.ggames.view.RoundImageView android:id="@id/iv_alpha_lock" android:background="@drawable/room_top_lock_alpha_bg" android:visibility="gone" android:layout_width="58.0dip" android:layout_height="58.0dip" android:src="@drawable/room_top_left_lock" android:scaleType="center" app:cornerRadius="4.0dip" />

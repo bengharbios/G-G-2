@@ -3,8 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <FrameLayout android:id="@id/fl_bg" android:clickable="true" android:layout_width="fill_parent" android:layout_height="193.0dip" android:layout_centerHorizontal="true">
-            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/skin_detail_bg_blue" android:layout_width="260.0dip" android:layout_height="179.0dip" android:layout_marginTop="14.0dip" android:scaleType="fitXY" />
-            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title_bg" android:layout_width="wrap_content" android:layout_height="50.0dip" android:src="@drawable/skin_title_blue" />
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/room_default" android:layout_width="260.0dip" android:layout_height="179.0dip" android:layout_marginTop="14.0dip" android:scaleType="fitXY" />
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title_bg" android:layout_width="wrap_content" android:layout_height="50.0dip" android:src="@drawable/room_default" />
         </FrameLayout>
         <FrameLayout android:id="@id/fl_effect" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="42.0dip" android:layout_centerHorizontal="true">
             <ImageView android:layout_gravity="center_horizontal" android:id="@id/static_image" android:visibility="visible" android:layout_width="210.0dip" android:layout_height="96.0dip" android:layout_marginTop="24.0dip" />

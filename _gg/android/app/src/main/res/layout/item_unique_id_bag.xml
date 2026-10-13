@@ -11,7 +11,7 @@
     </RelativeLayout>
     <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_use" android:background="@drawable/bg_uniqueid_use" android:layout_width="143.0dip" android:layout_height="42.0dip" android:layout_marginTop="-9.0dip" android:translationZ="-1.0dip">
         <LinearLayout android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/ll_use" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip">
-            <ImageView android:layout_width="18.0dip" android:layout_height="20.0dip" android:src="@drawable/skin_check" />
+            <ImageView android:layout_width="18.0dip" android:layout_height="20.0dip" android:src="@drawable/room_default" />
             <com.bengharbios.ggames.view.StrokeTextView android:textSize="13.0dip" android:textColor="#ff188f62" android:id="@id/tv_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1393_79" android:includeFontPadding="false" android:shadowColor="#ff5efece" android:shadowDx="-1.0" android:shadowDy="2.0" android:shadowRadius="1.0" android:layout_marginStart="5.0dip" />
         </LinearLayout>
         <com.bengharbios.ggames.view.StrokeButton android:textSize="12.0dip" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btn_use" android:background="@drawable/bn_yes_short" android:layout_width="80.0dip" android:layout_height="32.0dip" android:text="@string/use" android:textAllCaps="false" style="@style/StrokeTextStyle_Yes" />

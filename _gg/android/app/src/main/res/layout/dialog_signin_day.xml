@@ -6,7 +6,7 @@
             <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_day_title" android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff3e9b81" android:layout_gravity="center_vertical" android:id="@id/stv_day_left" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.5dip" android:layout_marginBottom="2.5dip" />
             </FrameLayout>
-            <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_head_receive" android:background="@drawable/sign_7_day_head_receive_bg" android:visibility="gone" android:layout_width="314.0dip" android:layout_height="47.0dip" android:layout_marginBottom="2.0dip">
+            <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_head_receive" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="314.0dip" android:layout_height="47.0dip" android:layout_marginBottom="2.0dip">
                 <View android:layout_gravity="start|center" android:id="@id/fl_head" android:background="@drawable/sign_7_day_head_bg" android:layout_width="43.0dip" android:layout_height="43.0dip" android:layout_marginTop="1.0dip" android:layout_marginStart="2.5dip" />
                 <View android:id="@id/head_frame_view" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginTop="2.0dip" android:layout_marginStart="6.0dip" />
                 <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="172.0dip" android:layout_height="39.0dip" android:layout_marginStart="47.0dip">
@@ -17,7 +17,7 @@
                     <com.bengharbios.ggames.view.StrokeTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="@color/White" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:text="@string/G_1380_054" app:stroke_color="@color/black_50" app:stroke_width="1.0dip" />
                 </FrameLayout>
             </FrameLayout>
-            <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_head_receive_preview" android:background="@drawable/sign_7_day_head_receive_bg" android:visibility="gone" android:layout_width="314.0dip" android:layout_height="47.0dip" android:layout_marginBottom="2.0dip">
+            <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_head_receive_preview" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="314.0dip" android:layout_height="47.0dip" android:layout_marginBottom="2.0dip">
                 <RelativeLayout android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="fill_parent">
                     <FrameLayout android:id="@id/fl_head_frame_preview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentStart="true">
                         <View android:layout_gravity="start|center" android:id="@id/fl_head_preview" android:background="@drawable/sign_7_day_head_bg" android:layout_width="43.0dip" android:layout_height="43.0dip" android:layout_marginTop="1.0dip" android:layout_marginStart="2.5dip" />

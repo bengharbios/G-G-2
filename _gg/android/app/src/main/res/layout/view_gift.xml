@@ -14,7 +14,7 @@
         <View android:orientation="vertical" android:id="@id/view_frame" android:layout_width="fill_parent" android:layout_height="fill_parent">
             <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/fl_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         </View>
-        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_sort_mode" android:background="@drawable/bg_sort_mode" android:layout_width="226.0dip" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="10.0dip">
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_sort_mode" android:background="@drawable/room_default" android:layout_width="226.0dip" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="10.0dip">
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_sort_mode_top" android:layout_width="226.0dip" android:layout_height="34.0dip">
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ffa7cabf" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_239" />
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff78a99a" android:id="@id/tv_mode" android:layout_width="92.0dip" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />

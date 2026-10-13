@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:background="@drawable/bg_dialog_no_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip"
+<FrameLayout android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.bengharbios.ggames.view.CustomTextView android:textSize="19.0dip" android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/room_rank_rules" />
     <ImageView android:layout_gravity="end" android:id="@id/iv_x_dialog" android:layout_width="25.0dip" android:layout_height="25.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/dialog_x" android:layout_marginEnd="10.0dip" />
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="center_horizontal" android:background="@drawable/bg_dialog_no_title_body" android:paddingTop="8.0dip" android:paddingBottom="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_marginTop="40.0dip" android:layout_marginRight="2.0dip" android:layout_marginBottom="2.0dip">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="center_horizontal" android:background="@drawable/room_default_body" android:paddingTop="8.0dip" android:paddingBottom="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_marginTop="40.0dip" android:layout_marginRight="2.0dip" android:layout_marginBottom="2.0dip">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rv_instructions" android:layout_width="fill_parent" android:layout_height="172.0dip" app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

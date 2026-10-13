@@ -4,7 +4,7 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh_room_filter" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/top">
         <View.BlockScrollRecycleView android:id="@id/rv_room_filter" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    <RelativeLayout android:id="@id/top" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip" app:layout_constraintTop_toTopOf="parent">
+    <RelativeLayout android:id="@id/top" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip" app:layout_constraintTop_toTopOf="parent">
         <ImageView android:id="@id/iv_close" android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/x_closed" android:layout_alignTop="@id/tv_title" android:layout_alignBottom="@id/tv_title" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true" />
         <com.bengharbios.ggames.view.CustomTextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ff58c980" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true" />
     </RelativeLayout>

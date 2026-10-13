@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageView android:layout_gravity="center_horizontal" android:background="@drawable/bg_item_chat_face" android:layout_width="340.0dip" android:layout_height="169.0dip" />
-        <View android:id="@id/divider" android:background="@drawable/skin_item_divider" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginTop="-30.0dip" android:scaleType="fitXY" android:translationZ="-1.0dip" />
+        <View android:id="@id/divider" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginTop="-30.0dip" android:scaleType="fitXY" android:translationZ="-1.0dip" />
     </LinearLayout>
-    <View android:layout_gravity="bottom|center" android:id="@id/view_buy_bg" android:background="@drawable/bg_item_chat_price" android:layout_width="191.0dip" android:layout_height="47.0dip" />
+    <View android:layout_gravity="bottom|center" android:id="@id/view_buy_bg" android:background="@drawable/room_default" android:layout_width="191.0dip" android:layout_height="47.0dip" />
     <com.bengharbios.ggames.view.CustomTextView android:textColor="#ff188f62" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tv_owned" android:layout_width="150.0dip" android:layout_height="35.0dip" android:layout_marginBottom="8.0dip" android:text="@string/G_1470_0162" android:maxLines="1" android:includeFontPadding="false" android:shadowColor="#ff5efece" android:shadowDx="0.0" android:shadowDy="2.0" android:shadowRadius="2.0" app:autoSizeMaxTextSize="17.0dip" app:autoSizeMinTextSize="8.0dip" app:autoSizeTextType="uniform" />
     <FrameLayout android:layout_gravity="bottom|center" android:id="@id/btn_buy" android:background="@drawable/bn_yes" android:visibility="gone" android:layout_width="132.0dip" android:layout_height="44.0dip" android:layout_marginBottom="10.0dip">
         <LinearLayout android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">

@@ -8,6 +8,6 @@
         <ImageView android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/medal_new_show_ic" />
         <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_add" android:layout_width="26.0dip" android:layout_height="26.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/medal_add" android:layout_marginEnd="10.0dip" />
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="22.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="14.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
-        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_check" android:layout_width="23.0dip" android:layout_height="25.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/skin_check" android:layout_marginEnd="12.0dip" />
+        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_check" android:layout_width="23.0dip" android:layout_height="25.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/room_default" android:layout_marginEnd="12.0dip" />
     </FrameLayout>
 </RelativeLayout>

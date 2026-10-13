@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/rl_task" android:layout_width="fill_parent" android:layout_height="58.0dip" android:layout_marginTop="5.0dip" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout android:id="@id/rl_main" android:background="@drawable/task_article_2" android:layout_width="298.0dip" android:layout_height="58.0dip" android:layout_centerHorizontal="true">
+    <RelativeLayout android:id="@id/rl_main" android:background="@drawable/room_default" android:layout_width="298.0dip" android:layout_height="58.0dip" android:layout_centerHorizontal="true">
         <ImageView android:id="@id/iv_task" android:layout_width="50.0dip" android:layout_height="50.0dip" android:src="@drawable/room_default" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_alignParentStart="true" />
         <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_upgrade" android:visibility="gone" android:layout_width="120.0dip" android:layout_height="120.0dip" android:layout_marginLeft="-30.0dip" android:layout_marginBottom="-4.0dip" app:view_scale="2.45" />
         <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_open_box" android:visibility="gone" android:layout_width="120.0dip" android:layout_height="120.0dip" android:layout_marginLeft="-25.0dip" android:layout_marginBottom="-2.1999817dip" app:view_scale="1.65" />

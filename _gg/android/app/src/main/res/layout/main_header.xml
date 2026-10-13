@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <View android:id="@id/user_head_view" android:layout_width="60.0dip" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_alignParentLeft="true" android:layout_marginStart="5.0dip" android:layout_alignParentStart="true" />
     <FrameLayout android:id="@id/iv_setting" android:layout_width="40.0dip" android:layout_height="fill_parent" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_alignParentEnd="true">
-        <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/system" />
+        <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_default" />
     </FrameLayout>
     <FrameLayout android:id="@id/iv_skin" android:layout_width="44.0dip" android:layout_height="fill_parent" android:layout_toLeftOf="@id/iv_setting" android:layout_centerVertical="true" android:layout_marginEnd="-3.0dip" android:layout_toStartOf="@id/iv_setting">
         <View android:layout_gravity="center" android:layout_width="38.0dip" android:layout_height="32.0dip" app:default_static_source="@drawable/icon_skin" app:play_on_attach="true" app:source="cart.svga" />

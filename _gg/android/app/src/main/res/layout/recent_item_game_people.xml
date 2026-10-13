@@ -13,9 +13,9 @@
                 <View android:id="@id/iv_vip_tag" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout android:gravity="bottom" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <ImageView android:id="@id/iv_league" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/icon_lobby" />
+                <ImageView android:id="@id/iv_league" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/room_default" />
                 <FrameLayout android:id="@id/fl_legend" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <FrameLayout android:layout_gravity="bottom" android:background="@drawable/legend_star_bg" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:paddingStart="18.0dip" android:layout_marginStart="5.0dip">
+                    <FrameLayout android:layout_gravity="bottom" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:paddingStart="18.0dip" android:layout_marginStart="5.0dip">
                         <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/tv_stars_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="#ff9c520a" app:stroke_width="1.0dip" />
                     </FrameLayout>
                     <ImageView android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/legend_small" />

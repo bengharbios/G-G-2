@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/rl_task" android:layout_width="360.0dip" android:layout_height="wrap_content" android:layout_marginTop="-21.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:id="@id/bottom_view_1" android:background="@drawable/pass_task_item_left_bottom" android:layout_width="180.0dip" android:layout_height="140.0dip" android:layout_marginTop="17.0dip" />
-    <View android:background="@drawable/pass_task_item_right_bottom" android:layout_width="180.0dip" android:layout_height="140.0dip" android:layout_marginTop="17.0dip" android:layout_toEndOf="@id/bottom_view_1" />
+    <View android:id="@id/bottom_view_1" android:background="@drawable/room_default" android:layout_width="180.0dip" android:layout_height="140.0dip" android:layout_marginTop="17.0dip" />
+    <View android:background="@drawable/room_default" android:layout_width="180.0dip" android:layout_height="140.0dip" android:layout_marginTop="17.0dip" android:layout_toEndOf="@id/bottom_view_1" />
     <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
         <View android:layout_gravity="center_vertical" android:background="@drawable/pass_task_bottom_show_bg" android:layout_width="fill_parent" android:layout_height="9.0dip" android:layout_marginStart="-5.0dip" android:layout_marginEnd="-5.0dip" />
         <View android:layout_gravity="center" android:background="@drawable/pass_task_bottom_show_ic" android:layout_width="115.0dip" android:layout_height="33.0dip" android:layout_marginStart="-5.0dip" android:layout_marginEnd="-5.0dip" />

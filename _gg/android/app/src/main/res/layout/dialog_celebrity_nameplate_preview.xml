@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:id="@id/rl_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <FrameLayout android:id="@id/main_detail" android:clickable="true" android:layout_width="fill_parent" android:layout_height="340.0dip" android:layout_centerHorizontal="true">
-            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/skin_detail_bg_royal" android:layout_width="252.0dip" android:layout_height="179.0dip" android:layout_marginTop="100.0dip" android:scaleType="fitXY" android:layout_centerInParent="true" />
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/room_default" android:layout_width="252.0dip" android:layout_height="179.0dip" android:layout_marginTop="100.0dip" android:scaleType="fitXY" android:layout_centerInParent="true" />
             <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title_bg" android:layout_width="360.0dip" android:layout_height="wrap_content" android:src="@drawable/skin_title_royal" />
             <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="250.0dip" android:layout_height="fill_parent" android:layout_marginTop="50.0dip">
                 <ImageView android:layout_gravity="center_horizontal" android:id="@id/static_image" android:visibility="visible" android:layout_width="176.0dip" android:layout_height="42.0dip" android:layout_marginTop="113.0dip" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/bg_associate_option" android:layout_width="160.0dip" android:layout_height="189.0dip"
+<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="160.0dip" android:layout_height="189.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageView android:id="@id/iv_icon_1" android:layout_width="22.0dip" android:layout_height="21.0dip" android:src="@drawable/icon_associate_total" android:scaleType="fitXY" android:layout_centerVertical="true" android:layout_marginStart="5.0dip" />

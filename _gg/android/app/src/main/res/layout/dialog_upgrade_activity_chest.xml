@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_gravity="center_horizontal" android:layout_width="360.0dip" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:id="@id/fl_content" android:background="@drawable/chest_upgrade_bg" android:layout_width="297.0dip" android:layout_height="wrap_content" android:layout_centerInParent="true">
+    <FrameLayout android:id="@id/fl_content" android:background="@drawable/room_default" android:layout_width="297.0dip" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_middle_icon" android:layout_width="270.0dip" android:layout_height="141.0dip" android:layout_marginTop="40.0dip" />
         <FrameLayout android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/fl_time_down" android:layout_width="162.0dip" android:layout_height="27.0dip" android:layout_marginTop="20.0dip">
             <ImageView android:layout_width="162.0dip" android:layout_height="22.0dip" android:layout_marginTop="3.0dip" android:src="@drawable/dialog_tower_buy_time_bg" />

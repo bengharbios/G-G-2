@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:background="@drawable/shop_privileges_detail_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <FrameLayout android:id="@id/fl_royal_title_change" android:background="@drawable/royal_current_level_bg" android:layout_width="267.0dip" android:layout_height="32.0dip" android:layout_marginTop="45.0dip" android:layout_centerHorizontal="true">
+    <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <FrameLayout android:id="@id/fl_royal_title_change" android:background="@drawable/room_default" android:layout_width="267.0dip" android:layout_height="32.0dip" android:layout_marginTop="45.0dip" android:layout_centerHorizontal="true">
         <LinearLayout android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
             <ImageView android:id="@id/iv_royal_level_change" android:layout_width="30.0dip" android:layout_height="23.0dip" />
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">

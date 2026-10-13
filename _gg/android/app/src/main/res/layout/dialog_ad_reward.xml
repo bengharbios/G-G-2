@@ -6,7 +6,7 @@
     <RelativeLayout android:background="@drawable/bg_ad_reward_tips" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginTop="-33.0dip">
         <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0sp" android:textColor="#ff3dab5f" android:gravity="center" android:layout_width="130.0dip" android:layout_height="wrap_content" android:layout_marginLeft="43.0dip" android:layout_marginTop="28.0dip" android:text="@string/G_1340_158" android:rotation="-10.0" />
     </RelativeLayout>
-    <LinearLayout android:orientation="vertical" android:background="@drawable/bg_ad_reward_dialog" android:layout_width="fill_parent" android:layout_height="350.0dip">
+    <LinearLayout android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="350.0dip">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="300.0dip" android:layout_marginBottom="-50.0dip" />
         <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0sp" android:layout_gravity="center_horizontal" android:id="@id/tv_times" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
         <View android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/ll_watch" android:layout_width="188.0dip" android:layout_height="61.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="10.0dip" />

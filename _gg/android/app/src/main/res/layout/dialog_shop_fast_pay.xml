@@ -34,7 +34,7 @@
                 </FrameLayout>
             </LinearLayout>
         </FrameLayout>
-        <LinearLayout android:orientation="vertical" android:background="@drawable/fast_pay_content_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip">
+        <LinearLayout android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip">
             <RelativeLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/rl_coin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginStart="7.0dip">
                 <com.bengharbios.ggames.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_coin_num" android:background="@drawable/fast_pay_total_money_num_bg" android:layout_width="90.0dip" android:layout_height="23.0dip" android:lines="1" android:layout_centerVertical="true" android:paddingStart="13.0dip" android:paddingEnd="6.0dip" android:layout_marginStart="11.0dip" app:strokeAutoSizeMaxTextSize="12.0sp" app:strokeAutoSizeMinTextSize="4.0sp" app:strokeAutoSizeStepGranularity="1.0sp" />
                 <ImageView android:id="@id/iv_coin" android:layout_width="24.0dip" android:layout_height="26.0dip" android:layout_centerVertical="true" android:layout_alignParentStart="true" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_base_dialog" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/rl_title" android:background="@drawable/image_bg_title" android:layout_width="fill_parent" android:layout_height="38.0dip">
+    <RelativeLayout android:id="@id/rl_title" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="38.0dip">
         <ImageView android:id="@id/iv_return" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/btn_return" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="38.0dip">
             <ImageView android:id="@id/iv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="2.0dip" />

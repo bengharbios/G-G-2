@@ -2,7 +2,7 @@
 <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical" android:id="@id/ll_room_lock_container" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <View android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="51.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+        <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="51.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
         <RelativeLayout android:background="@drawable/room_lock_title_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="6.0dip" android:layout_marginStart="6.0dip" android:layout_marginEnd="6.0dip">
             <com.bengharbios.ggames.view.CustomTextView android:textSize="20.0dip" android:textStyle="bold" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="36.0dip" android:text="@string/room_lock" android:layout_marginEnd="54.0dip" android:layout_alignParentEnd="true" />
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="19.0dip" android:src="@drawable/room_lock_title_lock" android:layout_marginStart="33.0dip" />

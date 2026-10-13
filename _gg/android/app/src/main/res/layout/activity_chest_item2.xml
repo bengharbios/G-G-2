@@ -6,7 +6,7 @@
         <View android:background="@drawable/event_chest_item_split_ic" android:layout_width="fill_parent" android:layout_height="22.0dip" android:layout_alignParentBottom="true" />
         <View android:id="@id/view_final_top_space" android:background="@drawable/event_chest_top_space_ic" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="22.0dip" android:layout_marginTop="-14.0dip" />
         <FrameLayout android:id="@id/fl_current_level_sweep" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <View android:layout_gravity="center_horizontal" android:background="@drawable/pass_middle_upgrage_bg" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <View android:layout_gravity="center_horizontal" android:background="@drawable/room_default" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         </FrameLayout>
         <FrameLayout android:id="@id/fl_free_regard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:layout_marginStart="78.0dip">
             <ImageView android:id="@id/iv_free_regard_bg" android:layout_width="65.0dip" android:layout_height="65.0dip" android:src="@drawable/pass_task_item_regard_lock_bg" />

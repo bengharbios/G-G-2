@@ -2,7 +2,7 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <RelativeLayout android:id="@id/fl_content" android:background="@drawable/sign_30_day_dialog_bg" android:layout_width="350.0dip" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <RelativeLayout android:id="@id/fl_content" android:background="@drawable/room_default" android:layout_width="350.0dip" android:layout_height="wrap_content" android:layout_centerInParent="true">
             <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_task" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginTop="6.0dip" android:layout_marginRight="3.0dip" android:minHeight="256.0dip" />
         </RelativeLayout>
         <RelativeLayout android:layout_width="350.0dip" android:layout_height="63.0dip" android:layout_alignLeft="@id/fl_content" android:layout_alignTop="@id/fl_content">

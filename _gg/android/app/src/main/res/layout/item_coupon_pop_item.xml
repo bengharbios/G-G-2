@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginTop="1.5dip" android:layout_marginRight="7.0dip" android:layout_marginBottom="1.5dip" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:id="@id/view_bg" android:background="@drawable/bg_coupon_item" android:visibility="gone" android:layout_width="222.0dip" android:layout_height="66.0dip" />
+    <View android:id="@id/view_bg" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="222.0dip" android:layout_height="66.0dip" />
     <FrameLayout android:layout_gravity="center" android:layout_width="218.5dip" android:layout_height="wrap_content">
         <ImageView android:id="@id/iv_coupon_bg" android:layout_width="214.0dip" android:layout_height="57.0dip" android:layout_marginTop="1.5dip" android:src="@drawable/royal_coupon_item_bg" android:scaleType="fitXY" />
         <com.bengharbios.ggames.view.CustomTextView android:textSize="9.0sp" android:textStyle="bold" android:textColor="#ff2c7762" android:gravity="center|left" android:id="@id/ctv_title" android:layout_width="100.0dip" android:layout_height="wrap_content" android:layout_marginLeft="65.0dip" android:layout_marginTop="3.0dip" android:lines="1" app:autoSizeMaxTextSize="9.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />

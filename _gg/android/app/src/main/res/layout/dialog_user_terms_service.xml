@@ -2,7 +2,7 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="322.0dip" android:layout_height="500.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@id/rl_title" android:layout_width="fill_parent" android:layout_height="38.0dip">
-        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/image_bg_title" />
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/room_default" />
         <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textColor="@color/white" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/user_agreement" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
         <ImageView android:id="@id/iv_agreement_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>

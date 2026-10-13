@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_gravity="center_vertical" android:id="@id/ff_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:background="@drawable/bg_award" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_title">
+    <FrameLayout android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_title">
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="18.0sp" android:textColor="#ffb36900" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:text="@string/congratulations" app:stroke_color="#fffff3a0" app:stroke_width="1.0dip" />
         <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.0dip">
             <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_diamonds" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip">

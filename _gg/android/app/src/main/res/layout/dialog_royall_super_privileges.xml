@@ -5,8 +5,8 @@
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#fffdea80" android:gravity="center" android:layout_gravity="center_horizontal" android:layout_width="223.0dip" android:layout_height="40.0dip" android:layout_marginTop="58.0dip" android:text="@string/G_1410_22" app:stroke_color="#ffa62619" app:stroke_width="2.0dip" />
         <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="300.0dip" android:layout_height="50.0dip" android:layout_marginTop="20.0dip">
             <FrameLayout android:layout_gravity="start" android:id="@id/rl_level_progress" android:visibility="visible" android:layout_width="230.0dip" android:layout_height="18.0dip" android:layout_marginTop="16.0dip" android:layout_marginStart="29.0dip">
-                <View android:background="@drawable/royal_super_progress_bg" android:layout_width="fill_parent" android:layout_height="18.0dip" />
-                <View android:layout_gravity="center_vertical" android:id="@id/view_progress" android:background="@drawable/royal_super_progress" android:layout_width="0.0dip" android:layout_height="16.0dip" />
+                <View android:background="@drawable/room_default_bg" android:layout_width="fill_parent" android:layout_height="18.0dip" />
+                <View android:layout_gravity="center_vertical" android:id="@id/view_progress" android:background="@drawable/room_default" android:layout_width="0.0dip" android:layout_height="16.0dip" />
                 <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/stv_progress_des" android:layout_width="fill_parent" android:layout_height="fill_parent" app:stroke_color="#80000000" app:stroke_width="1.5dip" />
             </FrameLayout>
             <ImageView android:layout_gravity="start" android:layout_width="41.0dip" android:layout_height="41.0dip" android:src="@drawable/royal_level_5" />

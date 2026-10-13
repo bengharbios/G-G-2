@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/fl_content" android:layout_width="258.0dip" android:layout_height="130.0dip" android:layout_marginTop="3.0dip" android:layoutDirection="ltr"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:id="@id/view_bg" android:background="@drawable/chat_game_invite_bubble_left" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="3.0dip" android:layout_marginEnd="3.0dip" />
+    <View android:id="@id/view_bg" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="3.0dip" android:layout_marginEnd="3.0dip" />
     <RelativeLayout android:id="@id/rl_content" android:background="@drawable/chat_invitation_ludo" android:layout_width="fill_parent" android:layout_height="85.0dip" android:layout_marginStart="10.0dip" android:layout_marginEnd="1.6999817dip">
         <ImageView android:id="@id/vip_flag" android:layout_width="35.0dip" android:layout_height="18.0dip" android:layout_marginTop="9.0dip" android:src="@drawable/vip" android:layout_marginEnd="60.0dip" android:layout_alignParentEnd="true" style="@style/StrokeTextStyle_Yes" />
         <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/bg_chat_game_invite_mode" android:layout_width="114.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:minHeight="23.0dip" android:layout_below="@id/vip_flag" android:layout_marginEnd="22.0dip" android:layout_alignParentEnd="true">

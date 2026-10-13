@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_gravity="center" android:id="@id/fl_container" android:background="@drawable/regression_room_bg_bg" android:layout_width="260.0dip" android:layout_height="415.0dip"
+<FrameLayout android:layout_gravity="center" android:id="@id/fl_container" android:background="@drawable/room_default" android:layout_width="260.0dip" android:layout_height="415.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:layout_gravity="center" android:id="@id/static_image" android:padding="3.0dip" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_image" android:padding="3.0dip" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />

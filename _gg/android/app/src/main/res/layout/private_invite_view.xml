@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_invited" android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout android:id="@id/rl_content" android:background="@drawable/bg_friendwindow" android:layout_width="323.0dip" android:layout_height="wrap_content" android:layout_margin="3.0dip">
+    <RelativeLayout android:id="@id/rl_content" android:background="@drawable/room_default" android:layout_width="323.0dip" android:layout_height="wrap_content" android:layout_margin="3.0dip">
         <ImageView android:id="@id/iv_logo" android:layout_width="63.0dip" android:layout_height="44.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/team_invite_logo" android:layout_marginStart="4.0dip" />
         <RelativeLayout android:gravity="center_vertical" android:id="@id/rl_invited_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_alignTop="@id/iv_logo" android:layout_marginStart="8.0dip" android:layout_toEndOf="@id/iv_logo">
             <com.bengharbios.ggames.view.StrokeTextView android:textSize="11.0dip" android:textColor="@color/white" android:id="@id/tv_mode_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1480_0052" app:stroke_color="#ff16423b" app:stroke_width="1.0dip" />

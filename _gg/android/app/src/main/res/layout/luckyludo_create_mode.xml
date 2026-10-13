@@ -2,7 +2,7 @@
 <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <RelativeLayout android:id="@id/rl_content" android:background="@drawable/bg_mode_select" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="19.0dip" android:layout_marginEnd="19.0dip">
+        <RelativeLayout android:id="@id/rl_content" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="19.0dip" android:layout_marginEnd="19.0dip">
             <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff8dd4ff" android:gravity="center" android:id="@id/tv_des" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="16.0dip" android:text="@string/G_1510_0242" android:layout_centerHorizontal="true" />
             <ImageView android:id="@id/iv_logo" android:layout_width="294.0dip" android:layout_height="164.0dip" android:src="@drawable/lucky_ludo_page_logo" android:layout_below="@id/tv_des" android:layout_centerHorizontal="true" />
             <View android:id="@id/iv_divider" android:background="@drawable/divider_in_black_mode" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="5.0dip" android:layout_below="@id/iv_logo" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />

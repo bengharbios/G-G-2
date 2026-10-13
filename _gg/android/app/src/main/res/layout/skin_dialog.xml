@@ -3,8 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:orientation="horizontal" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_switch" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_centerInParent="true" />
-        <ImageView android:id="@id/iv_arrow_left" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/skin_arrow_left" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
-        <ImageView android:id="@id/iv_arrow_right" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/skin_arrow_right" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/iv_arrow_left" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/room_default" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/iv_arrow_right" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/room_default" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
     </RelativeLayout>
     <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_open_unlock_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_open_unlock_1" android:layout_width="fill_parent" android:layout_height="fill_parent" app:view_scale="1.2" />

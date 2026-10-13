@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:id="@id/rl_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <FrameLayout android:id="@id/main_detail" android:clickable="true" android:layout_width="fill_parent" android:layout_height="193.0dip" android:layout_centerHorizontal="true">
-            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/skin_detail_bg_blue" android:layout_width="260.0dip" android:layout_height="179.0dip" android:layout_marginTop="14.0dip" android:scaleType="fitXY" android:layout_centerInParent="true" />
-            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title_bg" android:layout_width="wrap_content" android:layout_height="50.0dip" android:src="@drawable/skin_title_blue" />
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/vp_bg" android:background="@drawable/room_default" android:layout_width="260.0dip" android:layout_height="179.0dip" android:layout_marginTop="14.0dip" android:scaleType="fitXY" android:layout_centerInParent="true" />
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title_bg" android:layout_width="wrap_content" android:layout_height="50.0dip" android:src="@drawable/room_default" />
             <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="250.0dip" android:layout_height="fill_parent" android:layout_marginTop="35.0dip" android:layout_marginBottom="3.0dip">
                 <ImageView android:layout_gravity="center_horizontal" android:id="@id/static_image" android:visibility="visible" android:layout_width="240.0dip" android:layout_height="110.0dip" android:layout_marginTop="18.0dip" />
                 <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center_horizontal" android:id="@id/lsv_show_svga" android:visibility="gone" android:layout_width="240.0dip" android:layout_height="110.0dip" android:layout_marginTop="18.0dip" />
-                <ImageView android:layout_gravity="end|bottom|center" android:id="@id/iv_play" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_marginBottom="8.0dip" android:src="@drawable/skin_play" android:layout_marginEnd="8.0dip" />
+                <ImageView android:layout_gravity="end|bottom|center" android:id="@id/iv_play" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_marginBottom="8.0dip" android:src="@drawable/room_default" android:layout_marginEnd="8.0dip" />
                 <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
             </FrameLayout>
         </FrameLayout>
@@ -21,5 +21,5 @@
         </LinearLayout>
     </RelativeLayout>
     <com.bengharbios.ggames.view.CustomTextView android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_description" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_below="@id/rl_content" android:layout_centerHorizontal="true" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="20.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_btn" android:background="@drawable/btn_yes" android:visibility="gone" android:layout_width="200.0dip" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:text="@string/go" android:layout_below="@id/tv_description" android:layout_centerHorizontal="true" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="20.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_btn" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="200.0dip" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:text="@string/go" android:layout_below="@id/tv_description" android:layout_centerHorizontal="true" android:layout_marginStart="2.0dip" android:layout_marginEnd="2.0dip" />
 </RelativeLayout>

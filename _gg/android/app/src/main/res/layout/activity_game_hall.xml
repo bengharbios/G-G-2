@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:orientation="vertical" android:id="@id/ll_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true">
-            <FrameLayout android:id="@id/fl_main_header" android:background="@drawable/friends_titlebg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <FrameLayout android:id="@id/fl_main_header" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <View.main.MainHeaderView android:id="@id/main_header" android:layout_width="fill_parent" android:layout_height="51.0dip" />
             </FrameLayout>
             <View.main.MainRtlViewPager android:id="@id/viewPager" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />

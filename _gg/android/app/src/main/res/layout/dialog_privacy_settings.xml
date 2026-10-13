@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:background="@drawable/bg_feed_back_detail" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip">
+    <LinearLayout android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip">
         <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="3.0dip">
             <com.bengharbios.ggames.view.CustomTextView android:textSize="18.0sp" android:textColor="@color/setting_item" android:id="@id/tv_disturb_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1370_130" android:layout_marginStart="25.0dip" />
             <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0sp" android:textColor="#ff999999" android:layout_width="210.0dip" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginBottom="5.0dip" android:text="@string/G_1370_131" android:layout_below="@id/tv_disturb_title" android:layout_alignStart="@id/tv_disturb_title" />

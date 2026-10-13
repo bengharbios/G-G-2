@@ -19,9 +19,9 @@
                 <View android:layout_gravity="center_vertical" android:id="@id/vip_flag_view" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout android:gravity="bottom" android:orientation="horizontal" android:id="@id/ll_league" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
-                <ImageView android:id="@id/iv_league" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/icon_lobby" />
+                <ImageView android:id="@id/iv_league" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/room_default" />
                 <FrameLayout android:id="@id/fl_legend" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <FrameLayout android:layout_gravity="bottom" android:background="@drawable/legend_star_bg" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:paddingStart="18.0dip" android:layout_marginStart="5.0dip">
+                    <FrameLayout android:layout_gravity="bottom" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:paddingStart="18.0dip" android:layout_marginStart="5.0dip">
                         <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/tv_stars_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="#ff9c520a" app:stroke_width="1.0dip" />
                     </FrameLayout>
                     <ImageView android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/legend_small" />
@@ -34,7 +34,7 @@
         </LinearLayout>
         <ImageView android:id="@id/iv_friend_top" android:visibility="gone" android:layout_width="22.0dip" android:layout_height="22.0dip" android:src="@drawable/icon_friends_top" />
     </RelativeLayout>
-    <RelativeLayout android:id="@id/rl_game_select" android:background="@drawable/invitation_friend_game_bg" android:visibility="gone" android:layout_width="340.0dip" android:layout_height="69.0dip" android:layout_marginTop="-3.0dip" android:layout_below="@id/iv_arrow" android:layout_centerHorizontal="true">
+    <RelativeLayout android:id="@id/rl_game_select" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="340.0dip" android:layout_height="69.0dip" android:layout_marginTop="-3.0dip" android:layout_below="@id/iv_arrow" android:layout_centerHorizontal="true">
         <ImageView android:id="@id/iv_ludo" android:layout_width="145.0dip" android:layout_height="53.0dip" android:src="@drawable/invitation_ludo" android:layout_centerVertical="true" android:layout_marginStart="20.0dip" android:layout_alignParentStart="true" />
         <ImageView android:id="@id/iv_domino" android:layout_width="145.0dip" android:layout_height="53.0dip" android:src="@drawable/invitation_domino" android:layout_centerVertical="true" android:layout_marginEnd="16.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>

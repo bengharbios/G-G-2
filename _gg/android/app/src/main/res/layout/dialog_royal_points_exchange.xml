@@ -17,7 +17,7 @@
         </LinearLayout>
         <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_add_min" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="35.0dip" android:layout_marginBottom="34.0dip" android:layout_below="@id/ll_exchange_info" android:layout_centerHorizontal="true">
             <FrameLayout android:layout_width="54.0dip" android:layout_height="35.0dip">
-                <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textColor="@android:color/white" android:gravity="center" android:id="@id/ctv_sub_min" android:background="@drawable/common_add_sub_btn_gray" android:layout_width="54.0dip" android:layout_height="34.0dip" android:text="@string/G_1400_235" android:shadowColor="#ff513900" android:shadowDx="0.0" android:shadowDy="3.0" android:shadowRadius="3.0" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textColor="@android:color/white" android:gravity="center" android:id="@id/ctv_sub_min" android:background="@drawable/room_default" android:layout_width="54.0dip" android:layout_height="34.0dip" android:text="@string/G_1400_235" android:shadowColor="#ff513900" android:shadowDx="0.0" android:shadowDy="3.0" android:shadowRadius="3.0" />
             </FrameLayout>
             <ImageView android:id="@id/iv_sub" android:layout_width="34.0dip" android:layout_height="35.0dip" android:src="@drawable/btn_reduce" android:layout_marginStart="10.0dip" />
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/royal_store_add_sub_num_bg" android:layout_width="96.0dip" android:layout_height="40.0dip" android:layoutDirection="ltr" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip">
@@ -27,7 +27,7 @@
             </LinearLayout>
             <ImageView android:id="@id/iv_add" android:layout_width="34.0dip" android:layout_height="34.0dip" android:src="@drawable/btn_add" android:layout_marginEnd="10.0dip" />
             <FrameLayout android:layout_width="54.0dip" android:layout_height="35.0dip">
-                <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textColor="@android:color/white" android:gravity="center" android:id="@id/ctv_sub_max" android:background="@drawable/common_add_sub_btn_yellow" android:layout_width="54.0dip" android:layout_height="34.0dip" android:text="@string/G_1400_234" android:shadowColor="#ff513900" android:shadowDx="0.0" android:shadowDy="3.0" android:shadowRadius="3.0" android:layout_marginEnd="10.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textColor="@android:color/white" android:gravity="center" android:id="@id/ctv_sub_max" android:background="@drawable/room_default" android:layout_width="54.0dip" android:layout_height="34.0dip" android:text="@string/G_1400_234" android:shadowColor="#ff513900" android:shadowDx="0.0" android:shadowDy="3.0" android:shadowRadius="3.0" android:layout_marginEnd="10.0dip" />
             </FrameLayout>
         </LinearLayout>
         <LinearLayout android:gravity="center" android:background="@drawable/bg_royal_points_exchange_top" android:layout_width="fill_parent" android:layout_height="30.0dip">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.bengharbios.ggames.view.StrokeTextView android:textSize="17.0sp" android:textColor="#ff5ae7bc" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_title" android:background="@drawable/bg_skin_title" android:paddingBottom="3.0dip" android:layout_width="249.0dip" android:layout_height="27.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="7.0dip" android:includeFontPadding="false" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="17.0sp" android:textColor="#ff5ae7bc" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_title" android:background="@drawable/room_default" android:paddingBottom="3.0dip" android:layout_width="249.0dip" android:layout_height="27.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="7.0dip" android:includeFontPadding="false" />
     <ImageView android:layout_gravity="end|center" android:id="@id/iv_rules" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="18.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/question_icon" android:layout_marginEnd="10.0dip" />
 </FrameLayout>

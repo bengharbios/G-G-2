@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="@drawable/bg_notes" android:layout_width="300.0dip" android:layout_height="fill_parent"
+<LinearLayout android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="300.0dip" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:orientation="vertical" android:background="@drawable/bg_rank_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
         <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip">

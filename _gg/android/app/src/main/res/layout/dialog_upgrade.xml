@@ -10,7 +10,7 @@
         </FrameLayout>
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="27.0sp" android:textColor="#ffb87311" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="249.0dip" android:text="@string/level_up" android:includeFontPadding="false" app:stroke_color="#fffffd87" app:stroke_width="1.0dip" />
         <com.bengharbios.ggames.view.StrokeTextView android:textSize="13.0sp" android:textColor="@color/white" android:layout_gravity="center_horizontal" android:id="@id/stv_next_reward_title" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="415.0dip" android:text="@string/G_1390_98" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
-        <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_reward" android:background="@drawable/next_upgrade_reward_middle_bg" android:layout_width="290.0dip" android:layout_height="66.0dip" android:layout_marginTop="437.0dip">
+        <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_reward" android:background="@drawable/room_default" android:layout_width="290.0dip" android:layout_height="66.0dip" android:layout_marginTop="437.0dip">
             <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rv_reward" android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginTop="7.0dip" android:overScrollMode="never" />
         </FrameLayout>
     </FrameLayout>

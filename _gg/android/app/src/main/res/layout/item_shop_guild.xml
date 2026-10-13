@@ -28,7 +28,7 @@
         <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_reward_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-2.0dip" android:text="@string/reward_tip" android:layout_below="@id/iv_shelves" android:layout_centerHorizontal="true" />
         <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="15.0dip" android:layout_alignBottom="@id/iv_shelves" android:layout_centerHorizontal="true" android:layoutDirection="ltr">
             <ImageView android:layout_gravity="bottom" android:id="@id/iv_charge_box" android:layout_width="72.0dip" android:layout_height="54.0dip" android:src="@drawable/chest_firstcharge" />
-            <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/bg_firstcharge" android:layout_width="150.0dip" android:layout_height="85.0dip">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="150.0dip" android:layout_height="85.0dip">
                 <LinearLayout android:gravity="center" android:layout_width="150.0dip" android:layout_height="wrap_content">
                     <FrameLayout android:layout_width="47.0dip" android:layout_height="47.0dip" android:layout_marginStart="10.0dip">
                         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_gift" android:layout_width="36.0dip" android:layout_height="36.0dip" android:src="@drawable/recharge_room_gift" />

@@ -7,7 +7,7 @@
         <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_image" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
         <ImageView android:id="@id/iv_logo_two_match" android:layout_width="wrap_content" android:layout_height="105.0dip" android:layout_marginTop="64.0dip" android:layout_centerHorizontal="true" />
         <RelativeLayout android:id="@id/rl_rank" android:layout_width="310.0dip" android:layout_height="100.0dip" android:layout_marginTop="43.0dip" android:layout_below="@id/iv_logo_two_match" android:layout_centerHorizontal="true">
-            <View android:background="@drawable/bg_cup" android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_marginLeft="50.0dip" android:layout_centerVertical="true" />
+            <View android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_marginLeft="50.0dip" android:layout_centerVertical="true" />
             <ImageView android:id="@id/iv_coin" android:layout_width="100.0dip" android:layout_height="77.0dip" android:layout_marginLeft="30.0dip" android:src="@drawable/match_coin" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
             <LinearLayout android:gravity="left" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="135.0dip" android:layout_centerVertical="true">
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0dip" android:textColor="@color/color_ffdd3c" android:id="@id/iv1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/rank1" android:includeFontPadding="false" />
@@ -23,7 +23,7 @@
         </RelativeLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="19.0dip" android:layout_below="@id/rl3" android:layout_centerHorizontal="true">
             <View android:id="@id/match_two_view_1" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-            <ImageView android:layout_gravity="center_vertical" android:id="@id/iv0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/vs" android:layout_marginStart="30.0dip" />
+            <ImageView android:layout_gravity="center_vertical" android:id="@id/iv0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_default" android:layout_marginStart="30.0dip" />
             <View android:id="@id/match_two_view_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="30.0dip" />
         </LinearLayout>
     </RelativeLayout>

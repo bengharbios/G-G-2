@@ -2,5 +2,5 @@
 <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:id="@id/view_header" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="9.0dip" />
-    <View.battle.vip.jackaroo.view.JackarooVipRoomItemView android:id="@id/vip_room_item" android:background="@drawable/vip_room_bg" android:layout_width="327.0dip" android:layout_height="114.0dip" android:layout_marginTop="3.0dip" />
+    <View.battle.vip.jackaroo.view.JackarooVipRoomItemView android:id="@id/vip_room_item" android:background="@drawable/room_default" android:layout_width="327.0dip" android:layout_height="114.0dip" android:layout_marginTop="3.0dip" />
 </LinearLayout>

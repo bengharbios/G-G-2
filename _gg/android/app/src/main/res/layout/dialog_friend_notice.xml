@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_friend_notice" android:background="@drawable/bg_friendwindow" android:visibility="visible" android:layout_width="330.0dip" android:layout_height="65.0dip" android:layout_marginTop="20.0dip"
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_friend_notice" android:background="@drawable/room_default" android:visibility="visible" android:layout_width="330.0dip" android:layout_height="65.0dip" android:layout_marginTop="20.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:id="@id/civ_friend_head" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginStart="14.0dip" />
     <RelativeLayout android:gravity="center_vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="4.0dip">

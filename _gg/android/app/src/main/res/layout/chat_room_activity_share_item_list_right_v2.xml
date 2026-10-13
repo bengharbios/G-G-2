@@ -4,7 +4,7 @@
     <LinearLayout android:orientation="vertical" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginBottom="6.0dip" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip">
         <FrameLayout android:layout_width="240.0dip" android:layout_height="wrap_content">
             <View android:id="@id/iv_img" android:layout_width="fill_parent" android:layout_height="wrap_content" android:adjustViewBounds="true" app:isRoundRect="true" app:roundRectRadius="4.0dip" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="9.5dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_label" android:background="@drawable/bg_msg_room_activity_share_label" android:layout_width="100.0dip" android:layout_height="18.0dip" android:layout_margin="10.0dip" android:lines="1" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="9.5dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_label" android:background="@drawable/room_default" android:layout_width="100.0dip" android:layout_height="18.0dip" android:layout_margin="10.0dip" android:lines="1" />
         </FrameLayout>
         <LinearLayout android:gravity="center|left" android:layout_width="206.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip">
             <ImageView android:layout_width="17.0dip" android:layout_height="17.0dip" android:src="@drawable/icon_msg_room_activity_share_time" />

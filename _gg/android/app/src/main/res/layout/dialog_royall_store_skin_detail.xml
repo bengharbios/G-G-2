@@ -4,7 +4,7 @@
     <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_image" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="20.0dip" app:view_scale="1.1" />
     <FrameLayout android:layout_gravity="center" android:id="@id/fl_static_image" android:layout_width="70.0dip" android:layout_height="70.0dip">
         <ImageView android:id="@id/static_image" android:layout_width="70.0dip" android:layout_height="70.0dip" android:scaleType="fitCenter" />
-        <ImageView android:layout_gravity="end|bottom|center" android:id="@id/iv_fragment" android:visibility="gone" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginBottom="5.0dip" android:src="@drawable/fragment_skin_icon" />
+        <ImageView android:layout_gravity="end|bottom|center" android:id="@id/iv_fragment" android:visibility="gone" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginBottom="5.0dip" android:src="@drawable/room_default" />
     </FrameLayout>
     <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
 </FrameLayout>

@@ -2,7 +2,7 @@
 <View android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <View android:orientation="vertical" android:id="@id/content_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="50.0dip" android:layout_marginBottom="50.0dip">
-        <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_game_chat_ludo_title" android:layout_width="fill_parent" android:layout_height="39.0dip">
+        <RelativeLayout android:id="@id/rl_title" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="39.0dip">
             <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
                 <ImageView android:layout_width="25.0dip" android:layout_height="22.0dip" android:src="@drawable/icon_friends_game_chat" />
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0dip" android:textColor="#ffffffff" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/social_friend_request" android:layout_marginStart="5.0dip" />
@@ -10,14 +10,14 @@
             <ImageView android:id="@id/iv_close" android:padding="7.5dip" android:layout_width="39.0dip" android:layout_height="39.0dip" android:src="@drawable/game_chat_fragment_ludo_close" android:layout_alignParentEnd="true" />
         </RelativeLayout>
         <LinearLayout android:orientation="vertical" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/rl_title">
-            <FrameLayout android:id="@id/fl_main" android:background="@drawable/bg_game_chat_black" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="-2.0dip" android:layout_weight="1.0">
+            <FrameLayout android:id="@id/fl_main" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="-2.0dip" android:layout_weight="1.0">
                 <androidx.recyclerview.widget.RecyclerView android:id="@id/friends_list_view" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="15.0dip" android:listSelector="@android:color/transparent" android:transcriptMode="alwaysScroll" android:divider="@null" android:dividerHeight="16.0dip" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
                 <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_friends" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
                     <ImageView android:id="@id/iv_friends_no_friends" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/no_friends" />
                     <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0sp" android:textColor="#ffabd8cb" android:id="@id/tv_friends_no_friends" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_friend_requests" />
                 </LinearLayout>
             </FrameLayout>
-            <ImageView android:layout_gravity="left" android:id="@id/iv_arrow" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginTop="-5.299988dip" android:src="@drawable/bg_game_chat_black_arrow" />
+            <ImageView android:layout_gravity="left" android:id="@id/iv_arrow" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginTop="-5.299988dip" android:src="@drawable/room_default_arrow" />
         </LinearLayout>
     </View>
 </View>
