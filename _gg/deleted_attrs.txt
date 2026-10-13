@@ -1,0 +1,246 @@
+=== Deleted Attrs (36) ===
+These attrs were deleted from attrs.xml because they are
+also defined in material/appcompat/constraintlayout AARs
+with matching format/enum/flag definitions.
+
+  badgeGravity
+  behavior_saveFlags
+  boxBackgroundMode
+  checkedIconGravity
+  collapsedTitleGravity
+  endIconMode
+  endIconTintMode
+  errorIconTintMode
+  expandedTitleGravity
+  fabAlignmentMode
+  fabAnimationMode
+  fabSize
+  hideAnimationBehavior
+  iconGravity
+  indeterminateAnimationType
+  indicatorDirectionCircular
+  indicatorDirectionLinear
+  labelBehavior
+  labelVisibilityMode
+  layout_collapseMode
+  layout_constraintHeight_default
+  layout_constraintWidth_default
+  layout_optimizationLevel
+  layout_scrollFlags
+  logoScaleType
+  menuGravity
+  passwordToggleTintMode
+  placeholder_emptyVisibility
+  showAnimationBehavior
+  startIconTintMode
+  tabGravity
+  tabIconTintMode
+  tabIndicatorAnimationMode
+  tabIndicatorGravity
+  tabMode
+  titleCollapseMode
+
+=== Not Deleted (different format) (199) ===
+These attrs have different format/enum/flag definitions
+between our project and the libraries.
+They were NOT deleted to avoid breaking layouts.
+
+  animateCircleAngleTo: not found in AARs
+  animateRelativeTo: not found in AARs
+  background: not found in AARs
+  backgroundSplit: not found in AARs
+  backgroundTint: not found in AARs
+  barrierAllowsGoneWidgets: not found in AARs
+  barrierDirection: not found in AARs
+  barrierMargin: not found in AARs
+  behavior_draggable: not found in AARs
+  borderRound: not found in AARs
+  borderRoundPercent: not found in AARs
+  buttonCompat: not found in AARs
+  buttonTint: not found in AARs
+  chainUseRtl: not found in AARs
+  checkedIcon: not found in AARs
+  checkedIconTint: not found in AARs
+  circularflow_angles: not found in AARs
+  circularflow_defaultAngle: not found in AARs
+  circularflow_defaultRadius: not found in AARs
+  circularflow_radiusInDP: not found in AARs
+  circularflow_viewCenter: not found in AARs
+  clockIcon: not found in AARs
+  colorOnBackground: not found in AARs
+  constraintSet: not found in AARs
+  constraint_referenced_ids: not found in AARs
+  constraint_referenced_tags: not found in AARs
+  constraints: not found in AARs
+  content: not found in AARs
+  contentInsetEnd: not found in AARs
+  contentInsetEndWithActions: not found in AARs
+  contentInsetLeft: not found in AARs
+  contentInsetRight: not found in AARs
+  contentInsetStart: not found in AARs
+  contentInsetStartWithNavigation: not found in AARs
+  contentPadding: not found in AARs
+  contentPaddingBottom: not found in AARs
+  contentPaddingLeft: not found in AARs
+  contentPaddingRight: not found in AARs
+  contentPaddingTop: not found in AARs
+  curveFit: not found in AARs
+  defaultDuration: not found in AARs
+  divider: not found in AARs
+  dividerInsetEnd: not found in AARs
+  dividerInsetStart: not found in AARs
+  dragDirection: not found in AARs
+  drawPath: not found in AARs
+  duration: not found in AARs
+  elevation: not found in AARs
+  ensureMinTouchTargetSize: not found in AARs
+  flow_firstHorizontalBias: not found in AARs
+  flow_firstHorizontalStyle: not found in AARs
+  flow_firstVerticalBias: not found in AARs
+  flow_firstVerticalStyle: not found in AARs
+  flow_horizontalAlign: not found in AARs
+  flow_horizontalBias: not found in AARs
+  flow_horizontalGap: not found in AARs
+  flow_horizontalStyle: not found in AARs
+  flow_lastHorizontalBias: not found in AARs
+  flow_lastHorizontalStyle: not found in AARs
+  flow_lastVerticalBias: not found in AARs
+  flow_lastVerticalStyle: not found in AARs
+  flow_maxElementsWrap: not found in AARs
+  flow_verticalAlign: not found in AARs
+  flow_verticalBias: not found in AARs
+  flow_verticalGap: not found in AARs
+  flow_verticalStyle: not found in AARs
+  flow_wrapMode: not found in AARs
+  fontFamily: not found in AARs
+  fontProviderSystemFontFamily: not found in AARs
+  framePosition: not found in AARs
+  headerLayout: not found in AARs
+  height: not found in AARs
+  hideMotionSpec: not found in AARs
+  itemBackground: not found in AARs
+  itemIconSize: not found in AARs
+  itemIconTint: not found in AARs
+  itemRippleColor: not found in AARs
+  itemShapeAppearance: not found in AARs
+  itemShapeAppearanceOverlay: not found in AARs
+  itemTextColor: not found in AARs
+  keyboardIcon: not found in AARs
+  layoutDescription: not found in AARs
+  layoutDuringTransition: not found in AARs
+  layout_constrainedHeight: not found in AARs
+  layout_constrainedWidth: not found in AARs
+  layout_constraintBaseline_creator: not found in AARs
+  layout_constraintBaseline_toBaselineOf: not found in AARs
+  layout_constraintBaseline_toBottomOf: not found in AARs
+  layout_constraintBaseline_toTopOf: not found in AARs
+  layout_constraintBottom_creator: not found in AARs
+  layout_constraintBottom_toBottomOf: not found in AARs
+  layout_constraintBottom_toTopOf: not found in AARs
+  layout_constraintCircle: not found in AARs
+  layout_constraintCircleAngle: not found in AARs
+  layout_constraintCircleRadius: not found in AARs
+  layout_constraintDimensionRatio: not found in AARs
+  layout_constraintEnd_toEndOf: not found in AARs
+  layout_constraintEnd_toStartOf: not found in AARs
+  layout_constraintGuide_begin: not found in AARs
+  layout_constraintGuide_end: not found in AARs
+  layout_constraintGuide_percent: not found in AARs
+  layout_constraintHeight: not found in AARs
+  layout_constraintHeight_max: not found in AARs
+  layout_constraintHeight_min: not found in AARs
+  layout_constraintHeight_percent: not found in AARs
+  layout_constraintHorizontal_bias: not found in AARs
+  layout_constraintHorizontal_chainStyle: not found in AARs
+  layout_constraintHorizontal_weight: not found in AARs
+  layout_constraintLeft_creator: not found in AARs
+  layout_constraintLeft_toLeftOf: not found in AARs
+  layout_constraintLeft_toRightOf: not found in AARs
+  layout_constraintRight_creator: not found in AARs
+  layout_constraintRight_toLeftOf: not found in AARs
+  layout_constraintRight_toRightOf: not found in AARs
+  layout_constraintStart_toEndOf: not found in AARs
+  layout_constraintStart_toStartOf: not found in AARs
+  layout_constraintTag: not found in AARs
+  layout_constraintTop_creator: not found in AARs
+  layout_constraintTop_toBottomOf: not found in AARs
+  layout_constraintTop_toTopOf: not found in AARs
+  layout_constraintVertical_bias: not found in AARs
+  layout_constraintVertical_chainStyle: not found in AARs
+  layout_constraintVertical_weight: not found in AARs
+  layout_constraintWidth: not found in AARs
+  layout_constraintWidth_max: not found in AARs
+  layout_constraintWidth_min: not found in AARs
+  layout_constraintWidth_percent: not found in AARs
+  layout_editor_absoluteX: not found in AARs
+  layout_editor_absoluteY: not found in AARs
+  layout_goneMarginBaseline: not found in AARs
+  layout_goneMarginBottom: not found in AARs
+  layout_goneMarginEnd: not found in AARs
+  layout_goneMarginLeft: not found in AARs
+  layout_goneMarginRight: not found in AARs
+  layout_goneMarginStart: not found in AARs
+  layout_goneMarginTop: not found in AARs
+  layout_marginBaseline: not found in AARs
+  layout_wrapBehaviorInParent: not found in AARs
+  lineHeight: not found in AARs
+  logo: not found in AARs
+  marginLeftSystemWindowInsets: not found in AARs
+  marginRightSystemWindowInsets: not found in AARs
+  marginTopSystemWindowInsets: not found in AARs
+  materialCircleRadius: not found in AARs
+  materialDividerHeavyStyle: not found in AARs
+  materialDividerStyle: not found in AARs
+  menu: not found in AARs
+  minTouchTargetSize: not found in AARs
+  motionPathRotate: not found in AARs
+  motionProgress: not found in AARs
+  motionStagger: not found in AARs
+  motionTarget: not found in AARs
+  navigationIconTint: not found in AARs
+  onStateTransition: not found in AARs
+  paddingBottomSystemWindowInsets: not found in AARs
+  paddingLeftSystemWindowInsets: not found in AARs
+  paddingRightSystemWindowInsets: not found in AARs
+  paddingTopSystemWindowInsets: not found in AARs
+  pathMotionArc: not found in AARs
+  pivotAnchor: not found in AARs
+  polarRelativeTo: not found in AARs
+  popupTheme: not found in AARs
+  quantizeMotionInterpolator: not found in AARs
+  quantizeMotionPhase: not found in AARs
+  quantizeMotionSteps: not found in AARs
+  rippleColor: not found in AARs
+  selectionRequired: not found in AARs
+  shapeAppearance: not found in AARs
+  shapeAppearanceOverlay: not found in AARs
+  showMotionSpec: not found in AARs
+  singleSelection: not found in AARs
+  sizePercent: not found in AARs
+  strokeColor: not found in AARs
+  strokeWidth: not found in AARs
+  subtitle: not found in AARs
+  subtitleTextStyle: not found in AARs
+  targetId: not found in AARs
+  textAllCaps: not found in AARs
+  textLocale: not found in AARs
+  textOutlineColor: not found in AARs
+  textOutlineThickness: not found in AARs
+  title: not found in AARs
+  titleTextStyle: not found in AARs
+  touchAnchorId: not found in AARs
+  touchAnchorSide: not found in AARs
+  trackColor: not found in AARs
+  transformPivotTarget: not found in AARs
+  transitionDisable: not found in AARs
+  transitionEasing: not found in AARs
+  transitionPathRotate: not found in AARs
+  useMaterialThemeColors: not found in AARs
+  viewTransitionMode: not found in AARs
+  visibilityMode: not found in AARs
+  waveDecay: not found in AARs
+  waveOffset: not found in AARs
+  wavePeriod: not found in AARs
+  wavePhase: not found in AARs
+  waveShape: not found in AARs
+  waveVariesBy: not found in AARs
