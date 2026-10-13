@@ -99,8 +99,62 @@ interface GameConfig {
   icon: string;
   color: string;
   isComingSoon: boolean;
+  isFree: boolean;
+  category: string;
+  status: 'available' | 'coming_soon' | 'disabled';
   createdAt: string;
   updatedAt: string;
+}
+
+// ─── Game Reward Config (مكافآت الألعاب القابلة للتعديل) ──────────────
+interface GameRewardConfig {
+  id: string;
+  gameSlug: string;
+  xpOnPlay: number;
+  xpOnWin: number;
+  goldOnPlay: number;
+  goldOnWin: number;
+  minPlayers: number;
+  maxGoldPerDay: number;
+  maxXPPerDay: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface GameRewardWithGame {
+  gameSlug: string;
+  gameName: string;
+  config: GameRewardConfig | null;
+}
+
+// ─── Role Reward Multiplier (مضاعفات الأدوار) ──────────────────────
+interface RoleRewardMultiplier {
+  id: string;
+  roleKey: string;
+  roleName: string;
+  xpMultiplier: number;
+  goldMultiplier: number;
+  description: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── User Reward Log (سجل المكافآت) ──────────────────────────────────
+interface UserRewardLog {
+  id: string;
+  userId: string;
+  subscriptionCode: string;
+  gameSlug: string;
+  outcome: 'play' | 'win' | 'loss' | 'achievement';
+  xpAwarded: number;
+  goldAwarded: number;
+  userRole: string;
+  userLevel: number;
+  subPlan: string;
+  dayBucket: string;
+  createdAt: string;
 }
 
 interface Subscription {
@@ -219,13 +273,16 @@ interface LeaderboardEntry {
   isSpecialId: boolean;
 }
 
-type ActiveSection = 'dashboard' | 'games' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
+type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
 
 // ─── Navigation items ─────────────────────────────────────────────────
 
 const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = [
   { id: 'dashboard', label: 'لوحة التحكم', icon: <LayoutDashboard className="w-5 h-5" /> },
   { id: 'games', label: 'إدارة الألعاب', icon: <Gamepad2 className="w-5 h-5" /> },
+  { id: 'game-rewards', label: 'مكافآت الألعاب', icon: <Trophy className="w-5 h-5" /> },
+  { id: 'role-multipliers', label: 'مضاعفات الأدوار', icon: <Users className="w-5 h-5" /> },
+  { id: 'reward-log', label: 'سجل المكافآت', icon: <Activity className="w-5 h-5" /> },
   { id: 'subscriptions', label: 'الاشتراكات', icon: <Users className="w-5 h-5" /> },
   { id: 'sessions', label: 'الجلسات', icon: <Activity className="w-5 h-5" /> },
   { id: 'messages', label: 'الرسائل', icon: <MessageSquare className="w-5 h-5" /> },
@@ -407,6 +464,15 @@ export default function AdminPage() {
   // Data
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [games, setGames] = useState<GameConfig[]>([]);
+  const [gameRewards, setGameRewards] = useState<GameRewardWithGame[]>([]);
+  const [roleMultipliers, setRoleMultipliers] = useState<RoleRewardMultiplier[]>([]);
+  const [rewardLogs, setRewardLogs] = useState<UserRewardLog[]>([]);
+  const [editingReward, setEditingReward] = useState<GameRewardWithGame | null>(null);
+  const [editingRole, setEditingRole] = useState<RoleRewardMultiplier | null>(null);
+  const [newRoleKey, setNewRoleKey] = useState('');
+  const [newRoleName, setNewRoleName] = useState('');
+  const [newRoleXp, setNewRoleXp] = useState('1.0');
+  const [newRoleGold, setNewRoleGold] = useState('1.0');
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [sessions, setSessions] = useState<GameSession[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -631,6 +697,121 @@ export default function AdminPage() {
       }
     } catch { /* ignore */ }
   }, []);
+
+  // ─── fetch game rewards (مكافآت الألعاب) ──────────────────────────
+  const fetchGameRewards = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/game-rewards');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) setGameRewards(data.rewards);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ─── fetch role multipliers (مضاعفات الأدوار) ──────────────────────
+  const fetchRoleMultipliers = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/role-multipliers');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) setRoleMultipliers(data.roles);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ─── fetch reward log (سجل المكافآت) ──────────────────────────────
+  const fetchRewardLog = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/reward-log?limit=100');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) setRewardLogs(data.logs);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ─── save game reward (إضافة/تحديث إعدادات مكافآت لعبة) ───────────
+  const saveGameReward = useCallback(async (reward: GameRewardWithGame) => {
+    if (!reward.config) return;
+    try {
+      const res = await fetch('/api/admin/game-rewards', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gameSlug: reward.gameSlug,
+          ...reward.config,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setGameRewards((prev) => prev.map((r) =>
+            r.gameSlug === reward.gameSlug ? { ...r, config: data.config } : r
+          ));
+          showToast('تم حفظ إعدادات المكافآت');
+        }
+      }
+    } catch { showToast('خطأ في الحفظ', 'error'); }
+  }, []);
+
+  // ─── save role multiplier (تحديث مضاعف دور) ───────────────────────
+  const saveRoleMultiplier = useCallback(async (role: RoleRewardMultiplier) => {
+    try {
+      const res = await fetch('/api/admin/role-multipliers', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          roleKey: role.roleKey,
+          roleName: role.roleName,
+          xpMultiplier: role.xpMultiplier,
+          goldMultiplier: role.goldMultiplier,
+          description: role.description,
+          isActive: role.isActive,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setRoleMultipliers((prev) => prev.map((r) =>
+            r.roleKey === role.roleKey ? data.role : r
+          ));
+          showToast('تم حفظ مضاعف الدور');
+        }
+      }
+    } catch { showToast('خطأ في الحفظ', 'error'); }
+  }, []);
+
+  // ─── create new role ──────────────────────────────────────────────
+  const createRole = useCallback(async () => {
+    if (!newRoleKey.trim() || !newRoleName.trim()) {
+      showToast('مطلوب مفتاح الدور واسمه', 'error');
+      return;
+    }
+    try {
+      const res = await fetch('/api/admin/role-multipliers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          roleKey: newRoleKey.trim(),
+          roleName: newRoleName.trim(),
+          xpMultiplier: Number(newRoleXp) || 1.0,
+          goldMultiplier: Number(newRoleGold) || 1.0,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setRoleMultipliers((prev) => [...prev, data.role]);
+          setNewRoleKey('');
+          setNewRoleName('');
+          setNewRoleXp('1.0');
+          setNewRoleGold('1.0');
+          showToast('تم إنشاء الدور الجديد');
+        }
+      }
+    } catch { showToast('خطأ في الإنشاء', 'error'); }
+  }, [newRoleKey, newRoleName, newRoleXp, newRoleGold]);
 
   const fetchSubscriptions = useCallback(async () => {
     try {
@@ -999,6 +1180,15 @@ export default function AdminPage() {
       case 'games':
         fetchGames();
         break;
+      case 'game-rewards':
+        fetchGameRewards();
+        break;
+      case 'role-multipliers':
+        fetchRoleMultipliers();
+        break;
+      case 'reward-log':
+        fetchRewardLog();
+        break;
       case 'subscriptions':
         fetchSubscriptions();
         // بيانات المستخدمين لربط الاشتراكات وعرض المشترك المرتبط
@@ -1046,7 +1236,7 @@ export default function AdminPage() {
         fetchSettings();
         break;
     }
-  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, gamesLoadedOnce, games.length]);
+  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, fetchGameRewards, fetchRoleMultipliers, fetchRewardLog, gamesLoadedOnce, games.length]);
 
   // ─── Auto-refresh tables every 10 seconds ──────────────────────────
 
@@ -1172,6 +1362,11 @@ export default function AdminPage() {
           icon: editingGame.icon,
           color: editingGame.color,
           playerRange: editingGame.playerRange,
+          category: editingGame.category,
+          status: editingGame.status,
+          isFree: editingGame.isFree,
+          isComingSoon: editingGame.isComingSoon,
+          isEnabled: editingGame.isEnabled,
         }),
       });
       if (res.ok) {
@@ -2415,6 +2610,456 @@ export default function AdminPage() {
                     </Card>
                   );
                 })}
+              </div>
+            </div>
+          )}
+
+          {/* ─── Game Rewards (مكافآت الألعاب) ──────────────────── */}
+          {activeSection === 'game-rewards' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">🏆 مكافآت الألعاب</h2>
+                  <p className="text-xs text-slate-400 mt-1">عرّف مكافآت XP والذهب لكل لعبة — قابلة للتعديل بالكامل</p>
+                </div>
+                <Button onClick={fetchGameRewards} variant="outline" size="sm" className="border-slate-700 text-slate-300">
+                  <RefreshCw className="w-4 h-4 ml-2" /> تحديث
+                </Button>
+              </div>
+
+              {/* جدول المكافآت */}
+              <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-slate-900/60 text-slate-400 text-xs">
+                      <tr>
+                        <th className="p-3 text-right font-medium">اللعبة</th>
+                        <th className="p-3 text-center font-medium">XP عند اللعب</th>
+                        <th className="p-3 text-center font-medium">XP عند الفوز</th>
+                        <th className="p-3 text-center font-medium">ذهب اللعب</th>
+                        <th className="p-3 text-center font-medium">ذهب الفوز</th>
+                        <th className="p-3 text-center font-medium">أقل لاعبين</th>
+                        <th className="p-3 text-center font-medium">حد الذهب اليومي</th>
+                        <th className="p-3 text-center font-medium">حد XP اليومي</th>
+                        <th className="p-3 text-center font-medium">فعّال</th>
+                        <th className="p-3 text-center font-medium">إجراءات</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/40">
+                      {gameRewards.length === 0 ? (
+                        <tr><td colSpan={10} className="p-8 text-center text-slate-500">جارٍ التحميل...</td></tr>
+                      ) : gameRewards.map((rw) => (
+                        <tr key={rw.gameSlug} className="hover:bg-slate-800/20">
+                          <td className="p-3 font-medium text-white">{rw.gameName}</td>
+                          <td className="p-3 text-center">{rw.config?.xpOnPlay ?? '-'}</td>
+                          <td className="p-3 text-center text-emerald-400 font-bold">{rw.config?.xpOnWin ?? '-'}</td>
+                          <td className="p-3 text-center">{rw.config?.goldOnPlay ?? '-'}</td>
+                          <td className="p-3 text-center text-amber-400 font-bold">{rw.config?.goldOnWin ?? '-'}</td>
+                          <td className="p-3 text-center">{rw.config?.minPlayers ?? '-'}</td>
+                          <td className="p-3 text-center text-xs">{rw.config?.maxGoldPerDay?.toLocaleString() ?? '-'}</td>
+                          <td className="p-3 text-center text-xs">{rw.config?.maxXPPerDay?.toLocaleString() ?? '-'}</td>
+                          <td className="p-3 text-center">
+                            {rw.config ? (
+                              <span className={`px-2 py-0.5 rounded text-xs ${rw.config.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>
+                                {rw.config.isActive ? 'نعم' : 'لا'}
+                              </span>
+                            ) : '-'}
+                          </td>
+                          <td className="p-3 text-center">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setEditingReward(rw)}
+                              className="text-slate-300 hover:text-white"
+                            >
+                              <Settings className="w-4 h-4" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Modal تعديل مكافآت لعبة */}
+              <Dialog open={!!editingReward} onOpenChange={(open) => !open && setEditingReward(null)}>
+                <DialogContent className="bg-slate-900 border-slate-800 max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">تعديل مكافآت: {editingReward?.gameName}</DialogTitle>
+                    <DialogDescription className="text-slate-400">
+                      المعادلة: المكافأة × مضاعف المستوى × مضاعف الدور × مضاعف الاشتراك
+                    </DialogDescription>
+                  </DialogHeader>
+                  {editingReward && (
+                    <div className="space-y-4">
+                      {editingReward.config ? (
+                        <>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">XP عند المشاركة</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.xpOnPlay}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, xpOnPlay: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">XP عند الفوز</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.xpOnWin}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, xpOnWin: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">ذهب عند المشاركة</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.goldOnPlay}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, goldOnPlay: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">ذهب عند الفوز</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.goldOnWin}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, goldOnWin: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-3 gap-3">
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">أقل لاعبين</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.minPlayers}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, minPlayers: Math.max(1, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">حد الذهب اليومي</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.maxGoldPerDay}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, maxGoldPerDay: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-slate-300">حد XP اليومي</Label>
+                              <Input
+                                type="number"
+                                value={editingReward.config.maxXPPerDay}
+                                onChange={(e) => setEditingReward({
+                                  ...editingReward,
+                                  config: { ...editingReward.config!, maxXPPerDay: Math.max(0, Number(e.target.value)) }
+                                })}
+                                className="bg-slate-800/50 border-slate-700/50 text-white"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                            <Label className="text-slate-300">تفعيل المكافآت</Label>
+                            <Switch
+                              checked={editingReward.config.isActive}
+                              onCheckedChange={(checked) => setEditingReward({
+                                ...editingReward,
+                                config: { ...editingReward.config!, isActive: checked }
+                              })}
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center p-4 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                          <p className="text-amber-400 text-sm mb-3">لا توجد إعدادات لهذه اللعبة بعد.</p>
+                          <Button
+                            onClick={() => setEditingReward({
+                              ...editingReward,
+                              config: {
+                                id: '', gameSlug: editingReward.gameSlug,
+                                xpOnPlay: 10, xpOnWin: 50, goldOnPlay: 100, goldOnWin: 500,
+                                minPlayers: 2, maxGoldPerDay: 10000, maxXPPerDay: 1000,
+                                isActive: true, createdAt: '', updatedAt: '',
+                              }
+                            })}
+                            className="bg-emerald-600 hover:bg-emerald-500"
+                          >
+                            إنشاء إعدادات افتراضية
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setEditingReward(null)} className="border-slate-700 text-slate-300">إلغاء</Button>
+                    <Button
+                      onClick={() => { if (editingReward) saveGameReward(editingReward); setEditingReward(null); }}
+                      disabled={!editingReward?.config}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                    >
+                      حفظ
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
+          {/* ─── Role Multipliers (مضاعفات الأدوار) ─────────────── */}
+          {activeSection === 'role-multipliers' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">👥 مضاعفات الأدوار</h2>
+                  <p className="text-xs text-slate-400 mt-1">تحكم في نسبة المكافآت لكل دور — قابل للتطوير</p>
+                </div>
+                <Button onClick={fetchRoleMultipliers} variant="outline" size="sm" className="border-slate-700 text-slate-300">
+                  <RefreshCw className="w-4 h-4 ml-2" /> تحديث
+                </Button>
+              </div>
+
+              {/* جدول الأدوار */}
+              <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-900/60 text-slate-400 text-xs">
+                    <tr>
+                      <th className="p-3 text-right">المفتاح</th>
+                      <th className="p-3 text-right">الاسم</th>
+                      <th className="p-3 text-center">مضاعف XP</th>
+                      <th className="p-3 text-center">مضاعف الذهب</th>
+                      <th className="p-3 text-right">الوصف</th>
+                      <th className="p-3 text-center">فعّال</th>
+                      <th className="p-3 text-center">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {roleMultipliers.length === 0 ? (
+                      <tr><td colSpan={7} className="p-8 text-center text-slate-500">جارٍ التحميل...</td></tr>
+                    ) : roleMultipliers.map((r) => (
+                      <tr key={r.roleKey} className="hover:bg-slate-800/20">
+                        <td className="p-3 font-mono text-xs text-slate-300">{r.roleKey}</td>
+                        <td className="p-3 text-white font-medium">{r.roleName}</td>
+                        <td className="p-3 text-center text-emerald-400 font-bold">{r.xpMultiplier}x</td>
+                        <td className="p-3 text-center text-amber-400 font-bold">{r.goldMultiplier}x</td>
+                        <td className="p-3 text-xs text-slate-400">{r.description || '-'}</td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded text-xs ${r.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>
+                            {r.isActive ? '✓' : '✗'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setEditingRole(r)}
+                            className="text-slate-300 hover:text-white"
+                          >
+                            <Settings className="w-4 h-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* إضافة دور جديد */}
+              <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/40 space-y-3">
+                <h3 className="text-sm font-bold text-white">➕ إضافة دور جديد</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                  <Input
+                    placeholder="مفتاح (مثلاً: vip)"
+                    value={newRoleKey}
+                    onChange={(e) => setNewRoleKey(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                  <Input
+                    placeholder="الاسم (مثلاً: VIP)"
+                    value={newRoleName}
+                    onChange={(e) => setNewRoleName(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                  />
+                  <Input
+                    placeholder="مضاعف XP (1.5)"
+                    value={newRoleXp}
+                    onChange={(e) => setNewRoleXp(e.target.value)}
+                    type="number"
+                    step="0.1"
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                  <Input
+                    placeholder="مضاعف الذهب (1.5)"
+                    value={newRoleGold}
+                    onChange={(e) => setNewRoleGold(e.target.value)}
+                    type="number"
+                    step="0.1"
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                </div>
+                <Button onClick={createRole} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+                  <Plus className="w-4 h-4 ml-2" /> إنشاء دور
+                </Button>
+              </div>
+
+              {/* Modal تعديل دور */}
+              <Dialog open={!!editingRole} onOpenChange={(open) => !open && setEditingRole(null)}>
+                <DialogContent className="bg-slate-900 border-slate-800 max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">تعديل: {editingRole?.roleName}</DialogTitle>
+                  </DialogHeader>
+                  {editingRole && (
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الاسم</Label>
+                        <Input
+                          value={editingRole.roleName}
+                          onChange={(e) => setEditingRole({ ...editingRole, roleName: e.target.value })}
+                          className="bg-slate-800/50 border-slate-700/50 text-white"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">مضاعف XP</Label>
+                          <Input
+                            type="number"
+                            step="0.1"
+                            value={editingRole.xpMultiplier}
+                            onChange={(e) => setEditingRole({ ...editingRole, xpMultiplier: Number(e.target.value) })}
+                            className="bg-slate-800/50 border-slate-700/50 text-white"
+                            dir="ltr"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">مضاعف الذهب</Label>
+                          <Input
+                            type="number"
+                            step="0.1"
+                            value={editingRole.goldMultiplier}
+                            onChange={(e) => setEditingRole({ ...editingRole, goldMultiplier: Number(e.target.value) })}
+                            className="bg-slate-800/50 border-slate-700/50 text-white"
+                            dir="ltr"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الوصف</Label>
+                        <Textarea
+                          value={editingRole.description}
+                          onChange={(e) => setEditingRole({ ...editingRole, description: e.target.value })}
+                          className="bg-slate-800/50 border-slate-700/50 text-white"
+                          rows={2}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                        <Label className="text-slate-300">فعّال</Label>
+                        <Switch
+                          checked={editingRole.isActive}
+                          onCheckedChange={(checked) => setEditingRole({ ...editingRole, isActive: checked })}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setEditingRole(null)} className="border-slate-700 text-slate-300">إلغاء</Button>
+                    <Button
+                      onClick={() => { if (editingRole) saveRoleMultiplier(editingRole); setEditingRole(null); }}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                    >
+                      حفظ
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
+          {/* ─── Reward Log (سجل المكافآت) ───────────────────────── */}
+          {activeSection === 'reward-log' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">📊 سجل المكافآت</h2>
+                  <p className="text-xs text-slate-400 mt-1">آخر 100 مكافأة ممنوحة</p>
+                </div>
+                <Button onClick={fetchRewardLog} variant="outline" size="sm" className="border-slate-700 text-slate-300">
+                  <RefreshCw className="w-4 h-4 ml-2" /> تحديث
+                </Button>
+              </div>
+
+              <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-slate-900/60 text-slate-400 text-xs">
+                      <tr>
+                        <th className="p-3 text-right">الوقت</th>
+                        <th className="p-3 text-right">المستخدم</th>
+                        <th className="p-3 text-right">اللعبة</th>
+                        <th className="p-3 text-center">النتيجة</th>
+                        <th className="p-3 text-center">XP</th>
+                        <th className="p-3 text-center">ذهب</th>
+                        <th className="p-3 text-center">الدور</th>
+                        <th className="p-3 text-center">المستوى</th>
+                        <th className="p-3 text-center">الخطة</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/40">
+                      {rewardLogs.length === 0 ? (
+                        <tr><td colSpan={9} className="p-8 text-center text-slate-500">لا توجد مكافآت بعد</td></tr>
+                      ) : rewardLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-slate-800/20">
+                          <td className="p-3 text-xs text-slate-400">{new Date(log.createdAt).toLocaleString('ar-EG')}</td>
+                          <td className="p-3 text-xs font-mono text-slate-300" title={log.userId}>{log.userId.slice(0, 8)}...</td>
+                          <td className="p-3 text-white">{log.gameSlug}</td>
+                          <td className="p-3 text-center">
+                            <span className={`px-2 py-0.5 rounded text-xs ${
+                              log.outcome === 'win' ? 'bg-emerald-500/20 text-emerald-400' :
+                              log.outcome === 'achievement' ? 'bg-purple-500/20 text-purple-400' :
+                              log.outcome === 'loss' ? 'bg-red-500/20 text-red-400' :
+                              'bg-slate-700 text-slate-300'
+                            }`}>
+                              {log.outcome}
+                            </span>
+                          </td>
+                          <td className="p-3 text-center text-emerald-400 font-bold">+{log.xpAwarded}</td>
+                          <td className="p-3 text-center text-amber-400 font-bold">+{log.goldAwarded.toLocaleString()}</td>
+                          <td className="p-3 text-center text-xs">{log.userRole}</td>
+                          <td className="p-3 text-center text-xs">{log.userLevel}</td>
+                          <td className="p-3 text-center text-xs">{log.subPlan}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
@@ -5383,6 +6028,68 @@ export default function AdminPage() {
                   className="bg-slate-800/50 border-slate-700/50 text-white"
                   placeholder="4-14"
                   dir="ltr"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label className="text-slate-300">الفئة (Category)</Label>
+                  <Select
+                    value={editingGame.category || 'other'}
+                    onValueChange={(v) => setEditingGame({ ...editingGame, category: v })}
+                  >
+                    <SelectTrigger className="bg-slate-800/50 border-slate-700/50 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectItem value="اجتماعية">اجتماعية</SelectItem>
+                      <SelectItem value="حربية">حربية</SelectItem>
+                      <SelectItem value="ذكاء">ذكاء</SelectItem>
+                      <SelectItem value="مجازفة">مجازفة</SelectItem>
+                      <SelectItem value="رعب">رعب</SelectItem>
+                      <SelectItem value="استراتيجية">استراتيجية</SelectItem>
+                      <SelectItem value="إبداعية">إبداعية</SelectItem>
+                      <SelectItem value="other">أخرى</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-slate-300">الحالة (Status)</Label>
+                  <Select
+                    value={editingGame.status || 'available'}
+                    onValueChange={(v) => setEditingGame({ ...editingGame, status: v as 'available' | 'coming_soon' | 'disabled' })}
+                  >
+                    <SelectTrigger className="bg-slate-800/50 border-slate-700/50 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectItem value="available">متاح</SelectItem>
+                      <SelectItem value="coming_soon">قريباً</SelectItem>
+                      <SelectItem value="disabled">معطّل</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                  <Label className="text-slate-300 cursor-pointer">مجاني (isFree)</Label>
+                  <Switch
+                    checked={!!editingGame.isFree}
+                    onCheckedChange={(checked) => setEditingGame({ ...editingGame, isFree: checked })}
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                  <Label className="text-slate-300 cursor-pointer">قريباً (isComingSoon)</Label>
+                  <Switch
+                    checked={!!editingGame.isComingSoon}
+                    onCheckedChange={(checked) => setEditingGame({ ...editingGame, isComingSoon: checked })}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                <Label className="text-slate-300 cursor-pointer">مفعّلة (isEnabled)</Label>
+                <Switch
+                  checked={!!editingGame.isEnabled}
+                  onCheckedChange={(checked) => setEditingGame({ ...editingGame, isEnabled: checked })}
                 />
               </div>
             </div>
