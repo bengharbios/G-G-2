@@ -898,17 +898,15 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
   const shineDelay = `${(index % 3) * 1.4}s`;
 
   return (
-    <motion.div
-      custom={index}
-      variants={fadeInUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-30px' }}
-      className="relative"
+    <div
+      className="relative gg-card-wrap"
       style={{
         width: '167px',
         height: '134px',
-        flexShrink: 0,  // لا ينضغط داخل flex container (مطابق لـ .gg-card)
+        flexShrink: '0',  // لا ينضغط داخل flex container
+        flexBasis: '167px',  // الأساس: 167px لكل بطاقة
+        display: 'inline-block',
+        verticalAlign: 'top',
       }}
     >
       <Link
@@ -988,7 +986,7 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
           {game.title}
         </span>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -1092,10 +1090,8 @@ function GamesSection() {
 
         {/* Games Grid — مطابق لـ .gg-grid من سورس يلا:
             display:flex; flex-wrap:wrap; justify-content:center; gap:16px; padding:18px 5px 8px; */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
+        <div
+          className="gg-grid"
           style={{
             display: 'flex',
             flexWrap: 'wrap',
@@ -1109,7 +1105,7 @@ function GamesSection() {
           {filteredGames.map((game, i) => (
             <GameCard key={game.id} game={game} index={i} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
