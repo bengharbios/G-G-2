@@ -529,19 +529,6 @@
     <style name="TestThemeWithLineHeightDisabled" parent="@style/TestThemeWithLineHeight">
         <item name="textAppearanceLineHeightEnabled">false</item>
     </style>
-    <style name="TextAppearance.Compat.Notification.Line2" parent="@style/TextAppearance.Compat.Notification.Info" />
-    <style name="TextAppearance.Compat.Notification.Line2.Media" parent="@style/TextAppearance.Compat.Notification.Info.Media" />
-    <style name="TextAppearance.Compat.Notification.Media" parent="@style/TextAppearance.Compat.Notification">
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
-    </style>
-    <style name="TextAppearance.Compat.Notification.Time" parent="@android:style/TextAppearance.Material.Notification.Time" />
-    <style name="TextAppearance.Compat.Notification.Time.Media" parent="@style/TextAppearance.Compat.Notification.Time">
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
-    </style>
-    <style name="TextAppearance.Compat.Notification.Title" parent="@android:style/TextAppearance.Material.Notification.Title" />
-    <style name="TextAppearance.Compat.Notification.Title.Media" parent="@style/TextAppearance.Compat.Notification.Title">
-        <item name="android:textColor">@color/primary_text_default_material_dark</item>
-    </style>
     <style name="TextAppearance.M3.Sys.Typescale.BodyLarge" parent="@style/TextAppearance.AppCompat.Body2">
         <item name="android:textSize">16.0sp</item>
         <item name="android:textStyle">normal</item>
@@ -745,52 +732,6 @@
     <style name="Widget.Support.CoordinatorLayout" parent="@android:style/Widget">
         <item name="statusBarBackground">#ff000000</item>
     </style>
-    <style name="com_facebook_activity_theme" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-    <style name="com_facebook_auth_dialog" parent="@style/Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-    <style name="com_facebook_auth_dialog_instructions_textview">
-        <item name="android:textSize">16.0sp</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:textColor">@color/com_facebook_device_auth_text</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:singleLine">false</item>
-        <item name="android:drawablePadding">12.0dip</item>
-        <item name="android:fontFamily">roboto</item>
-    </style>
-    <style name="com_facebook_button" parent="@android:style/Widget.Button">
-        <item name="android:textSize">14.0dip</item>
-        <item name="android:textColor">@color/com_facebook_button_text_color</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/com_facebook_button_background</item>
-        <item name="android:paddingLeft">8.0dip</item>
-        <item name="android:paddingTop">5.0dip</item>
-        <item name="android:paddingRight">8.0dip</item>
-        <item name="android:paddingBottom">5.0dip</item>
-        <item name="android:drawablePadding">4.0dip</item>
-    </style>
-    <style name="com_facebook_button_like" parent="@style/com_facebook_button">
-        <item name="android:background">@drawable/com_facebook_button_like_background</item>
-    </style>
-    <style name="com_facebook_button_send" parent="@style/com_facebook_button">
-        <item name="android:textColor">@color/com_facebook_send_button_text_color</item>
-        <item name="android:background">@drawable/com_facebook_button_send_background</item>
-        <item name="android:text">@string/com_facebook_send_button_text</item>
-        <item name="android:drawableLeft">@drawable/com_facebook_send_button_icon</item>
-    </style>
-    <style name="com_facebook_button_share" parent="@style/com_facebook_button">
-        <item name="android:text">@string/com_facebook_share_button_text</item>
-    </style>
-    <style name="com_facebook_loginview_default_style" parent="@style/com_facebook_button" />
     <style name="dialog_anim">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit</item>
