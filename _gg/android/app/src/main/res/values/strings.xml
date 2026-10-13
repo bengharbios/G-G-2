@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_activity_main">ألعاب الغريب</string>
+    <string name="package_name">com.bengharbios.ggames</string>
+    <string name="custom_url_scheme">com.bengharbios.ggames</string>
+
     <string name="ga_trackingId">UA-XXXX-X</string>
     <string name="Arabic">Arabic</string>
     <string name="C_1340_1">Chuckle</string>
@@ -7326,7 +7330,7 @@ In addition, it may take some time to fully activate your account. Please be pat
     <string name="appName">Yalla Ludo</string>
     <string name="app_icon_select_tip">The exclusive App icon is ready for you. You can choose to set it now.</string>
     <string name="app_id">f0074f79faf044e68d9cf2ce1ef663e9</string>
-    <string name="app_name">battle</string>
+    <string name="app_name">ألعاب الغريب</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="are_you_sure_delete">Are you sure you want to delete your account xxx？</string>
     <string name="arena">Arena</string>
