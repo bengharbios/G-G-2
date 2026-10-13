@@ -888,13 +888,6 @@ public class RoomActivity extends Activity {
             name.setIncludeFontPadding(false);
             seat.addView(name);
 
-            seat.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    onSeatClicked(seats.get(pos));
-                }
-            });
-
             return new MicViewHolder(seat);
         }
 
@@ -903,6 +896,7 @@ public class RoomActivity extends Activity {
             try {
                 MicSeat seat = seats.get(position);
                 holder.bind(seat);
+                holder.itemView.setOnClickListener(v -> onSeatClicked(seat));
             } catch (Exception e) {
                 Log.e(TAG, "[A] MicAdapter bind error", e);
             }
