@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -620,8 +621,11 @@ public class RoomActivity extends Activity {
             // البند 3: استخدم room_include_room_mic_item.xml الأصلي
             // الملف يبدأ بـ <merge> لذا نحتاج wrapper (FrameLayout)
             FrameLayout wrapper = new FrameLayout(parent.getContext());
+            int widthPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 80,
+                parent.getResources().getDisplayMetrics());
             wrapper.setLayoutParams(new ViewGroup.LayoutParams(
-                dp(80), ViewGroup.LayoutParams.WRAP_CONTENT
+                widthPx, ViewGroup.LayoutParams.WRAP_CONTENT
             ));
             try {
                 LayoutInflater.from(parent.getContext())
