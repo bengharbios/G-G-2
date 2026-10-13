@@ -817,6 +817,8 @@ public class RoomActivity extends Activity {
 
                 // اربط etInputMessage (إن وجد في roomBottomInputView) بـ listeners
                 if (etInputMessage != null) {
+                    // انسخ roomBottomInputView إلى final متغير محلي للاستخدام داخل TextWatcher
+                    final View finalRoomBottomInputView = roomBottomInputView;
                     // TextWatcher على etInputMessage: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
                     etInputMessage.addTextChangedListener(new android.text.TextWatcher() {
                         @Override
@@ -827,12 +829,14 @@ public class RoomActivity extends Activity {
                         public void afterTextChanged(android.text.Editable s) {
                             try {
                                 boolean hasText = s != null && s.toString().trim().length() > 0;
-                                ImageView pic = (ImageView) ((ViewGroup) roomBottomInputView)
-                                    .findViewById(getId("ivSendPicture"));
-                                ImageView send = (ImageView) ((ViewGroup) roomBottomInputView)
-                                    .findViewById(getId("ivSend"));
-                                if (pic != null) pic.setVisibility(hasText ? View.GONE : View.VISIBLE);
-                                if (send != null) send.setVisibility(hasText ? View.VISIBLE : View.GONE);
+                                if (finalRoomBottomInputView instanceof ViewGroup) {
+                                    ImageView pic = (ImageView) ((ViewGroup) finalRoomBottomInputView)
+                                        .findViewById(getId("ivSendPicture"));
+                                    ImageView send = (ImageView) ((ViewGroup) finalRoomBottomInputView)
+                                        .findViewById(getId("ivSend"));
+                                    if (pic != null) pic.setVisibility(hasText ? View.GONE : View.VISIBLE);
+                                    if (send != null) send.setVisibility(hasText ? View.VISIBLE : View.GONE);
+                                }
                             } catch (Exception e) {
                                 Log.e(TAG, "[E] TextWatcher error", e);
                             }
