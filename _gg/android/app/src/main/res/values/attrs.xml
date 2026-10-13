@@ -251,10 +251,6 @@
     <attr name="cardUseCompatPadding" format="boolean" />
     <attr name="cardViewStyle" format="reference" />
     <attr name="carousel_backwardTransition" format="reference" />
-    <attr name="carousel_emptyViewsBehavior">
-        <enum name="invisible" value="4" />
-        <enum name="gone" value="8" />
-    </attr>
     <attr name="carousel_firstView" format="reference" />
     <attr name="carousel_forwardTransition" format="reference" />
     <attr name="carousel_infinite" format="boolean" />
@@ -537,15 +533,6 @@
     <attr name="dialogTheme" format="reference" />
     <attr name="dimensionRatio" format="float" />
     <attr name="dimension_ratio" format="float" />
-    <attr name="displayOptions">
-        <flag name="none" value="0x00000000" />
-        <flag name="useLogo" value="0x00000001" />
-        <flag name="showHome" value="0x00000002" />
-        <flag name="homeAsUp" value="0x00000004" />
-        <flag name="showTitle" value="0x00000008" />
-        <flag name="showCustom" value="0x00000010" />
-        <flag name="disableHome" value="0x00000020" />
-    </attr>
     <attr name="divider" format="reference" />
     <attr name="dividerColor" format="color" />
     <attr name="dividerDrawable" format="reference" />
@@ -586,14 +573,6 @@
     <attr name="drawableSize" format="dimension" />
     <attr name="drawableStartCompat" format="reference" />
     <attr name="drawableTint" format="color" />
-    <attr name="drawableTintMode">
-        <enum name="src_over" value="3" />
-        <enum name="src_in" value="5" />
-        <enum name="src_atop" value="9" />
-        <enum name="multiply" value="14" />
-        <enum name="screen" value="15" />
-        <enum name="add" value="16" />
-    </attr>
     <attr name="drawableTopCompat" format="reference" />
     <attr name="drawerArrowStyle" format="reference" />
     <attr name="drawerLayoutCornerSize" format="dimension" />
@@ -788,9 +767,6 @@
     <attr name="fontFamily" format="string" />
     <attr name="fontProviderAuthority" format="string" />
     <attr name="fontProviderCerts" format="reference" />
-    <attr name="fontProviderFetchTimeout" format="integer">
-        <enum name="forever" value="-1" />
-    </attr>
     <attr name="fontProviderPackage" format="string" />
     <attr name="fontProviderQuery" format="string" />
     <attr name="fontProviderSystemFontFamily" format="string" />
@@ -1124,15 +1100,6 @@
     <attr name="layout_goneMarginRight" format="dimension" />
     <attr name="layout_goneMarginStart" format="dimension" />
     <attr name="layout_goneMarginTop" format="dimension" />
-    <attr name="layout_insetEdge">
-        <enum name="none" value="0" />
-        <enum name="top" value="48" />
-        <enum name="bottom" value="80" />
-        <enum name="left" value="3" />
-        <enum name="right" value="5" />
-        <enum name="start" value="8388611" />
-        <enum name="end" value="8388613" />
-    </attr>
     <attr name="layout_keyline" format="integer" />
     <attr name="layout_marginBaseline" format="dimension" />
     <attr name="layout_maxHeight" format="dimension" />
@@ -1355,15 +1322,6 @@
     <attr name="motionEffect_translationX" format="dimension" />
     <attr name="motionEffect_translationY" format="dimension" />
     <attr name="motionEffect_viewTransition" format="reference" />
-    <attr name="motionInterpolator" format="reference|string">
-        <enum name="easeInOut" value="0" />
-        <enum name="easeIn" value="1" />
-        <enum name="easeOut" value="2" />
-        <enum name="linear" value="3" />
-        <enum name="bounce" value="4" />
-        <enum name="overshoot" value="5" />
-        <enum name="anticipate" value="6" />
-    </attr>
     <attr name="motionPath" format="string">
         <enum name="linear" value="0" />
         <enum name="arc" value="1" />
@@ -1393,14 +1351,6 @@
     <attr name="nestedScrollViewStyle" format="reference" />
     <attr name="nestedScrollable" format="boolean" />
     <attr name="number" format="integer" />
-    <attr name="numericModifiers">
-        <flag name="META" value="0x00010000" />
-        <flag name="CTRL" value="0x00001000" />
-        <flag name="ALT" value="0x00000002" />
-        <flag name="SHIFT" value="0x00000001" />
-        <flag name="SYM" value="0x00000004" />
-        <flag name="FUNCTION" value="0x00000008" />
-    </attr>
     <attr name="onCross" format="string" />
     <attr name="onHide" format="boolean" />
     <attr name="onNegativeCross" format="string" />
@@ -1644,12 +1594,6 @@
     <attr name="spinnerStyle" format="reference" />
     <attr name="splash_center_bg" format="reference" />
     <attr name="splitTrack" format="boolean" />
-    <attr name="springBoundary">
-        <flag name="overshoot" value="0x00000000" />
-        <flag name="bounceStart" value="0x00000001" />
-        <flag name="bounceEnd" value="0x00000002" />
-        <flag name="bounceBoth" value="0x00000003" />
-    </attr>
     <attr name="springDamping" format="float" />
     <attr name="springMass" format="float" />
     <attr name="springStiffness" format="float" />
@@ -2049,14 +1993,6 @@
     <attr name="trackHeight" format="dimension" />
     <attr name="trackThickness" format="dimension" />
     <attr name="trackTint" format="color" />
-    <attr name="trackTintMode">
-        <enum name="src_over" value="3" />
-        <enum name="src_in" value="5" />
-        <enum name="src_atop" value="9" />
-        <enum name="multiply" value="14" />
-        <enum name="screen" value="15" />
-        <enum name="add" value="16" />
-    </attr>
     <attr name="transformPivotTarget" format="reference" />
     <attr name="transitionDisable" format="boolean" />
     <attr name="transitionEasing" format="string">
