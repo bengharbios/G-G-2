@@ -72,10 +72,9 @@ public class RoomActivity extends Activity {
     private EditText etMessage;
     private TextView tvRoomTopName;
     private View roomRoot;
-    // عناصر جديدة للصورة 21
+    // عناصر إضافية للصورة 21
     private View ownerTagView;          // pill-shape tag للمالك (يمين)
-    private View leftChatBtn;           // زر الدردشة + نقطة حمراء (يسار)
-    private View leftMusicBtn;          // زر الموسيقى + نص (يسار)
+    // (تم حذف leftChatBtn/leftMusicBtn — هما في الأصل موجودان في rightScrollView)
 
     // Data
     private List<MicSeat> micSeats = new ArrayList<>();
@@ -245,14 +244,7 @@ public class RoomActivity extends Activity {
             Log.e(TAG, "[D] setupSidebar فشل", e);
         }
 
-        // ===== البند D2: أزرار الشريط الأيسر (دردشة + موسيقى) — من الصورة 21 =====
-        try {
-            Log.i(TAG, "[D2] بدء setupLeftSideButtons");
-            setupLeftSideButtons();
-            Log.i(TAG, "[D2] اكتمل بنجاح");
-        } catch (Exception e) {
-            Log.e(TAG, "[D2] setupLeftSideButtons فشل", e);
-        }
+        // ===== البند D2: تم حذفه — أزرار الشريط الأيسر موجودة أصلاً في rightScrollView =====
 
         // ===== البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00) — من الصورة 21 =====
         try {
@@ -649,106 +641,8 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
-    // البند D2: أزرار الشريط الأيسر (دردشة + نقطة حمراء + موسيقى)
-    // مطابقة للصورة 21: زران على اليسار في النصف السفلي
+    // البند D2: محذوف — أزرار الدردشة والموسيقى موجودة أصلاً في rightScrollView
     // ============================================
-    private void setupLeftSideButtons() {
-        try {
-            // ابحث عن FrameLayout الجذر (content_view)
-            int rootId = getId("content_view");
-            ViewGroup rootView = (ViewGroup) findViewById(rootId);
-            if (rootView == null) {
-                Log.w(TAG, "[D2] content_view not found");
-                return;
-            }
-
-            int dp = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-
-            // === زر الدردشة (top) ===
-            // FrameLayout: 56dp x 56dp, على اليسار، أسفل الهيدر بمقدار 200dp تقريباً
-            FrameLayout chatBtn = new FrameLayout(this);
-            int chatBtnSize = 56 * dp;
-            FrameLayout.LayoutParams chatLp = new FrameLayout.LayoutParams(chatBtnSize, chatBtnSize);
-            chatLp.gravity = Gravity.START | Gravity.BOTTOM;
-            chatLp.setMargins(8 * dp, 0, 0, 220 * dp);
-            chatBtn.setLayoutParams(chatLp);
-
-            // أيقونة الدردشة (icon_message_box)
-            ImageView chatIcon = new ImageView(this);
-            FrameLayout.LayoutParams iconLp = new FrameLayout.LayoutParams(
-                40 * dp, 40 * dp, Gravity.CENTER);
-            int msgBoxIconId = getResources().getIdentifier("icon_message_box", "drawable", getPackageName());
-            if (msgBoxIconId != 0) {
-                chatIcon.setImageResource(msgBoxIconId);
-            } else {
-                chatIcon.setImageResource(R.drawable.room_default);
-            }
-            chatIcon.setLayoutParams(iconLp);
-            chatBtn.addView(chatIcon);
-
-            // نقطة حمراء (7dp) على أعلى يمين الأيقونة
-            View redDot = new View(this);
-            int dotSize = 9 * dp;
-            FrameLayout.LayoutParams dotLp = new FrameLayout.LayoutParams(dotSize, dotSize);
-            dotLp.gravity = Gravity.END | Gravity.TOP;
-            dotLp.setMargins(0, 4 * dp, 4 * dp, 0);
-            GradientDrawable dotBg = new GradientDrawable();
-            dotBg.setShape(GradientDrawable.OVAL);
-            dotBg.setColor(0xFFFF3B30); // أحمر
-            redDot.setBackground(dotBg);
-            redDot.setLayoutParams(dotLp);
-            chatBtn.addView(redDot);
-
-            chatBtn.setOnClickListener(v ->
-                Toast.makeText(this, "💬 الدردشة", Toast.LENGTH_SHORT).show());
-            rootView.addView(chatBtn);
-            leftChatBtn = chatBtn;
-            Log.i(TAG, "[D2] leftChatBtn added");
-
-            // === زر الموسيقى (bottom) ===
-            LinearLayout musicBtn = new LinearLayout(this);
-            musicBtn.setOrientation(LinearLayout.VERTICAL);
-            musicBtn.setGravity(Gravity.CENTER_HORIZONTAL);
-            FrameLayout.LayoutParams musicLp = new FrameLayout.LayoutParams(
-                56 * dp, 60 * dp);
-            musicLp.gravity = Gravity.START | Gravity.BOTTOM;
-            musicLp.setMargins(8 * dp, 0, 0, 150 * dp);
-            musicBtn.setLayoutParams(musicLp);
-
-            // أيقونة الموسيقى
-            ImageView musicIcon = new ImageView(this);
-            LinearLayout.LayoutParams musicIconLp = new LinearLayout.LayoutParams(
-                40 * dp, 40 * dp);
-            int musicIconId = getResources().getIdentifier("room_icon_room_music", "drawable", getPackageName());
-            if (musicIconId != 0) {
-                musicIcon.setImageResource(musicIconId);
-            } else {
-                musicIcon.setImageResource(R.drawable.room_default);
-            }
-            musicIcon.setLayoutParams(musicIconLp);
-            musicBtn.addView(musicIcon);
-
-            // نص "الموسيقى"
-            TextView musicText = new TextView(this);
-            musicText.setText("الموسيقى");
-            musicText.setTextColor(Color.WHITE);
-            musicText.setTextSize(9);
-            musicText.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams musicTextLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            musicText.setLayoutParams(musicTextLp);
-            musicBtn.addView(musicText);
-
-            musicBtn.setOnClickListener(v ->
-                Toast.makeText(this, "🎵 الموسيقى", Toast.LENGTH_SHORT).show());
-            rootView.addView(musicBtn);
-            leftMusicBtn = musicBtn;
-            Log.i(TAG, "[D2] leftMusicBtn added");
-        } catch (Exception e) {
-            Log.e(TAG, "[D2] setupLeftSideButtons error", e);
-        }
-    }
 
     // ============================================
     // البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00)
@@ -910,7 +804,7 @@ public class RoomActivity extends Activity {
             etMessage = findViewById(getId("etMessage"));
 
             // مكن حقل الإدخال (في XML الأصلي: enabled=false focusable=false)
-            // مطابقة للصورة 21: حقل إدخال نشط + زر إرسال أخضر
+            // مطابقة للصور 23/24/25: حقل إدخال نشط عند الحاجة فقط
             try {
                 if (etMessage != null) {
                     etMessage.setEnabled(true);
@@ -919,45 +813,40 @@ public class RoomActivity extends Activity {
                     etMessage.setClickable(true);
                     etMessage.setLongClickable(true);
                     etMessage.setCursorVisible(true);
-                    etMessage.setHint("اكتب رسالة...");
-                    // خلفية مدورة للحقل (مطابقة للصورة 21: pill-shape رمادي)
+                    etMessage.setHint("قل شيئاً...");
+                    // خلفية مدورة للحقل (مطابقة للصورة 25: pill-shape رمادي غامق)
                     GradientDrawable etBg = new GradientDrawable();
                     etBg.setShape(GradientDrawable.RECTANGLE);
-                    etBg.setCornerRadius(18 * (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
+                    int radiusDp = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 18, getResources().getDisplayMetrics());
+                    etBg.setCornerRadius(radiusDp);
                     etBg.setColor(0x66000000); // رمادي شفاف
-                    etBg.setStroke(1 * (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()),
-                        0x33FFFFFF);
+                    int strokePx = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+                    etBg.setStroke(strokePx, 0x33FFFFFF);
                     etMessage.setBackground(etBg);
                     etMessage.setTextColor(Color.WHITE);
                     etMessage.setHintTextColor(0xFFB0B0B0);
-                    Log.i(TAG, "[E] etMessage enabled + styled");
+                    Log.i(TAG, "[E] etMessage enabled + styled (pill)");
                 }
             } catch (Exception etEx) {
                 Log.e(TAG, "[E] etMessage enable error", etEx);
             }
 
-            // اظهر زر الإرسال (في XML الأصلي: gone)
-            try {
-                if (ivSend != null) {
-                    ivSend.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "[E] ivSend -> VISIBLE");
-                }
-            } catch (Exception sendEx) {
-                Log.e(TAG, "[E] ivSend show error", sendEx);
-            }
-
-            // تأكيد VISIBLE على باقي أيقونات الشريط السفلي (الصورة 21):
-            // ivSound + ivSendPicture + ivShowGameCenter + ivGift
+            // ===== حالة افتراضية للشريط السفلي (مطابقة للصورة 23: يدخل الروم) =====
+            // VISIBLE:  ivSound, ivGift, ivShowGameCenter, etMessage
+            // GONE:      ivMic, ivMicEmoji, ivSendPicture, ivSend  (تظهر لاحقاً حسب الحالة)
             try {
                 if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
-                if (ivSendPicture != null) ivSendPicture.setVisibility(View.VISIBLE);
-                if (ivShowGameCenter != null) ivShowGameCenter.setVisibility(View.VISIBLE);
                 if (ivGift != null) ivGift.setVisibility(View.VISIBLE);
-                Log.i(TAG, "[E] bottom icons: ivSound + ivSendPicture + ivShowGameCenter + ivGift -> VISIBLE");
+                if (ivShowGameCenter != null) ivShowGameCenter.setVisibility(View.VISIBLE);
+                if (ivMic != null) ivMic.setVisibility(View.GONE);
+                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
+                if (ivSendPicture != null) ivSendPicture.setVisibility(View.GONE);
+                if (ivSend != null) ivSend.setVisibility(View.GONE);
+                Log.i(TAG, "[E] Default state: ivSound+ivGift+ivShowGameCenter VISIBLE; ivMic+ivMicEmoji+ivSendPicture+ivSend GONE");
             } catch (Exception visEx) {
-                Log.e(TAG, "[E] bottom icons VISIBLE error", visEx);
+                Log.e(TAG, "[E] default state error", visEx);
             }
 
             // WindowInsets
@@ -970,22 +859,56 @@ public class RoomActivity extends Activity {
                 });
             }
 
-            // البند E: ivMic يظهر عند الضغط على مقعد (انضم)
-            // ivEmoji يظهر عند التركيز على حقل الكتابة
+            // ===== منطق ظهور/إخفاء الأيقونات حسب الحالة (مطابقة للصور 24/25) =====
+            // السيناريو:
+            //  - الحالة A (افتراضي / غير جالس على مايك):
+            //      ivSound=VISIBLE, ivMic=GONE, ivMicEmoji=GONE,
+            //      ivSendPicture=GONE, ivSend=GONE, ivEmoji=GONE
+            //  - الحالة B (جالس على مايك، لا كتابة) — صورة 24:
+            //      ivSound=VISIBLE, ivMic=VISIBLE, ivMicEmoji=VISIBLE,
+            //      ivSendPicture=GONE, ivSend=GONE, ivEmoji=GONE
+            //  - الحالة C (etMessage مُركّز + النص فارغ) — صورة 25:
+            //      ivSound=GONE, ivMic=GONE (إن لم يكن جالساً),
+            //      ivSendPicture=VISIBLE, ivSend=GONE, ivEmoji=VISIBLE
+            //  - الحالة D (etMessage مُركّز + النص غير فارغ):
+            //      ivSendPicture=GONE, ivSend=VISIBLE, ivEmoji=VISIBLE
             final int emojiId = getId("ivEmoji");
-            if (etMessage != null && emojiId != 0) {
-                etMessage.setOnFocusChangeListener((v, hasFocus) -> {
-                    try {
-                        if (hasFocus) {
-                            ImageView ivEmoji = findViewById(emojiId);
-                            if (ivEmoji != null) {
-                                ivEmoji.setVisibility(View.VISIBLE);
+            if (etMessage != null) {
+                try {
+                    // ركز على الحقل: ادخل الحالة C أو D حسب النص
+                    etMessage.setOnFocusChangeListener((v, hasFocus) -> {
+                        try {
+                            if (hasFocus) {
+                                onInputFocused();
+                            } else {
+                                onInputUnfocused();
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[E] focus change error", e);
+                        }
+                    });
+
+                    // TextWatcher: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
+                    etMessage.addTextChangedListener(new android.text.TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        @Override
+                        public void afterTextChanged(android.text.Editable s) {
+                            try {
+                                boolean hasText = s != null && s.toString().trim().length() > 0;
+                                if (ivSendPicture != null) ivSendPicture.setVisibility(hasText ? View.GONE : View.VISIBLE);
+                                if (ivSend != null) ivSend.setVisibility(hasText ? View.VISIBLE : View.GONE);
+                            } catch (Exception e) {
+                                Log.e(TAG, "[E] TextWatcher error", e);
                             }
                         }
-                    } catch (Exception e) {
-                        Log.e(TAG, "[E] etMessage focus error", e);
-                    }
-                });
+                    });
+                    Log.i(TAG, "[E] etMessage listeners set (focus + TextWatcher)");
+                } catch (Exception listEx) {
+                    Log.e(TAG, "[E] listeners setup error", listEx);
+                }
             }
 
             Log.i(TAG, "[E] Bottom bar IDs: ivSound=" + (ivSound != null)
@@ -994,6 +917,325 @@ public class RoomActivity extends Activity {
                 + " etMessage=" + (etMessage != null));
         } catch (Exception e) {
             Log.e(TAG, "[E] setupBottomBar error", e);
+        }
+    }
+
+    /** يُستدعى عند focus على etMessage: يدخل الحالة C (نص فارغ) أو D (نص غير فارغ) */
+    private void onInputFocused() {
+        try {
+            // أخفِ ivSound و ivMic و ivMicEmoji
+            if (ivSound != null) ivSound.setVisibility(View.GONE);
+            if (ivMic != null) ivMic.setVisibility(View.GONE);
+            if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
+            // اظهر ivEmoji (أيقونة الإيموجي بجانب الحقل)
+            int emojiId = getId("ivEmoji");
+            if (emojiId != 0) {
+                ImageView ivEmoji = findViewById(emojiId);
+                if (ivEmoji != null) ivEmoji.setVisibility(View.VISIBLE);
+            }
+            // اظهر ivSendPicture افتراضياً (سيُبدّلها TextWatcher حسب النص)
+            if (ivSendPicture != null) ivSendPicture.setVisibility(View.VISIBLE);
+            if (ivSend != null) ivSend.setVisibility(View.GONE);
+            Log.i(TAG, "[E] onInputFocused: ivSound/ivMic/ivMicEmoji GONE, ivEmoji+ivSendPicture VISIBLE");
+        } catch (Exception e) {
+            Log.e(TAG, "onInputFocused error", e);
+        }
+    }
+
+    /** يُستدعى عند فقدان focus من etMessage: ارجع للحالة A أو B حسب الجلوس على مايك */
+    private void onInputUnfocused() {
+        try {
+            // أخفِ ivEmoji, ivSendPicture, ivSend
+            int emojiId = getId("ivEmoji");
+            if (emojiId != 0) {
+                ImageView ivEmoji = findViewById(emojiId);
+                if (ivEmoji != null) ivEmoji.setVisibility(View.GONE);
+            }
+            if (ivSendPicture != null) ivSendPicture.setVisibility(View.GONE);
+            if (ivSend != null) ivSend.setVisibility(View.GONE);
+            // أعد ivSound + ivMic حسب الجلوس على مايك
+            if (mySeatIndex == -1) {
+                if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
+                if (ivMic != null) ivMic.setVisibility(View.GONE);
+                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
+            } else {
+                if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
+                if (ivMic != null) ivMic.setVisibility(View.VISIBLE);
+                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.VISIBLE);
+            }
+            Log.i(TAG, "[E] onInputUnfocused: ivEmoji+ivSendPicture+ivSend GONE, ivSound VISIBLE, mySeatIndex=" + mySeatIndex);
+        } catch (Exception e) {
+            Log.e(TAG, "onInputUnfocused error", e);
+        }
+    }
+
+    // ============================================
+    // نافذة مايك إيموجي (popup سفلية بـ 16 إيموجي — مطابقة للصورة 26)
+    // ============================================
+    private View micEmojiPopupView = null;   // النافذة المنبثقة
+    private final String[] MIC_EMOJIS = {
+        "\uD83D\uDE04", // 😄 ضحك
+        "\uD83D\uDE02", // 😂 قهقهة
+        "\uD83D\uDE22", // 😢 بكاء
+        "\uD83D\uDE2E", // 😮 مفاجأة
+        "\uD83D\uDE21", // 😡 غضب
+        "\uD83D\uDE0D", // 😍 حب
+        "\uD83D\uDE34", // 😴 نوم
+        "\uD83E\uDD14", // 🤔 تفكير
+        "\uD83D\uDE0E", // 😎 رائع
+        "\uD83D\uDE07", // 😇 ملاك
+        "\uD83D\uDE31", // 😱 ذعر
+        "\uD83D\uDE41", // 🙁 حزن
+        "\uD83E\uDD29", // 🤩 مبهور
+        "\uD83E\uDD73", // 🥳 احتفال
+        "\uD83D\uDE36", // 😶 صامت
+        "\uD83E\uDD92"  // 🤒 مريض
+    };
+    private final String[] MIC_EMOJI_NAMES = {
+        "ضحك", "قهقهة", "بكاء", "مفاجأة", "غضب", "حب", "نوم", "تفكير",
+        "رائع", "ملاك", "ذعر", "حزن", "انبهار", "احتفال", "صمت", "مرض"
+    };
+
+    private void showMicEmojiPopup() {
+        try {
+            // إذا كانت النافذة مفتوحة، أغلقها
+            if (micEmojiPopupView != null && micEmojiPopupView.isShown()) {
+                dismissMicEmojiPopup();
+                return;
+            }
+
+            int rootId = getId("content_view");
+            ViewGroup rootView = (ViewGroup) findViewById(rootId);
+            if (rootView == null) {
+                Log.w(TAG, "[MicPopup] content_view not found");
+                return;
+            }
+
+            int dp = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+            // الحاوية الرئيسية: FrameLayout بشاشة كاملة لالتقاط النقرات الخارجية
+            FrameLayout overlay = new FrameLayout(this);
+            overlay.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+
+            // اللوحة السفلية: LinearLayout عمودي
+            LinearLayout sheet = new LinearLayout(this);
+            sheet.setOrientation(LinearLayout.VERTICAL);
+            int sheetHeight = (int) (screenHeight * 0.45);
+            FrameLayout.LayoutParams sheetLp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, sheetHeight);
+            sheetLp.gravity = Gravity.BOTTOM;
+            sheet.setLayoutParams(sheetLp);
+
+            // خلفية: استخدم room_shape_mic_emoji_sheet_bg إن وُجدت، وإلا فـ GradientDrawable
+            try {
+                int bgResId = getResources().getIdentifier(
+                    "room_shape_mic_emoji_sheet_bg", "drawable", getPackageName());
+                if (bgResId != 0) {
+                    sheet.setBackgroundResource(bgResId);
+                } else {
+                    GradientDrawable sheetBg = new GradientDrawable();
+                    sheetBg.setShape(GradientDrawable.RECTANGLE);
+                    sheetBg.setCornerRadii(new float[]{
+                        13 * dp, 13 * dp, 13 * dp, 13 * dp, 0, 0, 0, 0
+                    });
+                    sheetBg.setColor(0xFF0F1D23); // رمادي غامق مزرق
+                    sheet.setBackground(sheetBg);
+                }
+            } catch (Exception bgEx) {
+                Log.e(TAG, "[MicPopup] sheet bg error", bgEx);
+            }
+            sheet.setPadding(8 * dp, 4 * dp, 8 * dp, 16 * dp);
+
+            // 1) drag bar أعلى المنتصف (مطابقة للصورة 26)
+            View dragBar = new View(this);
+            LinearLayout.LayoutParams dragLp = new LinearLayout.LayoutParams(
+                40 * dp, 4 * dp);
+            dragLp.gravity = Gravity.CENTER_HORIZONTAL;
+            dragLp.setMargins(0, 4 * dp, 0, 8 * dp);
+            dragBar.setLayoutParams(dragLp);
+            GradientDrawable dragBg = new GradientDrawable();
+            dragBg.setShape(GradientDrawable.RECTANGLE);
+            dragBg.setCornerRadius(2 * dp);
+            dragBg.setColor(0x80FFFFFF); // أبيض شفاف
+            dragBar.setBackground(dragBg);
+            sheet.addView(dragBar);
+
+            // 2) عنوان صغير
+            TextView title = new TextView(this);
+            title.setText("مايك إيموجي");
+            title.setTextColor(Color.WHITE);
+            title.setTextSize(14);
+            title.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            titleLp.setMargins(0, 4 * dp, 0, 8 * dp);
+            title.setLayoutParams(titleLp);
+            sheet.addView(title);
+
+            // 3) شبكة 4 أعمدة × 4 صفوف = 16 إيموجي
+            // استخدم GridView بسيط أو LinearLayout عمودي بداخله LinearLayout أفقي
+            LinearLayout grid = new LinearLayout(this);
+            grid.setOrientation(LinearLayout.VERTICAL);
+            grid.setLayoutParams(new LinearLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+            for (int row = 0; row < 4; row++) {
+                LinearLayout rowView = new LinearLayout(this);
+                rowView.setOrientation(LinearLayout.HORIZONTAL);
+                rowView.setGravity(Gravity.CENTER);
+                LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                rowLp.setMargins(0, 4 * dp, 0, 4 * dp);
+                rowView.setLayoutParams(rowLp);
+
+                for (int col = 0; col < 4; col++) {
+                    final int idx = row * 4 + col;
+                    LinearLayout cell = new LinearLayout(this);
+                    cell.setOrientation(LinearLayout.VERTICAL);
+                    cell.setGravity(Gravity.CENTER);
+                    LinearLayout.LayoutParams cellLp = new LinearLayout.LayoutParams(
+                        0, FrameLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    cell.setLayoutParams(cellLp);
+
+                    // دائرة صفراء بحجم 50dp
+                    FrameLayout emojiFrame = new FrameLayout(this);
+                    int emojiSize = 50 * dp;
+                    LinearLayout.LayoutParams emojiLp = new LinearLayout.LayoutParams(
+                        emojiSize, emojiSize);
+                    emojiFrame.setLayoutParams(emojiLp);
+                    GradientDrawable frameBg = new GradientDrawable();
+                    frameBg.setShape(GradientDrawable.OVAL);
+                    frameBg.setColor(0xFFFFD54F); // أصفر
+                    emojiFrame.setBackground(frameBg);
+
+                    TextView emojiTv = new TextView(this);
+                    emojiTv.setText(MIC_EMOJIS[idx]);
+                    emojiTv.setTextSize(28);
+                    emojiTv.setGravity(Gravity.CENTER);
+                    FrameLayout.LayoutParams etLp = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    etLp.gravity = Gravity.CENTER;
+                    emojiTv.setLayoutParams(etLp);
+                    emojiFrame.addView(emojiTv);
+
+                    cell.addView(emojiFrame);
+
+                    TextView nameTv = new TextView(this);
+                    nameTv.setText(MIC_EMOJI_NAMES[idx]);
+                    nameTv.setTextColor(0xFFCCCCCC);
+                    nameTv.setTextSize(10);
+                    nameTv.setGravity(Gravity.CENTER);
+                    LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                    nameLp.setMargins(0, 4 * dp, 0, 0);
+                    nameTv.setLayoutParams(nameLp);
+                    cell.addView(nameTv);
+
+                    cell.setOnClickListener(v -> {
+                        try {
+                            onMicEmojiSelected(idx);
+                            dismissMicEmojiPopup();
+                        } catch (Exception e) {
+                            Log.e(TAG, "[MicPopup] cell click error", e);
+                        }
+                    });
+
+                    rowView.addView(cell);
+                }
+                grid.addView(rowView);
+            }
+            sheet.addView(grid);
+
+            // أضف اللوحة إلى الـ overlay
+            overlay.addView(sheet);
+
+            // النقر خارج اللوحة يغلقها
+            overlay.setOnClickListener(v -> dismissMicEmojiPopup());
+
+            // أضف overlay إلى content_view
+            rootView.addView(overlay);
+            micEmojiPopupView = overlay;
+            Log.i(TAG, "[MicPopup] shown, " + MIC_EMOJIS.length + " emojis");
+
+            // أنميشن بسيط: slide up من الأسفل
+            try {
+                sheet.setTranslationY(sheetHeight);
+                sheet.animate().translationY(0).setDuration(200).start();
+            } catch (Exception animEx) {
+                Log.e(TAG, "[MicPopup] anim error", animEx);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[MicPopup] show error", e);
+        }
+    }
+
+    /** يُستدعى عند اختيار إيموجي: اعرضه على مقعد المستخدم */
+    private void onMicEmojiSelected(int emojiIdx) {
+        try {
+            Toast.makeText(this,
+                "🎭 تم اختيار: " + MIC_EMOJI_NAMES[emojiIdx],
+                Toast.LENGTH_SHORT).show();
+
+            if (mySeatIndex == -1) {
+                Log.w(TAG, "[MicPopup] not on a mic, can't show emoji");
+                return;
+            }
+
+            // ابحث عن المقعد الحالي في القائمة
+            if (micAdapter != null && mySeatIndex >= 0 && mySeatIndex < micSeats.size()) {
+                MicSeat seat = micSeats.get(mySeatIndex);
+                if (seat.user == null) {
+                    seat.user = new RoomUser("me", currentUserName, 0, 1, "member");
+                }
+                // خزّن الإيموجي على المقعد
+                seat.micEmoji = MIC_EMOJIS[emojiIdx];
+                seat.micEmojiName = MIC_EMOJI_NAMES[emojiIdx];
+                micAdapter.notifyItemChanged(mySeatIndex);
+                Log.i(TAG, "[MicPopup] emoji " + MIC_EMOJI_NAMES[emojiIdx] + " applied to seat " + (mySeatIndex + 1));
+            }
+
+            // أضف رسالة نظام
+            addChatMessage(new ChatMessage(
+                ChatMessage.TYPE_SYSTEM, null,
+                currentUserName + " اختار إيموجي: " + MIC_EMOJI_NAMES[emojiIdx], null));
+
+            // محاكاة: إخفاء الإيموجي بعد 5 ثوان
+            handler.postDelayed(() -> {
+                try {
+                    if (mySeatIndex >= 0 && mySeatIndex < micSeats.size()) {
+                        MicSeat s = micSeats.get(mySeatIndex);
+                        if (s.micEmoji != null) {
+                            s.micEmoji = null;
+                            s.micEmojiName = null;
+                            if (micAdapter != null) micAdapter.notifyItemChanged(mySeatIndex);
+                            Log.i(TAG, "[MicPopup] emoji cleared after 5s");
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "[MicPopup] clear delay error", e);
+                }
+            }, 5000);
+        } catch (Exception e) {
+            Log.e(TAG, "[MicPopup] onMicEmojiSelected error", e);
+        }
+    }
+
+    /** يغلق نافذة إيموجي المايك */
+    private void dismissMicEmojiPopup() {
+        try {
+            if (micEmojiPopupView == null) return;
+            ViewGroup parent = (ViewGroup) micEmojiPopupView.getParent();
+            if (parent != null) {
+                parent.removeView(micEmojiPopupView);
+            }
+            micEmojiPopupView = null;
+            Log.i(TAG, "[MicPopup] dismissed");
+        } catch (Exception e) {
+            Log.e(TAG, "[MicPopup] dismiss error", e);
         }
     }
 
@@ -1015,8 +1257,14 @@ public class RoomActivity extends Activity {
                 });
             }
             if (ivMicEmoji != null) {
-                ivMicEmoji.setOnClickListener(v ->
-                    Toast.makeText(this, "🎭 مايك إيموجي", Toast.LENGTH_SHORT).show());
+                ivMicEmoji.setOnClickListener(v -> {
+                    try {
+                        Toast.makeText(this, "🎭 مايك إيموجي", Toast.LENGTH_SHORT).show();
+                        showMicEmojiPopup();
+                    } catch (Exception e) {
+                        Log.e(TAG, "[F] ivMicEmoji click error", e);
+                    }
+                });
             }
             if (ivGift != null) {
                 ivGift.setOnClickListener(v ->
@@ -1145,19 +1393,29 @@ public class RoomActivity extends Activity {
 
     // ============================================
     // سلوك Yalla Ludo: المايك يظهر فقط عند الجلوس
+    // مطابقة للصورة 24: ivSound يبقى VISIBLE دائماً، ivMic و ivMicEmoji يظهران عند الجلوس
     // ============================================
     private void updateBottomBarForMicState() {
         try {
-            if (ivSound == null || ivMic == null) return;
+            // تحقق أن etMessage ليس مُركّز عليه (إذا كان كذلك، onInputFocused يتحكم)
+            boolean etHasFocus = etMessage != null && etMessage.hasFocus();
+            if (etHasFocus) {
+                Log.i(TAG, "[MicState] etMessage has focus, skip update");
+                return;
+            }
+            // ivSound دائماً VISIBLE (مطابقة للصور 23 و24)
+            if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
             if (mySeatIndex == -1) {
-                ivSound.setVisibility(View.VISIBLE);
-                ivMic.setVisibility(View.GONE);
+                // الحالة A: غير جالس على مايك
+                if (ivMic != null) ivMic.setVisibility(View.GONE);
                 if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
             } else {
-                ivSound.setVisibility(View.GONE);
-                ivMic.setVisibility(View.VISIBLE);
+                // الحالة B: جالس على مايك — اظهر ivMic + ivMicEmoji
+                if (ivMic != null) ivMic.setVisibility(View.VISIBLE);
                 if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.VISIBLE);
             }
+            Log.i(TAG, "[MicState] updated, mySeatIndex=" + mySeatIndex
+                + " ivSound=VISIBLE ivMic=" + (mySeatIndex != -1 ? "VISIBLE" : "GONE"));
         } catch (Exception e) {
             Log.e(TAG, "updateBottomBar error", e);
         }
@@ -1217,6 +1475,23 @@ public class RoomActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        // أغلق popup الإيموجي إن كان مفتوحاً
+        try {
+            if (micEmojiPopupView != null && micEmojiPopupView.isShown()) {
+                dismissMicEmojiPopup();
+                return;
+            }
+        } catch (Exception e) {}
+        // أفرغ focus من etMessage إن كان مُركّزاً
+        try {
+            if (etMessage != null && etMessage.hasFocus()) {
+                etMessage.clearFocus();
+                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
+                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                if (imm != null) imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                return;
+            }
+        } catch (Exception e) {}
         finish();
     }
 
@@ -1235,6 +1510,9 @@ public class RoomActivity extends Activity {
         boolean isMuted;
         boolean isSpeaking;
         boolean isLocked;
+        // مايك إيموجي (مطابقة للصورة 27): يحل محل صورة المستخدم مؤقتاً
+        String micEmoji = null;
+        String micEmojiName = null;
         MicSeat(int index) {
             this.index = index;
             this.user = null;
@@ -1314,6 +1592,68 @@ public class RoomActivity extends Activity {
                     // إخفاء الكل افتراضياً
                     mute.setVisibility(View.GONE);
                     ownerBadge.setVisibility(View.GONE);
+
+                    // ===== مايك إيموجي (مطابقة للصورة 27) =====
+                    // ابحث عن TextView الإيموجي المُنشأ ديناميكياً (tag="mic_emoji_overlay")
+                    final FrameLayout waveContainer = (FrameLayout) itemView.findViewById(R.id.mic_wave);
+                    TextView existingEmoji = null;
+                    if (waveContainer != null) {
+                        View prev = waveContainer.findViewWithTag("mic_emoji_overlay");
+                        if (prev instanceof TextView) {
+                            existingEmoji = (TextView) prev;
+                        }
+                    }
+
+                    if (seat.micEmoji != null && seat.user != null) {
+                        // اعرض الإيموجي بدلاً من الصورة الرمزية
+                        head.setVisibility(View.GONE);
+                        if (existingEmoji == null && waveContainer != null) {
+                            existingEmoji = new TextView(itemView.getContext());
+                            existingEmoji.setTag("mic_emoji_overlay");
+                            FrameLayout.LayoutParams emojiLp = new FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT);
+                            emojiLp.gravity = Gravity.CENTER;
+                            existingEmoji.setLayoutParams(emojiLp);
+                            existingEmoji.setGravity(Gravity.CENTER);
+                            existingEmoji.setTextSize(36);
+                            waveContainer.addView(existingEmoji);
+                        }
+                        if (existingEmoji != null) {
+                            existingEmoji.setText(seat.micEmoji);
+                            existingEmoji.setVisibility(View.VISIBLE);
+                            // أنميشن: scale up + alpha (محاكاة لظهور الإيموجي)
+                            try {
+                                existingEmoji.setScaleX(0.3f);
+                                existingEmoji.setScaleY(0.3f);
+                                existingEmoji.setAlpha(0f);
+                                existingEmoji.animate()
+                                    .scaleX(1f).scaleY(1f).alpha(1f)
+                                    .setDuration(300).start();
+                            } catch (Exception animEx) {
+                                Log.e(TAG, "[A] emoji anim error", animEx);
+                            }
+                        }
+                        // اظهر خلفية دائرية
+                        GradientDrawable circle = new GradientDrawable();
+                        circle.setShape(GradientDrawable.OVAL);
+                        circle.setColor(0xFFFFD54F); // أصفر مثل popup
+                        circle.setStroke(2, Color.WHITE);
+                        headBg.setBackground(circle);
+                        // اظهر اسم المستخدم أسفل (يبقى ظاهراً)
+                        name.setText(seat.user.name);
+                        // اظهر تاج المالك إن لزم
+                        if ("owner".equals(seat.user.role)) {
+                            ownerBadge.setVisibility(View.VISIBLE);
+                        }
+                        return;
+                    } else {
+                        // لا يوجد إيموجي — أخفِ TextView الإيموجي وأعد head
+                        head.setVisibility(View.VISIBLE);
+                        if (existingEmoji != null) {
+                            existingEmoji.setVisibility(View.GONE);
+                        }
+                    }
 
                     if (seat.isLocked) {
                         // مقعد مقفل (50dp, src=room_ic_room_mic_lock)
