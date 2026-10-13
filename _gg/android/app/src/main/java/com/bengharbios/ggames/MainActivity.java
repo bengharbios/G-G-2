@@ -25,6 +25,27 @@ public class MainActivity extends BridgeActivity {
         
         super.onCreate(savedInstanceState);
 
+        // ===== اعرض crash log من RoomActivity إن وُجد =====
+        try {
+            java.io.File crashFile = getFileStreamPath("room_crash.log");
+            if (crashFile != null && crashFile.exists()) {
+                java.io.FileInputStream fis = openFileInput("room_crash.log");
+                byte[] data = new byte[(int) crashFile.length()];
+                fis.read(data);
+                fis.close();
+                String crashText = new String(data);
+                crashFile.delete();
+                new android.app.AlertDialog.Builder(this)
+                    .setTitle("💥 Crash سابق في الغرفة")
+                    .setMessage(crashText.substring(0, Math.min(crashText.length(), 3000)))
+                    .setPositiveButton("حسناً", (d, w) -> d.dismiss())
+                    .setCancelable(false)
+                    .show();
+            }
+        } catch (Exception e) {
+            android.util.Log.e("MainActivity", "Failed to read crash log", e);
+        }
+
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // Set volume control to media stream (not call stream)
