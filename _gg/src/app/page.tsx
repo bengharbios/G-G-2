@@ -859,134 +859,165 @@ function LuckySpinCard() {
 
 // ─── Game Card Component ──────────────────────────────────────────────────────
 
-// ─── Game Card — مطابق لتصميم yalla.gg-card من سورس يلا لودو ─────────────
-// HTML الأصلي (من client/index.html):
-//   <button class="gg-card" data-game=... data-players=... data-cat=...>
-//     <img src="/assets/games/X.png"><span class="gg-name" style="-webkit-text-stroke:1px #COLOR">NAME</span>
-//   </button>
-// CSS الأصلي (من client/css/style.css):
-//   .gg-card { width:167px; height:134px; border-radius:16px; overflow:hidden; }
-//   .gg-card img { width:100%; height:100%; object-fit:fill; filter:drop-shadow(0 6px 8px rgba(0,0,0,.45)); animation:ggFloat 2.6s ease-in-out infinite; }
-//   .gg-card::after { background:linear-gradient(105deg, transparent 42%, rgba(255,255,255,.22) 50%, transparent 58%); animation:ggShine 4.2s ease-in-out infinite; }
-//   .gg-name { position:absolute; bottom:6px; left:0; right:0; text-align:center; font-size:15px; font-weight:900; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.55); }
-//   @keyframes ggFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-//   @keyframes ggShine { 0%,55%{background-position:130% 0} 85%,100%{background-position:-130% 0} }
-const GAME_STROKE_COLORS: Record<string, string> = {
-  mafia:       '#7A1F1F',
-  tobol:       '#7A3A10',
-  tabot:       '#4A2E75',
-  prison:      '#14554E',
-  risk:        '#7A1F1F',
-  risk2:       '#3A3170',
-  baharharb:   '#14405C',
-  familyfeud:  '#A0631C',
-  shifarat:    '#387E12',
-};
-
 function GameCard({ game, index }: { game: GameData; index: number }) {
   const isAvailable = game.status === 'available';
   const isComingSoon = game.status === 'coming_soon';
 
-  // لون text-stroke من السورس الأصلي لكل لعبة
-  const strokeColor = GAME_STROKE_COLORS[game.id] || '#000000';
-
-  // مسار الصورة — مطابق لـ /assets/games/X.png في يلا، نضعها في /yalla-games/X.png لـ Next.js
-  const gameImage = game.bgImage || `/yalla-games/${game.id}.png`;
-
-  // أنميشن staggered (مثل nth-child delays في CSS الأصلي)
-  const floatDelay = `${(index % 5) * 0.45}s`;
-  const shineDelay = `${(index % 3) * 1.4}s`;
+  const gradientColors = isAvailable
+    ? game.themeBorder.includes('red')
+      ? ['#ef4444', '#a855f7', '#f59e0b', '#ef4444']
+      : game.themeBorder.includes('orange')
+        ? ['#f97316', '#ef4444', '#f59e0b', '#f97316']
+        : game.themeBorder.includes('purple')
+          ? ['#a855f7', '#6366f1', '#ec4899', '#a855f7']
+          : game.themeBorder.includes('amber')
+            ? ['#f59e0b', '#f97316', '#ef4444', '#f59e0b']
+            : game.themeBorder.includes('violet')
+              ? ['#8b5cf6', '#a855f7', '#6366f1', '#8b5cf6']
+              : game.themeBorder.includes('teal')
+                ? ['#14b8a6', '#10b981', '#f59e0b', '#14b8a6']
+                : game.themeBorder.includes('emerald')
+                  ? ['#10b981', '#14b8a6', '#059669', '#10b981']
+                  : ['#ef4444', '#a855f7', '#f59e0b', '#ef4444']
+    : null;
 
   return (
-    <div
-      className="relative gg-card-wrap"
-      style={{
-        width: '167px',
-        height: '134px',
-        flexShrink: '0',  // لا ينضغط داخل flex container
-        flexBasis: '167px',  // الأساس: 167px لكل بطاقة
-        display: 'inline-block',
-        verticalAlign: 'top',
-      }}
+    <motion.div
+      custom={index}
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-30px' }}
     >
-      <Link
-        href={isAvailable && game.href ? game.href : '#games'}
-        data-game={game.id}
-        data-players={game.players}
-        data-cat={game.category}
-        aria-label={isAvailable ? `العب ${game.title}` : `${game.title} قريباً`}
-        className={`group relative block w-[167px] h-[134px] rounded-2xl overflow-hidden transition-transform duration-150 active:scale-95 ${
-          isAvailable ? 'cursor-pointer' : 'opacity-60 cursor-default pointer-events-none'
+      <div
+        className={`relative rounded-2xl p-[2px] ${
+          isAvailable
+            ? 'bg-gradient-to-br from-slate-700/50 via-slate-800/30 to-slate-700/50'
+            : ''
         }`}
+        style={
+          isAvailable && gradientColors
+            ? {
+                background: `linear-gradient(var(--gradient-angle, 0deg), ${gradientColors.join(', ')})`,
+                animation: 'card-border-spin 6s linear infinite',
+              }
+            : undefined
+        }
       >
-        {/* الصورة: 100% fill + drop-shadow + ggFloat animation (تطفو 4px كل 2.6 ثانية) */}
-        <img
-          src={gameImage}
-          alt={game.title}
-          className="block w-full h-full object-fill"
-          style={{
-            filter: 'drop-shadow(0 6px 8px rgba(0,0,0,.45))',
-            animation: 'ggFloat 2.6s ease-in-out infinite',
-            animationDelay: floatDelay,
-          }}
-          onError={(e) => {
-            const t = e.target as HTMLImageElement;
-            t.src = `/yalla-games/${game.id}.png`;
-          }}
-        />
-
-        {/* ggShine: لمعان يمشي عبر البطاقة كل 4.2 ثانية (مثل ::after في CSS) */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(105deg, transparent 42%, rgba(255,255,255,.22) 50%, transparent 58%)',
-            backgroundSize: '240% 100%',
-            backgroundPosition: '130% 0',
-            animation: 'ggShine 4.2s ease-in-out infinite',
-            animationDelay: shineDelay,
-          }}
-        />
-
-        {/* Coming Soon Overlay — يضاف فوق الصورة لو status === 'coming_soon' */}
-        {isComingSoon && (
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[1px] flex items-center justify-center">
-            <span className="text-xs font-bold text-amber-400 bg-slate-900/70 px-2 py-1 rounded-md border border-amber-500/40 animate-pulse">
-              ✨ قريباً
-            </span>
-          </div>
-        )}
-
-        {/* شارة الفئة (Category) أعلى يمين البطاقة — من الأدمن */}
-        {isAvailable && game.category && game.category !== 'other' && (
-          <span className="absolute top-2 right-2 text-[9px] font-bold text-white bg-slate-950/60 backdrop-blur-sm px-2 py-0.5 rounded-md border border-white/20 z-10">
-            {game.category}
-          </span>
-        )}
-
-        {/* شارة isFree (مجاني/مدفوع) أعلى يسار البطاقة */}
-        {isAvailable && (
-          <span className={`absolute top-2 left-2 text-[9px] font-bold backdrop-blur-sm px-2 py-0.5 rounded-md z-10 ${
-            game.isFree
-              ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/40'
-              : 'bg-amber-500/30 text-amber-300 border border-amber-500/40'
-          }`}>
-            {game.isFree ? '🟢 مجاني' : '💎 مدفوع'}
-          </span>
-        )}
-
-        {/* gg-name: اسم اللعبة أسفل البطاقة — مطابق لـ yalla الأصلي */}
-        <span
-          className="absolute bottom-1.5 left-0 right-0 text-center text-[15px] font-black text-white whitespace-nowrap z-10"
-          style={{
-            paintOrder: 'stroke fill',
-            WebkitTextStroke: `1px ${strokeColor}`,
-            textShadow: '0 1px 3px rgba(0,0,0,.55)',
-          }}
+        <Link
+          href={isAvailable && game.href ? game.href : '#games'}
+          className={`group relative block rounded-[14px] border ${game.themeBorder} overflow-hidden transition-all duration-300 ${
+            isAvailable
+              ? 'hover:shadow-2xl hover:shadow-black/40 hover:-translate-y-1 cursor-pointer'
+              : 'opacity-60 cursor-default pointer-events-none'
+          }`}
+          aria-label={isAvailable ? `العب ${game.title}` : `${game.title} قريباً`}
         >
-          {game.title}
-        </span>
-      </Link>
-    </div>
+          {/* Background Image Layer — أيقونات يلا تظهر كاملة مع تظليل سفلي للنص */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-b ${game.themeBg}`}
+            style={
+              game.bgImage
+                ? {
+                    backgroundImage: `url(${game.bgImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }
+                : undefined
+            }
+          >
+            {game.bgImage && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
+            )}
+          </div>
+
+          {/* Coming Soon Overlay */}
+          {isComingSoon && (
+            <div className="absolute inset-0 z-5 bg-slate-950/30 backdrop-blur-[1px]" />
+          )}
+
+          {/* Content */}
+          <div className="relative z-10 p-4 sm:p-5 flex flex-col min-h-[200px] sm:min-h-[230px]">
+            {/* Top: Badge + Emoji */}
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex flex-col gap-1">
+                <Badge
+                  className={`${game.themeBadge} text-[9px] sm:text-[10px] font-bold backdrop-blur-sm ${isComingSoon ? 'animate-pulse' : ''}`}
+                >
+                  {isAvailable
+                    ? game.isFree
+                      ? '🟢 متاحة'
+                      : '💎 VIP'
+                    : '✨ قريباً'}
+                </Badge>
+                {/* شارة الفئة (Category) — من الأدمن */}
+                {game.category && game.category !== 'other' && (
+                  <span className="text-[8px] sm:text-[9px] text-slate-400/80 bg-slate-900/40 backdrop-blur-sm px-1.5 py-0.5 rounded-md border border-slate-700/40 w-fit">
+                    {game.category}
+                  </span>
+                )}
+              </div>
+              <motion.div
+                className="text-3xl sm:text-4xl"
+                whileHover={isAvailable ? { scale: 1.3, rotate: [0, -10, 10, 0] } : {}}
+              >
+                {game.emoji}
+              </motion.div>
+            </div>
+
+            {/* Title */}
+            <div className="mb-1">
+              <h3 className={`text-base sm:text-lg font-black ${game.themeColor} leading-tight ${isComingSoon ? 'opacity-70' : ''}`}>
+                {game.title}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-slate-500">{game.titleEn}</p>
+            </div>
+
+            {/* Description */}
+            <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 flex-1 mb-2">
+              {game.description}
+            </p>
+
+            {/* Bottom: Players + Play button */}
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1 text-[10px] sm:text-xs text-slate-500">
+                <Users className="w-3 h-3" />
+                {game.players}
+              </span>
+              {isAvailable ? (
+                <motion.div
+                  initial={false}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                >
+                  <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white" />
+                </motion.div>
+              ) : (
+                <motion.span
+                  className="text-xs text-slate-500"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                >
+                  🚧 قيد التطوير
+                </motion.span>
+              )}
+            </div>
+          </div>
+
+          {/* Play Overlay on Hover (desktop) */}
+          {isAvailable && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-200 pointer-events-none">
+              <motion.div
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300"
+              >
+                <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white" />
+              </motion.div>
+            </div>
+          )}
+        </Link>
+      </div>
+    </motion.div>
   );
 }
 
@@ -1088,24 +1119,17 @@ function GamesSection() {
           ))}
         </motion.div>
 
-        {/* Games Grid — مطابق لـ .gg-grid من سورس يلا:
-            display:flex; flex-wrap:wrap; justify-content:center; gap:16px; padding:18px 5px 8px; */}
-        <div
-          className="gg-grid"
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '16px',
-            padding: '18px 5px 8px',
-            position: 'relative',
-            zIndex: 1,
-          }}
+        {/* Games Grid */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4"
         >
           {filteredGames.map((game, i) => (
             <GameCard key={game.id} game={game} index={i} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -1393,15 +1417,6 @@ export default function HomePage() {
           to {
             --gradient-angle: 360deg;
           }
-        }
-        /* ─── yalla ludo card animations (من سورس يلا ludo style.css) ─── */
-        @keyframes ggFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
-        }
-        @keyframes ggShine {
-          0%, 55% { background-position: 130% 0; }
-          85%, 100% { background-position: -130% 0; }
         }
         /* Hide scrollbar for horizontal scroll */
         .scrollbar-none::-webkit-scrollbar {
