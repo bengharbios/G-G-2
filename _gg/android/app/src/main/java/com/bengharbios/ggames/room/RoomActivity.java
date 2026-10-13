@@ -473,20 +473,17 @@ public class RoomActivity extends Activity {
             }
 
             // Treasure / Activity / Music
-            int[][] sidebarItems = {
-                {getId("operations_activity_banner"), "الكنز"},
-                {getId("eventAndGameBannerView"), "النشاط"},
-                {getId("activesBannerView"), "البانر"},
-                {getId("ivRoomMusic"), "الموسيقى"},
-                {getId("ivMessagesBox"), "الرسائل"},
-            };
+            String[] sidebarIds = {"operations_activity_banner", "eventAndGameBannerView",
+                "activesBannerView", "ivRoomMusic", "ivMessagesBox"};
+            String[] sidebarNames = {"الكنز", "النشاط", "البانر", "الموسيقى", "الرسائل"};
 
-            for (int[] item : sidebarItems) {
-                if (item[0] == 0) continue;
-                View v = findViewById(item[0]);
+            for (int i = 0; i < sidebarIds.length; i++) {
+                final int sid = getId(sidebarIds[i]);
+                if (sid == 0) continue;
+                final String name = sidebarNames[i];
+                View v = findViewById(sid);
                 if (v != null) {
                     v.setVisibility(View.VISIBLE);
-                    final String name = item[1];
                     v.setOnClickListener(btn ->
                         Toast.makeText(this, "📋 " + name, Toast.LENGTH_SHORT).show());
                     Log.i(TAG, "[D] " + name + " -> VISIBLE + Toast");
@@ -566,17 +563,14 @@ public class RoomActivity extends Activity {
 
             // البند E: ivMic يظهر عند الضغط على مقعد (انضم)
             // ivEmoji يظهر عند التركيز على حقل الكتابة
-            if (etMessage != null) {
+            final int emojiId = getId("ivEmoji");
+            if (etMessage != null && emojiId != 0) {
                 etMessage.setOnFocusChangeListener((v, hasFocus) -> {
                     try {
-                        if (hasFocus && ivEmoji != null) {
-                            // ivEmoji — ابحث عنه
-                            int emojiId = getId("ivEmoji");
-                            if (emojiId != 0) {
-                                ImageView ivEmoji = findViewById(emojiId);
-                                if (ivEmoji != null) {
-                                    ivEmoji.setVisibility(View.VISIBLE);
-                                }
+                        if (hasFocus) {
+                            ImageView ivEmoji = findViewById(emojiId);
+                            if (ivEmoji != null) {
+                                ivEmoji.setVisibility(View.VISIBLE);
                             }
                         }
                     } catch (Exception e) {
