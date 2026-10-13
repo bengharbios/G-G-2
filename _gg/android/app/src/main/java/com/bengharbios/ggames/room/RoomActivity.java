@@ -69,12 +69,14 @@ public class RoomActivity extends Activity {
     private RecyclerView rvChat;
     private ImageView ivSound, ivMic, ivMicEmoji, ivGift, ivSendPicture, ivSend;
     private ImageView ivShowGameCenter;
-    private EditText etMessage;
-    private TextView tvRoomTopName;
+    private EditText etMessage;        // الحقل في الشريط السفلي (معطّل — يفتح overlay عند النقر)
+    private EditText etInputMessage;  // الحقل في الـ overlay (نشط — يستقبل الكتابة)
     private View roomRoot;
     // عناصر إضافية للصورة 21
-    private View ownerTagView;          // pill-shape tag للمالك (يمين)
+    private View ownerTagView;          // pill-shape tag للمالك (سيُحذف ويُعاد وضعه في مكان sofa)
     // (تم حذف leftChatBtn/leftMusicBtn — هما في الأصل موجودان في rightScrollView)
+    // overlay لوحة الإدخال فوق الكيبورد (مطابقة للسورس الأصلي room_bottom_input.xml)
+    private View inputOverlayView;     // الحاوية العلوية للـ overlay
 
     // Data
     private List<MicSeat> micSeats = new ArrayList<>();
@@ -246,14 +248,10 @@ public class RoomActivity extends Activity {
 
         // ===== البند D2: تم حذفه — أزرار الشريط الأيسر موجودة أصلاً في rightScrollView =====
 
-        // ===== البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00) — من الصورة 21 =====
-        try {
-            Log.i(TAG, "[D3] بدء setupOwnerTag");
-            setupOwnerTag();
-            Log.i(TAG, "[D3] اكتمل بنجاح");
-        } catch (Exception e) {
-            Log.e(TAG, "[D3] setupOwnerTag فشل", e);
-        }
+        // ===== البند D3: Owner pill-tag — محذوف =====
+        // المستخدم أشار أن الـ pill-tag يظهر فوق زر الخروج ولا يوجد في Yalla Ludo الأصلي بهذا الشكل
+        // في الأصل، المالك يُحدد عبر تاج (room_icon_room_top_close_king) على صورة المستخدم في المقعد الأول
+        // ولا توجد pill-tag في الأعلى. سيُحذف في بناء لاحق إذا لم يكن ضرورياً.
 
         // ===== البند E: الشريط السفلي + WindowInsets =====
         try {
@@ -645,119 +643,16 @@ public class RoomActivity extends Activity {
     // ============================================
 
     // ============================================
-    // البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00)
-    // مطابقة للصورة 21: pill-shape tag على اليمين أعلى
+    // البند D3: محذوف — Owner pill-tag لم يكن في مكانه الصحيح
+    // في Yalla Ludo الأصلي، المالك يُحدد فقط عبر تاج (room_icon_room_top_close_king)
+    // على صورة المستخدم في المقعد الأول، ولا توجد pill-tag في الأعلى
     // ============================================
-    private void setupOwnerTag() {
-        try {
-            int rootId = getId("content_view");
-            ViewGroup rootView = (ViewGroup) findViewById(rootId);
-            if (rootView == null) {
-                Log.w(TAG, "[D3] content_view not found");
-                return;
-            }
-
-            int dp = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-
-            // pill-shape tag: LinearLayout أفقي
-            LinearLayout pill = new LinearLayout(this);
-            pill.setOrientation(LinearLayout.HORIZONTAL);
-            pill.setGravity(Gravity.CENTER_VERTICAL);
-            int pillWidth = LinearLayout.LayoutParams.WRAP_CONTENT;
-            int pillHeight = 32 * dp;
-            FrameLayout.LayoutParams pillLp = new FrameLayout.LayoutParams(pillWidth, pillHeight);
-            pillLp.gravity = Gravity.END | Gravity.TOP;
-            pillLp.setMargins(0, 12 * dp, 8 * dp, 0);
-            pill.setLayoutParams(pillLp);
-
-            // خلفية pill-shape: مستطيل مدور نصف شفاف أسود
-            GradientDrawable pillBg = new GradientDrawable();
-            pillBg.setShape(GradientDrawable.RECTANGLE);
-            pillBg.setCornerRadius(16 * dp);
-            pillBg.setColor(0x99000000); // أسود شفاف
-            pillBg.setStroke(1 * dp, 0x33FFFFFF);
-            pill.setBackground(pillBg);
-            pill.setPadding(6 * dp, 2 * dp, 6 * dp, 2 * dp);
-
-            // 1) صورة مربعة صغيرة (avatar المالك)
-            ImageView avatar = new ImageView(this);
-            int avatarSize = 24 * dp;
-            LinearLayout.LayoutParams avatarLp = new LinearLayout.LayoutParams(avatarSize, avatarSize);
-            avatarLp.setMarginEnd(4 * dp);
-            avatar.setImageResource(R.drawable.room_default);
-            avatar.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            avatar.setLayoutParams(avatarLp);
-            // اضبط خلفية بيضاء مدورة على الصورة
-            GradientDrawable avatarBg = new GradientDrawable();
-            avatarBg.setShape(GradientDrawable.RECTANGLE);
-            avatarBg.setCornerRadius(4 * dp);
-            avatarBg.setColor(0xFF0D8A7A); // أخضر
-            avatar.setBackground(avatarBg);
-            pill.addView(avatar);
-
-            // 2) نص "البرج" (اسم الغرفة/المالك)
-            TextView name = new TextView(this);
-            name.setText(roomName);
-            name.setTextColor(Color.WHITE);
-            name.setTextSize(11);
-            name.setSingleLine(true);
-            LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            nameLp.setMarginEnd(6 * dp);
-            name.setLayoutParams(nameLp);
-            pill.addView(name);
-
-            // 3) توقيت "00:00" (محاكاة عداد مدة البث)
-            TextView timer = new TextView(this);
-            timer.setText("00:00");
-            timer.setTextColor(0xFFFFD700); // ذهبي
-            timer.setTextSize(10);
-            timer.setSingleLine(true);
-            LinearLayout.LayoutParams timerLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            timer.setLayoutParams(timerLp);
-            pill.addView(timer);
-
-            pill.setOnClickListener(v ->
-                Toast.makeText(this, "🏷️ " + roomName + " (مالك)", Toast.LENGTH_SHORT).show());
-
-            rootView.addView(pill);
-            ownerTagView = pill;
-            Log.i(TAG, "[D3] ownerTag added with name=" + roomName + ", timer=00:00");
-
-            // === محاكاة عداد الوقت: كل ثانية يزيد الثواني ===
-            handler.postDelayed(new Runnable() {
-                int totalSec = 0;
-                @Override
-                public void run() {
-                    try {
-                        totalSec++;
-                        int h = totalSec / 3600;
-                        int m = (totalSec % 3600) / 60;
-                        int s = totalSec % 60;
-                        final String timeStr;
-                        if (h > 0) {
-                            timeStr = String.format("%02d:%02d:%02d", h, m, s);
-                        } else {
-                            timeStr = String.format("%02d:%02d", m, s);
-                        }
-                        TextView t = (TextView) ((ViewGroup) ownerTagView).getChildAt(2);
-                        if (t != null) t.setText(timeStr);
-                        handler.postDelayed(this, 1000);
-                    } catch (Exception e) {
-                        Log.e(TAG, "[D3] timer error", e);
-                    }
-                }
-            }, 1000);
-
-        } catch (Exception e) {
-            Log.e(TAG, "[D3] setupOwnerTag error", e);
-        }
-    }
 
     // ============================================
-    // البند E: الشريط السفلي + WindowInsets
+    // البند E: الشريط السفلي + لوحة الإدخال فوق الكيبورد
+    // مطابقة للسورس الأصلي Yalla Ludo:
+    //  - الشريط السفلي (room_include_room_input.xml) دائم
+    //  - لوحة إدخال (room_bottom_input.xml) تظهر كـ overlay فوق الكيبورد عند النقر على etMessage
     // ============================================
     private void setupBottomBar() {
         try {
@@ -793,7 +688,7 @@ public class RoomActivity extends Activity {
                 }
             }
 
-            // اربط عناصر الشريط السفلي
+            // اربط عناصر الشريط السفلي (من room_include_room_input.xml)
             ivSound = findViewById(getId("ivSound"));
             ivMic = findViewById(getId("ivMic"));
             ivMicEmoji = findViewById(getId("ivMicEmoji"));
@@ -803,39 +698,55 @@ public class RoomActivity extends Activity {
             ivShowGameCenter = findViewById(getId("ivShowGameCenter"));
             etMessage = findViewById(getId("etMessage"));
 
-            // مكن حقل الإدخال (في XML الأصلي: enabled=false focusable=false)
-            // مطابقة للصور 23/24/25: حقل إدخال نشط عند الحاجة فقط
+            // ===== استبدال ivGift (الذي كان svga) بصورة gift_default.webp الثابتة =====
+            // (svga تحتاج مكتبة SVGAPlayer غير متوفرة — استخدم gift_default.webp من الموارد الأصلية)
+            try {
+                if (ivGift != null) {
+                    int giftResId = getResources().getIdentifier("gift_default", "drawable", getPackageName());
+                    if (giftResId != 0) {
+                        ivGift.setImageResource(giftResId);
+                        ivGift.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "[E] ivGift = gift_default.webp");
+                    } else {
+                        ivGift.setVisibility(View.VISIBLE);
+                        Log.w(TAG, "[E] gift_default not found, keeping svga placeholder");
+                    }
+                }
+            } catch (Exception giftEx) {
+                Log.e(TAG, "[E] ivGift setup error", giftEx);
+            }
+
+            // ===== عطّل etMessage (لن يستقبل الكتابة) — النقر عليه يفتح overlay =====
+            // مطابقة للسورس الأصلي Yalla Ludo: enabled=false + focusable=false في XML
             try {
                 if (etMessage != null) {
-                    etMessage.setEnabled(true);
-                    etMessage.setFocusable(true);
-                    etMessage.setFocusableInTouchMode(true);
+                    // أبقِه معطّل (كما في XML الأصلي) — النقر عليه يفتح overlay
+                    etMessage.setEnabled(false);
+                    etMessage.setFocusable(false);
+                    etMessage.setFocusableInTouchMode(false);
                     etMessage.setClickable(true);
-                    etMessage.setLongClickable(true);
-                    etMessage.setCursorVisible(true);
+                    etMessage.setLongClickable(false);
+                    etMessage.setCursorVisible(false);
                     etMessage.setHint("قل شيئاً...");
-                    // خلفية مدورة للحقل (مطابقة للصورة 25: pill-shape رمادي غامق)
-                    GradientDrawable etBg = new GradientDrawable();
-                    etBg.setShape(GradientDrawable.RECTANGLE);
-                    int radiusDp = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 18, getResources().getDisplayMetrics());
-                    etBg.setCornerRadius(radiusDp);
-                    etBg.setColor(0x66000000); // رمادي شفاف
-                    int strokePx = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-                    etBg.setStroke(strokePx, 0x33FFFFFF);
-                    etMessage.setBackground(etBg);
                     etMessage.setTextColor(Color.WHITE);
                     etMessage.setHintTextColor(0xFFB0B0B0);
-                    Log.i(TAG, "[E] etMessage enabled + styled (pill)");
+                    // النقر على etMessage يفتح الـ overlay
+                    etMessage.setOnClickListener(v -> {
+                        try {
+                            openInputOverlay();
+                        } catch (Exception e) {
+                            Log.e(TAG, "[E] etMessage click error", e);
+                        }
+                    });
+                    Log.i(TAG, "[E] etMessage disabled (opens overlay on click)");
                 }
             } catch (Exception etEx) {
-                Log.e(TAG, "[E] etMessage enable error", etEx);
+                Log.e(TAG, "[E] etMessage setup error", etEx);
             }
 
             // ===== حالة افتراضية للشريط السفلي (مطابقة للصورة 23: يدخل الروم) =====
-            // VISIBLE:  ivSound, ivGift, ivShowGameCenter, etMessage
-            // GONE:      ivMic, ivMicEmoji, ivSendPicture, ivSend  (تظهر لاحقاً حسب الحالة)
+            // VISIBLE:  ivSound, ivGift, ivShowGameCenter, etMessage (hint)
+            // GONE:      ivMic, ivMicEmoji, ivSendPicture, ivSend, ivEmoji  (تظهر لاحقاً)
             try {
                 if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
                 if (ivGift != null) ivGift.setVisibility(View.VISIBLE);
@@ -844,7 +755,12 @@ public class RoomActivity extends Activity {
                 if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
                 if (ivSendPicture != null) ivSendPicture.setVisibility(View.GONE);
                 if (ivSend != null) ivSend.setVisibility(View.GONE);
-                Log.i(TAG, "[E] Default state: ivSound+ivGift+ivShowGameCenter VISIBLE; ivMic+ivMicEmoji+ivSendPicture+ivSend GONE");
+                int emojiId = getId("ivEmoji");
+                if (emojiId != 0) {
+                    ImageView ivEmoji = findViewById(emojiId);
+                    if (ivEmoji != null) ivEmoji.setVisibility(View.GONE);
+                }
+                Log.i(TAG, "[E] Default state: ivSound+ivGift+ivShowGameCenter VISIBLE; ivMic+ivMicEmoji+ivSendPicture+ivSend+ivEmoji GONE");
             } catch (Exception visEx) {
                 Log.e(TAG, "[E] default state error", visEx);
             }
@@ -859,58 +775,6 @@ public class RoomActivity extends Activity {
                 });
             }
 
-            // ===== منطق ظهور/إخفاء الأيقونات حسب الحالة (مطابقة للصور 24/25) =====
-            // السيناريو:
-            //  - الحالة A (افتراضي / غير جالس على مايك):
-            //      ivSound=VISIBLE, ivMic=GONE, ivMicEmoji=GONE,
-            //      ivSendPicture=GONE, ivSend=GONE, ivEmoji=GONE
-            //  - الحالة B (جالس على مايك، لا كتابة) — صورة 24:
-            //      ivSound=VISIBLE, ivMic=VISIBLE, ivMicEmoji=VISIBLE,
-            //      ivSendPicture=GONE, ivSend=GONE, ivEmoji=GONE
-            //  - الحالة C (etMessage مُركّز + النص فارغ) — صورة 25:
-            //      ivSound=GONE, ivMic=GONE (إن لم يكن جالساً),
-            //      ivSendPicture=VISIBLE, ivSend=GONE, ivEmoji=VISIBLE
-            //  - الحالة D (etMessage مُركّز + النص غير فارغ):
-            //      ivSendPicture=GONE, ivSend=VISIBLE, ivEmoji=VISIBLE
-            final int emojiId = getId("ivEmoji");
-            if (etMessage != null) {
-                try {
-                    // ركز على الحقل: ادخل الحالة C أو D حسب النص
-                    etMessage.setOnFocusChangeListener((v, hasFocus) -> {
-                        try {
-                            if (hasFocus) {
-                                onInputFocused();
-                            } else {
-                                onInputUnfocused();
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "[E] focus change error", e);
-                        }
-                    });
-
-                    // TextWatcher: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
-                    etMessage.addTextChangedListener(new android.text.TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                        @Override
-                        public void afterTextChanged(android.text.Editable s) {
-                            try {
-                                boolean hasText = s != null && s.toString().trim().length() > 0;
-                                if (ivSendPicture != null) ivSendPicture.setVisibility(hasText ? View.GONE : View.VISIBLE);
-                                if (ivSend != null) ivSend.setVisibility(hasText ? View.VISIBLE : View.GONE);
-                            } catch (Exception e) {
-                                Log.e(TAG, "[E] TextWatcher error", e);
-                            }
-                        }
-                    });
-                    Log.i(TAG, "[E] etMessage listeners set (focus + TextWatcher)");
-                } catch (Exception listEx) {
-                    Log.e(TAG, "[E] listeners setup error", listEx);
-                }
-            }
-
             Log.i(TAG, "[E] Bottom bar IDs: ivSound=" + (ivSound != null)
                 + " ivMic=" + (ivMic != null)
                 + " ivGift=" + (ivGift != null)
@@ -920,53 +784,230 @@ public class RoomActivity extends Activity {
         }
     }
 
-    /** يُستدعى عند focus على etMessage: يدخل الحالة C (نص فارغ) أو D (نص غير فارغ) */
-    private void onInputFocused() {
+    // ============================================
+    // لوحة الإدخال فوق الكيبورد (overlay)
+    // مطابقة للسورس الأصلي Yalla Ludo:
+    //  - تُنشأ برمجياً من room_bottom_input.xml
+    //  - تُضاف إلى content_view (FrameLayout) فوق الشريط السفلي
+    //  - تُحاكي ظهورها فوق الكيبورد
+    // ============================================
+    private void openInputOverlay() {
         try {
-            // أخفِ ivSound و ivMic و ivMicEmoji
-            if (ivSound != null) ivSound.setVisibility(View.GONE);
-            if (ivMic != null) ivMic.setVisibility(View.GONE);
-            if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
-            // اظهر ivEmoji (أيقونة الإيموجي بجانب الحقل)
-            int emojiId = getId("ivEmoji");
-            if (emojiId != 0) {
-                ImageView ivEmoji = findViewById(emojiId);
-                if (ivEmoji != null) ivEmoji.setVisibility(View.VISIBLE);
+            // إذا كانت مفتوحة، لا تفعل شيئاً
+            if (inputOverlayView != null && inputOverlayView.isShown()) {
+                Log.i(TAG, "[InputOverlay] already open");
+                // ركز على الحقل لفتح الكيبورد
+                focusInputMessage();
+                return;
             }
-            // اظهر ivSendPicture افتراضياً (سيُبدّلها TextWatcher حسب النص)
-            if (ivSendPicture != null) ivSendPicture.setVisibility(View.VISIBLE);
-            if (ivSend != null) ivSend.setVisibility(View.GONE);
-            Log.i(TAG, "[E] onInputFocused: ivSound/ivMic/ivMicEmoji GONE, ivEmoji+ivSendPicture VISIBLE");
+
+            int rootId = getId("content_view");
+            ViewGroup rootView = (ViewGroup) findViewById(rootId);
+            if (rootView == null) {
+                Log.w(TAG, "[InputOverlay] content_view not found");
+                return;
+            }
+
+            // انفخ room_bottom_input.xml كـ view منفصلة
+            View overlay;
+            try {
+                overlay = LayoutInflater.from(this).inflate(R.layout.room_bottom_input, rootView, false);
+            } catch (Exception inflateEx) {
+                Log.e(TAG, "[InputOverlay] inflate room_bottom_input failed", inflateEx);
+                return;
+            }
+
+            // خصائص الـ layout
+            int overlayWidth = FrameLayout.LayoutParams.MATCH_PARENT;
+            int overlayHeight = FrameLayout.LayoutParams.WRAP_CONTENT;
+            FrameLayout.LayoutParams overlayLp = new FrameLayout.LayoutParams(overlayWidth, overlayHeight);
+            overlayLp.gravity = Gravity.BOTTOM;
+            overlay.setLayoutParams(overlayLp);
+            // خلفية شفافة فوق الـ background — تكون فوق الشريط السفلي
+            overlay.setBackgroundColor(0xFF1A1F2A); // مطابقة للسورس: room_f5f5f6 لكن مع خلفية غامقة
+
+            // اربط عناصر الـ overlay
+            EditText etInput = (EditText) overlay.findViewById(getId("etInputMessage"));
+            ImageView emojiBtn = (ImageView) overlay.findViewById(getId("ivEmoji"));
+            ImageView picBtn = (ImageView) overlay.findViewById(getId("ivSendPicture"));
+            ImageView sendBtn = (ImageView) overlay.findViewById(getId("ivSend"));
+
+            // اظهر ivSendPicture (مرئية افتراضياً) وأخفِ ivSend
+            if (picBtn != null) picBtn.setVisibility(View.VISIBLE);
+            if (sendBtn != null) sendBtn.setVisibility(View.GONE);
+
+            // انسخ النص من etMessage إلى etInputMessage
+            if (etMessage != null && etInput != null) {
+                String prevText = etMessage.getText() != null ? etMessage.getText().toString() : "";
+                if (!prevText.isEmpty()) {
+                    etInput.setText(prevText);
+                    etInput.setSelection(prevText.length());
+                }
+            }
+
+            // ركز على etInputMessage لفتح الكيبورد
+            if (etInput != null) {
+                etInput.requestFocus();
+                // افتح الكيبورد
+                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
+                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.showSoftInput(etInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+
+            // TextWatcher على etInputMessage: بدّل ivSendPicture ↔ ivSend حسب فراغ الحقل
+            if (etInput != null) {
+                etInput.addTextChangedListener(new android.text.TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                    @Override
+                    public void afterTextChanged(android.text.Editable s) {
+                        try {
+                            boolean hasText = s != null && s.toString().trim().length() > 0;
+                            if (picBtn != null) picBtn.setVisibility(hasText ? View.GONE : View.VISIBLE);
+                            if (sendBtn != null) sendBtn.setVisibility(hasText ? View.VISIBLE : View.GONE);
+                        } catch (Exception e) {
+                            Log.e(TAG, "[InputOverlay] TextWatcher error", e);
+                        }
+                    }
+                });
+            }
+
+            // ربط ivSend: إرسال الرسالة
+            if (sendBtn != null) {
+                sendBtn.setOnClickListener(v -> {
+                    try {
+                        if (etInput != null) {
+                            String text = etInput.getText() != null ? etInput.getText().toString().trim() : "";
+                            if (!text.isEmpty()) {
+                                // أرسل الرسالة
+                                addChatMessage(new ChatMessage(
+                                    ChatMessage.TYPE_TEXT,
+                                    new RoomUser("me", currentUserName, 0, 1, "member"),
+                                    text, null));
+                                etInput.setText("");
+                                // أخفِ الـ overlay بعد الإرسال
+                                closeInputOverlay();
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "[InputOverlay] send error", e);
+                    }
+                });
+            }
+
+            // ربط ivEmoji: Toast (لم يتم تنفيذ panel حقيقي)
+            if (emojiBtn != null) {
+                emojiBtn.setOnClickListener(v ->
+                    Toast.makeText(this, "😊 الإيموجي", Toast.LENGTH_SHORT).show());
+            }
+
+            // ربط ivSendPicture: Toast
+            if (picBtn != null) {
+                picBtn.setOnClickListener(v ->
+                    Toast.makeText(this, "📷 صورة", Toast.LENGTH_SHORT).show());
+            }
+
+            // أضف الـ overlay إلى content_view
+            rootView.addView(overlay);
+            inputOverlayView = overlay;
+            etInputMessage = etInput;
+            Log.i(TAG, "[InputOverlay] opened");
+
+            // أنميشن بسيط: slide up
+            try {
+                overlay.setTranslationY(200);
+                overlay.animate().translationY(0).setDuration(200).start();
+            } catch (Exception animEx) {
+                Log.e(TAG, "[InputOverlay] anim error", animEx);
+            }
+
+            // استمع لإغلاق الكيبورد (WindowInsets) — عند الإخفاء، أغلق الـ overlay
+            View contentView = findViewById(android.R.id.content);
+            if (contentView != null) {
+                ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
+                    int imeVisible = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+                    int sysBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+                    int bottomInset = Math.max(imeVisible, sysBars);
+                    v.setPadding(0, 0, 0, bottomInset);
+                    // إذا كان الكيبورد مختفياً والـ overlay مفتوح، أغلقه
+                    if (imeVisible == 0 && inputOverlayView != null && inputOverlayView.isShown()) {
+                        closeInputOverlay();
+                    }
+                    return insets;
+                });
+            }
         } catch (Exception e) {
-            Log.e(TAG, "onInputFocused error", e);
+            Log.e(TAG, "[InputOverlay] open error", e);
         }
     }
 
-    /** يُستدعى عند فقدان focus من etMessage: ارجع للحالة A أو B حسب الجلوس على مايك */
-    private void onInputUnfocused() {
+    /** يغلق لوحة الإدخال فوق الكيبورد + ينسخ النص إلى etMessage */
+    private void closeInputOverlay() {
         try {
-            // أخفِ ivEmoji, ivSendPicture, ivSend
-            int emojiId = getId("ivEmoji");
-            if (emojiId != 0) {
-                ImageView ivEmoji = findViewById(emojiId);
-                if (ivEmoji != null) ivEmoji.setVisibility(View.GONE);
+            if (inputOverlayView == null) return;
+
+            // انسخ النص من etInputMessage إلى etMessage
+            if (etInputMessage != null && etMessage != null) {
+                String text = etInputMessage.getText() != null ? etInputMessage.getText().toString() : "";
+                // استخدم hint فقط (etMessage معطّل — فقط لعرض النص)
+                if (text.isEmpty()) {
+                    etMessage.setText("");
+                    etMessage.setHint("قل شيئاً...");
+                } else {
+                    etMessage.setText(text);
+                }
             }
-            if (ivSendPicture != null) ivSendPicture.setVisibility(View.GONE);
-            if (ivSend != null) ivSend.setVisibility(View.GONE);
-            // أعد ivSound + ivMic حسب الجلوس على مايك
-            if (mySeatIndex == -1) {
-                if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
-                if (ivMic != null) ivMic.setVisibility(View.GONE);
-                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
-            } else {
-                if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
-                if (ivMic != null) ivMic.setVisibility(View.VISIBLE);
-                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.VISIBLE);
+
+            // أخفِ الكيبورد
+            if (etInputMessage != null) {
+                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
+                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(etInputMessage.getWindowToken(), 0);
+                }
+                etInputMessage.clearFocus();
             }
-            Log.i(TAG, "[E] onInputUnfocused: ivEmoji+ivSendPicture+ivSend GONE, ivSound VISIBLE, mySeatIndex=" + mySeatIndex);
+
+            // أزل الـ overlay
+            ViewGroup parent = (ViewGroup) inputOverlayView.getParent();
+            if (parent != null) {
+                parent.removeView(inputOverlayView);
+            }
+            inputOverlayView = null;
+            etInputMessage = null;
+            Log.i(TAG, "[InputOverlay] closed");
         } catch (Exception e) {
-            Log.e(TAG, "onInputUnfocused error", e);
+            Log.e(TAG, "[InputOverlay] close error", e);
         }
+    }
+
+    /** يركّز على etInputMessage لفتح الكيبورد (عندما الـ overlay مفتوح) */
+    private void focusInputMessage() {
+        try {
+            if (etInputMessage == null) return;
+            etInputMessage.requestFocus();
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
+                getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(etInputMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[InputOverlay] focus error", e);
+        }
+    }
+
+    /** يُستدعى عند focus على etMessage: مُهمل — استخدم openInputOverlay() بدلاً منه */
+    private void onInputFocused() {
+        // تُستدعى عبر overlay الآن — مُهمل
+    }
+
+    /** يُستدعى عند فقدان focus من etMessage: مُهمل — استخدم closeInputOverlay() بدلاً منه */
+    private void onInputUnfocused() {
+        // تُستدعى عبر overlay الآن — مُهمل
     }
 
     // ============================================
@@ -1482,13 +1523,10 @@ public class RoomActivity extends Activity {
                 return;
             }
         } catch (Exception e) {}
-        // أفرغ focus من etMessage إن كان مُركّزاً
+        // أغلق overlay الإدخال إن كان مفتوحاً
         try {
-            if (etMessage != null && etMessage.hasFocus()) {
-                etMessage.clearFocus();
-                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
-                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+            if (inputOverlayView != null && inputOverlayView.isShown()) {
+                closeInputOverlay();
                 return;
             }
         } catch (Exception e) {}
@@ -1606,17 +1644,25 @@ public class RoomActivity extends Activity {
 
                     if (seat.micEmoji != null && seat.user != null) {
                         // اعرض الإيموجي بدلاً من الصورة الرمزية
+                        // مطابقة للصورة 27: حجم الإيموجي = حجم دائرة المايك (50dp)
+                        // بدون خلفية صفراء — الإيموجي يكون شفافاً فوق دائرة المايك
                         head.setVisibility(View.GONE);
                         if (existingEmoji == null && waveContainer != null) {
                             existingEmoji = new TextView(itemView.getContext());
                             existingEmoji.setTag("mic_emoji_overlay");
+                            // حجم 50dp مطابق لدائرة المايك (mic_head)
+                            int emojiSizePx = (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 50,
+                                itemView.getContext().getResources().getDisplayMetrics());
                             FrameLayout.LayoutParams emojiLp = new FrameLayout.LayoutParams(
-                                FrameLayout.LayoutParams.MATCH_PARENT,
-                                FrameLayout.LayoutParams.MATCH_PARENT);
+                                emojiSizePx, emojiSizePx);
                             emojiLp.gravity = Gravity.CENTER;
                             existingEmoji.setLayoutParams(emojiLp);
                             existingEmoji.setGravity(Gravity.CENTER);
+                            // حجم النص ليملأ 50dp — تقريباً 36sp
                             existingEmoji.setTextSize(36);
+                            // خلفية شفافة (بدون أصفر)
+                            existingEmoji.setBackgroundColor(Color.TRANSPARENT);
                             waveContainer.addView(existingEmoji);
                         }
                         if (existingEmoji != null) {
@@ -1634,12 +1680,8 @@ public class RoomActivity extends Activity {
                                 Log.e(TAG, "[A] emoji anim error", animEx);
                             }
                         }
-                        // اظهر خلفية دائرية
-                        GradientDrawable circle = new GradientDrawable();
-                        circle.setShape(GradientDrawable.OVAL);
-                        circle.setColor(0xFFFFD54F); // أصفر مثل popup
-                        circle.setStroke(2, Color.WHITE);
-                        headBg.setBackground(circle);
+                        // استخدم خلفية دائرة المايك الأصلية (room_icon_mic_head_bg) — بدون أصفر
+                        headBg.setBackgroundResource(R.drawable.room_icon_mic_head_bg);
                         // اظهر اسم المستخدم أسفل (يبقى ظاهراً)
                         name.setText(seat.user.name);
                         // اظهر تاج المالك إن لزم
