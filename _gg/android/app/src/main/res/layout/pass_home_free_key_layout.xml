@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="154.0dip" android:layout_height="129.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="start" android:layout_width="25.0dip" android:layout_height="27.0dip" android:layout_marginTop="60.0dip" app:play_on_attach="true" app:source="pass/pass_task_top_arrow.svga" />
-    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" app:default_static_source="@drawable/pass_top_free_key_ic" app:play_on_attach="true" app:source="pass/pass_task_free_big_key.svga" />
-    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="end" android:layout_width="25.0dip" android:layout_height="27.0dip" android:layout_marginTop="60.0dip" android:rotationY="180.0" app:play_on_attach="true" app:source="pass/pass_task_top_arrow.svga" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="start" android:layout_width="25.0dip" android:layout_height="27.0dip" android:layout_marginTop="60.0dip" app:play_on_attach="true" app:source="pass/pass_task_top_arrow.svga" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" app:default_static_source="@drawable/pass_top_free_key_ic" app:play_on_attach="true" app:source="pass/pass_task_free_big_key.svga" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="end" android:layout_width="25.0dip" android:layout_height="27.0dip" android:layout_marginTop="60.0dip" android:rotationY="180.0" app:play_on_attach="true" app:source="pass/pass_task_top_arrow.svga" />
 </FrameLayout>

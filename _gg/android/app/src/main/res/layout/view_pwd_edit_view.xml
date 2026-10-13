@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.yalla.games.common.view.CustomEditText android:textSize="14.0sp" android:textColorHint="@color/hint_phone" android:gravity="center" android:id="@id/et_cus_login_password" android:background="@drawable/round_editext" android:layout_width="fill_parent" android:layout_height="fill_parent" android:hint="@string/input_the_password" android:inputType="textPassword" android:imeOptions="flagNoExtractUi" android:textCursorDrawable="@drawable/edittext_cursor" android:paddingStart="40.0dip" android:paddingEnd="40.0dip" style="@style/Edit_Input_Text_Color" />
+    <View android:textSize="14.0sp" android:textColorHint="@color/hint_phone" android:gravity="center" android:id="@id/et_cus_login_password" android:background="@drawable/round_editext" android:layout_width="fill_parent" android:layout_height="fill_parent" android:hint="@string/input_the_password" android:inputType="textPassword" android:imeOptions="flagNoExtractUi" android:textCursorDrawable="@drawable/edittext_cursor" android:paddingStart="40.0dip" android:paddingEnd="40.0dip" style="@style/Edit_Input_Text_Color" />
     <ImageView android:layout_gravity="end|center" android:id="@id/ic_open_close" android:layout_width="40.0dip" android:layout_height="fill_parent" android:src="@drawable/login_pwd_close_ice_ic" android:paddingEnd="20.0dip" />
 </merge>

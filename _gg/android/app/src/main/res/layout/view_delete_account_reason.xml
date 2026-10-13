@@ -3,29 +3,29 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <LinearLayout android:layout_gravity="start" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
-            <com.yalla.games.common.view.CustomTextView android:textSize="18.0sp" android:textColor="#ff428371" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/we_re_sorry_to_see_you_leave" android:includeFontPadding="false" android:layout_marginStart="21.0dip" />
-            <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff88a89f" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:text="@string/please_tell_us_why_you_re_leaving" android:layout_marginStart="21.0dip" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="18.0sp" android:textColor="#ff428371" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/we_re_sorry_to_see_you_leave" android:includeFontPadding="false" android:layout_marginStart="21.0dip" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff88a89f" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:text="@string/please_tell_us_why_you_re_leaving" android:layout_marginStart="21.0dip" />
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
                 <ImageView android:id="@id/iv_check_1" android:layout_width="wrap_content" android:layout_height="30.0dip" android:src="@drawable/checklist_select" android:paddingStart="20.0dip" />
-                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_have_a_duplicate_account" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_have_a_duplicate_account" android:layout_marginStart="3.0dip" />
             </LinearLayout>
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
                 <ImageView android:id="@id/iv_check_2" android:layout_width="wrap_content" android:layout_height="30.0dip" android:src="@drawable/checklist_select" android:paddingStart="20.0dip" />
-                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_would_like_to_unbind_my_phone_number" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_would_like_to_unbind_my_phone_number" android:layout_marginStart="3.0dip" />
             </LinearLayout>
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
                 <ImageView android:id="@id/iv_check_3" android:layout_width="wrap_content" android:layout_height="30.0dip" android:src="@drawable/checklist_select" android:paddingStart="20.0dip" />
-                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_m_concerned_about_privacy" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_m_concerned_about_privacy" android:layout_marginStart="3.0dip" />
             </LinearLayout>
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip">
                 <ImageView android:id="@id/iv_check_4" android:layout_width="wrap_content" android:layout_height="30.0dip" android:src="@drawable/checklist_select" android:paddingStart="20.0dip" />
-                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_don_t_find_yalla_ludo_interesting" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/i_don_t_find_yalla_ludo_interesting" android:layout_marginStart="3.0dip" />
             </LinearLayout>
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip">
                 <ImageView android:id="@id/iv_check_5" android:layout_width="wrap_content" android:layout_height="30.0dip" android:src="@drawable/checklist_select" android:paddingStart="20.0dip" />
-                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/others" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/others" android:layout_marginStart="3.0dip" />
             </LinearLayout>
         </LinearLayout>
-        <com.yalla.game.base.view.StrokeButton android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_continue" android:background="@drawable/bn_yes_big" android:layout_width="190.0dip" android:layout_height="56.0dip" android:layout_marginTop="51.0dip" android:layout_marginBottom="20.0dip" android:text="@string/sure_delete" style="@style/StrokeTextStyle_Yes" />
+        <com.bengharbios.ggames.view.StrokeButton android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_continue" android:background="@drawable/bn_yes_big" android:layout_width="190.0dip" android:layout_height="56.0dip" android:layout_marginTop="51.0dip" android:layout_marginBottom="20.0dip" android:text="@string/sure_delete" style="@style/StrokeTextStyle_Yes" />
     </LinearLayout>
 </merge>

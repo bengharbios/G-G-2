@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yalla.games.common.view.TouchListenRelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
+<View android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout android:id="@id/rl_content" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <ImageView android:id="@id/bg_chat" android:background="#ff175946" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="54.0dip" />
-        <com.yalla.games.common.view.TouchListenRelativeLayout android:orientation="vertical" android:id="@id/content_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <View android:orientation="vertical" android:id="@id/content_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
             <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="63.0dip">
-                <com.yalla.games.common.view.HeadView android:id="@id/iv_head_view" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="4.0dip" />
+                <View android:id="@id/iv_head_view" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="4.0dip" />
                 <ImageView android:id="@id/iv_close" android:paddingTop="15.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/skin_close" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
                 <ImageView android:id="@id/iv_divider" android:layout_width="2.0dip" android:layout_height="31.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/line_divider" android:layout_toStartOf="@id/iv_close" />
                 <ImageView android:id="@id/iv_option" android:layout_width="wrap_content" android:layout_height="53.0dip" android:src="@drawable/user_option" android:layout_marginEnd="10.0dip" android:layout_toStartOf="@id/iv_divider" />
                 <ImageView android:id="@id/chat_iv_dot" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:src="@drawable/reddot" android:layout_alignRight="@id/iv_option" />
                 <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/ll_name" android:layout_width="200.0dip" android:layout_height="54.0dip" android:layout_marginEnd="10.0dip" android:layout_toEndOf="@id/iv_head_view">
                     <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                        <com.yalla.games.common.view.LoopGradientTextView android:textSize="14.0sp" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="center_vertical" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1.0" android:layout_marginStart="4.0dip" />
+                        <View android:textSize="14.0sp" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="center_vertical" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1.0" android:layout_marginStart="4.0dip" />
                         <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="2.0dip">
-                            <com.yalla.games.common.view.PrivilegeFlagView android:layout_gravity="center" android:id="@id/vip_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                            <View android:layout_gravity="center" android:id="@id/vip_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" />
                         </FrameLayout>
                     </LinearLayout>
-                    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_nameplate" android:visibility="gone" android:layout_width="75.0dip" android:layout_height="17.0dip" android:layout_marginTop="2.0dip" />
+                    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_nameplate" android:visibility="gone" android:layout_width="75.0dip" android:layout_height="17.0dip" android:layout_marginTop="2.0dip" />
                 </LinearLayout>
             </RelativeLayout>
-            <com.yalla.games.friends.view.chat.ChatBottomView android:id="@id/bottom_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
+            <View.friends.view.chat.ChatBottomView android:id="@id/bottom_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
             <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_chat_tip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="-10.0dip" android:layout_above="@id/bottom_view" android:layout_below="@id/rl_title">
                 <RelativeLayout android:layout_gravity="center_horizontal" android:id="@id/rl_disturb" android:background="@drawable/bg_chat_disturb" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="350.0dip" android:layout_height="wrap_content">
-                    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff82b4ac" android:id="@id/tv_disturb_tips" android:layout_width="300.0dip" android:layout_height="wrap_content" android:text="@string/disturb_notice" android:layout_centerVertical="true" android:layout_marginStart="12.0dip" android:layout_alignParentStart="true" />
+                    <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff82b4ac" android:id="@id/tv_disturb_tips" android:layout_width="300.0dip" android:layout_height="wrap_content" android:text="@string/disturb_notice" android:layout_centerVertical="true" android:layout_marginStart="12.0dip" android:layout_alignParentStart="true" />
                     <ImageView android:layout_width="11.0dip" android:layout_height="16.0dip" android:src="@drawable/bg_chat_tips_arrow" android:layout_centerVertical="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" />
                 </RelativeLayout>
-                <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="#ff5a9e8a" android:gravity="center" android:id="@id/tv_enter_room" android:background="@drawable/bg_chat_enter_room" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="28.0dip" android:text="@string/i_am_playing_in_this_room" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0dip" android:textColor="#ff5a9e8a" android:gravity="center" android:id="@id/tv_enter_room" android:background="@drawable/bg_chat_enter_room" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="28.0dip" android:text="@string/i_am_playing_in_this_room" />
                 <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smart_refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" app:srlAccentColor="@color/blue_cursor" app:srlPrimaryColor="@color/black_20">
                     <androidx.recyclerview.widget.RecyclerView android:id="@id/chat_recycle_view" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="5.0dip" android:overScrollMode="never" />
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
             </LinearLayout>
-        </com.yalla.games.common.view.TouchListenRelativeLayout>
+        </View>
     </RelativeLayout>
     <include android:id="@id/guide_chat" android:visibility="gone" layout="@layout/chat_fragment_guide_anim_layout" />
-</com.yalla.games.common.view.TouchListenRelativeLayout>
+</View>

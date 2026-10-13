@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:layout_gravity="center" android:id="@id/blindBoxGiftBg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_blind_box_small_gift_bg" />
     <ImageView android:layout_gravity="center" android:id="@id/blindBoxGiftIcon" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/gift_default" />
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:layout_gravity="bottom|center" android:id="@id/blindBoxGiftCount" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="@color/room_color_804B22" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:layout_gravity="bottom|center" android:id="@id/blindBoxGiftCount" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="@color/room_color_804B22" app:stroke_width="1.0dip" />
 </merge>

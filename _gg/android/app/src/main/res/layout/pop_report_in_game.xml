@@ -2,7 +2,7 @@
 <FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_bg" android:background="@drawable/report_layout_bg" android:layout_width="132.0dip" android:layout_height="wrap_content">
-        <com.yalla.game.base.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_report" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="5.0dip" android:text="@string/report_name" />
-        <com.yalla.game.base.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_mute" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="9.0dip" android:layout_marginBottom="5.0dip" />
+        <com.bengharbios.ggames.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_report" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="5.0dip" android:text="@string/report_name" />
+        <com.bengharbios.ggames.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_mute" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="9.0dip" android:layout_marginBottom="5.0dip" />
     </LinearLayout>
 </FrameLayout>

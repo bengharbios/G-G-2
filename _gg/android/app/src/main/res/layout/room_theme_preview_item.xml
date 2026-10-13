@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.yalla.ludochat.view.RoundImageView android:id="@id/ivPre" android:layout_width="246.0dip" android:layout_height="434.0dip" android:scaleType="centerCrop" app:cornerRadius="10.0dip" />
-    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/ivPreviewThemeLabel" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="30.0dip" app:clearsAfterStop="false" app:play_on_attach="true" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tvActivityThemeName" android:background="@drawable/room_activity_name_bg_shape" android:visibility="gone" android:layout_width="120.0dip" android:layout_height="25.0dip" android:layout_marginBottom="30.0dip" />
+    <com.bengharbios.ggames.view.RoundImageView android:id="@id/ivPre" android:layout_width="246.0dip" android:layout_height="434.0dip" android:scaleType="centerCrop" app:cornerRadius="10.0dip" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/ivPreviewThemeLabel" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="30.0dip" app:clearsAfterStop="false" app:play_on_attach="true" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tvActivityThemeName" android:background="@drawable/room_activity_name_bg_shape" android:visibility="gone" android:layout_width="120.0dip" android:layout_height="25.0dip" android:layout_marginBottom="30.0dip" />
 </FrameLayout>

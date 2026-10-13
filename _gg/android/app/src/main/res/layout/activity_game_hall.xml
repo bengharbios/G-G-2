@@ -4,16 +4,16 @@
     <FrameLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:orientation="vertical" android:id="@id/ll_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true">
             <FrameLayout android:id="@id/fl_main_header" android:background="@drawable/friends_titlebg" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <com.yalla.yallagames.main.MainHeaderView android:id="@id/main_header" android:layout_width="fill_parent" android:layout_height="51.0dip" />
+                <View.main.MainHeaderView android:id="@id/main_header" android:layout_width="fill_parent" android:layout_height="51.0dip" />
             </FrameLayout>
-            <com.yalla.yallagames.main.MainRtlViewPager android:id="@id/viewPager" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+            <View.main.MainRtlViewPager android:id="@id/viewPager" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
             <include android:id="@id/game_hall_bottom" android:layout_width="fill_parent" android:layout_height="75.0dip" layout="@layout/table_game_hall" />
         </LinearLayout>
     </FrameLayout>
-    <com.yalla.games.common.view.CoverView android:id="@id/ff_cover" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="bottom|center|left" android:id="@id/iv_chat_finger" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginBottom="25.0dip" android:src="@drawable/finger" android:rotation="-110.0" android:layout_marginEnd="72.0dip" />
+    <View android:id="@id/ff_cover" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="bottom|center|left" android:id="@id/iv_chat_finger" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginBottom="25.0dip" android:src="@drawable/finger" android:rotation="-110.0" android:layout_marginEnd="72.0dip" />
     <FrameLayout android:id="@id/fl_guide" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textColor="#ff9b9b9b" android:gravity="center" android:layout_gravity="right" android:id="@id/tv_skip" android:background="@drawable/skip_tutorial" android:paddingLeft="7.0dip" android:visibility="gone" android:layout_width="89.0dip" android:layout_height="28.0dip" android:layout_marginTop="16.0dip" android:text="@string/skip_tutorial" android:includeFontPadding="false" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0sp" android:textColor="#ff9b9b9b" android:gravity="center" android:layout_gravity="right" android:id="@id/tv_skip" android:background="@drawable/skip_tutorial" android:paddingLeft="7.0dip" android:visibility="gone" android:layout_width="89.0dip" android:layout_height="28.0dip" android:layout_marginTop="16.0dip" android:text="@string/skip_tutorial" android:includeFontPadding="false" />
         <include android:id="@id/guide_battle" android:visibility="gone" layout="@layout/guide_anim_layout" />
     </FrameLayout>
 </FrameLayout>

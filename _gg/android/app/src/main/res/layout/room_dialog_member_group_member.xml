@@ -12,5 +12,5 @@
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager2.widget.ViewPager2 android:id="@id/viewPager2" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <androidx.constraintlayout.widget.Group android:id="@id/contentGroup" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" app:constraint_referenced_ids="aplMemberGroup,viewPager2" />
-    <com.yalla.ludochat.view.adapter.PageStatusView android:id="@id/pageStateView" android:background="@color/room_color_0E2035" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View.PageStatusView android:id="@id/pageStateView" android:background="@color/room_color_0E2035" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

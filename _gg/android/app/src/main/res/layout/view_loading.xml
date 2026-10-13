@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/sv_loading" android:layout_width="140.0dip" android:layout_height="140.0dip" android:scaleType="fitCenter" app:default_static_source="@drawable/loading_horse" app:play_on_attach="true" app:source="loading.svga" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/in_the_load" />
+    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/sv_loading" android:layout_width="140.0dip" android:layout_height="140.0dip" android:scaleType="fitCenter" app:default_static_source="@drawable/loading_horse" app:play_on_attach="true" app:source="loading.svga" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/in_the_load" />
 </merge>

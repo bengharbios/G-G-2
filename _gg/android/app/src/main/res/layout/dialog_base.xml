@@ -5,8 +5,8 @@
         <ImageView android:id="@id/iv_return" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/btn_return" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="38.0dip">
             <ImageView android:id="@id/iv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="2.0dip" />
-            <com.yalla.games.common.view.CustomTextView android:textSize="21.0dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:singleLine="true" android:includeFontPadding="false" />
-            <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_title_right" android:visibility="gone" android:layout_width="52.0dip" android:layout_height="wrap_content" android:includeFontPadding="false" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="21.0dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:singleLine="true" android:includeFontPadding="false" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_title_right" android:visibility="gone" android:layout_width="52.0dip" android:layout_height="wrap_content" android:includeFontPadding="false" />
         </LinearLayout>
         <ImageView android:id="@id/iv_dialog_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/close_click" android:layout_centerVertical="true" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>

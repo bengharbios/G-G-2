@@ -13,7 +13,7 @@
                 <ImageView android:id="@id/iv_rule" android:layout_width="25.0dip" android:layout_height="24.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="3.0dip" android:src="@drawable/royal_store_rule" android:layout_marginStart="10.0dip" android:layout_marginEnd="8.0dip" />
             </FrameLayout>
             <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_centerHorizontal="true">
-                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/ctv_coin" android:background="@drawable/royal_store_top_bar_coin_num" android:layout_width="wrap_content" android:layout_height="24.0dip" android:layout_marginTop="5.0dip" android:minWidth="90.0dip" android:paddingStart="30.0dip" android:layout_marginStart="2.0dip" />
+                <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/ctv_coin" android:background="@drawable/royal_store_top_bar_coin_num" android:layout_width="wrap_content" android:layout_height="24.0dip" android:layout_marginTop="5.0dip" android:minWidth="90.0dip" android:paddingStart="30.0dip" android:layout_marginStart="2.0dip" />
                 <ImageView android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/royal_store_coin_ic" />
             </FrameLayout>
             <FrameLayout android:id="@id/fl_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true">

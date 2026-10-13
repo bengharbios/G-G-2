@@ -3,8 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:layout_gravity="center_horizontal" android:background="@drawable/room_card_tray" android:layout_width="360.0dip" android:layout_height="24.0dip" android:layout_marginTop="172.0dip" />
     <LinearLayout android:layout_gravity="center" android:orientation="horizontal" android:layout_width="326.0dip" android:layout_height="170.0dip" android:layout_marginStart="17.0dip" android:layout_marginEnd="17.0dip">
-        <com.yalla.ludochat.view.ThemeItemView android:gravity="center" android:id="@id/theme1" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginEnd="3.0dip" />
-        <com.yalla.ludochat.view.ThemeItemView android:gravity="center" android:id="@id/theme2" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip" />
-        <com.yalla.ludochat.view.ThemeItemView android:gravity="center" android:id="@id/theme3" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="3.0dip" />
+        <View android:gravity="center" android:id="@id/theme1" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginEnd="3.0dip" />
+        <View android:gravity="center" android:id="@id/theme2" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip" />
+        <View android:gravity="center" android:id="@id/theme3" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="3.0dip" />
     </LinearLayout>
 </FrameLayout>

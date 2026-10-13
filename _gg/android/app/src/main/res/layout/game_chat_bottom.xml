@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.yalla.games.view.GameChatInputView android:id="@id/chat_input" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <com.yalla.games.view.GameEmojiSelectView android:id="@id/chat_select_emoji" android:background="#ffffffff" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+    <View.view.GameChatInputView android:id="@id/chat_input" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <View.view.GameEmojiSelectView android:id="@id/chat_select_emoji" android:background="#ffffffff" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" />
 </LinearLayout>

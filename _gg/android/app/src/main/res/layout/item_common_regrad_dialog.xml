@@ -4,9 +4,9 @@
     <RelativeLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginRight="3.0dip" android:layout_marginBottom="1.0dip">
         <FrameLayout android:id="@id/rl_bg" android:background="@drawable/common_regard_bubble_ic" android:layout_width="57.0dip" android:layout_height="58.0dip" android:layout_marginTop="9.0dip">
             <ImageView android:layout_gravity="center" android:id="@id/iv_icon" android:layout_width="40.0dip" android:layout_height="36.0dip" />
-            <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="36.0dip" />
+            <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="36.0dip" />
         </FrameLayout>
-        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@android:color/white" android:id="@id/stv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+40050" android:layout_below="@id/rl_bg" android:layout_centerHorizontal="true" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="16.0sp" android:textColor="@android:color/white" android:id="@id/stv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+40050" android:layout_below="@id/rl_bg" android:layout_centerHorizontal="true" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
         <ImageView android:id="@id/iv_reward_tag" android:visibility="invisible" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginStart="2.0dip" />
     </RelativeLayout>
 </FrameLayout>

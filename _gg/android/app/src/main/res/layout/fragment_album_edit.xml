@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <include layout="@layout/include_album_edit_title" />
     <com.common.support.imagepicker.mediaedit.widget.MediaEditLayout android:id="@id/layout_media_edit" android:background="#ffe0f9f3" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-8.0dip" android:layout_below="@id/include_title_layout_title" android:layoutDirection="ltr">
-        <com.yalla.games.common.album.view.MediaCropLayout android:id="@id/layout_media_crop" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <View.MediaCropLayout android:id="@id/layout_media_crop" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     </com.common.support.imagepicker.mediaedit.widget.MediaEditLayout>
 </RelativeLayout>

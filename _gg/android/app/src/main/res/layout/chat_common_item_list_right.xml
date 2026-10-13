@@ -4,15 +4,15 @@
     <TextView android:textSize="10.0sp" android:textColor="#ffb6dcd2" android:layout_gravity="center_horizontal" android:id="@id/tv_date" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
         <RelativeLayout android:layout_gravity="end" android:id="@id/rl_msg_main" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
-            <com.yalla.games.common.view.HeadView android:id="@id/iv_head_view" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_alignParentEnd="true" />
-            <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="#ff626262" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:layout_alignTop="@id/iv_head_view" android:textDirection="locale" android:layout_toStartOf="@id/iv_head_view" />
+            <View android:id="@id/iv_head_view" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_alignParentEnd="true" />
+            <com.bengharbios.ggames.view.StrokeTextView android:textSize="11.0sp" android:textColor="#ff626262" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:layout_alignTop="@id/iv_head_view" android:textDirection="locale" android:layout_toStartOf="@id/iv_head_view" />
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="3.0dip" android:layout_below="@id/tv_name" android:layout_toStartOf="@id/iv_head_view">
                 <ImageView android:id="@id/iv_status" android:focusable="false" android:visibility="invisible" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_marginEnd="3.0dip" />
                 <FrameLayout android:id="@id/fl_extra" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <com.yalla.games.common.view.TouchListenFrameLayout android:id="@id/content" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <View android:id="@id/content" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
         </RelativeLayout>
         <View android:id="@id/view_location_tip" android:background="@color/black_80" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignTop="@id/rl_msg_main" android:layout_alignBottom="@id/rl_msg_main" android:alpha="0.0" />
     </RelativeLayout>
-    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff588d7f" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_tips" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" android:text="@string/chat_safty_tips" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff588d7f" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_tips" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" android:text="@string/chat_safty_tips" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
 </LinearLayout>

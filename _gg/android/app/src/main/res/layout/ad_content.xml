@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/web_content" android:visibility="invisible" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.yalla.games.common.view.LoadingView android:id="@id/svg_loading" android:background="@color/black_80" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <View android:id="@id/web_content" android:visibility="invisible" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View android:id="@id/svg_loading" android:background="@color/black_80" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
     <ImageView android:id="@id/iv_close" android:background="@color/transparent_1" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginTop="13.0dip" android:src="@drawable/ad_close" android:layout_marginEnd="14.0dip" android:layout_alignParentEnd="true" />
 </RelativeLayout>

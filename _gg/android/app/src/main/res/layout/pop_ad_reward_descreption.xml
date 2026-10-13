@@ -2,5 +2,5 @@
 <FrameLayout android:background="@drawable/bg_ad_reward_description" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:layout_gravity="center" android:id="@id/iv_preview" android:layout_width="30.0dip" android:layout_height="30.0dip" />
-    <com.yalla.game.base.view.StrokeTextView android:textSize="10.0dip" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_tips" android:layout_width="95.0dip" android:layout_height="21.0dip" app:autoSizeMaxTextSize="10.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0dip" app:autoSizeTextType="uniform" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="10.0dip" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_tips" android:layout_width="95.0dip" android:layout_height="21.0dip" app:autoSizeMaxTextSize="10.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0dip" app:autoSizeTextType="uniform" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
 </FrameLayout>

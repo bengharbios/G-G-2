@@ -2,5 +2,5 @@
 <merge
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:id="@id/iv_star" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginBottom="4.0dip" android:src="@drawable/shared_top_star_icon" android:layout_marginEnd="4.0dip" />
-    <com.yalla.game.base.view.StrokeTextView android:textSize="24.0sp" android:textColor="#ffffffff" android:id="@id/tv_star_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="-4.0dip" android:layout_marginBottom="-2.0dip" android:layout_alignRight="@id/iv_star" android:layout_alignBottom="@id/iv_star" android:textDirection="ltr" app:stroke_color="#ff85350a" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="24.0sp" android:textColor="#ffffffff" android:id="@id/tv_star_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="-4.0dip" android:layout_marginBottom="-2.0dip" android:layout_alignRight="@id/iv_star" android:layout_alignBottom="@id/iv_star" android:textDirection="ltr" app:stroke_color="#ff85350a" app:stroke_width="1.0dip" />
 </merge>

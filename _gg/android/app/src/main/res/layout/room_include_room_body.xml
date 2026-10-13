@@ -5,7 +5,7 @@
     <include android:layout_gravity="end|bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="36.0dip" layout="@layout/room_include_room_body_sidebar" />
     <ViewStub android:layout_gravity="bottom" android:id="@id/vsMagicCardAnim" android:visibility="gone" android:layout="@layout/room_magic_card_runaway_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" />
     <include android:layout_gravity="start|bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12.0dip" layout="@layout/room_dialog_new_message_layout" />
-    <com.yalla.ludochat.view.ReturnRoomView android:layout_gravity="start|bottom|center" android:id="@id/returnRoomView" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" />
-    <com.yalla.ludochat.view.GrowthBonusTipView android:layout_gravity="start|bottom|center" android:id="@id/growthBonusTipView" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_marginStart="15.0dip" />
+    <View android:layout_gravity="start|bottom|center" android:id="@id/returnRoomView" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" />
+    <View android:layout_gravity="start|bottom|center" android:id="@id/growthBonusTipView" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_marginStart="15.0dip" />
     <View android:id="@id/vInputMask" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </FrameLayout>

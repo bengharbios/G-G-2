@@ -6,8 +6,8 @@
         <LinearLayout android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
             <ImageView android:id="@id/iv_royal_level_change" android:layout_width="30.0dip" android:layout_height="23.0dip" />
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <com.yalla.game.base.view.StrokeTextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="@android:color/transparent" android:gravity="center_vertical" android:id="@id/ctv_current_level_shadow" android:layout_width="wrap_content" android:layout_height="23.0dip" android:shadowColor="@color/black_50" android:shadowDy="4.0" android:shadowRadius="2.0" android:layout_marginStart="3.0dip" />
-                <com.yalla.game.base.view.StrokeTextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="#ffffb310" android:gravity="center_vertical" android:id="@id/ctv_current_level" android:layout_width="wrap_content" android:layout_height="23.0dip" android:layout_marginStart="3.0dip" app:end_color="#ffffc000" app:gradient="true" app:start_color="#ffffff75" />
+                <com.bengharbios.ggames.view.StrokeTextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="@android:color/transparent" android:gravity="center_vertical" android:id="@id/ctv_current_level_shadow" android:layout_width="wrap_content" android:layout_height="23.0dip" android:shadowColor="@color/black_50" android:shadowDy="4.0" android:shadowRadius="2.0" android:layout_marginStart="3.0dip" />
+                <com.bengharbios.ggames.view.StrokeTextView android:textSize="17.0sp" android:textStyle="bold" android:textColor="#ffffb310" android:gravity="center_vertical" android:id="@id/ctv_current_level" android:layout_width="wrap_content" android:layout_height="23.0dip" android:layout_marginStart="3.0dip" app:end_color="#ffffc000" app:gradient="true" app:start_color="#ffffff75" />
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>

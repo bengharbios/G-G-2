@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <View android:background="@drawable/royal_store_hot_item_bar" android:layout_width="fill_parent" android:layout_height="77.0dip" android:layout_marginTop="110.0dip" android:layout_marginStart="-10.0dip" android:layout_marginEnd="-10.0dip" />
     <ImageView android:layout_gravity="center_horizontal" android:layout_width="107.0dip" android:layout_height="107.0dip" android:src="@drawable/royal_store_empty_item_ic" />
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="125.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="125.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
 </FrameLayout>

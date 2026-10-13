@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:padding="1.0dip" android:layout_width="106.0dip" android:layout_height="106.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.yalla.ludochat.view.RoundImageView android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="#ff0f1e24" app:borderColor="#12ffffff" app:borderWidth="1.0dip" app:cornerRadius="8.0dip" />
+    <com.bengharbios.ggames.view.RoundImageView android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="#ff0f1e24" app:borderColor="#12ffffff" app:borderWidth="1.0dip" app:cornerRadius="8.0dip" />
     <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
         <ProgressBar android:layout_gravity="center" android:id="@id/pb_load" android:layout_width="23.0dip" android:layout_height="23.0dip" android:indeterminateDrawable="@drawable/room_gif_load_animal" android:indeterminateDuration="500" android:indeterminateBehavior="repeat" app:layout_constraintStart_toStartOf="parent" />
-        <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/ludoSVGAView" android:layout_width="77.0dip" android:layout_height="77.0dip" app:cornerRadius="8.0dip" />
+        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/ludoSVGAView" android:layout_width="77.0dip" android:layout_height="77.0dip" app:cornerRadius="8.0dip" />
     </FrameLayout>
 </FrameLayout>

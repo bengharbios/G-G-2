@@ -6,7 +6,7 @@
         <ViewStub android:id="@id/vsTopMessage" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_include_room_body_top_msg_item" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </FrameLayout>
     <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/enterCarSvga" android:layout_width="fill_parent" android:layout_height="245.0dip" android:layout_marginTop="35.0dip" />
+        <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/enterCarSvga" android:layout_width="fill_parent" android:layout_height="245.0dip" android:layout_marginTop="35.0dip" />
         <LinearLayout android:orientation="vertical" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="180.0dip">
             <ViewStub android:id="@id/vsEnterRunaway" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_include_room_body_float_item2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="50.0dip" />
             <ViewStub android:id="@id/vsGiftAnim" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_layout_gift_run_away" android:layout_width="fill_parent" android:layout_height="wrap_content" />

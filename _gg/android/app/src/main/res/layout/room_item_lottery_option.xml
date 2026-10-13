@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="33.0dip" android:layout_marginTop="10.0dip" android:layout_marginEnd="24.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.yalla.games.common.view.AutoMirrorImageView android:id="@id/imageView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/room_lottery_arrow_icon" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#fffee8e4" android:gravity="center_vertical" android:id="@id/tvContent" android:background="@drawable/room_lottery_option_nomal_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="8.0dip" android:layout_marginStart="4.0dip" />
+    <View android:id="@id/imageView" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/room_lottery_arrow_icon" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#fffee8e4" android:gravity="center_vertical" android:id="@id/tvContent" android:background="@drawable/room_lottery_option_nomal_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="8.0dip" android:layout_marginStart="4.0dip" />
 </LinearLayout>

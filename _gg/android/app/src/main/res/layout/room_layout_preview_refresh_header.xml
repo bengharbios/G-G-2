@@ -2,5 +2,5 @@
 <merge android:gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ProgressBar android:layout_gravity="center" android:id="@id/head_loading" android:layout_width="21.0dip" android:layout_height="21.0dip" android:indeterminateDrawable="@drawable/progress_loading_anim" android:indeterminateBehavior="repeat" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="17.0dip" android:textStyle="bold" android:textColor="#b2ffffff" android:id="@id/tv_refresh_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:layout_marginStart="25.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0dip" android:textStyle="bold" android:textColor="#b2ffffff" android:id="@id/tv_refresh_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:layout_marginStart="25.0dip" />
 </merge>

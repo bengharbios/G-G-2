@@ -4,8 +4,8 @@
     <FrameLayout android:id="@id/fl_content" android:background="@drawable/regression_wecome_reward_item" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_centerHorizontal="true">
         <ImageView android:layout_gravity="center" android:id="@id/iv_net_icon" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="34.0dip" />
         <ImageView android:layout_gravity="center" android:id="@id/iv_local_icon" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="30.0dip" />
-        <com.yalla.games.common.view.HeadFrameView android:layout_gravity="center" android:id="@id/chest_iv_frame_elite" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" />
-        <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/iv_elite_svga_icon" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" app:play_on_attach="true" />
+        <View android:layout_gravity="center" android:id="@id/chest_iv_frame_elite" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" />
+        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/iv_elite_svga_icon" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" app:play_on_attach="true" />
     </FrameLayout>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#fffffd56" android:gravity="center" android:id="@id/stv_num" android:layout_width="65.0dip" android:layout_height="wrap_content" android:lines="1" android:layout_below="@id/fl_content" android:layout_centerHorizontal="true" app:stroke_color="@color/black_50" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#fffffd56" android:gravity="center" android:id="@id/stv_num" android:layout_width="65.0dip" android:layout_height="wrap_content" android:lines="1" android:layout_below="@id/fl_content" android:layout_centerHorizontal="true" app:stroke_color="@color/black_50" app:stroke_width="1.0dip" />
 </RelativeLayout>

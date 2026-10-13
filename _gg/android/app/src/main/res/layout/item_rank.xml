@@ -3,25 +3,25 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:id="@id/ff_rank" android:layout_width="47.0dip" android:layout_height="fill_parent" android:layout_marginStart="0.5dip">
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_rank" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/rank_no_1" />
-        <com.yalla.game.base.view.StrokeTextView android:textSize="18.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_rank" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="18.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_rank" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.8000001dip" />
     </FrameLayout>
-    <com.yalla.games.common.view.HeadView android:id="@id/iv_head" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_toRightOf="@id/ff_rank" android:layout_centerVertical="true" android:layout_marginStart="3.0dip" android:layout_toEndOf="@id/ff_rank" />
+    <View android:id="@id/iv_head" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_toRightOf="@id/ff_rank" android:layout_centerVertical="true" android:layout_marginStart="3.0dip" android:layout_toEndOf="@id/ff_rank" />
     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_coin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="3.0dip" android:layout_alignParentEnd="true">
         <ImageView android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/coin" />
-        <com.yalla.game.base.view.StrokeTextView android:textSize="13.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:id="@id/tv_earning" android:layout_width="45.0dip" android:layout_height="wrap_content" android:lines="1" app:stroke_color="#ff0e6349" app:stroke_width="1.0dip" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="13.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:id="@id/tv_earning" android:layout_width="45.0dip" android:layout_height="wrap_content" android:lines="1" app:stroke_color="#ff0e6349" app:stroke_width="1.0dip" />
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_centerVertical="true" android:layout_marginStart="5.0dip" android:layout_toStartOf="@id/ll_coin" android:layout_toEndOf="@id/iv_head">
         <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_name" android:layout_width="wrap_content" android:layout_height="25.0dip">
             <ImageView android:id="@id/iv_country" android:layout_width="16.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:scaleType="fitXY" />
-            <com.yalla.games.common.view.LoopGradientTextView android:textSize="12.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="start|center" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:includeFontPadding="false" android:layout_weight="1.0" android:layout_marginStart="3.0dip" />
-            <com.yalla.games.common.view.PrivilegeFlagView android:id="@id/vip_flag" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <View android:textSize="12.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="start|center" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:includeFontPadding="false" android:layout_weight="1.0" android:layout_marginStart="3.0dip" />
+            <View android:id="@id/vip_flag" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout android:layout_gravity="start|center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="21.0dip">
             <FrameLayout android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <com.yalla.games.common.view.LeagueView android:id="@id/iv_league_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bronze_cup_name" android:scaleType="fitStart" />
+                <View android:id="@id/iv_league_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bronze_cup_name" android:scaleType="fitStart" />
             </FrameLayout>
-            <com.yalla.games.common.view.BadgeView android:layout_gravity="center_vertical" android:id="@id/view_badge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+            <View android:layout_gravity="center_vertical" android:id="@id/view_badge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

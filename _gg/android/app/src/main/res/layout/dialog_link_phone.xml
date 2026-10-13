@@ -2,9 +2,9 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="321.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <com.yalla.yallagames.ui.dialog.linkaccount.LinkedAccountInfoView android:id="@id/linked_account_info_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <com.yalla.yallagames.ui.dialog.linkaccount.LinkAccountView android:id="@id/link_account_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <com.yalla.yallagames.ui.dialog.linkaccount.LinkAccountPasswordView android:id="@id/set_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <com.yalla.yallagames.ui.view.CommonCountrySelectView android:id="@id/area_select_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View.ui.dialog.linkaccount.LinkedAccountInfoView android:id="@id/linked_account_info_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View.ui.dialog.linkaccount.LinkAccountView android:id="@id/link_account_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View.ui.dialog.linkaccount.LinkAccountPasswordView android:id="@id/set_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View.ui.view.CommonCountrySelectView android:id="@id/area_select_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </FrameLayout>
 </LinearLayout>

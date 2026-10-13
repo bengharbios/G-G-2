@@ -2,5 +2,5 @@
 <merge android:id="@id/rl_task" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_shop" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" />
-    <com.yalla.games.common.view.LoadingView android:layout_gravity="center" android:id="@id/iv_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <View android:layout_gravity="center" android:id="@id/iv_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </merge>

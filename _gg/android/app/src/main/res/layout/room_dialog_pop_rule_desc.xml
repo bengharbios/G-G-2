@@ -2,5 +2,5 @@
 <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="200.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:id="@id/ivPopRuleAngle" android:layout_width="11.0dip" android:layout_height="11.0dip" android:src="@drawable/room_gift_record_rule_bg" android:layout_below="@id/tvPopRuleDesc" android:layout_marginStart="10.0dip" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tvPopRuleDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="30.0dip" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tvPopRuleDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="30.0dip" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" />
 </RelativeLayout>

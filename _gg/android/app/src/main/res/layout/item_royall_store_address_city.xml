@@ -2,6 +2,6 @@
 <FrameLayout android:gravity="center" android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="19.0dip" android:layout_marginTop="7.0dip" android:layout_marginBottom="6.0dip">
-        <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff458371" android:gravity="start|center" android:id="@id/ctv_city" android:layout_width="fill_parent" android:layout_height="19.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:autoSizeMaxTextSize="14.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff458371" android:gravity="start|center" android:id="@id/ctv_city" android:layout_width="fill_parent" android:layout_height="19.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:autoSizeMaxTextSize="14.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
     </LinearLayout>
 </FrameLayout>

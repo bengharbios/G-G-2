@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="15.0dip">
         <FrameLayout android:layout_width="200.0dip" android:layout_height="wrap_content">
-            <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff428371" android:ellipsize="end" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" />
+            <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff428371" android:ellipsize="end" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" />
         </FrameLayout>
-        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff88a89f" android:id="@id/tv_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff88a89f" android:id="@id/tv_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" />
     </LinearLayout>
     <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true">
-        <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff00a8ff" android:layout_gravity="center_vertical" android:id="@id/tv_diamonds_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layoutDirection="ltr" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff00a8ff" android:layout_gravity="center_vertical" android:id="@id/tv_diamonds_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layoutDirection="ltr" />
         <ImageView android:id="@id/iv_business_icon" android:layout_width="15.0dip" android:layout_height="17.0dip" android:src="@drawable/diamonds" android:layout_marginStart="2.0dip" />
     </LinearLayout>
 </RelativeLayout>

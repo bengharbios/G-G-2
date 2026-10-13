@@ -3,26 +3,26 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_common_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
         <ImageView android:id="@id/iv_item_src" android:visibility="gone" android:layout_width="61.0dip" android:layout_height="61.0dip" android:src="@drawable/re_diamonds" />
-        <com.yalla.game.base.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_item_descr" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_item_descr" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
     </LinearLayout>
     <RelativeLayout android:gravity="center_horizontal" android:id="@id/rl_head_frame" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:id="@id/head_bg" android:background="@drawable/common_regard_bubble_ic" android:layout_width="61.0dip" android:layout_height="61.0dip" android:layout_centerHorizontal="true" />
-        <com.yalla.games.common.view.HeadFrameView android:id="@id/head_frame" android:visibility="visible" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true" />
-        <com.yalla.game.base.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_frame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:layout_below="@id/head_bg" android:layout_centerHorizontal="true" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
+        <View android:id="@id/head_frame" android:visibility="visible" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_frame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:layout_below="@id/head_bg" android:layout_centerHorizontal="true" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
         <ImageView android:id="@id/iv_reward_tag" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/common_regard_head_tag_ic" android:layout_marginEnd="48.0dip" />
     </RelativeLayout>
     <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_medal" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <RelativeLayout android:background="@drawable/common_regard_bubble_3" android:layout_width="61.0dip" android:layout_height="61.0dip">
             <ImageView android:id="@id/iv_medal" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_centerInParent="true" />
-            <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignBottom="@id/iv_medal" android:layout_centerHorizontal="true" app:stroke_color="#ff2c7762" app:stroke_width="1.0dip" />
+            <com.bengharbios.ggames.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignBottom="@id/iv_medal" android:layout_centerHorizontal="true" app:stroke_color="#ff2c7762" app:stroke_width="1.0dip" />
         </RelativeLayout>
-        <com.yalla.game.base.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_medal" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_medal" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
     </LinearLayout>
     <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_other" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <RelativeLayout android:id="@id/rl_other_bg" android:background="@drawable/common_regard_bubble_3" android:layout_width="61.0dip" android:layout_height="61.0dip">
-            <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_centerInParent="true" />
+            <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_centerInParent="true" />
             <ImageView android:id="@id/iv_other" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_centerInParent="true" />
         </RelativeLayout>
-        <com.yalla.game.base.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_other" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
+        <com.bengharbios.ggames.view.StrokeTextView android:textSize="19.0sp" android:textColor="@color/white" android:id="@id/tv_other" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff007065" app:stroke_width="1.0dip" />
     </LinearLayout>
 </LinearLayout>

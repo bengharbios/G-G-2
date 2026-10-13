@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yalla.yallagames.ui.view.ScrollContainerFrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+<View.ui.view.ScrollContainerFrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout android:id="@id/ff_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <FrameLayout android:id="@id/ff_game_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.yalla.games.common.view.NoticeView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/notice_view" android:background="@drawable/bg_announcement" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="22.0dip" android:layout_marginTop="70.0dip" android:layout_below="@id/iv_close" />
+    <View android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/notice_view" android:background="@drawable/bg_announcement" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="22.0dip" android:layout_marginTop="70.0dip" android:layout_below="@id/iv_close" />
     <TextView android:textSize="12.0dip" android:textColor="#ffff66ff" android:layout_gravity="center|right|top" android:id="@id/engine_switch" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="30.0dip" android:layout_marginTop="120.0dip" android:layout_marginRight="10.0dip" />
-</com.yalla.yallagames.ui.view.ScrollContainerFrameLayout>
+</View.ui.view.ScrollContainerFrameLayout>

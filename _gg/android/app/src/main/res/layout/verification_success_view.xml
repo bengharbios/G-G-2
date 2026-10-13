@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <ImageView android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/verification_success" />
-        <com.yalla.games.common.view.CustomTextView android:textSize="16.0dip" android:textColor="#ff5a9983" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/verification_successful" android:layout_marginStart="5.0dip" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0dip" android:textColor="#ff5a9983" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/verification_successful" android:layout_marginStart="5.0dip" />
     </LinearLayout>
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="#ff777777" android:gravity="center" android:layout_width="306.0dip" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/verification_you_can_reset_your_password" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0dip" android:textColor="#ff777777" android:gravity="center" android:layout_width="306.0dip" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/verification_you_can_reset_your_password" />
 </LinearLayout>

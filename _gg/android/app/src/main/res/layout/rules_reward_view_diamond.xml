@@ -2,5 +2,5 @@
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_type" android:layout_width="25.0dip" android:layout_height="35.0dip" android:layout_marginBottom="2.0dip" android:src="@drawable/diamonds" />
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tv_num" android:layout_width="50.0dip" android:layout_height="wrap_content" app:stroke_color="#ff428371" app:stroke_width="1.0dip" />
+    <com.bengharbios.ggames.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tv_num" android:layout_width="50.0dip" android:layout_height="wrap_content" app:stroke_color="#ff428371" app:stroke_width="1.0dip" />
 </merge>

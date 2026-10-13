@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#ffffffff" android:id="@id/tvPKCardTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffc0bcf3" android:id="@id/tvPKCardDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0sp" android:textColor="#ffffffff" android:id="@id/tvPKCardTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffc0bcf3" android:id="@id/tvPKCardDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
 </LinearLayout>

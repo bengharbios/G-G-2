@@ -2,8 +2,8 @@
 <FrameLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <AbsoluteLayout android:id="@id/game_rl2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.yalla.games.battle.match.view.FourMatchView android:id="@id/game_match_4" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.yalla.games.battle.match.view.TwoMatchView android:id="@id/game_match_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View android:id="@id/game_match_4" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View android:id="@id/game_match_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <ViewStub android:id="@id/vs_cash_match" android:visibility="gone" android:layout="@layout/cash_game_marching_stub" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     <ImageView android:layout_gravity="end" android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" />
 </FrameLayout>

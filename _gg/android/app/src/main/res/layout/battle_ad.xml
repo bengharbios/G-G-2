@@ -2,5 +2,5 @@
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:id="@id/iv_ad" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerInside" />
-    <com.yalla.games.common.view.CustomTextView android:id="@id/tv_ad" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:id="@id/tv_ad" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" />
 </merge>

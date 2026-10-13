@@ -2,13 +2,13 @@
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:id="@id/fl_normal_reward" android:layout_width="60.0dip" android:layout_height="60.0dip">
-        <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="end|bottom|center" android:id="@id/svga_reward" android:layout_width="50.0dip" android:layout_height="50.0dip" />
+        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="end|bottom|center" android:id="@id/svga_reward" android:layout_width="50.0dip" android:layout_height="50.0dip" />
         <ImageView android:layout_gravity="center" android:id="@id/iv_reward_img" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" />
-        <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_reward_img" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" />
+        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_reward_img" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" />
         <ImageView android:layout_gravity="start|center|top" android:id="@id/iv_reward_icon" android:layout_width="25.0dip" android:layout_height="25.0dip" android:scaleType="fitXY" />
         <LinearLayout android:gravity="center" android:layout_gravity="end|bottom|center" android:id="@id/ll_bg_mask" android:background="@drawable/associate_reward_mask" android:layout_width="46.0dip" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:layout_marginEnd="2.0dip">
             <ImageView android:id="@id/iv_type_icon" android:layout_width="12.0dip" android:layout_height="12.0dip" />
-            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:id="@id/tv_value" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff666666" app:stroke_width="1.0dip" />
+            <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:id="@id/tv_value" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff666666" app:stroke_width="1.0dip" />
         </LinearLayout>
     </FrameLayout>
 </merge>

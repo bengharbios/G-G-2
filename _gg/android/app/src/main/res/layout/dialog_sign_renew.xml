@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.yalla.games.common.view.CustomTextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ff626262" android:id="@id/ctv_content" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="21.0dip" android:includeFontPadding="false" android:layout_centerHorizontal="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+    <com.bengharbios.ggames.view.CustomTextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ff626262" android:id="@id/ctv_content" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="21.0dip" android:includeFontPadding="false" android:layout_centerHorizontal="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:layout_marginBottom="19.0dip" android:layout_below="@id/ctv_content" android:layout_centerHorizontal="true" android:layoutDirection="ltr">
         <ImageView android:layout_width="32.0dip" android:layout_height="37.0dip" android:layout_marginRight="11.0dip" android:src="@drawable/diamonds" />
-        <com.yalla.games.common.view.CustomTextView android:textSize="24.0sp" android:textStyle="bold" android:textColor="#ff00aff1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-5" />
+        <com.bengharbios.ggames.view.CustomTextView android:textSize="24.0sp" android:textStyle="bold" android:textColor="#ff00aff1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-5" />
     </LinearLayout>
 </RelativeLayout>
