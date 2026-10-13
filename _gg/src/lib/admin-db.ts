@@ -14,6 +14,53 @@ export interface GameConfig {
   color: string;
   isComingSoon: boolean;
   isFree: boolean;
+  category: string;        // اجتماعية/حربية/ذكاء/مجازفة/رعب/استراتيجية/إبداعية/other
+  status: 'available' | 'coming_soon' | 'disabled';  // الحالة المعروضة للجمهور
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Game Reward Config (قابل للتعديل بالكامل من الأدمن) ──────────────
+export interface GameRewardConfig {
+  id: string;
+  gameSlug: string;
+  xpOnPlay: number;        // XP عند المشاركة
+  xpOnWin: number;         // XP عند الفوز
+  goldOnPlay: number;      // ذهب عند المشاركة
+  goldOnWin: number;       // ذهب عند الفوز
+  minPlayers: number;      // أقل عدد لاعبين للمكافأة
+  maxGoldPerDay: number;   // حد يومي للذهب
+  maxXPPerDay: number;      // حد يومي للـ XP
+  isActive: boolean;        // تعطيل المكافآت وقت الصيانة
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── User Reward Log (سجل المكافآت + للحدود اليومية) ────────────────
+export interface UserRewardLog {
+  id: string;
+  userId: string;
+  subscriptionCode: string;
+  gameSlug: string;
+  outcome: 'play' | 'win' | 'loss' | 'achievement';
+  xpAwarded: number;
+  goldAwarded: number;
+  userRole: string;         // guest/user/subscriber/moderator/admin
+  userLevel: number;       // المستوى وقت المكافأة (للتاريخ)
+  subPlan: string;          // free/trial/paid
+  dayBucket: string;       // YYYY-MM-DD (للحدود اليومية)
+  createdAt: string;
+}
+
+// ─── Role Reward Multiplier (مضاعف الأدوار - قابل للتعديل من الأدمن) ─────
+export interface RoleRewardMultiplier {
+  id: string;
+  roleKey: string;         // guest/user/subscriber/moderator/admin/custom
+  roleName: string;
+  xpMultiplier: number;    // مضاعف XP (1.0 = 100%)
+  goldMultiplier: number;  // مضاعف الذهب (1.0 = 100%)
+  description: string;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -994,6 +1041,97 @@ export async function ensureAdminTables(): Promise<void> {
       UNIQUE(roomId, date))
   `);
 
+  // ─── Migration: add category + status to GameConfig ───────────────
+  try {
+    const gameCols = await c.execute('PRAGMA table_info(GameConfig)');
+    const gameColNames = gameCols.rows.map((r) => r.name);
+    if (!gameColNames.includes('category')) {
+      await c.execute("ALTER TABLE GameConfig ADD COLUMN category TEXT DEFAULT 'other'");
+    }
+    if (!gameColNames.includes('status')) {
+      await c.execute("ALTER TABLE GameConfig ADD COLUMN status TEXT DEFAULT 'available'");
+    }
+  } catch { /* may already exist */ }
+
+  // ─── GameRewardConfig: قابلة للتعديل بالكامل من لوحة الأدمن ────────
+  // كل لعبة لها:
+  //   - مكافآت أساسية (xpOnPlay, xpOnWin, goldOnPlay, goldOnWin)
+  //   - حدود يومية (maxGoldPerDay, maxXPPerDay)
+  //   - شروط (minPlayers)
+  //   - isActive (تعطيل المكافآت وقت الصيانة)
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS GameRewardConfig (
+      id TEXT PRIMARY KEY,
+      gameSlug TEXT NOT NULL UNIQUE,
+      xpOnPlay INTEGER DEFAULT 10,
+      xpOnWin INTEGER DEFAULT 50,
+      goldOnPlay INTEGER DEFAULT 100,
+      goldOnWin INTEGER DEFAULT 500,
+      minPlayers INTEGER DEFAULT 2,
+      maxGoldPerDay INTEGER DEFAULT 10000,
+      maxXPPerDay INTEGER DEFAULT 1000,
+      isActive INTEGER DEFAULT 1,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // ─── UserRewardLog: سجل المكافآت الممنوحة + للحدود اليومية ─────────
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS UserRewardLog (
+      id TEXT PRIMARY KEY,
+      userId TEXT NOT NULL,
+      subscriptionCode TEXT DEFAULT '',
+      gameSlug TEXT NOT NULL,
+      outcome TEXT NOT NULL,
+      xpAwarded INTEGER DEFAULT 0,
+      goldAwarded INTEGER DEFAULT 0,
+      userRole TEXT DEFAULT 'user',
+      userLevel INTEGER DEFAULT 1,
+      subPlan TEXT DEFAULT 'free',
+      dayBucket TEXT DEFAULT '',
+      createdAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // ─── RoleRewardMultiplier: مضاعف الأدوار (guest/user/subscriber + custom) ───
+  // قابل للتعديل من الأدمن — كل دور له مضاعف للمكافآت
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS RoleRewardMultiplier (
+      id TEXT PRIMARY KEY,
+      roleKey TEXT NOT NULL UNIQUE,
+      roleName TEXT NOT NULL,
+      xpMultiplier REAL DEFAULT 1.0,
+      goldMultiplier REAL DEFAULT 1.0,
+      description TEXT DEFAULT '',
+      isActive INTEGER DEFAULT 1,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // ─── Seed: الأدوار الأساسية الافتراضية (إن لم توجد) ─────────────
+  try {
+    const rolesExist = await c.execute("SELECT COUNT(*) as cnt FROM RoleRewardMultiplier");
+    const cnt = (rolesExist.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (!cnt || cnt === 0) {
+      const defaultRoles = [
+        { key: 'guest',      name: 'ضيف',              xp: 0.5,  gold: 0.5,  desc: 'زائر غير مسجل — مكافآت مخفّضة 50%' },
+        { key: 'user',       name: 'عضو',              xp: 1.0,  gold: 1.0,  desc: 'مستخدم مسجل عادي' },
+        { key: 'subscriber', name: 'مشترك',           xp: 1.5,  gold: 1.5,  desc: 'مشترك مدفوع — مكافآت مضاعفة 50%' },
+        { key: 'moderator',  name: 'مشرف',            xp: 2.0,  gold: 2.0,  desc: 'مشرف — مكافآت مضاعفة 100%' },
+        { key: 'admin',      name: 'مدير',             xp: 3.0,  gold: 3.0,  desc: 'مدير عام' },
+      ];
+      for (const r of defaultRoles) {
+        await c.execute({
+          sql: `INSERT INTO RoleRewardMultiplier (id, roleKey, roleName, xpMultiplier, goldMultiplier, description, isActive)
+                VALUES (?, ?, ?, ?, ?, ?, 1)`,
+          args: [crypto.randomUUID(), r.key, r.name, r.xp, r.gold, r.desc],
+        });
+      }
+    }
+  } catch { /* ignore seed errors */ }
+
   _tablesReady = true;
 }
 
@@ -1431,6 +1569,59 @@ function toGameConfig(row: Record<string, unknown>): GameConfig {
     color: (row.color as string) ?? '',
     isComingSoon: !!(row.isComingSoon && row.isComingSoon !== 0),
     isFree: !!(row.isFree && row.isFree !== 0),
+    category: (row.category as string) ?? 'other',
+    status: (row.status as GameConfig['status']) ?? 'available',
+    createdAt: (row.createdAt as string) ?? new Date().toISOString(),
+    updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
+  };
+}
+
+// ─── GameRewardConfig: تحويل صف → كائن ─────────────────────────────
+function toGameRewardConfig(row: Record<string, unknown>): GameRewardConfig {
+  return {
+    id: row.id as string,
+    gameSlug: row.gameSlug as string,
+    xpOnPlay: Number(row.xpOnPlay ?? 10),
+    xpOnWin: Number(row.xpOnWin ?? 50),
+    goldOnPlay: Number(row.goldOnPlay ?? 100),
+    goldOnWin: Number(row.goldOnWin ?? 500),
+    minPlayers: Number(row.minPlayers ?? 2),
+    maxGoldPerDay: Number(row.maxGoldPerDay ?? 10000),
+    maxXPPerDay: Number(row.maxXPPerDay ?? 1000),
+    isActive: !!(row.isActive && row.isActive !== 0),
+    createdAt: (row.createdAt as string) ?? new Date().toISOString(),
+    updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
+  };
+}
+
+// ─── UserRewardLog: تحويل صف → كائن ────────────────────────────────
+function toUserRewardLog(row: Record<string, unknown>): UserRewardLog {
+  return {
+    id: row.id as string,
+    userId: row.userId as string,
+    subscriptionCode: (row.subscriptionCode as string) ?? '',
+    gameSlug: row.gameSlug as string,
+    outcome: (row.outcome as UserRewardLog['outcome']) ?? 'play',
+    xpAwarded: Number(row.xpAwarded ?? 0),
+    goldAwarded: Number(row.goldAwarded ?? 0),
+    userRole: (row.userRole as string) ?? 'user',
+    userLevel: Number(row.userLevel ?? 1),
+    subPlan: (row.subPlan as string) ?? 'free',
+    dayBucket: (row.dayBucket as string) ?? '',
+    createdAt: (row.createdAt as string) ?? new Date().toISOString(),
+  };
+}
+
+// ─── RoleRewardMultiplier: تحويل صف → كائن ──────────────────────────
+function toRoleRewardMultiplier(row: Record<string, unknown>): RoleRewardMultiplier {
+  return {
+    id: row.id as string,
+    roleKey: row.roleKey as string,
+    roleName: (row.roleName as string) ?? '',
+    xpMultiplier: Number(row.xpMultiplier ?? 1.0),
+    goldMultiplier: Number(row.goldMultiplier ?? 1.0),
+    description: (row.description as string) ?? '',
+    isActive: !!(row.isActive && row.isActive !== 0),
     createdAt: (row.createdAt as string) ?? new Date().toISOString(),
     updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
   };
@@ -2894,6 +3085,419 @@ export function getXPProgress(totalXP: number): {
     progress,
     isMaxLevel: false,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// ─── Game Reward System ───────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+
+/**
+ * Level-based multiplier — يزداد كلما ارتفع المستوى
+ * معادلة متزايدة (غير خطية): level 1 = 1.0x، level 50 = ~3.5x، level 100 = ~5x
+ * Formula: 1 + (level - 1) * 0.04 + (level >= 10 ? 0.1 : 0) + (level >= 50 ? 0.5 : 0)
+ *  - كل مستوى يضيف 4% فوق القاعدة
+ *  - عند مستوى 10+ : +10% بونص
+ *  - عند مستوى 50+ : +50% بونص
+ */
+export function getLevelMultiplier(level: number): number {
+  const safeLevel = Math.max(1, Math.min(MAX_LEVEL, level));
+  let mult = 1 + (safeLevel - 1) * 0.04;
+  if (safeLevel >= 10) mult += 0.10;
+  if (safeLevel >= 25) mult += 0.15;
+  if (safeLevel >= 50) mult += 0.50;
+  if (safeLevel >= 75) mult += 0.75;
+  if (safeLevel >= 100) mult += 1.00;
+  // قص أقصى مضاعف (5x القاعدة)
+  return Math.min(5.0, Math.round(mult * 100) / 100);
+}
+
+/**
+ * Subscription plan multiplier — كلما زاد الاشتراك، زادت الأرباح
+ *  - free: 1.0x
+ *  - trial: 1.25x (+25%)
+ *  - paid: 1.5x (+50%)
+ * قابل للتعديل مستقبلاً من جدول RoleRewardMultiplier
+ */
+export function getPlanMultiplier(plan: string): number {
+  switch (plan) {
+    case 'paid': return 1.5;
+    case 'trial': return 1.25;
+    case 'free':
+    default: return 1.0;
+  }
+}
+
+/**
+ * يحصل على مضاعف الدور من جدول RoleRewardMultiplier (يقرأ من DB)
+ * يعود للقيمة الافتراضية لو لم يجد الدور
+ */
+export async function getRoleMultiplier(roleKey: string): Promise<{ xp: number; gold: number }> {
+  try {
+    await ensureAdminTables();
+    const c = getClient();
+    const r = await c.execute({
+      sql: 'SELECT * FROM RoleRewardMultiplier WHERE roleKey = ? AND isActive = 1',
+      args: [roleKey],
+    });
+    if (r.rows.length === 0) {
+      // fallback افتراضي
+      switch (roleKey) {
+        case 'guest':      return { xp: 0.5, gold: 0.5 };
+        case 'subscriber':  return { xp: 1.5, gold: 1.5 };
+        case 'moderator':   return { xp: 2.0, gold: 2.0 };
+        case 'admin':       return { xp: 3.0, gold: 3.0 };
+        case 'user':
+        default:            return { xp: 1.0, gold: 1.0 };
+      }
+    }
+    const m = toRoleRewardMultiplier(r.rows[0] as Record<string, unknown>);
+    return { xp: m.xpMultiplier, gold: m.goldMultiplier };
+  } catch {
+    return { xp: 1.0, gold: 1.0 };
+  }
+}
+
+/**
+ * يحصل على إعدادات المكافآت للعبة محددة (أو ينشئ افتراضية لو غير موجودة)
+ */
+export async function getGameRewardConfig(gameSlug: string): Promise<GameRewardConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM GameRewardConfig WHERE gameSlug = ?',
+    args: [gameSlug],
+  });
+  if (r.rows.length === 0) return null;
+  return toGameRewardConfig(r.rows[0] as Record<string, unknown>);
+}
+
+/**
+ * يحصل على كل إعدادات المكافآت
+ */
+export async function getAllGameRewardConfigs(): Promise<GameRewardConfig[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM GameRewardConfig ORDER BY gameSlug ASC',
+    args: [],
+  });
+  return r.rows.map((row) => toGameRewardConfig(row as Record<string, unknown>));
+}
+
+/**
+ * ينشئ أو يحدّث إعدادات المكافآت للعبة (يستخدمها الأدمن)
+ */
+export async function upsertGameRewardConfig(
+  gameSlug: string,
+  data: Partial<Omit<GameRewardConfig, 'id' | 'gameSlug' | 'createdAt' | 'updatedAt'>>
+): Promise<GameRewardConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+
+  const existing = await getGameRewardConfig(gameSlug);
+  if (existing) {
+    // UPDATE
+    const fields: string[] = [];
+    const values: unknown[] = [];
+    for (const [k, v] of Object.entries(data)) {
+      if (k === 'isActive') {
+        fields.push(`isActive = ?`);
+        values.push(v ? 1 : 0);
+      } else {
+        fields.push(`${k} = ?`);
+        values.push(sqlVal(v));
+      }
+    }
+    fields.push("updatedAt = datetime('now')");
+    values.push(gameSlug);
+    await c.execute({
+      sql: `UPDATE GameRewardConfig SET ${fields.join(', ')} WHERE gameSlug = ?`,
+      args: values,
+    });
+  } else {
+    // INSERT
+    const defaults: GameRewardConfig = {
+      id: crypto.randomUUID(),
+      gameSlug,
+      xpOnPlay: 10, xpOnWin: 50,
+      goldOnPlay: 100, goldOnWin: 500,
+      minPlayers: 2, maxGoldPerDay: 10000, maxXPPerDay: 1000,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    const merged = { ...defaults, ...data, id: defaults.id, gameSlug, createdAt: defaults.createdAt };
+    await c.execute({
+      sql: `INSERT INTO GameRewardConfig (id, gameSlug, xpOnPlay, xpOnWin, goldOnPlay, goldOnWin, minPlayers, maxGoldPerDay, maxXPPerDay, isActive, createdAt, updatedAt)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+      args: [merged.id, merged.gameSlug, merged.xpOnPlay, merged.xpOnWin, merged.goldOnPlay, merged.goldOnWin, merged.minPlayers, merged.maxGoldPerDay, merged.maxXPPerDay, merged.isActive ? 1 : 0],
+    });
+  }
+  return getGameRewardConfig(gameSlug);
+}
+
+/**
+ * يحسب إجمالي ما حصل عليه المستخدم اليوم (للحدود اليومية)
+ */
+export async function getUserDailyTotals(userId: string, dayBucket?: string): Promise<{ xp: number; gold: number }> {
+  await ensureAdminTables();
+  const c = getClient();
+  const today = dayBucket ?? new Date().toISOString().slice(0, 10);
+  const r = await c.execute({
+    sql: 'SELECT COALESCE(SUM(xpAwarded), 0) as xp, COALESCE(SUM(goldAwarded), 0) as gold FROM UserRewardLog WHERE userId = ? AND dayBucket = ?',
+    args: [userId, today],
+  });
+  const row = r.rows[0] as Record<string, unknown> | undefined;
+  return {
+    xp: Number(row?.xp ?? 0),
+    gold: Number(row?.gold ?? 0),
+  };
+}
+
+/**
+ * 🎯 الدالة الموحدة لمنح مكافآت الألعاب (الذهب + XP فقط — لا مجوهرات)
+ *
+ * المعادلة الكاملة:
+ *   xpAwarded = baseXP × levelMultiplier × roleMultiplier × planMultiplier
+ *   goldAwarded = baseGold × levelMultiplier × roleMultiplier × planMultiplier
+ *
+ * حيث:
+ *   baseXP = outcome === 'win' ? xpOnWin : xpOnPlay
+ *   baseGold = outcome === 'win' ? goldOnWin : goldOnPlay
+ *   levelMultiplier = getLevelMultiplier(userLevel)  — يزداد كلما ارتفع المستوى
+ *   roleMultiplier = getRoleMultiplier(role)          — guest=0.5x, user=1x, subscriber=1.5x, ...
+ *   planMultiplier = getPlanMultiplier(plan)          — free=1x, trial=1.25x, paid=1.5x
+ *
+ * تحقق إضافي:
+ *   - isActive في GameRewardConfig
+ *   - playerCount >= minPlayers
+ *   - الحدود اليومية (maxGoldPerDay, maxXPPerDay)
+ *
+ * @returns { success, xpAwarded, goldAwarded, newLevel, leveledUp, newGoldBalance, reason }
+ */
+export async function awardGameRewards(
+  userId: string,
+  subscriptionCode: string,
+  gameSlug: string,
+  outcome: 'play' | 'win' | 'loss' | 'achievement',
+  playerCount: number = 1,
+  options?: { skipDailyLimit?: boolean }
+): Promise<{
+  success: boolean;
+  xpAwarded: number;
+  goldAwarded: number;
+  newLevel: number;
+  leveledUp: boolean;
+  newGoldBalance: number;
+  reason: string; // 'ok' | 'config_not_found' | 'disabled' | 'below_min_players' | 'daily_limit_reached' | 'user_not_found' | 'sub_not_found'
+}> {
+  const empty = { success: false, xpAwarded: 0, goldAwarded: 0, newLevel: 0, leveledUp: false, newGoldBalance: 0, reason: 'config_not_found' };
+
+  try {
+    await ensureAdminTables();
+    const c = getClient();
+
+    // 1) إعدادات المكافآت للعبة
+    const config = await getGameRewardConfig(gameSlug);
+    if (!config) return { ...empty, reason: 'config_not_found' };
+    if (!config.isActive) return { ...empty, reason: 'disabled' };
+    if (playerCount < config.minPlayers) return { ...empty, reason: 'below_min_players' };
+
+    // 2) المستخدم (لـ gold + role)
+    const userRes = await c.execute({
+      sql: 'SELECT * FROM AppUser WHERE id = ?',
+      args: [userId],
+    });
+    if (userRes.rows.length === 0) return { ...empty, reason: 'user_not_found' };
+    const user = toAppUser(userRes.rows[0] as Record<string, unknown>);
+    const userRole = user.role || 'user';
+
+    // 3) الاشتراك (لـ XP + level + plan)
+    let sub: Subscription | null = null;
+    if (subscriptionCode) {
+      const subRes = await c.execute({
+        sql: 'SELECT * FROM Subscription WHERE subscriptionCode = ?',
+        args: [subscriptionCode],
+      });
+      if (subRes.rows.length > 0) {
+        sub = toSubscription(subRes.rows[0] as Record<string, unknown>);
+      }
+    }
+
+    // 4) حساب القيم الأساسية
+    const baseXP = outcome === 'win' ? config.xpOnWin : (outcome === 'achievement' ? config.xpOnWin * 2 : config.xpOnPlay);
+    const baseGold = outcome === 'win' ? config.goldOnWin : (outcome === 'achievement' ? config.goldOnWin * 2 : config.goldOnPlay);
+
+    // 5) المضاعفات (المعادلة المتزايدة)
+    const userLevel = sub?.level ?? 1;
+    const levelMult = getLevelMultiplier(userLevel);
+    const roleMult = await getRoleMultiplier(userRole);
+    const plan = sub?.plan ?? 'free';
+    const planMult = getPlanMultiplier(plan);
+
+    // 6) المكافأة النهائية (مع المضاعفات)
+    let xpAwarded = Math.floor(baseXP * levelMult * roleMult.xp * planMult);
+    let goldAwarded = Math.floor(baseGold * levelMult * roleMult.gold * planMult);
+
+    // لا تسمح بقيم سلبية أو صفرية
+    xpAwarded = Math.max(0, xpAwarded);
+    goldAwarded = Math.max(0, goldAwarded);
+
+    if (xpAwarded === 0 && goldAwarded === 0) {
+      return { ...empty, reason: 'ok' };
+    }
+
+    // 7) الحدود اليومية (لو مش مفعّل skipDailyLimit)
+    if (!options?.skipDailyLimit) {
+      const today = new Date().toISOString().slice(0, 10);
+      const daily = await getUserDailyTotals(userId, today);
+      let cappedXp = xpAwarded;
+      let cappedGold = goldAwarded;
+      if (daily.xp + xpAwarded > config.maxXPPerDay) {
+        cappedXp = Math.max(0, config.maxXPPerDay - daily.xp);
+      }
+      if (daily.gold + goldAwarded > config.maxGoldPerDay) {
+        cappedGold = Math.max(0, config.maxGoldPerDay - daily.gold);
+      }
+      // لو الحد اليومي قلّب المكافأة لـ 0، نخرج بدون أي شيء
+      if (cappedXp === 0 && cappedGold === 0) {
+        return { ...empty, reason: 'daily_limit_reached' };
+      }
+      xpAwarded = cappedXp;
+      goldAwarded = cappedGold;
+    }
+
+    // 8) منح XP (تحديث Subscription.xp + level + XPHistory)
+    let newLevel = userLevel;
+    let leveledUp = false;
+    if (xpAwarded > 0 && sub) {
+      const xpResult = await awardXP(subscriptionCode, xpAwarded, outcome === 'win' ? 'game_win' : 'game_play');
+      if (xpResult.success) {
+        newLevel = xpResult.newLevel;
+        leveledUp = xpResult.leveledUp;
+      }
+    }
+
+    // 9) منح الذهب (تحديث AppUser.gold)
+    let newGoldBalance = Number(user.gold ?? 0);
+    if (goldAwarded > 0) {
+      await c.execute({
+        sql: 'UPDATE AppUser SET gold = COALESCE(gold, 0) + ?, updatedAt = datetime(\'now\') WHERE id = ?',
+        args: [goldAwarded, userId],
+      });
+      newGoldBalance = Number(user.gold ?? 0) + goldAwarded;
+    }
+
+    // 10) سجل في UserRewardLog
+    const logId = crypto.randomUUID();
+    const today = new Date().toISOString().slice(0, 10);
+    await c.execute({
+      sql: `INSERT INTO UserRewardLog (id, userId, subscriptionCode, gameSlug, outcome, xpAwarded, goldAwarded, userRole, userLevel, subPlan, dayBucket, createdAt)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+      args: [logId, userId, subscriptionCode || '', gameSlug, outcome, xpAwarded, goldAwarded, userRole, userLevel, plan, today],
+    });
+
+    return {
+      success: true,
+      xpAwarded,
+      goldAwarded,
+      newLevel,
+      leveledUp,
+      newGoldBalance,
+      reason: 'ok',
+    };
+  } catch (err) {
+    console.error('[awardGameRewards] error:', err);
+    return { ...empty, reason: 'user_not_found' };
+  }
+}
+
+/**
+ * يحصل على سجل المكافآت (للأدمن)
+ */
+export async function getRewardLog(limit: number = 100): Promise<UserRewardLog[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM UserRewardLog ORDER BY createdAt DESC LIMIT ?',
+    args: [limit],
+  });
+  return r.rows.map((row) => toUserRewardLog(row as Record<string, unknown>));
+}
+
+/**
+ * يحصل على سجل المكافآت لمستخدم محدد
+ */
+export async function getUserRewardLog(userId: string, limit: number = 50): Promise<UserRewardLog[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM UserRewardLog WHERE userId = ? ORDER BY createdAt DESC LIMIT ?',
+    args: [userId, limit],
+  });
+  return r.rows.map((row) => toUserRewardLog(row as Record<string, unknown>));
+}
+
+/**
+ * يحصل على كل أدوار المكافآت (للأدمن — إدارة المضاعفات)
+ */
+export async function getAllRoleMultipliers(): Promise<RoleRewardMultiplier[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM RoleRewardMultiplier ORDER BY roleKey ASC',
+    args: [],
+  });
+  return r.rows.map((row) => toRoleRewardMultiplier(row as Record<string, unknown>));
+}
+
+/**
+ * يحدّث مضاعف دور (للأدمن)
+ */
+export async function updateRoleMultiplier(
+  roleKey: string,
+  data: Partial<Pick<RoleRewardMultiplier, 'roleName' | 'xpMultiplier' | 'goldMultiplier' | 'description' | 'isActive'>>
+): Promise<RoleRewardMultiplier | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const fields: string[] = [];
+  const values: unknown[] = [];
+  if (data.roleName !== undefined) { fields.push('roleName = ?'); values.push(data.roleName); }
+  if (data.xpMultiplier !== undefined) { fields.push('xpMultiplier = ?'); values.push(Number(data.xpMultiplier)); }
+  if (data.goldMultiplier !== undefined) { fields.push('goldMultiplier = ?'); values.push(Number(data.goldMultiplier)); }
+  if (data.description !== undefined) { fields.push('description = ?'); values.push(data.description); }
+  if (data.isActive !== undefined) { fields.push('isActive = ?'); values.push(data.isActive ? 1 : 0); }
+  if (fields.length === 0) return null;
+  fields.push("updatedAt = datetime('now')");
+  values.push(roleKey);
+  await c.execute({
+    sql: `UPDATE RoleRewardMultiplier SET ${fields.join(', ')} WHERE roleKey = ?`,
+    args: values,
+  });
+  const r = await c.execute({
+    sql: 'SELECT * FROM RoleRewardMultiplier WHERE roleKey = ?',
+    args: [roleKey],
+  });
+  return r.rows.length > 0 ? toRoleRewardMultiplier(r.rows[0] as Record<string, unknown>) : null;
+}
+
+/**
+ * ينشئ دور جديد (قابل للتطوير — إضافة أدوار مخصصة)
+ */
+export async function createRoleMultiplier(data: { roleKey: string; roleName: string; xpMultiplier?: number; goldMultiplier?: number; description?: string }): Promise<RoleRewardMultiplier | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const id = crypto.randomUUID();
+  await c.execute({
+    sql: `INSERT INTO RoleRewardMultiplier (id, roleKey, roleName, xpMultiplier, goldMultiplier, description, isActive, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))`,
+    args: [id, data.roleKey, data.roleName, data.xpMultiplier ?? 1.0, data.goldMultiplier ?? 1.0, data.description ?? ''],
+  });
+  const r = await c.execute({
+    sql: 'SELECT * FROM RoleRewardMultiplier WHERE roleKey = ?',
+    args: [data.roleKey],
+  });
+  return r.rows.length > 0 ? toRoleRewardMultiplier(r.rows[0] as Record<string, unknown>) : null;
 }
 
 // ─── Player ID Generation ─────────────────────────────────────────────
