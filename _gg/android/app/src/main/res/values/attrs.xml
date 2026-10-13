@@ -61,10 +61,6 @@
         <enum name="constraint" value="4" />
     </attr>
     <attr name="animateRelativeTo" format="reference" />
-    <attr name="animationMode">
-        <enum name="slide" value="0" />
-        <enum name="fade" value="1" />
-    </attr>
     <attr name="antiAlias" format="boolean" />
     <attr name="appBarLayoutStyle" format="reference" />
     <attr name="applyMotionScene" format="boolean" />
@@ -130,9 +126,6 @@
     <attr name="behavior_halfExpandedRatio" format="reference|float" />
     <attr name="behavior_hideable" format="boolean" />
     <attr name="behavior_overlapTop" format="dimension" />
-    <attr name="behavior_peekHeight" format="dimension">
-        <enum name="auto" value="-1" />
-    </attr>
     <attr name="behavior_skipCollapsed" format="boolean" />
     <attr name="bgArcColor" format="color" />
     <attr name="bgArcWidth" format="dimension" />
@@ -388,10 +381,6 @@
     <attr name="coordinatorLayoutStyle" format="reference" />
     <attr name="cornerBottomEndRadius" format="dimension" />
     <attr name="cornerBottomStartRadius" format="dimension" />
-    <attr name="cornerFamily">
-        <enum name="rounded" value="0" />
-        <enum name="cut" value="1" />
-    </attr>
     <attr name="cornerFamilyBottomLeft">
         <enum name="rounded" value="0" />
         <enum name="cut" value="1" />
@@ -909,10 +898,6 @@
         <enum name="small" value="1" />
     </attr>
     <attr name="layout_order" format="integer" />
-    <attr name="layout_scrollEffect">
-        <enum name="none" value="0" />
-        <enum name="compress" value="1" />
-    </attr>
     <attr name="layout_scrollInterpolator" format="reference" />
     <attr name="layout_srlBackgroundColor" format="color" />
     <attr name="layout_srlSpinnerStyle">

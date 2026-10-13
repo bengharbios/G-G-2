@@ -145,7 +145,6 @@
     <public type="attr" name="altSrc" id="0x7f040035" />
     <public type="attr" name="animateCircleAngleTo" id="0x7f040036" />
     <public type="attr" name="animateRelativeTo" id="0x7f040037" />
-    <public type="attr" name="animationMode" id="0x7f040038" />
     <public type="attr" name="antiAlias" id="0x7f040039" />
     <public type="attr" name="appBarLayoutStyle" id="0x7f04003a" />
     <public type="attr" name="applyMotionScene" id="0x7f04003b" />
@@ -206,7 +205,6 @@
     <public type="attr" name="behavior_halfExpandedRatio" id="0x7f040072" />
     <public type="attr" name="behavior_hideable" id="0x7f040073" />
     <public type="attr" name="behavior_overlapTop" id="0x7f040074" />
-    <public type="attr" name="behavior_peekHeight" id="0x7f040075" />
     <public type="attr" name="behavior_saveFlags" id="0x7f040076" />
     <public type="attr" name="behavior_skipCollapsed" id="0x7f040077" />
     <public type="attr" name="bgArcColor" id="0x7f040078" />
@@ -441,7 +439,6 @@
     <public type="attr" name="coordinatorLayoutStyle" id="0x7f04015d" />
     <public type="attr" name="cornerBottomEndRadius" id="0x7f04015e" />
     <public type="attr" name="cornerBottomStartRadius" id="0x7f04015f" />
-    <public type="attr" name="cornerFamily" id="0x7f040160" />
     <public type="attr" name="cornerFamilyBottomLeft" id="0x7f040161" />
     <public type="attr" name="cornerFamilyBottomRight" id="0x7f040162" />
     <public type="attr" name="cornerFamilyTopLeft" id="0x7f040163" />
@@ -837,7 +834,6 @@
     <public type="attr" name="layout_mode" id="0x7f0402e9" />
     <public type="attr" name="layout_optimizationLevel" id="0x7f0402ea" />
     <public type="attr" name="layout_order" id="0x7f0402eb" />
-    <public type="attr" name="layout_scrollEffect" id="0x7f0402ec" />
     <public type="attr" name="layout_scrollFlags" id="0x7f0402ed" />
     <public type="attr" name="layout_scrollInterpolator" id="0x7f0402ee" />
     <public type="attr" name="layout_srlBackgroundColor" id="0x7f0402ef" />
