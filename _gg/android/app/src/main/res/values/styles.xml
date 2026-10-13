@@ -1165,4 +1165,15 @@
         <item name="android:background">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="Widget.Design.Snackbar" parent="Widget.AppCompat.TextView">
+        <item name="android:background">#CC000000</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+    <style name="TextAppearance.Design.Snackbar.Message" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+    <style name="com_facebook_auth_dialog_instructions_textview" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
 </resources>
