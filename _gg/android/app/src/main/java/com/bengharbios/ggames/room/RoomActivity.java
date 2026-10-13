@@ -58,7 +58,7 @@ public class RoomActivity extends Activity {
     private static final String TAG = "RoomActivity";
 
     private String roomId = "100002";
-    private String roomName = "الغريب";
+    private String roomName = "البرج";
     private String currentUserName = "أنا";
     private int micSeatCount = 5;
     private int mySeatIndex = -1;
@@ -72,6 +72,10 @@ public class RoomActivity extends Activity {
     private EditText etMessage;
     private TextView tvRoomTopName;
     private View roomRoot;
+    // عناصر جديدة للصورة 21
+    private View ownerTagView;          // pill-shape tag للمالك (يمين)
+    private View leftChatBtn;           // زر الدردشة + نقطة حمراء (يسار)
+    private View leftMusicBtn;          // زر الموسيقى + نص (يسار)
 
     // Data
     private List<MicSeat> micSeats = new ArrayList<>();
@@ -158,17 +162,48 @@ public class RoomActivity extends Activity {
             showErrorDialog("فشل تحميل تصميم الغرفة", e);
         }
 
-        // خلفية
+        // خلفية: استخدم bg_chat_room الأصلي (cityscape ليلي مطابق للصورة 21)
         try {
             int contentViewId = getId("content_view");
             View root = findViewById(contentViewId);
             if (root != null) {
-                GradientDrawable gradient = new GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    new int[]{0xFF1A1A2E, 0xFF16213E, 0xFF0F3460}
-                );
-                root.setBackground(gradient);
+                // 1) خلفية content_view = bg_chat_room (مدينة ليلية)
+                try {
+                    int bgId = getResources().getIdentifier("bg_chat_room", "drawable", getPackageName());
+                    if (bgId != 0) {
+                        root.setBackgroundResource(bgId);
+                        Log.i(TAG, "[BG] content_view bg=bg_chat_room");
+                    } else {
+                        // Fallback: gradient بنفسجي/أزرق غامق
+                        GradientDrawable gradient = new GradientDrawable(
+                            GradientDrawable.Orientation.TOP_BOTTOM,
+                            new int[]{0xFF1A1A2E, 0xFF16213E, 0xFF0F3460}
+                        );
+                        root.setBackground(gradient);
+                        Log.w(TAG, "[BG] bg_chat_room not found, fallback gradient");
+                    }
+                } catch (Exception e1) {
+                    Log.e(TAG, "[BG] content_view bg error", e1);
+                }
                 roomRoot = root;
+            }
+
+            // 2) iv_room_theme: أيضاً استخدم bg_chat_room (طبقة فوقية)
+            try {
+                int themeIvId = getId("iv_room_theme");
+                if (themeIvId != 0) {
+                    ImageView ivTheme = findViewById(themeIvId);
+                    if (ivTheme != null) {
+                        int bgId = getResources().getIdentifier("bg_chat_room", "drawable", getPackageName());
+                        if (bgId != 0) {
+                            ivTheme.setImageResource(bgId);
+                            ivTheme.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "[BG] iv_room_theme=bg_chat_room");
+                        }
+                    }
+                }
+            } catch (Exception e2) {
+                Log.e(TAG, "[BG] iv_room_theme error", e2);
             }
         } catch (Exception e) {
             Log.e(TAG, "Background error", e);
@@ -208,6 +243,24 @@ public class RoomActivity extends Activity {
             Log.i(TAG, "[D] اكتمل بنجاح");
         } catch (Exception e) {
             Log.e(TAG, "[D] setupSidebar فشل", e);
+        }
+
+        // ===== البند D2: أزرار الشريط الأيسر (دردشة + موسيقى) — من الصورة 21 =====
+        try {
+            Log.i(TAG, "[D2] بدء setupLeftSideButtons");
+            setupLeftSideButtons();
+            Log.i(TAG, "[D2] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[D2] setupLeftSideButtons فشل", e);
+        }
+
+        // ===== البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00) — من الصورة 21 =====
+        try {
+            Log.i(TAG, "[D3] بدء setupOwnerTag");
+            setupOwnerTag();
+            Log.i(TAG, "[D3] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[D3] setupOwnerTag فشل", e);
         }
 
         // ===== البند E: الشريط السفلي + WindowInsets =====
@@ -478,9 +531,10 @@ public class RoomActivity extends Activity {
             Log.e(TAG, "[C] vsNoticeBoard error", e);
         }
 
-        // vsTopMessage
+        // vsTopMessage — رسالة ذهبية تحت المقاعد (مطابقة للصورة 21)
         try {
             int topMsgId = getId("vsTopMessage");
+            String welcomeText = "مرحبا بكم في الغرفة! اضغط على ميكروفون لتحدث 🔒";
             if (topMsgId != 0) {
                 View topMsgStub = findViewById(topMsgId);
                 if (topMsgStub instanceof ViewStub) {
@@ -490,8 +544,8 @@ public class RoomActivity extends Activity {
                             View inflated = ((ViewStub) topMsgStub).inflate();
                             Log.i(TAG, "[C] vsTopMessage inflated");
                             if (inflated != null) {
-                                setTextViewRecursive(inflated,
-                                    "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً.");
+                                setTextViewRecursive(inflated, welcomeText);
+                                applyGoldenTextStyle(inflated);
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "[C] vsTopMessage inflate failed", e);
@@ -499,12 +553,35 @@ public class RoomActivity extends Activity {
                     }
                 } else if (topMsgStub != null) {
                     Log.i(TAG, "[C] vsTopMessage already inflated");
-                    setTextViewRecursive(topMsgStub,
-                        "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً.");
+                    setTextViewRecursive(topMsgStub, welcomeText);
+                    applyGoldenTextStyle(topMsgStub);
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, "[C] vsTopMessage error", e);
+        }
+    }
+
+    /** يطبّق لون ذهبي + ظل أسود على TextViews (مطابقة للصورة 21) */
+    private void applyGoldenTextStyle(View view) {
+        try {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                tv.setTextColor(0xFFFFD700); // ذهبي
+                tv.setShadowLayer(4f, 1f, 1f, 0xFF000000); // ظل أسود
+                tv.setTextSize(13);
+                tv.setGravity(Gravity.CENTER);
+                tv.setSingleLine(false);
+                tv.setMaxLines(2);
+            }
+            if (view instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) view;
+                for (int i = 0; i < vg.getChildCount(); i++) {
+                    applyGoldenTextStyle(vg.getChildAt(i));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "applyGoldenTextStyle error", e);
         }
     }
 
@@ -572,6 +649,220 @@ public class RoomActivity extends Activity {
     }
 
     // ============================================
+    // البند D2: أزرار الشريط الأيسر (دردشة + نقطة حمراء + موسيقى)
+    // مطابقة للصورة 21: زران على اليسار في النصف السفلي
+    // ============================================
+    private void setupLeftSideButtons() {
+        try {
+            // ابحث عن FrameLayout الجذر (content_view)
+            int rootId = getId("content_view");
+            ViewGroup rootView = (ViewGroup) findViewById(rootId);
+            if (rootView == null) {
+                Log.w(TAG, "[D2] content_view not found");
+                return;
+            }
+
+            int dp = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+
+            // === زر الدردشة (top) ===
+            // FrameLayout: 56dp x 56dp, على اليسار، أسفل الهيدر بمقدار 200dp تقريباً
+            FrameLayout chatBtn = new FrameLayout(this);
+            int chatBtnSize = 56 * dp;
+            FrameLayout.LayoutParams chatLp = new FrameLayout.LayoutParams(chatBtnSize, chatBtnSize);
+            chatLp.gravity = Gravity.START | Gravity.BOTTOM;
+            chatLp.setMargins(8 * dp, 0, 0, 220 * dp);
+            chatBtn.setLayoutParams(chatLp);
+
+            // أيقونة الدردشة (icon_message_box)
+            ImageView chatIcon = new ImageView(this);
+            FrameLayout.LayoutParams iconLp = new FrameLayout.LayoutParams(
+                40 * dp, 40 * dp, Gravity.CENTER);
+            int msgBoxIconId = getResources().getIdentifier("icon_message_box", "drawable", getPackageName());
+            if (msgBoxIconId != 0) {
+                chatIcon.setImageResource(msgBoxIconId);
+            } else {
+                chatIcon.setImageResource(R.drawable.room_default);
+            }
+            chatIcon.setLayoutParams(iconLp);
+            chatBtn.addView(chatIcon);
+
+            // نقطة حمراء (7dp) على أعلى يمين الأيقونة
+            View redDot = new View(this);
+            int dotSize = 9 * dp;
+            FrameLayout.LayoutParams dotLp = new FrameLayout.LayoutParams(dotSize, dotSize);
+            dotLp.gravity = Gravity.END | Gravity.TOP;
+            dotLp.setMargins(0, 4 * dp, 4 * dp, 0);
+            GradientDrawable dotBg = new GradientDrawable();
+            dotBg.setShape(GradientDrawable.OVAL);
+            dotBg.setColor(0xFFFF3B30); // أحمر
+            redDot.setBackground(dotBg);
+            redDot.setLayoutParams(dotLp);
+            chatBtn.addView(redDot);
+
+            chatBtn.setOnClickListener(v ->
+                Toast.makeText(this, "💬 الدردشة", Toast.LENGTH_SHORT).show());
+            rootView.addView(chatBtn);
+            leftChatBtn = chatBtn;
+            Log.i(TAG, "[D2] leftChatBtn added");
+
+            // === زر الموسيقى (bottom) ===
+            LinearLayout musicBtn = new LinearLayout(this);
+            musicBtn.setOrientation(LinearLayout.VERTICAL);
+            musicBtn.setGravity(Gravity.CENTER_HORIZONTAL);
+            FrameLayout.LayoutParams musicLp = new FrameLayout.LayoutParams(
+                56 * dp, 60 * dp);
+            musicLp.gravity = Gravity.START | Gravity.BOTTOM;
+            musicLp.setMargins(8 * dp, 0, 0, 150 * dp);
+            musicBtn.setLayoutParams(musicLp);
+
+            // أيقونة الموسيقى
+            ImageView musicIcon = new ImageView(this);
+            LinearLayout.LayoutParams musicIconLp = new LinearLayout.LayoutParams(
+                40 * dp, 40 * dp);
+            int musicIconId = getResources().getIdentifier("room_icon_room_music", "drawable", getPackageName());
+            if (musicIconId != 0) {
+                musicIcon.setImageResource(musicIconId);
+            } else {
+                musicIcon.setImageResource(R.drawable.room_default);
+            }
+            musicIcon.setLayoutParams(musicIconLp);
+            musicBtn.addView(musicIcon);
+
+            // نص "الموسيقى"
+            TextView musicText = new TextView(this);
+            musicText.setText("الموسيقى");
+            musicText.setTextColor(Color.WHITE);
+            musicText.setTextSize(9);
+            musicText.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams musicTextLp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            musicText.setLayoutParams(musicTextLp);
+            musicBtn.addView(musicText);
+
+            musicBtn.setOnClickListener(v ->
+                Toast.makeText(this, "🎵 الموسيقى", Toast.LENGTH_SHORT).show());
+            rootView.addView(musicBtn);
+            leftMusicBtn = musicBtn;
+            Log.i(TAG, "[D2] leftMusicBtn added");
+        } catch (Exception e) {
+            Log.e(TAG, "[D2] setupLeftSideButtons error", e);
+        }
+    }
+
+    // ============================================
+    // البند D3: Owner pill-tag (البرج + صورة + توقيت 00:00)
+    // مطابقة للصورة 21: pill-shape tag على اليمين أعلى
+    // ============================================
+    private void setupOwnerTag() {
+        try {
+            int rootId = getId("content_view");
+            ViewGroup rootView = (ViewGroup) findViewById(rootId);
+            if (rootView == null) {
+                Log.w(TAG, "[D3] content_view not found");
+                return;
+            }
+
+            int dp = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+
+            // pill-shape tag: LinearLayout أفقي
+            LinearLayout pill = new LinearLayout(this);
+            pill.setOrientation(LinearLayout.HORIZONTAL);
+            pill.setGravity(Gravity.CENTER_VERTICAL);
+            int pillWidth = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int pillHeight = 32 * dp;
+            FrameLayout.LayoutParams pillLp = new FrameLayout.LayoutParams(pillWidth, pillHeight);
+            pillLp.gravity = Gravity.END | Gravity.TOP;
+            pillLp.setMargins(0, 12 * dp, 8 * dp, 0);
+            pill.setLayoutParams(pillLp);
+
+            // خلفية pill-shape: مستطيل مدور نصف شفاف أسود
+            GradientDrawable pillBg = new GradientDrawable();
+            pillBg.setShape(GradientDrawable.RECTANGLE);
+            pillBg.setCornerRadius(16 * dp);
+            pillBg.setColor(0x99000000); // أسود شفاف
+            pillBg.setStroke(1 * dp, 0x33FFFFFF);
+            pill.setBackground(pillBg);
+            pill.setPadding(6 * dp, 2 * dp, 6 * dp, 2 * dp);
+
+            // 1) صورة مربعة صغيرة (avatar المالك)
+            ImageView avatar = new ImageView(this);
+            int avatarSize = 24 * dp;
+            LinearLayout.LayoutParams avatarLp = new LinearLayout.LayoutParams(avatarSize, avatarSize);
+            avatarLp.setMarginEnd(4 * dp);
+            avatar.setImageResource(R.drawable.room_default);
+            avatar.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            avatar.setLayoutParams(avatarLp);
+            // اضبط خلفية بيضاء مدورة على الصورة
+            GradientDrawable avatarBg = new GradientDrawable();
+            avatarBg.setShape(GradientDrawable.RECTANGLE);
+            avatarBg.setCornerRadius(4 * dp);
+            avatarBg.setColor(0xFF0D8A7A); // أخضر
+            avatar.setBackground(avatarBg);
+            pill.addView(avatar);
+
+            // 2) نص "البرج" (اسم الغرفة/المالك)
+            TextView name = new TextView(this);
+            name.setText(roomName);
+            name.setTextColor(Color.WHITE);
+            name.setTextSize(11);
+            name.setSingleLine(true);
+            LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            nameLp.setMarginEnd(6 * dp);
+            name.setLayoutParams(nameLp);
+            pill.addView(name);
+
+            // 3) توقيت "00:00" (محاكاة عداد مدة البث)
+            TextView timer = new TextView(this);
+            timer.setText("00:00");
+            timer.setTextColor(0xFFFFD700); // ذهبي
+            timer.setTextSize(10);
+            timer.setSingleLine(true);
+            LinearLayout.LayoutParams timerLp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            timer.setLayoutParams(timerLp);
+            pill.addView(timer);
+
+            pill.setOnClickListener(v ->
+                Toast.makeText(this, "🏷️ " + roomName + " (مالك)", Toast.LENGTH_SHORT).show());
+
+            rootView.addView(pill);
+            ownerTagView = pill;
+            Log.i(TAG, "[D3] ownerTag added with name=" + roomName + ", timer=00:00");
+
+            // === محاكاة عداد الوقت: كل ثانية يزيد الثواني ===
+            handler.postDelayed(new Runnable() {
+                int totalSec = 0;
+                @Override
+                public void run() {
+                    try {
+                        totalSec++;
+                        int h = totalSec / 3600;
+                        int m = (totalSec % 3600) / 60;
+                        int s = totalSec % 60;
+                        final String timeStr;
+                        if (h > 0) {
+                            timeStr = String.format("%02d:%02d:%02d", h, m, s);
+                        } else {
+                            timeStr = String.format("%02d:%02d", m, s);
+                        }
+                        TextView t = (TextView) ((ViewGroup) ownerTagView).getChildAt(2);
+                        if (t != null) t.setText(timeStr);
+                        handler.postDelayed(this, 1000);
+                    } catch (Exception e) {
+                        Log.e(TAG, "[D3] timer error", e);
+                    }
+                }
+            }, 1000);
+
+        } catch (Exception e) {
+            Log.e(TAG, "[D3] setupOwnerTag error", e);
+        }
+    }
+
+    // ============================================
     // البند E: الشريط السفلي + WindowInsets
     // ============================================
     private void setupBottomBar() {
@@ -617,6 +908,57 @@ public class RoomActivity extends Activity {
             ivSend = findViewById(getId("ivSend"));
             ivShowGameCenter = findViewById(getId("ivShowGameCenter"));
             etMessage = findViewById(getId("etMessage"));
+
+            // مكن حقل الإدخال (في XML الأصلي: enabled=false focusable=false)
+            // مطابقة للصورة 21: حقل إدخال نشط + زر إرسال أخضر
+            try {
+                if (etMessage != null) {
+                    etMessage.setEnabled(true);
+                    etMessage.setFocusable(true);
+                    etMessage.setFocusableInTouchMode(true);
+                    etMessage.setClickable(true);
+                    etMessage.setLongClickable(true);
+                    etMessage.setCursorVisible(true);
+                    etMessage.setHint("اكتب رسالة...");
+                    // خلفية مدورة للحقل (مطابقة للصورة 21: pill-shape رمادي)
+                    GradientDrawable etBg = new GradientDrawable();
+                    etBg.setShape(GradientDrawable.RECTANGLE);
+                    etBg.setCornerRadius(18 * (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
+                    etBg.setColor(0x66000000); // رمادي شفاف
+                    etBg.setStroke(1 * (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()),
+                        0x33FFFFFF);
+                    etMessage.setBackground(etBg);
+                    etMessage.setTextColor(Color.WHITE);
+                    etMessage.setHintTextColor(0xFFB0B0B0);
+                    Log.i(TAG, "[E] etMessage enabled + styled");
+                }
+            } catch (Exception etEx) {
+                Log.e(TAG, "[E] etMessage enable error", etEx);
+            }
+
+            // اظهر زر الإرسال (في XML الأصلي: gone)
+            try {
+                if (ivSend != null) {
+                    ivSend.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[E] ivSend -> VISIBLE");
+                }
+            } catch (Exception sendEx) {
+                Log.e(TAG, "[E] ivSend show error", sendEx);
+            }
+
+            // تأكيد VISIBLE على باقي أيقونات الشريط السفلي (الصورة 21):
+            // ivSound + ivSendPicture + ivShowGameCenter + ivGift
+            try {
+                if (ivSound != null) ivSound.setVisibility(View.VISIBLE);
+                if (ivSendPicture != null) ivSendPicture.setVisibility(View.VISIBLE);
+                if (ivShowGameCenter != null) ivShowGameCenter.setVisibility(View.VISIBLE);
+                if (ivGift != null) ivGift.setVisibility(View.VISIBLE);
+                Log.i(TAG, "[E] bottom icons: ivSound + ivSendPicture + ivShowGameCenter + ivGift -> VISIBLE");
+            } catch (Exception visEx) {
+                Log.e(TAG, "[E] bottom icons VISIBLE error", visEx);
+            }
 
             // WindowInsets
             View contentView = findViewById(android.R.id.content);
