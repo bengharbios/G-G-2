@@ -336,23 +336,25 @@ public class RoomActivity extends Activity {
     // ============================================
     private void setupHeader() {
         try {
+            // rivRoomTopHeader — صورة الغرفة (40dp, src=room_default)
+            // app:srcCompat لا يعمل مع ImageView العادي، اضبط برمجياً
+            int headerId = getId("rivRoomTopHeader");
+            if (headerId != 0) {
+                ImageView rivHeader = findViewById(headerId);
+                if (rivHeader != null) {
+                    rivHeader.setImageResource(R.drawable.room_default);
+                    Log.i(TAG, "[B] rivRoomTopHeader = room_default");
+                }
+            }
+
+            // tvRoomTopName — اسم الغرفة (13sp, bold, white, 20dp)
             tvRoomTopName = findViewById(getId("tvRoomTopName"));
             if (tvRoomTopName != null) {
                 tvRoomTopName.setText(roomName);
                 Log.i(TAG, "[B] tvRoomTopName = " + roomName);
             }
 
-            // ivRoomTopSound -> VISIBLE
-            int soundId = getId("ivRoomTopSound");
-            if (soundId != 0) {
-                ImageView ivRoomTopSound = findViewById(soundId);
-                if (ivRoomTopSound != null) {
-                    ivRoomTopSound.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "[B] ivRoomTopSound -> VISIBLE");
-                }
-            }
-
-            // ID الغرفة = 100002 — ابحث عن tvRoomTopLevel
+            // tvRoomTopLevel — مستوى/ID الغرفة (7sp, color_FFA, 24dp)
             int levelId = getId("tvRoomTopLevel");
             if (levelId != 0) {
                 TextView tvLevel = findViewById(levelId);
@@ -362,14 +364,75 @@ public class RoomActivity extends Activity {
                 }
             }
 
-            // زر الإغلاق
+            // ivRoomTopSound — VISIBLE (44dp, src=icon_room_top_sound)
+            int soundId = getId("ivRoomTopSound");
+            if (soundId != 0) {
+                ImageView ivRoomTopSound = findViewById(soundId);
+                if (ivRoomTopSound != null) {
+                    ivRoomTopSound.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[B] ivRoomTopSound -> VISIBLE");
+                }
+            }
+
+            // ivRoomTopLikeJoin — عداد الكأس/الإعجاب (36dp)
+            int likeJoinId = getId("ivRoomTopLikeJoin");
+            if (likeJoinId != 0) {
+                View likeJoin = findViewById(likeJoinId);
+                if (likeJoin != null) {
+                    likeJoin.setVisibility(View.VISIBLE);
+                    likeJoin.setOnClickListener(v ->
+                        Toast.makeText(this, "🏆 الكأس: 0", Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[B] ivRoomTopLikeJoin -> VISIBLE + Toast");
+                }
+            }
+
+            // likeAndIdxViewSwitcher — نص "0" (عداد الإعجابات)
+            int switcherId = getId("likeAndIdxViewSwitcher");
+            if (switcherId != 0) {
+                View switcher = findViewById(switcherId);
+                if (switcher instanceof ViewSwitcher) {
+                    ViewSwitcher vs = (ViewSwitcher) switcher;
+                    for (int i = 0; i < vs.getChildCount(); i++) {
+                        View child = vs.getChildAt(i);
+                        if (child instanceof TextView) {
+                            ((TextView) child).setText("0");
+                        }
+                    }
+                    Log.i(TAG, "[B] likeAndIdxViewSwitcher = 0");
+                }
+            }
+
+            // roomTopic — أيقونة الموضوع (wrap x 40dp, src=room_topic_entrance_icon)
+            int topicId = getId("roomTopic");
+            if (topicId != 0) {
+                ImageView roomTopic = findViewById(topicId);
+                if (roomTopic != null) {
+                    roomTopic.setVisibility(View.VISIBLE);
+                    roomTopic.setOnClickListener(v ->
+                        Toast.makeText(this, "📝 الموضوع", Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[B] roomTopic -> VISIBLE");
+                }
+            }
+
+            // iv_more — زر المزيد (wrap x 40dp, src=room_icon_room_top_more)
+            int moreId = getId("iv_more");
+            if (moreId != 0) {
+                ImageView ivMore = findViewById(moreId);
+                if (ivMore != null) {
+                    ivMore.setOnClickListener(v ->
+                        Toast.makeText(this, "⚙️ المزيد", Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[B] iv_more click");
+                }
+            }
+
+            // ivRoomTopClose — زر الإغلاق (wrap x 40dp, src=room_icon_room_top_close)
             int[] closeIds = {getId("ivRoomTopClose"), getId("iv_room_top_close")};
             for (int id : closeIds) {
                 if (id == 0) continue;
                 ImageView ivClose = findViewById(id);
                 if (ivClose != null) {
                     ivClose.setOnClickListener(v -> finish());
-                    Log.i(TAG, "[B] Close button found");
+                    Log.i(TAG, "[B] ivRoomTopClose click");
                     break;
                 }
             }
@@ -864,31 +927,10 @@ public class RoomActivity extends Activity {
         @NonNull
         @Override
         public MicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // مقعد بسيط برمجي (لا يعتمد على XML معقد)
-            int sizePx = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 70,
-                parent.getResources().getDisplayMetrics());
-            LinearLayout seat = new LinearLayout(parent.getContext());
-            seat.setOrientation(LinearLayout.VERTICAL);
-            seat.setGravity(Gravity.CENTER_HORIZONTAL);
-            seat.setPadding(8, 8, 8, 8);
-            seat.setLayoutParams(new ViewGroup.LayoutParams(sizePx, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            ImageView avatar = new ImageView(parent.getContext());
-            LinearLayout.LayoutParams avatarParams = new LinearLayout.LayoutParams(sizePx, sizePx);
-            avatar.setLayoutParams(avatarParams);
-            avatar.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            seat.addView(avatar);
-
-            TextView name = new TextView(parent.getContext());
-            name.setGravity(Gravity.CENTER);
-            name.setTextColor(Color.WHITE);
-            name.setTextSize(10);
-            name.setMaxLines(1);
-            name.setIncludeFontPadding(false);
-            seat.addView(name);
-
-            return new MicViewHolder(seat);
+            // استخدم room_mic_item_program.xml (نسخة بأبعاد أصلية)
+            View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.room_mic_item_program, parent, false);
+            return new MicViewHolder(view);
         }
 
         @Override
@@ -906,41 +948,57 @@ public class RoomActivity extends Activity {
         public int getItemCount() { return seats.size(); }
 
         class MicViewHolder extends RecyclerView.ViewHolder {
-            LinearLayout container;
-            ImageView head;
-            TextView name;
+            ImageView headBg;    // خلفية الإطار (room_icon_mic_head_bg)
+            ImageView head;     // صورة المستخدم/أيقونة المايك
+            ImageView mute;     // طبقة الكتم
+            ImageView ownerBadge; // تاج المالك
+            TextView name;       // اسم المستخدم
 
             MicViewHolder(@NonNull View itemView) {
                 super(itemView);
-                container = (LinearLayout) itemView;
-                head = (ImageView) container.getChildAt(0);
-                name = (TextView) container.getChildAt(1);
+                headBg = itemView.findViewById(R.id.mic_head_bg);
+                head = itemView.findViewById(R.id.mic_head);
+                mute = itemView.findViewById(R.id.mic_mute);
+                ownerBadge = itemView.findViewById(R.id.mic_owner_badge);
+                name = itemView.findViewById(R.id.mic_name);
             }
 
             void bind(MicSeat seat) {
                 try {
+                    // إخفاء الكل افتراضياً
+                    mute.setVisibility(View.GONE);
+                    ownerBadge.setVisibility(View.GONE);
+
                     if (seat.isLocked) {
-                        // مقعد مقفل
-                        head.setVisibility(View.VISIBLE);
+                        // مقعد مقفل (50dp, src=room_ic_room_mic_lock)
                         head.setImageResource(R.drawable.room_ic_room_mic_lock);
                         name.setText("مقفل");
-                        name.setVisibility(View.VISIBLE);
                     } else if (seat.user != null) {
-                        // مقعد مشغول
-                        head.setVisibility(View.VISIBLE);
+                        // مقعد مشغول (50dp, src=room_default + دائرة ملونة)
+                        head.setImageResource(R.drawable.room_default);
+                        // غيّر الخلفية إلى دائرة ملونة
                         GradientDrawable circle = new GradientDrawable();
                         circle.setShape(GradientDrawable.OVAL);
                         circle.setColor(0xFF0D8A7A);
                         circle.setStroke(2, seat.isSpeaking ? Color.GREEN : Color.WHITE);
-                        head.setImageDrawable(circle);
+                        headBg.setBackground(circle);
+                        
+                        // تاج المالك
+                        if ("owner".equals(seat.user.role)) {
+                            ownerBadge.setVisibility(View.VISIBLE);
+                        }
+                        // أيقونة الكتم
+                        if (seat.isMuted) {
+                            mute.setVisibility(View.VISIBLE);
+                            mute.setImageResource(R.drawable.room_ic_input_mic_off);
+                        }
                         name.setText(seat.user.name);
-                        name.setVisibility(View.VISIBLE);
                     } else {
-                        // مقعد فارغ — أيقونة مايك
-                        head.setVisibility(View.VISIBLE);
+                        // مقعد فارغ (50dp, src=room_ic_room_mic_free)
                         head.setImageResource(R.drawable.room_ic_room_mic_free);
+                        // أعد الخلفية إلى room_icon_mic_head_bg الأصلية
+                        headBg.setBackgroundResource(R.drawable.room_icon_mic_head_bg);
                         name.setText(String.valueOf(seat.index + 1));
-                        name.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "[A] MicViewHolder bind error", e);

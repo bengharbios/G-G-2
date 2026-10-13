@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- نسخة مطابقة لـ room_include_room_mic_item.xml بأبعاد وأيقونات أصلية -->
+<!-- لكن بـ LinearLayout بدل ConstraintLayout (لأن الأصل يحتاج custom views) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="70dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <!-- room_mic_item_wave: 70dp x 70dp -->
+    <FrameLayout
+        android:id="@+id/mic_wave"
+        android:layout_width="70dp"
+        android:layout_height="70dp">
+
+        <!-- room_mic_guide_head: 50dp x 50dp, bg=room_icon_mic_head_bg -->
+        <ImageView
+            android:id="@+id/mic_head_bg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/room_icon_mic_head_bg"
+            android:scaleType="centerCrop" />
+
+        <!-- room_mic_item_head: 50dp x 50dp, src=room_ic_room_mic_free -->
+        <ImageView
+            android:id="@+id/mic_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/room_ic_room_mic_free"
+            android:scaleType="centerCrop" />
+
+        <!-- room_mic_item_mute: 50dp x 50dp (overlay for muted) -->
+        <ImageView
+            android:id="@+id/mic_mute"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
+
+        <!-- royalViewMic: 24dp x 24dp (owner badge) -->
+        <ImageView
+            android:id="@+id/mic_owner_badge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/room_icon_room_top_close_king"
+            android:scaleType="centerInside"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- room_mic_item_name: 11sp, white, center, 20dp, max 1 line, 6dp padding -->
+    <TextView
+        android:id="@+id/mic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:textSize="11sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:maxWidth="70dp" />
+
+</LinearLayout>
