@@ -11,5 +11,5 @@
         <View android:textSize="16.0dip" android:gravity="center" android:id="@id/tv_item_room" android:layout_width="171.5dip" android:layout_height="fill_parent" android:text="@string/G_1393_81" />
     </LinearLayout>
     <View android:id="@id/view_div" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="12.0dip" android:layout_marginTop="11.0dip" />
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/view_pager" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-5.0dip" />
+    <View android:id="@id/view_pager" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-5.0dip" />
 </View>

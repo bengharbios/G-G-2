@@ -32,6 +32,6 @@
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-    <View.PageStatusView android:id="@id/pageLoading" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/tvSubmit" />
+    <View android:id="@id/pageLoading" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/tvSubmit" />
     <View android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tvSubmit" android:background="@drawable/room_btn_gray_bg" android:layout_width="240.0dip" android:layout_height="45.0dip" android:layout_marginBottom="19.0dip" android:text="@string/C_1380_022" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
 </RelativeLayout>

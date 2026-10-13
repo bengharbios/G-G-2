@@ -9,15 +9,15 @@
         </LinearLayout>
         <FrameLayout android:layout_gravity="center" android:background="@drawable/royal_story_lottery_item_bg" android:layout_width="340.0dip" android:layout_height="350.0dip">
             <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_reward_conent" android:layout_width="324.0dip" android:layout_height="252.0dip" android:layout_marginTop="25.0dip">
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_1" android:layout_width="108.0dip" android:layout_height="84.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_2" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginStart="108.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_3" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginStart="216.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_4" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_6" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" android:layout_marginStart="216.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_7" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_8" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" android:layout_marginStart="108.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_9" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" android:layout_marginStart="216.0dip" />
-                <View.shop.view.RoyalLotteryItemView android:id="@id/fl_reward_5" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" android:layout_marginStart="108.0dip" />
+                <View android:id="@id/fl_reward_1" android:layout_width="108.0dip" android:layout_height="84.0dip" />
+                <View android:id="@id/fl_reward_2" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginStart="108.0dip" />
+                <View android:id="@id/fl_reward_3" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginStart="216.0dip" />
+                <View android:id="@id/fl_reward_4" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" />
+                <View android:id="@id/fl_reward_6" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" android:layout_marginStart="216.0dip" />
+                <View android:id="@id/fl_reward_7" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" />
+                <View android:id="@id/fl_reward_8" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" android:layout_marginStart="108.0dip" />
+                <View android:id="@id/fl_reward_9" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="168.0dip" android:layout_marginStart="216.0dip" />
+                <View android:id="@id/fl_reward_5" android:layout_width="108.0dip" android:layout_height="84.0dip" android:layout_marginTop="84.0dip" android:layout_marginStart="108.0dip" />
             </FrameLayout>
             <FrameLayout android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_marginTop="272.0dip">
                 <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#fffad961" android:layout_gravity="center_horizontal" android:padding="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/G_1460_0095" app:stroke_color="#ff0f4c2b" app:stroke_width="1.0dip" />

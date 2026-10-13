@@ -7,9 +7,9 @@
         <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff666263" android:gravity="center" android:layout_width="88.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_77" />
         <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff666263" android:gravity="center" android:layout_width="53.0dip" android:layout_height="fill_parent" android:text="@string/G_1400_78" android:layout_marginStart="-5.0dip" />
     </LinearLayout>
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh_record" android:layout_width="328.0dip" android:layout_height="fill_parent" android:layout_below="@id/ll_title" android:layout_centerHorizontal="true">
+    <View android:id="@id/refresh_record" android:layout_width="328.0dip" android:layout_height="fill_parent" android:layout_below="@id/ll_title" android:layout_centerHorizontal="true">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rcv_record" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </View>
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_record" android:paddingBottom="30.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ll_title" android:layout_centerHorizontal="true">
         <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="93.0dip" android:layout_height="93.0dip" android:src="@drawable/no_data" />
         <View android:textSize="16.0sp" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/no_record" />

@@ -15,25 +15,25 @@
         <ImageView android:id="@id/iv_arrow_album" android:layout_width="11.0dip" android:layout_height="18.0dip" android:src="@drawable/user_info_item_arrow" android:layout_marginEnd="13.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_album_name" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/tv_album_name" />
         <ImageView android:id="@id/iv_red_dot_album" android:visibility="invisible" android:layout_width="9.0dip" android:layout_height="9.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/reddot" app:layout_constraintStart_toEndOf="@id/iv_arrow_album" app:layout_constraintTop_toTopOf="@id/iv_arrow_album" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="11.0dip" app:layout_constraintBottom_toBottomOf="@id/iv_arrow_album" app:layout_constraintEnd_toStartOf="@id/iv_arrow_album" app:layout_constraintTop_toTopOf="@id/iv_arrow_album">
-            <View.ui.userinfo.view.AlbumPicView android:id="@id/iv_album_pic1" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" />
-            <View.ui.userinfo.view.AlbumPicView android:id="@id/iv_album_pic2" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" android:layout_marginStart="10.0dip" />
-            <View.ui.userinfo.view.AlbumPicView android:id="@id/iv_album_pic3" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/iv_album_pic1" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" />
+            <View android:id="@id/iv_album_pic2" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/iv_album_pic3" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="38.0dip" android:layout_marginStart="10.0dip" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <View android:id="@id/view_divider_badge" android:background="@drawable/divider_horizontal" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/cl_album" />
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/cl_grade" android:layout_width="fill_parent" android:layout_height="60.0dip" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/view_divider_badge">
         <View android:textSize="13.0sp" android:textColor="#ff428371" android:id="@id/tv_grade_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="19.0dip" android:text="@string/G_1390_13" android:layout_marginStart="12.0dip" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_grade_name" app:layout_constraintStart_toEndOf="@id/tv_grade_name" app:layout_constraintTop_toTopOf="@id/tv_grade_name">
-            <View.ui.userinfo.view.MedalQualityView android:id="@id/medal_quality_view_1" android:layout_width="24.0dip" android:layout_height="24.0dip" />
-            <View.ui.userinfo.view.MedalQualityView android:id="@id/medal_quality_view_2" android:layout_width="24.0dip" android:layout_height="24.0dip" />
-            <View.ui.userinfo.view.MedalQualityView android:id="@id/medal_quality_view_3" android:layout_width="24.0dip" android:layout_height="24.0dip" />
+            <View android:id="@id/medal_quality_view_1" android:layout_width="24.0dip" android:layout_height="24.0dip" />
+            <View android:id="@id/medal_quality_view_2" android:layout_width="24.0dip" android:layout_height="24.0dip" />
+            <View android:id="@id/medal_quality_view_3" android:layout_width="24.0dip" android:layout_height="24.0dip" />
         </LinearLayout>
         <ImageView android:id="@id/iv_arrow" android:layout_width="11.0dip" android:layout_height="18.0dip" android:src="@drawable/user_info_item_arrow" android:layout_marginEnd="13.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_grade_name" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/tv_grade_name" />
         <ImageView android:id="@id/iv_red_dot" android:visibility="invisible" android:layout_width="9.0dip" android:layout_height="9.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/reddot" app:layout_constraintStart_toEndOf="@id/iv_arrow" app:layout_constraintTop_toTopOf="@id/iv_arrow" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="11.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_grade_name" app:layout_constraintEnd_toStartOf="@id/iv_arrow" app:layout_constraintTop_toTopOf="@id/tv_grade_name">
-            <View.ui.userinfo.view.MedalView android:id="@id/medal_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
-            <View.ui.userinfo.view.MedalView android:id="@id/medal_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
-            <View.ui.userinfo.view.MedalView android:id="@id/medal_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/medal_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
+            <View android:id="@id/medal_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/medal_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <View android:id="@id/view_divider_dice" android:background="@drawable/divider_horizontal" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/cl_grade" />
@@ -42,9 +42,9 @@
         <ImageView android:id="@id/iv_arrow_dice" android:layout_width="11.0dip" android:layout_height="18.0dip" android:src="@drawable/user_info_item_arrow" android:layout_marginEnd="13.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_dice_name" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/tv_dice_name" />
         <ImageView android:id="@id/iv_red_dot_dice" android:visibility="invisible" android:layout_width="9.0dip" android:layout_height="9.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/reddot" app:layout_constraintStart_toEndOf="@id/iv_arrow_dice" app:layout_constraintTop_toTopOf="@id/iv_arrow_dice" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="11.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_dice_name" app:layout_constraintEnd_toStartOf="@id/iv_arrow_dice" app:layout_constraintTop_toTopOf="@id/tv_dice_name">
-            <View.ui.userinfo.view.DiceView android:id="@id/dice_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
-            <View.ui.userinfo.view.DiceView android:id="@id/dice_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
-            <View.ui.userinfo.view.DiceView android:id="@id/dice_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" />
+            <View android:id="@id/dice_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
+            <View android:id="@id/dice_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+            <View android:id="@id/dice_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <View android:id="@id/view_divider_honor_title" android:background="@drawable/divider_horizontal" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/cl_dice" />
@@ -60,10 +60,10 @@
         <View android:textSize="13.0sp" android:textColor="#ff428371" android:id="@id/tv_legend" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:text="@string/G_1390_14" android:layout_marginStart="13.0dip" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
         <ImageView android:id="@id/iv_arrow_gift" android:layout_width="11.0dip" android:layout_height="18.0dip" android:src="@drawable/user_info_item_arrow" android:layout_marginEnd="13.0dip" app:layout_constraintBottom_toBottomOf="@id/ll_gift_view" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/ll_gift_view" />
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_gift_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="11.0dip" app:layout_constraintBottom_toBottomOf="@id/tv_legend" app:layout_constraintEnd_toStartOf="@id/iv_arrow_gift" app:layout_constraintTop_toTopOf="@id/tv_legend">
-            <View.ui.userinfo.view.ViewRoomGift android:id="@id/gift_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
-            <View.ui.userinfo.view.ViewRoomGift android:id="@id/gift_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
-            <View.ui.userinfo.view.ViewRoomGift android:id="@id/gift_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
-            <View.ui.userinfo.view.ViewRoomGift android:id="@id/gift_view_4" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/gift_view_1" android:layout_width="38.0dip" android:layout_height="wrap_content" />
+            <View android:id="@id/gift_view_2" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/gift_view_3" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+            <View android:id="@id/gift_view_4" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

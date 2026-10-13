@@ -17,7 +17,7 @@
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_privilege" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_switch" />
+    <View android:id="@id/vp_privilege" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_switch" />
     <FrameLayout android:id="@id/fl_vip_question" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true">
         <ImageView android:layout_width="21.0dip" android:layout_height="20.0dip" android:layout_marginTop="15.0dip" android:layout_marginBottom="5.0dip" android:src="@drawable/question_icon" android:layout_marginStart="11.0dip" android:layout_marginEnd="8.0dip" />
     </FrameLayout>

@@ -45,9 +45,9 @@
             <ImageView android:layout_width="124.0dip" android:layout_height="124.0dip" android:src="@drawable/vip_room_no_search_result" />
             <View android:textSize="12.0sp" android:textColor="#fffff298" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1480_0038" />
         </LinearLayout>
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smart_refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/fl_bottom" android:layout_below="@id/rl_title">
+        <View android:id="@id/smart_refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/fl_bottom" android:layout_below="@id/rl_title">
             <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_rooms" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </View>
         <LinearLayout android:gravity="bottom|center" android:orientation="vertical" android:id="@id/ll_watch_switch" android:background="@drawable/room_default" android:visibility="gone" android:clickable="true" android:layout_width="162.0dip" android:layout_height="wrap_content" android:layout_marginTop="36.0dip" android:layout_marginStart="4.0dip">
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/id_filter_question" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
                 <View android:textSize="15.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/filter" />

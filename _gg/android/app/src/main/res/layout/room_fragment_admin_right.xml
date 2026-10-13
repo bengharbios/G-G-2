@@ -5,5 +5,5 @@
     <FrameLayout android:id="@id/cl_content" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="8.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/simpleTopBar">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/rvRight" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="6.0dip" />
     </FrameLayout>
-    <View.PageStatusView android:id="@id/page_status" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/simpleTopBar" />
+    <View android:id="@id/page_status" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/simpleTopBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-    <View.PageStatusView android:id="@id/pageStatus" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toTopOf="@id/llShare" app:layout_constraintTop_toTopOf="@id/scrollView" />
+    <View android:id="@id/pageStatus" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toTopOf="@id/llShare" app:layout_constraintTop_toTopOf="@id/scrollView" />
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/llShare" android:background="@drawable/room_btn_yellow_bg" android:layout_width="0.0dip" android:layout_height="40.0dip" android:layout_marginBottom="16.0dip" android:layout_marginStart="18.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@id/llSubscribe" app:layout_constraintHorizontal_weight="1.0" app:layout_constraintStart_toStartOf="parent" app:layout_goneMarginEnd="18.0dip">
         <View android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_activity_share_yellow_icon" />
         <View android:textSize="14.0sp" android:textColor="#ffa17129" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1380_070" android:shadowColor="#a1070317" android:layout_marginStart="8.0dip" app:stroke_color="@color/room_fcf098" app:stroke_width="1.0dip" />

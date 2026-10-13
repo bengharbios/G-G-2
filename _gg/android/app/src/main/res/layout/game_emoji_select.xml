@@ -10,7 +10,7 @@
     </HorizontalScrollView>
     <ImageView android:id="@id/iv_delete" android:layout_width="50.0dip" android:layout_height="38.0dip" android:src="@drawable/chat_emoji_delete" android:scaleType="centerInside" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" />
     <View android:id="@id/divider_line" android:background="#ffd6d6d6" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_above="@id/scroll_view" />
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_emoji" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/divider_line" />
+    <View android:id="@id/vp_emoji" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/divider_line" />
     <View android:textSize="14.0dip" android:textColor="#ffc9c9c9" android:gravity="center" android:id="@id/tv_tip_single_chat" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="65.0dip" android:text="@string/G_1470_0016" android:layout_above="@id/divider_line" android:layout_marginStart="37.0dip" android:layout_marginEnd="37.0dip" />
     <RelativeLayout android:id="@id/ll_cover" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/divider_line">
         <View android:background="#ffa2a2a2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:alpha="0.7" />

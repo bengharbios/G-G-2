@@ -10,6 +10,6 @@
     </RelativeLayout>
     <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" />
     <ImageView android:id="@id/iv_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="84.0dip" android:src="@drawable/logo_private" android:layout_centerHorizontal="true" />
-    <View.battle.view.GameOptionView android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="37.5dip" android:layout_below="@id/iv_logo" />
+    <View android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="37.5dip" android:layout_below="@id/iv_logo" />
     <View android:textSize="24.0sp" android:gravity="center" android:id="@id/bt_create_room" android:background="@drawable/bn_yes_big" android:layout_width="202.0dip" android:layout_height="54.0dip" android:layout_marginBottom="60.0dip" android:text="@string/create" android:includeFontPadding="false" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:textAllCaps="false" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
 </RelativeLayout>

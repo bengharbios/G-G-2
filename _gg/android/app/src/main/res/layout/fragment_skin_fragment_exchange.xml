@@ -55,6 +55,6 @@
                 </LinearLayout>
             </RelativeLayout>
         </FrameLayout>
-        <com.booking.rtlviewpager.RtlViewPager android:id="@id/view_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-15.0dip" android:layout_below="@id/fl_count" />
+        <View android:id="@id/view_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-15.0dip" android:layout_below="@id/fl_count" />
     </RelativeLayout>
 </RelativeLayout>

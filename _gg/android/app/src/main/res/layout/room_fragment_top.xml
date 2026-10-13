@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.google.android.material.tabs.TabLayout android:id="@id/tab_layout" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:tabGravity="fill" app:tabIndicator="@null" app:tabIndicatorColor="@android:color/transparent" app:tabIndicatorHeight="0.0dip" app:tabMaxWidth="0.0dip" app:tabMode="fixed" app:tabRippleColor="@null" />
-    <View.base.vp2.NestedScrollableHost android:id="@id/nestedScrollableHost" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <View android:id="@id/tab_layout" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:tabGravity="fill" app:tabIndicator="@null" app:tabIndicatorColor="@android:color/transparent" app:tabIndicatorHeight="0.0dip" app:tabMaxWidth="0.0dip" app:tabMode="fixed" app:tabRippleColor="@null" />
+    <View android:id="@id/nestedScrollableHost" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <androidx.viewpager2.widget.ViewPager2 android:id="@id/vp_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    </View.base.vp2.NestedScrollableHost>
+    </View>
 </LinearLayout>

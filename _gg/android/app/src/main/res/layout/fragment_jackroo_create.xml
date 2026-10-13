@@ -11,7 +11,7 @@
                 <RelativeLayout android:id="@id/rl_content" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="wrap_content">
                     <ImageView android:id="@id/iv_logo" android:layout_width="202.0dip" android:layout_height="192.0dip" android:layout_marginTop="29.0dip" android:src="@drawable/jackaroo_1v1_page_logo" android:scaleType="fitXY" android:layout_centerHorizontal="true" />
                     <View android:id="@id/iv_divider" android:background="@drawable/divider_in_black_mode" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="8.0dip" android:layout_below="@id/iv_logo" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
-                    <View.battle.view.GameOptionView android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_divider" android:layout_centerHorizontal="true" app:Option_Type="Jackaroo" />
+                    <View android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_divider" android:layout_centerHorizontal="true" app:Option_Type="Jackaroo" />
                 </RelativeLayout>
                 <ViewStub android:layout_gravity="center_horizontal" android:id="@id/vs_super_exp" android:layout="@layout/view_super_exp_multi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="20.0dip" />
             </LinearLayout>

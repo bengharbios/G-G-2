@@ -17,9 +17,9 @@
                 <ImageView android:layout_width="27.0dip" android:layout_height="27.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/icon_celebrity_score" android:layout_alignTop="@id/tv_score" android:layout_marginStart="-10.0dip" android:layout_alignStart="@id/iv_score" />
             </RelativeLayout>
             <FrameLayout android:background="@drawable/room_default" android:layout_width="270.0dip" android:layout_height="297.0dip" android:layout_marginTop="10.0dip" android:layout_below="@id/rl_top" android:layout_centerHorizontal="true">
-                <com.scwang.smartrefresh.layout.SmartRefreshLayout android:layout_gravity="center_horizontal" android:id="@id/smart_refresh" android:layout_width="270.0dip" android:layout_height="267.0dip" android:layout_marginTop="5.0dip">
+                <View android:layout_gravity="center_horizontal" android:id="@id/smart_refresh" android:layout_width="270.0dip" android:layout_height="267.0dip" android:layout_marginTop="5.0dip">
                     <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                </View>
             </FrameLayout>
             <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_empty" android:background="@drawable/room_default" android:visibility="invisible" android:layout_width="270.0dip" android:layout_height="297.0dip" android:layout_marginTop="10.0dip" android:layout_below="@id/rl_top" android:layout_centerHorizontal="true">
                 <ImageView android:layout_width="74.0dip" android:layout_height="74.0dip" android:src="@drawable/celebrity_record_empty" />

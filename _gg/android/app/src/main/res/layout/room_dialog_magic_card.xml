@@ -9,7 +9,7 @@
             <ImageView android:id="@id/iv_gift_recharge_go" android:layout_width="wrap_content" android:layout_height="19.0dip" android:src="@drawable/room_gift_diamond_add" android:paddingEnd="6.0dip" android:layout_marginStart="4.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/tv_gift_coin_num" app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <RelativeLayout android:id="@id/top" android:background="@drawable/room_gift_title_bg" android:paddingTop="4.0dip" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginTop="4.0dip">
-            <View.YlTableLayout android:orientation="horizontal" android:id="@id/tabLayout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_marginEnd="40.0dip" android:layout_toStartOf="@id/llEnd" />
+            <View android:orientation="horizontal" android:id="@id/tabLayout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_marginEnd="40.0dip" android:layout_toStartOf="@id/llEnd" />
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llEnd" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentEnd="true">
                 <FrameLayout android:id="@id/fl_backpack_container" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="12.0dip">
                     <ImageView android:id="@id/ivBackpack" android:layout_width="28.0dip" android:layout_height="wrap_content" android:src="@drawable/room_backpack_icon" />
@@ -18,7 +18,7 @@
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout android:orientation="vertical" android:background="@drawable/room_gift_content_bg" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <com.booking.rtlviewpager.RtlViewPager android:id="@id/vpMagicCard" android:layout_width="fill_parent" android:layout_height="270.0dip" android:layout_marginTop="6.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
+            <View android:id="@id/vpMagicCard" android:layout_width="fill_parent" android:layout_height="270.0dip" android:layout_marginTop="6.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
             <View android:background="@drawable/room_panel_bottom_bg" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_alignBottom="@id/vpMagicCard" />
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingBottom="11.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/vpMagicCard" android:paddingStart="10.0dip" android:paddingEnd="10.0dip">
                 <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/clSelectUser" android:background="@drawable/shape_bg_dialog_magic_select_user" android:layout_width="195.0dip" android:layout_height="wrap_content">

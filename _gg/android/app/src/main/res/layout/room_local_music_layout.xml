@@ -10,5 +10,5 @@
         </LinearLayout>
         <View android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/color_7a" android:gravity="center" android:layout_gravity="end|center" android:id="@id/btDelete" android:background="@drawable/room_btn_gray_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="100.0dip" android:text="@string/Delete" android:layout_marginEnd="23.0dip" />
     </FrameLayout>
-    <View.PageStatusView android:id="@id/pageLoading" android:focusable="true" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/simpleTopBar" />
+    <View android:id="@id/pageLoading" android:focusable="true" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/simpleTopBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

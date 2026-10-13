@@ -2,10 +2,10 @@
 <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="321.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <View.login.password.LoginView android:id="@id/login_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <View.login.password.FindPasswordView android:id="@id/find_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <View.login.password.SignUpView android:id="@id/sign_up_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <View.login.password.SetPasswordView android:id="@id/set_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <View.ui.view.CommonCountrySelectView android:id="@id/area_select_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View android:id="@id/login_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View android:id="@id/find_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View android:id="@id/sign_up_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View android:id="@id/set_pass_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <View android:id="@id/area_select_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </FrameLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@
         <ImageView android:id="@id/ivTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:src="@drawable/room_icon_red_packet_record_title" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
         <ImageView android:id="@id/ivClose" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/room_ic_red_packet_send_close" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smart_refresh_layout" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="8.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/topBar">
+    <View android:id="@id/smart_refresh_layout" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="8.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/topBar">
         <androidx.recyclerview.widget.RecyclerView android:id="@id/recycler_view" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="12.0dip" android:paddingEnd="12.0dip" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </View>
 </androidx.constraintlayout.widget.ConstraintLayout>

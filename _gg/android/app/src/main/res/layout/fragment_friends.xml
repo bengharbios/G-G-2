@@ -29,6 +29,6 @@
                 <ImageView android:layout_width="21.0dip" android:layout_height="21.0dip" android:layout_marginTop="13.0dip" android:src="@drawable/sheet_dialog_close" android:layout_marginStart="13.0dip" />
             </FrameLayout>
         </LinearLayout>
-        <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_friend" android:background="@drawable/social_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ll_friend" />
+        <View android:id="@id/vp_friend" android:background="@drawable/social_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ll_friend" />
     </RelativeLayout>
 </FrameLayout>

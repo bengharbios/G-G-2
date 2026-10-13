@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+    <View android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
         <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
             <androidx.recyclerview.widget.RecyclerView android:id="@id/rvActivityPreview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginStart="16.0dip" android:layout_marginEnd="16.0dip" />
             <View android:id="@id/emptyActivityView" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         </FrameLayout>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </View>
     <View android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tvCreate" android:background="@drawable/room_btn_yellow_bg" android:layout_width="240.0dip" android:layout_height="45.0dip" android:layout_marginTop="19.0dip" android:layout_marginBottom="19.0dip" android:text="@string/C_1380_055" />
 </LinearLayout>

@@ -10,9 +10,9 @@
             <View android:textSize="11.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_earning_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/earning_name" android:layout_marginEnd="30.0dip" android:layout_alignParentEnd="true" />
         </RelativeLayout>
         <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="336.0dip" android:layout_height="fill_parent">
-            <com.scwang.smartrefresh.layout.SmartRefreshLayout android:layout_gravity="center_horizontal" android:id="@id/refresh_layout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="4.0dip">
+            <View android:layout_gravity="center_horizontal" android:id="@id/refresh_layout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="4.0dip">
                 <androidx.recyclerview.widget.RecyclerView android:id="@id/recycle_view_rank" android:clickable="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            </View>
             <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_time" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
                 <View android:textSize="15.0sp" android:textColor="#ff5aeab8" android:id="@id/tv_time_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="The new Global Ranking starts at" />
                 <View android:textSize="15.0sp" android:textColor="#ffffffff" android:id="@id/tv_start_left_time" android:layout_width="wrap_content" android:layout_height="wrap_content" />

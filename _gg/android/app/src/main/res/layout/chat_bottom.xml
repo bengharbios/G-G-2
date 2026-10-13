@@ -6,6 +6,6 @@
         <FrameLayout android:id="@id/fl_reply_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/tv_reply_name" android:layoutDirection="locale" android:layout_marginStart="10.0dip" />
         <ImageView android:id="@id/iv_reply_close" android:layout_width="17.0dip" android:layout_height="17.0dip" android:src="@drawable/reply_close" android:layout_centerVertical="true" android:layout_marginEnd="20.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>
-    <View.friends.view.chat.ChatInputView android:id="@id/chat_input" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <View.friends.view.chat.EmojiSelectView android:id="@id/chat_select_emoji" android:background="#ffffffff" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+    <View android:id="@id/chat_input" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <View android:id="@id/chat_select_emoji" android:background="#ffffffff" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" />
 </LinearLayout>

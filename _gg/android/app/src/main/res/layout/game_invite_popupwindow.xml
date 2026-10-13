@@ -15,5 +15,5 @@
             <View android:textSize="17.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_domino" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/domino" />
         </LinearLayout>
     </LinearLayout>
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_game" android:background="#ff1f8968" android:layout_width="fill_parent" android:layout_height="126.0dip" />
+    <View android:id="@id/vp_game" android:background="#ff1f8968" android:layout_width="fill_parent" android:layout_height="126.0dip" />
 </LinearLayout>

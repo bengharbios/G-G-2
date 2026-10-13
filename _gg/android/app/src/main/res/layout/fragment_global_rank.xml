@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:orientation="vertical" android:id="@id/rl_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View.rank.view.GlobalRankView android:id="@id/globalRankView" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="47.0dip" />
+    <View android:id="@id/globalRankView" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="47.0dip" />
     <RelativeLayout android:id="@id/rl_title" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip">
         <ImageView android:id="@id/iv_rules" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/room_default" android:paddingStart="10.0dip" android:layout_alignParentStart="true" />
         <View android:textSize="22.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:text="@string/global_name" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />

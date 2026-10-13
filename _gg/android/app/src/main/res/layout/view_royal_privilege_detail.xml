@@ -17,5 +17,5 @@
     <FrameLayout android:id="@id/fl_change_right" android:visibility="invisible" android:layout_width="38.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:layout_alignTop="@id/fl_royal_title_change" android:layout_alignParentRight="true">
         <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/royal_change_level_right_ic" />
     </FrameLayout>
-    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_privilege" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_change_right" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" />
+    <View android:id="@id/vp_privilege" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/fl_change_right" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" />
 </RelativeLayout>

@@ -41,7 +41,7 @@
                 <View android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4e9f7a" android:layout_gravity="center" android:id="@id/tv_weekly_num" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </FrameLayout>
             <View android:textSize="11.0sp" android:textColor="#ff71c0a9" android:layout_gravity="center" android:id="@id/ctv_resign" android:layout_width="wrap_content" android:layout_height="15.0dip" />
-            <com.booking.rtlviewpager.RtlViewPager android:id="@id/view_pager" android:layout_width="320.0dip" android:layout_height="188.0dip" android:layout_marginTop="8.0dip" />
+            <View android:id="@id/view_pager" android:layout_width="320.0dip" android:layout_height="188.0dip" android:layout_marginTop="8.0dip" />
             <LinearLayout android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
                 <ImageView android:id="@id/iv_dot_0" android:layout_width="7.0dip" android:layout_height="7.0dip" android:src="@drawable/sign_week_dot_nomal" />
                 <ImageView android:id="@id/iv_dot_1" android:layout_width="7.0dip" android:layout_height="7.0dip" android:src="@drawable/sign_week_dot_nomal" android:layout_marginStart="4.0dip" />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:orientation="vertical" android:fitsSystemWindows="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.google.android.material.appbar.AppBarLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/abl_related" android:background="@color/transparent" android:visibility="visible" android:layout_width="360.0dip" android:layout_height="170.0dip" app:elevation="0.0dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
-        <com.google.android.material.appbar.CollapsingToolbarLayout android:id="@id/ctl_room" android:paddingTop="5.0dip" android:layout_width="fill_parent" android:layout_height="120.0dip" app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed" app:scrimAnimationDuration="150">
+    <View android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/abl_related" android:background="@color/transparent" android:visibility="visible" android:layout_width="360.0dip" android:layout_height="170.0dip" app:elevation="0.0dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
+        <View android:id="@id/ctl_room" android:paddingTop="5.0dip" android:layout_width="fill_parent" android:layout_height="120.0dip" app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed" app:scrimAnimationDuration="150">
             <include android:layout_gravity="center_horizontal" android:id="@id/include_room_create" android:layout_width="360.0dip" android:layout_height="115.0dip" layout="@layout/room_layout_create_room_v2" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </View>
         <FrameLayout android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginTop="10.0dip" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip">
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="40.0dip">
                 <View android:gravity="center" android:background="@drawable/bg_related_title_selected_left_bg" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
@@ -22,9 +22,9 @@
                 <View android:textSize="12.0dip" android:textStyle="bold" android:textColor="@color/room_color_ff32644e" android:gravity="center" android:id="@id/tv_friend_room_list" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_marginBottom="1.0dip" android:text="@string/C_1392_071" android:layout_weight="1.0" />
             </LinearLayout>
         </FrameLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    </View>
     <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <View.YlViewPager android:layout_gravity="center_horizontal" android:id="@id/vp_related" android:clipChildren="false" android:layout_width="360.0dip" android:layout_height="wrap_content" />
+        <View android:layout_gravity="center_horizontal" android:id="@id/vp_related" android:clipChildren="false" android:layout_width="360.0dip" android:layout_height="wrap_content" />
     </FrameLayout>
     <ViewStub android:id="@id/vs_guide_create" android:layout="@layout/room_layout_create_room_guide" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

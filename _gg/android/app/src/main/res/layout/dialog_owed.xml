@@ -24,8 +24,8 @@
                 <View android:textSize="13.0sp" android:textColor="#ff669a8b" android:gravity="center" android:layout_width="103.0dip" android:layout_height="fill_parent" android:text="@string/G_1380_149" />
                 <View android:textSize="13.0sp" android:textColor="#ff669a8b" android:gravity="center" android:layout_width="103.0dip" android:layout_height="fill_parent" android:text="@string/G_1380_150" />
             </LinearLayout>
-            <View.shop.view.OwedListView android:id="@id/owed_list_view_1" android:layout_width="fill_parent" android:layout_height="253.0dip" />
-            <View.shop.view.OwedListView android:id="@id/owed_list_view_2" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="211.0dip" />
+            <View android:id="@id/owed_list_view_1" android:layout_width="fill_parent" android:layout_height="253.0dip" />
+            <View android:id="@id/owed_list_view_2" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="211.0dip" />
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignLeft="@id/ll_content_" android:layout_alignTop="@id/ll_content_" android:layout_alignRight="@id/ll_content_">

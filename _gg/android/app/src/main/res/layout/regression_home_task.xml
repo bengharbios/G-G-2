@@ -28,7 +28,7 @@
             <ImageView android:id="@id/shop_red_dot" android:visibility="gone" android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/reddot" android:layout_marginStart="80.0dip" />
         </FrameLayout>
     </LinearLayout>
-    <View.events.regression.view.RegressionViewPage android:id="@id/vp_regression" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/radio_group_switch" android:layout_centerHorizontal="true" />
+    <View android:id="@id/vp_regression" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/radio_group_switch" android:layout_centerHorizontal="true" />
     <FrameLayout android:id="@id/fl_new_guild" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
         <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="360.0dip" android:layout_height="fill_parent">
             <ImageView android:layout_gravity="center_horizontal" android:layout_width="340.0dip" android:layout_height="117.0dip" android:layout_marginTop="80.0dip" android:src="@drawable/ac_tower_new_guide_bg" />

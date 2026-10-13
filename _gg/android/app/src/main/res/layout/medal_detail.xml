@@ -14,13 +14,13 @@
     <ImageView android:id="@id/iv_medal" android:background="@drawable/medal_bg" android:layout_width="350.0dip" android:layout_height="185.0dip" android:layout_marginTop="-6.0dip" android:layout_below="@id/rl_title" android:layout_centerHorizontal="true" />
     <LinearLayout android:layout_width="350.0dip" android:layout_height="wrap_content" android:layout_marginBottom="75.0dip" android:layout_alignBottom="@id/iv_medal" android:layout_centerHorizontal="true">
         <FrameLayout android:layout_width="0.0px" android:layout_height="104.0dip" android:layout_weight="1.0">
-            <View.ui.medal.OwnMedalView android:id="@id/medal_view_1" android:layout_width="100.0dip" android:layout_height="104.0dip" android:layout_marginStart="15.5dip" />
+            <View android:id="@id/medal_view_1" android:layout_width="100.0dip" android:layout_height="104.0dip" android:layout_marginStart="15.5dip" />
         </FrameLayout>
         <FrameLayout android:layout_width="0.0px" android:layout_height="104.0dip" android:layout_weight="1.0">
-            <View.ui.medal.OwnMedalView android:layout_gravity="center" android:id="@id/medal_view_2" android:layout_width="100.0dip" android:layout_height="104.0dip" />
+            <View android:layout_gravity="center" android:id="@id/medal_view_2" android:layout_width="100.0dip" android:layout_height="104.0dip" />
         </FrameLayout>
         <FrameLayout android:layout_width="0.0px" android:layout_height="104.0dip" android:layout_weight="1.0">
-            <View.ui.medal.OwnMedalView android:layout_gravity="end" android:id="@id/medal_view_3" android:layout_width="100.0dip" android:layout_height="104.0dip" android:layout_marginEnd="10.5dip" />
+            <View android:layout_gravity="end" android:id="@id/medal_view_3" android:layout_width="100.0dip" android:layout_height="104.0dip" android:layout_marginEnd="10.5dip" />
         </FrameLayout>
     </LinearLayout>
     <RelativeLayout android:layout_width="350.0dip" android:layout_height="55.0dip" android:layout_marginBottom="7.0dip" android:layout_alignBottom="@id/iv_medal" android:layout_centerHorizontal="true">
@@ -38,7 +38,7 @@
         </FrameLayout>
     </RelativeLayout>
     <FrameLayout android:background="#ff17694f" android:layout_width="350.0dip" android:layout_height="fill_parent" android:layout_marginTop="-20.0dip" android:layout_marginBottom="40.0dip" android:layout_below="@id/iv_medal" android:layout_centerHorizontal="true">
-        <com.booking.rtlviewpager.RtlViewPager android:layout_gravity="center" android:id="@id/vp_medal" android:layout_width="350.0dip" android:layout_height="fill_parent" />
+        <View android:layout_gravity="center" android:id="@id/vp_medal" android:layout_width="350.0dip" android:layout_height="fill_parent" />
     </FrameLayout>
     <FrameLayout android:background="@drawable/bg_point" android:layout_width="350.0dip" android:layout_height="40.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
         <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_points" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="5.0dip">

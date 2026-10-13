@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh_joined_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+<View android:id="@id/refresh_joined_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <View.BlockScrollRecycleView android:id="@id/rv_joined_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:overScrollMode="never" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" />
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <View android:id="@id/rv_joined_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:overScrollMode="never" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" />
+</View>

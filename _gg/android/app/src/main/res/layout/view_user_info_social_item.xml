@@ -11,5 +11,5 @@
             <View android:textSize="12.0sp" android:textColor="#ff428371" android:gravity="center" android:id="@id/tv_room_player_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <View.ui.userinfo.view.UserSupportRoomInfoView android:id="@id/view_room_support" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <View android:id="@id/view_room_support" android:layout_width="fill_parent" android:layout_height="wrap_content" />
 </LinearLayout>

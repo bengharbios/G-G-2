@@ -12,9 +12,9 @@
             <ImageView android:id="@id/iv_switch" android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/celebrity_honor_rank_switch" android:layout_alignTop="@id/ll_time" android:layout_alignStart="@id/ll_time" />
         </FrameLayout>
         <RelativeLayout android:id="@id/rl_top_rank" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
-            <View.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_2" android:background="@drawable/bg_celebrity_rank_no_2" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginStart="25.0dip" android:layout_alignParentStart="true" />
-            <View.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_1" android:background="@drawable/bg_celebrity_rank_no_1" android:layout_width="144.0dip" android:layout_height="219.0dip" android:layout_marginTop="27.0dip" android:layout_centerHorizontal="true" />
-            <View.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_3" android:background="@drawable/bg_celebrity_rank_no_3" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginEnd="25.0dip" android:layout_alignParentEnd="true" />
+            <View android:id="@id/celebrity_no_2" android:background="@drawable/bg_celebrity_rank_no_2" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginStart="25.0dip" android:layout_alignParentStart="true" />
+            <View android:id="@id/celebrity_no_1" android:background="@drawable/bg_celebrity_rank_no_1" android:layout_width="144.0dip" android:layout_height="219.0dip" android:layout_marginTop="27.0dip" android:layout_centerHorizontal="true" />
+            <View android:id="@id/celebrity_no_3" android:background="@drawable/bg_celebrity_rank_no_3" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginEnd="25.0dip" android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </RelativeLayout>
     <View android:id="@id/view_list_bg" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-40.0dip" android:layout_below="@id/rl_top" />

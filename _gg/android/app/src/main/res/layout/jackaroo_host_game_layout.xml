@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View.battle.vip.jackaroo.view.JackarooVipGameOptionView android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" app:Option_Type="VipRoom" />
+    <View android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" app:Option_Type="VipRoom" />
     <View android:textSize="16.5sp" android:gravity="center" android:id="@id/btn_create" android:background="@drawable/bn_yes" android:layout_width="177.0dip" android:layout_height="48.0dip" android:layout_marginTop="5.0dip" android:layout_marginBottom="13.0dip" android:text="@string/create" android:layout_below="@id/game_option_view" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
     <FrameLayout android:id="@id/fl_prop" android:background="@drawable/prop_drop_pop_bg" android:visibility="gone" android:layout_width="43.0dip" android:layout_height="wrap_content" android:layout_marginTop="-20.0dip" android:layout_marginRight="-27.0dip" android:layout_alignTop="@id/btn_create" android:layout_alignRight="@id/btn_create">
         <View android:background="@drawable/prop_drop_pop_bg" android:layout_width="43.0dip" android:layout_height="43.0dip" android:layout_marginTop="2.0dip" />
