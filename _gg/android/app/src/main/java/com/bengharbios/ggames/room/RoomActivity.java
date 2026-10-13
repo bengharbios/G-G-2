@@ -618,9 +618,18 @@ public class RoomActivity extends Activity {
         @Override
         public MicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             // البند 3: استخدم room_include_room_mic_item.xml الأصلي
-            View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.room_include_room_mic_item, parent, false);
-            return new MicViewHolder(view);
+            // الملف يبدأ بـ <merge> لذا نحتاج wrapper (FrameLayout)
+            FrameLayout wrapper = new FrameLayout(parent.getContext());
+            wrapper.setLayoutParams(new ViewGroup.LayoutParams(
+                dp(80), ViewGroup.LayoutParams.WRAP_CONTENT
+            ));
+            try {
+                LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.room_include_room_mic_item, wrapper, true);
+            } catch (Exception e) {
+                Log.e(TAG, "[بند 3] Failed to inflate mic_item", e);
+            }
+            return new MicViewHolder(wrapper);
         }
 
         @Override
