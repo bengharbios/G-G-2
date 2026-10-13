@@ -358,12 +358,11 @@ public class RoomActivity extends Activity {
 
     private void initMicSeats() {
         micSeats.clear();
-        MicSeat ownerSeat = new MicSeat(0);
-        ownerSeat.user = new RoomUser("owner_001", roomName, 0, 25, "owner");
-        micSeats.add(ownerSeat);
-        for (int i = 1; i < micSeatCount; i++) {
+        // المرحلة 1 - البند 2: لا بروفايل وهمي في المايك 1
+        // جميع المقاعد فارغة مثل بعضها (مطابقة لطلب المستخدم)
+        for (int i = 0; i < micSeatCount; i++) {
             MicSeat seat = new MicSeat(i);
-            // المقعد 3 مقفل (مثل Yalla Ludo الأصلي)
+            // المقعد 3 (index=2) مقفل (مثل Yalla Ludo الأصلي)
             if (i == 2) seat.isLocked = true;
             micSeats.add(seat);
         }
@@ -809,23 +808,37 @@ public class RoomActivity extends Activity {
                 return;
             }
 
+            // === الحاوية الرئيسية (overlay frame) — شفافة بالكامل ===
+            // تستقبل لمس خارج اللوحة السفلية → closeInputOverlay
+            FrameLayout overlayFrame = new FrameLayout(this);
+            overlayFrame.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+            // خلفية شفافة (لا تظهر) — لكنها تستقبل النقرات
+            overlayFrame.setBackgroundColor(0x00000000);
+            // النقر على الحاوية يغلق الـ overlay (لمس خارج اللوحة)
+            overlayFrame.setOnClickListener(v -> closeInputOverlay());
+
+            // === اللوحة السفلية (room_bottom_input.xml) ===
             // انفخ room_bottom_input.xml كـ view منفصلة
             View overlay;
             try {
-                overlay = LayoutInflater.from(this).inflate(R.layout.room_bottom_input, rootView, false);
+                overlay = LayoutInflater.from(this).inflate(R.layout.room_bottom_input, overlayFrame, false);
             } catch (Exception inflateEx) {
                 Log.e(TAG, "[InputOverlay] inflate room_bottom_input failed", inflateEx);
                 return;
             }
 
-            // خصائص الـ layout
+            // خصائص اللوحة السفلية: عرض كامل، ارتفاع تلقائي، أسفل الشاشة
             int overlayWidth = FrameLayout.LayoutParams.MATCH_PARENT;
             int overlayHeight = FrameLayout.LayoutParams.WRAP_CONTENT;
             FrameLayout.LayoutParams overlayLp = new FrameLayout.LayoutParams(overlayWidth, overlayHeight);
             overlayLp.gravity = Gravity.BOTTOM;
             overlay.setLayoutParams(overlayLp);
-            // خلفية شفافة فوق الـ background — تكون فوق الشريط السفلي
-            overlay.setBackgroundColor(0xFF1A1F2A); // مطابقة للسورس: room_f5f5f6 لكن مع خلفية غامقة
+            // خلفية غامقة (مطابقة للسورس: room_f5f5f6 لكن مع خلفية غامقة ليلاً)
+            overlay.setBackgroundColor(0xFF1A1F2A);
+            // اللوحة السفلية تستهلك النقر (لا تغلق عند لمسها)
+            overlay.setOnClickListener(v -> { /* consume click */ });
 
             // اربط عناصر الـ overlay
             EditText etInput = (EditText) overlay.findViewById(getId("etInputMessage"));
@@ -843,17 +856,6 @@ public class RoomActivity extends Activity {
                 if (!prevText.isEmpty()) {
                     etInput.setText(prevText);
                     etInput.setSelection(prevText.length());
-                }
-            }
-
-            // ركز على etInputMessage لفتح الكيبورد
-            if (etInput != null) {
-                etInput.requestFocus();
-                // افتح الكيبورد
-                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)
-                    getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.showSoftInput(etInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
                 }
             }
 
@@ -877,7 +879,7 @@ public class RoomActivity extends Activity {
                 });
             }
 
-            // ربط ivSend: إرسال الرسالة
+            // ربط ivSend: إرسال الرسالة + إغلاق الـ overlay
             if (sendBtn != null) {
                 sendBtn.setOnClickListener(v -> {
                     try {
@@ -912,13 +914,16 @@ public class RoomActivity extends Activity {
                     Toast.makeText(this, "📷 صورة", Toast.LENGTH_SHORT).show());
             }
 
-            // أضف الـ overlay إلى content_view
-            rootView.addView(overlay);
-            inputOverlayView = overlay;
+            // أضف اللوحة السفلية إلى الحاوية
+            overlayFrame.addView(overlay);
+
+            // أضف الحاوية إلى content_view
+            rootView.addView(overlayFrame);
+            inputOverlayView = overlayFrame;
             etInputMessage = etInput;
             Log.i(TAG, "[InputOverlay] opened");
 
-            // أنميشن بسيط: slide up
+            // أنميشن بسيط: slide up للوحة السفلية فقط (الحاوية تظهر فوراً)
             try {
                 overlay.setTranslationY(200);
                 overlay.animate().translationY(0).setDuration(200).start();
@@ -926,21 +931,30 @@ public class RoomActivity extends Activity {
                 Log.e(TAG, "[InputOverlay] anim error", animEx);
             }
 
-            // استمع لإغلاق الكيبورد (WindowInsets) — عند الإخفاء، أغلق الـ overlay
-            View contentView = findViewById(android.R.id.content);
-            if (contentView != null) {
-                ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
-                    int imeVisible = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-                    int sysBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
-                    int bottomInset = Math.max(imeVisible, sysBars);
-                    v.setPadding(0, 0, 0, bottomInset);
-                    // إذا كان الكيبورد مختفياً والـ overlay مفتوح، أغلقه
-                    if (imeVisible == 0 && inputOverlayView != null && inputOverlayView.isShown()) {
-                        closeInputOverlay();
+            // === المرحلة 1 - البند 1: requestFocus + showSoftInput داخل post() ===
+            // لا WindowInsets listener للإغلاق التلقائي (حسب طلب المستخدم)
+            // الإغلاق يتم فقط بـ: زر الإرسال / زر الرجوع / لمس خارج الـ overlay
+            if (etInput != null) {
+                etInput.post(() -> {
+                    try {
+                        etInput.requestFocus();
+                        android.view.inputmethod.InputMethodManager imm =
+                            (android.view.inputmethod.InputMethodManager)
+                                getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) {
+                            // SHOW_FORCED يضمن ظهور الكيبورد حتى لو لم يكن هناك تركيز كامل
+                            imm.showSoftInput(etInput,
+                                android.view.inputmethod.InputMethodManager.SHOW_FORCED);
+                            Log.i(TAG, "[InputOverlay] keyboard shown via post()");
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "[InputOverlay] post focus/keyboard error", e);
                     }
-                    return insets;
                 });
             }
+
+            // ملاحظة: لا نضيف WindowInsets listener للإغلاق التلقائي
+            // الإغلاق يتم فقط بـ: زر الإرسال / زر الرجوع / لمس خارج الـ overlay
         } catch (Exception e) {
             Log.e(TAG, "[InputOverlay] open error", e);
         }
