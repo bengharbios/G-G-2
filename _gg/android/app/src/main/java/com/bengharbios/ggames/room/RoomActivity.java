@@ -248,6 +248,143 @@ public class RoomActivity extends Activity {
 
         startSpeakingSimulation();
         Toast.makeText(this, "تم فتح الغرفة", Toast.LENGTH_SHORT).show();
+
+        // ===== تشخيص مؤقت على الشاشة =====
+        showDiagnosticOverlay();
+    }
+
+    /**
+     * تشخيص مؤقت: TextView أحمر يعرض حالة rvRoomMic والأخطاء
+     */
+    private void showDiagnosticOverlay() {
+        try {
+            // اجمع الأخطاء الملتقطة
+            final StringBuilder diag = new StringBuilder();
+
+            // rvRoomMic
+            if (rvRoomMic != null) {
+                diag.append("rvRoomMic:\n");
+                diag.append("  vis=").append(rvRoomMic.getVisibility()).append("\n");
+                diag.append("  w=").append(rvRoomMic.getWidth());
+                diag.append(" h=").append(rvRoomMic.getHeight()).append("\n");
+                diag.append("  adapter=").append(rvRoomMic.getAdapter() != null ? "set" : "NULL").append("\n");
+                diag.append("  itemCount=").append(micAdapter != null ? micAdapter.getItemCount() : -1).append("\n");
+                diag.append("  childCount=").append(rvRoomMic.getChildCount()).append("\n");
+                // أبعاد أول child بعد post
+                rvRoomMic.post(() -> {
+                    try {
+                        StringBuilder d2 = new StringBuilder(diag);
+                        d2.append("  post-childCount=").append(rvRoomMic.getChildCount()).append("\n");
+                        if (rvRoomMic.getChildCount() > 0) {
+                            View child = rvRoomMic.getChildAt(0);
+                            d2.append("  child0: w=").append(child.getWidth());
+                            d2.append(" h=").append(child.getHeight());
+                            d2.append(" vis=").append(child.getVisibility()).append("\n");
+                            // أبناء الـ child
+                            if (child instanceof ViewGroup) {
+                                ViewGroup vg = (ViewGroup) child;
+                                d2.append("  child0.childCount=").append(vg.getChildCount()).append("\n");
+                                for (int i = 0; i < vg.getChildCount() && i < 5; i++) {
+                                    View sub = vg.getChildAt(i);
+                                    d2.append("    sub").append(i).append(": vis=").append(sub.getVisibility());
+                                    d2.append(" w=").append(sub.getWidth()).append(" h=").append(sub.getHeight()).append("\n");
+                                }
+                            }
+                        }
+                        updateDiagText(d2.toString());
+                    } catch (Exception e) {
+                        updateDiagText("post error: " + e.getMessage());
+                    }
+                });
+            } else {
+                diag.append("rvRoomMic: NULL (fallback used)\n");
+            }
+
+            // llRoomTop
+            int llRoomTopId = getId("llRoomTop");
+            if (llRoomTopId != 0) {
+                View llRoomTop = findViewById(llRoomTopId);
+                if (llRoomTop != null) {
+                    llRoomTop.post(() -> {
+                        try {
+                            StringBuilder d3 = new StringBuilder(diag);
+                            d3.append("llRoomTop:\n");
+                            d3.append("  w=").append(llRoomTop.getWidth());
+                            d3.append(" h=").append(llRoomTop.getHeight()).append("\n");
+                            d3.append("  vis=").append(llRoomTop.getVisibility()).append("\n");
+                            d3.append("  y=").append(llRoomTop.getY()).append("\n");
+                            updateDiagText(d3.toString());
+                        } catch (Exception e) {}
+                    });
+                }
+            }
+
+            // أنشئ TextView تشخيص
+            final TextView diagView = new TextView(this);
+            diagView.setId(View.generateViewId());
+            diagView.setText(diag.toString());
+            diagView.setTextColor(Color.WHITE);
+            diagView.setBackgroundColor(0xCC000000);
+            diagView.setTextSize(10);
+            diagView.setPadding(8, 8, 8, 8);
+            diagView.setMaxLines(25);
+
+            // أضفه فوق كل شيء
+            ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
+            if (contentView != null && contentView.getChildCount() > 0) {
+                FrameLayout overlay = new FrameLayout(this);
+                FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                );
+                flp.gravity = Gravity.TOP;
+                overlay.addView(diagView, flp);
+                ((ViewGroup) contentView.getChildAt(0)).addView(overlay);
+                diagView.setTag("diag_overlay");
+            }
+
+            // اجعل rvRoomMic خلفية حمراء شفافة
+            if (rvRoomMic != null) {
+                rvRoomMic.setBackgroundColor(0x44FF0000);
+                rvRoomMic.bringToFront();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "showDiagnosticOverlay error", e);
+        }
+    }
+
+    private void updateDiagText(final String text) {
+        try {
+            runOnUiThread(() -> {
+                ViewGroup content = (ViewGroup) findViewById(android.R.id.content);
+                if (content != null && content.getChildCount() > 0) {
+                    View root = content.getChildAt(0);
+                    if (root instanceof ViewGroup) {
+                        ViewGroup vg = (ViewGroup) root;
+                        for (int i = 0; i < vg.getChildCount(); i++) {
+                            View child = vg.getChildAt(i);
+                            if (child instanceof ViewGroup) {
+                                ViewGroup overlay = (ViewGroup) child;
+                                for (int j = 0; j < overlay.getChildCount(); j++) {
+                                    View v = overlay.getChildAt(j);
+                                    if (v instanceof TextView && "diag_overlay".equals(v.getTag())) {
+                                        ((TextView) v).setText(text);
+                                        return;
+                                    }
+                                }
+                            }
+                            if (child instanceof TextView && "diag_overlay".equals(child.getTag())) {
+                                ((TextView) child).setText(text);
+                                return;
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "updateDiagText error", e);
+        }
     }
 
     // ============================================
