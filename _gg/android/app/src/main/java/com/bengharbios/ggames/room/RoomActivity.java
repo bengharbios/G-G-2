@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -43,12 +44,14 @@ import java.util.Random;
 /**
  * RoomActivity — يحمّل room_layout_room.xml الأصلي من Yalla Ludo v1.5.1.0
  *
- * البنود المنفذة:
- * 1. الشريط السفلي: roomBottomInputView -> VISIBLE + WindowInsets
- * 2. ViewStubs: vsNoticeBoard + vsTopMessage inflate
- * 3. rvRoomMic: Adapter بسيط باستخدام room_include_room_mic_item.xml
- * 4. rvRoomChat: Adapter بسيط مع رسالة ترحيب
- * 5. ivRoomTopSound -> VISIBLE
+ * البنود A-G مع try/catch مستقل لكل بند:
+ * A. المقاعد (5 مقاعد + أيقونة مايك + رقم + قفل + صورة افتراضية)
+ * B. الهيدر (صورة الغرفة + ID + ivRoomTopSound)
+ * C. صندوق الإعلان (vsNoticeBoard بنص تجريبي)
+ * D. الشريط الجانبي الأيمن (Treasure / Activity / Music)
+ * E. ivMic و ivEmoji يظهران عند التفاعل
+ * F. كل الأزرار تعرض Toast باسمها
+ * G. عداد الكأس = 0
  */
 public class RoomActivity extends Activity {
 
@@ -65,6 +68,7 @@ public class RoomActivity extends Activity {
     private RecyclerView rvRoomMic;
     private RecyclerView rvChat;
     private ImageView ivSound, ivMic, ivMicEmoji, ivGift, ivSendPicture, ivSend;
+    private ImageView ivShowGameCenter;
     private EditText etMessage;
     private TextView tvRoomTopName;
     private View roomRoot;
@@ -83,7 +87,7 @@ public class RoomActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ===== UncaughtExceptionHandler — يكتب stack trace في ملف =====
+        // ===== UncaughtExceptionHandler =====
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             try {
                 StringWriter sw = new StringWriter();
@@ -95,19 +99,17 @@ public class RoomActivity extends Activity {
                 throwable.printStackTrace(pw);
                 String crashText = sw.toString();
                 Log.e(TAG, crashText);
-                // اكتب في ملف
                 java.io.FileOutputStream fos = openFileOutput("room_crash.log", MODE_PRIVATE);
                 fos.write(crashText.getBytes());
                 fos.close();
             } catch (Exception writeEx) {
                 Log.e(TAG, "Failed to write crash log", writeEx);
             }
-            // أنهي النشاط
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
         });
 
-        // ===== اعرض crash log سابق إن وُجد =====
+        // ===== اعرض crash log سابق =====
         try {
             java.io.File crashFile = getFileStreamPath("room_crash.log");
             if (crashFile != null && crashFile.exists()) {
@@ -119,8 +121,9 @@ public class RoomActivity extends Activity {
                 crashFile.delete();
                 new AlertDialog.Builder(this)
                     .setTitle("💥 Crash سابق")
-                    .setMessage(crashText.substring(0, Math.min(crashText.length(), 2000)))
+                    .setMessage(crashText.substring(0, Math.min(crashText.length(), 3000)))
                     .setPositiveButton("حسناً", (d, w) -> d.dismiss())
+                    .setCancelable(false)
                     .show();
             }
         } catch (Exception e) {
@@ -146,7 +149,7 @@ public class RoomActivity extends Activity {
             Log.e(TAG, "[Setup] Error", e);
         }
 
-        // تحميل XML الأصلي
+        // تحميل XML
         try {
             setContentView(R.layout.room_layout_room);
             Log.i(TAG, "✓ room_layout_room.xml loaded");
@@ -155,7 +158,7 @@ public class RoomActivity extends Activity {
             showErrorDialog("فشل تحميل تصميم الغرفة", e);
         }
 
-        // خلفية متدرجة
+        // خلفية
         try {
             int contentViewId = getId("content_view");
             View root = findViewById(contentViewId);
@@ -171,283 +174,129 @@ public class RoomActivity extends Activity {
             Log.e(TAG, "Background error", e);
         }
 
-        // ===== البند 1: الشريط السفلي =====
+        // ===== البند A: المقاعد =====
         try {
-            Log.i(TAG, "[بند 1] بدء setupBottomBar");
-            setupBottomBar();
-            Log.i(TAG, "[بند 1] اكتمل بنجاح");
-        } catch (Exception e) {
-            Log.e(TAG, "[بند 1] setupBottomBar فشل", e);
-        }
-
-        // ===== البند 2: ViewStubs =====
-        try {
-            Log.i(TAG, "[بند 2] بدء inflateViewStubs");
-            inflateViewStubs();
-            Log.i(TAG, "[بند 2] اكتمل بنجاح");
-        } catch (Exception e) {
-            Log.e(TAG, "[بند 2] inflateViewStubs فشل", e);
-        }
-
-        // ===== البند 5: الهيدر =====
-        try {
-            Log.i(TAG, "[بند 5] بدء setupHeader");
-            setupHeader();
-            Log.i(TAG, "[بند 5] اكتمل بنجاح");
-        } catch (Exception e) {
-            Log.e(TAG, "[بند 5] setupHeader فشل", e);
-        }
-
-        // ===== البند 3: مقاعد المايك =====
-        try {
-            Log.i(TAG, "[بند 3] بدء setupMicSeats");
+            Log.i(TAG, "[A] بدء setupMicSeats");
             setupMicSeats();
-            Log.i(TAG, "[بند 3] اكتمل بنجاح");
+            Log.i(TAG, "[A] اكتمل بنجاح");
         } catch (Exception e) {
-            Log.e(TAG, "[بند 3] setupMicSeats فشل", e);
+            Log.e(TAG, "[A] setupMicSeats فشل", e);
         }
 
-        // ===== البند 4: الدردشة =====
+        // ===== البند B: الهيدر =====
         try {
-            Log.i(TAG, "[بند 4] بدء setupChat");
-            setupChat();
-            Log.i(TAG, "[بند 4] اكتمل بنجاح");
+            Log.i(TAG, "[B] بدء setupHeader");
+            setupHeader();
+            Log.i(TAG, "[B] اكتمل بنجاح");
         } catch (Exception e) {
-            Log.e(TAG, "[بند 4] setupChat فشل", e);
+            Log.e(TAG, "[B] setupHeader فشل", e);
         }
 
-        // محاكاة نشاط المايك
-        startSpeakingSimulation();
+        // ===== البند C: الإعلان والترحيب =====
+        try {
+            Log.i(TAG, "[C] بدء setupAnnouncement");
+            setupAnnouncement();
+            Log.i(TAG, "[C] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[C] setupAnnouncement فشل", e);
+        }
 
+        // ===== البند D: الشريط الجانبي =====
+        try {
+            Log.i(TAG, "[D] بدء setupSidebar");
+            setupSidebar();
+            Log.i(TAG, "[D] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[D] setupSidebar فشل", e);
+        }
+
+        // ===== البند E: الشريط السفلي + WindowInsets =====
+        try {
+            Log.i(TAG, "[E] بدء setupBottomBar");
+            setupBottomBar();
+            Log.i(TAG, "[E] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[E] setupBottomBar فشل", e);
+        }
+
+        // ===== البند F: Toast على كل زر =====
+        try {
+            Log.i(TAG, "[F] بدء setupToasts");
+            setupToasts();
+            Log.i(TAG, "[F] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[F] setupToasts فشل", e);
+        }
+
+        // ===== البند G: عداد الكأس =====
+        try {
+            Log.i(TAG, "[G] بدء setupTrophy");
+            setupTrophy();
+            Log.i(TAG, "[G] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[G] setupTrophy فشل", e);
+        }
+
+        // ===== الدردشة =====
+        try {
+            Log.i(TAG, "[Chat] بدء setupChat");
+            setupChat();
+            Log.i(TAG, "[Chat] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[Chat] setupChat فشل", e);
+        }
+
+        startSpeakingSimulation();
         Toast.makeText(this, "تم فتح الغرفة", Toast.LENGTH_SHORT).show();
     }
 
     // ============================================
-    // البند 1: الشريط السفلي
-    // ============================================
-    private void setupBottomBar() {
-        try {
-            // roomBottomInputView (gone) -> VISIBLE
-            int inputViewId = getId("roomBottomInputView");
-            View roomBottomInputView = findViewById(inputViewId);
-            if (roomBottomInputView != null) {
-                roomBottomInputView.setVisibility(View.VISIBLE);
-                Log.i(TAG, "✓ roomBottomInputView -> VISIBLE");
-            } else {
-                Log.w(TAG, "roomBottomInputView not found");
-            }
-
-            // staticRoomBottomView -> تأكد أنه VISIBLE
-            int staticBottomId = getId("staticRoomBottomView");
-            View staticRoomBottomView = findViewById(staticBottomId);
-            if (staticRoomBottomView != null) {
-                staticRoomBottomView.setVisibility(View.VISIBLE);
-                Log.i(TAG, "✓ staticRoomBottomView -> VISIBLE");
-
-                // محاولة نفخ room_include_room_input داخله إن كان فارغاً
-                if (staticRoomBottomView instanceof ViewGroup) {
-                    ViewGroup container = (ViewGroup) staticRoomBottomView;
-                    if (container.getChildCount() == 0) {
-                        try {
-                            View inputBar = LayoutInflater.from(this)
-                                .inflate(R.layout.room_include_room_input, container, false);
-                            container.addView(inputBar);
-                            Log.i(TAG, "✓ Inflated room_include_room_input into staticRoomBottomView");
-                        } catch (Exception e) {
-                            Log.e(TAG, "Failed to inflate room_include_room_input", e);
-                        }
-                    }
-                }
-            }
-
-            // اربط عناصر الشريط السفلي
-            ivSound = findViewById(getId("ivSound"));
-            ivMic = findViewById(getId("ivMic"));
-            ivMicEmoji = findViewById(getId("ivMicEmoji"));
-            ivGift = findViewById(getId("ivGift"));
-            ivSendPicture = findViewById(getId("ivSendPicture"));
-            ivSend = findViewById(getId("ivSend"));
-            etMessage = findViewById(getId("etMessage"));
-
-            // WindowInsets — padding سفلي
-            View contentView = findViewById(android.R.id.content);
-            if (contentView != null) {
-                ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
-                    int bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
-                    v.setPadding(0, 0, 0, bottomInset);
-                    return insets;
-                });
-            }
-
-            // Click listeners
-            if (ivSound != null) {
-                ivSound.setOnClickListener(btn -> Toast.makeText(this, "🔊 الصوت", Toast.LENGTH_SHORT).show());
-            }
-            if (ivMic != null) {
-                ivMic.setOnClickListener(btn -> {
-                    isMuted = !isMuted;
-                    Toast.makeText(this, isMuted ? "🔇 مكتوم" : "🎤 مفعّل", Toast.LENGTH_SHORT).show();
-                });
-            }
-            if (ivGift != null) {
-                ivGift.setOnClickListener(btn -> Toast.makeText(this, "🎁 هدية", Toast.LENGTH_SHORT).show());
-            }
-
-            Log.i(TAG, "=== Bottom Bar IDs ===");
-            Log.i(TAG, "ivSound: " + (ivSound != null ? "FOUND" : "NULL"));
-            Log.i(TAG, "ivMic: " + (ivMic != null ? "FOUND" : "NULL"));
-            Log.i(TAG, "ivGift: " + (ivGift != null ? "FOUND" : "NULL"));
-            Log.i(TAG, "etMessage: " + (etMessage != null ? "FOUND" : "NULL"));
-        } catch (Exception e) {
-            Log.e(TAG, "setupBottomBar error", e);
-        }
-    }
-
-    // ============================================
-    // البند 2: ViewStubs (الإعلان والترحيب)
-    // ============================================
-    private void inflateViewStubs() {
-        // vsNoticeBoard
-        try {
-            int noticeId = getId("vsNoticeBoard");
-            if (noticeId != 0) {
-                View noticeStub = findViewById(noticeId);
-                if (noticeStub instanceof ViewStub) {
-                    // تأكد أن parent != null
-                    ViewParent parent = noticeStub.getParent();
-                    if (parent != null) {
-                        try {
-                            View inflated = ((ViewStub) noticeStub).inflate();
-                            Log.i(TAG, "[بند 2] vsNoticeBoard inflated");
-                            if (inflated != null) {
-                                setWelcomeText(inflated);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "[بند 2] vsNoticeBoard inflate failed", e);
-                        }
-                    } else {
-                        Log.w(TAG, "[بند 2] vsNoticeBoard parent is null");
-                    }
-                } else if (noticeStub != null) {
-                    // ViewStub تم نفخه بالفعل - الناتج هو View عادي
-                    Log.i(TAG, "[بند 2] vsNoticeBoard already inflated");
-                    setWelcomeText(noticeStub);
-                }
-            } else {
-                Log.w(TAG, "[بند 2] vsNoticeBoard ID not found");
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "[بند 2] vsNoticeBoard error", e);
-        }
-
-        // vsTopMessage
-        try {
-            int topMsgId = getId("vsTopMessage");
-            if (topMsgId != 0) {
-                View topMsgStub = findViewById(topMsgId);
-                if (topMsgStub instanceof ViewStub) {
-                    ViewParent parent = topMsgStub.getParent();
-                    if (parent != null) {
-                        try {
-                            View inflated = ((ViewStub) topMsgStub).inflate();
-                            Log.i(TAG, "[بند 2] vsTopMessage inflated");
-                            if (inflated != null) {
-                                setWelcomeText(inflated);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "[بند 2] vsTopMessage inflate failed", e);
-                        }
-                    } else {
-                        Log.w(TAG, "[بند 2] vsTopMessage parent is null");
-                    }
-                } else if (topMsgStub != null) {
-                    Log.i(TAG, "[بند 2] vsTopMessage already inflated");
-                    setWelcomeText(topMsgStub);
-                }
-            } else {
-                Log.w(TAG, "[بند 2] vsTopMessage ID not found");
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "[بند 2] vsTopMessage error", e);
-        }
-    }
-
-    private void setWelcomeText(View parent) {
-        try {
-            // ابحث عن أي TextView داخل parent واضبط نص الترحيب
-            if (parent instanceof ViewGroup) {
-                ViewGroup vg = (ViewGroup) parent;
-                for (int i = 0; i < vg.getChildCount(); i++) {
-                    View child = vg.getChildAt(i);
-                    if (child instanceof TextView) {
-                        ((TextView) child).setText("مرحباً بك في غرفة " + roomName + "! احترم بعضكم بعضاً.");
-                    }
-                    if (child instanceof ViewGroup) {
-                        setWelcomeText(child);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "setWelcomeText error", e);
-        }
-    }
-
-    // ============================================
-    // البند 5: الهيدر
-    // ============================================
-    private void setupHeader() {
-        try {
-            tvRoomTopName = findViewById(getId("tvRoomTopName"));
-            if (tvRoomTopName != null) {
-                tvRoomTopName.setText(roomName);
-                Log.i(TAG, "✓ tvRoomTopName set to: " + roomName);
-            }
-
-            // ivRoomTopSound -> VISIBLE فقط
-            int soundId = getId("ivRoomTopSound");
-            if (soundId != 0) {
-                ImageView ivRoomTopSound = findViewById(soundId);
-                if (ivRoomTopSound != null) {
-                    ivRoomTopSound.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "✓ ivRoomTopSound -> VISIBLE");
-                }
-            }
-
-            // زر الإغلاق
-            int[] closeIds = {getId("ivRoomTopClose"), getId("iv_room_top_close")};
-            for (int id : closeIds) {
-                if (id == 0) continue;
-                ImageView ivClose = findViewById(id);
-                if (ivClose != null) {
-                    ivClose.setOnClickListener(v -> finish());
-                    Log.i(TAG, "✓ Close button found");
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "setupHeader error", e);
-        }
-    }
-
-    // ============================================
-    // البند 3: مقاعد المايك
+    // البند A: المقاعد (مع إصلاح ارتفاع rvRoomMic)
     // ============================================
     private void setupMicSeats() {
         try {
             rvRoomMic = findViewById(getId("rvRoomMic"));
             if (rvRoomMic == null) {
-                Log.w(TAG, "rvRoomMic not found, creating fallback");
+                Log.w(TAG, "[A] rvRoomMic not found, fallback");
                 createMicRecyclerViewFallback();
                 return;
+            }
+
+            // إصلاح ارتفاع rvRoomMic (تبعية دائرية → 0)
+            int heightPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 100,
+                getResources().getDisplayMetrics());
+            ViewGroup.LayoutParams params = rvRoomMic.getLayoutParams();
+            if (params != null) {
+                params.height = heightPx;
+                rvRoomMic.setLayoutParams(params);
+                Log.i(TAG, "[A] rvRoomMic height set to 100dp");
+            }
+
+            // أيضاً اضبط llRoomTop ارتفاع ثابت
+            int llRoomTopId = getId("llRoomTop");
+            if (llRoomTopId != 0) {
+                View llRoomTop = findViewById(llRoomTopId);
+                if (llRoomTop != null) {
+                    int topHeightPx = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 220,
+                        getResources().getDisplayMetrics());
+                    ViewGroup.LayoutParams topParams = llRoomTop.getLayoutParams();
+                    if (topParams != null) {
+                        topParams.height = topHeightPx;
+                        llRoomTop.setLayoutParams(topParams);
+                        Log.i(TAG, "[A] llRoomTop height set to 220dp");
+                    }
+                }
             }
 
             rvRoomMic.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             initMicSeats();
             micAdapter = new MicAdapter(micSeats);
             rvRoomMic.setAdapter(micAdapter);
-            Log.i(TAG, "✓ rvRoomMic adapter set with " + micSeats.size() + " seats");
+            Log.i(TAG, "[A] rvRoomMic adapter set with " + micSeats.size() + " seats");
         } catch (Exception e) {
-            Log.e(TAG, "setupMicSeats error", e);
+            Log.e(TAG, "[A] setupMicSeats error", e);
             createMicRecyclerViewFallback();
         }
     }
@@ -458,7 +307,10 @@ public class RoomActivity extends Activity {
         ownerSeat.user = new RoomUser("owner_001", roomName, 0, 25, "owner");
         micSeats.add(ownerSeat);
         for (int i = 1; i < micSeatCount; i++) {
-            micSeats.add(new MicSeat(i));
+            MicSeat seat = new MicSeat(i);
+            // المقعد 3 مقفل (مثل Yalla Ludo الأصلي)
+            if (i == 2) seat.isLocked = true;
+            micSeats.add(seat);
         }
     }
 
@@ -475,33 +327,406 @@ public class RoomActivity extends Activity {
                 ((ViewGroup) content.getChildAt(0)).addView(rvRoomMic);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Fallback RecyclerView error", e);
+            Log.e(TAG, "[A] Fallback RecyclerView error", e);
         }
     }
 
     // ============================================
-    // البند 4: الدردشة
+    // البند B: الهيدر
+    // ============================================
+    private void setupHeader() {
+        try {
+            tvRoomTopName = findViewById(getId("tvRoomTopName"));
+            if (tvRoomTopName != null) {
+                tvRoomTopName.setText(roomName);
+                Log.i(TAG, "[B] tvRoomTopName = " + roomName);
+            }
+
+            // ivRoomTopSound -> VISIBLE
+            int soundId = getId("ivRoomTopSound");
+            if (soundId != 0) {
+                ImageView ivRoomTopSound = findViewById(soundId);
+                if (ivRoomTopSound != null) {
+                    ivRoomTopSound.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[B] ivRoomTopSound -> VISIBLE");
+                }
+            }
+
+            // ID الغرفة = 100002 — ابحث عن tvRoomTopLevel
+            int levelId = getId("tvRoomTopLevel");
+            if (levelId != 0) {
+                TextView tvLevel = findViewById(levelId);
+                if (tvLevel != null) {
+                    tvLevel.setText("ID:" + roomId);
+                    Log.i(TAG, "[B] tvRoomTopLevel = ID:" + roomId);
+                }
+            }
+
+            // زر الإغلاق
+            int[] closeIds = {getId("ivRoomTopClose"), getId("iv_room_top_close")};
+            for (int id : closeIds) {
+                if (id == 0) continue;
+                ImageView ivClose = findViewById(id);
+                if (ivClose != null) {
+                    ivClose.setOnClickListener(v -> finish());
+                    Log.i(TAG, "[B] Close button found");
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[B] setupHeader error", e);
+        }
+    }
+
+    // ============================================
+    // البند C: الإعلان (ViewStubs)
+    // ============================================
+    private void setupAnnouncement() {
+        // vsNoticeBoard
+        try {
+            int noticeId = getId("vsNoticeBoard");
+            if (noticeId != 0) {
+                View noticeStub = findViewById(noticeId);
+                if (noticeStub instanceof ViewStub) {
+                    ViewParent parent = noticeStub.getParent();
+                    if (parent != null) {
+                        try {
+                            View inflated = ((ViewStub) noticeStub).inflate();
+                            Log.i(TAG, "[C] vsNoticeBoard inflated");
+                            if (inflated != null) {
+                                setTextViewRecursive(inflated,
+                                    "📢 إعلان: مرحباً بكم في غرفة " + roomName + "!");
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[C] vsNoticeBoard inflate failed", e);
+                        }
+                    }
+                } else if (noticeStub != null) {
+                    Log.i(TAG, "[C] vsNoticeBoard already inflated");
+                    setTextViewRecursive(noticeStub,
+                        "📢 إعلان: مرحباً بكم في غرفة " + roomName + "!");
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[C] vsNoticeBoard error", e);
+        }
+
+        // vsTopMessage
+        try {
+            int topMsgId = getId("vsTopMessage");
+            if (topMsgId != 0) {
+                View topMsgStub = findViewById(topMsgId);
+                if (topMsgStub instanceof ViewStub) {
+                    ViewParent parent = topMsgStub.getParent();
+                    if (parent != null) {
+                        try {
+                            View inflated = ((ViewStub) topMsgStub).inflate();
+                            Log.i(TAG, "[C] vsTopMessage inflated");
+                            if (inflated != null) {
+                                setTextViewRecursive(inflated,
+                                    "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً.");
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[C] vsTopMessage inflate failed", e);
+                        }
+                    }
+                } else if (topMsgStub != null) {
+                    Log.i(TAG, "[C] vsTopMessage already inflated");
+                    setTextViewRecursive(topMsgStub,
+                        "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً.");
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[C] vsTopMessage error", e);
+        }
+    }
+
+    private void setTextViewRecursive(View parent, String text) {
+        try {
+            if (parent instanceof TextView) {
+                ((TextView) parent).setText(text);
+            }
+            if (parent instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) parent;
+                for (int i = 0; i < vg.getChildCount(); i++) {
+                    setTextViewRecursive(vg.getChildAt(i), text);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "setTextViewRecursive error", e);
+        }
+    }
+
+    // ============================================
+    // البند D: الشريط الجانبي الأيمن
+    // ============================================
+    private void setupSidebar() {
+        try {
+            // rightScrollView
+            int scrollId = getId("rightScrollView");
+            if (scrollId != 0) {
+                View rightScroll = findViewById(scrollId);
+                if (rightScroll != null) {
+                    rightScroll.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[D] rightScrollView -> VISIBLE");
+                }
+            }
+
+            // Treasure / Activity / Music
+            int[][] sidebarItems = {
+                {getId("operations_activity_banner"), "الكنز"},
+                {getId("eventAndGameBannerView"), "النشاط"},
+                {getId("activesBannerView"), "البانر"},
+                {getId("ivRoomMusic"), "الموسيقى"},
+                {getId("ivMessagesBox"), "الرسائل"},
+            };
+
+            for (int[] item : sidebarItems) {
+                if (item[0] == 0) continue;
+                View v = findViewById(item[0]);
+                if (v != null) {
+                    v.setVisibility(View.VISIBLE);
+                    final String name = item[1];
+                    v.setOnClickListener(btn ->
+                        Toast.makeText(this, "📋 " + name, Toast.LENGTH_SHORT).show());
+                    Log.i(TAG, "[D] " + name + " -> VISIBLE + Toast");
+                }
+            }
+
+            // fl_message_box (gone) -> VISIBLE
+            int msgBoxId = getId("fl_message_box");
+            if (msgBoxId != 0) {
+                View msgBox = findViewById(msgBoxId);
+                if (msgBox != null) {
+                    msgBox.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[D] fl_message_box -> VISIBLE");
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[D] setupSidebar error", e);
+        }
+    }
+
+    // ============================================
+    // البند E: الشريط السفلي + WindowInsets
+    // ============================================
+    private void setupBottomBar() {
+        try {
+            // roomBottomInputView (gone) -> VISIBLE
+            int inputViewId = getId("roomBottomInputView");
+            if (inputViewId != 0) {
+                View roomBottomInputView = findViewById(inputViewId);
+                if (roomBottomInputView != null) {
+                    roomBottomInputView.setVisibility(View.VISIBLE);
+                    Log.i(TAG, "[E] roomBottomInputView -> VISIBLE");
+                }
+            }
+
+            // staticRoomBottomView -> VISIBLE + inflate input if empty
+            int staticBottomId = getId("staticRoomBottomView");
+            if (staticBottomId != 0) {
+                View staticRoomBottomView = findViewById(staticBottomId);
+                if (staticRoomBottomView != null) {
+                    staticRoomBottomView.setVisibility(View.VISIBLE);
+                    if (staticRoomBottomView instanceof ViewGroup) {
+                        ViewGroup container = (ViewGroup) staticRoomBottomView;
+                        if (container.getChildCount() == 0) {
+                            try {
+                                View inputBar = LayoutInflater.from(this)
+                                    .inflate(R.layout.room_include_room_input, container, false);
+                                container.addView(inputBar);
+                                Log.i(TAG, "[E] Inflated room_include_room_input");
+                            } catch (Exception e) {
+                                Log.e(TAG, "[E] Failed to inflate room_include_room_input", e);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // اربط عناصر الشريط السفلي
+            ivSound = findViewById(getId("ivSound"));
+            ivMic = findViewById(getId("ivMic"));
+            ivMicEmoji = findViewById(getId("ivMicEmoji"));
+            ivGift = findViewById(getId("ivGift"));
+            ivSendPicture = findViewById(getId("ivSendPicture"));
+            ivSend = findViewById(getId("ivSend"));
+            ivShowGameCenter = findViewById(getId("ivShowGameCenter"));
+            etMessage = findViewById(getId("etMessage"));
+
+            // WindowInsets
+            View contentView = findViewById(android.R.id.content);
+            if (contentView != null) {
+                ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
+                    int bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+                    v.setPadding(0, 0, 0, bottomInset);
+                    return insets;
+                });
+            }
+
+            // البند E: ivMic يظهر عند الضغط على مقعد (انضم)
+            // ivEmoji يظهر عند التركيز على حقل الكتابة
+            if (etMessage != null) {
+                etMessage.setOnFocusChangeListener((v, hasFocus) -> {
+                    try {
+                        if (hasFocus && ivEmoji != null) {
+                            // ivEmoji — ابحث عنه
+                            int emojiId = getId("ivEmoji");
+                            if (emojiId != 0) {
+                                ImageView ivEmoji = findViewById(emojiId);
+                                if (ivEmoji != null) {
+                                    ivEmoji.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "[E] etMessage focus error", e);
+                    }
+                });
+            }
+
+            Log.i(TAG, "[E] Bottom bar IDs: ivSound=" + (ivSound != null)
+                + " ivMic=" + (ivMic != null)
+                + " ivGift=" + (ivGift != null)
+                + " etMessage=" + (etMessage != null));
+        } catch (Exception e) {
+            Log.e(TAG, "[E] setupBottomBar error", e);
+        }
+    }
+
+    // ============================================
+    // البند F: Toast على كل زر
+    // ============================================
+    private void setupToasts() {
+        try {
+            // الشريط السفلي
+            if (ivSound != null) {
+                ivSound.setOnClickListener(v ->
+                    Toast.makeText(this, "🔊 الصوت", Toast.LENGTH_SHORT).show());
+            }
+            if (ivMic != null) {
+                ivMic.setOnClickListener(v -> {
+                    isMuted = !isMuted;
+                    Toast.makeText(this, isMuted ? "🔇 مكتوم" : "🎤 مفعّل", Toast.LENGTH_SHORT).show();
+                    updateBottomBarForMicState();
+                });
+            }
+            if (ivMicEmoji != null) {
+                ivMicEmoji.setOnClickListener(v ->
+                    Toast.makeText(this, "🎭 مايك إيموجي", Toast.LENGTH_SHORT).show());
+            }
+            if (ivGift != null) {
+                ivGift.setOnClickListener(v ->
+                    Toast.makeText(this, "🎁 هدية", Toast.LENGTH_SHORT).show());
+            }
+            if (ivSendPicture != null) {
+                ivSendPicture.setOnClickListener(v ->
+                    Toast.makeText(this, "📷 صورة", Toast.LENGTH_SHORT).show());
+            }
+            if (ivSend != null) {
+                ivSend.setOnClickListener(v -> {
+                    Toast.makeText(this, "📨 إرسال", Toast.LENGTH_SHORT).show();
+                    if (etMessage != null) {
+                        String text = etMessage.getText().toString().trim();
+                        if (!text.isEmpty()) {
+                            addChatMessage(new ChatMessage(
+                                ChatMessage.TYPE_TEXT,
+                                new RoomUser("me", currentUserName, 0, 1, "member"),
+                                text, null));
+                            etMessage.setText("");
+                        }
+                    }
+                });
+            }
+            if (ivShowGameCenter != null) {
+                ivShowGameCenter.setOnClickListener(v ->
+                    Toast.makeText(this, "🎮 مركز الألعاب", Toast.LENGTH_SHORT).show());
+            }
+
+            // الهيدر
+            int moreId = getId("iv_more");
+            if (moreId != 0) {
+                ImageView ivMore = findViewById(moreId);
+                if (ivMore != null) {
+                    ivMore.setOnClickListener(v ->
+                        Toast.makeText(this, "⚙️ المزيد", Toast.LENGTH_SHORT).show());
+                }
+            }
+
+            // ivRoomTopLikeJoin
+            int likeJoinId = getId("ivRoomTopLikeJoin");
+            if (likeJoinId != 0) {
+                View likeJoin = findViewById(likeJoinId);
+                if (likeJoin != null) {
+                    likeJoin.setOnClickListener(v ->
+                        Toast.makeText(this, "👍 إعجاب/انضمام", Toast.LENGTH_SHORT).show());
+                }
+            }
+
+            Log.i(TAG, "[F] All Toasts set");
+        } catch (Exception e) {
+            Log.e(TAG, "[F] setupToasts error", e);
+        }
+    }
+
+    // ============================================
+    // البند G: عداد الكأس = 0
+    // ============================================
+    private void setupTrophy() {
+        try {
+            // likeAndIdxViewSwitcher (ViewSwitcher في الهيدر)
+            int switcherId = getId("likeAndIdxViewSwitcher");
+            if (switcherId != 0) {
+                View switcher = findViewById(switcherId);
+                if (switcher instanceof ViewSwitcher) {
+                    ViewSwitcher vs = (ViewSwitcher) switcher;
+                    // ابحث عن TextView داخل الـ ViewSwitcher
+                    for (int i = 0; i < vs.getChildCount(); i++) {
+                        View child = vs.getChildAt(i);
+                        if (child instanceof TextView) {
+                            ((TextView) child).setText("0");
+                            Log.i(TAG, "[G] Trophy set to 0 in ViewSwitcher child " + i);
+                        }
+                        if (child instanceof ViewGroup) {
+                            setTextViewRecursive(child, "0");
+                        }
+                    }
+                }
+            }
+
+            // roomTopic
+            int topicId = getId("roomTopic");
+            if (topicId != 0) {
+                ImageView roomTopic = findViewById(topicId);
+                if (roomTopic != null) {
+                    roomTopic.setVisibility(View.VISIBLE);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "[G] setupTrophy error", e);
+        }
+    }
+
+    // ============================================
+    // الدردشة
     // ============================================
     private void setupChat() {
         try {
             rvChat = findViewById(getId("rvRoomChat"));
             if (rvChat == null) {
-                Log.w(TAG, "rvRoomChat not found");
+                Log.w(TAG, "[Chat] rvRoomChat not found");
                 return;
             }
-
             rvChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             chatAdapter = new ChatAdapter(chatMessages);
             rvChat.setAdapter(chatAdapter);
 
-            // رسالة ترحيب
             addChatMessage(new ChatMessage(
                 ChatMessage.TYPE_SYSTEM, null,
-                "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً وتحدث بأدب.", null
-            ));
-            Log.i(TAG, "✓ rvRoomChat adapter set with welcome message");
+                "مرحباً بك في " + roomName + "! احترم بعضكم بعضاً وتحدث بأدب.", null));
+            Log.i(TAG, "[Chat] rvRoomChat adapter set");
         } catch (Exception e) {
-            Log.e(TAG, "setupChat error", e);
+            Log.e(TAG, "[Chat] setupChat error", e);
         }
     }
 
@@ -512,6 +737,26 @@ public class RoomActivity extends Activity {
             if (rvChat != null) rvChat.scrollToPosition(chatMessages.size() - 1);
         } catch (Exception e) {
             Log.e(TAG, "addChatMessage error", e);
+        }
+    }
+
+    // ============================================
+    // سلوك Yalla Ludo: المايك يظهر فقط عند الجلوس
+    // ============================================
+    private void updateBottomBarForMicState() {
+        try {
+            if (ivSound == null || ivMic == null) return;
+            if (mySeatIndex == -1) {
+                ivSound.setVisibility(View.VISIBLE);
+                ivMic.setVisibility(View.GONE);
+                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.GONE);
+            } else {
+                ivSound.setVisibility(View.GONE);
+                ivMic.setVisibility(View.VISIBLE);
+                if (ivMicEmoji != null) ivMicEmoji.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "updateBottomBar error", e);
         }
     }
 
@@ -586,7 +831,14 @@ public class RoomActivity extends Activity {
         RoomUser user;
         boolean isMuted;
         boolean isSpeaking;
-        MicSeat(int index) { this.index = index; this.user = null; }
+        boolean isLocked;
+        MicSeat(int index) {
+            this.index = index;
+            this.user = null;
+            this.isMuted = false;
+            this.isSpeaking = false;
+            this.isLocked = false;
+        }
     }
 
     static class RoomUser {
@@ -618,8 +870,7 @@ public class RoomActivity extends Activity {
         @NonNull
         @Override
         public MicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // البند 3: استخدم room_include_room_mic_item.xml الأصلي
-            // الملف يبدأ بـ <merge> لذا نحتاج wrapper (FrameLayout)
+            // الملف يبدأ بـ <merge> — نحتاج FrameLayout wrapper
             FrameLayout wrapper = new FrameLayout(parent.getContext());
             int widthPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 80,
@@ -631,7 +882,7 @@ public class RoomActivity extends Activity {
                 LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.room_include_room_mic_item, wrapper, true);
             } catch (Exception e) {
-                Log.e(TAG, "[بند 3] Failed to inflate mic_item", e);
+                Log.e(TAG, "[A] Failed to inflate mic_item", e);
             }
             return new MicViewHolder(wrapper);
         }
@@ -642,7 +893,7 @@ public class RoomActivity extends Activity {
                 MicSeat seat = seats.get(position);
                 holder.bind(seat);
             } catch (Exception e) {
-                Log.e(TAG, "MicAdapter bind error", e);
+                Log.e(TAG, "[A] MicAdapter bind error", e);
             }
         }
 
@@ -651,52 +902,100 @@ public class RoomActivity extends Activity {
 
         class MicViewHolder extends RecyclerView.ViewHolder {
             ImageView head;
+            ImageView mute;
             TextView name;
 
             MicViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // ابحث عن IDs من item layout الأصلي
                 head = itemView.findViewById(getId("room_mic_item_head"));
+                mute = itemView.findViewById(getId("room_mic_item_mute"));
                 name = itemView.findViewById(getId("room_mic_item_name"));
+                itemView.setOnClickListener(v -> {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onSeatClicked(seats.get(pos));
+                    }
+                });
             }
 
             void bind(MicSeat seat) {
                 try {
-                    if (seat.user != null) {
-                        // مقعد مشغول
-                        if (name != null) {
-                            name.setText(seat.user.name);
-                            name.setVisibility(View.VISIBLE);
-                        }
-                        // head: اتركه كما هو (له drawable افتراضي)
+                    // إخفاء الكل افتراضياً
+                    if (mute != null) mute.setVisibility(View.GONE);
+
+                    if (seat.isLocked) {
+                        // مقعد مقفل
                         if (head != null) {
                             head.setVisibility(View.VISIBLE);
-                            // اضبط خلفية دائرية للمستخدم
+                            head.setImageResource(R.drawable.room_ic_room_mic_lock);
+                        }
+                        if (name != null) {
+                            name.setText("مقفل");
+                            name.setVisibility(View.VISIBLE);
+                        }
+                    } else if (seat.user != null) {
+                        // مقعد مشغول
+                        if (head != null) {
+                            head.setVisibility(View.VISIBLE);
+                            // صورة افتراضية: دائرة ملونة
                             GradientDrawable circle = new GradientDrawable();
                             circle.setShape(GradientDrawable.OVAL);
                             circle.setColor(0xFF0D8A7A);
                             circle.setStroke(2, seat.isSpeaking ? Color.GREEN : Color.WHITE);
-                            head.setBackground(circle);
+                            head.setImageDrawable(circle);
+                        }
+                        if (mute != null && seat.isMuted) {
+                            mute.setVisibility(View.VISIBLE);
+                            mute.setImageResource(R.drawable.room_ic_input_mic_off);
+                        }
+                        if (name != null) {
+                            name.setText(seat.user.name);
+                            name.setVisibility(View.VISIBLE);
                         }
                     } else {
-                        // مقعد فارغ — اعرض رقم المقعد
+                        // مقعد فارغ — أيقونة مايك
+                        if (head != null) {
+                            head.setVisibility(View.VISIBLE);
+                            head.setImageResource(R.drawable.room_ic_room_mic_free);
+                        }
                         if (name != null) {
                             name.setText(String.valueOf(seat.index + 1));
                             name.setVisibility(View.VISIBLE);
                         }
-                        if (head != null) {
-                            head.setVisibility(View.VISIBLE);
-                            GradientDrawable circle = new GradientDrawable();
-                            circle.setShape(GradientDrawable.OVAL);
-                            circle.setColor(0x40000000);
-                            circle.setStroke(2, 0xFF808080);
-                            head.setBackground(circle);
-                        }
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, "MicViewHolder bind error", e);
+                    Log.e(TAG, "[A] MicViewHolder bind error", e);
                 }
             }
+        }
+    }
+
+    // ============================================
+    // معالج نقر المقعد
+    // ============================================
+    private void onSeatClicked(MicSeat seat) {
+        try {
+            if (seat.isLocked) {
+                Toast.makeText(this, "🔒 مقعد مقفل", Toast.LENGTH_SHORT).show();
+            } else if (seat.user != null) {
+                Toast.makeText(this, "👤 " + seat.user.name + " (Lv." + seat.user.level + ")",
+                    Toast.LENGTH_SHORT).show();
+            } else if (mySeatIndex == -1) {
+                // انضم للمايك
+                seat.user = new RoomUser("me", currentUserName, 0, 1, "member");
+                seat.isMuted = false;
+                mySeatIndex = seat.index;
+                if (micAdapter != null) micAdapter.notifyItemChanged(seat.index);
+                updateBottomBarForMicState();
+                addChatMessage(new ChatMessage(
+                    ChatMessage.TYPE_SYSTEM, null,
+                    currentUserName + " انضم للمايك " + (seat.index + 1), null));
+                Toast.makeText(this, "🎤 انضممت للمايك " + (seat.index + 1), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "أنت على المايك " + (mySeatIndex + 1), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onSeatClicked error", e);
         }
     }
 
