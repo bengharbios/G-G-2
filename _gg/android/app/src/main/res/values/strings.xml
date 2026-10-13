@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">ألعاب الغريب</string>
+    <string name="title_activity_main">ألعاب الغريب</string>
+    <string name="package_name">com.bengharbios.ggames</string>
+    <string name="custom_url_scheme">com.bengharbios.ggames</string>
+    <string name="room_say_something">قل شيئاً...</string>
+    <string name="room_take_mic">أخذ المايك</string>
+    <string name="room_lock_the_mic">قفل المايك</string>
+    <string name="room_free_microphone">أخذ المايك بحرية</string>
+    <string name="room_take_mic_permission">إذن المايك</string>
+    <string name="room_members_only">الأعضاء فقط</string>
+    <string name="room_mic_locked">مقفل</string>
+    <string name="room_mic_locked_by_owner">المايك مغلق من قبل مالك الغرفة</string>
+    <string name="room_level">المستوى</string>
+    <string name="room_upgrade">ترقية</string>
+    <string name="room_type_standard">قياسي</string>
+    <string name="room_music">موسيقى</string>
+    <string name="room_message_box">رسائل</string>
+    <string name="room_side_chest">كنز</string>
+    <string name="room_administrator_rights">صلاحيات المشرف</string>
+    <string name="room_number_of_mic">عدد المايكات</string>
+    <string name="room_membership_fee">رسوم العضوية</string>
+    <string name="room_lock">قفل الغرفة</string>
+    <string name="room_online_num">سعة الغرفة</string>
+    <string name="room_member">الأعضاء</string>
+    <string name="room_my_room">غرفتي</string>
+
     <string name="Arabic">Arabic</string>
     <string name="C_1340_1">Chuckle</string>
     <string name="C_1340_10">Save</string>
@@ -7325,7 +7351,7 @@ In addition, it may take some time to fully activate your account. Please be pat
     <string name="appName">Yalla Ludo</string>
     <string name="app_icon_select_tip">The exclusive App icon is ready for you. You can choose to set it now.</string>
     <string name="app_id">f0074f79faf044e68d9cf2ce1ef663e9</string>
-    <string name="app_name">battle</string>
+    <!-- removed old app_name -->
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="are_you_sure_delete">Are you sure you want to delete your account xxx？</string>
     <string name="arena">Arena</string>
