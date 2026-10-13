@@ -291,6 +291,17 @@ public class RoomActivity extends Activity {
             }
 
             rvRoomMic.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+            // مركزة المقاعد في الوسط (5 × 70dp = 350dp)
+            int totalWidthPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 350,
+                getResources().getDisplayMetrics());
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int padding = Math.max(0, (screenWidth - totalWidthPx) / 2);
+            rvRoomMic.setPadding(padding, 0, padding, 0);
+            rvRoomMic.setClipToPadding(false);
+            Log.i(TAG, "[A] rvRoomMic centered, padding=" + padding + "px");
+
             initMicSeats();
             micAdapter = new MicAdapter(micSeats);
             rvRoomMic.setAdapter(micAdapter);
@@ -364,15 +375,8 @@ public class RoomActivity extends Activity {
                 }
             }
 
-            // ivRoomTopSound — VISIBLE (44dp, src=icon_room_top_sound)
-            int soundId = getId("ivRoomTopSound");
-            if (soundId != 0) {
-                ImageView ivRoomTopSound = findViewById(soundId);
-                if (ivRoomTopSound != null) {
-                    ivRoomTopSound.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "[B] ivRoomTopSound -> VISIBLE");
-                }
-            }
+            // ivRoomTopSound — invisible في الأصل (لا تظهر، متداخلة مع المقاعد)
+            // أبقها invisible كما في تصميم Yalla Ludo الأصلي
 
             // ivRoomTopLikeJoin — عداد الكأس/الإعجاب (36dp)
             int likeJoinId = getId("ivRoomTopLikeJoin");
@@ -974,14 +978,22 @@ public class RoomActivity extends Activity {
                         head.setImageResource(R.drawable.room_ic_room_mic_lock);
                         name.setText("مقفل");
                     } else if (seat.user != null) {
-                        // مقعد مشغول (50dp, src=room_default + دائرة ملونة)
+                        // مقعد مشغول (50dp, src=room_default + دائرة)
                         head.setImageResource(R.drawable.room_default);
-                        // غيّر الخلفية إلى دائرة ملونة
+                        // إطار دائري رفيع (مثل RoundImageView isCircle=true)
                         GradientDrawable circle = new GradientDrawable();
                         circle.setShape(GradientDrawable.OVAL);
                         circle.setColor(0xFF0D8A7A);
                         circle.setStroke(2, seat.isSpeaking ? Color.GREEN : Color.WHITE);
                         headBg.setBackground(circle);
+                        // اجعل الصورة مقصوصة دائرياً
+                        head.setClipToOutline(true);
+                        head.setOutlineProvider(new android.view.ViewOutlineProvider() {
+                            @Override
+                            public void getOutline(View view, android.graphics.Outline outline) {
+                                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                            }
+                        });
                         
                         // تاج المالك
                         if ("owner".equals(seat.user.role)) {
