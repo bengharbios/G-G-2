@@ -4,7 +4,7 @@
     <RelativeLayout android:layout_gravity="center" android:layout_width="38.0dip" android:layout_height="40.0dip">
         <ImageView android:layout_width="38.0dip" android:layout_height="38.0dip" android:src="@drawable/royal_entrance_1_bg" android:layout_centerHorizontal="true" />
         <ImageView android:layout_width="25.0dip" android:layout_height="25.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/royal_top_lef_coupon" android:layout_centerHorizontal="true" />
-        <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_num" android:background="@drawable/royal_entrance_2_bg" android:layout_width="38.0dip" android:layout_height="11.0dip" android:layout_marginTop="29.0dip" android:layout_centerHorizontal="true" android:textDirection="ltr" />
+        <View android:textSize="9.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_num" android:background="@drawable/royal_entrance_2_bg" android:layout_width="38.0dip" android:layout_height="11.0dip" android:layout_marginTop="29.0dip" android:layout_centerHorizontal="true" android:textDirection="ltr" />
         <ImageView android:id="@id/iv_dot" android:visibility="gone" android:layout_width="12.0dip" android:layout_height="12.0dip" android:layout_marginTop="2.0dip" android:src="@drawable/reddot" android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </merge>

@@ -2,6 +2,6 @@
 <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:layout_gravity="center_horizontal" android:background="@drawable/royal_store_item_title_bg" android:layout_width="281.0dip" android:layout_height="35.0dip">
-        <com.bengharbios.ggames.view.StrokeTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#fffffbed" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_title_name" android:layout_width="150.0dip" android:layout_height="27.0dip" android:layout_marginTop="3.0dip" />
+        <View android:textSize="15.0sp" android:textStyle="bold" android:textColor="#fffffbed" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_title_name" android:layout_width="150.0dip" android:layout_height="27.0dip" android:layout_marginTop="3.0dip" />
     </FrameLayout>
 </FrameLayout>

@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <View android:textSize="12.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@id/tv_player_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:text="@string/matching" android:maxLines="1" android:maxEms="4" />
     <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_matching" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center_horizontal" android:id="@id/svga_image" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_marginTop="26.0dip" android:src="@drawable/room_default" app:speed_scale="1.5" />
+        <View android:layout_gravity="center_horizontal" android:id="@id/svga_image" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_marginTop="26.0dip" android:src="@drawable/room_default" app:speed_scale="1.5" />
         <View android:layout_gravity="center_horizontal" android:id="@id/head_image" android:visibility="invisible" android:layout_width="62.0dip" android:layout_height="62.0dip" android:layout_marginTop="21.0dip" android:scaleType="centerCrop" app:head_face_margin="8.0dip" />
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_loading_frame" android:background="@drawable/room_default" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_marginTop="25.0dip" />
     </FrameLayout>
-    <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center_horizontal" android:id="@id/svg_open" android:layout_width="80.0dip" android:layout_height="75.0dip" android:layout_marginTop="15.0dip" app:speed_scale="2.0" app:view_scale="1.3" />
+    <View android:layout_gravity="center_horizontal" android:id="@id/svg_open" android:layout_width="80.0dip" android:layout_height="75.0dip" android:layout_marginTop="15.0dip" app:speed_scale="2.0" app:view_scale="1.3" />
 </merge>

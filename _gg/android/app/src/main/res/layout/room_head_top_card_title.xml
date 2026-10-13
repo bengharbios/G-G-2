@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.bengharbios.ggames.view.LudoSVGAView android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginTop="-10.0dip" android:scaleType="fitXY" app:play_on_attach="true" app:source="star_light.svga" />
+    <View android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginTop="-10.0dip" android:scaleType="fitXY" app:play_on_attach="true" app:source="star_light.svga" />
     <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="7.0dip" android:src="@drawable/room_pin_on_top_icon" android:adjustViewBounds="true" />
 </FrameLayout>

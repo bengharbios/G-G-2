@@ -9,7 +9,7 @@
         <ImageView android:layout_gravity="center_horizontal" android:id="@id/ivMilestoneDoneHook" android:layout_width="20.0dip" android:layout_height="13.0dip" android:layout_marginTop="22.0dip" android:src="@drawable/room_icon_milestone_done" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/llContainerMilestoneValue" android:background="@drawable/room_bg_member_milestone_value_desc" android:layout_width="wrap_content" android:layout_height="20.0dip" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tvMilestoneValue" android:layout_width="wrap_content" android:layout_height="fill_parent" android:maxLines="1" />
+        <View android:textSize="11.0dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tvMilestoneValue" android:layout_width="wrap_content" android:layout_height="fill_parent" android:maxLines="1" />
         <ImageView android:id="@id/ivMilestoneValue" android:layout_width="19.0dip" android:layout_height="19.0dip" android:layout_marginStart="2.0dip" />
     </LinearLayout>
 </merge>

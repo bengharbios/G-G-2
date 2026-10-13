@@ -8,7 +8,7 @@
         <ImageView android:id="@id/iv_close" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_default" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
     </RelativeLayout>
     <RelativeLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/rl_gold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_centerHorizontal="true">
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_coin_num" android:background="@drawable/bg_add_coin" android:layout_width="wrap_content" android:layout_height="20.0dip" android:minWidth="80.0dip" android:lines="1" android:layout_centerVertical="true" android:paddingStart="18.0dip" android:paddingEnd="10.0dip" android:layout_marginStart="10.0dip" />
+        <View android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_coin_num" android:background="@drawable/bg_add_coin" android:layout_width="wrap_content" android:layout_height="20.0dip" android:minWidth="80.0dip" android:lines="1" android:layout_centerVertical="true" android:paddingStart="18.0dip" android:paddingEnd="10.0dip" android:layout_marginStart="10.0dip" />
         <ImageView android:layout_width="23.0dip" android:layout_height="26.0dip" android:src="@drawable/regression_coin_ic" android:layout_centerVertical="true" android:layout_alignParentStart="true" />
     </RelativeLayout>
     <View android:id="@id/view_switch_right_chect_bg" android:background="@drawable/regression_home_switch_bg" android:visibility="invisible" android:layout_width="300.0dip" android:layout_height="47.0dip" android:layout_marginTop="52.0dip" android:layout_centerHorizontal="true" android:rotationY="180.0" />
@@ -17,13 +17,13 @@
         <FrameLayout android:id="@id/fl_switch_task" android:paddingBottom="3.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
             <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <ImageView android:id="@id/iv_switch_task" android:layout_width="14.0dip" android:layout_height="19.0dip" android:src="@drawable/regression_switch_task_check" />
-                <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/ctv_task" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:text="@string/regression_switch_task" android:includeFontPadding="false" />
+                <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/ctv_task" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:text="@string/regression_switch_task" android:includeFontPadding="false" />
             </LinearLayout>
         </FrameLayout>
         <FrameLayout android:id="@id/fl_switch_rewards" android:paddingBottom="3.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
             <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <ImageView android:id="@id/iv_switch_rewards" android:layout_width="19.0dip" android:layout_height="19.0dip" android:src="@drawable/regression_switch_reward_uncheck" />
-                <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ff17654c" android:gravity="center" android:id="@id/ctv_rewards" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:text="@string/regression_switch_reward" android:lines="1" android:includeFontPadding="false" />
+                <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ff17654c" android:gravity="center" android:id="@id/ctv_rewards" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:text="@string/regression_switch_reward" android:lines="1" android:includeFontPadding="false" />
             </LinearLayout>
             <ImageView android:id="@id/shop_red_dot" android:visibility="gone" android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/reddot" android:layout_marginStart="80.0dip" />
         </FrameLayout>
@@ -32,7 +32,7 @@
     <FrameLayout android:id="@id/fl_new_guild" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
         <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="360.0dip" android:layout_height="fill_parent">
             <ImageView android:layout_gravity="center_horizontal" android:layout_width="340.0dip" android:layout_height="117.0dip" android:layout_marginTop="80.0dip" android:src="@drawable/ac_tower_new_guide_bg" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff487664" android:gravity="start|center" android:layout_width="220.0dip" android:layout_height="65.0dip" android:layout_marginTop="110.0dip" android:text="@string/regression_guild_des" android:layout_marginStart="105.0dip" />
+            <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff487664" android:gravity="start|center" android:layout_width="220.0dip" android:layout_height="65.0dip" android:layout_marginTop="110.0dip" android:text="@string/regression_guild_des" android:layout_marginStart="105.0dip" />
         </FrameLayout>
     </FrameLayout>
 </RelativeLayout>

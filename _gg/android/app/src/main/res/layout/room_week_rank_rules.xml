@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="14.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/room__week_rank_rule_1" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_2" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_3" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_4" />
+    <View android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/room__week_rank_rule_1" />
+    <View android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_2" />
+    <View android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_3" />
+    <View android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:text="@string/room__week_rank_rule_4" />
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:src="@drawable/room_icon_rank_rules_star" android:layout_marginStart="4.0dip" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="@string/room__week_rank_rule_5" />
+    <View android:textSize="12.0dip" android:textColor="@color/room_color_487" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="@string/room__week_rank_rule_5" />
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:src="@drawable/room_icon_rank_rules_moon" android:layout_marginStart="4.0dip" />
 </LinearLayout>

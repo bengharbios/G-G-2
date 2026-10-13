@@ -10,6 +10,6 @@
     </LinearLayout>
     <LinearLayout android:gravity="center" android:id="@id/ll_thx" android:background="@drawable/bn_no" android:layout_width="81.0dip" android:layout_height="30.0dip" android:layout_marginTop="5.0dip" android:layout_below="@id/iv_gift" android:layout_centerHorizontal="true">
         <ImageView android:layout_gravity="center_vertical" android:id="@id/iv_thx" android:layout_width="12.0dip" android:layout_height="18.0dip" android:src="@drawable/chat_gift_thx" android:layout_marginEnd="1.0dip" />
-        <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0dip" android:textColor="#ff08846b" android:gravity="center" android:id="@id/tv_thx" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1500_0130" android:maxLines="1" android:includeFontPadding="false" android:layout_toEndOf="@id/iv_gift" app:stroke_color="#ff61f2ca" app:stroke_width="1.0dip" />
+        <View android:textSize="9.0dip" android:textColor="#ff08846b" android:gravity="center" android:id="@id/tv_thx" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1500_0130" android:maxLines="1" android:includeFontPadding="false" android:layout_toEndOf="@id/iv_gift" app:stroke_color="#ff61f2ca" app:stroke_width="1.0dip" />
     </LinearLayout>
 </RelativeLayout>

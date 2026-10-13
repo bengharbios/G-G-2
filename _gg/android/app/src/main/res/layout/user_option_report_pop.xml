@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_report" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/G_1390_26" />
+    <View android:textSize="11.0sp" android:textColor="#ff478373" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_report" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/G_1390_26" />
 </LinearLayout>

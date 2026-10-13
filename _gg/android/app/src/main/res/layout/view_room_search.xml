@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_no_friends" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="361.0dip">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_share_no_search_result" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textColor="#ffa7e5d3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/share_no_search_result" />
+        <View android:textSize="14.0sp" android:textColor="#ffa7e5d3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/share_no_search_result" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_search_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="7.5dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" />
 </merge>

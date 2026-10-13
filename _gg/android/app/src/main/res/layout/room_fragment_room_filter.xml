@@ -6,6 +6,6 @@
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     <RelativeLayout android:id="@id/top" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="53.0dip" app:layout_constraintTop_toTopOf="parent">
         <ImageView android:id="@id/iv_close" android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/x_closed" android:layout_alignTop="@id/tv_title" android:layout_alignBottom="@id/tv_title" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ff58c980" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true" />
+        <View android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ff58c980" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

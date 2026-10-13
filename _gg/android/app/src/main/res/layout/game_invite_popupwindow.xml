@@ -4,15 +4,15 @@
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="38.0dip">
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_ludo" android:background="@drawable/room_default" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
             <ImageView android:id="@id/iv_ludo" android:layout_width="19.0dip" android:layout_height="19.0dip" android:src="@drawable/ludo_select" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0sp" android:textColor="@color/white" android:id="@id/tv_ludo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/ludo" />
+            <View android:textSize="17.0sp" android:textColor="@color/white" android:id="@id/tv_ludo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/ludo" />
         </LinearLayout>
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_jackaroo" android:background="@drawable/room_default" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
             <ImageView android:id="@id/iv_jackaroo" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/game_select_jackaroo_icon_unselect" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_jackaroo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="1.0dip" android:text="@string/G_1430_76" />
+            <View android:textSize="17.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_jackaroo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="1.0dip" android:text="@string/G_1430_76" />
         </LinearLayout>
         <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_domino" android:background="@drawable/room_default" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
             <ImageView android:id="@id/iv_domino" android:layout_width="19.0dip" android:layout_height="19.0dip" android:src="@drawable/domino_unselect" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_domino" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/domino" />
+            <View android:textSize="17.0sp" android:textColor="#ff75cfb0" android:id="@id/tv_domino" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/domino" />
         </LinearLayout>
     </LinearLayout>
     <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_game" android:background="#ff1f8968" android:layout_width="fill_parent" android:layout_height="126.0dip" />

@@ -7,10 +7,10 @@
                 <EditText android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/white" android:textColorHint="#ff317dbb" android:id="@id/et_search" android:background="@drawable/room_default" android:layout_width="fill_parent" android:layout_height="30.0dip" android:hint="@string/G_1390_208" android:singleLine="true" android:imeOptions="actionSearch" android:paddingStart="10.0dip" />
                 <ImageView android:layout_gravity="end|center" android:id="@id/iv_clear_search" android:visibility="invisible" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/iv_room_share_clear" android:layout_marginEnd="3.0dip" />
             </FrameLayout>
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff317dbb" android:gravity="center" android:id="@id/tv_cancel" android:background="@drawable/bg_room_share_cancel" android:visibility="gone" android:layout_width="54.0dip" android:layout_height="30.0dip" android:text="@string/cancel" android:layout_marginStart="8.0dip" android:layout_marginEnd="9.0dip" />
+            <View android:textSize="12.0sp" android:textColor="#ff317dbb" android:gravity="center" android:id="@id/tv_cancel" android:background="@drawable/bg_room_share_cancel" android:visibility="gone" android:layout_width="54.0dip" android:layout_height="30.0dip" android:text="@string/cancel" android:layout_marginStart="8.0dip" android:layout_marginEnd="9.0dip" />
         </LinearLayout>
         <View.friends.view.ViewRoomShareFriends android:id="@id/view_share_friends" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="26.0dip" />
         <View.friends.view.ViewShareFriendsSearchView android:id="@id/view_share_search" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
     </LinearLayout>
-    <com.bengharbios.ggames.view.StrokeButton android:textSize="13.0sp" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btn_search" android:background="@drawable/bn_yes" android:layout_width="136.0dip" android:layout_height="42.0dip" android:layout_marginBottom="8.0dip" style="@style/StrokeTextStyle_Yes" />
+    <View android:textSize="13.0sp" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btn_search" android:background="@drawable/bn_yes" android:layout_width="136.0dip" android:layout_height="42.0dip" android:layout_marginBottom="8.0dip" style="@style/StrokeTextStyle_Yes" />
 </merge>

@@ -2,9 +2,9 @@
 <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="110.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <com.bengharbios.ggames.view.RoundImageView android:layout_gravity="center" android:id="@id/ivHead" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/room_default" app:isCircle="true" />
+        <View android:layout_gravity="center" android:id="@id/ivHead" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/room_default" app:isCircle="true" />
         <ImageView android:layout_gravity="center" android:id="@id/ivCrown" android:visibility="invisible" android:layout_width="60.0dip" android:layout_height="60.0dip" android:src="@drawable/room_lottery_selected_icon" />
     </FrameLayout>
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center" android:id="@id/tvName" android:layout_width="74.0dip" android:layout_height="26.0dip" android:text="Mmmmm" android:lines="1" />
+    <View android:textSize="11.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center" android:id="@id/tvName" android:layout_width="74.0dip" android:layout_height="26.0dip" android:text="Mmmmm" android:lines="1" />
     <ImageView android:layout_gravity="center" android:id="@id/ivSend" android:visibility="invisible" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/room_gift_send_icon" />
 </LinearLayout>

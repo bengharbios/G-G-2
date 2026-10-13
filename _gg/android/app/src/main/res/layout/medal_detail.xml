@@ -5,7 +5,7 @@
         <FrameLayout android:id="@id/fl_rules" android:layout_width="50.0dip" android:layout_height="40.0dip">
             <ImageView android:id="@id/iv_rules" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:src="@drawable/room_default" android:layout_marginStart="7.0dip" android:layout_alignParentStart="true" />
         </FrameLayout>
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="25.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:text="@string/badge" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
+        <View android:textSize="25.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:text="@string/badge" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
         <FrameLayout android:id="@id/fl_close" android:layout_width="50.0dip" android:layout_height="40.0dip" android:layout_alignParentEnd="true">
             <ImageView android:layout_gravity="end" android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:src="@drawable/room_default" android:layout_marginEnd="10.0dip" />
         </FrameLayout>
@@ -25,13 +25,13 @@
     </LinearLayout>
     <RelativeLayout android:layout_width="350.0dip" android:layout_height="55.0dip" android:layout_marginBottom="7.0dip" android:layout_alignBottom="@id/iv_medal" android:layout_centerHorizontal="true">
         <FrameLayout android:id="@id/fl_achievement" android:background="@drawable/medal_select" android:layout_width="161.0dip" android:layout_height="41.0dip" android:layout_marginStart="10.0dip">
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_achievement" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/achievement_badge" />
+            <View android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_achievement" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/achievement_badge" />
             <FrameLayout android:layout_gravity="end" android:id="@id/fl_achievement_tag_mark" android:layout_width="25.0dip" android:layout_height="38.0dip">
                 <ImageView android:layout_gravity="center" android:id="@id/iv_achievement_tag_mark" android:layout_width="13.0dip" android:layout_height="11.0dip" android:src="@drawable/medal_tag_mark_select" />
             </FrameLayout>
         </FrameLayout>
         <FrameLayout android:id="@id/fl_honor" android:background="@drawable/medal_unselect" android:layout_width="161.0dip" android:layout_height="41.0dip" android:layout_marginStart="14.0dip" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true">
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff5ed2ac" android:gravity="center" android:id="@id/tv_honor" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/honor_badge" />
+            <View android:textSize="11.0sp" android:textColor="#ff5ed2ac" android:gravity="center" android:id="@id/tv_honor" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/honor_badge" />
             <FrameLayout android:layout_gravity="end" android:id="@id/fl_honor_tag_mark" android:layout_width="25.0dip" android:layout_height="38.0dip">
                 <ImageView android:layout_gravity="center" android:id="@id/iv_honor_tag_mark" android:layout_width="13.0dip" android:layout_height="11.0dip" android:src="@drawable/medal_tag_mark_select" />
             </FrameLayout>
@@ -42,26 +42,26 @@
     </FrameLayout>
     <FrameLayout android:background="@drawable/bg_point" android:layout_width="350.0dip" android:layout_height="40.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
         <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_points" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginTop="5.0dip">
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0dip" android:textColor="#ffffffff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/on_top_stars" android:layout_marginStart="14.0dip" />
+            <View android:textSize="12.0dip" android:textColor="#ffffffff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/on_top_stars" android:layout_marginStart="14.0dip" />
             <ImageView android:id="@id/iv_point_star" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/point_star" android:layout_marginStart="5.0dip" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#fffff65d" android:id="@id/tv_points" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="3.0dip" />
+            <View android:textSize="12.0sp" android:textColor="#fffff65d" android:id="@id/tv_points" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="3.0dip" />
             <ImageView android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/point_enter" android:layout_marginStart="10.0dip" android:layout_marginEnd="5.0dip" />
         </LinearLayout>
     </FrameLayout>
     <FrameLayout android:id="@id/fl_my_badge" android:background="@drawable/bg_my_badge" android:layout_width="78.0dip" android:layout_height="61.0dip" android:layout_marginBottom="64.0dip" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true">
-        <com.bengharbios.ggames.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:layout_gravity="bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/my_badge" android:layout_marginStart="6.0dip" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+        <View android:textSize="10.0sp" android:textColor="@color/white" android:layout_gravity="bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/my_badge" android:layout_marginStart="6.0dip" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
     </FrameLayout>
     <FrameLayout android:id="@id/fl_new_guild" android:background="@color/black_50" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
         <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="350.0dip" android:layout_height="fill_parent" android:layout_marginTop="65.0dip">
             <FrameLayout android:id="@id/fl_guide_achievement" android:background="@drawable/medal_select" android:layout_width="161.0dip" android:layout_height="41.0dip" android:layout_marginTop="105.0dip" android:layout_marginStart="10.0dip">
-                <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/achievement_badge" />
+                <View android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:layout_width="fill_parent" android:layout_height="35.0dip" android:text="@string/achievement_badge" />
                 <FrameLayout android:layout_gravity="end" android:layout_width="25.0dip" android:layout_height="38.0dip">
                     <ImageView android:layout_gravity="center" android:layout_width="13.0dip" android:layout_height="11.0dip" android:src="@drawable/medal_tag_mark_select" />
                 </FrameLayout>
             </FrameLayout>
             <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_guide_bg" android:layout_width="320.0dip" android:layout_height="100.0dip" android:src="@drawable/medal_tag_first_guide_ic" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff626262" android:gravity="center" android:layout_width="220.0dip" android:layout_height="62.0dip" android:layout_marginTop="30.0dip" android:text="@string/G_1480_0138" android:layout_marginStart="105.0dip" />
+            <View android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff626262" android:gravity="center" android:layout_width="220.0dip" android:layout_height="62.0dip" android:layout_marginTop="30.0dip" android:text="@string/G_1480_0138" android:layout_marginStart="105.0dip" />
         </FrameLayout>
-        <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center_horizontal" android:id="@id/iv_finger" android:visibility="visible" android:clickable="false" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="172.0dip" android:src="@drawable/finger" />
+        <View android:layout_gravity="center_horizontal" android:id="@id/iv_finger" android:visibility="visible" android:clickable="false" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="172.0dip" android:src="@drawable/finger" />
     </FrameLayout>
 </RelativeLayout>

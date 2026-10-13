@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bengharbios.ggames.view.CustomTextView android:textSize="14.0dip" android:textStyle="bold" android:textColor="#ff428171" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:paddingStart="11.0dip" android:paddingEnd="11.0dip"
+<View android:textSize="14.0dip" android:textStyle="bold" android:textColor="#ff428171" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:paddingStart="11.0dip" android:paddingEnd="11.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" />

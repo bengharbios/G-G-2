@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="360.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.bengharbios.ggames.view.StrokeTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff666666" android:gravity="center" android:id="@id/tv_content_tip" android:layout_width="300.0dip" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:text="@string/G_1440_61" android:layout_centerHorizontal="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+    <View android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff666666" android:gravity="center" android:id="@id/tv_content_tip" android:layout_width="300.0dip" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:text="@string/G_1440_61" android:layout_centerHorizontal="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
     <LinearLayout android:orientation="horizontal" android:id="@id/ll_icon" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/tv_content_tip" android:paddingStart="10.0dip" android:paddingEnd="10.0dip">
         <FrameLayout android:id="@id/fl_royal_icon_default" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
             <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
@@ -31,5 +31,5 @@
             <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_royal_icon_check2" android:visibility="visible" android:layout_width="33.0dip" android:layout_height="34.0dip" android:layout_marginTop="170.0dip" android:src="@drawable/sex_uncheck" />
         </FrameLayout>
     </LinearLayout>
-    <com.bengharbios.ggames.view.StrokeTextView android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_confirm" android:background="@drawable/bn_yes" android:paddingBottom="8.0dip" android:visibility="visible" android:layout_width="192.0dip" android:layout_height="56.0dip" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip" android:text="@string/confirm" android:layout_below="@id/ll_icon" android:layout_centerHorizontal="true" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+    <View android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_confirm" android:background="@drawable/bn_yes" android:paddingBottom="8.0dip" android:visibility="visible" android:layout_width="192.0dip" android:layout_height="56.0dip" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip" android:text="@string/confirm" android:layout_below="@id/ll_icon" android:layout_centerHorizontal="true" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
 </RelativeLayout>

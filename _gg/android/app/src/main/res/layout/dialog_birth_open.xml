@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_main" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="@color/white" android:id="@id/tv_des" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="120.0dip" android:text="@string/G_1370_026" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
+    <View android:id="@id/svga_main" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View android:textSize="12.0sp" android:textColor="@color/white" android:id="@id/tv_des" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="120.0dip" android:text="@string/G_1370_026" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
 </RelativeLayout>

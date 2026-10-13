@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_data" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
         <ImageView android:layout_gravity="center" android:id="@id/iv_empty" android:layout_width="83.0dip" android:layout_height="83.0dip" android:src="@drawable/no_data" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1410_78" />
+        <View android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1410_78" />
     </LinearLayout>
     <RelativeLayout android:id="@id/rl_main" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip">
         <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smart_refresh" android:layout_width="fill_parent" android:layout_height="360.0dip">
             <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="340.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        <com.bengharbios.ggames.view.StrokeButton android:textSize="18.0sp" android:gravity="center" android:id="@id/btn_confirm" android:background="@drawable/bn_yes" android:layout_width="150.0dip" android:layout_height="52.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="@string/G_1410_77" android:layout_below="@id/smart_refresh" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
+        <View android:textSize="18.0sp" android:gravity="center" android:id="@id/btn_confirm" android:background="@drawable/bn_yes" android:layout_width="150.0dip" android:layout_height="52.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="@string/G_1410_77" android:layout_below="@id/smart_refresh" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
     </RelativeLayout>
 </RelativeLayout>

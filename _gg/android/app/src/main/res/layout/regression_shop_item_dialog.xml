@@ -6,6 +6,6 @@
         <ImageView android:id="@id/iv_arrow_left" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/room_default" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
         <ImageView android:id="@id/iv_arrow_right" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/room_default" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
     </RelativeLayout>
-    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_open_unlock_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_open_unlock_1" android:layout_width="fill_parent" android:layout_height="fill_parent" app:view_scale="1.2" />
+    <View android:id="@id/svga_open_unlock_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <View android:id="@id/svga_open_unlock_1" android:layout_width="fill_parent" android:layout_height="fill_parent" app:view_scale="1.2" />
 </FrameLayout>

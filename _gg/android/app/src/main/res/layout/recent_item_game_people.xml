@@ -6,7 +6,7 @@
             <View android:id="@id/head_imag" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_marginStart="8.0dip" app:civ_border_color="@color/head" app:civ_border_width="1.0dip" />
             <View android:textSize="7.0sp" android:layout_gravity="end|bottom|center" android:id="@id/tv_level" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" app:isSameWidth="true" />
         </FrameLayout>
-        <com.bengharbios.ggames.view.StrokeButton android:textSize="13.0sp" android:textStyle="bold" android:gravity="center" android:id="@id/btn_add" android:layout_width="84.0dip" android:layout_height="33.0dip" android:text="@string/add" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="7.0dip" android:layout_alignParentEnd="true" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+        <View android:textSize="13.0sp" android:textStyle="bold" android:gravity="center" android:id="@id/btn_add" android:layout_width="84.0dip" android:layout_height="33.0dip" android:text="@string/add" android:layout_centerVertical="true" android:textAllCaps="false" android:layout_marginEnd="7.0dip" android:layout_alignParentEnd="true" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
         <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_toStartOf="@id/btn_add" android:layout_toEndOf="@id/fl">
             <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_name" android:layout_width="wrap_content" android:layout_height="25.0dip">
                 <View android:textSize="14.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:maxEms="30" android:layout_weight="1.0" android:textAlignment="viewStart" />
@@ -16,12 +16,12 @@
                 <ImageView android:id="@id/iv_league" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/room_default" />
                 <FrameLayout android:id="@id/fl_legend" android:layout_width="wrap_content" android:layout_height="wrap_content">
                     <FrameLayout android:layout_gravity="bottom" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginBottom="2.0dip" android:paddingStart="18.0dip" android:layout_marginStart="5.0dip">
-                        <com.bengharbios.ggames.view.StrokeTextView android:textSize="9.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/tv_stars_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="#ff9c520a" app:stroke_width="1.0dip" />
+                        <View android:textSize="9.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/tv_stars_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="#ff9c520a" app:stroke_width="1.0dip" />
                     </FrameLayout>
                     <ImageView android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/legend_small" />
                 </FrameLayout>
                 <View android:id="@id/view_badge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:layout_marginStart="3.0dip" />
-                <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/svga_nameplate" android:visibility="gone" android:layout_width="75.0dip" android:layout_height="17.0dip" android:layout_marginBottom="2.0dip" />
+                <View android:id="@id/svga_nameplate" android:visibility="gone" android:layout_width="75.0dip" android:layout_height="17.0dip" android:layout_marginBottom="2.0dip" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

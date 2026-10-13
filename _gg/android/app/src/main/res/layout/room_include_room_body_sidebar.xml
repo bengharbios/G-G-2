@@ -7,10 +7,10 @@
         <View android:id="@id/activesBannerView" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" />
         <FrameLayout android:id="@id/fl_message_box" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="48.0dip">
             <View android:layout_gravity="start|bottom|center" android:id="@id/ivMessagesBox" android:layout_width="43.0dip" android:layout_height="43.0dip" android:src="@drawable/icon_message_box" />
-            <com.bengharbios.ggames.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="end|center|top" android:id="@id/tv_num" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <View android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="end|center|top" android:id="@id/tv_num" android:background="@drawable/room_default" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         </FrameLayout>
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="11.0dip" android:textColor="@color/white" android:ellipsize="end" android:id="@id/tv_message_box" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/room_message_box" android:lines="1" />
+        <View android:textSize="11.0dip" android:textColor="@color/white" android:ellipsize="end" android:id="@id/tv_message_box" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/room_message_box" android:lines="1" />
         <View android:id="@id/ivRoomMusic" android:layout_width="43.0dip" android:layout_height="43.0dip" android:src="@drawable/room_icon_room_music" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_room_music" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_music" />
+        <View android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_room_music" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_music" />
     </LinearLayout>
 </View>

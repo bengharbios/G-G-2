@@ -2,6 +2,6 @@
 <LinearLayout android:orientation="vertical" android:layout_width="166.0dip" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:id="@id/topLine" android:background="@drawable/line_dashed_3b555e" android:layout_width="fill_parent" android:layout_height="2.0dip" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff7e9cb8" android:gravity="center" android:id="@id/tvPKTime" android:layout_width="fill_parent" android:layout_height="38.0dip" />
+    <View android:textSize="12.0sp" android:textColor="#ff7e9cb8" android:gravity="center" android:id="@id/tvPKTime" android:layout_width="fill_parent" android:layout_height="38.0dip" />
     <View android:id="@id/bottomLine" android:background="@drawable/line_dashed_3b555e" android:layout_width="fill_parent" android:layout_height="2.0dip" />
 </LinearLayout>

@@ -4,6 +4,6 @@
     <androidx.recyclerview.widget.RecyclerView android:id="@id/rcv_coupon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" />
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_data" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent">
         <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="83.0dip" android:layout_height="83.0dip" android:src="@drawable/tips_no_data" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="#ff196d51" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/no_data" />
+        <View android:textSize="13.0sp" android:textStyle="bold" android:textColor="#ff196d51" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/no_data" />
     </LinearLayout>
 </RelativeLayout>

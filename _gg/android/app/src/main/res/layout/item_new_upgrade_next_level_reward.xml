@@ -4,9 +4,9 @@
     <RelativeLayout android:layout_gravity="center" android:layout_width="48.0dip" android:layout_height="wrap_content" android:layout_marginBottom="1.0dip">
         <FrameLayout android:id="@id/rl_bg" android:background="@drawable/room_default" android:layout_width="38.0dip" android:layout_height="39.0dip" android:layout_marginTop="6.0dip" android:layout_centerHorizontal="true">
             <ImageView android:layout_gravity="center" android:id="@id/iv_icon" android:layout_width="27.0dip" android:layout_height="24.0dip" />
-            <com.bengharbios.ggames.view.LudoSVGAView android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="27.0dip" android:layout_height="24.0dip" />
+            <View android:layout_gravity="center" android:id="@id/iv_svga_icon" android:visibility="gone" android:layout_width="27.0dip" android:layout_height="24.0dip" />
         </FrameLayout>
-        <com.bengharbios.ggames.view.StrokeTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center" android:id="@id/stv_num" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="36.0dip" android:lines="1" android:paddingStart="1.0dip" android:paddingEnd="1.0dip" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
+        <View android:textSize="10.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="center" android:id="@id/stv_num" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="36.0dip" android:lines="1" android:paddingStart="1.0dip" android:paddingEnd="1.0dip" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
         <ImageView android:id="@id/iv_reward_tag" android:visibility="invisible" android:layout_width="19.0dip" android:layout_height="19.0dip" android:layout_marginStart="5.5dip" />
     </RelativeLayout>
 </FrameLayout>

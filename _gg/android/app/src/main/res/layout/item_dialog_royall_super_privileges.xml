@@ -6,8 +6,8 @@
             <ImageView android:layout_gravity="center" android:id="@id/iv_privileges_pic" android:layout_width="64.0dip" android:layout_height="64.0dip" />
         </FrameLayout>
         <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginStart="10.0dip">
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/ctv_pri_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:lines="1" />
-            <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ffa6f5b7" android:ellipsize="end" android:id="@id/ctv_pri_des" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:lines="3" />
+            <View android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/ctv_pri_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:lines="1" />
+            <View android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ffa6f5b7" android:ellipsize="end" android:id="@id/ctv_pri_des" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:lines="3" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

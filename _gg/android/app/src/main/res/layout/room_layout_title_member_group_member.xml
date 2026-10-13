@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="47.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="13.0dip" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="260.0dip" android:maxLines="1" android:singleLine="true" />
+    <View android:textSize="13.0dip" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="260.0dip" android:maxLines="1" android:singleLine="true" />
     <View android:id="@id/ivTitleEnd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" app:srcCompat="@drawable/room_member_withe_arrows_right" />
 </merge>

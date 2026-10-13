@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:layout_gravity="end" android:id="@id/iv_scan_closed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:src="@drawable/dialog_x" />
     <ImageView android:id="@id/ivScan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_music_scan_cycle" />
-    <com.bengharbios.ggames.view.CustomTextView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/room_color_487" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/room_scanning" android:singleLine="true" />
+    <View android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/room_color_487" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/room_scanning" android:singleLine="true" />
 </LinearLayout>

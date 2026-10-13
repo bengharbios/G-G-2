@@ -6,5 +6,5 @@
             <ImageView android:layout_gravity="center" android:id="@id/iv_icon" android:layout_width="32.0dip" android:layout_height="32.0dip" />
         </FrameLayout>
     </RelativeLayout>
-    <com.bengharbios.ggames.view.StrokeTextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_num" android:layout_width="57.0dip" android:layout_height="22.0dip" android:layout_marginBottom="8.0dip" android:lines="1" android:textDirection="ltr" android:layoutDirection="ltr" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="1.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
+    <View android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_num" android:layout_width="57.0dip" android:layout_height="22.0dip" android:layout_marginBottom="8.0dip" android:lines="1" android:textDirection="ltr" android:layoutDirection="ltr" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="1.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff007266" app:stroke_width="1.0dip" />
 </LinearLayout>

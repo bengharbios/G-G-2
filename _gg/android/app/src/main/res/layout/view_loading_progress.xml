@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.bengharbios.ggames.view.LudoSVGAView android:id="@id/sv_loading" android:layout_width="140.0dip" android:layout_height="140.0dip" android:scaleType="fitCenter" app:default_static_source="@drawable/loading_horse" app:play_on_attach="true" app:source="loading.svga" />
+    <View android:id="@id/sv_loading" android:layout_width="140.0dip" android:layout_height="140.0dip" android:scaleType="fitCenter" app:default_static_source="@drawable/loading_horse" app:play_on_attach="true" app:source="loading.svga" />
     <ProgressBar android:id="@id/view_loading_progress" android:layout_width="143.0dip" android:layout_height="13.0dip" android:layout_marginTop="-15.0dip" android:max="100" android:progress="0" android:progressDrawable="@drawable/event_view_loaing_process" style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
     <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffffffff" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/in_the_load" />
-        <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffffffff" android:id="@id/tv_progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0%" />
+        <View android:textSize="12.0sp" android:textColor="#ffffffff" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/in_the_load" />
+        <View android:textSize="12.0sp" android:textColor="#ffffffff" android:id="@id/tv_progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0%" />
     </LinearLayout>
 </merge>
