@@ -14,6 +14,8 @@ export async function GET() {
         isEnabled: g.isEnabled,
         isComingSoon: g.isComingSoon,
         isFree: g.isFree,
+        category: g.category,
+        status: g.status,
         playerRange: g.playerRange,
         description: g.description,
         order: g.order,
