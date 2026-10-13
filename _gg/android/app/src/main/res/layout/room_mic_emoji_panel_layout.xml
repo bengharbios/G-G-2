@@ -2,6 +2,6 @@
 <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:id="@id/rvMicEmojiPanel" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="51.0dip" />
-    <View android:layout_gravity="bottom" android:background="@color/whiteAF" android:layout_width="fill_parent" android:layout_height="2.0px" android:layout_marginBottom="50.0dip" />
+    <View android:layout_gravity="bottom" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="2.0px" android:layout_marginBottom="50.0dip" />
     <androidx.recyclerview.widget.RecyclerView android:layout_gravity="bottom" android:id="@id/rvMicEmojiPanelIndicator" android:layout_width="fill_parent" android:layout_height="50.0dip" android:overScrollMode="never" />
 </FrameLayout>

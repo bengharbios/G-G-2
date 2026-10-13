@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:textSize="15.0sp" android:textColor="@color/color_086" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btnThanks" android:background="@drawable/room_btn_green_bg" android:visibility="gone" android:layout_width="173.0dip" android:layout_height="48.0dip" android:layout_marginBottom="58.0dip" android:text="@string/C_1500_0001" android:includeFontPadding="false" app:stroke_color="@color/whiteF2CA" app:stroke_width="1.0dip" />
+    <View android:textSize="15.0sp" android:textColor="@color/color_086" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btnThanks" android:background="@drawable/room_btn_green_bg" android:visibility="gone" android:layout_width="173.0dip" android:layout_height="48.0dip" android:layout_marginBottom="58.0dip" android:text="@string/C_1500_0001" android:includeFontPadding="false" app:stroke_color="@color/white" app:stroke_width="1.0dip" />
     <ImageView android:layout_gravity="end" android:id="@id/ivPlayViewClose" android:layout_width="50.0dip" android:layout_height="50.0dip" android:src="@drawable/room_private_gift_play_x" android:scaleType="center" />
 </merge>

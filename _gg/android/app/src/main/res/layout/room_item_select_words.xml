@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="14.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View android:textSize="17.0sp" android:textStyle="bold" android:textColor="@color/whiteAB6E0F" android:gravity="center" android:layout_gravity="center" android:id="@id/tvSelectWord" android:background="@drawable/room_btn_yellow_bg" android:layout_width="135.0dip" android:layout_height="48.0dip" app:stroke_color="@color/whiteFFF08B" app:stroke_width="1.0dip" />
+    <View android:textSize="17.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/tvSelectWord" android:background="@drawable/room_btn_yellow_bg" android:layout_width="135.0dip" android:layout_height="48.0dip" app:stroke_color="@color/white" app:stroke_width="1.0dip" />
 </FrameLayout>

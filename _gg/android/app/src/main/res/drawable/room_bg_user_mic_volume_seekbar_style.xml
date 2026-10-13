@@ -4,7 +4,7 @@
     <item android:gravity="center_vertical" android:id="@android:id/background">
         <shape android:shape="rectangle">
             <corners android:radius="15.0dip" />
-            <gradient android:startColor="@color/whiteD48" android:endColor="@color/whiteD48" android:angle="0.0" />
+            <gradient android:startColor="@color/white" android:endColor="@color/white" android:angle="0.0" />
             <size android:height="30.0dip" />
         </shape>
     </item>

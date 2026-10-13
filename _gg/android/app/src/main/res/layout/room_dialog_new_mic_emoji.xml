@@ -11,7 +11,7 @@
         </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <LinearLayout android:orientation="vertical" android:id="@id/flIndicatorContainer" android:background="@drawable/room_bg_mic_emoji_tab" android:layout_width="fill_parent" android:layout_height="50.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
-        <View android:background="@color/whiteAF" android:layout_width="fill_parent" android:layout_height="1.0dip" />
+        <View android:background="@color/white" android:layout_width="fill_parent" android:layout_height="1.0dip" />
         <androidx.recyclerview.widget.RecyclerView android:layout_gravity="bottom" android:id="@id/rvMicEmojiPanelIndicator" android:layout_width="fill_parent" android:layout_height="49.0dip" android:overScrollMode="never" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

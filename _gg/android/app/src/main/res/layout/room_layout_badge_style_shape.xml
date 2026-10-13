@@ -17,5 +17,5 @@
         <View android:layout_gravity="center" android:id="@id/bdv_badge_4" android:layout_width="13.0dip" android:layout_height="13.0dip" />
         <View android:textSize="5.0dip" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="bottom|center" android:id="@id/stv_badge4_rank_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="0.5dip" android:lines="1" android:includeFontPadding="false" app:stroke_color="@color/black" app:stroke_width="0.5dip" />
     </FrameLayout>
-    <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/stv_badge_total_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="@color/whiteC5E42" app:stroke_width="0.5dip" />
+    <View android:textSize="11.0sp" android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/stv_badge_total_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" app:stroke_color="@color/white" app:stroke_width="0.5dip" />
 </merge>
