@@ -1,19 +1,21 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="257.000000dip" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomEditText android:textSize="14.000000sp" android:textColorHint="@7F06011D" android:gravity="0x00800013" android:id="@7F0A038D" android:background="@7F080978" android:layout_width="-1" android:layout_height="40.000000dip" android:hint="@7F111F1D" android:maxLength="18" android:inputType="0x00000002" android:imeOptions="0x10000000" android:textCursorDrawable="@7F08052E" android:paddingStart="94.000000dip" android:layout_marginStart="3.000000dip" style="@7F12011C"/>
-  <LinearLayout android:orientation="0" android:id="@7F0A0C22" android:background="@7F080337" android:layout_width="-2" android:layout_height="40.000000dip">
-    <ImageView android:layout_gravity="0x00000010" android:id="@7F0A0888" android:layout_width="25.000000dip" android:layout_height="25.000000dip" android:src="@7F0804B6" android:layout_marginStart="10.000000dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00000010" android:id="@7F0A14BE" android:layout_width="-2" android:layout_height="-2" android:text="@7F111BFC" android:layout_marginStart="5.000000dip" android:layout_marginEnd="10.000000dip"/>
-  </LinearLayout>
-  <RelativeLayout android:id="@7F0A0F9F" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A038D">
-    <LinearLayout android:gravity="0x00000010" android:id="@7F0A0D22" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_alignParentStart="true">
-      <ImageView android:id="@7F0A0854" android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F080723"/>
-      <ImageView android:id="@7F0A0AE0" android:layout_width="13.000000dip" android:layout_height="13.000000dip" android:src="@7F080722" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
-      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF626262" android:layout_width="-2" android:layout_height="-2" android:text="@7F110F4C"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="257.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomEditText android:textSize="14.0sp" android:textColorHint="@color/hint_phone" android:gravity="start|center" android:id="@id/et_phone_number" android:background="@drawable/right_round_editext" android:layout_width="fill_parent" android:layout_height="40.0dip" android:hint="@string/regist_phone_text" android:maxLength="18" android:inputType="number" android:imeOptions="flagNoExtractUi" android:textCursorDrawable="@drawable/edittext_cursor" android:paddingStart="94.0dip" android:layout_marginStart="3.0dip" style="@style/Edit_Input_Text_Color" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/ll_code" android:background="@drawable/btn_country" android:layout_width="wrap_content" android:layout_height="40.0dip">
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/iv_country" android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/country_unselect" android:layout_marginStart="10.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/tv_code" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/country_code_unselect" android:layout_marginStart="5.0dip" android:layout_marginEnd="10.0dip" />
     </LinearLayout>
-    <LinearLayout android:gravity="0x00000010" android:id="@7F0A0D5C" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_alignParentEnd="true">
-      <ImageView android:id="@7F0A0858" android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F080724"/>
-      <ImageView android:id="@7F0A0B71" android:layout_width="13.000000dip" android:layout_height="13.000000dip" android:src="@7F080741" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
-      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF626262" android:layout_width="-2" android:layout_height="-2" android:text="@7F110F4D"/>
-    </LinearLayout>
-  </RelativeLayout>
+    <RelativeLayout android:id="@id/rl_send_way" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/et_phone_number">
+        <LinearLayout android:gravity="center_vertical" android:id="@id/ll_sms" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentStart="true">
+            <ImageView android:id="@id/iv_check_sms" android:layout_width="17.0dip" android:layout_height="17.0dip" android:src="@drawable/icon_sms_check" />
+            <ImageView android:id="@id/iv_sms" android:layout_width="13.0dip" android:layout_height="13.0dip" android:src="@drawable/icon_sms" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_141" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:id="@id/ll_what_app" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true">
+            <ImageView android:id="@id/iv_check_whats_app" android:layout_width="17.0dip" android:layout_height="17.0dip" android:src="@drawable/icon_sms_un_check" />
+            <ImageView android:id="@id/iv_whats_app" android:layout_width="13.0dip" android:layout_height="13.0dip" android:src="@drawable/icon_whatsapp_sms" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_142" />
+        </LinearLayout>
+    </RelativeLayout>
 </merge>

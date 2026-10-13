@@ -1,7 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F080886" android:paddingLeft="24.000000dip" android:paddingTop="40.000000dip" android:paddingRight="24.000000dip" android:paddingBottom="40.000000dip" android:layout_width="-1" android:layout_height="-2" android:filterTouchesWhenObscured="true">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0E18" android:layout_width="42.000000dip" android:layout_height="42.000000dip" android:src="@7F080887" android:scaleType="7" android:contentDescription="@7F111E5A"/>
-  <LinearLayout android:orientation="1" android:paddingTop="14.000000dip" android:layout_width="-1" android:layout_height="-2">
-    <TextView android:textColor="@android:0106000C" android:gravity="0x00000011" android:id="@7F0A0E19" android:layout_width="-1" android:layout_height="-2" android:text="@7F111E5B"/>
-    <TextView android:textColor="@android:01060000" android:gravity="0x00000011" android:id="@7F0A0E17" android:paddingTop="12.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:text=""/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/offline_dialog_background" android:paddingLeft="24.0dip" android:paddingTop="40.0dip" android:paddingRight="24.0dip" android:paddingBottom="40.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:filterTouchesWhenObscured="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/offline_dialog_image" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/offline_dialog_default_icon_42dp" android:scaleType="centerInside" android:contentDescription="@string/offline_dialog_image_description" />
+    <LinearLayout android:orientation="vertical" android:paddingTop="14.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textColor="@android:color/black" android:gravity="center" android:id="@id/offline_dialog_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/offline_dialog_text" />
+        <TextView android:textColor="@android:color/darker_gray" android:gravity="center" android:id="@id/offline_dialog_advertiser_name" android:paddingTop="12.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="" />
+    </LinearLayout>
 </LinearLayout>

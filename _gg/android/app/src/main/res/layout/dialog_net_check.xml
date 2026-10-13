@@ -1,6 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-2" android:layout_height="-2">
-  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepOneView android:layout_gravity="0x00000011" android:id="@7F0A0DF5" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
-  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepTwoView android:layout_gravity="0x00000011" android:id="@7F0A0DF6" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
-  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepThreeView android:layout_gravity="0x00000011" android:id="@7F0A0DF7" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
-  <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepFourView android:layout_gravity="0x00000011" android:id="@7F0A0DF8" android:visibility="2" android:layout_width="-1" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepOneView android:layout_gravity="center" android:id="@id/net_check_1" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepTwoView android:layout_gravity="center" android:id="@id/net_check_2" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepThreeView android:layout_gravity="center" android:id="@id/net_check_3" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <com.yalla.yallagames.ui.dialog.networktest.NetCheckStepFourView android:layout_gravity="center" android:id="@id/net_check_4" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
 </FrameLayout>

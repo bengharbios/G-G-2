@@ -1,7 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03F3" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
-  <FrameLayout android:id="@7F0A03D4" android:layout_width="-1" android:layout_height="-1">
-    <com.yalla.ludochat.view.SimpleTopBar android:id="@7F0A10D4" android:layout_width="-1" android:layout_height="-2"/>
-    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A18E7" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="50.000000dip"/>
-  </FrameLayout>
-  <com.yalla.games.common.view.LoadingView android:id="@7F0A17FE" android:background="#80000000" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/flRoomDescriptionRoot" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:id="@id/flContent" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.yalla.ludochat.view.SimpleTopBar android:id="@id/simpleTopBar" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/webDescription" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="50.0dip" />
+    </FrameLayout>
+    <com.yalla.games.common.view.LoadingView android:id="@id/viewLoading" android:background="#80000000" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </FrameLayout>

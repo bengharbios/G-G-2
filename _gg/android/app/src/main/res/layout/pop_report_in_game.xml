@@ -1,6 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2">
-  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0C09" android:background="@7F080971" android:layout_width="132.000000dip" android:layout_height="-2">
-    <com.yalla.game.base.view.StrokeButton android:textSize="14.000000sp" android:textColor="#FF70B9A7" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A015B" android:background="@7F080130" android:layout_width="120.000000dip" android:layout_height="42.000000dip" android:layout_marginTop="5.000000dip" android:text="@7F111F43"/>
-    <com.yalla.game.base.view.StrokeButton android:textSize="14.000000sp" android:textColor="#FF70B9A7" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A014D" android:background="@7F080130" android:layout_width="120.000000dip" android:layout_height="42.000000dip" android:layout_marginTop="9.000000dip" android:layout_marginBottom="5.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_bg" android:background="@drawable/report_layout_bg" android:layout_width="132.0dip" android:layout_height="wrap_content">
+        <com.yalla.game.base.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_report" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="5.0dip" android:text="@string/report_name" />
+        <com.yalla.game.base.view.StrokeButton android:textSize="14.0sp" android:textColor="#ff70b9a7" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_mute" android:background="@drawable/bg_btn_report" android:layout_width="120.0dip" android:layout_height="42.0dip" android:layout_marginTop="9.0dip" android:layout_marginBottom="5.0dip" />
+    </LinearLayout>
 </FrameLayout>

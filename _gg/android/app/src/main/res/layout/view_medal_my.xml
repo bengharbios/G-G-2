@@ -1,13 +1,15 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="100.000000dip" android:layout_height="120.000000dip">
-  <LinearLayout android:layout_gravity="0x00000031" android:orientation="1" android:id="@7F0A0CA7" android:layout_width="80.000000dip" android:layout_height="-2">
-    <com.yalla.games.common.view.CustomTextView android:id="@7F0A15FA" android:layout_width="-2" android:layout_height="-2"/>
-    <com.yalla.games.common.view.BadgeDynamicView android:id="@7F0A09C4" android:layout_width="80.000000dip" android:layout_height="80.000000dip" app:isUseSmallBadge="false"/>
-  </LinearLayout>
-  <com.yalla.game.base.view.StrokeTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:layout_gravity="0x00000051" android:id="@7F0A1571" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="11.000000dip" app:end_color="#FFFFDF0F" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFFFFF" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
-  <ImageView android:layout_gravity="0x00800035" android:id="@7F0A0898" android:visibility="2" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:layout_marginTop="30.000000dip" android:src="@7F0804BB" android:layout_marginEnd="15.000000dip"/>
-  <FrameLayout android:layout_gravity="0x00000050" android:layout_width="100.000000dip" android:layout_height="100.000000dip">
-    <ImageView android:layout_gravity="0x00000051" android:id="@7F0A085A" android:visibility="1" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:layout_marginBottom="2.000000dip" android:src="@7F08082C"/>
-    <ImageView android:layout_gravity="0x00000051" android:id="@7F0A07EC" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F080850"/>
-  </FrameLayout>
-  <ImageView android:layout_gravity="0x00000051" android:id="@7F0A0A09" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F080896"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="100.0dip" android:layout_height="120.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_gravity="center|top" android:orientation="vertical" android:id="@id/ll_medal" android:layout_width="80.0dip" android:layout_height="wrap_content">
+        <com.yalla.games.common.view.CustomTextView android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.yalla.games.common.view.BadgeDynamicView android:id="@id/iv_medal" android:layout_width="80.0dip" android:layout_height="80.0dip" app:isUseSmallBadge="false" />
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="17.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="11.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+    <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_cut" android:visibility="gone" android:layout_width="19.0dip" android:layout_height="19.0dip" android:layout_marginTop="30.0dip" android:src="@drawable/cut" android:layout_marginEnd="15.0dip" />
+    <FrameLayout android:layout_gravity="bottom" android:layout_width="100.0dip" android:layout_height="100.0dip">
+        <ImageView android:layout_gravity="bottom|center" android:id="@id/iv_circle_light" android:visibility="invisible" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginBottom="2.0dip" android:src="@drawable/medal_add_circle_light" />
+        <ImageView android:layout_gravity="bottom|center" android:id="@id/iv_add" android:layout_width="69.0dip" android:layout_height="64.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/my_medal_add" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="bottom|center" android:id="@id/iv_other_void" android:layout_width="69.0dip" android:layout_height="64.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/other_void_medal" />
 </merge>

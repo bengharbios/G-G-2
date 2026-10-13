@@ -1,3 +1,5 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0E27" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="1">
-  <androidx.recyclerview.widget.RecyclerView android:orientation="1" android:id="@7F0A0E26" android:paddingTop="4.000000dip" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/onlineRefresh" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="ifContentScrolls"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.recyclerview.widget.RecyclerView android:orientation="vertical" android:id="@id/onlineList" android:paddingTop="4.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

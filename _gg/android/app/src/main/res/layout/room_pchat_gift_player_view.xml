@@ -1,4 +1,6 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="15.000000sp" android:textColor="@7F060052" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="@7F0A0120" android:background="@7F080A25" android:visibility="2" android:layout_width="173.000000dip" android:layout_height="48.000000dip" android:layout_marginBottom="58.000000dip" android:text="@7F110B29" android:includeFontPadding="false" app:stroke_color="@7F0603EB" app:stroke_width="1.000000dip"/>
-  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0709" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F080E15" android:scaleType="5"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="15.0sp" android:textColor="@color/color_086" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/btnThanks" android:background="@drawable/room_btn_green_bg" android:visibility="gone" android:layout_width="173.0dip" android:layout_height="48.0dip" android:layout_marginBottom="58.0dip" android:text="@string/C_1500_0001" android:includeFontPadding="false" app:stroke_color="@color/room_color_61F2CA" app:stroke_width="1.0dip" />
+    <ImageView android:layout_gravity="end" android:id="@id/ivPlayViewClose" android:layout_width="50.0dip" android:layout_height="50.0dip" android:src="@drawable/room_private_gift_play_x" android:scaleType="center" />
 </merge>

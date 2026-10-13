@@ -1,6 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0D86" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.ludochat.view.SimpleTopBar android:id="@7F0A10D4" android:layout_width="-1" android:layout_height="-2"/>
-  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A10E2" android:paddingTop="8.000000dip" android:layout_width="-1" android:layout_height="-1">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EBA" android:clipChildren="false" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
-  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/main_container" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.SimpleTopBar android:id="@id/simpleTopBar" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smart_refresh_layout" android:paddingTop="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/recycler_view" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="never" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

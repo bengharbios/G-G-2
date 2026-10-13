@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="46.000000dip">
-  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A05E0" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:indeterminateDrawable="@7F0808F8" android:indeterminateBehavior="1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="46.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ProgressBar android:layout_gravity="center" android:id="@id/head_loading" android:layout_width="30.0dip" android:layout_height="30.0dip" android:indeterminateDrawable="@drawable/progress_loading_anim" android:indeterminateBehavior="repeat" />
 </FrameLayout>

@@ -1,4 +1,6 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_selected="false" android:drawable="@7F080C1C"/>
-  <item android:state_selected="true" android:drawable="@7F080C1B"/>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="false" android:drawable="@drawable/room_icon_gift_no_select" />
+    <item android:state_selected="true" android:drawable="@drawable/room_icon_gift_all_select" />
 </selector>

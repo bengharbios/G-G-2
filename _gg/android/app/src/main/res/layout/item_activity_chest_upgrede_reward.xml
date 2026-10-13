@@ -1,8 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="50.000000dip">
-  <RelativeLayout android:id="@7F0A044C" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="24.000000dip">
-    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08E8" android:layout_width="60.000000dip" android:layout_height="45.000000dip"/>
-    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08EA" android:layout_width="54.000000dip" android:layout_height="50.000000dip"/>
-    <com.yalla.games.common.view.HeadFrameView android:layout_gravity="0x00000011" android:id="@7F0A019C" android:layout_width="54.000000dip" android:layout_height="54.000000dip"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF87EFCC" android:gravity="0x00800013" android:layout_width="160.000000dip" android:layout_height="50.000000dip" android:text="Hahahahahahahahahaha hahahahahaha" android:layout_marginEnd="24.000000dip" android:layout_alignParentEnd="true" app:stroke_color="#FF0B6546" app:stroke_width="1.000000dip"/>
-  </RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="50.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/fl_elite_regard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="24.0dip">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_elite_regard" android:layout_width="60.0dip" android:layout_height="45.0dip" />
+        <ImageView android:layout_gravity="center" android:id="@id/iv_elite_regard_net" android:layout_width="54.0dip" android:layout_height="50.0dip" />
+        <com.yalla.games.common.view.HeadFrameView android:layout_gravity="center" android:id="@id/chest_iv_frame_elite" android:layout_width="54.0dip" android:layout_height="54.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff87efcc" android:gravity="start|center" android:layout_width="160.0dip" android:layout_height="50.0dip" android:text="Hahahahahahahahahaha hahahahahaha" android:layout_marginEnd="24.0dip" android:layout_alignParentEnd="true" app:stroke_color="#ff0b6546" app:stroke_width="1.0dip" />
+    </RelativeLayout>
 </FrameLayout>

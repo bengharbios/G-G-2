@@ -1,4 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:background="@7F080288" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginStart="12.000000dip" android:layout_marginEnd="70.000000dip">
-  <ImageView android:layout_gravity="0x00000010" android:id="@7F0A060E" android:layout_width="36.000000dip" android:layout_height="36.000000dip" android:src="@7F080D59"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000010" android:id="@7F0A1273" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="6.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@drawable/bg_system" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/image" android:layout_width="36.0dip" android:layout_height="36.0dip" android:src="@drawable/room_lucky_star_icon" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ffffffff" android:layout_gravity="center_vertical" android:id="@id/textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6.0dip" />
 </LinearLayout>

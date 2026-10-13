@@ -1,10 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:layout_width="322.000000dip" android:layout_height="-2">
-  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A0245">
-    <com.yalla.games.common.view.CustomTextView android:textSize="19.000000sp" android:textColor="#FF428371" android:layout_gravity="0x00000001" android:id="@7F0A1735" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="22.000000dip"/>
-    <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:background="@7F080F57" android:layout_width="285.000000dip" android:layout_height="257.000000dip" android:layout_marginTop="22.000000dip" android:layout_marginStart="19.000000dip" android:layout_marginEnd="19.000000dip">
-      <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textColor="#FF626262" android:layout_gravity="0x00000001" android:id="@7F0A1736" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000sp"/>
-      <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF767676" android:id="@7F0A14C8" android:layout_width="-1" android:layout_height="-1" android:layout_margin="23.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center" android:layout_width="322.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/common_header">
+        <com.yalla.games.common.view.CustomTextView android:textSize="19.0sp" android:textColor="#ff428371" android:layout_gravity="center_horizontal" android:id="@id/tv_version_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22.0dip" />
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/rounded_edittext" android:layout_width="285.0dip" android:layout_height="257.0dip" android:layout_marginTop="22.0dip" android:layout_marginStart="19.0dip" android:layout_marginEnd="19.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff626262" android:layout_gravity="center_horizontal" android:id="@id/tv_version_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0sp" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff767676" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="23.0dip" />
+        </LinearLayout>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/bt_upgrade" android:background="@drawable/bn_yes_big" android:layout_width="198.0dip" android:layout_height="54.0dip" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip" android:text="@string/G_1450_0082" android:textAllCaps="false" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
     </LinearLayout>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="20.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A010F" android:background="@7F080301" android:layout_width="198.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="12.000000dip" android:layout_marginBottom="12.000000dip" android:text="@7F1115B7" android:textAllCaps="false" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" app:need_press_status="true" style="@7F120191"/>
-  </LinearLayout>
 </RelativeLayout>

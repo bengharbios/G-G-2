@@ -1,4 +1,6 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0FB6" android:layout_width="-1" android:layout_height="-1">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EB1" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="10.000000dip"/>
-  <com.yalla.games.common.view.LoadingView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:layout_width="-2" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:id="@id/rl_task" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_shop" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" />
+    <com.yalla.games.common.view.LoadingView android:layout_gravity="center" android:id="@id/iv_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </merge>

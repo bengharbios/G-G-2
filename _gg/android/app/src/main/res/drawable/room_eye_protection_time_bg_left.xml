@@ -1,1 +1,3 @@
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:src="@7F080AB3"/>
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap android:gravity="center" android:src="@drawable/room_eye_protection_time_bg"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

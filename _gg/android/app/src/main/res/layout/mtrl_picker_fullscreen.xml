@@ -1,4 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:id="@7F0A0DDD" android:layout_width="-1" android:layout_height="-1">
-  <include layout="@7F0D0305"/>
-  <androidx.fragment.app.FragmentContainerView android:id="@7F0A0DD3" android:paddingLeft="@7F0701AD" android:paddingRight="@7F0701AD" android:layout_width="-1" android:layout_height="-2" android:paddingStart="@7F0701AD" android:paddingEnd="@7F0701AD"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/mtrl_picker_fullscreen" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/mtrl_picker_header_fullscreen" />
+    <androidx.fragment.app.FragmentContainerView android:id="@id/mtrl_calendar_frame" android:paddingLeft="@dimen/mtrl_calendar_content_padding" android:paddingRight="@dimen/mtrl_calendar_content_padding" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="@dimen/mtrl_calendar_content_padding" android:paddingEnd="@dimen/mtrl_calendar_content_padding" />
 </LinearLayout>

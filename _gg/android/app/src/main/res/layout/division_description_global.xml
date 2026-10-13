@@ -1,5 +1,7 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F080208" android:layout_width="330.000000dip" android:layout_height="-1">
-  <ScrollView android:layout_width="-1" android:layout_height="-2">
-    <LinearLayout android:orientation="1" android:id="@7F0A0CF6" android:background="@7F08021E" android:layout_width="-1" android:layout_height="-2" android:layout_margin="5.000000dip"/>
-  </ScrollView>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/bg_notes" android:layout_width="330.0dip" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_rank_content" android:background="@drawable/bg_rank_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip" />
+    </ScrollView>
 </LinearLayout>

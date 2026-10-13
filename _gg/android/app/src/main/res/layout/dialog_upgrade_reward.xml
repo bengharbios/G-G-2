@@ -1,18 +1,20 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
-  <RelativeLayout android:id="@7F0A0F1C" android:layout_width="-1" android:layout_height="565.000000dip" android:layout_centerInParent="true">
-    <View android:id="@7F0A181D" android:layout_width="-1" android:layout_height="524.000000dip" android:layout_marginTop="110.000000dip" android:layout_centerInParent="true"/>
-    <ImageView android:layout_gravity="0x00000001" android:layout_width="320.000000dip" android:layout_height="253.000000dip" android:layout_marginTop="16777166.000000dip" android:src="@7F0812C7" android:layout_alignTop="@7F0A181D" android:layout_centerHorizontal="true"/>
-    <FrameLayout android:id="@7F0A0439" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="100.000000dip" android:layout_centerHorizontal="true">
-      <FrameLayout android:background="@7F0812C6" android:layout_width="360.000000dip" android:layout_height="424.000000dip" android:layout_marginTop="35.000000dip">
-        <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0C8D" android:background="@7F0804F1" android:visibility="2" android:layout_width="293.000000dip" android:layout_height="27.000000dip" android:layout_marginTop="32.000000dip">
-          <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF75B5A3" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="@7F111045" android:layout_weight="1.000000"/>
-          <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08F6" android:layout_width="35.000000dip" android:layout_height="27.000000dip" android:src="@7F080901" android:paddingStart="7.000000dip" android:paddingEnd="9.000000dip"/>
-        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="32.000000dip" android:layout_marginBottom="38.000000dip" android:layout_marginStart="18.000000dip" android:layout_marginEnd="18.000000dip"/>
-      </FrameLayout>
-    </FrameLayout>
-    <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
-    <ImageView android:id="@7F0A099A" android:layout_width="320.000000dip" android:layout_height="121.000000dip" android:layout_marginTop="16777159.000000dip" android:src="@7F0812C9" android:layout_alignTop="@7F0A0439" android:layout_centerHorizontal="true"/>
-    <ImageView android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="59.000000dip" android:src="@7F0812C8" android:layout_alignTop="@7F0A099A" android:layout_centerHorizontal="true"/>
-  </RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/rl_content" android:layout_width="fill_parent" android:layout_height="565.0dip" android:layout_centerInParent="true">
+        <View android:id="@id/view_content" android:layout_width="fill_parent" android:layout_height="524.0dip" android:layout_marginTop="110.0dip" android:layout_centerInParent="true" />
+        <ImageView android:layout_gravity="center_horizontal" android:layout_width="320.0dip" android:layout_height="253.0dip" android:layout_marginTop="-50.0dip" android:src="@drawable/upgrade_level_light" android:layout_alignTop="@id/view_content" android:layout_centerHorizontal="true" />
+        <FrameLayout android:id="@id/fl_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="100.0dip" android:layout_centerHorizontal="true">
+            <FrameLayout android:background="@drawable/upgrade_level_content" android:layout_width="360.0dip" android:layout_height="424.0dip" android:layout_marginTop="35.0dip">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_level_exp_tips" android:background="@drawable/dialog_leve_up_tips_bg" android:visibility="gone" android:layout_width="293.0dip" android:layout_height="27.0dip" android:layout_marginTop="32.0dip">
+                    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff75b5a3" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_97" android:layout_weight="1.0" />
+                    <ImageView android:layout_gravity="center" android:id="@id/iv_exp_question" android:layout_width="35.0dip" android:layout_height="27.0dip" android:src="@drawable/question_green_ic" android:paddingStart="7.0dip" android:paddingEnd="9.0dip" />
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="32.0dip" android:layout_marginBottom="38.0dip" android:layout_marginStart="18.0dip" android:layout_marginEnd="18.0dip" />
+            </FrameLayout>
+        </FrameLayout>
+        <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/close" android:layout_alignParentEnd="true" />
+        <ImageView android:id="@id/iv_level_top_ic" android:layout_width="320.0dip" android:layout_height="121.0dip" android:layout_marginTop="-57.0dip" android:src="@drawable/upgrade_level_top" android:layout_alignTop="@id/fl_content" android:layout_centerHorizontal="true" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="59.0dip" android:src="@drawable/upgrade_level_title" android:layout_alignTop="@id/iv_level_top_ic" android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </RelativeLayout>

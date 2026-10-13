@@ -1,20 +1,22 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0F6D" android:background="@7F0805C8" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="200.000000dip" android:scaleType="3" app:lowMemoryConfig="2" app:play_on_attach="true" app:source="?7F040326"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="200.000000dip" android:scaleType="3" app:lowMemoryConfig="2" app:play_on_attach="true" app:source="?7F040325"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A11DF" android:layout_width="-1" android:layout_height="121.000000dip" android:layout_marginBottom="16777204.000000dip" android:scaleType="3" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga"/>
-  <FrameLayout android:id="@7F0A0507" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip">
-    <ImageView android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="15.000000dip" android:src="@7F0811D8" android:layout_marginStart="15.000000dip"/>
-  </FrameLayout>
-  <RelativeLayout android:id="@7F0A0F44" android:layout_width="-1" android:layout_height="90.000000dip" android:layout_marginTop="75.000000dip">
-    <FrameLayout android:layout_width="109.000000dip" android:layout_height="-2" android:layout_marginStart="59.000000dip">
-      <ImageView android:id="@7F0A07CB" android:layout_width="109.000000dip" android:layout_height="-2" android:scaleType="2"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000031" android:id="@7F0A1486" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="45.000000dip" android:text="@7F1122F8" android:layout_centerHorizontal="true" app:stroke_color="#FF0D73BA" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rl_match" android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svgaImage" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
+    <FrameLayout android:id="@id/fl_rule" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip">
+        <ImageView android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_marginTop="15.0dip" android:src="@drawable/team_create_rule_ic" android:layout_marginStart="15.0dip" />
     </FrameLayout>
-    <FrameLayout android:layout_width="114.000000dip" android:layout_height="-2" android:layout_marginEnd="59.000000dip" android:layout_alignParentEnd="true">
-      <ImageView android:id="@7F0A07E1" android:layout_width="113.000000dip" android:layout_height="-2" android:scaleType="2"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000031" android:id="@7F0A1488" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="45.000000dip" android:text="@7F111EB5" android:layout_centerHorizontal="true" app:stroke_color="#FF0D73BA" app:stroke_width="1.000000dip"/>
-    </FrameLayout>
-  </RelativeLayout>
-  <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18B3" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip" android:layout_below="@7F0A0F44"/>
-  <ImageView android:id="@7F0A0840" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="@7F08044D" android:layout_alignParentTop="true" android:layout_alignParentEnd="true"/>
+    <RelativeLayout android:id="@id/rl_game_select" android:layout_width="fill_parent" android:layout_height="90.0dip" android:layout_marginTop="75.0dip">
+        <FrameLayout android:layout_width="109.0dip" android:layout_height="wrap_content" android:layout_marginStart="59.0dip">
+            <ImageView android:id="@id/iv_2p" android:layout_width="109.0dip" android:layout_height="wrap_content" android:scaleType="fitStart" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_2p" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.0dip" android:text="@string/v_1_1" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+        </FrameLayout>
+        <FrameLayout android:layout_width="114.0dip" android:layout_height="wrap_content" android:layout_marginEnd="59.0dip" android:layout_alignParentEnd="true">
+            <ImageView android:id="@id/iv_4p" android:layout_width="113.0dip" android:layout_height="wrap_content" android:scaleType="fitStart" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_gravity="center|top" android:id="@id/tv_4p" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.0dip" android:text="@string/players_4" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+        </FrameLayout>
+    </RelativeLayout>
+    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_duel" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_below="@id/rl_game_select" />
+    <ImageView android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentTop="true" android:layout_alignParentEnd="true" />
 </RelativeLayout>

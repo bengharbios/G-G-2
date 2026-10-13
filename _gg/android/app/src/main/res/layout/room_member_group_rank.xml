@@ -1,13 +1,15 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
-  <View android:background="@7F080D79" android:layout_width="-1" android:layout_height="-1" android:adjustViewBounds="true" app:layout_constraintTop_toTopOf="0"/>
-  <RelativeLayout android:orientation="0" android:id="@7F0A0BF6" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="6.000000dip" app:layout_constraintTop_toTopOf="0">
-    <ImageView android:id="@7F0A0749" android:layout_width="-2" android:layout_height="-2" android:src="@7F080D7C" android:layout_marginStart="9.000000dip"/>
-    <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F080D7E" android:layout_centerHorizontal="true" android:layout_toStartOf="@7F0A067A" android:layout_toEndOf="@7F0A0749"/>
-    <ImageView android:id="@7F0A067A" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
-  </RelativeLayout>
-  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BF1" android:background="@7F080D7D" android:layout_width="256.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="16777206.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A0BF6">
-    <TextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FFE8F4FF" android:gravity="0x00000011" android:layout_width="128.000000dip" android:layout_height="-1" android:text="@7F110150" android:shadowColor="#6B073145" android:shadowDx="0.000000" android:shadowDy="1.000000" android:shadowRadius="3.000000"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textStyle="0x00000001" android:textColor="#FF6EABCF" android:gravity="0x00000011" android:background="@7F080D7B" android:layout_width="128.000000dip" android:layout_height="-1" android:text="@7F11014E" android:shadowColor="#6B0C334C" android:shadowDx="0.000000" android:shadowDy="1.000000" android:shadowRadius="3.000000"/>
-  </LinearLayout>
-  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A0E8A" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A0BF1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/room_member_group_rank_head_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:adjustViewBounds="true" app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout android:orientation="horizontal" android:id="@id/llTitle" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" app:layout_constraintTop_toTopOf="parent">
+        <ImageView android:id="@id/ivRule" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_member_group_rank_rule_icon" android:layout_marginStart="9.0dip" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_member_group_rank_title_icon" android:layout_centerHorizontal="true" android:layout_toStartOf="@id/ivClose" android:layout_toEndOf="@id/ivRule" />
+        <ImageView android:id="@id/ivClose" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:src="@drawable/close" android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llTab" android:background="@drawable/room_member_group_rank_tab_bg" android:layout_width="256.0dip" android:layout_height="34.0dip" android:layout_marginTop="-10.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/llTitle">
+        <TextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="#ffe8f4ff" android:gravity="center" android:layout_width="128.0dip" android:layout_height="fill_parent" android:text="@string/C_1360_90" android:shadowColor="#6b073145" android:shadowDx="0.0" android:shadowDy="1.0" android:shadowRadius="3.0" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="#ff6eabcf" android:gravity="center" android:background="@drawable/room_member_group_rank_right_tab" android:layout_width="128.0dip" android:layout_height="fill_parent" android:text="@string/C_1360_89" android:shadowColor="#6b0c334c" android:shadowDx="0.0" android:shadowDy="1.0" android:shadowRadius="3.0" />
+    </LinearLayout>
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/rankViewPager2" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/llTab" />
 </androidx.constraintlayout.widget.ConstraintLayout>

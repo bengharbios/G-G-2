@@ -1,9 +1,11 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
-  <RelativeLayout android:orientation="0" android:id="@7F0A0CA5" android:layout_width="-1" android:layout_height="-1">
-    <com.booking.rtlviewpager.RtlViewPager android:id="@7F0A18C8" android:layout_width="-1" android:layout_height="-2" android:layout_weight="1.000000" android:layout_centerInParent="true"/>
-    <ImageView android:id="@7F0A0803" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F081146" android:scaleType="7" android:layout_alignParentLeft="true" android:layout_centerVertical="true"/>
-    <ImageView android:id="@7F0A0806" android:layout_width="49.000000dip" android:layout_height="180.000000dip" android:src="@7F081147" android:scaleType="7" android:layout_alignParentRight="true" android:layout_centerVertical="true"/>
-  </RelativeLayout>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A121B" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A121A" android:layout_width="-1" android:layout_height="-1" app:view_scale="1.200000"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:orientation="horizontal" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_switch" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_centerInParent="true" />
+        <ImageView android:id="@id/iv_arrow_left" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/skin_arrow_left" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/iv_arrow_right" android:layout_width="49.0dip" android:layout_height="180.0dip" android:src="@drawable/skin_arrow_right" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_open_unlock_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_open_unlock_1" android:layout_width="fill_parent" android:layout_height="fill_parent" app:view_scale="1.2" />
 </FrameLayout>

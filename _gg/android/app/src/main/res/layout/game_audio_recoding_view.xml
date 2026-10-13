@@ -1,17 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="130.000000dip" android:layout_height="-2" android:filterTouchesWhenObscured="true">
-  <FrameLayout android:id="@7F0A0439" android:layout_width="120.000000dip" android:layout_height="-2" android:layout_marginTop="10.000000dip">
-    <ImageView android:background="@7F0805C5" android:layout_width="120.000000dip" android:layout_height="120.000000dip"/>
-    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F0A04DB" android:visibility="0" android:layout_width="-1" android:layout_height="-1">
-      <ImageView android:id="@7F0A0775" android:layout_width="60.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="15.000000dip" android:src="@7F0805C4" android:scaleType="1"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FF94FEDF" android:gravity="0x00000001" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F11195D" android:lines="1" app:stroke_color="#FF47AA82" app:stroke_width="1.500000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FF94FEDF" android:gravity="0x00000001" android:id="@7F0A11B2" android:visibility="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:text="0/15s" android:lines="1" app:stroke_color="#FF47AA82" app:stroke_width="1.500000dip"/>
-    </LinearLayout>
-    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F0A04DA" android:visibility="1" android:layout_width="-1" android:layout_height="-1">
-      <ImageView android:layout_width="56.000000dip" android:layout_height="56.000000dip" android:layout_marginTop="10.000000dip" android:src="@7F0805C6"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FF94FEDF" android:gravity="0x00000001" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:text="@7F11195E" android:lines="1" app:stroke_color="#FF47AA82" app:stroke_width="1.500000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FF94FEDF" android:gravity="0x00000011" android:id="@7F0A1193" android:background="@7F0805BD" android:layout_width="61.000000dip" android:layout_height="20.000000dip" android:layout_marginTop="8.000000dip" android:text="@7F11195F" app:stroke_color="#FF47AA82" app:stroke_width="1.000000dip"/>
-    </LinearLayout>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF94FEDF" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A11B0" android:background="@7F0805C7" android:paddingBottom="1.000000dip" android:visibility="0" android:layout_width="85.000000dip" android:layout_height="31.000000dip" android:layout_marginTop="122.000000dip" android:text="@7F111960" app:stroke_color="#FF47AA82" app:stroke_width="1.500000dip"/>
-  </FrameLayout>
-  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0863" android:padding="2.000000dip" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:src="@7F0805BE"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="130.0dip" android:layout_height="wrap_content" android:filterTouchesWhenObscured="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_content" android:layout_width="120.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <ImageView android:background="@drawable/game_audio_recoding_view_bg" android:layout_width="120.0dip" android:layout_height="120.0dip" />
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/fl_recording" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:id="@id/ivStart" android:layout_width="60.0dip" android:layout_height="50.0dip" android:layout_marginTop="15.0dip" android:src="@drawable/game_audio_recoding_view_animation" android:scaleType="fitXY" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1500_0125" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:id="@id/stv_time" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="0/15s" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/fl_recorded" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:layout_width="56.0dip" android:layout_height="56.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/game_audio_record_complete_ic" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/G_1500_0126" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center" android:id="@id/stv_re_record" android:background="@drawable/game_audio_re_record_bg" android:layout_width="61.0dip" android:layout_height="20.0dip" android:layout_marginTop="8.0dip" android:text="@string/G_1500_0127" app:stroke_color="#ff47aa82" app:stroke_width="1.0dip" />
+        </LinearLayout>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff94fedf" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_submit" android:background="@drawable/game_audio_record_submit_bg" android:paddingBottom="1.0dip" android:visibility="visible" android:layout_width="85.0dip" android:layout_height="31.0dip" android:layout_marginTop="122.0dip" android:text="@string/G_1500_0128" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="end" android:id="@id/iv_close_recording" android:padding="2.0dip" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/game_audio_recoding_close_ic" />
 </FrameLayout>

@@ -1,3 +1,5 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_pressed="false" android:drawable="@7F080352"/>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false" android:drawable="@drawable/btn_invitefacebook" />
 </selector>

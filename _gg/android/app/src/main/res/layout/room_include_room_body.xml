@@ -1,9 +1,11 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03F2" android:layout_width="-1" android:layout_height="0.000000dip">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1057" android:paddingTop="3.000000dip" android:paddingBottom="20.000000dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:overScrollMode="2" app:stackFromEnd="true"/>
-  <include android:layout_gravity="0x00800055" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="36.000000dip" layout="@7F0D043D"/>
-  <ViewStub android:layout_gravity="0x00000050" android:id="@7F0A18D0" android:visibility="2" android:layout="@7F0D0542" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="10.000000dip"/>
-  <include android:layout_gravity="0x00800053" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="12.000000dip" layout="@7F0D03C6"/>
-  <com.yalla.ludochat.view.ReturnRoomView android:layout_gravity="0x00800053" android:id="@7F0A0ED6" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="32.000000dip"/>
-  <com.yalla.ludochat.view.GrowthBonusTipView android:layout_gravity="0x00800053" android:id="@7F0A05A5" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="20.000000dip" android:layout_marginStart="15.000000dip"/>
-  <View android:id="@7F0A17C1" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/flRoomBody" android:layout_width="fill_parent" android:layout_height="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rvRoomChat" android:paddingTop="3.0dip" android:paddingBottom="20.0dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:overScrollMode="never" app:stackFromEnd="true" />
+    <include android:layout_gravity="end|bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="36.0dip" layout="@layout/room_include_room_body_sidebar" />
+    <ViewStub android:layout_gravity="bottom" android:id="@id/vsMagicCardAnim" android:visibility="gone" android:layout="@layout/room_magic_card_runaway_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" />
+    <include android:layout_gravity="start|bottom|center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12.0dip" layout="@layout/room_dialog_new_message_layout" />
+    <com.yalla.ludochat.view.ReturnRoomView android:layout_gravity="start|bottom|center" android:id="@id/returnRoomView" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" />
+    <com.yalla.ludochat.view.GrowthBonusTipView android:layout_gravity="start|bottom|center" android:id="@id/growthBonusTipView" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_marginStart="15.0dip" />
+    <View android:id="@id/vInputMask" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </FrameLayout>

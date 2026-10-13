@@ -1,26 +1,28 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:layout_width="-1" android:layout_height="-1">
-  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="16777213.000000dip">
-    <View android:background="@7F080FB6" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
-    <View android:background="@7F080FB7" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_marginTop="16777215.000000dip" android:layout_weight="1.000000"/>
-  </LinearLayout>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EA5" android:paddingTop="18.000000dip" android:scrollbars="0x00000000" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="75.000000dip" android:layout_below="@7F0A0FBE" android:overScrollMode="2" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
-  <View android:id="@7F0A180F" android:background="@7F0811A9" android:layout_width="-1" android:layout_height="166.000000dip"/>
-  <FrameLayout android:id="@7F0A0FBE" android:background="@7F080FD3" android:layout_width="-1" android:layout_height="53.000000dip">
-    <RelativeLayout android:layout_width="-1" android:layout_height="38.000000dip">
-      <FrameLayout android:id="@7F0A0507" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentStart="true">
-        <ImageView android:id="@7F0A0AB0" android:layout_width="25.000000dip" android:layout_height="24.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginBottom="3.000000dip" android:src="@7F080FCF" android:layout_marginStart="10.000000dip" android:layout_marginEnd="8.000000dip"/>
-      </FrameLayout>
-      <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:layout_centerHorizontal="true">
-        <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A027C" android:background="@7F080FD2" android:layout_width="-2" android:layout_height="24.000000dip" android:layout_marginTop="5.000000dip" android:minWidth="90.000000dip" android:paddingStart="30.000000dip" android:layout_marginStart="2.000000dip"/>
-        <ImageView android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:src="@7F080FAC"/>
-      </FrameLayout>
-      <FrameLayout android:id="@7F0A042F" android:layout_width="-2" android:layout_height="-2" android:layout_alignParentEnd="true">
-        <ImageView android:id="@7F0A0861" android:layout_width="23.000000dip" android:layout_height="24.000000dip" android:layout_marginTop="11.000000dip" android:layout_marginBottom="3.000000dip" android:src="@7F080FAA" android:layout_marginStart="8.000000dip" android:layout_marginEnd="10.000000dip"/>
-      </FrameLayout>
-    </RelativeLayout>
-  </FrameLayout>
-  <LinearLayout android:orientation="1" android:id="@7F0A0C2E" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="3.000000dip" android:layout_below="@7F0A0FBE" android:layout_centerHorizontal="true">
-    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0B29" android:layout_width="205.000000dip" android:layout_height="54.000000dip" android:src="@7F080FD1"/>
-  </LinearLayout>
-  <ImageView android:id="@7F0A0A59" android:paddingTop="3.000000dip" android:paddingBottom="5.000000dip" android:layout_width="42.000000dip" android:layout_height="43.000000dip" android:src="@7F080FCA" android:layout_below="@7F0A0FBE" android:paddingStart="5.000000dip" android:paddingEnd="7.000000dip" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="-3.0dip">
+        <View android:background="@drawable/royal_store_green_bg_1" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+        <View android:background="@drawable/royal_store_green_bg_2" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="-1.0dip" android:layout_weight="1.0" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcv_store" android:paddingTop="18.0dip" android:scrollbars="none" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="75.0dip" android:layout_below="@id/rl_title" android:overScrollMode="never" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" />
+    <View android:id="@id/view_banner_bg" android:background="@drawable/store_royal_top_banner" android:layout_width="fill_parent" android:layout_height="166.0dip" />
+    <FrameLayout android:id="@id/rl_title" android:background="@drawable/royal_store_top_bar_ic" android:layout_width="fill_parent" android:layout_height="53.0dip">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="38.0dip">
+            <FrameLayout android:id="@id/fl_rule" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentStart="true">
+                <ImageView android:id="@id/iv_rule" android:layout_width="25.0dip" android:layout_height="24.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="3.0dip" android:src="@drawable/royal_store_rule" android:layout_marginStart="10.0dip" android:layout_marginEnd="8.0dip" />
+            </FrameLayout>
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_centerHorizontal="true">
+                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/ctv_coin" android:background="@drawable/royal_store_top_bar_coin_num" android:layout_width="wrap_content" android:layout_height="24.0dip" android:layout_marginTop="5.0dip" android:minWidth="90.0dip" android:paddingStart="30.0dip" android:layout_marginStart="2.0dip" />
+                <ImageView android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/royal_store_coin_ic" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true">
+                <ImageView android:id="@id/iv_close" android:layout_width="23.0dip" android:layout_height="24.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="3.0dip" android:src="@drawable/royal_store_close" android:layout_marginStart="8.0dip" android:layout_marginEnd="10.0dip" />
+            </FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+    <LinearLayout android:orientation="vertical" android:id="@id/ll_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="3.0dip" android:layout_below="@id/rl_title" android:layout_centerHorizontal="true">
+        <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_top" android:layout_width="205.0dip" android:layout_height="54.0dip" android:src="@drawable/royal_store_title_des_ic" />
+    </LinearLayout>
+    <ImageView android:id="@id/iv_record" android:paddingTop="3.0dip" android:paddingBottom="5.0dip" android:layout_width="42.0dip" android:layout_height="43.0dip" android:src="@drawable/royal_store_record_ic" android:layout_below="@id/rl_title" android:paddingStart="5.0dip" android:paddingEnd="7.0dip" android:layout_alignParentEnd="true" />
 </RelativeLayout>

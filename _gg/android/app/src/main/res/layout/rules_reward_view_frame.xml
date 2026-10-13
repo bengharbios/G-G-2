@@ -1,1 +1,3 @@
-<com.yalla.games.common.view.svga.LudoSVGAView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0906" android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:src="@7F080972" app:play_on_attach="true" app:source="app/frame_img/110001.svga"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/iv_frame" android:layout_width="45.0dip" android:layout_height="45.0dip" android:src="@drawable/reward_110001" app:play_on_attach="true" app:source="app/frame_img/110001.svga"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

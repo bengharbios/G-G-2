@@ -1,14 +1,16 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:constantSize="true">
-  <item android:state_enabled="false" android:state_pressed="true">
-    <bitmap android:gravity="0x00000011" android:src="@7F08003B"/>
-  </item>
-  <item android:state_enabled="false">
-    <bitmap android:gravity="0x00000011" android:src="@7F08003B"/>
-  </item>
-  <item android:state_pressed="true">
-    <bitmap android:gravity="0x00000011" android:src="@7F08003D"/>
-  </item>
-  <item>
-    <bitmap android:gravity="0x00000011" android:src="@7F08003C"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<selector android:constantSize="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:state_pressed="true">
+        <bitmap android:gravity="center" android:src="@drawable/abc_scrubber_control_off_mtrl_alpha" />
+    </item>
+    <item android:state_enabled="false">
+        <bitmap android:gravity="center" android:src="@drawable/abc_scrubber_control_off_mtrl_alpha" />
+    </item>
+    <item android:state_pressed="true">
+        <bitmap android:gravity="center" android:src="@drawable/abc_scrubber_control_to_pressed_mtrl_005" />
+    </item>
+    <item>
+        <bitmap android:gravity="center" android:src="@drawable/abc_scrubber_control_to_pressed_mtrl_000" />
+    </item>
 </selector>

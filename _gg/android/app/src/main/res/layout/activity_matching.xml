@@ -1,8 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0805C8" android:layout_width="-1" android:layout_height="-1">
-  <ImageView android:id="@7F0A0840" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="26.000000dip" android:src="@7F08044D" android:layout_marginEnd="16.000000dip" android:layout_alignParentEnd="true"/>
-  <ImageView android:id="@7F0A09A9" android:layout_width="-2" android:layout_height="105.000000dip" android:layout_marginTop="55.000000dip" android:src="@7F0806B1" android:layout_centerHorizontal="true"/>
-  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_below="@7F0A09A9">
-    <include android:id="@7F0A0D91" layout="@7F0D02D6"/>
-    <Button android:textSize="24.000000sp" android:textColor="@7F060544" android:id="@7F0A0103" android:background="@7F0803A0" android:layout_width="202.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="15.000000dip" android:text="start" android:layout_below="@7F0A0D91" android:layout_centerHorizontal="true"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="26.0dip" android:src="@drawable/close" android:layout_marginEnd="16.0dip" android:layout_alignParentEnd="true" />
+    <ImageView android:id="@id/iv_logo" android:layout_width="wrap_content" android:layout_height="105.0dip" android:layout_marginTop="55.0dip" android:src="@drawable/icon_ludo" android:layout_centerHorizontal="true" />
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/iv_logo">
+        <include android:id="@id/match_room" layout="@layout/match_room_ludo" />
+        <Button android:textSize="24.0sp" android:textColor="@color/white" android:id="@id/bt_ludo" android:background="@drawable/btn_start" android:layout_width="202.0dip" android:layout_height="54.0dip" android:layout_marginTop="15.0dip" android:text="start" android:layout_below="@id/match_room" android:layout_centerHorizontal="true" />
+    </LinearLayout>
 </RelativeLayout>

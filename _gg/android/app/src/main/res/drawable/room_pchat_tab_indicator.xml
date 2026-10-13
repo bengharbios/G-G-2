@@ -1,9 +1,11 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:gravity="0x00000011" android:bottom="3.000000dip">
-    <shape android:shape="0">
-      <size android:height="2.000000dip" android:width="34.000000dip"/>
-      <corners android:radius="1.000000dip"/>
-      <solid android:color="@7F060544"/>
-    </shape>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center" android:bottom="3.0dip">
+        <shape android:shape="rectangle">
+            <size android:height="2.0dip" android:width="34.0dip" />
+            <corners android:radius="1.0dip" />
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
 </layer-list>

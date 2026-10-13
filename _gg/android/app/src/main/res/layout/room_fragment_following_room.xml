@@ -1,3 +1,5 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0EC7" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.ludochat.view.recyclerview.BlockScrollRecycleView android:id="@7F0A1078" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="15.000000dip" android:overScrollMode="2" android:paddingStart="20.000000dip" android:paddingEnd="20.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh_following_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.recyclerview.BlockScrollRecycleView android:id="@id/rv_following_room" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:overScrollMode="never" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" />
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

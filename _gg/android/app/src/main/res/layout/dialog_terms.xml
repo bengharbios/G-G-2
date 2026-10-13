@@ -1,5 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="322.000000dip" android:layout_height="-2">
-  <FrameLayout android:layout_width="-1" android:layout_height="306.000000dip">
-    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A18EB" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="12.000000dip" android:layout_marginBottom="24.000000dip" android:layout_marginStart="16.000000dip" android:layout_marginEnd="16.000000dip"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="322.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="306.0dip">
+        <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/web_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="12.0dip" android:layout_marginBottom="24.0dip" android:layout_marginStart="16.0dip" android:layout_marginEnd="16.0dip" />
+    </FrameLayout>
 </LinearLayout>

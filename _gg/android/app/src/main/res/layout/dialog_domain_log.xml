@@ -1,10 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
-  <TextView android:id="@7F0A1650" android:layout_width="-1" android:layout_height="100.000000dip" android:layout_marginTop="70.000000dip"/>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="10.000000dip" android:layout_below="@7F0A1650"/>
-  <Button android:id="@7F0A012D" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="关闭" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
-  <Button android:id="@7F0A0131" android:layout_width="-2" android:layout_height="-2" android:text="复制" android:layout_alignTop="@7F0A012D" android:layout_marginEnd="10.000000dip" android:layout_toStartOf="@7F0A012D"/>
-  <Button android:id="@7F0A012C" android:layout_width="-2" android:layout_height="-2" android:text="清空" android:layout_alignTop="@7F0A0131" android:layout_marginEnd="10.000000dip" android:layout_toStartOf="@7F0A0131"/>
-  <ScrollView android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="80.000000dip" android:layout_alignParentEnd="true">
-    <LinearLayout android:orientation="1" android:id="@7F0A0C12" android:layout_width="-2" android:layout_height="-1" android:alpha="0.400000"/>
-  </ScrollView>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/tv_proxy" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginTop="70.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="10.0dip" android:layout_below="@id/tv_proxy" />
+    <Button android:id="@id/btn_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="关闭" android:layout_marginEnd="20.0dip" android:layout_alignParentEnd="true" />
+    <Button android:id="@id/btn_copy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="复制" android:layout_alignTop="@id/btn_close" android:layout_marginEnd="10.0dip" android:layout_toStartOf="@id/btn_close" />
+    <Button android:id="@id/btn_clear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="清空" android:layout_alignTop="@id/btn_copy" android:layout_marginEnd="10.0dip" android:layout_toStartOf="@id/btn_copy" />
+    <ScrollView android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginTop="80.0dip" android:layout_alignParentEnd="true">
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_btn" android:layout_width="wrap_content" android:layout_height="fill_parent" android:alpha="0.4" />
+    </ScrollView>
 </RelativeLayout>

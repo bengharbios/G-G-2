@@ -1,5 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="166.000000dip" android:layout_height="-2">
-  <View android:id="@7F0A129A" android:background="@7F0807B1" android:layout_width="-1" android:layout_height="2.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF7E9CB8" android:gravity="0x00000011" android:id="@7F0A13B0" android:layout_width="-1" android:layout_height="38.000000dip"/>
-  <View android:id="@7F0A00CA" android:background="@7F0807B1" android:layout_width="-1" android:layout_height="2.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="166.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/topLine" android:background="@drawable/line_dashed_3b555e" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff7e9cb8" android:gravity="center" android:id="@id/tvPKTime" android:layout_width="fill_parent" android:layout_height="38.0dip" />
+    <View android:id="@id/bottomLine" android:background="@drawable/line_dashed_3b555e" android:layout_width="fill_parent" android:layout_height="2.0dip" />
 </LinearLayout>

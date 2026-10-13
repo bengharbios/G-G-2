@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:longClickable="false" android:clipChildren="false" android:layout_width="-1" android:layout_height="-2">
-  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A1038" android:clipChildren="false" android:layout_width="-2" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_horizontal" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:longClickable="false" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rvHost" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </FrameLayout>

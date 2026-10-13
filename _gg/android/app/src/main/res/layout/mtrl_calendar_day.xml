@@ -1,1 +1,3 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@7F0701B3" android:layout_height="@7F0701AF" style="?7F040330"/>
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:layout_width="@dimen/mtrl_calendar_day_width" android:layout_height="@dimen/mtrl_calendar_day_height" style="?materialCalendarDay"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

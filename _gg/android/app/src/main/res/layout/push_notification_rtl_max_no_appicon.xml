@@ -1,8 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000010" android:layout_width="-1" android:layout_height="60.000000dip" android:layout_centerVertical="true" android:layoutDirection="1">
-  <ImageView android:id="@7F0A092F" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip"/>
-  <ImageView android:id="@7F0A07FA" android:layout_width="46.000000dip" android:layout_height="46.000000dip" android:layout_centerVertical="true" android:layout_marginEnd="5.000000dip" android:layout_alignParentEnd="true"/>
-  <LinearLayout android:gravity="0x00000005" android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="10.000000dip" android:layout_marginEnd="5.000000dip" android:layout_toStartOf="@7F0A07FA" android:layout_toEndOf="@7F0A092F">
-    <TextView android:textSize="16.000000sp" android:textStyle="0x00000001" android:textColor="#FF000000" android:id="@7F0A170B" android:layout_width="-2" android:layout_height="-2" android:includeFontPadding="false" android:fontFamily="sans-serif-medium"/>
-    <TextView android:textSize="15.000000sp" android:textColor="#FF000000" android:ellipsize="3" android:id="@7F0A14C8" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:maxLines="2"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="60.0dip" android:layout_centerVertical="true" android:layoutDirection="rtl"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/iv_head" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" />
+    <ImageView android:id="@id/iv_app_logo" android:layout_width="46.0dip" android:layout_height="46.0dip" android:layout_centerVertical="true" android:layout_marginEnd="5.0dip" android:layout_alignParentEnd="true" />
+    <LinearLayout android:gravity="right" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="5.0dip" android:layout_toStartOf="@id/iv_app_logo" android:layout_toEndOf="@id/iv_head">
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff000000" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:fontFamily="sans-serif-medium" />
+        <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:ellipsize="end" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxLines="2" />
+    </LinearLayout>
 </RelativeLayout>

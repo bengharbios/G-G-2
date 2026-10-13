@@ -1,6 +1,8 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:paddingBottom="10.000000dip" android:layout_width="-2" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textStyle="0x00000001" android:textColor="@7F06051C" android:id="@7F0A14A3" android:background="@7F08020B" android:layout_width="-2" android:layout_height="-2" android:text="@7F112179" android:paddingStart="29.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip" app:layout_constraintBottom_toBottomOf="@7F0A03DF" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0"/>
-  <FrameLayout android:id="@7F0A03DF" android:layout_width="-2" android:layout_height="-2" app:layout_constraintEnd_toEndOf="@7F0A14A3" app:layout_constraintTop_toTopOf="0">
-    <ImageView android:id="@7F0A0824" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F080B23" android:layout_marginEnd="10.000000dip"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:id="@id/tv_bg_guide_on_mic_text" android:background="@drawable/bg_on_mic_guide_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_tips_on_mic_room" android:paddingStart="29.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" app:layout_constraintBottom_toBottomOf="@id/flHorsePosition" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" />
+    <FrameLayout android:id="@id/flHorsePosition" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="@id/tv_bg_guide_on_mic_text" app:layout_constraintTop_toTopOf="parent">
+        <ImageView android:id="@id/iv_bg_guide_on_mic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/room_guide_on_mic_horses" android:layout_marginEnd="10.0dip" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2" android:layout_weight="1.000000" android:layoutDirection="0">
-  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textStyle="0x00000001" android:textColor="@7F06051C" android:gravity="0x00000001" android:id="@7F0A16BE" android:background="@7F080271" android:paddingTop="12.000000dip" android:layout_width="-1" android:layout_height="-2" android:text="@7F112110" android:drawableTop="@7F080C2C"/>
-  <com.yalla.games.common.view.CustomTextView android:id="@7F0A00BB" android:background="@7F080272" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
-  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0603" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:src="@7F08071B" android:layout_marginEnd="3.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center_horizontal" android:id="@id/tv_set_role_item" android:background="@drawable/bg_set_role_item" android:paddingTop="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/room_remove_member" android:drawableTop="@drawable/room_icon_kick_out_member" />
+    <com.yalla.games.common.view.CustomTextView android:id="@id/bg_set_role_selected" android:background="@drawable/bg_set_role_item_seleced" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:layout_gravity="end" android:id="@id/icon_set_role_selected" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:src="@drawable/icon_selected_set_role" android:layout_marginEnd="3.0dip" />
 </FrameLayout>

@@ -1,5 +1,7 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A10E0" android:descendantFocusability="2" android:layout_width="-1" android:layout_height="-1">
-  <FrameLayout android:clipChildren="false" android:layout_width="-1" android:layout_height="-1">
-    <com.yalla.ludochat.view.recyclerview.BlockScrollRecycleView android:layout_gravity="0x00000001" android:id="@7F0A0EB8" android:clipChildren="false" android:layout_width="320.000000dip" android:layout_height="-1" android:overScrollMode="2" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smartRefreshLayout" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.yalla.ludochat.view.recyclerview.BlockScrollRecycleView android:layout_gravity="center_horizontal" android:id="@id/recyclerView" android:clipChildren="false" android:layout_width="320.0dip" android:layout_height="fill_parent" android:overScrollMode="never" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
+    </FrameLayout>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A1010" android:background="@android:0106000D" android:layout_width="-1" android:layout_height="-1">
-  <com.previewlibrary.wight.SmoothImageView android:id="@7F0A0E56" android:background="@android:0106000D" android:layout_width="-1" android:layout_height="-1"/>
-  <ProgressBar android:id="@7F0A0D6D" android:visibility="0" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:indeterminate="true" android:layout_centerInParent="true" android:indeterminateTint="#80000000" style="@android:01030184"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rootView" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.previewlibrary.wight.SmoothImageView android:id="@id/photoView" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ProgressBar android:id="@id/loading" android:visibility="visible" android:layout_width="30.0dip" android:layout_height="30.0dip" android:indeterminate="true" android:layout_centerInParent="true" android:indeterminateTint="#80000000" style="@android:style/Widget.DeviceDefault.Light.ProgressBar" />
 </RelativeLayout>

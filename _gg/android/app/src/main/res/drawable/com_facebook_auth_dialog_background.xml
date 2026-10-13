@@ -1,4 +1,6 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-  <solid android:color="@android:0106000B"/>
-  <corners android:topLeftRadius="@7F07005A" android:topRightRadius="@7F07005A" android:bottomLeftRadius="@7F070059" android:bottomRightRadius="@7F070059"/>
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white" />
+    <corners android:topLeftRadius="@dimen/com_facebook_auth_dialog_corner_radius_oversized" android:topRightRadius="@dimen/com_facebook_auth_dialog_corner_radius_oversized" android:bottomLeftRadius="@dimen/com_facebook_auth_dialog_corner_radius" android:bottomRightRadius="@dimen/com_facebook_auth_dialog_corner_radius" />
 </shape>

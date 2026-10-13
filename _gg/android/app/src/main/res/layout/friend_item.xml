@@ -1,8 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="@7F0805A7" android:layout_width="-1" android:layout_height="53.000000dip" android:layout_marginTop="5.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="16.000000dip" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip">
-  <com.yalla.games.common.view.HeadView android:id="@7F0A05FB" android:layout_width="41.000000dip" android:layout_height="41.000000dip"/>
-  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip">
-    <com.yalla.game.base.view.StrokeTextView android:textSize="14.000000sp" android:textColor="#FF626262" android:ellipsize="3" android:id="@7F0A1541" android:layout_width="-2" android:layout_height="-2" android:lines="1"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF999999" android:ellipsize="3" android:id="@7F0A1540" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="7.000000dip" android:lines="1"/>
-  </LinearLayout>
-  <ImageView android:id="@7F0A0916" android:layout_width="37.500003dip" android:layout_height="19.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/friend_item_bg" android:layout_width="fill_parent" android:layout_height="53.0dip" android:layout_marginTop="5.0dip" android:paddingStart="10.0dip" android:paddingEnd="16.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.HeadView android:id="@id/hv_friend_item_head" android:layout_width="41.0dip" android:layout_height="41.0dip" />
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="14.0sp" android:textColor="#ff626262" android:ellipsize="end" android:id="@id/tv_friend_item_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:lines="1" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff999999" android:ellipsize="end" android:id="@id/tv_friend_item_descr" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:lines="1" />
+    </LinearLayout>
+    <ImageView android:id="@id/iv_friend_item_select" android:layout_width="37.5dip" android:layout_height="19.0dip" />
 </LinearLayout>

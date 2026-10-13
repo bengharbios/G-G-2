@@ -1,4 +1,6 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <View android:id="@7F0A03F5" android:layout_width="-1" android:layout_height="106.000000dip" android:layout_marginBottom="237.000000dip"/>
-  <com.yalla.ludochat.view.MicEmojiPanelView android:layout_gravity="0x00000050" android:id="@7F0A0DB9" android:background="@7F080AC5" android:layout_width="-1" android:layout_height="237.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:id="@id/flRoot" android:layout_width="fill_parent" android:layout_height="106.0dip" android:layout_marginBottom="237.0dip" />
+    <com.yalla.ludochat.view.MicEmojiPanelView android:layout_gravity="bottom" android:id="@id/micEmojiPanelView" android:background="@drawable/room_fun_center_dialog_bg" android:layout_width="fill_parent" android:layout_height="237.0dip" />
 </FrameLayout>

@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:id="@7F0A0528" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:gravity="0x00000011" android:id="@7F0A1290" android:visibility="1" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.CustomTextView android:gravity="0x00000011" android:id="@7F0A128F" android:visibility="1" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/fl_tab_custom" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:gravity="center" android:id="@id/tl_tab_un_select_text" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.CustomTextView android:gravity="center" android:id="@id/tl_tab_select_text" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </FrameLayout>

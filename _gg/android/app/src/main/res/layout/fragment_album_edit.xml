@@ -1,6 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0CA5" android:background="@7F0801A9" android:layout_width="-1" android:layout_height="-1">
-  <include layout="@7F0D0212"/>
-  <com.common.support.imagepicker.mediaedit.widget.MediaEditLayout android:id="@7F0A0B83" android:background="#FFE0F9F3" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777208.000000dip" android:layout_below="@7F0A061A" android:layoutDirection="0">
-    <com.yalla.games.common.album.view.MediaCropLayout android:id="@7F0A0B82" android:layout_width="-1" android:layout_height="-1"/>
-  </com.common.support.imagepicker.mediaedit.widget.MediaEditLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/ll_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/include_album_edit_title" />
+    <com.common.support.imagepicker.mediaedit.widget.MediaEditLayout android:id="@id/layout_media_edit" android:background="#ffe0f9f3" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-8.0dip" android:layout_below="@id/include_title_layout_title" android:layoutDirection="ltr">
+        <com.yalla.games.common.album.view.MediaCropLayout android:id="@id/layout_media_crop" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </com.common.support.imagepicker.mediaedit.widget.MediaEditLayout>
 </RelativeLayout>

@@ -1,6 +1,8 @@
-<inset xmlns:android="http://schemas.android.com/apk/res/android" android:insetLeft="@7F070052" android:insetRight="@7F070052" android:insetTop="@7F070052" android:insetBottom="@7F070052">
-  <shape android:shape="0">
-    <corners android:radius="@7F07021D"/>
-    <solid android:color="?7F04012D"/>
-  </shape>
+<?xml version="1.0" encoding="utf-8"?>
+<inset android:insetLeft="@dimen/appcompat_dialog_background_inset" android:insetRight="@dimen/appcompat_dialog_background_inset" android:insetTop="@dimen/appcompat_dialog_background_inset" android:insetBottom="@dimen/appcompat_dialog_background_inset"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <shape android:shape="rectangle">
+        <corners android:radius="@dimen/mtrl_shape_corner_size_medium_component" />
+        <solid android:color="?colorSurface" />
+    </shape>
 </inset>

@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:gravity="0x00000011" android:id="@7F0A16F3" android:layout_width="-2" android:layout_height="-2" android:layout_centerHorizontal="true"/>
-  <View android:id="@7F0A184C" android:background="@7F060544" android:layout_width="-2" android:layout_height="1.000000dip" android:layout_marginTop="5.000000dip" android:layout_below="@7F0A16F3" android:layout_alignStart="@7F0A16F3" android:layout_alignEnd="@7F0A16F3"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:gravity="center" android:id="@id/tv_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" />
+    <View android:id="@id/view_line" android:background="@color/white" android:layout_width="wrap_content" android:layout_height="1.0dip" android:layout_marginTop="5.0dip" android:layout_below="@id/tv_text" android:layout_alignStart="@id/tv_text" android:layout_alignEnd="@id/tv_text" />
 </merge>

@@ -1,6 +1,8 @@
-<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_checked="true" android:id="@7F0A0199" android:drawable="@7F08032A"/>
-  <item android:id="@7F0A179C" android:drawable="@7F08032C"/>
-  <transition android:drawable="@7F08032D" android:toId="@7F0A0199" android:fromId="@7F0A179C"/>
-  <transition android:drawable="@7F08032B" android:toId="@7F0A179C" android:fromId="@7F0A0199"/>
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:id="@id/checked" android:drawable="@drawable/btn_checkbox_checked_mtrl" />
+    <item android:id="@id/unchecked" android:drawable="@drawable/btn_checkbox_unchecked_mtrl" />
+    <transition android:drawable="@drawable/btn_checkbox_unchecked_to_checked_mtrl_animation" android:toId="@id/checked" android:fromId="@id/unchecked" />
+    <transition android:drawable="@drawable/btn_checkbox_checked_to_unchecked_mtrl_animation" android:toId="@id/unchecked" android:fromId="@id/checked" />
 </animated-selector>

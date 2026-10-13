@@ -1,4 +1,6 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
-  <com.yalla.games.common.view.CircleImageView android:layout_gravity="0x00000011" android:id="@7F0A0A12" android:visibility="2" android:layout_width="31.000000dip" android:layout_height="31.000000dip" android:scaleType="6" app:isRoundRect="true" app:roundRectRadius="4.000000dip"/>
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A07EC" android:layout_width="31.000000dip" android:layout_height="31.000000dip" android:src="@7F080084"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CircleImageView android:layout_gravity="center" android:id="@id/iv_photo" android:visibility="gone" android:layout_width="31.0dip" android:layout_height="31.0dip" android:scaleType="centerCrop" app:isRoundRect="true" app:roundRectRadius="4.0dip" />
+    <ImageView android:layout_gravity="center" android:id="@id/iv_add" android:layout_width="31.0dip" android:layout_height="31.0dip" android:src="@drawable/album_add_icon" />
 </merge>

@@ -1,6 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <LinearLayout android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0CA7" android:layout_width="-2" android:layout_height="-2">
-    <com.yalla.games.common.view.CustomTextView android:id="@7F0A15FA" android:layout_width="-2" android:layout_height="-2"/>
-    <ImageView android:id="@7F0A09C4" android:layout_width="69.000000dip" android:layout_height="64.000000dip" android:layout_marginTop="4.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_medal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <com.yalla.games.common.view.CustomTextView android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <ImageView android:id="@id/iv_medal" android:layout_width="69.0dip" android:layout_height="64.0dip" android:layout_marginTop="4.0dip" />
+    </LinearLayout>
 </merge>

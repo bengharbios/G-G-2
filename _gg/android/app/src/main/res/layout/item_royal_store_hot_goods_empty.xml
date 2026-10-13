@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:paddingTop="15.000000dip" android:paddingBottom="10.000000dip" android:layout_width="-1" android:layout_height="-2">
-  <View android:background="@7F080FB8" android:layout_width="-1" android:layout_height="77.000000dip" android:layout_marginTop="110.000000dip" android:layout_marginStart="16777206.000000dip" android:layout_marginEnd="16777206.000000dip"/>
-  <ImageView android:layout_gravity="0x00000001" android:layout_width="107.000000dip" android:layout_height="107.000000dip" android:src="@7F080FB0"/>
-  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF66AF46" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="125.000000dip" android:text="@7F11124B" app:stroke_color="#FF073E18" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:paddingTop="15.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/royal_store_hot_item_bar" android:layout_width="fill_parent" android:layout_height="77.0dip" android:layout_marginTop="110.0dip" android:layout_marginStart="-10.0dip" android:layout_marginEnd="-10.0dip" />
+    <ImageView android:layout_gravity="center_horizontal" android:layout_width="107.0dip" android:layout_height="107.0dip" android:src="@drawable/royal_store_empty_item_ic" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="125.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
 </FrameLayout>

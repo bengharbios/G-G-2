@@ -1,5 +1,7 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="38.000000dip" android:layout_height="43.000000dip">
-  <ImageView android:layout_width="25.000000dip" android:layout_height="22.000000dip" android:layout_marginBottom="16777215.000000dip" android:src="@7F08061C" android:layout_above="@7F0A1618" android:layout_centerHorizontal="true"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="7.500001sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1618" android:background="@7F080F69" android:layout_width="30.000000dip" android:layout_height="10.000000dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
-  <ImageView android:id="@7F0A08C8" android:visibility="2" android:layout_width="10.000000dip" android:layout_height="10.000000dip" android:layout_marginTop="4.000000dip" android:src="@7F080945" android:layout_marginEnd="2.000000dip" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="38.0dip" android:layout_height="43.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_width="25.0dip" android:layout_height="22.0dip" android:layout_marginBottom="-1.0dip" android:src="@drawable/ic_coupon_entry" android:layout_above="@id/tv_num" android:layout_centerHorizontal="true" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="7.5sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_num" android:background="@drawable/royal_entrance_2_bg" android:layout_width="30.0dip" android:layout_height="10.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
+    <ImageView android:id="@id/iv_dot" android:visibility="gone" android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="4.0dip" android:src="@drawable/reddot" android:layout_marginEnd="2.0dip" android:layout_alignParentEnd="true" />
 </merge>

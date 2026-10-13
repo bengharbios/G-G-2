@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:background="@7F0801F5" android:layout_width="61.000000dip" android:layout_height="42.000000dip">
-  <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF555555" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A14C8" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F111C6D"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/bg_msg" android:layout_width="61.0dip" android:layout_height="42.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff555555" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/expression_hello" />
 </FrameLayout>

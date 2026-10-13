@@ -1,6 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000001" android:orientation="0" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginLeft="16777166.000000dip" android:layout_marginTop="90.000000dip" android:layoutDirection="0">
-  <FrameLayout android:background="@7F08092A" android:layout_width="223.000000dip" android:layout_height="96.000000dip" android:layout_marginTop="30.000000dip">
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF626262" android:gravity="0x00800003" android:layout_gravity="0x00000001" android:id="@7F0A14C8" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="16.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginRight="16.000000dip" android:text="@7F111EFA"/>
-  </FrameLayout>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000035" android:id="@7F0A08FD" android:layout_width="80.000000dip" android:layout_height="80.000000dip" android:src="@7F08058F" android:layout_alignParentRight="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="270.0dip" android:layout_height="wrap_content" android:layout_marginLeft="-50.0dip" android:layout_marginTop="90.0dip" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:background="@drawable/rank_guide_bg_up" android:layout_width="223.0dip" android:layout_height="96.0dip" android:layout_marginTop="30.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#ff626262" android:gravity="start" android:layout_gravity="center_horizontal" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="16.0dip" android:text="@string/rank_guide_tip_1" />
+    </FrameLayout>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center|right|top" android:id="@id/iv_finger" android:layout_width="80.0dip" android:layout_height="80.0dip" android:src="@drawable/finger" android:layout_alignParentRight="true" />
 </FrameLayout>

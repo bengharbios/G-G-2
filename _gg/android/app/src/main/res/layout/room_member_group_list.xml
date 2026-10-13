@@ -1,6 +1,8 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
-  <include android:id="@7F0A05D8" android:visibility="1" app:layout_constraintBottom_toTopOf="@7F0A0EC2" app:layout_constraintTop_toTopOf="0" layout="@7F0D0549"/>
-  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A0EC2" android:layout_width="-1" android:layout_height="0.000000dip" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintTop_toBottomOf="@7F0A05D8">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1044" android:layout_width="-1" android:layout_height="-1"/>
-  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/headView" android:visibility="invisible" app:layout_constraintBottom_toTopOf="@id/refresh" app:layout_constraintTop_toTopOf="parent" layout="@layout/room_member_group_list_head" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/headView">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rvMemberList" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

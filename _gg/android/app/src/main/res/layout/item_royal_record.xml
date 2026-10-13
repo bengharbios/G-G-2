@@ -1,10 +1,12 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F080F9C" android:layout_width="360.000000dip" android:layout_height="46.000000dip" android:layout_marginBottom="3.000000dip" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip">
-  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="14.000000dip">
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:gravity="0x00000010" android:id="@7F0A170B" android:layout_width="225.000000dip" android:layout_height="17.000000dip" android:lines="1" app:autoSizeMaxTextSize="12.000000sp" app:autoSizeMinTextSize="4.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="#FF83FFD6" android:id="@7F0A16FB" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip"/>
-  </LinearLayout>
-  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0C71" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="25.000000dip" android:layout_alignParentEnd="true">
-    <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textStyle="0x00000001" android:gravity="0x00800015" android:id="@7F0A0287" android:layout_width="75.000000dip" android:layout_height="23.000000dip" android:lines="1" android:layoutDirection="0" app:autoSizeMaxTextSize="17.000000sp" app:autoSizeMinTextSize="4.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
-    <ImageView android:layout_width="16.000000dip" android:layout_height="16.000000dip" android:src="@7F080F8F" android:layout_marginStart="5.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/royal_record_list_item" android:layout_width="360.0dip" android:layout_height="46.0dip" android:layout_marginBottom="3.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="14.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center_vertical" android:id="@id/tv_title" android:layout_width="225.0dip" android:layout_height="17.0dip" android:lines="1" app:autoSizeMaxTextSize="12.0sp" app:autoSizeMinTextSize="4.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="#ff83ffd6" android:id="@id/tv_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_growth_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="25.0dip" android:layout_alignParentEnd="true">
+        <com.yalla.games.common.view.CustomTextView android:textSize="17.0sp" android:textStyle="bold" android:gravity="end|center" android:id="@id/ctv_current_num" android:layout_width="75.0dip" android:layout_height="23.0dip" android:lines="1" android:layoutDirection="ltr" app:autoSizeMaxTextSize="17.0sp" app:autoSizeMinTextSize="4.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <ImageView android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/royal_level_value_ic" android:layout_marginStart="5.0dip" />
+    </LinearLayout>
 </RelativeLayout>

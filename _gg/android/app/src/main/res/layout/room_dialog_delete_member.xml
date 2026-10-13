@@ -1,6 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
-  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A0EC2" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1042" android:layout_width="-1" android:layout_height="-1"/>
-  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-  <com.yalla.games.common.view.CustomTextView android:textSize="18.000000sp" android:textColor="#FFAB6F0F" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A00E1" android:background="@7F080A2B" android:layout_width="162.000000dip" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="12.000000dip" android:text="Delete (2)"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rvMember" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="18.0sp" android:textColor="#ffab6f0f" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btDelete" android:background="@drawable/room_btn_yellow_bg" android:layout_width="162.0dip" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginBottom="12.0dip" android:text="Delete (2)" />
 </LinearLayout>

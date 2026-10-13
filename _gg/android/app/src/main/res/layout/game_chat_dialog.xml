@@ -1,3 +1,5 @@
-<com.yalla.games.common.view.TouchListenRelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0F6C" android:background="@7F06052B" android:focusableInTouchMode="false" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.view.GameChatBottomView android:id="@7F0A00D1" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.games.common.view.TouchListenRelativeLayout android:id="@id/rl_main" android:background="@color/transparent" android:focusableInTouchMode="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.view.GameChatBottomView android:id="@id/bottom_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
 </com.yalla.games.common.view.TouchListenRelativeLayout>

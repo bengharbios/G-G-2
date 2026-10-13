@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="45.000000dip" android:layout_height="-2">
-  <ImageView android:layout_gravity="0x00000001" android:layout_width="43.000000dip" android:layout_height="43.000000dip" android:src="@7F0809A0"/>
-  <com.yalla.game.base.view.StrokeTextView android:textSize="8.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00800035" android:id="@7F0A139E" android:background="@7F080998" android:paddingBottom="4.000000dip" android:layout_width="16.000000dip" android:layout_height="19.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000001" android:id="@7F0A130C" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="43.000000dip" android:text="@7F1102EB" android:lines="1" app:layout_constraintTop_toBottomOf="@7F0A06B6"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="45.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center_horizontal" android:layout_width="43.0dip" android:layout_height="43.0dip" android:src="@drawable/room_activity_side_icon" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="8.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="end|center|top" android:id="@id/tvNum" android:background="@drawable/room_activity_num_side_bg" android:paddingBottom="4.0dip" android:layout_width="16.0dip" android:layout_height="19.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/tvDesc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="43.0dip" android:text="@string/C_1380_035" android:lines="1" app:layout_constraintTop_toBottomOf="@id/ivIcon" />
 </FrameLayout>

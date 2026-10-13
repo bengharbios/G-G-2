@@ -1,17 +1,19 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="21.000000dip">
-  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00800003" android:id="@7F0A0C2E" android:background="@7F08085C" android:layout_width="-2" android:layout_height="16.000000dip" android:paddingStart="3.000000dip" android:paddingEnd="3.000000dip">
-    <FrameLayout android:id="@7F0A0414" android:visibility="2" android:layout_width="17.000000dip" android:layout_height="16.000000dip">
-      <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A0817" android:layout_width="15.000000dip" android:layout_height="15.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="5.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1130" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" app:stroke_color="#FF000000" app:stroke_width="0.500000dip"/>
-    </FrameLayout>
-    <FrameLayout android:id="@7F0A0415" android:visibility="2" android:layout_width="17.000000dip" android:layout_height="16.000000dip">
-      <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A0818" android:layout_width="15.000000dip" android:layout_height="15.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="5.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1132" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" app:stroke_color="#FF000000" app:stroke_width="0.500000dip"/>
-    </FrameLayout>
-    <FrameLayout android:id="@7F0A0416" android:visibility="2" android:layout_width="17.000000dip" android:layout_height="16.000000dip">
-      <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A0819" android:layout_width="15.000000dip" android:layout_height="15.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="5.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:ellipsize="3" android:layout_gravity="0x00000051" android:id="@7F0A1134" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="0.500000dip" android:lines="1" app:stroke_color="#FF000000" app:stroke_width="0.500000dip"/>
-    </FrameLayout>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="@7F060544" android:gravity="0x00000010" android:id="@7F0A1137" android:visibility="2" android:layout_width="-2" android:layout_height="-2" app:stroke_color="#FF1C5E42" app:stroke_width="0.500000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="21.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="start" android:id="@id/ll_content" android:background="@drawable/new_rank_item_show_num_ic_" android:layout_width="wrap_content" android:layout_height="16.0dip" android:paddingStart="3.0dip" android:paddingEnd="3.0dip">
+        <FrameLayout android:id="@id/fl_badge_1" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="16.0dip">
+            <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="center" android:id="@id/iv_badge_1" android:layout_width="15.0dip" android:layout_height="15.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="5.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="bottom|center" android:id="@id/stv_badge1_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="0.5dip" android:lines="1" app:stroke_color="#ff000000" app:stroke_width="0.5dip" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_badge_2" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="16.0dip">
+            <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="center" android:id="@id/iv_badge_2" android:layout_width="15.0dip" android:layout_height="15.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="5.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="bottom|center" android:id="@id/stv_badge2_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="0.5dip" android:lines="1" app:stroke_color="#ff000000" app:stroke_width="0.5dip" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_badge_3" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="16.0dip">
+            <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="center" android:id="@id/iv_badge_3" android:layout_width="15.0dip" android:layout_height="15.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="5.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="bottom|center" android:id="@id/stv_badge3_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="0.5dip" android:lines="1" app:stroke_color="#ff000000" app:stroke_width="0.5dip" />
+        </FrameLayout>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center_vertical" android:id="@id/stv_badge_num" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" app:stroke_color="#ff1c5e42" app:stroke_width="0.5dip" />
+    </LinearLayout>
 </merge>

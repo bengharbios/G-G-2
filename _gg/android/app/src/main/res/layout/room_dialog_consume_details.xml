@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/refresh" android:background="@drawable/bg_bottom_sheet" android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="2">
-  <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvDetails" android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="2"/>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>

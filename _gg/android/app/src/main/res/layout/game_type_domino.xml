@@ -1,8 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000010" android:layout_gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2">
-  <FrameLayout android:id="@7F0A04C9" android:background="@7F0811AD" android:layout_width="107.000000dip" android:layout_height="95.000000dip" android:layout_marginStart="9.000000dip" android:layout_marginEnd="9.000000dip">
-    <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:layout_width="-1" android:layout_height="30.000000dip" android:layout_marginBottom="5.000000dip" android:text="@7F111AC1" app:autoSizeMaxTextSize="16.000000sp" app:autoSizeMinTextSize="10.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1" app:stroke_color="#FF504694"/>
-  </FrameLayout>
-  <FrameLayout android:id="@7F0A0543" android:background="@7F0811AF" android:layout_width="107.000000dip" android:layout_height="95.000000dip" android:layout_marginEnd="9.000000dip">
-    <com.yalla.game.base.view.StrokeTextView android:textSize="16.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:layout_width="-1" android:layout_height="30.000000dip" android:layout_marginBottom="5.000000dip" android:text="@7F112310" app:autoSizeMaxTextSize="16.000000sp" app:autoSizeMinTextSize="10.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1" app:stroke_color="#FF504694"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_private" android:background="@drawable/svg_domino_private" android:layout_width="107.0dip" android:layout_height="95.0dip" android:layout_marginStart="9.0dip" android:layout_marginEnd="9.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5.0dip" android:text="@string/Private" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="10.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff504694" />
+    </FrameLayout>
+    <FrameLayout android:id="@id/fl_vip" android:background="@drawable/svg_domino_vip" android:layout_width="107.0dip" android:layout_height="95.0dip" android:layout_marginEnd="9.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5.0dip" android:text="@string/vip_room" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="10.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff504694" />
+    </FrameLayout>
 </LinearLayout>

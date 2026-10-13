@@ -1,11 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0800EF" android:layout_width="-1" android:layout_height="-1">
-  <View android:background="@7F060034" android:layout_width="-1" android:layout_height="-1"/>
-  <RelativeLayout android:id="@7F0A0F6C" android:layout_width="-1" android:layout_height="-1">
-    <ImageView android:id="@7F0A0ACB" android:visibility="2" android:layout_width="36.000000dip" android:layout_height="36.000000dip" android:src="@7F080321" android:layout_marginStart="6.000000dip"/>
-    <ImageView android:id="@7F0A0861" android:layout_width="28.000000dip" android:layout_height="28.000000dip" android:layout_marginTop="8.000000dip" android:src="@7F08031D" android:layout_marginStart="6.000000dip" android:layout_marginEnd="8.000000dip" android:layout_alignParentEnd="true"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000dip" android:textColor="#FFFFFFFF" android:id="@7F0A16FB" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="51.000000dip" android:layout_centerHorizontal="true"/>
-    <ImageView android:layout_gravity="0x00000001" android:id="@7F0A0B22" android:layout_width="252.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="51.000000dip" android:src="@7F08040F" android:layout_centerHorizontal="true"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textColor="#FFFFD810" android:gravity="0x00000011" android:id="@7F0A16AB" android:background="@7F0800FC" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_below="@7F0A0B22" android:layout_centerHorizontal="true" android:paddingStart="25.000000dip" android:paddingEnd="25.000000dip"/>
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-2" android:layout_height="-1" android:layout_marginTop="60.000000dip" android:layout_marginBottom="20.000000dip" android:layout_below="@7F0A16AB" android:layout_centerHorizontal="true"/>
-  </RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="@drawable/bg_associate_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@color/black_50" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ImageView android:id="@id/iv_setting" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" android:src="@drawable/btn_associate_settings" android:layout_marginStart="6.0dip" />
+        <ImageView android:id="@id/iv_close" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginTop="8.0dip" android:src="@drawable/btn_associate_close" android:layout_marginStart="6.0dip" android:layout_marginEnd="8.0dip" android:layout_alignParentEnd="true" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="#ffffffff" android:id="@id/tv_time" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="51.0dip" android:layout_centerHorizontal="true" />
+        <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_title" android:layout_width="252.0dip" android:layout_height="30.0dip" android:layout_marginTop="51.0dip" android:src="@drawable/champion_challenge" android:layout_centerHorizontal="true" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.0dip" android:textColor="#ffffd810" android:gravity="center" android:id="@id/tv_season" android:background="@drawable/bg_associate_season" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_below="@id/iv_title" android:layout_centerHorizontal="true" android:paddingStart="25.0dip" android:paddingEnd="25.0dip" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginTop="60.0dip" android:layout_marginBottom="20.0dip" android:layout_below="@id/tv_season" android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </FrameLayout>

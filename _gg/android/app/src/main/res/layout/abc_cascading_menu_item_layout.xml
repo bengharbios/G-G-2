@@ -1,9 +1,11 @@
-<androidx.appcompat.view.menu.ListMenuItemView xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:minWidth="196.000000dip">
-  <ImageView android:id="@7F0A059C" android:background="@7F08002A" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginBottom="4.000000dip"/>
-  <LinearLayout android:id="@7F0A024E" android:duplicateParentState="true" android:layout_width="-1" android:layout_height="?7F0401B7" style="@7F12014E">
-    <TextView android:textAppearance="?7F04052A" android:layout_gravity="0x00000010" android:id="@7F0A1289" android:duplicateParentState="true" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" style="@7F120153"/>
-    <Space android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
-    <TextView android:textAppearance="?7F040533" android:layout_gravity="0x00000010" android:id="@7F0A10CE" android:duplicateParentState="true" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" style="@7F120150"/>
-    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A11C0" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:scaleType="5" style="@7F120151"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.view.menu.ListMenuItemView android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minWidth="196.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/group_divider" android:background="@drawable/abc_list_divider_material" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" />
+    <LinearLayout android:id="@id/content" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="?dropdownListPreferredItemHeight" style="@style/RtlOverlay.Widget.AppCompat.PopupMenuItem">
+        <TextView android:textAppearance="?textAppearanceLargePopupMenu" android:layout_gravity="center_vertical" android:id="@id/title" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" style="@style/RtlOverlay.Widget.AppCompat.PopupMenuItem.Title" />
+        <Space android:layout_width="0.0dip" android:layout_height="1.0dip" android:layout_weight="1.0" />
+        <TextView android:textAppearance="?textAppearanceSmallPopupMenu" android:layout_gravity="center_vertical" android:id="@id/shortcut" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" style="@style/RtlOverlay.Widget.AppCompat.PopupMenuItem.Shortcut" />
+        <ImageView android:layout_gravity="center" android:id="@id/submenuarrow" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="center" style="@style/RtlOverlay.Widget.AppCompat.PopupMenuItem.SubmenuArrow" />
+    </LinearLayout>
 </androidx.appcompat.view.menu.ListMenuItemView>

@@ -1,11 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000050" android:layout_gravity="0x00000050" android:layout_width="120.000000dip" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomTextView android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A15DE" android:layout_width="115.000000dip" android:layout_height="-2" android:maxLines="2" android:layout_centerHorizontal="true"/>
-  <FrameLayout android:layout_width="115.000000dip" android:layout_height="115.000000dip" android:layout_below="@7F0A15DE" android:layout_centerHorizontal="true">
-    <ImageView android:id="@7F0A085A" android:layout_width="115.000000dip" android:layout_height="115.000000dip" android:src="@7F08082C"/>
-    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000051" android:id="@7F0A09C8" android:layout_width="102.000000dip" android:layout_height="95.000000dip" android:layout_marginBottom="13.000000dip" app:isUseSmallBadge="false"/>
-    <ImageView android:id="@7F0A09F2" android:visibility="2" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:layout_marginTop="16777211.000000dip" android:src="@7F080832"/>
-    <ImageView android:layout_gravity="0x00800035" android:id="@7F0A07EC" android:layout_width="26.000000dip" android:layout_height="26.000000dip" android:layout_marginTop="10.000000dip" android:src="@7F08082B" android:layout_marginEnd="10.000000dip"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="22.000000sp" android:textStyle="0x00000001" android:layout_gravity="0x00000051" android:id="@7F0A1571" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="14.000000dip" app:end_color="#FFFFDF0F" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFFFFF" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
-    <ImageView android:layout_gravity="0x00800035" android:id="@7F0A0847" android:layout_width="23.000000dip" android:layout_height="25.000000dip" android:layout_marginTop="12.000000dip" android:src="@7F081152" android:layout_marginEnd="12.000000dip"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="bottom" android:layout_gravity="bottom" android:layout_width="120.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tv_medal_name" android:layout_width="115.0dip" android:layout_height="wrap_content" android:maxLines="2" android:layout_centerHorizontal="true" />
+    <FrameLayout android:layout_width="115.0dip" android:layout_height="115.0dip" android:layout_below="@id/tv_medal_name" android:layout_centerHorizontal="true">
+        <ImageView android:id="@id/iv_circle_light" android:layout_width="115.0dip" android:layout_height="115.0dip" android:src="@drawable/medal_add_circle_light" />
+        <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="bottom|center" android:id="@id/iv_medal_dynamic" android:layout_width="102.0dip" android:layout_height="95.0dip" android:layout_marginBottom="13.0dip" app:isUseSmallBadge="false" />
+        <ImageView android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/medal_new_show_ic" />
+        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_add" android:layout_width="26.0dip" android:layout_height="26.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/medal_add" android:layout_marginEnd="10.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="22.0sp" android:textStyle="bold" android:layout_gravity="bottom|center" android:id="@id/tv_honor_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="14.0dip" app:end_color="#ffffdf0f" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffffff" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+        <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_check" android:layout_width="23.0dip" android:layout_height="25.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/skin_check" android:layout_marginEnd="12.0dip" />
+    </FrameLayout>
 </RelativeLayout>

@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:layout_width="-1" android:layout_height="-1">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1028" android:layout_width="-1" android:layout_height="-1" android:layout_weight="1.000000"/>
-  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0BC6" android:layout_width="-2" android:layout_height="15.000000dip" android:minHeight="10.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rv" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/llIndicator" android:layout_width="wrap_content" android:layout_height="15.0dip" android:minHeight="10.0dip" />
 </merge>

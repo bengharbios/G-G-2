@@ -1,6 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="70.000000dip">
-  <FrameLayout android:layout_gravity="0x00000011" android:background="@7F080FD5" android:layout_width="340.000000dip" android:layout_height="350.000000dip">
-    <com.yalla.game.base.view.StrokeTextView android:textSize="15.000000sp" android:textColor="#FF66AF46" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="30.000000dip" android:layout_marginTop="60.000000dip" android:text="@7F1115DA" app:stroke_color="#FF073E18" app:stroke_width="1.000000dip"/>
-    <ImageView android:layout_gravity="0x00000001" android:layout_width="103.000000dip" android:layout_height="103.000000dip" android:layout_marginTop="106.000000dip" android:src="@7F080FD6"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:layout_gravity="center" android:background="@drawable/royal_story_lottery_item_bg" android:layout_width="340.0dip" android:layout_height="350.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="15.0sp" android:textColor="#ff66af46" android:gravity="center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginTop="60.0dip" android:text="@string/G_1460_0029" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
+        <ImageView android:layout_gravity="center_horizontal" android:layout_width="103.0dip" android:layout_height="103.0dip" android:layout_marginTop="106.0dip" android:src="@drawable/royal_story_lottery_wait_ic" />
+    </FrameLayout>
 </FrameLayout>

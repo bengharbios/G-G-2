@@ -1,1 +1,3 @@
-<androidx.appcompat.widget.ActionBarContextView xmlns:android="http://schemas.android.com/apk/res/android" android:theme="?7F040021" android:visibility="2" android:layout_width="-1" android:layout_height="-2" style="?7F040020"/>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.ActionBarContextView android:theme="?actionModeTheme" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" style="?actionModeStyle"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

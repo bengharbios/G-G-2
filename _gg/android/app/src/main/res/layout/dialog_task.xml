@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <include android:id="@7F0A125E" android:visibility="2" android:layout_width="-1" android:layout_height="-1" layout="@7F0D02C5"/>
-  <include android:id="@7F0A125D" android:visibility="2" android:layout_width="-1" android:layout_height="-1" layout="@7F0D02C4"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/task_nochat_item" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" layout="@layout/layout_task_nochat" />
+    <include android:id="@id/task_inchat_item" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" layout="@layout/layout_task_inchat" />
 </RelativeLayout>

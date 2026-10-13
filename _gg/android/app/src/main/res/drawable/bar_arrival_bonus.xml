@@ -1,12 +1,14 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@android:01020000">
-    <shape>
-      <solid android:color="#80000000"/>
-      <stroke android:width="1.000000dip" android:color="#FF317A7F"/>
-      <corners android:radius="3.000000dip"/>
-    </shape>
-  </item>
-  <item android:id="@android:0102000D" android:left="1.000000dip" android:top="1.000000dip" android:right="1.000000dip" android:bottom="1.000000dip">
-    <clip android:drawable="@7F0800C0"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#80000000" />
+            <stroke android:width="1.0dip" android:color="#ff317a7f" />
+            <corners android:radius="3.0dip" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress" android:left="1.0dip" android:top="1.0dip" android:right="1.0dip" android:bottom="1.0dip">
+        <clip android:drawable="@drawable/bar_process" />
+    </item>
 </layer-list>

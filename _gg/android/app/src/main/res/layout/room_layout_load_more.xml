@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="50.000000dip">
-  <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A0E33" android:layout_width="40.000000dip" android:layout_height="40.000000dip" style="@7F120321"/>
-  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="@7F060544" android:layout_gravity="0x00000011" android:id="@7F0A1366" android:layout_width="-2" android:layout_height="-2" android:text="@7F1120D9"/>
-  <com.yalla.games.common.view.CustomTextView android:textStyle="0x00000001" android:textColor="@7F060544" android:layout_gravity="0x00000011" android:id="@7F0A1367" android:layout_width="-2" android:layout_height="-2" android:text="@7F1120CC"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="50.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ProgressBar android:layout_gravity="center" android:id="@id/pBarLoading" android:layout_width="40.0dip" android:layout_height="40.0dip" style="@style/Widget.AppCompat.ProgressBar" />
+    <com.yalla.games.common.view.CustomTextView android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center" android:id="@id/tvLoadComplete" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_no_more_data" />
+    <com.yalla.games.common.view.CustomTextView android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center" android:id="@id/tvLoadFailed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_network_request_failed" />
 </FrameLayout>

@@ -1,8 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:id="@7F0A0435" android:layout_width="262.000000dip" android:layout_height="180.000000dip">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A1209" android:layout_width="-1" android:layout_height="-1" android:layout_marginBottom="20.000000dip" app:view_scale="1.100000"/>
-  <FrameLayout android:layout_gravity="0x00000011" android:id="@7F0A051A" android:layout_width="70.000000dip" android:layout_height="70.000000dip">
-    <ImageView android:id="@7F0A111F" android:layout_width="70.000000dip" android:layout_height="70.000000dip" android:scaleType="3"/>
-    <ImageView android:layout_gravity="0x00800055" android:id="@7F0A0902" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:layout_marginBottom="5.000000dip" android:src="@7F08059E"/>
-  </FrameLayout>
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="@7F0807C6" android:stateListAnimator="@7F01003A"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/fl_container" android:layout_width="262.0dip" android:layout_height="180.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_image" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="20.0dip" app:view_scale="1.1" />
+    <FrameLayout android:layout_gravity="center" android:id="@id/fl_static_image" android:layout_width="70.0dip" android:layout_height="70.0dip">
+        <ImageView android:id="@id/static_image" android:layout_width="70.0dip" android:layout_height="70.0dip" android:scaleType="fitCenter" />
+        <ImageView android:layout_gravity="end|bottom|center" android:id="@id/iv_fragment" android:visibility="gone" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginBottom="5.0dip" android:src="@drawable/fragment_skin_icon" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
 </FrameLayout>

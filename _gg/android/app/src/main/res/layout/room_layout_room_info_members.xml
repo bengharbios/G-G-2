@@ -1,3 +1,5 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A110C" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.ludochat.view.FixedRecyclerView android:id="@7F0A106D" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/srl_Member" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.FixedRecyclerView android:id="@id/rv_Member" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="never" />
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

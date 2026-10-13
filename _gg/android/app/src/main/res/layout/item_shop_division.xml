@@ -1,3 +1,5 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16777208.000000dip" android:layout_marginBottom="15.000000dip">
-  <ImageView android:layout_width="-1" android:layout_height="25.000000dip" android:layout_marginLeft="16777210.000000dip" android:layout_marginRight="16777210.000000dip" android:src="@7F08117C" android:scaleType="1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="-8.0dip" android:layout_marginBottom="15.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_width="fill_parent" android:layout_height="25.0dip" android:layout_marginLeft="-6.0dip" android:layout_marginRight="-6.0dip" android:src="@drawable/skin_item_divider" android:scaleType="fitXY" />
 </FrameLayout>

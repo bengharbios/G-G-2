@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
-  <com.yalla.ludochat.view.enterrunway.MemberEnterRunway android:id="@7F0A0DB4" android:visibility="2" android:layout_width="-2" android:layout_height="-2"/>
-  <com.yalla.ludochat.view.enterrunway.NormalEnterRunway android:id="@7F0A0E09" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip"/>
-  <com.yalla.ludochat.view.enterrunway.ShopAnimEnterRunway android:id="@7F0A10CC" android:visibility="2" android:layout_width="-1" android:layout_height="70.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.enterrunway.MemberEnterRunway android:id="@id/memberEnterRunway" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <com.yalla.ludochat.view.enterrunway.NormalEnterRunway android:id="@id/normalEnterRunway" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" />
+    <com.yalla.ludochat.view.enterrunway.ShopAnimEnterRunway android:id="@id/shopEnterRunway" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="70.0dip" />
 </FrameLayout>

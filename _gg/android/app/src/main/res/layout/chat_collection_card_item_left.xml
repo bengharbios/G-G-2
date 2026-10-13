@@ -1,20 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A0F1C" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF548172" android:id="@7F0A170B" android:layout_width="-2" android:layout_height="-2" android:text="Send you a card"/>
-  <RelativeLayout android:id="@7F0A0F99" android:layout_width="199.000000dip" android:layout_height="73.000000dip" android:layout_below="@7F0A170B">
-    <RelativeLayout android:id="@7F0A0F11" android:layout_width="54.000000dip" android:layout_height="69.000000dip" android:layout_marginTop="16777215.000000dip" android:layout_marginStart="9.000000dip">
-      <ImageView android:id="@7F0A0821" android:layout_width="45.000000dip" android:layout_height="65.000000dip" android:layout_marginTop="8.000000dip" android:layout_centerHorizontal="true"/>
-      <com.yalla.games.common.view.CircleImageView android:id="@7F0A083D" android:layout_width="41.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="3.099976dip" android:layout_alignTop="@7F0A0821" android:layout_marginStart="2.159973dip" android:layout_alignStart="@7F0A0821" app:isRoundRect="true" app:roundRectRadius="5.000000dip"/>
-      <View android:background="@7F080461" android:layout_width="45.000000dip" android:layout_height="65.000000dip" android:layout_marginTop="8.000000dip" android:layout_centerHorizontal="true"/>
-      <ImageView android:id="@7F0A0AEE" android:layout_width="-1" android:layout_height="20.000000dip" android:src="@7F08041F"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="7.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A14B3" android:background="@7F080462" android:layout_width="40.539982dip" android:layout_height="9.000000dip" android:layout_marginBottom="3.500000dip" android:text="4567" android:maxLines="1" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:paddingStart="1.000000dip" android:paddingEnd="1.000000dip" app:strokeAutoSizeMaxTextSize="7.000000sp" app:strokeAutoSizeMinTextSize="3.000000sp" app:strokeAutoSizeStepGranularity="1.000000sp" app:stroke_color="@7F06002F" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rl_content" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff548172" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Send you a card" />
+    <RelativeLayout android:id="@id/rl_request" android:layout_width="199.0dip" android:layout_height="73.0dip" android:layout_below="@id/tv_title">
+        <RelativeLayout android:id="@id/rl_card" android:layout_width="54.0dip" android:layout_height="69.0dip" android:layout_marginTop="-1.0dip" android:layout_marginStart="9.0dip">
+            <ImageView android:id="@id/iv_bg" android:layout_width="45.0dip" android:layout_height="65.0dip" android:layout_marginTop="8.0dip" android:layout_centerHorizontal="true" />
+            <com.yalla.games.common.view.CircleImageView android:id="@id/iv_card" android:layout_width="41.0dip" android:layout_height="54.0dip" android:layout_marginTop="3.0999756dip" android:layout_alignTop="@id/iv_bg" android:layout_marginStart="2.1599731dip" android:layout_alignStart="@id/iv_bg" app:isRoundRect="true" app:roundRectRadius="5.0dip" />
+            <View android:background="@drawable/collection_chat_bg_normal" android:layout_width="45.0dip" android:layout_height="65.0dip" android:layout_marginTop="8.0dip" android:layout_centerHorizontal="true" />
+            <ImageView android:id="@id/iv_stars" android:layout_width="fill_parent" android:layout_height="20.0dip" android:src="@drawable/chat_collection_card_star_1" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="7.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_card_name" android:background="@drawable/collection_chat_bottom_1" android:layout_width="40.539978dip" android:layout_height="9.0dip" android:layout_marginBottom="3.5dip" android:text="4567" android:maxLines="1" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:paddingStart="1.0dip" android:paddingEnd="1.0dip" app:strokeAutoSizeMaxTextSize="7.0sp" app:strokeAutoSizeMinTextSize="3.0sp" app:strokeAutoSizeStepGranularity="1.0sp" app:stroke_color="@color/black" app:stroke_width="1.0dip" />
+        </RelativeLayout>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_toEndOf="@id/rl_card">
+            <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_tips" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="The request is available for:" app:stroke_color="#ff834515" app:stroke_width="1.0dip" />
+            <FrameLayout android:id="@id/fl_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
+                <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#fff8f47f" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_time_left" android:background="@drawable/bg_chat_collection_card_time" android:layout_width="wrap_content" android:layout_height="12.0dip" android:paddingStart="17.0dip" android:layout_marginStart="3.0dip" app:stroke_color="#ff303030" app:stroke_width="1.0dip" />
+                <ImageView android:layout_width="13.0dip" android:layout_height="16.0dip" android:src="@drawable/chat_collection_icon_clock" />
+            </FrameLayout>
+            <com.yalla.game.base.view.StrokeTextView android:textSize="12.0dip" android:gravity="center" android:id="@id/btn_send" android:background="@drawable/bn_yes_flat" android:layout_width="76.0dip" android:layout_height="29.0dip" android:layout_marginTop="6.0dip" android:text="@string/G_1510_0015" style="@style/StrokeTextStyle_Yes" />
+        </LinearLayout>
     </RelativeLayout>
-    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:layout_toEndOf="@7F0A0F11">
-      <com.yalla.game.base.view.StrokeTextView android:textSize="10.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1707" android:layout_width="-1" android:layout_height="-2" android:text="The request is available for:" app:stroke_color="#FF834515" app:stroke_width="1.000000dip"/>
-      <FrameLayout android:id="@7F0A052F" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip">
-        <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textColor="#FFF8F47F" android:gravity="0x00000010" android:layout_gravity="0x00000010" android:id="@7F0A16FE" android:background="@7F080157" android:layout_width="-2" android:layout_height="12.000000dip" android:paddingStart="17.000000dip" android:layout_marginStart="3.000000dip" app:stroke_color="#FF303030" app:stroke_width="1.000000dip"/>
-        <ImageView android:layout_width="13.000000dip" android:layout_height="16.000000dip" android:src="@7F080424"/>
-      </FrameLayout>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000dip" android:gravity="0x00000011" android:id="@7F0A0162" android:background="@7F080302" android:layout_width="76.000000dip" android:layout_height="29.000000dip" android:layout_marginTop="6.000000dip" android:text="@7F1119AC" style="@7F120191"/>
-    </LinearLayout>
-  </RelativeLayout>
 </RelativeLayout>

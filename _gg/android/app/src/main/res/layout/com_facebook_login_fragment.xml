@@ -1,3 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <ProgressBar android:id="@7F0A023B" android:visibility="2" android:layout_width="-2" android:layout_height="50.000000dip" android:indeterminate="true" android:indeterminateOnly="true" android:layout_centerInParent="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ProgressBar android:id="@id/com_facebook_login_fragment_progress_bar" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="50.0dip" android:indeterminate="true" android:indeterminateOnly="true" android:layout_centerInParent="true" />
 </RelativeLayout>

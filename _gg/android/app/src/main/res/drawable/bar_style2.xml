@@ -1,6 +1,8 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@android:01020000" android:drawable="@7F0801E4"/>
-  <item android:id="@android:0102000D">
-    <scale android:drawable="@7F0808F6" android:scaleWidth="100%"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background" android:drawable="@drawable/bg_level_ps" />
+    <item android:id="@android:id/progress">
+        <scale android:drawable="@drawable/progress2" android:scaleWidth="100%" />
+    </item>
 </layer-list>

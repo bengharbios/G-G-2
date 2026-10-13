@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <View android:background="?android:01010214" android:layout_width="-1" android:layout_height="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="?android:listDivider" android:layout_width="fill_parent" android:layout_height="1.0dip" />
 </FrameLayout>

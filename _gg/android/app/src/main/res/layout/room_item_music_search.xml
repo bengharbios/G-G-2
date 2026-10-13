@@ -1,7 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000010" android:orientation="0" android:background="@7F080D00" android:visibility="0" android:layout_width="-1" android:layout_height="54.000000dip" android:layout_marginBottom="4.000000dip">
-  <ImageView android:layout_width="-2" android:layout_height="-2" android:src="@7F080C44" android:layout_marginStart="16.000000dip"/>
-  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-1" android:maxWidth="189.000000dip" android:layout_marginStart="16.000000dip">
-    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000dip" android:textStyle="0x00000001" android:textColor="@7F0603D3" android:ellipsize="3" android:gravity="0x00000010" android:id="@7F0A1330" android:layout_width="-2" android:layout_height="22.000000dip" android:layout_marginTop="9.000000dip" android:includeFontPadding="false" android:layout_marginEnd="16.000000dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="9.000000dip" android:textStyle="0x00000001" android:textColor="@7F06006D" android:ellipsize="3" android:layout_gravity="0x00000050" android:id="@7F0A1331" android:layout_width="-2" android:layout_height="18.000000dip" android:singleLine="true" android:layout_marginEnd="16.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/room_item_music_bg" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="54.0dip" android:layout_marginBottom="4.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_music_folder" android:layout_marginStart="16.0dip" />
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" android:maxWidth="189.0dip" android:layout_marginStart="16.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/room_color_487" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tvFolderName" android:layout_width="wrap_content" android:layout_height="22.0dip" android:layout_marginTop="9.0dip" android:includeFontPadding="false" android:layout_marginEnd="16.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="9.0dip" android:textStyle="bold" android:textColor="@color/color_3b7" android:ellipsize="end" android:layout_gravity="bottom" android:id="@id/tvFolderPath" android:layout_width="wrap_content" android:layout_height="18.0dip" android:singleLine="true" android:layout_marginEnd="16.0dip" />
+    </LinearLayout>
 </LinearLayout>

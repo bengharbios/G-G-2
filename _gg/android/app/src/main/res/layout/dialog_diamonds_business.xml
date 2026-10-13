@@ -1,9 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="379.000000dip">
-  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0CC2" android:visibility="1" android:layout_width="-2" android:layout_height="-2" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
-    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0AE3" android:layout_width="93.000000dip" android:layout_height="93.000000dip" android:src="@7F08085E"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FFABD8CB" android:layout_gravity="0x00000011" android:id="@7F0A16CE" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:text="@7F111E3E"/>
-  </LinearLayout>
-  <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A0EC9" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="6.000000dip" android:layout_marginBottom="5.000000dip">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EA7" android:layout_width="-1" android:layout_height="-1"/>
-  </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="379.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_record" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="93.0dip" android:layout_height="93.0dip" android:src="@drawable/no_data" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/no_record" />
+    </LinearLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refresh_layout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="6.0dip" android:layout_marginBottom="5.0dip">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_business_list" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

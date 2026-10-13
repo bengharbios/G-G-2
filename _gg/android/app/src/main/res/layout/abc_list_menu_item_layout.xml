@@ -1,6 +1,8 @@
-<androidx.appcompat.view.menu.ListMenuItemView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="?7F04030A">
-  <RelativeLayout android:layout_gravity="0x00000010" android:duplicateParentState="true" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_marginLeft="?7F04030C" android:layout_marginRight="?7F04030D" android:layout_weight="1.000000">
-    <TextView android:textAppearance="?7F04052E" android:ellipsize="4" android:id="@7F0A1289" android:fadingEdge="0x00001000" android:duplicateParentState="true" android:layout_width="-1" android:layout_height="-2" android:singleLine="true" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"/>
-    <TextView android:textAppearance="?android:01010042" android:id="@7F0A10CE" android:duplicateParentState="true" android:layout_width="-2" android:layout_height="-2" android:singleLine="true" android:layout_below="@7F0A1289" android:layout_alignParentLeft="true"/>
-  </RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.view.menu.ListMenuItemView android:layout_width="fill_parent" android:layout_height="?listPreferredItemHeightSmall"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_gravity="center_vertical" android:duplicateParentState="true" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="?listPreferredItemPaddingLeft" android:layout_marginRight="?listPreferredItemPaddingRight" android:layout_weight="1.0">
+        <TextView android:textAppearance="?textAppearanceListItemSmall" android:ellipsize="marquee" android:id="@id/title" android:fadingEdge="horizontal" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:id="@id/shortcut" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_below="@id/title" android:layout_alignParentLeft="true" />
+    </RelativeLayout>
 </androidx.appcompat.view.menu.ListMenuItemView>

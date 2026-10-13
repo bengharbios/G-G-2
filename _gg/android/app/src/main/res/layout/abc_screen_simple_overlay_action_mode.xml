@@ -1,4 +1,6 @@
-<androidx.appcompat.widget.FitWindowsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A004D" android:fitsSystemWindows="true" android:layout_width="-1" android:layout_height="-1">
-  <include layout="@7F0D0014"/>
-  <androidx.appcompat.widget.ViewStubCompat android:id="@7F0A0058" android:layout="@7F0D0004" android:inflatedId="@7F0A0057" android:layout_width="-1" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.FitWindowsFrameLayout android:id="@id/action_bar_root" android:fitsSystemWindows="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/abc_screen_content_include" />
+    <androidx.appcompat.widget.ViewStubCompat android:id="@id/action_mode_bar_stub" android:layout="@layout/abc_action_mode_bar" android:inflatedId="@id/action_mode_bar" android:layout_width="fill_parent" android:layout_height="wrap_content" />
 </androidx.appcompat.widget.FitWindowsFrameLayout>

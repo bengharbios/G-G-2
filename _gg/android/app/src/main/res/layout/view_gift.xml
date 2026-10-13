@@ -1,29 +1,31 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-1">
-  <LinearLayout android:gravity="0x00000011" android:id="@7F0A0D37" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:layout_marginBottom="5.000000dip" android:layout_centerHorizontal="true">
-    <ImageView android:layout_width="10.000000dip" android:layout_height="10.000000dip" android:src="@7F0805E8"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textColor="#FF91CFBA" android:layout_width="-2" android:layout_height="-2" android:text="@7F111013" android:layout_marginStart="4.000000dip"/>
-  </LinearLayout>
-  <FrameLayout android:layout_width="-1" android:layout_height="-1">
-    <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A1835" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
-      <ImageView android:id="@7F0A08F1" android:layout_width="121.000000dip" android:layout_height="121.000000dip" android:layout_marginTop="128.000000dip" android:src="@7F0811EA" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
-      <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF2A8461" android:gravity="0x00000011" android:id="@7F0A14F1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="30.000000dip" android:text="@7F111016" android:layout_marginStart="23.000000dip" android:layout_marginEnd="23.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A08F1"/>
-      <com.yalla.game.base.view.StrokeButton android:gravity="0x00000011" android:id="@7F0A013A" android:background="@7F080301" android:layout_width="144.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="50.000000dip" android:text="@7F111018" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A14F1" style="@7F120191"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <com.yalla.games.common.view.TouchListenFrameLayout android:orientation="1" android:id="@7F0A183C" android:layout_width="-1" android:layout_height="-1">
-      <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@7F0A0435" android:layout_width="-1" android:layout_height="-1"/>
-    </com.yalla.games.common.view.TouchListenFrameLayout>
-    <LinearLayout android:layout_gravity="0x00000001" android:orientation="1" android:id="@7F0A0D24" android:background="@7F080286" android:layout_width="226.000000dip" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:layout_marginBottom="10.000000dip">
-      <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F0A0D25" android:layout_width="226.000000dip" android:layout_height="34.000000dip">
-        <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FFA7CABF" android:layout_width="-2" android:layout_height="-2" android:text="@7F110FB8"/>
-        <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="#FF78A99A" android:id="@7F0A15EA" android:layout_width="92.000000dip" android:layout_height="-2" android:layout_marginStart="5.000000dip"/>
-        <ImageView android:layout_width="10.000000dip" android:layout_height="7.000000dip" android:src="@7F080094" android:layout_marginStart="5.000000dip"/>
-      </LinearLayout>
-      <LinearLayout android:orientation="1" android:id="@7F0A0CAC" android:visibility="2" android:layout_width="226.000000dip" android:layout_height="-2">
-        <View android:background="@7F0802E9" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip"/>
-        <com.yalla.yallagames.ui.userinfo.view.SortModeSelectView android:layout_gravity="0x00000001" android:id="@7F0A10E9" android:layout_width="-1" android:layout_height="34.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginBottom="4.000000dip"/>
-        <View android:background="@7F0802E9" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip"/>
-        <com.yalla.yallagames.ui.userinfo.view.SortModeSelectView android:layout_gravity="0x00000001" android:id="@7F0A10E8" android:layout_width="-1" android:layout_height="34.000000dip" android:layout_marginTop="4.000000dip" android:layout_marginBottom="4.000000dip"/>
-      </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center" android:id="@id/ll_tips" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:layout_centerHorizontal="true">
+        <ImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:src="@drawable/gift_rank_tips_icon" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textColor="#ff91cfba" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_51" android:layout_marginStart="4.0dip" />
     </LinearLayout>
-  </FrameLayout>
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/view_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:id="@id/iv_empty" android:layout_width="121.0dip" android:layout_height="121.0dip" android:layout_marginTop="128.0dip" android:src="@drawable/tips_no_data" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#ff2a8461" android:gravity="center" android:id="@id/tv_des" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:text="@string/G_1390_54" android:layout_marginStart="23.0dip" android:layout_marginEnd="23.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/iv_empty" />
+            <com.yalla.game.base.view.StrokeButton android:gravity="center" android:id="@id/btn_go" android:background="@drawable/bn_yes_big" android:layout_width="144.0dip" android:layout_height="47.0dip" android:layout_marginTop="50.0dip" android:text="@string/G_1390_56" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/tv_des" style="@style/StrokeTextStyle_Yes" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.yalla.games.common.view.TouchListenFrameLayout android:orientation="vertical" android:id="@id/view_frame" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/fl_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </com.yalla.games.common.view.TouchListenFrameLayout>
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_sort_mode" android:background="@drawable/bg_sort_mode" android:layout_width="226.0dip" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="10.0dip">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_sort_mode_top" android:layout_width="226.0dip" android:layout_height="34.0dip">
+                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ffa7cabf" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_239" />
+                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#ff78a99a" android:id="@id/tv_mode" android:layout_width="92.0dip" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+                <ImageView android:layout_width="10.0dip" android:layout_height="7.0dip" android:src="@drawable/arrow_down" android:layout_marginStart="5.0dip" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/ll_mode_select" android:visibility="gone" android:layout_width="226.0dip" android:layout_height="wrap_content">
+                <View android:background="@drawable/bg_white_divider_line" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
+                <com.yalla.yallagames.ui.userinfo.view.SortModeSelectView android:layout_gravity="center_horizontal" android:id="@id/sort_mode_2" android:layout_width="fill_parent" android:layout_height="34.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" />
+                <View android:background="@drawable/bg_white_divider_line" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
+                <com.yalla.yallagames.ui.userinfo.view.SortModeSelectView android:layout_gravity="center_horizontal" android:id="@id/sort_mode_1" android:layout_width="fill_parent" android:layout_height="34.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </merge>

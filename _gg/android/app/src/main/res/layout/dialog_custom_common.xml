@@ -1,6 +1,8 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0C07" android:layout_width="-1" android:layout_height="-2">
-  <FrameLayout android:background="@7F08026C" android:layout_width="-1" android:layout_height="-2">
-    <ViewStub android:id="@7F0A0321" android:layout_width="-1" android:layout_height="-2"/>
-  </FrameLayout>
-  <ViewStub android:id="@7F0A0322" android:layout_width="-1" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_base_dialog" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:background="@drawable/bg_second_level" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ViewStub android:id="@id/dialog_detail_content" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </FrameLayout>
+    <ViewStub android:id="@id/dialog_detail_content_extra" android:layout_width="fill_parent" android:layout_height="wrap_content" />
 </LinearLayout>

@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:textSize="14.000000dip" android:textColor="@7F060544" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:text="@7F1104AF"/>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1037" android:background="@7F080E97" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="14.0dip" android:textColor="@color/white" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/C_1392_017" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rvHistoryCountry" android:background="@drawable/room_shape_explore_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
 </merge>

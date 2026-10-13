@@ -1,5 +1,7 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:id="@7F0A0F6C" android:layout_width="-1" android:layout_height="-2">
-  <LinearLayout android:gravity="0x00000010" android:layout_width="-1" android:layout_height="19.000000dip" android:layout_marginTop="7.000000dip" android:layout_marginBottom="6.000000dip">
-    <com.yalla.games.common.view.CustomTextView android:textSize="14.000000sp" android:textStyle="0x00000001" android:textColor="#FF458371" android:gravity="0x00800013" android:id="@7F0A027A" android:layout_width="-1" android:layout_height="19.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip" app:autoSizeMaxTextSize="14.000000sp" app:autoSizeMinTextSize="5.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:gravity="center" android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="19.0dip" android:layout_marginTop="7.0dip" android:layout_marginBottom="6.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff458371" android:gravity="start|center" android:id="@id/ctv_city" android:layout_width="fill_parent" android:layout_height="19.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:autoSizeMaxTextSize="14.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+    </LinearLayout>
 </FrameLayout>

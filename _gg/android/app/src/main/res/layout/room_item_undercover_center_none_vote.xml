@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="250.000000dip">
-  <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="12.000000sp" android:textColor="@7F0603BC" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A1453" android:background="@7F080F25" android:layout_width="-2" android:layout_height="-2" android:minHeight="24.000000dip" android:text="@7F110A9A" app:layout_constrainedWidth="true" app:layout_constraintHorizontal_bias="0.500000" app:stroke_color="@7F060449" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="250.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="12.0sp" android:textColor="@color/room_color_34599c" android:gravity="center" android:layout_gravity="center" android:id="@id/tvUndercoverCenterTxt" android:background="@drawable/room_undercover_center_txt_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="24.0dip" android:text="@string/C_1490_0024" app:layout_constrainedWidth="true" app:layout_constraintHorizontal_bias="0.5" app:stroke_color="@color/room_color_B7E1FF" app:stroke_width="1.0dip" />
 </FrameLayout>

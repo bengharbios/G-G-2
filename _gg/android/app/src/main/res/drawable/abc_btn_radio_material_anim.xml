@@ -1,6 +1,8 @@
-<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_checked="true" android:id="@7F0A0E23" android:drawable="@7F080376"/>
-  <item android:id="@7F0A0E16" android:drawable="@7F080374"/>
-  <transition android:drawable="@7F080377" android:toId="@7F0A0E16" android:fromId="@7F0A0E23"/>
-  <transition android:drawable="@7F080375" android:toId="@7F0A0E23" android:fromId="@7F0A0E16"/>
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:id="@id/on" android:drawable="@drawable/btn_radio_on_mtrl" />
+    <item android:id="@id/off" android:drawable="@drawable/btn_radio_off_mtrl" />
+    <transition android:drawable="@drawable/btn_radio_on_to_off_mtrl_animation" android:toId="@id/off" android:fromId="@id/on" />
+    <transition android:drawable="@drawable/btn_radio_off_to_on_mtrl_animation" android:toId="@id/on" android:fromId="@id/off" />
 </animated-selector>

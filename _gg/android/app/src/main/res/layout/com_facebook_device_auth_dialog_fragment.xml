@@ -1,17 +1,20 @@
-<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2" app:cardBackgroundColor="@android:0106000D" app:cardElevation="10.000000dip">
-  <LinearLayout android:orientation="1" android:background="@7F08047C" android:layout_width="300.000000dip" android:layout_height="-2">
-    <RelativeLayout android:orientation="0" android:background="@7F08047E" android:layout_width="-1" android:layout_height="100.000000dip">
-      <FrameLayout android:layout_width="-1" android:layout_height="-2">
-        <androidx.appcompat.widget.AppCompatImageView android:layout_width="18.000000dip" android:layout_height="18.000000dip" android:layout_marginLeft="12.000000dip" android:layout_marginTop="11.000000dip" android:layout_marginBottom="11.000000dip" android:scaleType="1" android:adjustViewBounds="false" app:srcCompat="@7F080487"/>
-      </FrameLayout>
-      <TextView android:textSize="30.000000sp" android:typeface="1" android:textColor="@7F0600C8" android:gravity="0x00000011" android:id="@7F0A0249" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true" android:fontFamily="roboto_condensed"/>
-      <ProgressBar android:id="@7F0A0E73" android:layout_width="-2" android:layout_height="0.000000dip" android:layout_alignTop="@7F0A0249" android:layout_alignBottom="@7F0A0249" android:layout_centerInParent="true" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
-    </RelativeLayout>
-    <TextView android:textSize="12.000000sp" android:typeface="1" android:textColor="@7F0600CF" android:gravity="0x00000011" android:id="@7F0A0239" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:singleLine="false" android:fontFamily="roboto_condensed" android:layout_marginStart="16.000000dip" android:layout_marginEnd="16.000000dip"/>
-    <FrameLayout android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="14.000000dip" android:layout_marginBottom="17.000000dip">
-      <Button android:textSize="10.000000sp" android:typeface="1" android:textStyle="0x00000001" android:textColor="@7F0600CF" android:layout_gravity="0x00000001" android:id="@7F0A017B" android:background="@7F08047D" android:focusable="true" android:clickable="true" android:layout_width="84.000000dip" android:layout_height="27.000000dip" android:text="@android:01040000" android:textAllCaps="true" android:fontFamily="roboto_condensed">
-        <requestFocus/>
-      </Button>
-    </FrameLayout>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="wrap_content" android:layout_height="wrap_content" app:cardBackgroundColor="@android:color/transparent" app:cardElevation="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:background="@drawable/com_facebook_auth_dialog_background" android:layout_width="300.0dip" android:layout_height="wrap_content"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout android:orientation="horizontal" android:background="@drawable/com_facebook_auth_dialog_header_background" android:layout_width="fill_parent" android:layout_height="100.0dip">
+            <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_marginLeft="12.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="11.0dip" android:scaleType="fitXY" android:adjustViewBounds="false" app:srcCompat="@drawable/com_facebook_favicon_blue" />
+            </FrameLayout>
+            <TextView android:textSize="30.0sp" android:typeface="sans" android:textColor="@color/com_facebook_blue" android:gravity="center" android:id="@id/confirmation_code" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:fontFamily="roboto_condensed" />
+            <ProgressBar android:id="@id/progress_bar" android:layout_width="wrap_content" android:layout_height="0.0dip" android:layout_alignTop="@id/confirmation_code" android:layout_alignBottom="@id/confirmation_code" android:layout_centerInParent="true" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <TextView android:textSize="12.0sp" android:typeface="sans" android:textColor="@color/com_facebook_device_auth_text" android:gravity="center" android:id="@id/com_facebook_device_auth_instructions" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:singleLine="false" android:fontFamily="roboto_condensed" android:layout_marginStart="16.0dip" android:layout_marginEnd="16.0dip" />
+        <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:layout_marginBottom="17.0dip">
+            <Button android:textSize="10.0sp" android:typeface="sans" android:textStyle="bold" android:textColor="@color/com_facebook_device_auth_text" android:layout_gravity="center_horizontal" android:id="@id/cancel_button" android:background="@drawable/com_facebook_auth_dialog_cancel_background" android:focusable="true" android:clickable="true" android:layout_width="84.0dip" android:layout_height="27.0dip" android:text="@android:string/cancel" android:textAllCaps="true" android:fontFamily="roboto_condensed">
+                <requestFocus />
+            </Button>
+        </FrameLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

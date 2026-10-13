@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0812DE" android:layout_width="252.000000dip" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textColor="@7F060000" android:gravity="0x00000011" android:id="@7F0A02BF" android:layout_width="-1" android:layout_height="32.000000dip" android:layout_marginTop="9.000000dip"/>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0E9E" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="45.000000dip" android:layout_marginBottom="6.000000dip" android:overScrollMode="2" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:background="@drawable/user_info_head_frame_year_bg" android:layout_width="252.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0sp" android:textColor="@color/White" android:gravity="center" android:id="@id/ctv_pop_name" android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginTop="9.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcv_month_list" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="45.0dip" android:layout_marginBottom="6.0dip" android:overScrollMode="never" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
 </FrameLayout>

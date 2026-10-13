@@ -1,5 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textStyle="0x00000001" android:textColor="@7F06051C" android:gravity="0x00000011" android:id="@7F0A1516" android:background="@7F0809F5" android:layout_width="-1" android:layout_height="48.000000dip" android:text="@7F11212E"/>
-  <View android:background="@7F0600C1" android:layout_width="-1" android:layout_height="5.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000dip" android:textStyle="0x00000001" android:textColor="@7F06051C" android:gravity="0x00000011" android:id="@7F0A14B1" android:background="@7F060544" android:layout_width="-1" android:layout_height="48.000000dip" android:text="@7F111B8B"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_down_image" android:background="@drawable/room_bg_save_image" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/room_save_to_album" />
+    <View android:background="@color/color_grey_f5" android:layout_width="fill_parent" android:layout_height="5.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:gravity="center" android:id="@id/tv_cancel_down" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="48.0dip" android:text="@string/cancel" />
 </LinearLayout>

@@ -1,5 +1,7 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="@7F060544" android:gravity="0x00000011" android:id="@7F0A1502" android:background="@7F0800E9" android:layout_width="-2" android:layout_height="20.000000dip" android:minWidth="85.000000dip" android:layout_centerVertical="true" android:paddingStart="25.000000dip" android:paddingEnd="25.000000dip" android:layout_marginStart="5.000000dip"/>
-  <ImageView android:layout_width="29.000000dip" android:layout_height="29.000000dip" android:src="@7F0804FD" android:layout_centerVertical="true" android:layout_alignParentStart="true"/>
-  <ImageView android:id="@7F0A07ED" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip" android:layout_marginBottom="1.000000dip" android:src="@7F08077C" android:layout_centerVertical="true" android:layout_marginEnd="1.000000dip" android:layout_alignEnd="@7F0A1502"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_diamonds_num" android:background="@drawable/bg_add_coin" android:layout_width="wrap_content" android:layout_height="20.0dip" android:minWidth="85.0dip" android:layout_centerVertical="true" android:paddingStart="25.0dip" android:paddingEnd="25.0dip" android:layout_marginStart="5.0dip" />
+    <ImageView android:layout_width="29.0dip" android:layout_height="29.0dip" android:src="@drawable/diamonds" android:layout_centerVertical="true" android:layout_alignParentStart="true" />
+    <ImageView android:id="@id/iv_add_diamonds" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:layout_marginBottom="1.0dip" android:src="@drawable/jia" android:layout_centerVertical="true" android:layout_marginEnd="1.0dip" android:layout_alignEnd="@id/tv_diamonds_num" />
 </merge>

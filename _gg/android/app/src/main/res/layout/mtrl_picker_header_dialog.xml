@@ -1,10 +1,12 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="@7F0701B9">
-  <LinearLayout android:layout_gravity="0x00000030" android:orientation="0" android:id="@7F0A0DDE" android:paddingLeft="@7F0701B6" android:paddingRight="@7F0701B6" android:layout_width="-1" android:layout_height="@7F0701B9" android:baselineAligned="false" android:paddingStart="@7F0701B6" android:paddingEnd="@7F0701B6" style="?7F040336">
-    <FrameLayout android:id="@7F0A0DE0" android:paddingLeft="@7F0701BC" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000" android:paddingStart="@7F0701BC">
-      <include layout="@7F0D0307"/>
-      <include layout="@7F0D0306"/>
-    </FrameLayout>
-    <include layout="@7F0D0308"/>
-  </LinearLayout>
-  <View android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="@7F0701B8" style="?7F040335"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="@dimen/mtrl_calendar_header_height"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="top" android:orientation="horizontal" android:id="@id/mtrl_picker_header" android:paddingLeft="@dimen/mtrl_calendar_header_content_padding" android:paddingRight="@dimen/mtrl_calendar_header_content_padding" android:layout_width="fill_parent" android:layout_height="@dimen/mtrl_calendar_header_height" android:baselineAligned="false" android:paddingStart="@dimen/mtrl_calendar_header_content_padding" android:paddingEnd="@dimen/mtrl_calendar_header_content_padding" style="?materialCalendarHeaderLayout">
+        <FrameLayout android:id="@id/mtrl_picker_header_title_and_selection" android:paddingLeft="@dimen/mtrl_calendar_header_text_padding" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:paddingStart="@dimen/mtrl_calendar_header_text_padding">
+            <include layout="@layout/mtrl_picker_header_title_text" />
+            <include layout="@layout/mtrl_picker_header_selection_text" />
+        </FrameLayout>
+        <include layout="@layout/mtrl_picker_header_toggle" />
+    </LinearLayout>
+    <View android:layout_gravity="bottom" android:layout_width="fill_parent" android:layout_height="@dimen/mtrl_calendar_header_divider_thickness" style="?materialCalendarHeaderDivider" />
 </merge>

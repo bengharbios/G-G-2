@@ -1,10 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="50.000000dip" android:layout_height="40.000000dip">
-  <RelativeLayout android:layout_width="38.000000dip" android:layout_height="40.000000dip">
-    <ImageView android:layout_width="38.000000dip" android:layout_height="38.000000dip" android:src="@7F080F68" android:layout_centerHorizontal="true"/>
-    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A1226" android:layout_width="35.000000dip" android:layout_height="35.000000dip" android:layout_centerHorizontal="true"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:textColor="#FFFFB310" android:gravity="0x00000011" android:id="@7F0A02CE" android:background="@7F080F69" android:visibility="2" android:layout_width="38.000000dip" android:layout_height="11.000000dip" android:layout_marginTop="29.000000dip" android:layout_centerHorizontal="true" android:textDirection="3" app:end_color="#FFFFB310" app:gradient="true" app:start_color="#FFFFF8AF"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:textColor="#FF89E8A9" android:gravity="0x00000011" android:id="@7F0A02CD" android:background="@7F080F69" android:layout_width="38.000000dip" android:layout_height="11.000000dip" android:layout_marginTop="29.000000dip" android:text="R 0" android:layout_centerHorizontal="true" android:textDirection="3"/>
-    <ImageView android:id="@7F0A08C8" android:visibility="2" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:layout_marginTop="2.000000dip" android:src="@7F080945" android:layout_alignParentEnd="true"/>
-  </RelativeLayout>
-  <ImageView android:layout_gravity="0x00800035" android:id="@7F0A09F2" android:visibility="2" android:layout_width="28.000000dip" android:layout_height="15.000000dip" android:src="@7F080F96"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="50.0dip" android:layout_height="40.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:layout_width="38.0dip" android:layout_height="40.0dip">
+        <ImageView android:layout_width="38.0dip" android:layout_height="38.0dip" android:src="@drawable/royal_entrance_1_bg" android:layout_centerHorizontal="true" />
+        <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_royal_level" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_centerHorizontal="true" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textStyle="bold" android:textColor="#ffffb310" android:gravity="center" android:id="@id/ctv_royal_level_1_5" android:background="@drawable/royal_entrance_2_bg" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="11.0dip" android:layout_marginTop="29.0dip" android:layout_centerHorizontal="true" android:textDirection="ltr" app:end_color="#ffffb310" app:gradient="true" app:start_color="#fffff8af" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textStyle="bold" android:textColor="#ff89e8a9" android:gravity="center" android:id="@id/ctv_royal_level_0" android:background="@drawable/royal_entrance_2_bg" android:layout_width="38.0dip" android:layout_height="11.0dip" android:layout_marginTop="29.0dip" android:text="R 0" android:layout_centerHorizontal="true" android:textDirection="ltr" />
+        <ImageView android:id="@id/iv_dot" android:visibility="gone" android:layout_width="12.0dip" android:layout_height="12.0dip" android:layout_marginTop="2.0dip" android:src="@drawable/reddot" android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="28.0dip" android:layout_height="15.0dip" android:src="@drawable/royal_pri_item_tag_new" />
 </FrameLayout>

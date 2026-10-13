@@ -1,3 +1,5 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0EC4" android:layout_width="-1" android:layout_height="-1">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1054" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/refreshRecord" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rvRecord" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

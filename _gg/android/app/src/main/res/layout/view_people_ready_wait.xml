@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-2" android:layout_height="-2">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0A11" android:layout_width="52.000000dip" android:layout_height="52.000000dip"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A1238" android:visibility="2" android:layout_width="58.000000dip" android:layout_height="58.000000dip" app:view_scale="1.100000"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center" android:id="@id/iv_people_ready" android:layout_width="52.0dip" android:layout_height="52.0dip" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_view" android:visibility="gone" android:layout_width="58.0dip" android:layout_height="58.0dip" app:view_scale="1.1" />
 </merge>

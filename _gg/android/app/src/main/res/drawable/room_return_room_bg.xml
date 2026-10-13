@@ -1,4 +1,6 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-  <gradient android:startColor="#1A41CCA4" android:endColor="#FF29C89B" android:useLevel="true" android:angle="180.000000" android:type="0"/>
-  <corners android:topLeftRadius="0.000000dip" android:topRightRadius="48.000000dip" android:bottomLeftRadius="0.000000dip" android:bottomRightRadius="48.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient android:startColor="#1a41cca4" android:endColor="#ff29c89b" android:useLevel="true" android:angle="180.0" android:type="linear" />
+    <corners android:topLeftRadius="0.0dip" android:topRightRadius="48.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="48.0dip" />
 </shape>

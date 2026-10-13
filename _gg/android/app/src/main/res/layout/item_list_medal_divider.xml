@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip">
-  <ImageView android:layout_width="-1" android:layout_height="-2" android:src="@7F080830" android:scaleType="1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/medal_item_view_bg" android:scaleType="fitXY" />
 </FrameLayout>

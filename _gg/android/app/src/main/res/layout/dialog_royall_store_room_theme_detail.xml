@@ -1,9 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:id="@7F0A0435" android:background="@7F080957" android:layout_width="260.000000dip" android:layout_height="415.000000dip">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A111F" android:padding="3.000000dip" android:clickable="true" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A1209" android:padding="3.000000dip" android:visibility="2" android:clickable="true" android:layout_width="-1" android:layout_height="-1"/>
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="@7F0807C6" android:stateListAnimator="@7F01003A"/>
-  <LinearLayout android:gravity="0x00000010" android:layout_gravity="0x00000051" android:id="@7F0A0C8F" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="13.000000dip">
-    <ImageView android:layout_width="13.000000dip" android:layout_height="15.000000dip" android:src="@7F080FD0"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="@android:0106000B" android:id="@7F0A1169" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="3.000000dip" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/fl_container" android:background="@drawable/regression_room_bg_bg" android:layout_width="260.0dip" android:layout_height="415.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center" android:id="@id/static_image" android:padding="3.0dip" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_image" android:padding="3.0dip" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="bottom|center" android:id="@id/ll_limit_day" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="13.0dip">
+        <ImageView android:layout_width="13.0dip" android:layout_height="15.0dip" android:src="@drawable/royal_store_time_down" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="@android:color/white" android:id="@id/stv_limit_day" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="3.0dip" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
+    </LinearLayout>
 </FrameLayout>

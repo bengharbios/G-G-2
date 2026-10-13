@@ -1,23 +1,25 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_enabled="true" android:state_pressed="true">
-    <shape android:shape="0">
-      <solid android:color="@7F060532"/>
-      <corners android:radius="@7F070294"/>
-      <padding android:left="@7F070291" android:right="@7F070291"/>
-    </shape>
-  </item>
-  <item android:state_enabled="true">
-    <shape android:shape="0">
-      <solid android:color="@7F060531"/>
-      <corners android:radius="@7F070294"/>
-      <padding android:left="@7F070291" android:right="@7F070291"/>
-    </shape>
-  </item>
-  <item android:state_enabled="false">
-    <shape android:shape="0">
-      <solid android:color="@7F060534"/>
-      <corners android:radius="@7F070294"/>
-      <padding android:left="@7F070291" android:right="@7F070291"/>
-    </shape>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tw__composer_blue_text" />
+            <corners android:radius="@dimen/tw__composer_tweet_btn_radius" />
+            <padding android:left="@dimen/tw__composer_spacing_medium" android:right="@dimen/tw__composer_spacing_medium" />
+        </shape>
+    </item>
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tw__composer_blue" />
+            <corners android:radius="@dimen/tw__composer_tweet_btn_radius" />
+            <padding android:left="@dimen/tw__composer_spacing_medium" android:right="@dimen/tw__composer_spacing_medium" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tw__composer_light_gray" />
+            <corners android:radius="@dimen/tw__composer_tweet_btn_radius" />
+            <padding android:left="@dimen/tw__composer_spacing_medium" android:right="@dimen/tw__composer_spacing_medium" />
+        </shape>
+    </item>
 </selector>

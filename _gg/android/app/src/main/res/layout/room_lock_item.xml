@@ -1,6 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
-  <ImageView android:layout_width="-2" android:layout_height="24.000000dip" android:layout_marginTop="11.000000dip" android:src="@7F0804FD"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="19.000000sp" android:textStyle="0x00000001" android:textColor="@7F0603B8" android:layout_gravity="0x00000001" android:id="@7F0A15CB" android:layout_width="-2" android:layout_height="-2"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="#FF8ACCE3" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A1301" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="15.000000dip" android:layout_marginRight="15.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="@7F0600A8" android:layout_gravity="0x00000001" android:id="@7F0A15CA" android:layout_width="-2" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="wrap_content" android:layout_height="24.0dip" android:layout_marginTop="11.0dip" android:src="@drawable/diamonds" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="19.0sp" android:textStyle="bold" android:textColor="@color/room_color_2cf" android:layout_gravity="center_horizontal" android:id="@id/tv_lock_num" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff8acce3" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tvCrossOff" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="@color/color_black_5f" android:layout_gravity="center_horizontal" android:id="@id/tv_lock_limit" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </merge>

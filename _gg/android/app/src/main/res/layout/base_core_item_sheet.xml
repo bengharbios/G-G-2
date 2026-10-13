@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2" android:paddingStart="24.000000dip" android:paddingEnd="24.000000dip">
-  <TextView android:textSize="18.000000sp" android:textColor="@7F060023" android:gravity="0x00800013" android:id="@7F0A1352" android:layout_width="-1" android:layout_height="50.000000dip" android:textAllCaps="true" android:textAlignment="5"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="24.0dip" android:paddingEnd="24.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="18.0sp" android:textColor="@color/base_core_black_1F2329" android:gravity="start|center" android:id="@id/tvItemTitle" android:layout_width="fill_parent" android:layout_height="50.0dip" android:textAllCaps="true" android:textAlignment="viewStart" />
 </FrameLayout>

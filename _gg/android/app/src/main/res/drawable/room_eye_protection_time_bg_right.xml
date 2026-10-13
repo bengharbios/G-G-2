@@ -1,3 +1,5 @@
-<rotate xmlns:android="http://schemas.android.com/apk/res/android" android:fromDegrees="180.000000" android:pivotX="50.000001%" android:pivotY="50.000001%">
-  <bitmap android:gravity="0x00000011" android:src="@7F080AB3"/>
+<?xml version="1.0" encoding="utf-8"?>
+<rotate android:fromDegrees="180.0" android:pivotX="50.0%" android:pivotY="50.0%"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <bitmap android:gravity="center" android:src="@drawable/room_eye_protection_time_bg" />
 </rotate>

@@ -1,4 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-  <View android:id="@7F0A1847" android:visibility="2" android:layout_width="-1" android:layout_height="9.000000dip"/>
-  <com.yalla.games.battle.vip.view.VipRoomItemView android:id="@7F0A18A7" android:background="@7F0812F6" android:layout_width="322.000000dip" android:layout_height="114.000000dip" android:layout_marginTop="3.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/view_header" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="9.0dip" />
+    <com.yalla.games.battle.vip.view.VipRoomItemView android:id="@id/vip_room_item" android:background="@drawable/vip_room_bg" android:layout_width="322.0dip" android:layout_height="114.0dip" android:layout_marginTop="3.0dip" />
 </LinearLayout>

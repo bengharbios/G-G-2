@@ -1,19 +1,21 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000011" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-  <com.yalla.games.common.view.CommonDialogHeader android:id="@7F0A0D85" android:background="@7F080FF3" android:layout_width="-1" android:layout_height="38.000000dip" app:end_icon="@7F08044E" app:title="@7F1121E7" app:title_color="@7F060544" app:title_size="21.000000sp"/>
-  <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000001" android:orientation="1" android:background="@7F0801EB" android:layout_width="-1" android:layout_height="-2">
-    <RelativeLayout android:background="@7F0801EC" android:layout_width="295.000000dip" android:layout_height="95.000000dip" android:layout_marginTop="6.000000dip">
-      <ImageView android:id="@7F0A05FF" android:layout_width="-2" android:layout_height="-2" android:src="@7F080987" android:layout_centerVertical="true" android:layout_marginStart="17.000000dip"/>
-      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginStart="13.000000dip" android:layout_toEndOf="@7F0A05FF">
-        <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF676364" android:id="@7F0A1289" android:layout_width="-2" android:layout_height="-2" android:text="@7F111F5A"/>
-        <TextView android:textSize="12.000000sp" android:textColor="#FF967860" android:id="@7F0A0318" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="@7F111F5B"/>
-      </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout android:background="@7F0801EC" android:layout_width="295.000000dip" android:layout_height="-2" android:layout_marginTop="6.000000dip" android:layout_marginBottom="18.000000dip">
-      <ImageView android:id="@7F0A0600" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="15.000000dip" android:src="@7F0805EF" android:layout_centerVertical="true" android:layout_marginStart="20.000000dip"/>
-      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_alignTop="@7F0A0600" android:layout_centerVertical="true" android:layout_marginStart="16.000000dip" android:layout_toEndOf="@7F0A0600">
-        <com.yalla.games.common.view.CustomTextView android:textSize="16.000000sp" android:textColor="#FF676364" android:layout_width="-2" android:layout_height="-2" android:text="@7F111CDC"/>
-        <TextView android:textSize="12.000000sp" android:textColor="#FF967860" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="@7F111CDD"/>
-      </LinearLayout>
-    </RelativeLayout>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CommonDialogHeader android:id="@id/magic_rules_header" android:background="@drawable/rule_shap" android:layout_width="fill_parent" android:layout_height="38.0dip" app:end_icon="@drawable/close_click" app:title="@string/rule" app:title_color="@color/white" app:title_size="21.0sp" />
+    <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/bg_magic_dialog" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:background="@drawable/bg_magic_rules" android:layout_width="295.0dip" android:layout_height="95.0dip" android:layout_marginTop="6.0dip">
+            <ImageView android:id="@id/icon_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/rocket" android:layout_centerVertical="true" android:layout_marginStart="17.0dip" />
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="13.0dip" android:layout_toEndOf="@id/icon_1">
+                <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ff676364" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/rocket" />
+                <TextView android:textSize="12.0sp" android:textColor="#ff967860" android:id="@id/description" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="@string/rocket_description" />
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout android:background="@drawable/bg_magic_rules" android:layout_width="295.0dip" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_marginBottom="18.0dip">
+            <ImageView android:id="@id/icon_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" android:src="@drawable/golden_dice_big" android:layout_centerVertical="true" android:layout_marginStart="20.0dip" />
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignTop="@id/icon_2" android:layout_centerVertical="true" android:layout_marginStart="16.0dip" android:layout_toEndOf="@id/icon_2">
+                <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ff676364" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/golden_dice" />
+                <TextView android:textSize="12.0sp" android:textColor="#ff967860" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="@string/golden_dice_description" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

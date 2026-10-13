@@ -1,6 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F0A0F84" android:layout_width="-1" android:layout_height="-2">
-  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0BA5" android:layout_width="-1" android:layout_height="240.000000dip" android:layout_marginTop="15.000000dip" android:layout_below="@7F0A1637" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip"/>
-    <com.yalla.game.base.view.StrokeButton android:textSize="20.000000sp" android:textStyle="0x00000001" android:textColor="#FFAA6E1F" android:gravity="0x00000011" android:id="@7F0A00E8" android:layout_width="198.000000dip" android:layout_height="54.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginBottom="20.000000dip" android:text="@7F111BEB" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" app:stroke_color="#FFFEE641" app:stroke_width="1.000000dip"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_gravity="center" android:orientation="vertical" android:id="@id/rl_phone_area_code" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/list_country" android:layout_width="fill_parent" android:layout_height="240.0dip" android:layout_marginTop="15.0dip" android:layout_below="@id/tv_phone_login" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ffaa6e1f" android:gravity="center" android:id="@id/bt_area_confirm" android:layout_width="198.0dip" android:layout_height="54.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="20.0dip" android:text="@string/confirm" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" app:stroke_color="#fffee641" app:stroke_width="1.0dip" />
+    </LinearLayout>
 </merge>

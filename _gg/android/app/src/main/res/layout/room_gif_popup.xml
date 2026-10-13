@@ -1,8 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="130.000000dip" android:layout_height="140.000000dip">
-  <androidx.cardview.widget.CardView android:layout_gravity="0x00000001" android:layout_width="110.000000dip" android:layout_height="110.000000dip" android:layout_margin="8.000000dip" app:cardBackgroundColor="@7F060544" app:cardCornerRadius="8.000000dip" app:cardElevation="5.000000dip" app:cardMaxElevation="5.000000dip" app:cardPreventCornerOverlap="true">
-    <FrameLayout android:layout_width="-1" android:layout_height="-1">
-      <com.yalla.ludochat.view.RoundImageView android:layout_gravity="0x00000011" android:id="@7F0A069F" android:layout_width="100.000000dip" android:layout_height="100.000000dip" app:cornerRadius="8.000000dip"/>
-      <ProgressBar android:layout_gravity="0x00000011" android:id="@7F0A0E4E" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:indeterminateDrawable="@7F080AEA" android:indeterminateDuration="500" android:indeterminateBehavior="1" app:layout_constraintStart_toStartOf="0"/>
-    </FrameLayout>
-  </androidx.cardview.widget.CardView>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="130.0dip" android:layout_height="140.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView android:layout_gravity="center_horizontal" android:layout_width="110.0dip" android:layout_height="110.0dip" android:layout_margin="8.0dip" app:cardBackgroundColor="@color/white" app:cardCornerRadius="8.0dip" app:cardElevation="5.0dip" app:cardMaxElevation="5.0dip" app:cardPreventCornerOverlap="true">
+        <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.yalla.ludochat.view.RoundImageView android:layout_gravity="center" android:id="@id/ivGif" android:layout_width="100.0dip" android:layout_height="100.0dip" app:cornerRadius="8.0dip" />
+            <ProgressBar android:layout_gravity="center" android:id="@id/pb_load" android:layout_width="23.0dip" android:layout_height="23.0dip" android:indeterminateDrawable="@drawable/room_gif_load_animal" android:indeterminateDuration="500" android:indeterminateBehavior="repeat" app:layout_constraintStart_toStartOf="parent" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

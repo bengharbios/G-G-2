@@ -1,4 +1,6 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="0">
-  <size android:height="2.000000dip" android:width="2.000000dip"/>
-  <solid android:color="@android:0106000B"/>
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <size android:height="2.0dip" android:width="2.0dip" />
+    <solid android:color="@android:color/white" />
 </shape>

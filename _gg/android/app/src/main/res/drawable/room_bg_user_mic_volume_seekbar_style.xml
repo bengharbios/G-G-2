@@ -1,10 +1,12 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:gravity="0x00000010" android:id="@android:01020000">
-    <shape android:shape="0">
-      <corners android:radius="15.000000dip"/>
-      <gradient android:startColor="@7F0603A4" android:endColor="@7F0603A4" android:angle="0.000000"/>
-      <size android:height="30.000000dip"/>
-    </shape>
-  </item>
-  <item android:gravity="0x00000010" android:id="@android:0102000D" android:drawable="@7F080A04"/>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center_vertical" android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <corners android:radius="15.0dip" />
+            <gradient android:startColor="@color/room_color_223D48" android:endColor="@color/room_color_223D48" android:angle="0.0" />
+            <size android:height="30.0dip" />
+        </shape>
+    </item>
+    <item android:gravity="center_vertical" android:id="@android:id/progress" android:drawable="@drawable/room_bg_user_mic_volume_set" />
 </layer-list>

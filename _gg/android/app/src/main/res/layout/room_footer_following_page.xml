@@ -1,3 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomButton android:textSize="16.000000sp" android:textColor="@7F0600A0" android:layout_gravity="0x00000001" android:id="@7F0A0ECD" android:background="@7F0803AC" android:layout_width="180.000000dip" android:layout_height="45.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginBottom="8.000000dip" android:text="@7F112088" android:textAllCaps="false" style="?android:0101032B"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomButton android:textSize="16.0sp" android:textColor="@color/color_a60" android:layout_gravity="center_horizontal" android:id="@id/related_btn_follow_all" android:background="@drawable/btn_yes" android:layout_width="180.0dip" android:layout_height="45.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:text="@string/room_main_follow_all" android:textAllCaps="false" style="?android:borderlessButtonStyle" />
 </LinearLayout>

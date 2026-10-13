@@ -1,3 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.twitter.sdk.android.tweetui.internal.ViewPagerFixed android:id="@7F0A1786" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.twitter.sdk.android.tweetui.internal.ViewPagerFixed android:id="@id/tw__view_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </merge>

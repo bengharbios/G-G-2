@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CustomEditText android:textSize="14.000000sp" android:textColorHint="@7F06011D" android:gravity="0x00000011" android:id="@7F0A037F" android:background="@7F080F55" android:layout_width="-1" android:layout_height="-1" android:hint="@7F111D20" android:inputType="0x00000081" android:imeOptions="0x10000000" android:textCursorDrawable="@7F08052E" android:paddingStart="40.000000dip" android:paddingEnd="40.000000dip" style="@7F12011C"/>
-  <ImageView android:layout_gravity="0x00800015" android:id="@7F0A05FD" android:layout_width="40.000000dip" android:layout_height="-1" android:src="@7F0807E4" android:paddingEnd="20.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomEditText android:textSize="14.0sp" android:textColorHint="@color/hint_phone" android:gravity="center" android:id="@id/et_cus_login_password" android:background="@drawable/round_editext" android:layout_width="fill_parent" android:layout_height="fill_parent" android:hint="@string/input_the_password" android:inputType="textPassword" android:imeOptions="flagNoExtractUi" android:textCursorDrawable="@drawable/edittext_cursor" android:paddingStart="40.0dip" android:paddingEnd="40.0dip" style="@style/Edit_Input_Text_Color" />
+    <ImageView android:layout_gravity="end|center" android:id="@id/ic_open_close" android:layout_width="40.0dip" android:layout_height="fill_parent" android:src="@drawable/login_pwd_close_ice_ic" android:paddingEnd="20.0dip" />
 </merge>

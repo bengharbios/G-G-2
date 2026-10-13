@@ -1,3 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@7F0A18C7" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@id/vp_room_rank" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </LinearLayout>

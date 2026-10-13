@@ -1,1 +1,3 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:ellipsize="4" android:gravity="0x00000010" android:id="@android:01020014" android:paddingLeft="?7F04030C" android:paddingRight="?7F04030D" android:layout_width="-1" android:layout_height="-2" android:minHeight="?7F04030A" style="?7F040327"/>
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:ellipsize="marquee" android:gravity="center_vertical" android:id="@android:id/text1" android:paddingLeft="?listPreferredItemPaddingLeft" android:paddingRight="?listPreferredItemPaddingRight" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?listPreferredItemHeightSmall" style="?materialAlertDialogBodyTextStyle"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A049A" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A0E69" android:clickable="false" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A11EC" android:clickable="false" android:layout_width="-1" android:layout_height="-1" app:play_on_attach="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/previewCarSvga" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" app:play_on_attach="true" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svgaUnlock" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" app:play_on_attach="true" />
 </FrameLayout>

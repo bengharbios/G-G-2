@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A045B" android:layout_width="65.000000dip" android:layout_height="-1">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0E00" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:scaleType="3"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_face" android:layout_width="65.0dip" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/nivFaceIndicator" android:layout_width="30.0dip" android:layout_height="30.0dip" android:scaleType="fitCenter" />
 </FrameLayout>

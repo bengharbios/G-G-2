@@ -1,4 +1,6 @@
-<com.yalla.ludochat.view.WebInternalContainer xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0401" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A0FE5" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.LoadingView android:id="@7F0A0FE6" android:background="@7F0604F2" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.ludochat.view.WebInternalContainer android:id="@id/flWebInternalContainer" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/roomWebGame" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.LoadingView android:id="@id/roomWebGameLoading" android:background="@color/room_color_opaque_60" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </com.yalla.ludochat.view.WebInternalContainer>

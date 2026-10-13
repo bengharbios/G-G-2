@@ -1,1 +1,3 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03B4" android:background="#00F6F000" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/ff_game" android:background="#00f6f000" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

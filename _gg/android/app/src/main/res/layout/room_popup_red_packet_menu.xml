@@ -1,11 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="@7F0809EA" android:layout_width="-2" android:layout_height="-2" android:minWidth="120.000000dip">
-  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BE3" android:layout_width="-1" android:layout_height="36.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="15.000000dip">
-    <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080C8D" android:layout_marginEnd="5.000000dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="@7F060473" android:layout_width="-2" android:layout_height="-2" android:text="@7F110B3A"/>
-  </LinearLayout>
-  <View android:background="@7F080A9F" android:layout_width="-1" android:layout_height="2.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip"/>
-  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0BE9" android:layout_width="-1" android:layout_height="36.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="15.000000dip">
-    <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080C8F" android:layout_marginEnd="5.000000dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="10.000000dip" android:textColor="@7F060473" android:layout_width="-2" android:layout_height="-2" android:text="@7F110B3B"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/room_bg_red_packet_menu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="120.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llRuleItem" android:layout_width="fill_parent" android:layout_height="36.0dip" android:paddingStart="10.0dip" android:paddingEnd="15.0dip">
+        <ImageView android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/room_icon_red_packet_rule" android:layout_marginEnd="5.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/room_color_E8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0018" />
+    </LinearLayout>
+    <View android:background="@drawable/room_divider_red_packet_menu" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llSendRecordItem" android:layout_width="fill_parent" android:layout_height="36.0dip" android:paddingStart="10.0dip" android:paddingEnd="15.0dip">
+        <ImageView android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/room_icon_red_packet_send_record" android:layout_marginEnd="5.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/room_color_E8BBBB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/C_1500_0019" />
+    </LinearLayout>
 </LinearLayout>

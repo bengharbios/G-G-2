@@ -1,1 +1,3 @@
-<com.yalla.ludochat.view.RoomPassEnterSideView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0FDA" android:layout_width="-2" android:layout_height="-2" android:minHeight="60.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.ludochat.view.RoomPassEnterSideView android:id="@id/roomPassEnterSideView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="60.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

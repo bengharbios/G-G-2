@@ -1,5 +1,7 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A049A" android:layout_width="-1" android:layout_height="-1">
-  <FrameLayout android:id="@7F0A0542" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true">
-    <com.yalla.games.shop.store.video.VideoSurfaceView android:layout_gravity="0x00000011" android:id="@7F0A18E2" android:layout_width="1.000000px" android:layout_height="1.000000px"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_video" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true">
+        <com.yalla.games.shop.store.video.VideoSurfaceView android:layout_gravity="center" android:id="@id/vv_play" android:layout_width="1.0px" android:layout_height="1.0px" />
+    </FrameLayout>
 </RelativeLayout>

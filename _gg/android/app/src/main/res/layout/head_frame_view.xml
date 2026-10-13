@@ -1,6 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <View android:id="@7F0A183D" android:background="@7F0801AC" android:layout_width="-1" android:layout_height="-1" android:layout_margin="10.000000dip"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A0906" android:layout_width="-1" android:layout_height="-1"/>
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A7" android:layout_width="-2" android:layout_height="-2" android:src="@7F0807D0"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#FFFFFFFF" android:layout_gravity="0x00000051" android:id="@7F0A16FB" android:background="@7F0801AE" android:paddingLeft="5.000000dip" android:paddingRight="5.000000dip" android:layout_width="-2" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/view_frame_bg" android:background="@drawable/bg_head_frame" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="10.0dip" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/iv_frame" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:layout_gravity="center" android:id="@id/iv_lock" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/lock" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textColor="#ffffffff" android:layout_gravity="bottom|center" android:id="@id/tv_time" android:background="@drawable/bg_head_frame_left_time" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </merge>

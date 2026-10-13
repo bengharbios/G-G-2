@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1040" android:layout_width="-1" android:layout_height="192.000000dip"/>
-  <LinearLayout android:orientation="0" android:id="@7F0A0BC9" android:layout_width="-2" android:layout_height="-2"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rvMagicCard" android:layout_width="fill_parent" android:layout_height="192.0dip" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/llMagicCardIndicator" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </merge>

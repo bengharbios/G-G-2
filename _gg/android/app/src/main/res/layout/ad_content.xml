@@ -1,5 +1,7 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0F6C" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A18EB" android:visibility="1" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.LoadingView android:id="@7F0A11D2" android:background="@7F060036" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
-  <ImageView android:id="@7F0A0861" android:background="@7F06052C" android:layout_width="30.000000dip" android:layout_height="30.000000dip" android:layout_marginTop="13.000000dip" android:src="@7F080071" android:layout_marginEnd="14.000000dip" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/web_content" android:visibility="invisible" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.LoadingView android:id="@id/svg_loading" android:background="@color/black_80" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <ImageView android:id="@id/iv_close" android:background="@color/transparent_1" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginTop="13.0dip" android:src="@drawable/ad_close" android:layout_marginEnd="14.0dip" android:layout_alignParentEnd="true" />
 </RelativeLayout>

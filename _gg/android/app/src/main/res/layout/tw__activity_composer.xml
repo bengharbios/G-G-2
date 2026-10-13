@@ -1,3 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-  <com.twitter.sdk.android.tweetcomposer.ComposerView android:id="@7F0A176F" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.twitter.sdk.android.tweetcomposer.ComposerView android:id="@id/tw__composer_view" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </merge>

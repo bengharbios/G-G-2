@@ -1,14 +1,16 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-2">
-  <Chronometer android:textSize="10.000000dip" android:textStyle="0x00000001" android:textColor="#FF36B9C9" android:id="@7F0A01AC" android:background="@7F080E94" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="8.000000dip" android:fontFeatureSettings="tnum"/>
-  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A111E" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-2" android:minHeight="56.000000dip">
-    <ImageView android:id="@7F0A0771" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080B63" android:layout_marginStart="8.000000dip"/>
-    <ImageView android:id="@7F0A06D7" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080B4B" android:layout_marginStart="8.000000dip"/>
-    <ImageView android:id="@7F0A06D9" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080DA1" android:layout_marginStart="8.000000dip"/>
-    <Chronometer android:textSize="13.000000dip" android:textStyle="0x00000001" android:textColor="@7F06036F" android:gravity="0x00800013" android:id="@7F0A01AA" android:background="@7F080A1E" android:padding="8.000000dip" android:layout_width="0.000000dip" android:layout_height="36.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginBottom="10.000000dip" android:text="@7F11212F" android:maxLines="1" android:includeFontPadding="false" android:drawablePadding="4.000000dip" android:layout_weight="1.000000" android:drawableStart="@7F080678" android:textDirection="2" android:textAlignment="5" android:layout_marginStart="12.000000dip"/>
-    <ImageView android:id="@7F0A0719" android:layout_width="-2" android:layout_height="38.000000dip" android:src="@7F080E1D" android:layout_marginStart="8.000000dip"/>
-    <FrameLayout android:layout_width="45.000000dip" android:layout_height="45.000000dip" android:layout_marginBottom="3.000000dip" android:layout_marginStart="8.000000dip" android:layout_marginEnd="8.000000dip">
-      <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@7F0A06A0" android:layout_width="45.000000dip" android:layout_height="45.000000dip" app:play_on_attach="true" app:source="room_gift.svga"/>
-      <ImageView android:layout_gravity="0x00000051" android:id="@7F0A06A8" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:src="@7F080C1D"/>
-    </FrameLayout>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Chronometer android:textSize="10.0dip" android:textStyle="bold" android:textColor="#ff36b9c9" android:id="@id/chronometer_chat_disable_host_hint" android:background="@drawable/room_shape_chat_disable_host_hint" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8.0dip" android:fontFeatureSettings="tnum" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/static_bottom" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="56.0dip">
+        <ImageView android:id="@id/ivSound" android:layout_width="wrap_content" android:layout_height="38.0dip" android:src="@drawable/room_ic_input_sound" android:layout_marginStart="8.0dip" />
+        <ImageView android:id="@id/ivMic" android:layout_width="wrap_content" android:layout_height="38.0dip" android:src="@drawable/room_ic_input_mic" android:layout_marginStart="8.0dip" />
+        <ImageView android:id="@id/ivMicEmoji" android:layout_width="wrap_content" android:layout_height="38.0dip" android:src="@drawable/room_mic_emoji_icon" android:layout_marginStart="8.0dip" />
+        <Chronometer android:textSize="13.0dip" android:textStyle="bold" android:textColor="@color/room_b6b4b4" android:gravity="start|center" android:id="@id/chronometerStaticInputEnter" android:background="@drawable/room_bottom_input" android:padding="8.0dip" android:layout_width="0.0dip" android:layout_height="36.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="@string/room_say_something" android:maxLines="1" android:includeFontPadding="false" android:drawablePadding="4.0dip" android:layout_weight="1.0" android:drawableStart="@drawable/icon_edit_text" android:textDirection="anyRtl" android:textAlignment="viewStart" android:layout_marginStart="12.0dip" />
+        <ImageView android:id="@id/ivProp" android:layout_width="wrap_content" android:layout_height="38.0dip" android:src="@drawable/room_prop_icon" android:layout_marginStart="8.0dip" />
+        <FrameLayout android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginBottom="3.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip">
+            <com.yalla.games.common.view.svga.AutoPageSVGAView android:id="@id/ivGift" android:layout_width="45.0dip" android:layout_height="45.0dip" app:play_on_attach="true" app:source="room_gift.svga" />
+            <ImageView android:layout_gravity="bottom|center" android:id="@id/ivGiftPointNew" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_gift_point_new" />
+        </FrameLayout>
+    </LinearLayout>
 </merge>

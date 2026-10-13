@@ -1,13 +1,15 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <FrameLayout android:layout_gravity="0x00800003" android:id="@7F0A04CA" android:background="@7F080F97" android:layout_width="164.000000dip" android:layout_height="58.000000dip" android:layout_marginTop="2.000000dip" android:layout_marginStart="2.500000dip">
-    <FrameLayout android:id="@7F0A04B5" android:layout_width="-1" android:layout_height="-1">
-      <ImageView android:layout_gravity="0x00800003" android:id="@7F0A0A31" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginStart="15.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:ellipsize="3" android:gravity="0x00800013" android:id="@7F0A02AE" android:layout_width="98.000000dip" android:layout_height="48.000000dip" android:layout_marginTop="5.000000dip" android:lines="2" android:layout_marginStart="60.000000dip" app:stroke_color="#FF117A5B" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:layout_gravity="start" android:id="@id/fl_privilege_item" android:background="@drawable/royal_privi_item_pri_bg" android:layout_width="164.0dip" android:layout_height="58.0dip" android:layout_marginTop="2.0dip" android:layout_marginStart="2.5dip">
+        <FrameLayout android:id="@id/fl_ori_pri" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:layout_gravity="start" android:id="@id/iv_privilege" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="10.0dip" android:layout_marginStart="15.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="start|center" android:id="@id/ctv_name" android:layout_width="98.0dip" android:layout_height="48.0dip" android:layout_marginTop="5.0dip" android:lines="2" android:layout_marginStart="60.0dip" app:stroke_color="#ff117a5b" app:stroke_width="1.0dip" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_super_pri" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:layout_gravity="start" android:id="@id/iv_privilege_super" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="10.0dip" android:layout_marginStart="15.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:ellipsize="end" android:gravity="start|center" android:id="@id/ctv_name_super" android:layout_width="98.0dip" android:layout_height="48.0dip" android:layout_marginTop="5.0dip" android:lines="2" android:layout_marginStart="60.0dip" app:stroke_color="#ff117a5b" app:stroke_width="1.0dip" />
+        </FrameLayout>
     </FrameLayout>
-    <FrameLayout android:id="@7F0A051D" android:visibility="1" android:layout_width="-1" android:layout_height="-1">
-      <ImageView android:layout_gravity="0x00800003" android:id="@7F0A0A34" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginStart="15.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textStyle="0x00000001" android:textColor="@android:0106000B" android:ellipsize="3" android:gravity="0x00800013" android:id="@7F0A02AF" android:layout_width="98.000000dip" android:layout_height="48.000000dip" android:layout_marginTop="5.000000dip" android:lines="2" android:layout_marginStart="60.000000dip" app:stroke_color="#FF117A5B" app:stroke_width="1.000000dip"/>
-    </FrameLayout>
-  </FrameLayout>
-  <ImageView android:layout_gravity="0x00800035" android:id="@7F0A09F2" android:visibility="2" android:layout_width="28.000000dip" android:layout_height="15.000000dip" android:layout_marginTop="1.000000dip" android:src="@7F080F96"/>
+    <ImageView android:layout_gravity="end|center|top" android:id="@id/iv_new_tag" android:visibility="gone" android:layout_width="28.0dip" android:layout_height="15.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/royal_pri_item_tag_new" />
 </FrameLayout>

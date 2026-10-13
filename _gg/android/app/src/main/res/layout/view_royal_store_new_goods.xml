@@ -1,13 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="360.000000dip" android:layout_height="-1">
-  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip">
-    <FrameLayout android:id="@7F0A046C" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
-      <include layout="@7F0D0286"/>
-    </FrameLayout>
-    <FrameLayout android:id="@7F0A046D" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
-      <include layout="@7F0D0286"/>
-    </FrameLayout>
-    <FrameLayout android:id="@7F0A046E" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
-      <include layout="@7F0D0286"/>
-    </FrameLayout>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="360.0dip" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip">
+        <FrameLayout android:id="@id/fl_goods_1" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <include layout="@layout/item_royal_store_new_goods_item_half" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_goods_2" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <include layout="@layout/item_royal_store_new_goods_item_half" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_goods_3" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <include layout="@layout/item_royal_store_new_goods_item_half" />
+        </FrameLayout>
+    </LinearLayout>
 </FrameLayout>

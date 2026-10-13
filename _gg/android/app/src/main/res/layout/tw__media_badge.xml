@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-  <ImageView android:id="@7F0A1774" style="@7F120468"/>
-  <TextView android:id="@7F0A1785" style="@7F120469"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/tw__gif_badge" style="@style/tw__Badge" />
+    <TextView android:id="@id/tw__video_duration" style="@style/tw__Badge.VideoDuration" />
 </merge>

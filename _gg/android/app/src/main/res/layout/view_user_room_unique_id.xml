@@ -1,12 +1,14 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.shop.uniqueid.view.MyUniqueIdView android:layout_gravity="0x00000001" android:id="@7F0A0DE9" android:layout_width="-2" android:layout_height="57.000000dip" android:layout_marginTop="13.000000dip"/>
-  <FrameLayout android:id="@7F0A0439" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="12.000000dip">
-    <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF1CB988" android:gravity="0x00000011" android:layout_gravity="0x00000051" android:id="@7F0A1707" android:visibility="2" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginBottom="30.000000dip" android:text="@7F111145"/>
-  </FrameLayout>
-  <androidx.constraintlayout.widget.ConstraintLayout android:id="@7F0A1835" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
-    <ImageView android:id="@7F0A08F1" android:layout_width="121.000000dip" android:layout_height="121.000000dip" android:layout_marginTop="128.000000dip" android:src="@7F0811EA" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF75CFB0" android:gravity="0x00000011" android:id="@7F0A14F1" android:layout_width="270.000000dip" android:layout_height="-2" android:layout_marginTop="30.000000dip" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A08F1"/>
-    <com.yalla.game.base.view.StrokeButton android:gravity="0x00000011" android:id="@7F0A013A" android:background="@7F080301" android:layout_width="144.000000dip" android:layout_height="47.000000dip" android:layout_marginTop="50.000000dip" android:text="@7F1110C8" app:layout_constraintEnd_toEndOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toBottomOf="@7F0A14F1" style="@7F120191"/>
-  </androidx.constraintlayout.widget.ConstraintLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.shop.uniqueid.view.MyUniqueIdView android:layout_gravity="center_horizontal" android:id="@id/my_uniqueid_View" android:layout_width="wrap_content" android:layout_height="57.0dip" android:layout_marginTop="13.0dip" />
+    <FrameLayout android:id="@id/fl_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="12.0dip">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff1cb988" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/tv_tips" android:visibility="gone" android:layout_width="270.0dip" android:layout_height="wrap_content" android:layout_marginBottom="30.0dip" android:text="@string/G_1393_84" />
+    </FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/view_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ImageView android:id="@id/iv_empty" android:layout_width="121.0dip" android:layout_height="121.0dip" android:layout_marginTop="128.0dip" android:src="@drawable/tips_no_data" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#ff75cfb0" android:gravity="center" android:id="@id/tv_des" android:layout_width="270.0dip" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/iv_empty" />
+        <com.yalla.game.base.view.StrokeButton android:gravity="center" android:id="@id/btn_go" android:background="@drawable/bn_yes_big" android:layout_width="144.0dip" android:layout_height="47.0dip" android:layout_marginTop="50.0dip" android:text="@string/G_1393_116" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/tv_des" style="@style/StrokeTextStyle_Yes" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

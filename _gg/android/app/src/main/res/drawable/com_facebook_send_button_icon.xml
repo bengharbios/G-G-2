@@ -1,4 +1,6 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_focused="true" android:state_enabled="true" android:drawable="@7F080484"/>
-  <item android:drawable="@7F080485"/>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:state_enabled="true" android:drawable="@drawable/com_facebook_button_send_icon_blue" />
+    <item android:drawable="@drawable/com_facebook_button_send_icon_white" />
 </selector>

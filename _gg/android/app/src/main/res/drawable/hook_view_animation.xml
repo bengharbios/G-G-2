@@ -1,8 +1,10 @@
-<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
-  <item android:duration="200" android:drawable="@7F080B44"/>
-  <item android:duration="200" android:drawable="@7F080B45"/>
-  <item android:duration="200" android:drawable="@7F080B46"/>
-  <item android:duration="200" android:drawable="@7F080B47"/>
-  <item android:duration="200" android:drawable="@7F080B48"/>
-  <item android:duration="200" android:drawable="@7F080B49"/>
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list android:oneshot="false"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_01" />
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_02" />
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_03" />
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_04" />
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_05" />
+    <item android:duration="200" android:drawable="@drawable/room_ic_hook_animation_06" />
 </animation-list>

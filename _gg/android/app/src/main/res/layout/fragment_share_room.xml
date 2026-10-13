@@ -1,9 +1,11 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A0F6C" android:background="@7F060036" android:layout_width="-1" android:layout_height="-1">
-  <RelativeLayout android:id="@7F0A0F1C" android:layout_width="-1" android:layout_height="600.000000dip" android:layout_alignParentBottom="true">
-    <RelativeLayout android:id="@7F0A0FBE" android:background="@7F080113" android:clickable="true" android:layout_width="-1" android:layout_height="43.000000dip" app:layout_constraintStart_toStartOf="0" app:layout_constraintTop_toTopOf="0">
-      <com.yalla.games.common.view.CustomTextView android:textSize="17.000000sp" android:textColor="#FF467BB6" android:layout_width="-2" android:layout_height="-2" android:text="@7F110F9B" android:layout_centerInParent="true"/>
-      <ImageView android:id="@7F0A0861" android:paddingTop="10.000000dip" android:paddingBottom="10.000000dip" android:layout_width="42.000000dip" android:layout_height="-1" android:src="@7F080742" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rl_main" android:background="@color/black_80" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/rl_content" android:layout_width="fill_parent" android:layout_height="600.0dip" android:layout_alignParentBottom="true">
+        <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_bottom_sheet_title" android:clickable="true" android:layout_width="fill_parent" android:layout_height="43.0dip" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+            <com.yalla.games.common.view.CustomTextView android:textSize="17.0sp" android:textColor="#ff467bb6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1390_212" android:layout_centerInParent="true" />
+            <ImageView android:id="@id/iv_close" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="42.0dip" android:layout_height="fill_parent" android:src="@drawable/icon_x_bottom_sheet" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+        <com.yalla.games.friends.view.ViewRoomShare android:id="@id/view_room_share" android:background="@drawable/bg_bottom_sheet" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/rl_title" />
     </RelativeLayout>
-    <com.yalla.games.friends.view.ViewRoomShare android:id="@7F0A1872" android:background="@7F080111" android:clickable="true" android:layout_width="-1" android:layout_height="-1" android:layout_below="@7F0A0FBE"/>
-  </RelativeLayout>
 </RelativeLayout>

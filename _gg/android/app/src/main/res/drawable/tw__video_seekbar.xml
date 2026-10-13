@@ -1,9 +1,11 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@android:01020000" android:drawable="@7F081255"/>
-  <item android:id="@android:0102000F">
-    <scale android:drawable="@7F081257" android:scaleWidth="100%"/>
-  </item>
-  <item android:id="@android:0102000D">
-    <scale android:drawable="@7F081256" android:scaleWidth="100%"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background" android:drawable="@drawable/tw__ic_seekbar_bg" />
+    <item android:id="@android:id/secondaryProgress">
+        <scale android:drawable="@drawable/tw__ic_seekbar_secondary_bg" android:scaleWidth="100%" />
+    </item>
+    <item android:id="@android:id/progress">
+        <scale android:drawable="@drawable/tw__ic_seekbar_progress_bg" android:scaleWidth="100%" />
+    </item>
 </layer-list>

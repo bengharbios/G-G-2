@@ -1,14 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="0.000000dip">
-  <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2">
-    <ViewStub android:id="@7F0A18D1" android:background="@7F060544" android:layout="@7F0D043A" android:layout_width="-1" android:layout_height="-2"/>
-    <ViewStub android:id="@7F0A18D3" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D043E" android:layout_width="-1" android:layout_height="-2"/>
-  </FrameLayout>
-  <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="-2">
-    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A036A" android:layout_width="-1" android:layout_height="245.000000dip" android:layout_marginTop="35.000000dip"/>
-    <LinearLayout android:orientation="1" android:clipChildren="false" android:clipToPadding="false" android:layout_width="-1" android:layout_height="180.000000dip">
-      <ViewStub android:id="@7F0A18CC" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D043B" android:layout_width="-2" android:layout_height="-2" android:minHeight="50.000000dip"/>
-      <ViewStub android:id="@7F0A18CD" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D04F9" android:layout_width="-1" android:layout_height="-2"/>
-      <ViewStub android:id="@7F0A18CE" android:clipChildren="false" android:clipToPadding="false" android:layout="@7F0D04F9" android:layout_width="-1" android:layout_height="-2"/>
-    </LinearLayout>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ViewStub android:id="@id/vsNoticeBoard" android:background="@color/white" android:layout="@layout/room_include_room_body_float_item1" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <ViewStub android:id="@id/vsTopMessage" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_include_room_body_top_msg_item" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </FrameLayout>
+    <FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/enterCarSvga" android:layout_width="fill_parent" android:layout_height="245.0dip" android:layout_marginTop="35.0dip" />
+        <LinearLayout android:orientation="vertical" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="180.0dip">
+            <ViewStub android:id="@id/vsEnterRunaway" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_include_room_body_float_item2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="50.0dip" />
+            <ViewStub android:id="@id/vsGiftAnim" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_layout_gift_run_away" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <ViewStub android:id="@id/vsGiftAnimSecond" android:clipChildren="false" android:clipToPadding="false" android:layout="@layout/room_layout_gift_run_away" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

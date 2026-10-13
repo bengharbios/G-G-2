@@ -1,7 +1,9 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F0801D2" android:layout_width="311.000000dip" android:layout_height="153.000000dip">
-  <LinearLayout android:orientation="0" android:id="@7F0A0D38" android:background="@7F0801D3" android:layout_width="140.000000dip" android:layout_height="29.000000dip" android:layout_margin="10.000000dip">
-    <com.yalla.games.common.view.CircleImageView android:id="@7F0A05E3" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:layout_marginTop="3.000000dip" android:layout_marginStart="2.000000dip" app:roundRectRadius="11.500001dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00800013" android:id="@7F0A15FA" android:layout_width="-1" android:layout_height="-1" android:maxLines="1" android:layout_marginStart="3.000000dip" android:layout_marginEnd="10.000000dip"/>
-  </LinearLayout>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="5.000000dip" android:layout_marginBottom="5.000000dip" android:layout_below="@7F0A0D38" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:background="@drawable/bg_item_same_buy" android:layout_width="311.0dip" android:layout_height="153.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="horizontal" android:id="@id/ll_title" android:background="@drawable/bg_item_same_buy_blue" android:layout_width="140.0dip" android:layout_height="29.0dip" android:layout_margin="10.0dip">
+        <com.yalla.games.common.view.CircleImageView android:id="@id/head_view" android:layout_width="23.0dip" android:layout_height="23.0dip" android:layout_marginTop="3.0dip" android:layout_marginStart="2.0dip" app:roundRectRadius="11.5dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="start|center" android:id="@id/tv_name" android:layout_width="fill_parent" android:layout_height="fill_parent" android:maxLines="1" android:layout_marginStart="3.0dip" android:layout_marginEnd="10.0dip" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:layout_below="@id/ll_title" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
 </merge>

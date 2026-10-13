@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:clipChildren="false" android:layout_width="45.000000dip" android:layout_height="-2">
-  <com.yalla.games.common.view.AutoPageGifImageView android:layout_gravity="0x00000001" android:id="@7F0A0613" android:layout_width="45.000000dip" android:layout_height="-2" android:src="@7F080641" android:scaleType="3" android:adjustViewBounds="true" android:maxHeight="60.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="9.000000sp" android:textStyle="0x00000001" android:ellipsize="3" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A1273" android:layout_width="45.000000dip" android:layout_height="-2" android:text="@7F110157" android:lines="1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:clipChildren="false" android:layout_width="45.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.AutoPageGifImageView android:layout_gravity="center_horizontal" android:id="@id/img" android:layout_width="45.0dip" android:layout_height="wrap_content" android:src="@drawable/icn_roompass_rukou" android:scaleType="fitCenter" android:adjustViewBounds="true" android:maxHeight="60.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textStyle="bold" android:ellipsize="end" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/textView" android:layout_width="45.0dip" android:layout_height="wrap_content" android:text="@string/C_1370_001" android:lines="1" />
 </merge>

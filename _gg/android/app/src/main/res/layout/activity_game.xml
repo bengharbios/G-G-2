@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@7F0A03B4" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
-  <AbsoluteLayout android:id="@7F0A0562" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/ff_game" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <AbsoluteLayout android:id="@id/game_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </FrameLayout>

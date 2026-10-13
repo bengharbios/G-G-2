@@ -1,4 +1,6 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_pressed="true" android:drawable="@7F081260"/>
-  <item android:drawable="@7F08125F"/>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/tw__ic_video_replay_pressed" />
+    <item android:drawable="@drawable/tw__ic_video_replay" />
 </selector>

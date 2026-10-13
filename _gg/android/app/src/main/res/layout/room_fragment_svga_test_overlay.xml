@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A03FB" android:background="#80000000" android:layout_width="-1" android:layout_height="-1">
-  <TextView android:textSize="18.000000dip" android:textColor="#FFFFFFFF" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:text="SVGA is temporarily suspended for testing&#10;Click here to close and resum"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/flSvgaTestContainer" android:background="#80000000" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="18.0dip" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SVGA is temporarily suspended for testing\nClick here to close and resum" />
 </FrameLayout>

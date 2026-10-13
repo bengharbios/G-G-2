@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.CircleImageView android:layout_gravity="0x00000011" android:id="@7F0A092E" android:layout_width="-1" android:layout_height="-1" android:layout_margin="6.000000dip" android:scaleType="6"/>
-  <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:layout_gravity="0x00000011" android:id="@7F0A08F8" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CircleImageView android:layout_gravity="center" android:id="@id/iv_h" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="6.0dip" android:scaleType="centerCrop" />
+    <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:layout_gravity="center" android:id="@id/iv_f" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </merge>

@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0A03B7" android:background="@7F080602" android:visibility="2" android:layout_width="223.000000dip" android:layout_height="-2">
-  <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FF626262" android:gravity="0x00800013" android:layout_gravity="0x00000050" android:id="@7F0A14C8" android:layout_width="-1" android:layout_height="80.000000dip" android:layout_marginLeft="13.000000dip" android:layout_marginRight="13.000000dip" android:layout_marginBottom="5.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:gravity="center" android:layout_gravity="center" android:id="@id/ff_guide_description" android:background="@drawable/heade_guide_bg" android:visibility="gone" android:layout_width="223.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#ff626262" android:gravity="start|center" android:layout_gravity="bottom" android:id="@id/tv_content" android:layout_width="fill_parent" android:layout_height="80.0dip" android:layout_marginLeft="13.0dip" android:layout_marginRight="13.0dip" android:layout_marginBottom="5.0dip" />
 </FrameLayout>

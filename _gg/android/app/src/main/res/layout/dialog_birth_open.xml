@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:id="@7F0A1213" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:id="@7F0A14F1" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="120.000000dip" android:text="@7F110D9F" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_main" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="@color/white" android:id="@id/tv_des" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="120.0dip" android:text="@string/G_1370_026" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
 </RelativeLayout>

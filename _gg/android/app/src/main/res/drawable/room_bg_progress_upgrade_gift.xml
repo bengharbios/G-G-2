@@ -1,13 +1,15 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@android:01020000" android:drawable="@7F080219"/>
-  <item android:id="@android:0102000D">
-    <clip>
-      <nine-patch android:src="@7F080F3D"/>
-    </clip>
-  </item>
-  <item android:id="@android:0102000F">
-    <clip>
-      <nine-patch android:src="@7F080F3D"/>
-    </clip>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background" android:drawable="@drawable/bg_progress_upgrade_shape" />
+    <item android:id="@android:id/progress">
+        <clip>
+            <nine-patch android:src="@drawable/room_upgrade_gift_progress" />
+        </clip>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <nine-patch android:src="@drawable/room_upgrade_gift_progress" />
+        </clip>
+    </item>
 </layer-list>

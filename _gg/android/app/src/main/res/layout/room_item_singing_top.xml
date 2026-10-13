@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <com.yalla.ludochat.view.SingingTopView android:layout_gravity="0x00000011" android:id="@7F0A10D8" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="6.000000dip" android:layout_marginEnd="6.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.SingingTopView android:layout_gravity="center" android:id="@id/singingTopView" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="6.0dip" android:layout_marginEnd="6.0dip" />
 </FrameLayout>

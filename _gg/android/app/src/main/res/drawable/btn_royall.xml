@@ -1,4 +1,6 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_pressed="true" android:drawable="@7F080388"/>
-  <item android:drawable="@7F080387"/>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/btn_royall_yes_press" />
+    <item android:drawable="@drawable/btn_royall_yes" />
 </selector>

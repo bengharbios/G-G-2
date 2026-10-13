@@ -1,7 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.events.dialog.online.RewardWaitingView android:id="@7F0A18E3" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
-  <com.yalla.games.events.dialog.online.RewardReadyView android:id="@7F0A0EB5" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
-  <com.yalla.games.events.dialog.online.RewardOpenView android:id="@7F0A0E2B" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
-  <com.yalla.games.events.dialog.online.RewardRaiseOpenView android:id="@7F0A0E2A" android:visibility="1" android:layout_width="-1" android:layout_height="-1" android:layout_centerInParent="true"/>
-  <ImageView android:id="@7F0A0861" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="34.000000dip" android:src="@7F08044D" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.events.dialog.online.RewardWaitingView android:id="@id/waiting_view" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <com.yalla.games.events.dialog.online.RewardReadyView android:id="@id/ready_view" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <com.yalla.games.events.dialog.online.RewardOpenView android:id="@id/open_view" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <com.yalla.games.events.dialog.online.RewardRaiseOpenView android:id="@id/open_raise_view" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="34.0dip" android:src="@drawable/close" android:layout_alignParentEnd="true" />
 </RelativeLayout>

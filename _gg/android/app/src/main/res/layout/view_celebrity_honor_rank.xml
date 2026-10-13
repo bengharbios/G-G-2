@@ -1,24 +1,26 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <RelativeLayout android:id="@7F0A0FC0" android:background="@7F080140" android:layout_width="-1" android:layout_height="-2">
-    <FrameLayout android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="9.000000dip" android:layout_centerHorizontal="true">
-      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0A0D34" android:background="@7F080139" android:layout_width="220.000000dip" android:layout_height="21.000000dip" android:layout_marginStart="12.000000dip">
-        <com.yalla.games.common.view.CustomTextView android:textSize="13.000000sp" android:textColor="#FFF7C142" android:gravity="0x00000011" android:id="@7F0A15EA" android:layout_width="80.000000dip" android:layout_height="-2" android:text="Year" android:layout_marginStart="20.000000dip"/>
-        <View android:background="@7F0803D6" android:layout_width="1.000000dip" android:layout_height="13.000000dip" android:layout_marginEnd="5.000000dip"/>
-        <ImageView android:id="@7F0A0886" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0803D4" android:layout_marginEnd="5.000000dip"/>
-        <com.yalla.games.common.view.CustomTextView android:textSize="10.000000sp" android:textColor="#A0FFFFFF" android:id="@7F0A14D9" android:layout_width="-2" android:layout_height="-2"/>
-      </LinearLayout>
-      <ImageView android:id="@7F0A0AFC" android:layout_width="34.000000dip" android:layout_height="34.000000dip" android:layout_marginTop="16777211.000000dip" android:src="@7F0803E8" android:layout_alignTop="@7F0A0D34" android:layout_alignStart="@7F0A0D34"/>
-    </FrameLayout>
-    <RelativeLayout android:id="@7F0A0FC1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="2.000000dip">
-      <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@7F0A0183" android:background="@7F080143" android:layout_width="98.000000dip" android:layout_height="180.000000dip" android:layout_marginTop="57.000000dip" android:layout_marginStart="25.000000dip" android:layout_alignParentStart="true"/>
-      <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@7F0A0182" android:background="@7F080142" android:layout_width="144.000000dip" android:layout_height="219.000000dip" android:layout_marginTop="27.000000dip" android:layout_centerHorizontal="true"/>
-      <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@7F0A0184" android:background="@7F080144" android:layout_width="98.000000dip" android:layout_height="180.000000dip" android:layout_marginTop="57.000000dip" android:layout_marginEnd="25.000000dip" android:layout_alignParentEnd="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/rl_top" android:background="@drawable/bg_celebrity_rank_content_top" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:layout_centerHorizontal="true">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_time" android:background="@drawable/bg_celebrity_count_down_time" android:layout_width="220.0dip" android:layout_height="21.0dip" android:layout_marginStart="12.0dip">
+                <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textColor="#fff7c142" android:gravity="center" android:id="@id/tv_mode" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="Year" android:layout_marginStart="20.0dip" />
+                <View android:background="@drawable/celebrity_divider" android:layout_width="1.0dip" android:layout_height="13.0dip" android:layout_marginEnd="5.0dip" />
+                <ImageView android:id="@id/iv_count_down" android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/celebrity_count_down" android:layout_marginEnd="5.0dip" />
+                <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textColor="#a0ffffff" android:id="@id/tv_count_down_time" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <ImageView android:id="@id/iv_switch" android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_marginTop="-5.0dip" android:src="@drawable/celebrity_honor_rank_switch" android:layout_alignTop="@id/ll_time" android:layout_alignStart="@id/ll_time" />
+        </FrameLayout>
+        <RelativeLayout android:id="@id/rl_top_rank" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
+            <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_2" android:background="@drawable/bg_celebrity_rank_no_2" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginStart="25.0dip" android:layout_alignParentStart="true" />
+            <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_1" android:background="@drawable/bg_celebrity_rank_no_1" android:layout_width="144.0dip" android:layout_height="219.0dip" android:layout_marginTop="27.0dip" android:layout_centerHorizontal="true" />
+            <com.yalla.games.rank.celebrity.honor.view.CelebrityTopRankView android:id="@id/celebrity_no_3" android:background="@drawable/bg_celebrity_rank_no_3" android:layout_width="98.0dip" android:layout_height="180.0dip" android:layout_marginTop="57.0dip" android:layout_marginEnd="25.0dip" android:layout_alignParentEnd="true" />
+        </RelativeLayout>
     </RelativeLayout>
-  </RelativeLayout>
-  <View android:id="@7F0A1852" android:background="@7F080141" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="16777176.000000dip" android:layout_below="@7F0A0FC0"/>
-  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0C4E" android:visibility="2" android:layout_width="-1" android:layout_height="-1" android:layout_alignTop="@7F0A1852">
-    <ImageView android:layout_width="74.000000dip" android:layout_height="74.000000dip" android:src="@7F0803D7"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FFCF6D62" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:text="@7F111351"/>
-  </LinearLayout>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="35.000000dip" android:layout_marginBottom="53.000000dip" android:layout_alignTop="@7F0A1852"/>
+    <View android:id="@id/view_list_bg" android:background="@drawable/bg_celebrity_rank_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-40.0dip" android:layout_below="@id/rl_top" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_alignTop="@id/view_list_bg">
+        <ImageView android:layout_width="74.0dip" android:layout_height="74.0dip" android:src="@drawable/celebrity_empty_icon" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffcf6d62" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/G_1420_36" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="35.0dip" android:layout_marginBottom="53.0dip" android:layout_alignTop="@id/view_list_bg" />
 </merge>

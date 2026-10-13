@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:clipChildren="false" android:clipToPadding="false" android:layout_width="380.000000dip" android:layout_height="-2" android:layout_marginTop="16777168.000000dip" android:layout_marginStart="16777196.000000dip">
-  <View android:background="@7F080FB8" android:layout_width="380.000000dip" android:layout_height="77.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="380.0dip" android:layout_height="wrap_content" android:layout_marginTop="-48.0dip" android:layout_marginStart="-20.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/royal_store_hot_item_bar" android:layout_width="380.0dip" android:layout_height="77.0dip" />
 </FrameLayout>

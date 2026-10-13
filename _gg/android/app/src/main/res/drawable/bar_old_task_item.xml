@@ -1,11 +1,13 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@android:01020000">
-    <shape>
-      <solid android:color="#50000000"/>
-      <corners android:radius="2.000000dip"/>
-    </shape>
-  </item>
-  <item android:id="@android:0102000D" android:left="1.000000dip" android:top="1.000000dip" android:right="1.000000dip" android:bottom="1.000000dip">
-    <scale android:drawable="@7F0800C0" android:scaleWidth="100%"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#50000000" />
+            <corners android:radius="2.0dip" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress" android:left="1.0dip" android:top="1.0dip" android:right="1.0dip" android:bottom="1.0dip">
+        <scale android:drawable="@drawable/bar_process" android:scaleWidth="100%" />
+    </item>
 </layer-list>

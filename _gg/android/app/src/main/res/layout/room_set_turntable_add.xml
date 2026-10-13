@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <ImageView android:layout_gravity="0x00000001" android:id="@7F0A064D" android:layout_width="40.000000dip" android:layout_height="40.000000dip" android:src="@7F080F10"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_horizontal" android:id="@id/ivAdd" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/room_turntable_add_icon" />
 </FrameLayout>

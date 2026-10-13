@@ -1,12 +1,14 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item>
-    <shape android:shape="0">
-      <stroke android:width="1.000000dip" android:color="#FFBEDBD3"/>
-      <solid android:color="#FFDEF2EC"/>
-      <corners android:radius="11.000000dip"/>
-    </shape>
-  </item>
-  <item>
-    <nine-patch android:src="@7F080B35" android:dither="true"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="1.0dip" android:color="#ffbedbd3" />
+            <solid android:color="#ffdef2ec" />
+            <corners android:radius="11.0dip" />
+        </shape>
+    </item>
+    <item>
+        <nine-patch android:src="@drawable/room_ic_enter_room_setting_selected" android:dither="true" />
+    </item>
 </layer-list>

@@ -1,20 +1,22 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_focused="false" android:state_enabled="false">
-    <shape android:shape="0">
-      <corners android:radius="@7F07005B"/>
-      <solid android:color="@7F0600CA"/>
-    </shape>
-  </item>
-  <item android:state_pressed="true">
-    <shape android:shape="0">
-      <corners android:radius="@7F07005B"/>
-      <solid android:color="@7F0600CB"/>
-    </shape>
-  </item>
-  <item>
-    <shape android:shape="0">
-      <corners android:radius="@7F07005B"/>
-      <solid android:color="@7F0600C9"/>
-    </shape>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="false" android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/com_facebook_button_corner_radius" />
+            <solid android:color="@color/com_facebook_button_background_color_disabled" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/com_facebook_button_corner_radius" />
+            <solid android:color="@color/com_facebook_button_background_color_pressed" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/com_facebook_button_corner_radius" />
+            <solid android:color="@color/com_facebook_button_background_color" />
+        </shape>
+    </item>
 </selector>

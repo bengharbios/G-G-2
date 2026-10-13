@@ -1,3 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EAC" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="5.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="5.0dip" />
 </merge>

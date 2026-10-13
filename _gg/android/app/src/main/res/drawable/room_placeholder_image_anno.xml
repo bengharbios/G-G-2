@@ -1,12 +1,14 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item>
-    <shape android:shape="0">
-      <solid android:color="@7F0603F3"/>
-      <corners android:radius="5.000000dip"/>
-      <stroke android:width="1.000000dip" android:color="#4DFFFFFF"/>
-    </shape>
-  </item>
-  <item android:gravity="0x00000011">
-    <bitmap android:src="@7F080E06" android:height="47.000000dip" android:width="47.000000dip"/>
-  </item>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/room_color_660F1D23" />
+            <corners android:radius="5.0dip" />
+            <stroke android:width="1.0dip" android:color="#4dffffff" />
+        </shape>
+    </item>
+    <item android:gravity="center">
+        <bitmap android:src="@drawable/room_placeholder_chat_anno_image" android:height="47.0dip" android:width="47.0dip" />
+    </item>
 </layer-list>

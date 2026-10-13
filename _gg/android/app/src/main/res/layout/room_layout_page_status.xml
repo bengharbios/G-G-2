@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <ViewStub android:layout_gravity="0x00000011" android:id="@7F0A18CB" android:layout="@7F0D050C" android:layout_width="-1" android:layout_height="-1"/>
-  <ViewStub android:layout_gravity="0x00000011" android:id="@7F0A18CF" android:layout="@7F0D03DB" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ViewStub android:layout_gravity="center" android:id="@id/vsEmptyOrError" android:layout="@layout/room_layout_page_empty_or_error" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ViewStub android:layout_gravity="center" android:id="@id/vsLoading" android:layout="@layout/room_dialog_room_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </merge>

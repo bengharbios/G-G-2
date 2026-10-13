@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="-2">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="32.000000dip" android:layout_marginTop="16777206.000000dip" android:scaleType="1" app:play_on_attach="true" app:source="star_light.svga"/>
-  <ImageView android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="50.000000dip" android:layout_marginTop="11.000000dip" android:layout_marginBottom="7.000000dip" android:src="@7F080DE8" android:adjustViewBounds="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginTop="-10.0dip" android:scaleType="fitXY" app:play_on_attach="true" app:source="star_light.svga" />
+    <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginTop="11.0dip" android:layout_marginBottom="7.0dip" android:src="@drawable/room_pin_on_top_icon" android:adjustViewBounds="true" />
 </FrameLayout>

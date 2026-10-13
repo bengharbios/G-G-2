@@ -1,15 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_gravity="0x00000001" android:background="@7F0801C4" android:layout_width="330.000000dip" android:layout_height="62.000000dip" android:layout_marginBottom="10.000000dip">
-  <LinearLayout android:orientation="0" android:id="@7F0A0C62" android:layout_width="180.000000dip" android:layout_height="-2"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF88A89F" android:id="@7F0A16FB" android:layout_width="-2" android:layout_height="-2" android:layout_below="@7F0A0C62" android:layout_marginStart="6.000000dip" android:layout_alignStart="@7F0A0C62"/>
-  <View android:id="@7F0A1823" android:background="#FF88A89F" android:layout_width="1.000000dip" android:layout_height="12.000000dip" android:layout_marginTop="2.000000dip" android:layout_below="@7F0A0C62" android:layout_alignTop="@7F0A16FB" android:layout_marginStart="6.000000dip" android:layout_toEndOf="@7F0A16FB"/>
-  <ImageView android:id="@7F0A0B4A" android:layout_width="11.000000dip" android:layout_height="11.000000dip" android:layout_marginTop="2.000000dip" android:layout_below="@7F0A0C62" android:layout_marginStart="6.000000dip" android:layout_toEndOf="@7F0A1823"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF88A89F" android:id="@7F0A15FA" android:layout_width="-2" android:layout_height="-2" android:layout_below="@7F0A0C62" android:layout_marginStart="6.000000dip" android:layout_toEndOf="@7F0A0B4A"/>
-  <ImageView android:id="@7F0A07FB" android:layout_width="25.000000dip" android:layout_height="16.000000dip" android:src="@7F080095" android:layout_centerVertical="true" android:layout_marginStart="20.000000dip" android:layout_toEndOf="@7F0A0C62"/>
-  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:layout_width="50.000000dip" android:layout_height="-2" android:layout_centerVertical="true" android:layout_marginEnd="10.000000dip" android:layout_alignParentEnd="true">
-    <FrameLayout android:layout_width="43.000000dip" android:layout_height="30.000000dip">
-      <ImageView android:layout_gravity="0x00000001" android:id="@7F0A08A3" android:layout_width="43.000000dip" android:layout_height="30.000000dip"/>
-      <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:layout_gravity="0x00800055" android:id="@7F0A1538" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="5.000000dip" app:stroke_color="#FF428371" app:stroke_width="1.000000dip"/>
-    </FrameLayout>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="#FF428371" android:ellipsize="3" android:id="@7F0A14FA" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="2.000000dip" android:maxLines="1" android:includeFontPadding="false"/>
-  </LinearLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:background="@drawable/bg_item_exchange_history" android:layout_width="330.0dip" android:layout_height="62.0dip" android:layout_marginBottom="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="horizontal" android:id="@id/ll_fragments" android:layout_width="180.0dip" android:layout_height="wrap_content" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff88a89f" android:id="@id/tv_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ll_fragments" android:layout_marginStart="6.0dip" android:layout_alignStart="@id/ll_fragments" />
+    <View android:id="@id/view_divider" android:background="#ff88a89f" android:layout_width="1.0dip" android:layout_height="12.0dip" android:layout_marginTop="2.0dip" android:layout_below="@id/ll_fragments" android:layout_alignTop="@id/tv_time" android:layout_marginStart="6.0dip" android:layout_toEndOf="@id/tv_time" />
+    <ImageView android:id="@id/iv_type" android:layout_width="11.0dip" android:layout_height="11.0dip" android:layout_marginTop="2.0dip" android:layout_below="@id/ll_fragments" android:layout_marginStart="6.0dip" android:layout_toEndOf="@id/view_divider" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff88a89f" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ll_fragments" android:layout_marginStart="6.0dip" android:layout_toEndOf="@id/iv_type" />
+    <ImageView android:id="@id/iv_arrow" android:layout_width="25.0dip" android:layout_height="16.0dip" android:src="@drawable/arrow_exchange_history_icon" android:layout_centerVertical="true" android:layout_marginStart="20.0dip" android:layout_toEndOf="@id/ll_fragments" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="50.0dip" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="10.0dip" android:layout_alignParentEnd="true">
+        <FrameLayout android:layout_width="43.0dip" android:layout_height="30.0dip">
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_dest_type" android:layout_width="43.0dip" android:layout_height="30.0dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="@color/white" android:layout_gravity="end|bottom|center" android:id="@id/tv_fragment_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="5.0dip" app:stroke_color="#ff428371" app:stroke_width="1.0dip" />
+        </FrameLayout>
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff428371" android:ellipsize="end" android:id="@id/tv_dest_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxLines="1" android:includeFontPadding="false" />
+    </LinearLayout>
 </RelativeLayout>

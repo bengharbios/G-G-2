@@ -1,12 +1,14 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
-  <FrameLayout android:layout_gravity="0x00000001" android:orientation="1" android:layout_width="130.000000dip" android:layout_height="-2">
-    <FrameLayout android:layout_gravity="0x00000001" android:background="@7F080FDC" android:layout_width="95.000000dip" android:layout_height="95.000000dip">
-      <ImageView android:layout_gravity="0x00000011" android:id="@7F0A0A35" android:layout_width="64.000000dip" android:layout_height="64.000000dip"/>
-      <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A121D" android:visibility="2" android:layout_width="64.000000dip" android:layout_height="64.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="130.0dip" android:layout_height="wrap_content">
+        <FrameLayout android:layout_gravity="center_horizontal" android:background="@drawable/royal_super_privileges_item_bg" android:layout_width="95.0dip" android:layout_height="95.0dip">
+            <ImageView android:layout_gravity="center" android:id="@id/iv_privileges_pic" android:layout_width="64.0dip" android:layout_height="64.0dip" />
+            <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svga_privileges_pic" android:visibility="gone" android:layout_width="64.0dip" android:layout_height="64.0dip" />
+        </FrameLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="130.0dip" android:layout_height="wrap_content" android:layout_marginTop="82.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/ctv_pri_title" android:layout_width="fill_parent" android:layout_height="28.0dip" android:layout_marginBottom="2.0dip" android:lines="2" android:paddingStart="2.0dip" android:paddingEnd="2.0dip" app:autoSizeMaxTextSize="12.0sp" app:autoSizeMinTextSize="1.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+            <com.yalla.game.base.view.StrokeButton android:textSize="14.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/btn_go" android:background="@drawable/bn_no" android:visibility="gone" android:layout_width="69.0dip" android:layout_height="35.0dip" android:text="@string/G_1410_47" android:lines="1" app:autoSizeMaxTextSize="14.0sp" app:autoSizeMinTextSize="2.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" style="@style/StrokeTextStyle_No" />
+        </LinearLayout>
     </FrameLayout>
-    <LinearLayout android:orientation="1" android:layout_width="130.000000dip" android:layout_height="-2" android:layout_marginTop="82.000000dip">
-      <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000011" android:id="@7F0A02C1" android:layout_width="-1" android:layout_height="28.000000dip" android:layout_marginBottom="2.000000dip" android:lines="2" android:paddingStart="2.000000dip" android:paddingEnd="2.000000dip" app:autoSizeMaxTextSize="12.000000sp" app:autoSizeMinTextSize="1.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1"/>
-      <com.yalla.game.base.view.StrokeButton android:textSize="14.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000001" android:id="@7F0A013A" android:background="@7F0802FA" android:visibility="2" android:layout_width="69.000000dip" android:layout_height="35.000000dip" android:text="@7F111299" android:lines="1" app:autoSizeMaxTextSize="14.000000sp" app:autoSizeMinTextSize="2.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1" style="@7F120190"/>
-    </LinearLayout>
-  </FrameLayout>
 </FrameLayout>

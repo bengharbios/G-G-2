@@ -1,11 +1,13 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0A0F1B" android:background="@7F0801A9" android:layout_width="360.000000dip" android:layout_height="-1">
-  <View android:background="@7F081148" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="44.000000dip"/>
-  <com.yalla.games.common.view.TitleWithDiamondView android:id="@7F0A128E" android:layout_width="-1" android:layout_height="53.000000dip"/>
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="37.000000dip" app:play_on_attach="true" app:source="star_light.svga"/>
-  <View android:id="@7F0A188E" android:background="@7F0811EC" android:layout_width="188.000000dip" android:layout_height="49.000000dip" android:layout_marginTop="8.000000dip" android:layout_below="@7F0A128E" android:layout_centerHorizontal="true"/>
-  <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0A0C92" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="25.000000dip" android:layout_below="@7F0A188E">
-    <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08F1" android:layout_width="83.000000dip" android:layout_height="83.000000dip" android:src="@7F0811EA"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF75CFB0" android:layout_gravity="0x00000011" android:id="@7F0A1707" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="@7F110BFD"/>
-  </LinearLayout>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A0EB2" android:layout_width="360.000000dip" android:layout_height="-1" android:layout_marginTop="25.000000dip" android:layout_below="@7F0A188E" android:layout_centerHorizontal="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/rl_container" android:background="@drawable/bg_hall" android:layout_width="360.0dip" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/skin_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="44.0dip" />
+    <com.yalla.games.common.view.TitleWithDiamondView android:id="@id/title_view" android:layout_width="fill_parent" android:layout_height="53.0dip" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginTop="37.0dip" app:play_on_attach="true" app:source="star_light.svga" />
+    <View android:id="@id/view_title" android:background="@drawable/title_face_shop_sticker" android:layout_width="188.0dip" android:layout_height="49.0dip" android:layout_marginTop="8.0dip" android:layout_below="@id/title_view" android:layout_centerHorizontal="true" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_load_data" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="25.0dip" android:layout_below="@id/view_title">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_empty" android:layout_width="83.0dip" android:layout_height="83.0dip" android:src="@drawable/tips_no_data" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff75cfb0" android:layout_gravity="center" android:id="@id/tv_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1340_147" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_shop_list" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_marginTop="25.0dip" android:layout_below="@id/view_title" android:layout_centerHorizontal="true" />
 </RelativeLayout>

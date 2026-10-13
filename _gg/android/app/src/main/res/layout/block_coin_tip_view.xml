@@ -1,4 +1,6 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000011" android:orientation="0" android:background="@7F060036" android:layout_width="-1" android:layout_height="27.000000dip">
-  <ImageView android:layout_width="16.000000dip" android:layout_height="14.000000dip" android:src="@7F0802F7" android:layout_marginEnd="4.000000dip"/>
-  <com.yalla.game.base.view.StrokeTextView android:textSize="11.000000sp" android:textColor="@7F060544" android:layout_width="-2" android:layout_height="-2" android:text="@7F111E7A" android:singleLine="true" app:autoSizeMinTextSize="9.000000sp" app:autoSizeStepGranularity="1.000000sp" app:autoSizeTextType="1" app:strokeAutoSizeMaxTextSize="11.000000sp"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@color/black_80" android:layout_width="fill_parent" android:layout_height="27.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_width="16.0dip" android:layout_height="14.0dip" android:src="@drawable/block_warning_tip" android:layout_marginEnd="4.0dip" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/owed_tip" android:singleLine="true" app:autoSizeMinTextSize="9.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:strokeAutoSizeMaxTextSize="11.0sp" />
 </LinearLayout>

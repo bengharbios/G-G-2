@@ -1,3 +1,5 @@
-<com.yalla.ludochat.view.ScrollableContainer xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A10AC" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1">
-  <androidx.viewpager2.widget.ViewPager2 android:id="@7F0A18BF" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.ludochat.view.ScrollableContainer android:id="@id/scrollableContainer" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/vp_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </com.yalla.ludochat.view.ScrollableContainer>

@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="40.000000dip" android:layout_height="60.000000dip">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A08EF" android:layout_width="31.000000dip" android:layout_height="31.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="40.0dip" android:layout_height="60.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/iv_emoji" android:layout_width="31.0dip" android:layout_height="31.0dip" />
 </FrameLayout>

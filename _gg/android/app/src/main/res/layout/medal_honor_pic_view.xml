@@ -1,5 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="0" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="0x00000011" android:id="@7F0A11CC" android:layout_width="-1" android:layout_height="460.000000dip" app:play_on_attach="true" app:source="light_circle"/>
-  <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="0x00000011" android:id="@7F0A0A14" android:layout_width="215.000000dip" android:layout_height="199.000000dip" app:isUseSmallBadge="false"/>
-  <com.yalla.game.base.view.StrokeTextView android:textSize="49.000000sp" android:layout_gravity="0x00800055" android:id="@7F0A1571" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="140.000000dip" android:layout_marginEnd="100.000000dip" app:end_color="#FFFFFFFF" app:gradient="true" app:gradient_orientation="0" app:start_color="#FFFFDF0F" app:stroke_color="#FF000000" app:stroke_width="1.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svg_bg_light" android:layout_width="fill_parent" android:layout_height="460.0dip" app:play_on_attach="true" app:source="light_circle" />
+    <com.yalla.games.common.view.BadgeDynamicView android:layout_gravity="center" android:id="@id/iv_pic" android:layout_width="215.0dip" android:layout_height="199.0dip" app:isUseSmallBadge="false" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="49.0sp" android:layout_gravity="end|bottom|center" android:id="@id/tv_honor_value" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="140.0dip" android:layout_marginEnd="100.0dip" app:end_color="#ffffffff" app:gradient="true" app:gradient_orientation="vertical" app:start_color="#ffffdf0f" app:stroke_color="#ff000000" app:stroke_width="1.0dip" />
 </FrameLayout>

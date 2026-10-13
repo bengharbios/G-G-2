@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <ImageView android:layout_gravity="0x00000011" android:id="@7F0A09A3" android:layout_width="23.000000dip" android:layout_height="23.000000dip" android:src="@7F0807C6" android:stateListAnimator="@7F01003A"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:layout_width="23.0dip" android:layout_height="23.0dip" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
 </FrameLayout>

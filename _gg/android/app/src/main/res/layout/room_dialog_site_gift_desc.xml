@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:clipChildren="false" android:layout_width="-2" android:layout_height="-2" android:maxWidth="200.000000dip">
-  <ImageView android:id="@7F0A0ADB" android:layout_width="11.000000dip" android:layout_height="11.000000dip" android:src="@7F080B01" android:layout_below="@7F0A16C8" android:layout_marginStart="10.000000dip"/>
-  <com.yalla.games.common.view.CustomTextView android:textSize="11.000000sp" android:textColor="@7F060544" android:ellipsize="3" android:gravity="0x00000010" android:id="@7F0A16C8" android:background="@7F080280" android:layout_width="-2" android:layout_height="-2" android:minWidth="30.000000dip" android:text="@7F11214F" android:lines="3" android:paddingStart="4.000000dip" android:paddingEnd="4.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="200.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/iv_site_gift_arrow" android:layout_width="11.0dip" android:layout_height="11.0dip" android:src="@drawable/room_gift_label_bubble_arrow_bg" android:layout_below="@id/tv_site_gift_desc" android:layout_marginStart="10.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tv_site_gift_desc" android:background="@drawable/bg_site_gift_desc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="30.0dip" android:text="@string/room_show_all_room" android:lines="3" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" />
 </RelativeLayout>

@@ -1,7 +1,9 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0A049A" android:layout_width="-1" android:layout_height="-1" android:keepScreenOn="true">
-  <AbsoluteLayout android:id="@7F0A0569" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.battle.match.view.FourMatchView android:id="@7F0A0566" android:layout_width="-1" android:layout_height="-1"/>
-  <com.yalla.games.battle.match.view.TwoMatchView android:id="@7F0A0565" android:layout_width="-1" android:layout_height="-1"/>
-  <ViewStub android:id="@7F0A18D4" android:visibility="2" android:layout="@7F0D0055" android:layout_width="-1" android:layout_height="-1"/>
-  <ImageView android:layout_gravity="0x00800005" android:id="@7F0A0840" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:src="@7F08044D"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <AbsoluteLayout android:id="@id/game_rl2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.battle.match.view.FourMatchView android:id="@id/game_match_4" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.battle.match.view.TwoMatchView android:id="@id/game_match_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ViewStub android:id="@id/vs_cash_match" android:visibility="gone" android:layout="@layout/cash_game_marching_stub" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:layout_gravity="end" android:id="@id/iv_cha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" />
 </FrameLayout>

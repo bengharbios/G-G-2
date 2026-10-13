@@ -1,4 +1,6 @@
-<view xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="-2" class="com.google.android.material.snackbar.SnackbarContentLayout">
-  <TextView android:layout_gravity="0x00800013" android:id="@7F0A10E4" android:layout_width="-2" android:layout_height="-2" android:layout_weight="1.000000" style="?7F040439"/>
-  <Button android:layout_gravity="0x00800015" android:id="@7F0A10E3" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:minWidth="48.000000dip" style="?7F040437"/>
+<?xml version="1.0" encoding="utf-8"?>
+<view android:layout_gravity="bottom" android:layout_width="fill_parent" android:layout_height="wrap_content" class="com.google.android.material.snackbar.SnackbarContentLayout"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:layout_gravity="start|center" android:id="@id/snackbar_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" style="?snackbarTextViewStyle" />
+    <Button android:layout_gravity="end|center" android:id="@id/snackbar_action" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="48.0dip" style="?snackbarButtonStyle" />
 </view>

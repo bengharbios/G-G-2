@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <WebView android:id="@7F0A1787" android:visibility="1" android:layout_width="-1" android:layout_height="-1"/>
-  <ProgressBar android:id="@7F0A1778" android:layout_width="-2" android:layout_height="-2" android:layout_centerInParent="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <WebView android:id="@id/tw__web_view" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ProgressBar android:id="@id/tw__spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
 </RelativeLayout>

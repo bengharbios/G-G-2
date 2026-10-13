@@ -1,3 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F06052B" android:layout_width="-1" android:layout_height="-1">
-  <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@7F0A18EB" android:scrollbars="0x00000000" android:layout_width="-1" android:layout_height="354.000000dip" android:layout_marginLeft="3.000000dip" android:layout_marginTop="3.000000dip" android:layout_marginRight="3.000000dip" android:layout_marginBottom="3.000000dip"/>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/web_content" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="354.0dip" android:layout_marginLeft="3.0dip" android:layout_marginTop="3.0dip" android:layout_marginRight="3.0dip" android:layout_marginBottom="3.0dip" />
 </FrameLayout>

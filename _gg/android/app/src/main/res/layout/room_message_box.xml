@@ -1,9 +1,11 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
-  <include layout="@7F0D0553"/>
-  <View android:id="@7F0A1824" android:background="@7F080844" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip"/>
-  <include layout="@7F0D0552"/>
-  <View android:id="@7F0A1825" android:background="@7F080844" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip"/>
-  <include layout="@7F0D0558"/>
-  <View android:id="@7F0A1823" android:background="@7F080844" android:layout_width="-1" android:layout_height="1.000000dip" android:layout_marginStart="22.000000dip" android:layout_marginEnd="22.000000dip"/>
-  <androidx.recyclerview.widget.RecyclerView android:id="@7F0A1080" android:background="@7F080111" android:layout_width="-1" android:layout_height="-1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/room_message_box_sys_message" />
+    <View android:id="@id/view_divider_1" android:background="@drawable/msg_box_divider" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
+    <include layout="@layout/room_message_box_event_sys_message" />
+    <View android:id="@id/view_divider_2" android:background="@drawable/msg_box_divider" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
+    <include layout="@layout/room_msg_box_friend_invite" />
+    <View android:id="@id/view_divider" android:background="@drawable/msg_box_divider" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rv_message_box" android:background="@drawable/bg_bottom_sheet" android:layout_width="fill_parent" android:layout_height="fill_parent" />
 </merge>

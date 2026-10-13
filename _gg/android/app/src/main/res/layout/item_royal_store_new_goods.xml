@@ -1,18 +1,20 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="210.000000dip">
-  <LinearLayout android:layout_gravity="0x00000001" android:orientation="0" android:id="@7F0A0D35" android:background="@7F080FC5" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="1.000000dip">
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF65B17D" android:gravity="0x00000011" android:id="@7F0A02DD" android:visibility="0" android:layout_width="-2" android:layout_height="18.000000dip"/>
-    <com.yalla.games.common.view.CustomTextView android:textSize="12.000000sp" android:textStyle="0x00000001" android:textColor="#FF65B17D" android:gravity="0x00000011" android:id="@7F0A02DC" android:visibility="0" android:layout_width="-2" android:layout_height="18.000000dip"/>
-  </LinearLayout>
-  <View android:layout_gravity="0x00000050" android:background="@7F080FC6" android:layout_width="-1" android:layout_height="110.000000dip"/>
-  <FrameLayout android:id="@7F0A0451" android:visibility="2" android:layout_width="-1" android:layout_height="-2">
-    <ImageView android:layout_gravity="0x00000001" android:layout_width="107.000000dip" android:layout_height="107.000000dip" android:src="@7F080FB0"/>
-    <com.yalla.game.base.view.StrokeTextView android:textSize="12.000000sp" android:textColor="#FF66AF46" android:layout_gravity="0x00000001" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="115.000000dip" android:text="@7F11124B" app:stroke_color="#FF073E18" app:stroke_width="1.000000dip"/>
-  </FrameLayout>
-  <androidx.recyclerview.widget.RecyclerView android:layout_gravity="0x00000001" android:id="@7F0A0E9F" android:layout_width="360.000000dip" android:layout_height="-1" android:layout_marginTop="23.000000dip"/>
-  <FrameLayout android:layout_gravity="0x00000003" android:id="@7F0A0411" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="60.000000dip">
-    <ImageView android:id="@7F0A0803" android:layout_width="20.000000dip" android:layout_height="25.000000dip" android:layout_marginLeft="5.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginRight="10.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F081146"/>
-  </FrameLayout>
-  <FrameLayout android:layout_gravity="0x00000005" android:id="@7F0A0412" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="60.000000dip">
-    <ImageView android:id="@7F0A0806" android:layout_width="20.000000dip" android:layout_height="25.000000dip" android:layout_marginLeft="10.000000dip" android:layout_marginTop="10.000000dip" android:layout_marginRight="5.000000dip" android:layout_marginBottom="10.000000dip" android:src="@7F081147"/>
-  </FrameLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="210.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_time_down" android:background="@drawable/royal_store_new_goods_num_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down_pre" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ff65b17d" android:gravity="center" android:id="@id/ctv_time_down" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="18.0dip" />
+    </LinearLayout>
+    <View android:layout_gravity="bottom" android:background="@drawable/royal_store_new_item_bar" android:layout_width="fill_parent" android:layout_height="110.0dip" />
+    <FrameLayout android:id="@id/fl_empty_new" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center_horizontal" android:layout_width="107.0dip" android:layout_height="107.0dip" android:src="@drawable/royal_store_empty_item_ic" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff66af46" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="115.0dip" android:text="@string/G_1400_95" app:stroke_color="#ff073e18" app:stroke_width="1.0dip" />
+    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rcv_new" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_marginTop="23.0dip" />
+    <FrameLayout android:layout_gravity="left" android:id="@id/fl_arrow_left" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60.0dip">
+        <ImageView android:id="@id/iv_arrow_left" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="5.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/skin_arrow_left" />
+    </FrameLayout>
+    <FrameLayout android:layout_gravity="right" android:id="@id/fl_arrow_right" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60.0dip">
+        <ImageView android:id="@id/iv_arrow_right" android:layout_width="20.0dip" android:layout_height="25.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/skin_arrow_right" />
+    </FrameLayout>
 </FrameLayout>
