@@ -905,7 +905,11 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
       whileInView="visible"
       viewport={{ once: true, margin: '-30px' }}
       className="relative"
-      style={{ width: '167px', height: '134px' }}
+      style={{
+        width: '167px',
+        height: '134px',
+        flexShrink: 0,  // لا ينضغط داخل flex container (مطابق لـ .gg-card)
+      }}
     >
       <Link
         href={isAvailable && game.href ? game.href : '#games'}
@@ -1086,12 +1090,21 @@ function GamesSection() {
           ))}
         </motion.div>
 
-        {/* Games Grid — مطابق لـ .gg-grid من سورس يلا: flex-wrap + gap:16px + justify-center */}
+        {/* Games Grid — مطابق لـ .gg-grid من سورس يلا:
+            display:flex; flex-wrap:wrap; justify-content:center; gap:16px; padding:18px 5px 8px; */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="flex flex-wrap justify-center gap-4 py-3 px-1"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '16px',
+            padding: '18px 5px 8px',
+            position: 'relative',
+            zIndex: 1,
+          }}
         >
           {filteredGames.map((game, i) => (
             <GameCard key={game.id} game={game} index={i} />
