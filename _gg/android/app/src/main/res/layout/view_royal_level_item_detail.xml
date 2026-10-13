@@ -92,7 +92,7 @@
                 <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_extend" android:background="@drawable/room_default" android:visibility="gone" android:layout_width="110.0dip" android:layout_height="20.0dip" android:layout_marginBottom="15.0dip">
                     <LinearLayout android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
                         <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff63d4ae" android:id="@id/ctv_extend" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1400_36" />
-                        <View android:id="@id/view_extend" android:background="@drawable/room_default_ic" android:layout_width="12.0dip" android:layout_height="7.0dip" android:layout_marginStart="5.0dip" />
+                        <View android:id="@id/view_extend" android:background="@drawable/room_default" android:layout_width="12.0dip" android:layout_height="7.0dip" android:layout_marginStart="5.0dip" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>

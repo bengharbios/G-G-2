@@ -8,7 +8,7 @@
             <ImageView android:id="@id/iv_single" android:layout_width="wrap_content" android:layout_height="20.0dip" android:src="@drawable/face_shop_tab_single" />
             <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:id="@id/tv_single" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1470_0010" android:shadowColor="#8054ffce" android:shadowDy="1.5" android:shadowRadius="1.0" />
         </LinearLayout>
-        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_whole" android:background="@drawable/room_default_right" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_whole" android:background="@drawable/room_default" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
             <ImageView android:id="@id/iv_whole" android:layout_width="wrap_content" android:layout_height="20.0dip" android:src="@drawable/face_shop_tab_whole" />
             <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:id="@id/tv_whole" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1470_0114" android:shadowColor="#8054ffce" android:shadowDy="1.5" android:shadowRadius="1.0" />
         </LinearLayout>

@@ -11,7 +11,7 @@
             </LinearLayout>
             <ImageView android:id="@id/iv_dot_poker" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:src="@drawable/reddot" android:layout_alignParentTop="true" android:layout_marginEnd="5.0dip" android:layout_alignParentEnd="true" />
         </RelativeLayout>
-        <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_table" android:background="@drawable/room_default_right" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_table" android:background="@drawable/room_default" android:layout_width="0.0px" android:layout_height="fill_parent" android:layout_weight="1.0">
             <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
                 <ImageView android:id="@id/iv_table" android:layout_width="20.0dip" android:layout_height="20.0dip" android:src="@drawable/board_unchecked" />
                 <com.bengharbios.ggames.view.CustomTextView android:textSize="12.0sp" android:id="@id/tv_table" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1440_28" android:shadowColor="#8054ffce" android:shadowDy="1.5" android:shadowRadius="1.0" />

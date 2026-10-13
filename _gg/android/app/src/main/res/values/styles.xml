@@ -1162,7 +1162,7 @@
         <item name="android:shadowRadius">0.25</item>
     </style>
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/splash</item>
+        <item name="android:background">@drawable/room_default</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 

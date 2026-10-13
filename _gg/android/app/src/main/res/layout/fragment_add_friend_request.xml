@@ -17,7 +17,7 @@
                     <com.bengharbios.ggames.view.CustomTextView android:textSize="17.0sp" android:textColor="#ffabd8cb" android:id="@id/tv_friends_no_friends" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_friend_requests" />
                 </LinearLayout>
             </FrameLayout>
-            <ImageView android:layout_gravity="left" android:id="@id/iv_arrow" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginTop="-5.299988dip" android:src="@drawable/room_default_arrow" />
+            <ImageView android:layout_gravity="left" android:id="@id/iv_arrow" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginTop="-5.299988dip" android:src="@drawable/room_default" />
         </LinearLayout>
     </View>
 </View>
