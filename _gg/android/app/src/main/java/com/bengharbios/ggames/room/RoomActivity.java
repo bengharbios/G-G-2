@@ -71,9 +71,10 @@ public class RoomActivity extends Activity {
     private ImageView ivShowGameCenter;
     private EditText etMessage;        // الحقل في الشريط السفلي (معطّل — يفتح overlay عند النقر)
     private EditText etInputMessage;  // الحقل في الـ overlay (نشط — يستقبل الكتابة)
+    private TextView tvRoomTopName;   // اسم الغرفة في الهيدر
     private View roomRoot;
     // عناصر إضافية للصورة 21
-    private View ownerTagView;          // pill-shape tag للمالك (سيُحذف ويُعاد وضعه في مكان sofa)
+    // (تم حذف ownerTagView — غير مطلوب في الأصل)
     // (تم حذف leftChatBtn/leftMusicBtn — هما في الأصل موجودان في rightScrollView)
     // overlay لوحة الإدخال فوق الكيبورد (مطابقة للسورس الأصلي room_bottom_input.xml)
     private View inputOverlayView;     // الحاوية العلوية للـ overlay
