@@ -105,7 +105,7 @@ public class RoomActivity extends Activity {
 
         // خلفية متدرجة (يلا لودو خضراء)
         try {
-            View root = findViewById(R.id.content_view);
+            View root = findViewById(getId("content_view"));
             if (root != null) {
                 GradientDrawable gradient = new GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
@@ -181,20 +181,30 @@ public class RoomActivity extends Activity {
     // ربط الـ UI بأمان (كل محاولة في try-catch)
     // ============================================
     private void bindViewsSafely() {
-        try { rvRoomMic = findViewById(R.id.rvRoomMic); } catch (Exception e) { Log.w(TAG, "rvRoomMic not found"); }
-        try { rvChat = findViewById(R.id.rvChat); } catch (Exception e) { Log.w(TAG, "rvChat not found"); }
-        try { ivSound = findViewById(R.id.ivSound); } catch (Exception e) { Log.w(TAG, "ivSound not found"); }
-        try { ivMic = findViewById(R.id.ivMic); } catch (Exception e) { Log.w(TAG, "ivMic not found"); }
-        try { ivMicEmoji = findViewById(R.id.ivMicEmoji); } catch (Exception e) { Log.w(TAG, "ivMicEmoji not found"); }
-        try { ivGift = findViewById(R.id.ivGift); } catch (Exception e) { Log.w(TAG, "ivGift not found"); }
-        try { ivSendPicture = findViewById(R.id.ivSendPicture); } catch (Exception e) { Log.w(TAG, "ivSendPicture not found"); }
-        try { ivSend = findViewById(R.id.ivSend); } catch (Exception e) { Log.w(TAG, "ivSend not found"); }
-        try { etMessage = findViewById(R.id.etMessage); } catch (Exception e) { Log.w(TAG, "etMessage not found"); }
-        try { tvRoomTopName = findViewById(R.id.tvRoomTopName); } catch (Exception e) { Log.w(TAG, "tvRoomTopName not found"); }
-        try { roomRoot = findViewById(R.id.content_view); } catch (Exception e) { Log.w(TAG, "content_view not found"); }
+        // استخدام getIdentifier لتفادي compile errors للـ IDs غير الموجودة
+        try { rvRoomMic = findViewById(getId("rvRoomMic")); } catch (Exception e) { Log.w(TAG, "rvRoomMic not found"); }
+        try { rvChat = findViewById(getId("rvChat")); } catch (Exception e) { Log.w(TAG, "rvChat not found"); }
+        try { ivSound = findViewById(getId("ivSound")); } catch (Exception e) { Log.w(TAG, "ivSound not found"); }
+        try { ivMic = findViewById(getId("ivMic")); } catch (Exception e) { Log.w(TAG, "ivMic not found"); }
+        try { ivMicEmoji = findViewById(getId("ivMicEmoji")); } catch (Exception e) { Log.w(TAG, "ivMicEmoji not found"); }
+        try { ivGift = findViewById(getId("ivGift")); } catch (Exception e) { Log.w(TAG, "ivGift not found"); }
+        try { ivSendPicture = findViewById(getId("ivSendPicture")); } catch (Exception e) { Log.w(TAG, "ivSendPicture not found"); }
+        try { ivSend = findViewById(getId("ivSend")); } catch (Exception e) { Log.w(TAG, "ivSend not found"); }
+        try { etMessage = findViewById(getId("etMessage")); } catch (Exception e) { Log.w(TAG, "etMessage not found"); }
+        try { tvRoomTopName = findViewById(getId("tvRoomTopName")); } catch (Exception e) { Log.w(TAG, "tvRoomTopName not found"); }
+        try { roomRoot = findViewById(getId("content_view")); } catch (Exception e) { Log.w(TAG, "content_view not found"); }
 
         if (tvRoomTopName != null) {
             try { tvRoomTopName.setText(roomName); } catch (Exception e) {}
+        }
+    }
+
+    /** يحصل على resource ID بالاسم - يتغافل compile-time errors */
+    private int getId(String name) {
+        try {
+            return getResources().getIdentifier(name, "id", getPackageName());
+        } catch (Exception e) {
+            return 0;
         }
     }
 
@@ -289,8 +299,9 @@ public class RoomActivity extends Activity {
             }
 
             // زر الإغلاق في الهيدر - ابحث عن عدة IDs محتملة
-            int[] closeIds = {R.id.ivRoomTopLock, R.id.iv_room_top_lock, R.id.ivClose};
+            int[] closeIds = {getId("ivRoomTopLock"), getId("iv_room_top_lock"), getId("ivClose")};
             for (int id : closeIds) {
+                if (id == 0) continue;
                 ImageView ivClose = findViewById(id);
                 if (ivClose != null) {
                     ivClose.setOnClickListener(v -> finish());
