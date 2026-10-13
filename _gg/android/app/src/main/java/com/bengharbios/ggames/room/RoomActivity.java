@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -81,14 +82,56 @@ public class RoomActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // ===== UncaughtExceptionHandler — يكتب stack trace في ملف =====
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            try {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                pw.println("=== CRASH in RoomActivity ===");
+                pw.println("Thread: " + thread.getName());
+                pw.println("Time: " + new java.util.Date());
+                pw.println("Room: " + roomId + " / " + roomName);
+                throwable.printStackTrace(pw);
+                String crashText = sw.toString();
+                Log.e(TAG, crashText);
+                // اكتب في ملف
+                java.io.FileOutputStream fos = openFileOutput("room_crash.log", MODE_PRIVATE);
+                fos.write(crashText.getBytes());
+                fos.close();
+            } catch (Exception writeEx) {
+                Log.e(TAG, "Failed to write crash log", writeEx);
+            }
+            // أنهي النشاط
+            finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        });
+
+        // ===== اعرض crash log سابق إن وُجد =====
+        try {
+            java.io.File crashFile = getFileStreamPath("room_crash.log");
+            if (crashFile != null && crashFile.exists()) {
+                java.io.FileInputStream fis = openFileInput("room_crash.log");
+                byte[] data = new byte[(int) crashFile.length()];
+                fis.read(data);
+                fis.close();
+                String crashText = new String(data);
+                crashFile.delete();
+                new AlertDialog.Builder(this)
+                    .setTitle("💥 Crash سابق")
+                    .setMessage(crashText.substring(0, Math.min(crashText.length(), 2000)))
+                    .setPositiveButton("حسناً", (d, w) -> d.dismiss())
+                    .show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to read crash log", e);
+        }
+
         try {
             getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             );
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-            // WindowInsets — padding سفلي لمنع تغطية شريط النظام
             WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
             Intent intent = getIntent();
@@ -99,7 +142,7 @@ public class RoomActivity extends Activity {
                 if (intent.hasExtra("user_name")) currentUserName = intent.getStringExtra("user_name");
             }
         } catch (Exception e) {
-            showErrorDialog("خطأ في الإعداد", e);
+            Log.e(TAG, "[Setup] Error", e);
         }
 
         // تحميل XML الأصلي
@@ -128,19 +171,49 @@ public class RoomActivity extends Activity {
         }
 
         // ===== البند 1: الشريط السفلي =====
-        setupBottomBar();
+        try {
+            Log.i(TAG, "[بند 1] بدء setupBottomBar");
+            setupBottomBar();
+            Log.i(TAG, "[بند 1] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[بند 1] setupBottomBar فشل", e);
+        }
 
         // ===== البند 2: ViewStubs =====
-        inflateViewStubs();
+        try {
+            Log.i(TAG, "[بند 2] بدء inflateViewStubs");
+            inflateViewStubs();
+            Log.i(TAG, "[بند 2] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[بند 2] inflateViewStubs فشل", e);
+        }
 
         // ===== البند 5: الهيدر =====
-        setupHeader();
+        try {
+            Log.i(TAG, "[بند 5] بدء setupHeader");
+            setupHeader();
+            Log.i(TAG, "[بند 5] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[بند 5] setupHeader فشل", e);
+        }
 
         // ===== البند 3: مقاعد المايك =====
-        setupMicSeats();
+        try {
+            Log.i(TAG, "[بند 3] بدء setupMicSeats");
+            setupMicSeats();
+            Log.i(TAG, "[بند 3] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[بند 3] setupMicSeats فشل", e);
+        }
 
         // ===== البند 4: الدردشة =====
-        setupChat();
+        try {
+            Log.i(TAG, "[بند 4] بدء setupChat");
+            setupChat();
+            Log.i(TAG, "[بند 4] اكتمل بنجاح");
+        } catch (Exception e) {
+            Log.e(TAG, "[بند 4] setupChat فشل", e);
+        }
 
         // محاكاة نشاط المايك
         startSpeakingSimulation();
@@ -233,47 +306,68 @@ public class RoomActivity extends Activity {
     // البند 2: ViewStubs (الإعلان والترحيب)
     // ============================================
     private void inflateViewStubs() {
+        // vsNoticeBoard
         try {
-            // vsNoticeBoard
             int noticeId = getId("vsNoticeBoard");
             if (noticeId != 0) {
                 View noticeStub = findViewById(noticeId);
                 if (noticeStub instanceof ViewStub) {
-                    try {
-                        View inflated = ((ViewStub) noticeStub).inflate();
-                        Log.i(TAG, "✓ vsNoticeBoard inflated");
-                        // ابحث عن TextView في الناتج واضبط نص الإعلان
-                        if (inflated != null) {
-                            setWelcomeText(inflated);
+                    // تأكد أن parent != null
+                    ViewParent parent = noticeStub.getParent();
+                    if (parent != null) {
+                        try {
+                            View inflated = ((ViewStub) noticeStub).inflate();
+                            Log.i(TAG, "[بند 2] vsNoticeBoard inflated");
+                            if (inflated != null) {
+                                setWelcomeText(inflated);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[بند 2] vsNoticeBoard inflate failed", e);
                         }
-                    } catch (Exception e) {
-                        Log.e(TAG, "vsNoticeBoard inflate failed", e);
+                    } else {
+                        Log.w(TAG, "[بند 2] vsNoticeBoard parent is null");
                     }
+                } else if (noticeStub != null) {
+                    // ViewStub تم نفخه بالفعل - الناتج هو View عادي
+                    Log.i(TAG, "[بند 2] vsNoticeBoard already inflated");
+                    setWelcomeText(noticeStub);
                 }
+            } else {
+                Log.w(TAG, "[بند 2] vsNoticeBoard ID not found");
             }
         } catch (Exception e) {
-            Log.e(TAG, "vsNoticeBoard error", e);
+            Log.e(TAG, "[بند 2] vsNoticeBoard error", e);
         }
 
+        // vsTopMessage
         try {
-            // vsTopMessage
             int topMsgId = getId("vsTopMessage");
             if (topMsgId != 0) {
                 View topMsgStub = findViewById(topMsgId);
                 if (topMsgStub instanceof ViewStub) {
-                    try {
-                        View inflated = ((ViewStub) topMsgStub).inflate();
-                        Log.i(TAG, "✓ vsTopMessage inflated");
-                        if (inflated != null) {
-                            setWelcomeText(inflated);
+                    ViewParent parent = topMsgStub.getParent();
+                    if (parent != null) {
+                        try {
+                            View inflated = ((ViewStub) topMsgStub).inflate();
+                            Log.i(TAG, "[بند 2] vsTopMessage inflated");
+                            if (inflated != null) {
+                                setWelcomeText(inflated);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "[بند 2] vsTopMessage inflate failed", e);
                         }
-                    } catch (Exception e) {
-                        Log.e(TAG, "vsTopMessage inflate failed", e);
+                    } else {
+                        Log.w(TAG, "[بند 2] vsTopMessage parent is null");
                     }
+                } else if (topMsgStub != null) {
+                    Log.i(TAG, "[بند 2] vsTopMessage already inflated");
+                    setWelcomeText(topMsgStub);
                 }
+            } else {
+                Log.w(TAG, "[بند 2] vsTopMessage ID not found");
             }
         } catch (Exception e) {
-            Log.e(TAG, "vsTopMessage error", e);
+            Log.e(TAG, "[بند 2] vsTopMessage error", e);
         }
     }
 
