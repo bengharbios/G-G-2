@@ -1021,7 +1021,7 @@ function GamesSection() {
           {filteredGames.map((game, i) => (
             <GameCard key={game.id} game={game} index={i} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
