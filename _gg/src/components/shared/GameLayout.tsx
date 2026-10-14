@@ -148,19 +148,7 @@ export default function GameLayout({
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col" dir="rtl">
-      {/* Game Header */}
-      <GameHeader
-        gameName={gameName}
-        gameEmoji={gameEmoji}
-        accentColor={accentColor}
-        phaseLabel={phaseLabel}
-        subscriberName={subscriberInfo?.name}
-        gemsBalance={gemsBalance}
-        onProfileToggle={() => setProfileOpen(true)}
-        onStoreToggle={() => setStoreOpen(true)}
-        onUtilityToggle={() => setUtilityOpen((p) => !p)}
-        onExit={handleExit}
-      />
+      {/* الهيدر موحد عبر AppShell (SiteHeader) — لا نعرض GameHeader منفصل */}
 
       {/* Side Utility Panel */}
       <SideUtilityPanel

@@ -27,7 +27,7 @@ import { AppShellContext, type AppShellUser, type AppShellContextValue, type Sub
 import GazelleLoader from './GazelleLoader';
 
 // ─── Routes that should render the persistent shell (header + bottom nav) ───
-const SHELL_ROUTES = ['/', '/friends', '/voice-rooms'];
+const SHELL_ROUTES = ['/', '/friends', '/voice-rooms', '/tobol', '/mafia', '/prison', '/risk', '/risk2', '/tabot', '/baharharb', '/familyfeud', '/shifarat'];
 
 // ─── Routes that REQUIRE authentication — show login modal automatically ───
 const FORCED_AUTH_ROUTES = ['/', '/friends'];

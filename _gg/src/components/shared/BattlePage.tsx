@@ -49,7 +49,14 @@ interface Particle {
 
 export default function BattlePage() {
   const [config, setConfig] = useState<BattleConfig | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() => {
+    // استرجاع اللعبة النشطة من localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('battleActiveIndex');
+      return saved ? parseInt(saved) || 0 : 0;
+    }
+    return 0;
+  });
   const [userRole, setUserRole] = useState('guest');
   const [joinCode, setJoinCode] = useState('');
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -126,7 +133,14 @@ export default function BattlePage() {
   const isHot = HOT_GAMES.has(activeBtn.buttonKey);
   const canAccessMaintenance = userRole === 'admin' || userRole === 'moderator';
 
-  const switchGame = (i: number) => { setActiveIndex(i); setAnimKey(k => k + 1); };
+  const switchGame = (i: number) => {
+    setActiveIndex(i);
+    setAnimKey(k => k + 1);
+    // حفظ اللعبة النشطة في localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('battleActiveIndex', String(i));
+    }
+  };
 
   return (
     <div
@@ -297,7 +311,7 @@ export default function BattlePage() {
             delay="0.08s"
             reduceMotion={reduceMotion}
             isPrimary={true}
-            onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref)}
+            onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=godfather')}
           />
           {/* الديوانية */}
           <ModeButton

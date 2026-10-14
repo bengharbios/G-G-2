@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useSyncExternalStore } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTobolStore } from '@/lib/tobol-store';
 import LandingPage from '@/components/tobol/LandingPage';
@@ -409,9 +410,24 @@ export default function TobolPage() {
 function TobolContent() {
   const { phase, setPhase, resetGame, setGameMode } = useTobolStore();
   const mounted = useHydrated();
+  const searchParams = useSearchParams();
 
   // Start host heartbeat in Diwaniya mode
   useHostHeartbeat();
+
+  // ===== قراءة ?mode=godfather أو ?mode=diwaniya من URL =====
+  // إذا جاء من صفحة الألعاب (BattlePage)، تخطي LandingPage وانتقل مباشرة لـ Setup
+  useEffect(() => {
+    if (!mounted) return;
+    const mode = searchParams.get('mode');
+    if (mode === 'godfather' && phase === 'landing') {
+      setGameMode('classic');
+      setPhase('setup');
+    } else if (mode === 'diwaniya' && phase === 'landing') {
+      setGameMode('diwaniya');
+      setPhase('setup');
+    }
+  }, [mounted, searchParams, phase, setGameMode, setPhase]);
 
   const handleStartLocal = useCallback(() => {
     setGameMode('classic');
