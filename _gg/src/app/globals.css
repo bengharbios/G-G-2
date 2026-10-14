@@ -4682,3 +4682,124 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
   border-radius: 999px;
   text-shadow: 0 1px 2px rgba(0,0,0,.6);
 }
+
+/* ============================================================ */
+/* Profile v2 — bigger level flag + scrollable games + more btn */
+/* ============================================================ */
+
+/* Bigger level flag — was 27x37, now 48x60 so the level number is visible */
+.yp-flag {
+  position: relative;
+  display: inline-flex;
+  width: 48px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.yp-flag-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
+}
+
+.yp-flag-num {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 900;
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 #1A4A38, 0 0 5px rgba(0,0,0,.7);
+  text-align: center;
+  line-height: 1;
+}
+
+/* Horizontal-scrollable games container */
+.yp-secgames-scroll {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 5px 4px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(254,239,145,.4) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.yp-secgames-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.yp-secgames-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.yp-secgames-scroll::-webkit-scrollbar-thumb {
+  background: rgba(254,239,145,.35);
+  border-radius: 2px;
+}
+
+.yp-secgames-scroll .yp-secgame {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* "More" button — appears at the end of the games row */
+.yp-secgame-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 58px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease;
+}
+
+.yp-secgame-more:active {
+  transform: scale(0.95);
+}
+
+.yp-secgame-more img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid rgba(254,239,145,.4);
+  background: rgba(254,239,145,.08);
+  padding: 6px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(4,31,24,.2);
+}
+
+.yp-secgame-more span {
+  font-size: 10.5px;
+  color: #feef91;
+  font-weight: 700;
+}
+
+/* When expanded (more games shown), keep flex-wrap so they wrap onto multiple rows */
+.yp-secgames-scroll.expanded {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+/* Gender icon — same size as membership flag */
+.yp-mflag {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+  border-radius: 50%;
+}

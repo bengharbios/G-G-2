@@ -97,13 +97,31 @@ const RARITY_BADGEHOLDER: Record<string, string> = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
+// Returns the level flag image based on the user's level.
+// The Yalla Ludo source organizes levels into 9 tiers, each with a distinct
+// shield/badge design (gold border + colored fill, more elaborate at higher tiers):
+//   - Levels 1-9    → simple green shield (beginner)
+//   - Levels 10-19 → slightly upgraded
+//   - Levels 20-29 → ...
+//   - Levels 30-39 → ...
+//   - Levels 40-49 → ...
+//   - Levels 50-59 → red shield with golden wings + pink gem (elite)
+//   - Levels 60-69 → ...
+//   - Levels 70-89 → ...
+//   - Levels 91-95 → gold ornate shield with purple/magenta + pink gems (top tier)
+// We use the webp versions from /yalla-ui/levels/ (copied from the APK source).
 function levelFlagSrc(level: number): string {
-  if (level >= 50) return '/yalla-ui/level_big_50_60_ic.png';
-  if (level >= 40) return '/yalla-ui/level_big_40_49_ic.png';
-  if (level >= 30) return '/yalla-ui/level_big_30_39_ic.png';
-  if (level >= 20) return '/yalla-ui/level_big_20_29_ic.png';
-  if (level >= 10) return '/yalla-ui/level_big_10_19_ic.png';
-  return '/yalla-ui/level_big_1_9_ic.png';
+  const big = true; // use big version in profile header for better visibility
+  const prefix = big ? 'level_big_' : 'level_';
+  if (level >= 91) return `/yalla-ui/levels/${prefix}91_95_ic.webp`;
+  if (level >= 70) return `/yalla-ui/levels/${prefix}70_89_ic.webp`;
+  if (level >= 60) return `/yalla-ui/levels/${prefix}60_69_ic.webp`;
+  if (level >= 50) return `/yalla-ui/levels/${prefix}50_59_ic.webp`;
+  if (level >= 40) return `/yalla-ui/levels/${prefix}40_49_ic.webp`;
+  if (level >= 30) return `/yalla-ui/levels/${prefix}30_39_ic.webp`;
+  if (level >= 20) return `/yalla-ui/levels/${prefix}20_29_ic.webp`;
+  if (level >= 10) return `/yalla-ui/levels/${prefix}10_19_ic.webp`;
+  return `/yalla-ui/levels/${prefix}1_9_ic.webp`;
 }
 
 function idSeed(user: YallaAuthUser | null | undefined): number {
@@ -156,6 +174,7 @@ export default function YallaProfileDialog({
   const [xp, setXp] = useState<XPInfo | null>(null);
   const [stats, setStats] = useState<GameStat[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+  const [expandedGames, setExpandedGames] = useState(false);
 
   // Edit form state
   const [editing, setEditing] = useState(false);
@@ -833,7 +852,7 @@ export default function YallaProfileDialog({
                     </span>
                     <img
                       className="yp-mflag"
-                      src="/yalla-ui/level_big_50_60_ic.png"
+                      src="/yalla-ui/membership.webp"
                       alt="العضوية"
                       title={`العضوية: ${plan.label}`}
                     />
@@ -842,16 +861,20 @@ export default function YallaProfileDialog({
                       const g = (effectiveUser as YallaAuthUser & { gender?: string }).gender || '';
                       const isFemale = g === 'أنثى' || g === 'female';
                       const isMale = g === 'ذكر' || g === 'male';
-                      if (!isFemale && !isMale) return null; // لا نُظهر أيقونة إن لم يُحدّد الجنس
-                      const src = isFemale ? '/yalla-ui/gender_female.webp' : '/yalla-ui/gender_male.webp';
-                      const alt = isFemale ? 'أنثى' : 'ذكر';
+                      // Always show a gender icon — even when gender is unknown
+                      const src = isFemale
+                        ? '/yalla-ui/gender_female.webp'
+                        : isMale
+                        ? '/yalla-ui/gender_male.webp'
+                        : '/yalla-ui/gender_unknown.webp';
+                      const alt = isFemale ? 'أنثى' : isMale ? 'ذكر' : 'غير محدد';
                       return (
                         <img
                           className="yp-mflag"
                           src={src}
                           alt={alt}
-                          title={alt}
-                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          title={`الجنس: ${alt}`}
+                          onError={(e) => { e.currentTarget.src = '/yalla-ui/gender_unknown.webp'; }}
                         />
                       );
                     })()}
@@ -1165,14 +1188,14 @@ export default function YallaProfileDialog({
                         <span className="yp-secval">{new Intl.NumberFormat('en-US').format(totalPts)}</span>
                         <span className="yp-secval yp-secval--blue">احتمال الفوز {winRate}%</span>
                       </div>
-                      <div className="yp-secgames">
+                      <div className={`yp-secgames yp-secgames-scroll ${expandedGames ? 'expanded' : ''}`}>
                         {loadingData && stats.length === 0 && (
                           <span className="yp-secgame"><span>...جارٍ التحميل</span></span>
                         )}
                         {!loadingData && stats.length === 0 && (
                           <span className="yp-secgame"><span>لا توجد ألعاب مفعّلة بعد</span></span>
                         )}
-                        {stats.slice(0, 4).map((g) => (
+                        {stats.slice(0, expandedGames ? stats.length : 4).map((g) => (
                           <span className="yp-secgame" key={g.slug}>
                             <img
                               src={`/yalla-games/${g.slug}.png`}
@@ -1183,6 +1206,19 @@ export default function YallaProfileDialog({
                             <b>{new Intl.NumberFormat('en-US').format(g.won)}</b>
                           </span>
                         ))}
+                        {/* "More" button — expands the section to show all games */}
+                        {stats.length > 4 && (
+                          <button
+                            type="button"
+                            className="yp-secgame-more"
+                            onClick={() => setExpandedGames((p) => !p)}
+                            aria-label={expandedGames ? 'عرض أقل' : 'عرض المزيد'}
+                            title={expandedGames ? 'عرض أقل' : 'عرض المزيد'}
+                          >
+                            <img src="/yalla-ui/show_more.webp" alt="more" />
+                            <span>{expandedGames ? 'أقل' : 'المزيد'}</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
