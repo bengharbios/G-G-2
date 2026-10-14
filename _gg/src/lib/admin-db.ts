@@ -1314,9 +1314,7 @@ export async function ensureAdminTables(): Promise<void> {
     const oldBtns = await c.execute("SELECT COUNT(*) as cnt FROM BattleButton WHERE gameType IN ('ludo','domino','jackaroo','other')");
     const oldCnt = (oldBtns.rows[0] as Record<string, unknown>)?.cnt as number;
     if (oldCnt && oldCnt > 0) {
-      // احذف الأزرار القديمة
       await c.execute("DELETE FROM BattleButton WHERE gameType IN ('ludo','domino','jackaroo','other')");
-      // أضف أزرار G-G الجديدة للقالب النشط (yalla)
       const yallaTheme = await c.execute("SELECT id FROM BattleTheme WHERE themeKey = 'yalla' LIMIT 1");
       if (yallaTheme.rows.length > 0) {
         const yallaId = (yallaTheme.rows[0] as Record<string, unknown>).id as string;
@@ -1336,6 +1334,36 @@ export async function ensureAdminTables(): Promise<void> {
             sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
                   VALUES (?, ?, 'ggames', ?, ?, ?, ?, 167, 134, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
             args: [crypto.randomUUID(), yallaId, btn.key, btn.label, btn.img, btn.stroke, `/${btn.key}`, btn.order],
+          });
+        }
+      }
+    }
+  } catch { /* ignore */ }
+
+  // ─── Migration: أضف 9 أزرار G-G للقالب 'current' أيضاً ──────────────
+  try {
+    const currentTheme = await c.execute("SELECT id FROM BattleTheme WHERE themeKey = 'current' LIMIT 1");
+    if (currentTheme.rows.length > 0) {
+      const currentId = (currentTheme.rows[0] as Record<string, unknown>).id as string;
+      const currentBtns = await c.execute({ sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ?", args: [currentId] });
+      const cnt = (currentBtns.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!cnt || cnt === 0) {
+        const ggamesButtons = [
+          { key: 'mafia',      label: 'المافيا',           img: '/yalla-games/mafia.png',      stroke: '#7A1F1F', order: 0 },
+          { key: 'tobol',     label: 'طبول الحرب',         img: '/yalla-games/tobol.png',     stroke: '#7A3A10', order: 1 },
+          { key: 'tabot',     label: 'الهروب من التابوت',   img: '/yalla-games/tabot.png',     stroke: '#4A2E75', order: 2 },
+          { key: 'prison',    label: 'السجن',              img: '/yalla-games/prison.png',    stroke: '#14554E', order: 3 },
+          { key: 'risk',      label: 'المجازفة',           img: '/yalla-games/risk.png',      stroke: '#7A1F1F', order: 4 },
+          { key: 'risk2',     label: 'المجازفة 2',         img: '/yalla-games/risk2.png',     stroke: '#3A3170', order: 5 },
+          { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
+          { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
+          { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
+        ];
+        for (const btn of ggamesButtons) {
+          await c.execute({
+            sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                  VALUES (?, ?, 'ggames', ?, ?, ?, ?, 167, 134, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
+            args: [crypto.randomUUID(), currentId, btn.key, btn.label, btn.img, btn.stroke, `/${btn.key}`, btn.order],
           });
         }
       }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface BattleButtonData {
   id: string;
@@ -74,13 +75,70 @@ export default function BattlePage() {
     );
   }
 
-  const configs = config.configs;
-  const bgColor = configs.page_background || '#041F18';
+  const themeKey = config.theme.themeKey;
   const buttons = config.buttons.sort((a, b) => a.tabOrder - b.tabOrder);
+  const configs = config.configs;
 
+  // ─── القالب الأول (current): تصميم Tailwind الأصلي (card-border-spin + grid) ─
+  if (themeKey === 'current') {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white" style={{ paddingBottom: '75px' }}>
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6">
+          <h2 className="text-lg font-black text-white mb-4">🎮 الألعاب</h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(167px, 1fr))',
+              gap: '16px',
+            }}
+          >
+            {buttons.map((btn, i) => {
+              const isAvailable = btn.isActive && btn.visibility !== 'hidden';
+              const isMaintenance = btn.visibility === 'maintenance';
+              return (
+                <Link
+                  key={btn.id}
+                  href={isAvailable ? btn.tabHref : '#'}
+                  onClick={(e) => {
+                    if (!isAvailable || (isMaintenance && !canAccessMaintenance)) {
+                      e.preventDefault();
+                      handleButtonClick(btn);
+                    }
+                  }}
+                  className="group relative block rounded-2xl border-2 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                  style={{
+                    width: '100%',
+                    aspectRatio: '167 / 134',
+                    borderColor: btn.strokeColor + '40',
+                    background: `linear-gradient(135deg, ${btn.strokeColor}30, transparent)`,
+                  }}
+                >
+                  <img
+                    src={btn.imageSrc}
+                    alt={btn.label}
+                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                    <h3 className="text-base font-black text-white mb-1">{btn.label}</h3>
+                  </div>
+                  {isMaintenance && (
+                    <span className="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-600">🔧</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── القالب الثاني (yalla): نمط yalla ludo (gg-card + ggFloat + ggShine + rank-bar + hero) ─
+  const bgColor = configs.page_background || '#041F18';
   return (
     <div className="battle-page" style={{ background: bgColor, minHeight: '100vh' }}>
-      {/* شريط الرابطة — مطابق لـ yalla ludo */}
+      {/* شريط الرابطة */}
       <div className="rank-bar">
         <div className="rank-cell" style={configs.rank_bar_background_my ? { background: `url(${configs.rank_bar_background_my}) center / 100% 100% no-repeat` } : {}}>
           <div className="rk-side">
@@ -99,19 +157,18 @@ export default function BattlePage() {
         </div>
       </div>
 
-      {/* الهيرو — الهلال */}
+      {/* الهيرو */}
       <div className="battle-hero">
         {configs.hero_moon_image && <img className="bh-moon" src={configs.hero_moon_image} alt="" />}
       </div>
 
-      {/* شبكة ألعاب G-G — مطابقة لـ .gg-grid من yalla (flex-wrap + gap:16px) */}
+      {/* شبكة الألعاب — gg-grid من yalla ludo */}
       <div className="gg-grid">
         {buttons.map((btn, i) => (
           <button
             key={btn.id}
             onClick={() => handleButtonClick(btn)}
             data-game={btn.buttonKey}
-            data-cat={btn.gameType}
             className="gg-card"
             style={!btn.isActive ? { opacity: 0.5, pointerEvents: 'none' } : undefined}
           >
