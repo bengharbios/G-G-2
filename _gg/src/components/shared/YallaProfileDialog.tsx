@@ -23,6 +23,8 @@ interface YallaAuthUser {
   card?: string;
   role?: string;
   numericId?: number | null;
+  gender?: string;
+  birthDate?: string;
 }
 
 interface GameStat {
@@ -198,6 +200,8 @@ export default function YallaProfileDialog({
   // ── Edit window (view_edit_user_info) + Basic info window (edit_avatar) state ──
   const [editWin, setEditWin] = useState(false);
   const [basicWin, setBasicWin] = useState(false);
+  const [levelInfoOpen, setLevelInfoOpen] = useState(false);
+  const [royalInfoOpen, setRoyalInfoOpen] = useState(false);
   const [eAvatar, setEAvatar] = useState('');
   const [eGender, setEGender] = useState('');
   const [eBirth, setEBirth] = useState('');
@@ -253,6 +257,8 @@ export default function YallaProfileDialog({
           bio: data.user?.bio || '',
           country: data.user?.country || '',
           avatar: data.user?.avatar,
+          gender: data.user?.gender ?? eGender,
+          birthDate: data.user?.birthDate ?? eBirth,
         });
         setEditWin(false);
       } else {
@@ -1545,7 +1551,6 @@ export default function YallaProfileDialog({
         </motion.div>
       )}
     </AnimatePresence>
-    </AnimatePresence>
 
     {/* ═══════════ Modals: Level Info + Royal Info ═══════════ */}
 
@@ -1638,5 +1643,6 @@ export default function YallaProfileDialog({
         </div>
       </div>
     )}
+    </AnimatePresence>
   );
 }
