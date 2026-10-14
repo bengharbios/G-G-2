@@ -3294,24 +3294,30 @@ export async function updateChargeRequestStatus(
 
 // ─── Level / XP System ────────────────────────────────────────────────
 
+// Import the admin-editable XP table (default values from user spec)
+// + functions to read/override it from the DB at runtime.
+import { getXpForLevel as _getTableXp, getTotalXpForLevel as _getTotalTableXp } from './xp-table';
+
 /**
  * Calculate the XP needed to go from `level` to `level + 1`.
- * Formula: ((level + (level + 1)) * 1000) / 2
+ * Uses the admin-editable XP table (src/lib/xp-table.ts) which contains
+ * specific values from level 1→2 (5 XP) up to 98→99 (72,637,000 XP).
+ * Falls back to the old formula for levels beyond the table.
  */
 export function calculateXPForLevel(level: number): number {
+  const tableValue = _getTableXp(level);
+  if (tableValue > 0) return tableValue;
+  // Fallback for levels beyond the table (level 99+)
   return Math.floor(((level + (level + 1)) * 1000) / 2);
 }
 
 /**
  * Calculate total XP needed from level 1 to level `level` (exclusive).
  * This is the total XP a player would have accumulated reaching level `level`.
+ * Uses the admin-editable XP table.
  */
 export function calculateTotalXPForLevel(level: number): number {
-  let total = 0;
-  for (let i = 1; i < level; i++) {
-    total += calculateXPForLevel(i);
-  }
-  return total;
+  return _getTotalTableXp(level);
 }
 
 /**
