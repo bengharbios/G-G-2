@@ -1287,31 +1287,17 @@ export async function ensureAdminTables(): Promise<void> {
         });
       }
 
-      // أزرار قالب yalla (19 زر + 4 تبويبات تبديل)
+      // أزرار قالب yalla — ألعاب G-G التسعة (بصور /yalla-games/ + ألوان text-stroke من السورس)
       const yallaButtons = [
-        // Ludo (5)
-        { game: 'ludo', key: 'ludo_2p', label: '2&4 Players', img: '/battle/svg_ludo_2ren.webp', stroke: '#A0631C', w: 167, h: 134, order: 0 },
-        { game: 'ludo', key: 'ludo_4p', label: 'Team', img: '/battle/svg_ludo_4ren.webp', stroke: '#504593', w: 167, h: 134, order: 1 },
-        { game: 'ludo', key: 'ludo_tournament', label: 'Tournament', img: '/battle/svg_ludo_tournament.webp', stroke: '#387E12', w: 111, h: 99, order: 2 },
-        { game: 'ludo', key: 'ludo_local', label: 'Private&Local', img: '/battle/svg_ludo_local.webp', stroke: '#0D6C8C', w: 111, h: 99, order: 3 },
-        { game: 'ludo', key: 'ludo_vip', label: 'VIP Room', img: '/battle/svg_ludo_vip.webp', stroke: '#99372B', w: 111, h: 99, order: 4 },
-        // Domino (5)
-        { game: 'domino', key: 'domino_2p', label: '1 ON 1', img: '/battle/svg_domino_2ren.webp', stroke: '#2A7BB4', w: 166, h: 130, order: 0 },
-        { game: 'domino', key: 'domino_4p', label: '4 Players', img: '/battle/svg_domino_4ren.webp', stroke: '#504593', w: 166, h: 130, order: 1 },
-        { game: 'domino', key: 'domino_tournament', label: 'Tournament', img: '/battle/svg_domino_tournament.webp', stroke: '#387E12', w: 111, h: 99, order: 2 },
-        { game: 'domino', key: 'domino_private', label: 'Private', img: '/battle/svg_domino_private.webp', stroke: '#B76224', w: 111, h: 99, order: 3 },
-        { game: 'domino', key: 'domino_vip', label: 'VIP Room', img: '/battle/svg_domino_vip.webp', stroke: '#99372B', w: 111, h: 99, order: 4 },
-        // Jackaroo (4)
-        { game: 'jackaroo', key: 'jackaroo_1v1', label: 'Quick 1v1', img: '/battle/bg_jackaroo_enter_1v1.png', stroke: '#0F7D00', w: 150, h: 229, order: 0 },
-        { game: 'jackaroo', key: 'jackaroo_classic', label: 'Classic', img: '/battle/bg_jackaroo_basic_enter.png', stroke: '#1E6887', w: 180, h: 110, order: 1 },
-        { game: 'jackaroo', key: 'jackaroo_complex', label: 'Complex', img: '/battle/bg_jackaroo_complex_enter.png', stroke: '#B64E02', w: 88, h: 115, order: 2 },
-        { game: 'jackaroo', key: 'jackaroo_vip', label: 'VIP', img: '/battle/bg_jackaroo_vip_enter.png', stroke: '#B64E02', w: 88, h: 115, order: 3 },
-        // Other (5)
-        { game: 'other', key: 'other_jungle', label: 'Jungle Ludo', img: '/battle/other_jungle_ludo.webp', stroke: '#C06C2E', w: 160, h: 127, order: 0 },
-        { game: 'other', key: 'other_lucky', label: 'Lucky Ludo', img: '/battle/other_default_lucky_ludo.webp', stroke: '#732B99', w: 160, h: 127, order: 1 },
-        { game: 'other', key: 'other_snake', label: 'Snake 2p', img: '/battle/other_snake_mode.webp', stroke: '#670ABE', w: 106, h: 95, order: 2 },
-        { game: 'other', key: 'other_fight', label: 'Fight Ludo', img: '/battle/other_fight_ludo.webp', stroke: '#3D8815', w: 106, h: 95, order: 3 },
-        { game: 'other', key: 'other_night', label: 'Night Ludo', img: '/battle/other_night_ludo.webp', stroke: '#0B80C3', w: 106, h: 95, order: 4 },
+        { game: 'ggames', key: 'mafia',      label: 'المافيا',           img: '/yalla-games/mafia.png',      stroke: '#7A1F1F', w: 167, h: 134, order: 0 },
+        { game: 'ggames', key: 'tobol',     label: 'طبول الحرب',         img: '/yalla-games/tobol.png',     stroke: '#7A3A10', w: 167, h: 134, order: 1 },
+        { game: 'ggames', key: 'tabot',     label: 'الهروب من التابوت',   img: '/yalla-games/tabot.png',     stroke: '#4A2E75', w: 167, h: 134, order: 2 },
+        { game: 'ggames', key: 'prison',    label: 'السجن',              img: '/yalla-games/prison.png',    stroke: '#14554E', w: 167, h: 134, order: 3 },
+        { game: 'ggames', key: 'risk',      label: 'المجازفة',           img: '/yalla-games/risk.png',      stroke: '#7A1F1F', w: 167, h: 134, order: 4 },
+        { game: 'ggames', key: 'risk2',     label: 'المجازفة 2',         img: '/yalla-games/risk2.png',     stroke: '#3A3170', w: 167, h: 134, order: 5 },
+        { game: 'ggames', key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', w: 167, h: 134, order: 6 },
+        { game: 'ggames', key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', w: 167, h: 134, order: 7 },
+        { game: 'ggames', key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', w: 167, h: 134, order: 8 },
       ];
       for (const btn of yallaButtons) {
         await c.execute({
@@ -1322,6 +1308,39 @@ export async function ensureAdminTables(): Promise<void> {
       }
     }
   } catch { /* ignore seed errors */ }
+
+  // ─── Migration: استبدل أزرار yalla القديمة (ludo/domino/...) بأزرار G-G ─
+  try {
+    const oldBtns = await c.execute("SELECT COUNT(*) as cnt FROM BattleButton WHERE gameType IN ('ludo','domino','jackaroo','other')");
+    const oldCnt = (oldBtns.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (oldCnt && oldCnt > 0) {
+      // احذف الأزرار القديمة
+      await c.execute("DELETE FROM BattleButton WHERE gameType IN ('ludo','domino','jackaroo','other')");
+      // أضف أزرار G-G الجديدة للقالب النشط (yalla)
+      const yallaTheme = await c.execute("SELECT id FROM BattleTheme WHERE themeKey = 'yalla' LIMIT 1");
+      if (yallaTheme.rows.length > 0) {
+        const yallaId = (yallaTheme.rows[0] as Record<string, unknown>).id as string;
+        const ggamesButtons = [
+          { key: 'mafia',      label: 'المافيا',           img: '/yalla-games/mafia.png',      stroke: '#7A1F1F', order: 0 },
+          { key: 'tobol',     label: 'طبول الحرب',         img: '/yalla-games/tobol.png',     stroke: '#7A3A10', order: 1 },
+          { key: 'tabot',     label: 'الهروب من التابوت',   img: '/yalla-games/tabot.png',     stroke: '#4A2E75', order: 2 },
+          { key: 'prison',    label: 'السجن',              img: '/yalla-games/prison.png',    stroke: '#14554E', order: 3 },
+          { key: 'risk',      label: 'المجازفة',           img: '/yalla-games/risk.png',      stroke: '#7A1F1F', order: 4 },
+          { key: 'risk2',     label: 'المجازفة 2',         img: '/yalla-games/risk2.png',     stroke: '#3A3170', order: 5 },
+          { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
+          { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
+          { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
+        ];
+        for (const btn of ggamesButtons) {
+          await c.execute({
+            sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                  VALUES (?, ?, 'ggames', ?, ?, ?, ?, 167, 134, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
+            args: [crypto.randomUUID(), yallaId, btn.key, btn.label, btn.img, btn.stroke, `/${btn.key}`, btn.order],
+          });
+        }
+      }
+    }
+  } catch { /* ignore */ }
 
   // ─── Migration: فعّل yalla لو القالب النشط ليس له أزرار ─────────────
   try {
