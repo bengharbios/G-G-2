@@ -184,7 +184,7 @@ export default function BattlePage() {
             src={activeBtn.imageSrc}
             alt={activeBtn.label}
             style={{
-              width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+              width: '100%', height: '100%', objectFit: 'contain', display: 'block',
               filter: 'brightness(1.1) saturate(1.15)',
               animation: reduceMotion ? 'none' : 'slowZoom 6s ease-in-out infinite alternate',
             }}
