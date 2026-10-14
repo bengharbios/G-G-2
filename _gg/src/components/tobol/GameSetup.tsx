@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useTobolStore } from '@/lib/tobol-store';
@@ -28,18 +28,14 @@ export default function GameSetup() {
   const [blueName, setBlueName] = useState('');
   const [score, setScore] = useState('350');
   const [firstTeam, setFirstTeam] = useState<Team>('red');
-  const [notice, setNotice] = useState<string>('');
 
-  // أيقونات سفلية: الصوت + الدردشة + الخروج
+  // حالة أيقونات الهيدر: الصوت والخروج فقط (لا دردشة هنا)
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
-  const [chatOn, setChatOn] = useState(false);
-  const [exitPressed, setExitPressed] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
-  const noticeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── هيّج وضع "تجهيز المعركة": أخفِ ذهب/جواهر/متجر/إعدادات الهيدر
-  //    وأيضاً القائمة السفلية، وعطّل ضغط صورة البروفايل
+  // ─ـ هيّج وضع "تجهيز المعركة": أخفِ ذهب/جواهر/متجر/إعدادات الهيدر
+  //    والقائمة السفلية وأيضاً عطّل ضغط صورة البروفايل وأخفِ الـ SideUtilityPanel
   useEffect(() => {
     if (typeof document === 'undefined') return;
     document.body.classList.add('in-game-setup');
@@ -48,7 +44,7 @@ export default function GameSetup() {
     };
   }, []);
 
-  // ── مزامنة الحالة الأولية للصوت من localStorage
+  // ─ـ مزامنة الحالة الأولية للصوت من localStorage
   useEffect(() => {
     setMusicOn(isMusicEnabled());
     setSoundOn(isSoundEnabled());
@@ -65,17 +61,9 @@ export default function GameSetup() {
 
   const isValid = redName.trim() && blueName.trim() && parseInt(score) > 0;
 
-  // إشعار "الفريق الأزرق يبدأ أولا" يظهر تحت البطاقات
-  const triggerNotice = (team: Team) => {
-    const text = team === 'red' ? '🔴 الفريق الأحمر سيبدأ أولاً' : '🔵 الفريق الأزرق سيبدأ أولاً';
-    setNotice(text);
-    if (noticeTimeout.current) clearTimeout(noticeTimeout.current);
-    noticeTimeout.current = setTimeout(() => setNotice(''), 2600);
-  };
-
+  // اختيار الفريق — يحدّث firstTeam ويظهر الإشعار دائماً (لا يختفي)
   const handleSelectTeam = (team: Team) => {
     setFirstTeam(team);
-    triggerNotice(team);
   };
 
   // التبديل بين الصوت والـ BGM
@@ -91,12 +79,16 @@ export default function GameSetup() {
     setSoundEnabled(next);
   };
 
-  const toggleChat = () => setChatOn((p) => !p);
-
   const handleExit = () => {
     resetGame();
     router.push('/');
   };
+
+  // نص الإشعار: من سيبدأ أولاً (يظهر دائماً، لا يختفي)
+  const noticeText =
+    firstTeam === 'red' ? 'الفريق الأحمر سيبدأ أولاً' : 'الفريق الأزرق سيبدأ أولاً';
+  const noticeClass = firstTeam === 'red' ? 'team-red' : 'team-blue';
+  const noticeEmoji = firstTeam === 'red' ? '🔴' : '🔵';
 
   return (
     <div
@@ -105,16 +97,45 @@ export default function GameSetup() {
       style={{
         position: 'relative',
         height: 'calc(100vh - 56px)',
-        // NO BLUE — خلفية حرب دافئة متوافقة مع تصميمنا (game_bg.webp)
+        // خلفية حرب دافئة — لا أزرق
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 70px',
+        padding: '8px 14px 16px',
         gap: '10px',
         overflow: 'hidden',
       }}
     >
+      {/* ══════════ 1) أيقونات الهيدر — صوت + خروج ══════════ */}
+      {/* تظهر مكان الأيقونات المختفية في الهيدر (يسار الشاشة لأن RTL) */}
+      <div className="tobol-header-actions">
+        {/* أيقونة الصوت — تشغيل/تعطيل */}
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
+
+        {/* أيقونة الخروج */}
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowExitDialog(true)}
+          aria-label="خروج"
+          title="خروج"
+        >
+          <img src="/battle/btn_exit.webp" alt="exit" />
+        </button>
+      </div>
+
       {/* ══════════ 6) صورة اللعبة + اسمها بشكل احترافي ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -12, scale: 0.92 }}
@@ -133,7 +154,6 @@ export default function GameSetup() {
               filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
             }}
           />
-          {/* وهج خلف الأيقونة */}
           <div
             style={{
               position: 'absolute',
@@ -202,7 +222,6 @@ export default function GameSetup() {
           marginTop: '4px',
         }}
       >
-        {/* الفريق الأحمر */}
         <TeamCard
           color="red"
           name={redName}
@@ -212,7 +231,7 @@ export default function GameSetup() {
           delay={0.22}
         />
 
-        {/* علامة VS في الوسط (من سورس PK) */}
+        {/* علامة VS في الوسط */}
         <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
           <img
             src="/battle/vs_pk.webp"
@@ -221,7 +240,6 @@ export default function GameSetup() {
           />
         </div>
 
-        {/* الفريق الأزرق */}
         <TeamCard
           color="blue"
           name={blueName}
@@ -232,32 +250,21 @@ export default function GameSetup() {
         />
       </div>
 
-      {/* ══════════ 3) إشعار تحت البطاقات ══════════ */}
-      <div style={{ height: '24px', width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
+      {/* ══════════ 3) إشعار تحت البطاقات — ثابت دائماً ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center', marginTop: '4px' }}>
         <AnimatePresence mode="wait">
-          {notice && (
-            <motion.div
-              key={notice}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.25 }}
-              className="tobol-notice"
-              style={{
-                padding: '4px 14px',
-                borderRadius: '999px',
-                background: 'rgba(6,42,32,.85)',
-                border: '1px solid rgba(254,239,145,.22)',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#feef91',
-                boxShadow: '0 3px 10px rgba(0,0,0,.4)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {notice}
-            </motion.div>
-          )}
+          <motion.div
+            key={firstTeam}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+            className={`tobol-notice-pill ${noticeClass}`}
+          >
+            <span className="notice-dot" />
+            <span style={{ fontSize: '13px' }}>{noticeEmoji}</span>
+            <span>{noticeText}</span>
+          </motion.div>
         </AnimatePresence>
       </div>
 
@@ -277,7 +284,6 @@ export default function GameSetup() {
           marginTop: '4px',
         }}
       >
-        {/* أيقونة الهدف */}
         <div
           style={{
             width: '30px',
@@ -320,86 +326,40 @@ export default function GameSetup() {
         <span style={{ fontSize: '10px', color: '#9fc4b4', whiteSpace: 'nowrap' }}>نقطة</span>
       </motion.div>
 
-      {/* ══════════ زر البدء (btn_yes_big) ══════════ */}
+      {/* ══════════ زر بدء المعركة المعاد تصميمه ══════════ */}
       <motion.button
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.44, duration: 0.3 }}
         whileHover={isValid ? { scale: 1.02 } : {}}
-        whileTap={isValid ? { scale: 0.96 } : {}}
+        whileTap={isValid ? { scale: 0.97 } : {}}
         onClick={handleStart}
         disabled={!isValid}
+        className="tobol-start-btn"
         style={{
           width: '100%',
           maxWidth: '380px',
-          padding: '12px',
-          borderRadius: '14px',
+          padding: '14px 16px',
           border: 'none',
-          background: isValid
-            ? 'url(/battle/btn_yes_big.png) center / 100% 100% no-repeat, linear-gradient(135deg, #f59e0b, #d97706)'
-            : 'rgba(60,60,60,.35)',
-          color: isValid ? '#fff' : '#64748b',
+          color: '#feef91',
           fontSize: '17px',
           fontWeight: 900,
           cursor: isValid ? 'pointer' : 'not-allowed',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '8px',
-          ...STROKE_STYLE,
-          boxShadow: isValid ? '0 6px 18px rgba(245,158,11,.35)' : 'none',
+          gap: '10px',
+          paintOrder: 'stroke fill',
+          WebkitTextStroke: '0.5px #aa6e1f',
+          textShadow: '0 2px 6px rgba(0,0,0,.6)',
           marginTop: '6px',
         }}
       >
-        <span>⚔️</span>
-        بدء المعركة
+        <span className="tobol-start-icon">
+          <span style={{ fontSize: '18px' }}>⚔️</span>
+        </span>
+        <span>بدء المعركة</span>
       </motion.button>
-
-      {/* ══════════ 1) شريط أيقونات سفلي متطور من السورس ══════════ */}
-      <div className="tobol-action-bar">
-        {/* أيقونة الصوت — تشغيل/تعطيل */}
-        <button
-          type="button"
-          className={`tobol-action-btn ${musicOn ? 'active' : ''}`}
-          onClick={toggleMusic}
-          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
-          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
-        >
-          <img
-            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
-            alt="sound"
-          />
-        </button>
-
-        {/* أيقونة الدردشة الكتابية — تفعيل/تعطيل */}
-        <button
-          type="button"
-          className={`tobol-action-btn ${chatOn ? 'active' : ''}`}
-          onClick={toggleChat}
-          aria-label={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
-          title={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
-        >
-          <img src="/battle/icon_chat.webp" alt="chat" />
-        </button>
-
-        {/* أيقونة الخروج (btn_associate_exit) */}
-        <button
-          type="button"
-          className="tobol-action-btn"
-          onClick={() => setShowExitDialog(true)}
-          onMouseDown={() => setExitPressed(true)}
-          onMouseUp={() => setExitPressed(false)}
-          onMouseLeave={() => setExitPressed(false)}
-          aria-label="خروج"
-          title="خروج"
-        >
-          <img
-            src={exitPressed ? '/battle/btn_exit.webp' : '/battle/btn_exit.webp'}
-            alt="exit"
-            style={exitPressed ? { transform: 'scale(0.92)' } : undefined}
-          />
-        </button>
-      </div>
 
       {/* ══════════ حوار الخروج ══════════ */}
       <AnimatePresence>
@@ -537,7 +497,6 @@ function TeamCard({
         } as React.CSSProperties
       }
     >
-      {/* رأس البطاقة: شارة + لون الفريق + علامة "يبدأ" */}
       <div
         style={{
           display: 'flex',
@@ -593,7 +552,6 @@ function TeamCard({
         )}
       </div>
 
-      {/* حقل الاسم */}
       <input
         type="text"
         value={name}
@@ -617,7 +575,6 @@ function TeamCard({
         }}
       />
 
-      {/* خط شريط تزييني بنهاية البطاقة */}
       <div
         style={{
           marginTop: '8px',
