@@ -1,17 +1,58 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useTobolStore } from '@/lib/tobol-store';
 import type { Team } from '@/lib/tobol-types';
+import {
+  isMusicEnabled,
+  setMusicEnabled,
+  isSoundEnabled,
+  setSoundEnabled,
+} from '@/lib/sounds';
+
+// StrokeTextStyle_Yes (from yalla ludo styles.xml)
+// textColor: #aa6e1f (ذهبي داكن), stroke_color: #feef91 (ذهبي فاتح)
+const STROKE_STYLE: React.CSSProperties = {
+  color: '#feef91',
+  paintOrder: 'stroke fill',
+  WebkitTextStroke: '1px #aa6e1f',
+};
 
 export default function GameSetup() {
-  const { setTeamNames, setScores, startGame } = useTobolStore();
+  const router = useRouter();
+  const { setTeamNames, setScores, startGame, resetGame } = useTobolStore();
 
   const [redName, setRedName] = useState('');
   const [blueName, setBlueName] = useState('');
   const [score, setScore] = useState('350');
   const [firstTeam, setFirstTeam] = useState<Team>('red');
+  const [notice, setNotice] = useState<string>('');
+
+  // أيقونات سفلية: الصوت + الدردشة + الخروج
+  const [musicOn, setMusicOn] = useState(true);
+  const [soundOn, setSoundOn] = useState(true);
+  const [chatOn, setChatOn] = useState(false);
+  const [exitPressed, setExitPressed] = useState(false);
+  const [showExitDialog, setShowExitDialog] = useState(false);
+  const noticeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ── هيّج وضع "تجهيز المعركة": أخفِ ذهب/جواهر/متجر/إعدادات الهيدر
+  //    وأيضاً القائمة السفلية، وعطّل ضغط صورة البروفايل
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('in-game-setup');
+    return () => {
+      document.body.classList.remove('in-game-setup');
+    };
+  }, []);
+
+  // ── مزامنة الحالة الأولية للصوت من localStorage
+  useEffect(() => {
+    setMusicOn(isMusicEnabled());
+    setSoundOn(isSoundEnabled());
+  }, []);
 
   const handleStart = () => {
     const t1 = redName.trim() || 'الجيش الأحمر';
@@ -24,67 +65,237 @@ export default function GameSetup() {
 
   const isValid = redName.trim() && blueName.trim() && parseInt(score) > 0;
 
+  // إشعار "الفريق الأزرق يبدأ أولا" يظهر تحت البطاقات
+  const triggerNotice = (team: Team) => {
+    const text = team === 'red' ? '🔴 الفريق الأحمر سيبدأ أولاً' : '🔵 الفريق الأزرق سيبدأ أولاً';
+    setNotice(text);
+    if (noticeTimeout.current) clearTimeout(noticeTimeout.current);
+    noticeTimeout.current = setTimeout(() => setNotice(''), 2600);
+  };
+
+  const handleSelectTeam = (team: Team) => {
+    setFirstTeam(team);
+    triggerNotice(team);
+  };
+
+  // التبديل بين الصوت والـ BGM
+  const toggleMusic = () => {
+    const next = !musicOn;
+    setMusicOn(next);
+    setMusicEnabled(next);
+  };
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+  };
+
+  const toggleChat = () => setChatOn((p) => !p);
+
+  const handleExit = () => {
+    resetGame();
+    router.push('/');
+  };
+
   return (
     <div
       dir="rtl"
+      className="tobol-setup-root"
       style={{
-        minHeight: 'calc(100vh - 130px)',
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        // NO BLUE — خلفية حرب دافئة متوافقة مع تصميمنا (game_bg.webp)
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '16px 16px 120px',
-        gap: '12px',
+        padding: '8px 14px 70px',
+        gap: '10px',
+        overflow: 'hidden',
       }}
     >
-      {/* عنوان صغير */}
-      <motion.h2
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          fontSize: '18px', fontWeight: 900, color: '#feef91',
-          paintOrder: 'stroke fill',
-          WebkitTextStroke: '1px #aa6e1f',
-          marginBottom: '4px',
-        }}
-      >⚔️ تجهيز المعركة</motion.h2>
+      {/* ══════════ 6) صورة اللعبة + اسمها بشكل احترافي ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
+      >
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src="/yalla-games/tobol.png"
+            alt="طبول الحرب"
+            style={{
+              width: '76px',
+              height: '64px',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
+            }}
+          />
+          {/* وهج خلف الأيقونة */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-12px',
+              background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+              filter: 'blur(6px)',
+              zIndex: -1,
+              borderRadius: '50%',
+            }}
+          />
+        </div>
+        <h1
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '22px',
+            fontWeight: 900,
+            textShadow: '0 2px 4px rgba(0,0,0,.85)',
+            margin: '2px 0 0',
+            lineHeight: 1,
+          }}
+        >
+          طبول الحرب
+        </h1>
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Tobol — War Drums ⚔️
+        </p>
+      </motion.div>
 
-      {/* مقعدان متجاوران (مثل مقاعد yalla) */}
-      <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '360px' }}>
+      {/* ══════════ عنوان "تجهيز المعركة" ══════════ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '4px 14px',
+          borderRadius: '999px',
+          background: 'rgba(6,42,32,.65)',
+          border: '1px solid rgba(254,239,145,.18)',
+        }}
+      >
+        <span style={{ fontSize: '13px' }}>⚔️</span>
+        <span
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '13px',
+            fontWeight: 800,
+            letterSpacing: '0.4px',
+          }}
+        >
+          تجهيز المعركة
+        </span>
+      </motion.div>
+
+      {/* ══════════ 4) بطاقتان عصريتان + VS في الوسط ══════════ */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'stretch',
+          marginTop: '4px',
+        }}
+      >
         {/* الفريق الأحمر */}
-        <TeamSeat
+        <TeamCard
           color="red"
           name={redName}
           setName={setRedName}
           selected={firstTeam === 'red'}
-          onSelect={() => setFirstTeam('red')}
-          delay="0.08s"
+          onSelect={() => handleSelectTeam('red')}
+          delay={0.22}
         />
+
+        {/* علامة VS في الوسط (من سورس PK) */}
+        <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
+          <img
+            src="/battle/vs_pk.webp"
+            alt="VS"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
         {/* الفريق الأزرق */}
-        <TeamSeat
+        <TeamCard
           color="blue"
           name={blueName}
           setName={setBlueName}
           selected={firstTeam === 'blue'}
-          onSelect={() => setFirstTeam('blue')}
-          delay="0.16s"
+          onSelect={() => handleSelectTeam('blue')}
+          delay={0.32}
         />
       </div>
 
-      {/* النقاط الأولية (مشتركة) */}
+      {/* ══════════ 3) إشعار تحت البطاقات ══════════ */}
+      <div style={{ height: '24px', width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
+        <AnimatePresence mode="wait">
+          {notice && (
+            <motion.div
+              key={notice}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.25 }}
+              className="tobol-notice"
+              style={{
+                padding: '4px 14px',
+                borderRadius: '999px',
+                background: 'rgba(6,42,32,.85)',
+                border: '1px solid rgba(254,239,145,.22)',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#feef91',
+                boxShadow: '0 3px 10px rgba(0,0,0,.4)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {notice}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ══════════ 5) إطار نقاط متطور ══════════ */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.24 }}
+        transition={{ delay: 0.38, duration: 0.3 }}
+        className="tobol-score-frame"
         style={{
-          display: 'flex', alignItems: 'center', gap: '8px',
-          background: 'rgba(6,42,32,.6)', borderRadius: '12px',
-          border: '1px solid rgba(255,255,255,.08)', padding: '8px 12px',
-          width: '100%', maxWidth: '360px',
+          width: '100%',
+          maxWidth: '380px',
+          padding: '8px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginTop: '4px',
         }}
       >
-        <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#9fc4b4', whiteSpace: 'nowrap' }}>🎯 النقاط:</span>
+        {/* أيقونة الهدف */}
+        <div
+          style={{
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(254,239,145,.22), rgba(170,110,31,.08))',
+            border: '1px solid rgba(254,239,145,.35)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>🎯</span>
+        </div>
+        <span style={{ fontSize: '12px', fontWeight: 800, color: '#feef91', whiteSpace: 'nowrap' }}>
+          النقاط الأولية
+        </span>
         <input
           type="number"
           value={score}
@@ -93,112 +304,326 @@ export default function GameSetup() {
           max={9999}
           dir="ltr"
           style={{
-            flex: 1, background: 'transparent', border: 'none', outline: 'none',
-            color: '#fff', fontSize: '16px', fontWeight: 'bold', textAlign: 'center',
+            flex: 1,
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            color: '#fff',
+            fontSize: '20px',
+            fontWeight: 900,
+            textAlign: 'center',
+            textShadow: '0 1px 2px rgba(0,0,0,.6)',
+            letterSpacing: '1px',
             width: '60px',
           }}
         />
+        <span style={{ fontSize: '10px', color: '#9fc4b4', whiteSpace: 'nowrap' }}>نقطة</span>
       </motion.div>
 
-      {/* تنبيه: من يبدأ */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        style={{ fontSize: '11px', color: '#9fc4b4', textAlign: 'center' }}
-      >
-        {firstTeam === 'red' ? '🔴 الفريق الأحمر يبدأ أولاً' : '🔵 الفريق الأزرق يبدأ أولاً'}
-      </motion.p>
-
-      {/* زر البدء (btn_yes_big style) */}
+      {/* ══════════ زر البدء (btn_yes_big) ══════════ */}
       <motion.button
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
+        transition={{ delay: 0.44, duration: 0.3 }}
         whileHover={isValid ? { scale: 1.02 } : {}}
         whileTap={isValid ? { scale: 0.96 } : {}}
         onClick={handleStart}
         disabled={!isValid}
         style={{
-          width: '100%', maxWidth: '360px',
-          padding: '14px', borderRadius: '12px', border: 'none',
+          width: '100%',
+          maxWidth: '380px',
+          padding: '12px',
+          borderRadius: '14px',
+          border: 'none',
           background: isValid
-            ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-            : 'rgba(100,100,100,.3)',
+            ? 'url(/battle/btn_yes_big.png) center / 100% 100% no-repeat, linear-gradient(135deg, #f59e0b, #d97706)'
+            : 'rgba(60,60,60,.35)',
           color: isValid ? '#fff' : '#64748b',
-          fontSize: '18px', fontWeight: 900, cursor: isValid ? 'pointer' : 'not-allowed',
-          boxShadow: isValid ? '0 6px 20px rgba(245,158,11,.35)' : 'none',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-          paintOrder: 'stroke fill',
-          WebkitTextStroke: isValid ? '0.5px #feef91' : 'none',
+          fontSize: '17px',
+          fontWeight: 900,
+          cursor: isValid ? 'pointer' : 'not-allowed',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          ...STROKE_STYLE,
+          boxShadow: isValid ? '0 6px 18px rgba(245,158,11,.35)' : 'none',
+          marginTop: '6px',
         }}
       >
         <span>⚔️</span>
         بدء المعركة
       </motion.button>
+
+      {/* ══════════ 1) شريط أيقونات سفلي متطور من السورس ══════════ */}
+      <div className="tobol-action-bar">
+        {/* أيقونة الصوت — تشغيل/تعطيل */}
+        <button
+          type="button"
+          className={`tobol-action-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
+
+        {/* أيقونة الدردشة الكتابية — تفعيل/تعطيل */}
+        <button
+          type="button"
+          className={`tobol-action-btn ${chatOn ? 'active' : ''}`}
+          onClick={toggleChat}
+          aria-label={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
+          title={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
+        >
+          <img src="/battle/icon_chat.webp" alt="chat" />
+        </button>
+
+        {/* أيقونة الخروج (btn_associate_exit) */}
+        <button
+          type="button"
+          className="tobol-action-btn"
+          onClick={() => setShowExitDialog(true)}
+          onMouseDown={() => setExitPressed(true)}
+          onMouseUp={() => setExitPressed(false)}
+          onMouseLeave={() => setExitPressed(false)}
+          aria-label="خروج"
+          title="خروج"
+        >
+          <img
+            src={exitPressed ? '/battle/btn_exit.webp' : '/battle/btn_exit.webp'}
+            alt="exit"
+            style={exitPressed ? { transform: 'scale(0.92)' } : undefined}
+          />
+        </button>
+      </div>
+
+      {/* ══════════ حوار الخروج ══════════ */}
+      <AnimatePresence>
+        {showExitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowExitDialog(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,.72)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+              padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px',
+                padding: '20px',
+                width: '100%',
+                maxWidth: '300px',
+                textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
+              <h3
+                style={{
+                  ...STROKE_STYLE,
+                  fontSize: '17px',
+                  fontWeight: 900,
+                  marginBottom: '6px',
+                }}
+              >
+                الخروج من المعركة؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                سيتم إنهاء الجلسة وعدم حفظ أي تقدم. هل أنت متأكد؟
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowExitDialog(false)}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)',
+                    color: '#cbd5e1',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={handleExit}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff',
+                    fontSize: '14px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >
+                  نعم، اخرج
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-// ===== مقعد فريق (مثل bg_associate_seat من yalla) =====
-function TeamSeat({
-  color, name, setName, selected, onSelect, delay,
+// ===== بطاقة فريق عصرية (modern card with VS in middle) =====
+function TeamCard({
+  color,
+  name,
+  setName,
+  selected,
+  onSelect,
+  delay,
 }: {
   color: 'red' | 'blue';
   name: string;
   setName: (v: string) => void;
   selected: boolean;
   onSelect: () => void;
-  delay: string;
+  delay: number;
 }) {
   const isRed = color === 'red';
   const accent = isRed ? '#ef4444' : '#3b82f6';
-  const bg = isRed ? 'rgba(239,68,68,.1)' : 'rgba(59,130,246,.1)';
-  const borderColor = selected ? accent : `${accent}40`;
+  const accentLight = isRed ? '#fca5a5' : '#93c5fd';
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: parseFloat(delay) }}
+      transition={{ delay, duration: 0.3 }}
       onClick={onSelect}
-      style={{
-        flex: 1, borderRadius: '14px', overflow: 'hidden',
-        border: `2px solid ${borderColor}`,
-        background: bg,
-        padding: '10px', cursor: 'pointer',
-        transition: 'border-color .15s',
-      }}
+      className={`tobol-team-card ${selected ? 'selected' : ''}`}
+      style={
+        {
+          flex: 1,
+          padding: '10px 8px',
+          cursor: 'pointer',
+          '--card-border': selected
+            ? `linear-gradient(180deg, ${accentLight}, ${accent})`
+            : 'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02))',
+          '--card-border-selected': `linear-gradient(180deg, ${accentLight}, ${accent})`,
+          background: selected
+            ? `linear-gradient(180deg, ${accent}26, ${accent}0d 80%)`
+            : 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
+        } as React.CSSProperties
+      }
     >
-      {/* رأس المقعد */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px',
-      }}>
-        <div style={{
-          width: '24px', height: '24px', borderRadius: '50%',
-          background: `${accent}30`, border: `1px solid ${accent}50`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{ fontSize: '12px' }}>{isRed ? '🔴' : '🔵'}</span>
+      {/* رأس البطاقة: شارة + لون الفريق + علامة "يبدأ" */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          marginBottom: '8px',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${accent}55, ${accent}22)`,
+            border: `1.5px solid ${accent}80`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            boxShadow: selected ? `0 0 8px ${accent}55` : 'none',
+          }}
+        >
+          <span style={{ fontSize: '13px' }}>{isRed ? '🔴' : '🔵'}</span>
         </div>
-        <span style={{ fontSize: '13px', fontWeight: 'bold', color: accent }}>{isRed ? 'الأحمر' : 'الأزرق'}</span>
+        <span
+          style={{
+            fontSize: '12px',
+            fontWeight: 800,
+            color: accent,
+            textShadow: `0 1px 2px rgba(0,0,0,.6)`,
+          }}
+        >
+          {isRed ? 'الأحمر' : 'الأزرق'}
+        </span>
         {selected && (
-          <span style={{ fontSize: '10px', color: '#fbbf24', marginRight: 'auto' }}>⬅ يبدأ</span>
+          <motion.span
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              fontSize: '9px',
+              fontWeight: 800,
+              color: '#feef91',
+              background: 'rgba(254,239,145,.15)',
+              border: '1px solid rgba(254,239,145,.4)',
+              padding: '2px 6px',
+              borderRadius: '999px',
+              marginRight: 'auto',
+            }}
+          >
+            ← يبدأ
+          </motion.span>
         )}
       </div>
-      {/* اسم الفريق */}
+
+      {/* حقل الاسم */}
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder={isRed ? 'الجيش الأحمر' : 'الجيش الأزرق'}
+        placeholder={isRed ? 'اسم الجيش الأحمر' : 'اسم الجيش الأزرق'}
         maxLength={20}
         dir="rtl"
+        onClick={(e) => e.stopPropagation()}
         style={{
-          width: '100%', background: 'rgba(0,0,0,.3)',
-          border: `1px solid ${accent}20`, borderRadius: '8px',
-          color: '#fff', fontSize: '13px', padding: '8px 10px',
-          outline: 'none', textAlign: 'center',
+          width: '100%',
+          background: 'rgba(0,0,0,.35)',
+          border: `1px solid ${selected ? `${accent}55` : 'rgba(255,255,255,.08)'}`,
+          borderRadius: '10px',
+          color: '#fff',
+          fontSize: '12px',
+          fontWeight: 600,
+          padding: '7px 8px',
+          outline: 'none',
+          textAlign: 'center',
+          transition: 'border-color .15s',
+        }}
+      />
+
+      {/* خط شريط تزييني بنهاية البطاقة */}
+      <div
+        style={{
+          marginTop: '8px',
+          height: '2px',
+          background: `linear-gradient(90deg, transparent, ${accent}80, transparent)`,
+          opacity: selected ? 1 : 0.4,
         }}
       />
     </motion.div>
