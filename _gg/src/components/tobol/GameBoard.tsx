@@ -435,12 +435,21 @@ export default function GameBoard() {
     closeModal,
     resetGame,
     gameMode,
+    roomCode,
   } = useTobolStore();
 
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
+  // Diwaniya-mode viewer count + viewer modal + share link (read-only state)
+  const [viewerCount, setViewerCount] = useState(0);
+  const [viewers, setViewers] = useState<Array<{ id: string; name: string; joinedAt: number }>>([]);
+  const [showViewersModal, setShowViewersModal] = useState(false);
+  const [shareLink, setShareLink] = useState('');
+  const [directLink, setDirectLink] = useState('');
+  const [shareCopied, setShareCopied] = useState(false);
   const isSpectator = gameMode === 'diwaniya' && typeof window !== 'undefined' && !window.location.pathname.startsWith('/tobol');
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
 
   // Hide header chrome + bottom nav + floating panel tab
   useEffect(() => {
@@ -466,6 +475,74 @@ export default function GameBoard() {
     }, 2200);
     return () => clearTimeout(t);
   }, [pendingGameOver, closeModal]);
+
+  // ── Diwaniya mode: fetch viewer count + viewer list periodically
+  //    Also build the share link + direct link for the host.
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    // Build the share links
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    setShareLink(`${baseUrl}/join/tobol/${roomCode}`);
+    // Direct link: with ?direct=1, friends enter without typing the code
+    setDirectLink(`${baseUrl}/join/tobol/${roomCode}?direct=1`);
+    // Fetch viewer count
+    const fetchViewers = () => {
+      fetch(`/api/tobol-room/${roomCode}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(d => {
+          if (d?.room?.spectators) {
+            setViewers(d.room.spectators);
+            setViewerCount(d.room.spectators.length);
+          }
+        })
+        .catch(() => {});
+    };
+    fetchViewers();
+    const iv = setInterval(fetchViewers, 5000);
+    return () => clearInterval(iv);
+  }, [isDiwaniyaHost, roomCode]);
+
+  // Copy share link to clipboard
+  const copyShareLink = () => {
+    if (!shareLink) return;
+    navigator.clipboard.writeText(shareLink).then(() => {
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = shareLink;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    });
+  };
+
+  // Use native Web Share API for external app sharing (WhatsApp, Telegram, etc.)
+  const shareExternally = async () => {
+    if (!directLink) return;
+    const shareData = {
+      title: 'شاهد معركة طبول الحرب',
+      text: 'انضم لمشاهدة المعركة على G-G:',
+      url: directLink,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: copy direct link
+        navigator.clipboard.writeText(directLink).then(() => {
+          setShareCopied(true);
+          setTimeout(() => setShareCopied(false), 2000);
+        });
+      }
+    } catch {
+      // User cancelled share — silent
+    }
+  };
 
   const toggleMusic = () => {
     const next = !musicOn;
@@ -511,6 +588,22 @@ export default function GameBoard() {
         </button>
 
         <HeaderChatButton />
+
+        {/* Eye icon — only in diwaniya mode, shows viewer count */}
+        {isDiwaniyaHost && (
+          <button
+            type="button"
+            className="tobol-eye-btn"
+            onClick={() => setShowViewersModal(true)}
+            aria-label="المشاهدون"
+            title={`${viewerCount} مشاهد — اضغط لعرض القائمة`}
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" />
+            {viewerCount > 0 && (
+              <span className="tobol-eye-count">{viewerCount > 9 ? '9+' : viewerCount}</span>
+            )}
+          </button>
+        )}
 
         <button
           type="button"
@@ -726,6 +819,98 @@ export default function GameBoard() {
       <div style={{ marginTop: '4px' }}>
         <BattleLogButton />
       </div>
+
+      {/* ══════════ Diwaniya share box — appears under battle log ══════════ */}
+      {isDiwaniyaHost && (
+        <div className="tobol-share-box">
+          <div className="tobol-share-title">🔗 شارك مشاهدة المعركة</div>
+          <div className="tobol-share-code-row">
+            <span className="tobol-share-code-label">كود المشاهدة:</span>
+            <span className="tobol-share-code-value">{roomCode}</span>
+          </div>
+          <div className="tobol-share-link-row">
+            <input
+              type="text"
+              readOnly
+              value={shareLink}
+              className="tobol-share-link-input"
+              onClick={(e) => (e.target as HTMLInputElement).select()}
+            />
+            <button type="button" className="tobol-share-btn" onClick={copyShareLink}>
+              {shareCopied ? '✓ تم النسخ' : '📋 نسخ'}
+            </button>
+          </div>
+          <div className="tobol-share-link-row">
+            <button type="button" className="tobol-share-direct-btn" onClick={shareExternally}>
+              <img src="/battle/iv_team_share.webp" alt="share" />
+              <span>مشاركة مباشرة (دون كود)</span>
+            </button>
+          </div>
+          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '9px', margin: '4px 0 0', lineHeight: 1.4 }}>
+            الرابط المباشر يفتح اللعبة فوراً للأصدقاء المسجلين، أو يفتح نافذة التسجيل للسماح بالدخول.
+          </p>
+        </div>
+      )}
+
+      {/* ══════════ Viewers modal — diwaniya mode ══════════ */}
+      <AnimatePresence>
+        {showViewersModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowViewersModal(false)}
+            className="tobol-viewers-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-viewers-modal"
+            >
+              <div className="tobol-viewers-header">
+                <span className="tobol-viewers-title">
+                  <img src="/battle/icon_eye.webp" alt="viewers" />
+                  المشاهدون ({viewerCount})
+                </span>
+                <button
+                  onClick={() => setShowViewersModal(false)}
+                  className="tobol-viewers-close"
+                  aria-label="إغلاق"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="tobol-viewers-body">
+                {viewers.length === 0 ? (
+                  <p className="tobol-viewers-empty">
+                    لا يوجد مشاهدون حالياً
+                    <br />
+                    شارك الكود أو الرابط المباشر لجلب المشاهدين
+                  </p>
+                ) : (
+                  viewers.map((spec, idx) => (
+                    <div key={spec.id} className="tobol-viewer-row">
+                      <div className="tobol-viewer-avatar">
+                        {spec.name.charAt(0)}
+                      </div>
+                      <div className="tobol-viewer-info">
+                        <div className="tobol-viewer-name">{spec.name}</div>
+                        <div className="tobol-viewer-meta">
+                          انضم منذ {Math.max(0, Math.floor((Date.now() - spec.joinedAt) / 60000))} دقيقة
+                        </div>
+                      </div>
+                      <span className="tobol-viewer-badge">#{idx + 1}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ══════════ Quit game dialog ══════════ */}
       <AnimatePresence>

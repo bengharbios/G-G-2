@@ -5163,3 +5163,318 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
   text-align: center;
   font-style: italic;
 }
+
+/* ============================================================ */
+/* Diwaniya mode: Eye icon + share box + viewer modal          */
+/* ============================================================ */
+
+/* Eye icon in header — shows viewer count badge */
+.tobol-eye-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(8,28,22,.78);
+  border: 1px solid rgba(254,239,145,.25);
+  cursor: pointer;
+  transition: transform .12s ease, border-color .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(6px);
+}
+
+.tobol-eye-btn:hover {
+  border-color: rgba(254,239,145,.55);
+  box-shadow: 0 0 12px rgba(254,239,145,.22);
+}
+
+.tobol-eye-btn:active {
+  transform: scale(0.92);
+}
+
+.tobol-eye-btn img {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.tobol-eye-count {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #061812;
+  box-shadow: 0 0 6px rgba(220,38,38,.6);
+  animation: tobolBadgePulse 1.4s ease-in-out infinite;
+}
+
+/* Spectator share box — appears under battle log in diwaniya mode */
+.tobol-share-box {
+  width: 100%;
+  max-width: 380px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.12), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.95), rgba(4,18,14,.95));
+  border: 1px solid rgba(254,239,145,.35);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tobol-share-title {
+  color: #feef91;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 2px;
+  -webkit-text-stroke: 0.5px #aa6e1f;
+  paint-order: stroke fill;
+}
+
+.tobol-share-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.tobol-share-code-label {
+  color: #9fc4b4;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.tobol-share-code-value {
+  background: rgba(254,239,145,.08);
+  border: 1px solid rgba(254,239,145,.3);
+  border-radius: 6px;
+  padding: 3px 10px;
+  color: #feef91;
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  direction: ltr;
+}
+
+.tobol-share-link-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tobol-share-link-input {
+  flex: 1;
+  background: rgba(0,0,0,.4);
+  border: 1px solid rgba(254,239,145,.2);
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #cbd5e1;
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+  outline: none;
+  direction: ltr;
+}
+
+.tobol-share-link-input:focus {
+  border-color: rgba(254,239,145,.5);
+}
+
+.tobol-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform .12s ease;
+}
+
+.tobol-share-btn:active {
+  transform: scale(0.95);
+}
+
+.tobol-share-btn img {
+  width: 14px;
+  height: 14px;
+}
+
+.tobol-share-direct-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(254,239,145,.1);
+  border: 1px solid rgba(254,239,145,.35);
+  color: #feef91;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform .12s ease, border-color .15s ease;
+}
+
+.tobol-share-direct-btn:active {
+  transform: scale(0.95);
+}
+
+.tobol-share-direct-btn:hover {
+  border-color: rgba(254,239,145,.6);
+}
+
+.tobol-share-direct-btn img {
+  width: 14px;
+  height: 14px;
+}
+
+/* Viewer list modal — slides up from bottom */
+.tobol-viewers-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.tobol-viewers-modal {
+  background: linear-gradient(180deg, #0e2a22, #061812);
+  border: 1.5px solid rgba(254,239,145,.3);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 360px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 14px 36px rgba(0,0,0,.55);
+  overflow: hidden;
+}
+
+.tobol-viewers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(254,239,145,.15);
+}
+
+.tobol-viewers-title {
+  color: #feef91;
+  font-size: 15px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  -webkit-text-stroke: 0.5px #aa6e1f;
+  paint-order: stroke fill;
+}
+
+.tobol-viewers-title img {
+  width: 18px;
+  height: 18px;
+}
+
+.tobol-viewers-close {
+  background: none;
+  border: none;
+  color: #9fc4b4;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.tobol-viewers-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.tobol-viewer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,.3);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+.tobol-viewer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.tobol-viewer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tobol-viewer-name {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tobol-viewer-meta {
+  color: #9fc4b4;
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.tobol-viewer-badge {
+  font-size: 9px;
+  background: rgba(254,239,145,.12);
+  color: #feef91;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(254,239,145,.3);
+  flex-shrink: 0;
+}
+
+.tobol-viewers-empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  padding: 32px 0;
+}
