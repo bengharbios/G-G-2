@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface BattleButtonData {
@@ -35,6 +35,18 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   shifarat:    { select: '/battle/game_select_cipher_icon_select.webp',      unselect: '/battle/game_select_cipher_icon_unselect.webp',      label: 'الشيفرات' },
 };
 
+// ألعاب "الأكثر لعباً" (شارة HOT)
+const HOT_GAMES = new Set(['mafia', 'tobol', 'prison']);
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  delay: number;
+  duration: number;
+}
+
 export default function BattlePage() {
   const [config, setConfig] = useState<BattleConfig | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -42,7 +54,17 @@ export default function BattlePage() {
   const [joinCode, setJoinCode] = useState('');
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [animKey, setAnimKey] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
   const router = useRouter();
+
+  // تحقق من إعداد "تقليل الحركة"
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduceMotion(mq.matches);
+    const handler = () => setReduceMotion(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -73,16 +95,24 @@ export default function BattlePage() {
     if (touchStart === null) return;
     const diff = touchStart - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
-      if (diff > 0 && activeIndex < buttons.length - 1) {
-        setActiveIndex(activeIndex + 1);
-        setAnimKey(k => k + 1);
-      } else if (diff < 0 && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1);
-        setAnimKey(k => k + 1);
-      }
+      if (diff > 0 && activeIndex < buttons.length - 1) { setActiveIndex(i => i + 1); setAnimKey(k => k + 1); }
+      else if (diff < 0 && activeIndex > 0) { setActiveIndex(i => i - 1); setAnimKey(k => k + 1); }
     }
     setTouchStart(null);
   };
+
+  // جزيئات ذهبية متطايرة
+  const particles = useMemo<Particle[]>(() => {
+    if (reduceMotion) return [];
+    return Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: 2 + Math.random() * 4,
+      delay: Math.random() * 5,
+      duration: 4 + Math.random() * 3,
+    }));
+  }, [animKey, reduceMotion]);
 
   if (!config) {
     return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', color: '#9fc4b4', fontSize: '14px' }}>جارٍ التحميل...</div>;
@@ -93,12 +123,10 @@ export default function BattlePage() {
   if (!activeBtn) return null;
 
   const stroke = activeBtn.strokeColor;
+  const isHot = HOT_GAMES.has(activeBtn.buttonKey);
   const canAccessMaintenance = userRole === 'admin' || userRole === 'moderator';
 
-  const switchGame = (i: number) => {
-    setActiveIndex(i);
-    setAnimKey(k => k + 1);
-  };
+  const switchGame = (i: number) => { setActiveIndex(i); setAnimKey(k => k + 1); };
 
   return (
     <div
@@ -109,15 +137,23 @@ export default function BattlePage() {
         flexDirection: 'column',
         padding: '16px 16px 120px',
         gap: '14px',
-        background: 'linear-gradient(180deg, #062b21 0%, #041f18 40%, #03211a 100%)',
+        background: `linear-gradient(180deg, #062b21 0%, #041f18 40%, #03211a 100%)`,
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* خلفية زخرفية: هلال + نجوم بشفافية منخفضة جداً */}
+      {/* توهج بلون اللعبة خلف البطاقة */}
+      <div style={{
+        position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)',
+        width: '300px', height: '300px', borderRadius: '50%',
+        background: `radial-gradient(circle, ${stroke}15 0%, transparent 70%)`,
+        filter: 'blur(40px)', pointerEvents: 'none', zIndex: 0,
+        animation: reduceMotion ? 'none' : 'glowPulse 3s ease-in-out infinite',
+      }} />
+      {/* هلال زخرفي */}
       <div style={{
         position: 'absolute', top: '-30px', left: '50%', transform: 'translateX(-50%)',
-        width: '280px', height: 'auto', opacity: 0.06, pointerEvents: 'none', zIndex: 0,
+        width: '280px', height: 'auto', opacity: 0.05, pointerEvents: 'none', zIndex: 0,
       }}>
         <img src="/battle/hall_title_bg.webp" alt="" style={{ width: '100%' }} />
       </div>
@@ -130,53 +166,96 @@ export default function BattlePage() {
       >
         {/* ===== البطاقة الرئيسية (Hero Card) ===== */}
         <div
-          key={animKey}
+          key={`hero-${animKey}`}
           style={{
-            animation: 'heroFadeIn 0.4s ease-out',
+            animation: reduceMotion ? 'none' : 'heroEnter 0.5s cubic-bezier(0.22,1,0.36,1)',
             position: 'relative',
             width: '100%',
             aspectRatio: '1.35',
             borderRadius: '20px',
             overflow: 'hidden',
-            border: `2px solid ${stroke}50`,
-            boxShadow: `0 8px 28px rgba(0,0,0,.5), 0 0 16px ${stroke}30`,
+            border: `2px solid ${stroke}60`,
+            boxShadow: `0 10px 30px rgba(0,0,0,.5), 0 0 20px ${stroke}40`,
             flexShrink: 0,
           }}
         >
+          {/* الصورة — brightness + saturate + zoom بطيء */}
           <img
             src={activeBtn.imageSrc}
             alt={activeBtn.label}
             style={{
               width: '100%', height: '100%', objectFit: 'cover', display: 'block',
-              animation: 'ggFloat 2.6s ease-in-out infinite',
+              filter: 'brightness(1.1) saturate(1.15)',
+              animation: reduceMotion ? 'none' : 'slowZoom 6s ease-in-out infinite alternate',
             }}
           />
-          {/* تدرج داكن في الأسفل لاسم اللعبة */}
+          {/* Overlay بلون اللعبة */}
           <div style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%',
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.85) 100%)',
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: `linear-gradient(135deg, ${stroke}20 0%, transparent 50%, ${stroke}15 100%)`,
+          }} />
+          {/* تدرج داكن أسفل لاسم اللعبة */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.88) 100%)',
             display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-            padding: '0 0 14px 0',
+            padding: '0 0 16px 0',
           }}>
+            {/* اسم اللعبة فوق الصورة */}
             <span style={{
               fontSize: '22px', fontWeight: 900, color: '#fff',
-              textShadow: '0 2px 6px rgba(0,0,0,.8)',
+              textShadow: '0 2px 8px rgba(0,0,0,.9)',
               paintOrder: 'stroke fill',
               WebkitTextStroke: `1px ${stroke}`,
             }}>
               {activeBtn.label}
             </span>
           </div>
-          {/* تأثير لمعان */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'linear-gradient(105deg, transparent 42%, rgba(255,255,255,.15) 50%, transparent 58%)',
-            backgroundSize: '240% 100%', animation: 'ggShine 4.2s ease-in-out infinite',
-          }} />
+          {/* توهج نابض حول البطاقة */}
+          {!reduceMotion && (
+            <div style={{
+              position: 'absolute', inset: '-2px', borderRadius: '20px',
+              border: `2px solid ${stroke}30`, pointerEvents: 'none',
+              animation: 'glowPulse 3s ease-in-out infinite',
+            }} />
+          )}
+          {/* لمعة ضوئية تعبر البطاقة كل 4-5 ثوانٍ */}
+          {!reduceMotion && (
+            <div style={{
+              position: 'absolute', inset: 0, pointerEvents: 'none',
+              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,.25) 50%, transparent 60%)',
+              backgroundSize: '240% 100%', animation: 'ggShine 4.5s ease-in-out infinite',
+            }} />
+          )}
+          {/* جزيئات ذهبية متطايرة فوق الصورة */}
+          {!reduceMotion && particles.map((p) => (
+            <div key={p.id} style={{
+              position: 'absolute', left: `${p.x}%`, bottom: `${p.y}%`,
+              width: `${p.size}px`, height: `${p.size}px`, borderRadius: '50%',
+              background: '#ffd75e', opacity: 0.5, pointerEvents: 'none',
+              boxShadow: '0 0 4px #ffd75e',
+              animation: `floatParticle ${p.duration}s ease-in-out ${p.delay}s infinite`,
+            }} />
+          ))}
+          {/* شارة HOT للألعاب الأكثر لعباً */}
+          {isHot && (
+            <div style={{
+              position: 'absolute', top: '10px', right: '10px',
+              background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+              color: '#fff', fontSize: '10px', fontWeight: 900,
+              padding: '3px 10px', borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(239,68,68,.4)',
+              border: '1px solid rgba(255,255,255,.2)',
+              zIndex: 5,
+              animation: reduceMotion ? 'none' : 'badgePulse 2s ease-in-out infinite',
+            }}>
+              🔥 HOT
+            </div>
+          )}
           {/* شارة maintenance */}
           {activeBtn.visibility === 'maintenance' && (
             <span style={{
-              position: 'absolute', top: '8px', left: '50%', transform: 'translateX(-50%)',
+              position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)',
               background: '#f59e0b', color: '#78350f', fontSize: '9px', fontWeight: 900,
               padding: '3px 10px', borderRadius: '6px', zIndex: 5,
             }}>🔧 صيانة</span>
@@ -188,56 +267,43 @@ export default function BattlePage() {
           key={`btns-${animKey}`}
           style={{
             display: 'flex', gap: '12px',
-            animation: 'btnsFadeIn 0.4s ease-out 0.1s both',
           }}
         >
           {/* العراب */}
-          <button
+          <ModeButton
+            label="العراب"
+            icon="👑"
+            gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+            highlight="linear-gradient(180deg, rgba(255,255,255,.25) 0%, transparent 40%)"
+            shadow="0 4px 16px rgba(245,158,11,.35)"
+            delay="0.08s"
+            reduceMotion={reduceMotion}
+            isPrimary={true}
             onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref)}
-            style={{
-              flex: 1, minHeight: '90px',
-              borderRadius: '16px', border: 'none', cursor: 'pointer',
-              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-              boxShadow: '0 4px 14px rgba(245,158,11,.3)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px',
-              transition: 'transform .12s',
-            }}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(.96)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            <span style={{ fontSize: '28px' }}>👑</span>
-            <span style={{ fontSize: '16px', fontWeight: 800, color: '#fff' }}>العراب</span>
-          </button>
+          />
           {/* الديوانية */}
-          <button
+          <ModeButton
+            label="الديوانية"
+            icon="🏛️"
+            gradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+            highlight="linear-gradient(180deg, rgba(255,255,255,.2) 0%, transparent 40%)"
+            shadow="0 4px 16px rgba(16,185,129,.35)"
+            delay="0.16s"
+            reduceMotion={reduceMotion}
+            isPrimary={false}
             onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=diwaniya')}
-            style={{
-              flex: 1, minHeight: '90px',
-              borderRadius: '16px', border: 'none', cursor: 'pointer',
-              background: 'linear-gradient(135deg, #10b981, #059669)',
-              boxShadow: '0 4px 14px rgba(16,185,129,.3)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px',
-              transition: 'transform .12s',
-            }}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(.96)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            <span style={{ fontSize: '28px' }}>🏛️</span>
-            <span style={{ fontSize: '16px', fontWeight: 800, color: '#fff' }}>الديوانية</span>
-          </button>
+          />
         </div>
 
-        {/* ===== صف المشاهدة (كبسولة أنيقة) ===== */}
+        {/* ===== صف المشاهدة (كبسولة أنيقة خفيفة بصرياً) ===== */}
         <div
           key={`watch-${animKey}`}
           style={{
             display: 'flex', alignItems: 'center',
-            background: 'rgba(15,23,42,.6)', backdropFilter: 'blur(4px)',
-            borderRadius: '14px', border: '1px solid rgba(255,255,255,.1)',
-            padding: '4px 4px 4px 4px',
-            animation: 'btnsFadeIn 0.4s ease-out 0.2s both',
+            background: 'rgba(15,23,42,.45)', backdropFilter: 'blur(6px)',
+            borderRadius: '12px', border: '1px solid rgba(255,255,255,.08)',
+            padding: '3px 3px 3px 3px',
+            opacity: 0.85,
           }}
         >
           <input
@@ -247,7 +313,7 @@ export default function BattlePage() {
             placeholder="أدخل كود المشاهدة..."
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
-              color: '#fff', fontSize: '14px', padding: '12px 14px',
+              color: '#94a3b8', fontSize: '13px', padding: '10px 14px',
               textAlign: 'center',
             }}
             dir="ltr"
@@ -256,23 +322,24 @@ export default function BattlePage() {
             onClick={() => joinCode.trim() && router.push(`/join/${joinCode.trim()}`)}
             disabled={!joinCode.trim()}
             style={{
-              padding: '10px 18px', borderRadius: '10px', border: 'none', cursor: joinCode.trim() ? 'pointer' : 'not-allowed',
-              background: joinCode.trim() ? 'linear-gradient(135deg, #4a8d7a, #3a7d6a)' : 'rgba(100,100,100,.4)',
-              color: '#fff', fontSize: '14px', fontWeight: 700, whiteSpace: 'nowrap',
-              display: 'flex', alignItems: 'center', gap: '6px',
-              transition: 'transform .12s',
+              padding: '8px 16px', borderRadius: '9px', border: 'none',
+              cursor: joinCode.trim() ? 'pointer' : 'not-allowed',
+              background: joinCode.trim() ? 'linear-gradient(135deg, #4a8d7a, #3a7d6a)' : 'rgba(100,100,100,.3)',
+              color: '#fff', fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap',
+              display: 'flex', alignItems: 'center', gap: '5px',
+              transition: 'transform .1s',
             }}
-            onMouseDown={(e) => joinCode.trim() && (e.currentTarget.style.transform = 'scale(.96)')}
+            onMouseDown={(e) => joinCode.trim() && (e.currentTarget.style.transform = 'scale(.95)')}
             onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <span style={{ fontSize: '16px' }}>👁️</span>
+            <span style={{ fontSize: '14px' }}>👁️</span>
             مشاهدة
           </button>
         </div>
       </div>
 
-      {/* ===== شريط أيقونات التصفح — مطابق لـ yalla lodo ===== */}
+      {/* ===== شريط أيقونات التصفح ===== */}
       <div style={{
         position: 'fixed', bottom: '80px', left: '50%', transform: 'translateX(-50%)',
         zIndex: 90, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
@@ -303,7 +370,6 @@ export default function BattlePage() {
             );
           })}
         </div>
-        {/* مؤشر النقاط */}
         <div style={{ display: 'flex', gap: '8px', direction: 'ltr' }}>
           {buttons.map((_, i) => (
             <div key={i} style={{
@@ -315,25 +381,88 @@ export default function BattlePage() {
         </div>
       </div>
 
-      {/* CSS keyframes */}
+      {/* ===== CSS keyframes ===== */}
       <style jsx>{`
-        @keyframes heroFadeIn {
-          from { opacity: 0; transform: translateY(12px); }
+        @keyframes heroEnter {
+          from { opacity: 0; transform: scale(0.92) translateY(10px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes btnEnter {
+          from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes btnsFadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes ggFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
+        @keyframes slowZoom {
+          from { transform: scale(1) translateY(0); }
+          to { transform: scale(1.05) translateY(-2px); }
         }
         @keyframes ggShine {
           0%, 55% { background-position: 130% 0; }
           85%, 100% { background-position: -130% 0; }
         }
+        @keyframes glowPulse {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        @keyframes badgePulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+        @keyframes floatParticle {
+          0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+          50% { transform: translateY(-15px) translateX(5px); opacity: 0.7; }
+        }
+        @keyframes btnPulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.03); }
+        }
       `}</style>
     </div>
+  );
+}
+
+// ===== مكون زر الوضع (العراب / الديوانية) =====
+function ModeButton({
+  label, icon, gradient, highlight, shadow, delay, reduceMotion, isPrimary, onClick,
+}: {
+  label: string; icon: string; gradient: string; highlight: string;
+  shadow: string; delay: string; reduceMotion: boolean; isPrimary: boolean; onClick: () => void;
+}) {
+  const [pressed, setPressed] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      style={{
+        flex: 1, minHeight: '90px', borderRadius: '16px', border: 'none', cursor: 'pointer',
+        background: gradient, boxShadow: shadow,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px',
+        position: 'relative', overflow: 'hidden',
+        transform: pressed ? 'scale(0.95)' : 'scale(1)',
+        transition: 'transform .1s ease-out',
+        animation: reduceMotion ? 'none' : `btnEnter 0.4s ease-out ${delay} both${isPrimary ? ', btnPulse 2.5s ease-in-out 0.5s infinite' : ''}`,
+      }}
+    >
+      {/* حافة علوية فاتحة (تأثير 3D بارز) */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '50%',
+        background: highlight, pointerEvents: 'none',
+      }} />
+      {/* لمعة تعبر الزر */}
+      {!reduceMotion && (
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'linear-gradient(105deg, transparent 45%, rgba(255,255,255,.15) 50%, transparent 55%)',
+          backgroundSize: '200% 100%',
+          animation: `ggShine ${3 + Math.random()}s ease-in-out ${delay} infinite`,
+        }} />
+      )}
+      <span style={{
+        fontSize: '28px',
+        animation: reduceMotion ? 'none' : `btnPulse 2s ease-in-out ${Math.random()}s infinite`,
+      }}>{icon}</span>
+      <span style={{ fontSize: '16px', fontWeight: 800, color: '#fff', textShadow: '0 1px 3px rgba(0,0,0,.3)' }}>{label}</span>
+    </button>
   );
 }
