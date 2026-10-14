@@ -1185,6 +1185,144 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore seed errors */ }
 
+  // ─── BattleTheme: نظام القوالب (Themes) لصفحة الألعاب ────────────────
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS BattleTheme (
+      id TEXT PRIMARY KEY,
+      themeKey TEXT NOT NULL UNIQUE,
+      themeName TEXT NOT NULL,
+      description TEXT DEFAULT '',
+      isActive INTEGER DEFAULT 0,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // ─── BattleButton: كل زر قابل للتعديل/الحذف لكل قالب ─────────────────
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS BattleButton (
+      id TEXT PRIMARY KEY,
+      themeId TEXT NOT NULL,
+      gameType TEXT NOT NULL,
+      buttonKey TEXT NOT NULL,
+      label TEXT DEFAULT '',
+      imageSrc TEXT DEFAULT '',
+      strokeColor TEXT DEFAULT '#000000',
+      width INTEGER DEFAULT 167,
+      height INTEGER DEFAULT 134,
+      tabHref TEXT DEFAULT '',
+      tabOrder INTEGER DEFAULT 0,
+      visibility TEXT DEFAULT 'visible',
+      isActive INTEGER DEFAULT 1,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now')),
+      UNIQUE(themeId, buttonKey)
+    )
+  `);
+
+  // ─── BattleThemeConfig: إعدادات عامة لكل قالب (خلفيات، عناوين، أيقونات) ─
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS BattleThemeConfig (
+      id TEXT PRIMARY KEY,
+      themeId TEXT NOT NULL,
+      configKey TEXT NOT NULL,
+      configValue TEXT DEFAULT '',
+      configType TEXT DEFAULT 'text',
+      description TEXT DEFAULT '',
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now')),
+      UNIQUE(themeId, configKey)
+    )
+  `);
+
+  // ─── Seed: قالبان افتراضيان (current + yalla) ──────────────────────
+  try {
+    const themesExist = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme");
+    const themeCnt = (themesExist.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (!themeCnt || themeCnt === 0) {
+      // القالب 1: current (القالب الحالي بـ Tailwind)
+      const theme1Id = crypto.randomUUID();
+      await c.execute({
+        sql: `INSERT INTO BattleTheme (id, themeKey, themeName, description, isActive, createdAt, updatedAt)
+              VALUES (?, 'current', 'القالب الحالي', 'تصميم Tailwind الأصلي', 0, datetime('now'), datetime('now'))`,
+        args: [theme1Id],
+      });
+
+      // القالب 2: yalla (قالب yalla ludo)
+      const theme2Id = crypto.randomUUID();
+      await c.execute({
+        sql: `INSERT INTO BattleTheme (id, themeKey, themeName, description, isActive, createdAt, updatedAt)
+              VALUES (?, 'yalla', 'قالب يلا لودو', 'تصميم مطابق لـ yalla ludo الأصلي', 1, datetime('now'), datetime('now'))`,
+        args: [theme2Id],
+      });
+
+      // إعدادات عامة لقالب yalla
+      const yallaConfigs = [
+        { key: 'page_background', value: '#041F18', type: 'color', desc: 'خلفية الصفحة' },
+        { key: 'rank_bar_background_my', value: '/battle/icon_rank_my.webp', type: 'image', desc: 'خلفية شريط الرابطة (يسار)' },
+        { key: 'rank_bar_background_global', value: '/battle/icon_rank_global.webp', type: 'image', desc: 'خلفية شريط الرابطة (يمين)' },
+        { key: 'rank_cup_image', value: '/battle/battle_cup_seg_1.svga_static.png', type: 'image', desc: 'كأس الدوري' },
+        { key: 'rank_global_image', value: '/battle/rank_global.webp', type: 'image', desc: 'كأس عالمي' },
+        { key: 'rank_lock_image', value: '/battle/lock.webp', type: 'image', desc: 'قفل' },
+        { key: 'hero_moon_image', value: '/battle/hall_title_bg.webp', type: 'image', desc: 'الهلال العلوي' },
+        { key: 'bottom_desk_image', value: '/battle/bottom_desk.webp', type: 'image', desc: 'المكتب السفلي' },
+        { key: 'ludo_title_image', value: '/battle/ludo_title.webp', type: 'image', desc: 'عنوان لعبة Ludo' },
+        { key: 'domino_title_image', value: '/battle/domino_title.webp', type: 'image', desc: 'عنوان لعبة Domino' },
+        { key: 'jackaroo_title_image', value: '/battle/jackaroo_logo.webp', type: 'image', desc: 'عنوان لعبة Jackaroo' },
+        { key: 'other_title_image', value: '/battle/others_icon.webp', type: 'image', desc: 'عنوان ألعاب أخرى' },
+        { key: 'ludo_select_icon', value: '/battle/game_select_ludo_icon_select.webp', type: 'image', desc: 'زر Ludo (نشط)' },
+        { key: 'ludo_unselect_icon', value: '/battle/game_select_ludo_icon_unselect.webp', type: 'image', desc: 'زر Ludo (عادي)' },
+        { key: 'domino_select_icon', value: '/battle/game_select_domino_icon_select.webp', type: 'image', desc: 'زر Domino (نشط)' },
+        { key: 'domino_unselect_icon', value: '/battle/game_select_domino_icon_unselect.webp', type: 'image', desc: 'زر Domino (عادي)' },
+        { key: 'jackaroo_select_icon', value: '/battle/game_select_jackaroo_icon_select.webp', type: 'image', desc: 'زر Jackaroo (نشط)' },
+        { key: 'jackaroo_unselect_icon', value: '/battle/game_select_jackaroo_icon_unselect.webp', type: 'image', desc: 'زر Jackaroo (عادي)' },
+        { key: 'other_select_icon', value: '/battle/game_select_other_icon_select.webp', type: 'image', desc: 'زر Other (نشط)' },
+        { key: 'other_unselect_icon', value: '/battle/game_select_other_icon_unselect.webp', type: 'image', desc: 'زر Other (عادي)' },
+      ];
+      for (const cfg of yallaConfigs) {
+        await c.execute({
+          sql: `INSERT INTO BattleThemeConfig (id, themeId, configKey, configValue, configType, description, createdAt, updatedAt)
+                VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), theme2Id, cfg.key, cfg.value, cfg.type, cfg.desc],
+        });
+      }
+
+      // أزرار قالب yalla (19 زر + 4 تبويبات تبديل)
+      const yallaButtons = [
+        // Ludo (5)
+        { game: 'ludo', key: 'ludo_2p', label: '2&4 Players', img: '/battle/svg_ludo_2ren.webp', stroke: '#A0631C', w: 167, h: 134, order: 0 },
+        { game: 'ludo', key: 'ludo_4p', label: 'Team', img: '/battle/svg_ludo_4ren.webp', stroke: '#504593', w: 167, h: 134, order: 1 },
+        { game: 'ludo', key: 'ludo_tournament', label: 'Tournament', img: '/battle/svg_ludo_tournament.webp', stroke: '#387E12', w: 111, h: 99, order: 2 },
+        { game: 'ludo', key: 'ludo_local', label: 'Private&Local', img: '/battle/svg_ludo_local.webp', stroke: '#0D6C8C', w: 111, h: 99, order: 3 },
+        { game: 'ludo', key: 'ludo_vip', label: 'VIP Room', img: '/battle/svg_ludo_vip.webp', stroke: '#99372B', w: 111, h: 99, order: 4 },
+        // Domino (5)
+        { game: 'domino', key: 'domino_2p', label: '1 ON 1', img: '/battle/svg_domino_2ren.webp', stroke: '#2A7BB4', w: 166, h: 130, order: 0 },
+        { game: 'domino', key: 'domino_4p', label: '4 Players', img: '/battle/svg_domino_4ren.webp', stroke: '#504593', w: 166, h: 130, order: 1 },
+        { game: 'domino', key: 'domino_tournament', label: 'Tournament', img: '/battle/svg_domino_tournament.webp', stroke: '#387E12', w: 111, h: 99, order: 2 },
+        { game: 'domino', key: 'domino_private', label: 'Private', img: '/battle/svg_domino_private.webp', stroke: '#B76224', w: 111, h: 99, order: 3 },
+        { game: 'domino', key: 'domino_vip', label: 'VIP Room', img: '/battle/svg_domino_vip.webp', stroke: '#99372B', w: 111, h: 99, order: 4 },
+        // Jackaroo (4)
+        { game: 'jackaroo', key: 'jackaroo_1v1', label: 'Quick 1v1', img: '/battle/bg_jackaroo_enter_1v1.png', stroke: '#0F7D00', w: 150, h: 229, order: 0 },
+        { game: 'jackaroo', key: 'jackaroo_classic', label: 'Classic', img: '/battle/bg_jackaroo_basic_enter.png', stroke: '#1E6887', w: 180, h: 110, order: 1 },
+        { game: 'jackaroo', key: 'jackaroo_complex', label: 'Complex', img: '/battle/bg_jackaroo_complex_enter.png', stroke: '#B64E02', w: 88, h: 115, order: 2 },
+        { game: 'jackaroo', key: 'jackaroo_vip', label: 'VIP', img: '/battle/bg_jackaroo_vip_enter.png', stroke: '#B64E02', w: 88, h: 115, order: 3 },
+        // Other (5)
+        { game: 'other', key: 'other_jungle', label: 'Jungle Ludo', img: '/battle/other_jungle_ludo.webp', stroke: '#C06C2E', w: 160, h: 127, order: 0 },
+        { game: 'other', key: 'other_lucky', label: 'Lucky Ludo', img: '/battle/other_default_lucky_ludo.webp', stroke: '#732B99', w: 160, h: 127, order: 1 },
+        { game: 'other', key: 'other_snake', label: 'Snake 2p', img: '/battle/other_snake_mode.webp', stroke: '#670ABE', w: 106, h: 95, order: 2 },
+        { game: 'other', key: 'other_fight', label: 'Fight Ludo', img: '/battle/other_fight_ludo.webp', stroke: '#3D8815', w: 106, h: 95, order: 3 },
+        { game: 'other', key: 'other_night', label: 'Night Ludo', img: '/battle/other_night_ludo.webp', stroke: '#0B80C3', w: 106, h: 95, order: 4 },
+      ];
+      for (const btn of yallaButtons) {
+        await c.execute({
+          sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), theme2Id, btn.game, btn.key, btn.label, btn.img, btn.stroke, btn.w, btn.h, btn.order],
+        });
+      }
+    }
+  } catch { /* ignore seed errors */ }
+
   _tablesReady = true;
 }
 
@@ -3682,6 +3820,257 @@ export async function deleteBottomNavTab(tabKey: string): Promise<boolean> {
     args: [tabKey],
   });
   return true;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// ─── Battle Theme System (نظام القوالب لصفحة الألعاب) ──────────────
+// ═══════════════════════════════════════════════════════════════════════
+
+export interface BattleTheme {
+  id: string;
+  themeKey: string;
+  themeName: string;
+  description: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BattleButton {
+  id: string;
+  themeId: string;
+  gameType: string;       // ludo/domino/jackaroo/other
+  buttonKey: string;
+  label: string;
+  imageSrc: string;
+  strokeColor: string;
+  width: number;
+  height: number;
+  tabHref: string;
+  tabOrder: number;
+  visibility: 'visible' | 'hidden' | 'maintenance';
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BattleThemeConfig {
+  id: string;
+  themeId: string;
+  configKey: string;
+  configValue: string;
+  configType: 'image' | 'color' | 'number' | 'text' | 'boolean';
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function toBattleTheme(row: Record<string, unknown>): BattleTheme {
+  return {
+    id: row.id as string,
+    themeKey: row.themeKey as string,
+    themeName: (row.themeName as string) ?? '',
+    description: (row.description as string) ?? '',
+    isActive: !!(row.isActive && row.isActive !== 0),
+    createdAt: (row.createdAt as string) ?? '',
+    updatedAt: (row.updatedAt as string) ?? '',
+  };
+}
+
+function toBattleButton(row: Record<string, unknown>): BattleButton {
+  return {
+    id: row.id as string,
+    themeId: row.themeId as string,
+    gameType: (row.gameType as string) ?? 'ludo',
+    buttonKey: (row.buttonKey as string) ?? '',
+    label: (row.label as string) ?? '',
+    imageSrc: (row.imageSrc as string) ?? '',
+    strokeColor: (row.strokeColor as string) ?? '#000000',
+    width: Number(row.width ?? 167),
+    height: Number(row.height ?? 134),
+    tabHref: (row.tabHref as string) ?? '',
+    tabOrder: Number(row.tabOrder ?? 0),
+    visibility: (row.visibility as BattleButton['visibility']) ?? 'visible',
+    isActive: !!(row.isActive && row.isActive !== 0),
+    createdAt: (row.createdAt as string) ?? '',
+    updatedAt: (row.updatedAt as string) ?? '',
+  };
+}
+
+function toBattleThemeConfig(row: Record<string, unknown>): BattleThemeConfig {
+  return {
+    id: row.id as string,
+    themeId: row.themeId as string,
+    configKey: (row.configKey as string) ?? '',
+    configValue: (row.configValue as string) ?? '',
+    configType: (row.configType as BattleThemeConfig['configType']) ?? 'text',
+    description: (row.description as string) ?? '',
+    createdAt: (row.createdAt as string) ?? '',
+    updatedAt: (row.updatedAt as string) ?? '',
+  };
+}
+
+/** كل القوالب */
+export async function getAllBattleThemes(): Promise<BattleTheme[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({ sql: 'SELECT * FROM BattleTheme ORDER BY createdAt ASC', args: [] });
+  return r.rows.map((row) => toBattleTheme(row as Record<string, unknown>));
+}
+
+/** القالب النشط */
+export async function getActiveBattleTheme(): Promise<BattleTheme | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({ sql: 'SELECT * FROM BattleTheme WHERE isActive = 1 LIMIT 1', args: [] });
+  if (r.rows.length === 0) return null;
+  return toBattleTheme(r.rows[0] as Record<string, unknown>);
+}
+
+/** يفعّل قالب (ويعطّل الباقي) */
+export async function activateBattleTheme(themeId: string): Promise<boolean> {
+  await ensureAdminTables();
+  const c = getClient();
+  await c.execute({ sql: 'UPDATE BattleTheme SET isActive = 0', args: [] });
+  await c.execute({ sql: `UPDATE BattleTheme SET isActive = 1, updatedAt = datetime('now') WHERE id = ?`, args: [themeId] });
+  return true;
+}
+
+/** ينشئ قالب جديد */
+export async function createBattleTheme(data: { themeKey: string; themeName: string; description?: string }): Promise<BattleTheme | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const id = crypto.randomUUID();
+  await c.execute({
+    sql: `INSERT INTO BattleTheme (id, themeKey, themeName, description, isActive, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, 0, datetime('now'), datetime('now'))`,
+    args: [id, data.themeKey, data.themeName, data.description ?? ''],
+  });
+  // انسخ أزرار وإعدادات قالب yalla كنقطة بداية
+  const yallaTheme = await c.execute({ sql: "SELECT id FROM BattleTheme WHERE themeKey = 'yalla'", args: [] });
+  if (yallaTheme.rows.length > 0) {
+    const yallaId = (yallaTheme.rows[0] as Record<string, unknown>).id as string;
+    // انسخ الإعدادات
+    const cfgs = await c.execute({ sql: 'SELECT configKey, configValue, configType, description FROM BattleThemeConfig WHERE themeId = ?', args: [yallaId] });
+    for (const cfg of cfgs.rows) {
+      const c2 = cfg as Record<string, unknown>;
+      await c.execute({
+        sql: `INSERT INTO BattleThemeConfig (id, themeId, configKey, configValue, configType, description, createdAt, updatedAt)
+              VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+        args: [crypto.randomUUID(), id, c2.configKey, c2.configValue, c2.configType, c2.description],
+      });
+    }
+    // انسخ الأزرار
+    const btns = await c.execute({ sql: 'SELECT gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive FROM BattleButton WHERE themeId = ?', args: [yallaId] });
+    for (const btn of btns.rows) {
+      const b = btn as Record<string, unknown>;
+      await c.execute({
+        sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+        args: [crypto.randomUUID(), id, b.gameType, b.buttonKey, b.label, b.imageSrc, b.strokeColor, b.width, b.height, b.tabHref, b.tabOrder, b.visibility, b.isActive],
+      });
+    }
+  }
+  const r = await c.execute({ sql: 'SELECT * FROM BattleTheme WHERE id = ?', args: [id] });
+  return r.rows.length > 0 ? toBattleTheme(r.rows[0] as Record<string, unknown>) : null;
+}
+
+/** يحدّث قالب */
+export async function updateBattleTheme(themeId: string, data: Partial<Pick<BattleTheme, 'themeName' | 'description'>>): Promise<BattleTheme | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const fields: string[] = [];
+  const values: unknown[] = [];
+  if (data.themeName !== undefined) { fields.push('themeName = ?'); values.push(data.themeName); }
+  if (data.description !== undefined) { fields.push('description = ?'); values.push(data.description); }
+  if (fields.length === 0) return null;
+  fields.push("updatedAt = datetime('now')");
+  values.push(themeId);
+  await c.execute({ sql: `UPDATE BattleTheme SET ${fields.join(', ')} WHERE id = ?`, args: values });
+  const r = await c.execute({ sql: 'SELECT * FROM BattleTheme WHERE id = ?', args: [themeId] });
+  return r.rows.length > 0 ? toBattleTheme(r.rows[0] as Record<string, unknown>) : null;
+}
+
+/** يحذف قالب (لا يحذف القوالب الافتراضية) */
+export async function deleteBattleTheme(themeId: string): Promise<boolean> {
+  await ensureAdminTables();
+  const c = getClient();
+  // لا تحذف قالب نشط
+  const check = await c.execute({ sql: 'SELECT isActive, themeKey FROM BattleTheme WHERE id = ?', args: [themeId] });
+  if (check.rows.length === 0) return false;
+  const row = check.rows[0] as Record<string, unknown>;
+  if (row.isActive && row.isActive !== 0) return false; // لا تحذف قالب نشط
+  if (row.themeKey === 'current' || row.themeKey === 'yalla') return false; // لا تحذف افتراضي
+  await c.execute({ sql: 'DELETE FROM BattleButton WHERE themeId = ?', args: [themeId] });
+  await c.execute({ sql: 'DELETE FROM BattleThemeConfig WHERE themeId = ?', args: [themeId] });
+  await c.execute({ sql: 'DELETE FROM BattleTheme WHERE id = ?', args: [themeId] });
+  return true;
+}
+
+/** كل أزرار قالب محدد */
+export async function getBattleButtonsByTheme(themeId: string): Promise<BattleButton[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({ sql: 'SELECT * FROM BattleButton WHERE themeId = ? ORDER BY gameType, tabOrder ASC', args: [themeId] });
+  return r.rows.map((row) => toBattleButton(row as Record<string, unknown>));
+}
+
+/** كل إعدادات قالب محدد */
+export async function getBattleConfigsByTheme(themeId: string): Promise<BattleThemeConfig[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({ sql: 'SELECT * FROM BattleThemeConfig WHERE themeId = ? ORDER BY configKey ASC', args: [themeId] });
+  return r.rows.map((row) => toBattleThemeConfig(row as Record<string, unknown>));
+}
+
+/** يحدّث زر */
+export async function updateBattleButton(buttonId: string, data: Partial<Omit<BattleButton, 'id' | 'themeId' | 'createdAt' | 'updatedAt'>>): Promise<BattleButton | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const fields: string[] = [];
+  const values: unknown[] = [];
+  for (const [k, v] of Object.entries(data)) {
+    if (k === 'isActive') { fields.push('isActive = ?'); values.push(v ? 1 : 0); }
+    else if (k === 'width' || k === 'height' || k === 'tabOrder') { fields.push(`${k} = ?`); values.push(Number(v)); }
+    else { fields.push(`${k} = ?`); values.push(v); }
+  }
+  if (fields.length === 0) return null;
+  fields.push("updatedAt = datetime('now')");
+  values.push(buttonId);
+  await c.execute({ sql: `UPDATE BattleButton SET ${fields.join(', ')} WHERE id = ?`, args: values });
+  const r = await c.execute({ sql: 'SELECT * FROM BattleButton WHERE id = ?', args: [buttonId] });
+  return r.rows.length > 0 ? toBattleButton(r.rows[0] as Record<string, unknown>) : null;
+}
+
+/** ينشئ زر جديد */
+export async function createBattleButton(themeId: string, data: { gameType: string; buttonKey: string; label: string; imageSrc: string; strokeColor: string; width: number; height: number; tabHref?: string; tabOrder?: number }): Promise<BattleButton | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const id = crypto.randomUUID();
+  await c.execute({
+    sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
+    args: [id, themeId, data.gameType, data.buttonKey, data.label, data.imageSrc, data.strokeColor, data.width, data.height, data.tabHref ?? '', data.tabOrder ?? 999],
+  });
+  const r = await c.execute({ sql: 'SELECT * FROM BattleButton WHERE id = ?', args: [id] });
+  return r.rows.length > 0 ? toBattleButton(r.rows[0] as Record<string, unknown>) : null;
+}
+
+/** يحذف زر */
+export async function deleteBattleButton(buttonId: string): Promise<boolean> {
+  await ensureAdminTables();
+  const c = getClient();
+  await c.execute({ sql: 'DELETE FROM BattleButton WHERE id = ?', args: [buttonId] });
+  return true;
+}
+
+/** يحدّث إعداد قالب */
+export async function updateBattleConfig(themeId: string, configKey: string, configValue: string): Promise<BattleThemeConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  await c.execute({ sql: `UPDATE BattleThemeConfig SET configValue = ?, updatedAt = datetime('now') WHERE themeId = ? AND configKey = ?`, args: [configValue, themeId, configKey] });
+  const r = await c.execute({ sql: 'SELECT * FROM BattleThemeConfig WHERE themeId = ? AND configKey = ?', args: [themeId, configKey] });
+  return r.rows.length > 0 ? toBattleThemeConfig(r.rows[0] as Record<string, unknown>) : null;
 }
 
 // ─── Player ID Generation ─────────────────────────────────────────────

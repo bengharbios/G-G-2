@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import EventsModal from '@/components/shared/EventsModal';
+import BattlePage from '@/components/shared/BattlePage';
 import {
   Dialog,
   DialogContent,
@@ -1292,10 +1293,9 @@ export default function HomePage() {
         <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
       </header>
 
-      {/* Main Content */}
+      {/* Main Content — BattlePage ديناميكي من API (نظام القوالب) */}
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 pb-24">
-        {/* Games */}
-        <GamesSection />
+        <BattlePage />
       </main>
 
       {/* CSS keyframe for animated gradient border on cards */}
