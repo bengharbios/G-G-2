@@ -199,6 +199,9 @@ export const useTobolStore = create<TobolState>()(
         const state = get();
         if (state.phase !== 'playing') return;
         if (state.clickedBtns.has(btnId)) return;
+        // FREEZE: when pendingGameOver is true, block ALL further button clicks.
+        // The game is about to end — no more selections allowed.
+        if (state.pendingGameOver) return;
         // NOTE: We intentionally do NOT block when state.modalData is set.
         // The card stays visible and is REPLACED by the next card on the next
         // button click — this matches the desired UX where each click reveals

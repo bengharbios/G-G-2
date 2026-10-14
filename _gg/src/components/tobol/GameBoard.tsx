@@ -567,34 +567,6 @@ export default function GameBoard() {
         </p>
       </motion.div>
 
-      {/* ══════════ "تجهيز المعركة" pill ══════════ */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15, duration: 0.3 }}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '4px 14px',
-          borderRadius: '999px',
-          background: 'rgba(6,42,32,.65)',
-          border: '1px solid rgba(254,239,145,.18)',
-        }}
-      >
-        <span style={{ fontSize: '13px' }}>⚔️</span>
-        <span
-          style={{
-            ...STROKE_STYLE,
-            fontSize: '13px',
-            fontWeight: 800,
-            letterSpacing: '0.4px',
-          }}
-        >
-          تجهيز المعركة
-        </span>
-      </motion.div>
-
       {/* ══════════ Compact team panels + VS ══════════ */}
       <div
         style={{
