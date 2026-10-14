@@ -57,7 +57,7 @@ function renderBtnTable(
 }
 
 // ============================================================
-// Battle Log Modal — button + modal window (replaces always-visible log)
+// Battle Log Modal — button + modal window
 // ============================================================
 function BattleLogButton() {
   const { battleLog } = useTobolStore();
@@ -151,8 +151,7 @@ function BattleLogButton() {
 }
 
 // ============================================================
-// Notification Pill — turn indicator + last action
-// Uses the same notice-pill styling as GameSetup
+// Notification Pill v3 — team info at START, allows wrapping
 // ============================================================
 function NotificationPill() {
   const { lastAction, currentTurn, redName, blueName } = useTobolStore();
@@ -161,56 +160,42 @@ function NotificationPill() {
   const isTrap = lastAction?.includes('الفخ');
   const turnName = currentTurn === 'red' ? redName : blueName;
   const isRedTurn = currentTurn === 'red';
+  const teamChipLabel = isRedTurn ? '🔴 أحمر' : '🔵 أزرق';
+  const teamChipClass = isRedTurn ? 'team-red' : 'team-blue';
 
-  // Determine display text + style
+  // Determine display text + style — team at the START
   let displayText = '';
-  let className = `tobol-board-notice team-${currentTurn}`;
+  let containerClass = `tobol-board-notice-v3 team-${currentTurn}`;
 
   if (!lastAction) {
-    // Waiting — show turn indicator
-    displayText = `🎯 دور الفريق ${turnName}`;
+    // Waiting — show turn indicator (just say "دورك الآن")
+    displayText = `دورك الآن — ${turnName}`;
   } else {
     displayText = lastAction;
-    if (isAttack) className = 'tobol-board-notice attack';
-    else if (isTrap) className = 'tobol-board-notice trap';
+    if (isAttack) containerClass = 'tobol-board-notice-v3 attack';
+    else if (isTrap) containerClass = 'tobol-board-notice-v3 trap';
   }
 
   return (
     <div
       key={displayText + currentTurn}
-      className={className}
+      className={containerClass}
       style={{ animation: 'tobolNoticeSlide 0.32s cubic-bezier(.34,1.56,.64,1)' }}
     >
+      {/* Team chip at START — so the player knows whose turn it is immediately */}
+      <span className={`tobol-notice-team-chip ${teamChipClass}`}>
+        {teamChipLabel}
+      </span>
       <span className="notice-dot" />
-      <span style={{
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        maxWidth: '260px',
-      }}>
-        {displayText}
-      </span>
-      {/* show which team's turn as a chip */}
-      <span style={{
-        fontSize: '10px',
-        fontWeight: 800,
-        padding: '2px 8px',
-        borderRadius: '999px',
-        background: isRedTurn ? 'rgba(239,68,68,.18)' : 'rgba(59,130,246,.18)',
-        border: `1px solid ${isRedTurn ? 'rgba(239,68,68,.45)' : 'rgba(59,130,246,.45)'}`,
-        color: isRedTurn ? '#fca5a5' : '#93c5fd',
-        marginLeft: '4px',
-        flexShrink: 0,
-      }}>
-        {isRedTurn ? '🔴 أحمر' : '🔵 أزرق'}
-      </span>
+      <span className="tobol-notice-text">{displayText}</span>
     </div>
   );
 }
 
 // ============================================================
-// Team Panel — modern card with team name + score
-// Uses same visual language as GameSetup team cards
+// Team Panel — EXACTLY matches setup TeamCard design
+// Same container, same border gradient, same header, divider under name
+// + score number below
 // ============================================================
 function TeamPanel({ team }: { team: Team }) {
   const {
@@ -229,24 +214,57 @@ function TeamPanel({ team }: { team: Team }) {
   const isSpectator = gameMode === 'diwaniya' && typeof window !== 'undefined' && !window.location.pathname.startsWith('/tobol');
 
   return (
-    <div
-      className={`tobol-team-panel team-${team} ${isActive ? 'active-turn' : ''}`}
-      style={{ padding: '8px 10px' }}
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className={`tobol-team-card ${isActive ? 'selected' : ''}`}
+      style={
+        {
+          flex: 1,
+          padding: '10px 8px',
+          '--card-border': isActive
+            ? `linear-gradient(180deg, ${accentLight}, ${accent})`
+            : 'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02))',
+          '--card-border-selected': `linear-gradient(180deg, ${accentLight}, ${accent})`,
+          background: isActive
+            ? `linear-gradient(180deg, ${accent}26, ${accent}0d 80%)`
+            : 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
+        } as React.CSSProperties
+      }
     >
-      {/* Header row: emoji + label + active chip */}
+      {/* Header row: emoji + label + active chip — same as setup */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
-        marginBottom: '4px',
+        marginBottom: '8px',
+        position: 'relative',
       }}>
-        <span style={{ fontSize: '14px' }}>{teamEmoji}</span>
-        <span style={{
-          fontSize: '11px',
-          fontWeight: 800,
-          color: accent,
-          textShadow: '0 1px 2px rgba(0,0,0,.6)',
-        }}>
+        <div
+          style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${accent}55, ${accent}22)`,
+            border: `1.5px solid ${accent}80`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            boxShadow: isActive ? `0 0 8px ${accent}55` : 'none',
+          }}
+        >
+          <span style={{ fontSize: '13px' }}>{teamEmoji}</span>
+        </div>
+        <span
+          style={{
+            fontSize: '12px',
+            fontWeight: 800,
+            color: accent,
+            textShadow: `0 1px 2px rgba(0,0,0,.6)`,
+          }}
+        >
           {teamLabel}
         </span>
         {isActive && (
@@ -268,46 +286,209 @@ function TeamPanel({ team }: { team: Team }) {
           </motion.span>
         )}
       </div>
-      {/* Team name input */}
+
+      {/* Team name — editable (or read-only in spectator) */}
       {isSpectator ? (
         <div style={{
           fontSize: '13px',
           fontWeight: 700,
           color: '#fff',
           textShadow: '0 1px 2px rgba(0,0,0,.7)',
-          padding: '2px 4px',
+          padding: '7px 8px',
           textAlign: 'center',
+          background: 'rgba(0,0,0,.35)',
+          border: `1px solid ${isActive ? `${accent}55` : 'rgba(255,255,255,.08)'}`,
+          borderRadius: '10px',
         }}>
           {name}
         </div>
       ) : (
         <input
-          className="w-full bg-transparent border-none text-white text-center outline-none"
-          style={{
-            fontSize: '13px',
-            fontWeight: 700,
-            padding: '2px 4px',
-            textShadow: '0 1px 2px rgba(0,0,0,.7)',
-          }}
+          type="text"
           value={name}
           onChange={(e) => isRed ? setTeamNames(e.target.value, blueName) : setTeamNames(redName, e.target.value)}
+          placeholder={isRed ? 'اسم الجيش الأحمر' : 'اسم الجيش الأزرق'}
           maxLength={20}
           dir="rtl"
+          style={{
+            width: '100%',
+            background: 'rgba(0,0,0,.35)',
+            border: `1px solid ${isActive ? `${accent}55` : 'rgba(255,255,255,.08)'}`,
+            borderRadius: '10px',
+            color: '#fff',
+            fontSize: '12px',
+            fontWeight: 600,
+            padding: '7px 8px',
+            outline: 'none',
+            textAlign: 'center',
+            transition: 'border-color .15s',
+          }}
         />
       )}
-      {/* Score */}
+
+      {/* فاصل تحت اسم الفريق — same as setup */}
+      <div style={{
+        marginTop: '8px',
+        height: '2px',
+        background: `linear-gradient(90deg, transparent, ${accent}80, transparent)`,
+        opacity: isActive ? 1 : 0.4,
+      }} />
+
+      {/* Score below the divider */}
       <div
         className="tobol-score-number"
-        style={{ color: isActive ? accentLight : '#fff' }}
+        style={{
+          color: isActive ? accentLight : '#fff',
+          marginTop: '6px',
+          textAlign: 'center',
+        }}
       >
         {score}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 // ============================================================
-// Main GameBoard — restyled to match setup page
+// Bottom Chat FAB — fixed at bottom-center
+// Ephemeral chat: messages stored in component state only, not persisted
+// ============================================================
+interface ChatMsg {
+  id: number;
+  sender: string;
+  text: string;
+  me: boolean;
+}
+
+function BottomChatFAB() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [input, setInput] = useState('');
+  const [unread, setUnread] = useState(0);
+  const msgEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setUnread(0);
+      // Focus input when opening
+      setTimeout(() => inputRef.current?.focus(), 200);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen && msgEndRef.current) {
+      msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isOpen]);
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text) return;
+    const newMsg: ChatMsg = {
+      id: Date.now(),
+      sender: 'أنت',
+      text,
+      me: true,
+    };
+    setMessages((prev) => [...prev, newMsg]);
+    setInput('');
+    // Simulate a system echo / opponent reply (ephemeral, no DB)
+    // In Diwaniya mode, this would be wired to a real-time backend.
+    setTimeout(() => {
+      setMessages((prev) => [...prev, {
+        id: Date.now() + 1,
+        sender: 'الخصم',
+        text: 'استلمت رسالتك ✓',
+        me: false,
+      }]);
+    }, 800);
+  };
+
+  return (
+    <>
+      <button
+        className="tobol-chat-fab"
+        onClick={() => setIsOpen(true)}
+        aria-label="دردشة الطاولة"
+      >
+        <img src="/battle/icon_chat.webp" alt="chat" />
+        <span>دردشة الطاولة</span>
+        {unread > 0 && <span className="chat-count">{unread}</span>}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="tobol-chat-panel-overlay"
+          >
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-chat-panel"
+            >
+              <div className="tobol-chat-panel-header">
+                <span className="tobol-chat-panel-title">
+                  <img src="/battle/icon_chat.webp" alt="" style={{ width: '16px', height: '16px' }} />
+                  دردشة الطاولة
+                </span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="tobol-chat-panel-close"
+                  aria-label="إغلاق"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="tobol-chat-panel-body">
+                {messages.length === 0 ? (
+                  <p className="tobol-chat-empty">
+                    لا رسائل بعد — أرسل أول رسالة للخصم.
+                    <br />
+                    (الدردشة مؤقتة، تُحذف عند إغلاق الطاولة)
+                  </p>
+                ) : (
+                  messages.map((m) => (
+                    <div key={m.id} className={`tobol-chat-msg ${m.me ? 'me' : 'other'}`}>
+                      <span className="msg-sender">{m.sender}</span>
+                      <span className="msg-bubble">{m.text}</span>
+                    </div>
+                  ))
+                )}
+                <div ref={msgEndRef} />
+              </div>
+              <div className="tobol-chat-panel-input-row">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
+                  placeholder="اكتب رسالة..."
+                  maxLength={200}
+                  dir="rtl"
+                />
+                <button onClick={handleSend} disabled={!input.trim()}>
+                  إرسال
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================================
+// Main GameBoard — restyled to match setup page EXACTLY
 // ============================================================
 export default function GameBoard() {
   const router = useRouter();
@@ -321,14 +502,12 @@ export default function GameBoard() {
     gameMode,
   } = useTobolStore();
 
-  // Header button states
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
-  const [chatOn, setChatOn] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const isSpectator = gameMode === 'diwaniya' && typeof window !== 'undefined' && !window.location.pathname.startsWith('/tobol');
 
-  // ── apply body.in-game-setup class to hide chrome + bottom nav + side panel
+  // Hide header chrome + bottom nav + floating panel tab
   useEffect(() => {
     if (typeof document === 'undefined') return;
     document.body.classList.add('in-game-setup');
@@ -337,22 +516,12 @@ export default function GameBoard() {
     };
   }, []);
 
-  // sync sound preferences
   useEffect(() => {
     setMusicOn(isMusicEnabled());
     setSoundOn(isSoundEnabled());
   }, []);
 
-  // ── BUG FIX: auto-close card modal after 2.5s so the game doesn't freeze
-  // The original code blocked all button clicks while modalData was set,
-  // which made the game appear "frozen" if the user didn't tap the card.
-  useEffect(() => {
-    if (!modalData) return;
-    const t = setTimeout(() => {
-      closeModal();
-    }, 2500);
-    return () => clearTimeout(t);
-  }, [modalData, closeModal]);
+  // NO auto-close — card stays visible and is replaced on next click (per user request)
 
   const toggleMusic = () => {
     const next = !musicOn;
@@ -360,19 +529,14 @@ export default function GameBoard() {
     setMusicEnabled(next);
   };
 
-  const toggleSound = () => {
-    const next = !soundOn;
-    setSoundOn(next);
-    setSoundEnabled(next);
-  };
-
-  const toggleChat = () => setChatOn((p) => !p);
-
-  // Quit game without saving — reset everything and go to landing
   const handleQuitGame = () => {
     resetGame();
     router.push('/tobol');
   };
+
+  // Show the "waiting" image ONLY when no card has been shown yet.
+  // Once a card is shown, keep it visible (replaced on next click).
+  const hasAnyCardBeenShown = clickedBtns.size > 0;
 
   return (
     <div
@@ -384,14 +548,13 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 12px 16px',
-        gap: '8px',
+        padding: '8px 14px 16px',
+        gap: '10px',
         overflow: 'hidden',
       }}
     >
-      {/* ══════════ Header bar (top-left) — sound + chat + quit-game ══════════ */}
+      {/* ══════════ Header (top-left) — sound + quit-game (no chat here, moved to bottom FAB) ══════════ */}
       <div className="tobol-header-actions">
-        {/* Sound toggle */}
         <button
           type="button"
           className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
@@ -405,18 +568,6 @@ export default function GameBoard() {
           />
         </button>
 
-        {/* Chat toggle (chat is inside the game, per user request) */}
-        <button
-          type="button"
-          className={`tobol-header-btn ${chatOn ? 'active' : ''}`}
-          onClick={toggleChat}
-          aria-label={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
-          title={chatOn ? 'إغلاق الدردشة' : 'تفعيل الدردشة'}
-        >
-          <img src="/battle/icon_chat.webp" alt="chat" />
-        </button>
-
-        {/* Quit game (exit without saving) — power-button icon */}
         <button
           type="button"
           className="tobol-header-btn"
@@ -428,86 +579,105 @@ export default function GameBoard() {
         </button>
       </div>
 
-      {/* ══════════ Title (matches setup page) ══════════ */}
+      {/* ══════════ Title (matches setup exactly: 76x64 image + 22px title) ══════════ */}
       <motion.div
-        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        style={{ textAlign: 'center' }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
       >
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <img
             src="/yalla-games/tobol.png"
             alt="طبول الحرب"
             style={{
-              width: '48px',
-              height: '40px',
+              width: '76px',
+              height: '64px',
               objectFit: 'contain',
-              filter: 'drop-shadow(0 4px 10px rgba(0,0,0,.5))',
-              margin: '0 auto',
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
             }}
           />
           <div style={{
             position: 'absolute',
-            inset: '-8px',
-            background: 'radial-gradient(circle, rgba(254,239,145,.2), transparent 65%)',
-            filter: 'blur(4px)',
+            inset: '-12px',
+            background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+            filter: 'blur(6px)',
             zIndex: -1,
             borderRadius: '50%',
           }} />
         </div>
         <h1
-          className="tobol-board-title"
-          style={{ fontSize: '18px', margin: '2px 0 0', lineHeight: 1 }}
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '22px',
+            fontWeight: 900,
+            textShadow: '0 2px 4px rgba(0,0,0,.85)',
+            margin: '2px 0 0',
+            lineHeight: 1,
+          }}
         >
-          🥁 طبول الحرب
+          طبول الحرب
         </h1>
-        <p style={{ color: '#9fc4b4', fontSize: '9px', fontWeight: 600, marginTop: '1px' }}>
-          إنها الحرب ⚔️
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Tobol — War Drums ⚔️
         </p>
       </motion.div>
 
-      {/* ══════════ Team panels + VS ══════════ */}
+      {/* ══════════ "تجهيز المعركة" pill ══════════ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '4px 14px',
+          borderRadius: '999px',
+          background: 'rgba(6,42,32,.65)',
+          border: '1px solid rgba(254,239,145,.18)',
+        }}
+      >
+        <span style={{ fontSize: '13px' }}>⚔️</span>
+        <span
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '13px',
+            fontWeight: 800,
+            letterSpacing: '0.4px',
+          }}
+        >
+          تجهيز المعركة
+        </span>
+      </motion.div>
+
+      {/* ══════════ Team cards + VS — EXACTLY like setup (46x46 VS, same team-card design) ══════════ */}
       <div
         style={{
+          position: 'relative',
           width: '100%',
           maxWidth: '380px',
           display: 'flex',
-          gap: '6px',
+          gap: '8px',
           alignItems: 'stretch',
-          position: 'relative',
+          marginTop: '4px',
         }}
       >
-        <div style={{ flex: 1 }}>
-          <TeamPanel team="red" />
+        <TeamPanel team="red" />
+
+        {/* VS badge in middle — same as setup (46x46, pulsing glow) */}
+        <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
+          <img
+            src="/battle/vs_pk.webp"
+            alt="VS"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
         </div>
 
-        {/* VS badge in middle */}
-        <div
-          style={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '46px',
-            flexShrink: 0,
-          }}
-        >
-          <div className="tobol-vs-badge" style={{ width: '38px', height: '38px', position: 'relative' }}>
-            <img
-              src="/battle/vs_pk.webp"
-              alt="VS"
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            />
-          </div>
-        </div>
-
-        <div style={{ flex: 1 }}>
-          <TeamPanel team="blue" />
-        </div>
+        <TeamPanel team="blue" />
       </div>
 
-      {/* ══════════ Notification pill (turn/action) ══════════ */}
+      {/* ══════════ Notification pill v3 — team info at START, allows wrapping ══════════ */}
       <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
         <NotificationPill />
       </div>
@@ -516,7 +686,7 @@ export default function GameBoard() {
       <div className="gameDiv" style={{ paddingBottom: '0', width: '95vw', maxWidth: '100vmin', margin: 0, padding: '4px 0 0' }}>
         <table className="gameTable">
           <tbody>
-            {/* ===== ROW 2: Side Columns + Center Image (no more score row, replaced above) ===== */}
+            {/* ===== Side Columns + Center Image ===== */}
             <tr>
               <td colSpan={1}></td>
               <td colSpan={12}>
@@ -538,29 +708,48 @@ export default function GameBoard() {
                 </table>
               </td>
               <td colSpan={3}></td>
-              {/* CENTER: Waiting image or weapon card */}
+              {/* CENTER: Waiting image (only before any card shown) OR latest weapon card (stays visible) */}
               <td colSpan={64} style={{ textAlign: 'center', verticalAlign: 'middle', position: 'relative' }}>
                 {!modalData ? (
-                  <img
-                    className="w-[90%] mx-auto rounded-[7%] inline-block"
-                    src={`/img/war/waiting/${((mainBgId % 3) + 1)}.png`}
-                    alt="Waiting"
-                    draggable={false}
-                  />
+                  // Show waiting image ONLY when no card has been clicked yet
+                  hasAnyCardBeenShown ? (
+                    // After cards started showing, show a placeholder (no main image, just empty)
+                    <div style={{
+                      width: '90%',
+                      margin: '0 auto',
+                      aspectRatio: '1 / 1',
+                      borderRadius: '4%',
+                      background: 'radial-gradient(circle, rgba(254,239,145,.05), transparent 65%), rgba(0,0,0,.2)',
+                      border: '1px dashed rgba(254,239,145,.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                      <span style={{ fontSize: '11px', color: '#9fc4b4', opacity: 0.5 }}>في انتظار بطاقتك...</span>
+                    </div>
+                  ) : (
+                    <img
+                      className="w-[90%] mx-auto rounded-[7%] inline-block"
+                      src={`/img/war/waiting/${((mainBgId % 3) + 1)}.png`}
+                      alt="Waiting"
+                      draggable={false}
+                    />
+                  )
                 ) : (
+                  // Show the latest card — stays visible, replaced on next click
                   <div style={{ position: 'relative', display: 'inline-block', width: '90%' }}>
                     <img
                       src={modalData.cardImg}
                       alt="Card"
                       draggable={false}
                       onClick={isSpectator ? undefined : closeModal}
-                      style={{ width: '100%', display: 'block', cursor: isSpectator ? 'default' : 'pointer', borderRadius: '4%' }}
+                      style={{ width: '100%', display: 'block', cursor: 'pointer', borderRadius: '4%' }}
                     />
                     {/* Points badge */}
                     <div className={`tobol-card-points ${modalData.points > 0 ? 'attack' : ''}`}>
                       {modalData.points > 0 ? `💥 ${modalData.points}` : '◍ فارغة'}
                     </div>
-                    {/* Continue overlay — makes it clear the user should tap */}
+                    {/* Tap-to-continue overlay (still allows manual dismiss) */}
                     <div className="tobol-card-overlay">
                       <button
                         className="tobol-card-continue-pill"
@@ -636,6 +825,9 @@ export default function GameBoard() {
       <div style={{ marginTop: '4px' }}>
         <BattleLogButton />
       </div>
+
+      {/* ══════════ Bottom chat FAB (replaces bottom nav) ══════════ */}
+      <BottomChatFAB />
 
       {/* ══════════ Quit game dialog ══════════ */}
       <AnimatePresence>

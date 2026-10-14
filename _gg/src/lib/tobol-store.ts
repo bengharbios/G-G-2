@@ -199,7 +199,10 @@ export const useTobolStore = create<TobolState>()(
         const state = get();
         if (state.phase !== 'playing') return;
         if (state.clickedBtns.has(btnId)) return;
-        if (state.modalData) return;
+        // NOTE: We intentionally do NOT block when state.modalData is set.
+        // The card stays visible and is REPLACED by the next card on the next
+        // button click — this matches the desired UX where each click reveals
+        // a new weapon card without dismissing/forcing the user to tap first.
 
         // Mark button as clicked
         const newClicked = new Set(state.clickedBtns);

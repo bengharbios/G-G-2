@@ -3619,3 +3619,295 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
 
 .tobol-card-points.attack { color: #fca5a5; border-color: rgba(239,68,68,.55); }
 .tobol-card-points.trap { color: #fdba74; border-color: rgba(251,146,60,.55); }
+
+/* ============================================================ */
+/* GAME BOARD v3 — match setup exactly + chat panel + fixes     */
+/* ============================================================ */
+
+/* Notice pill v3 — team info at START, allow wrapping */
+.tobol-board-notice-v3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.15), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.95), rgba(4,18,14,.95));
+  border: 1px solid rgba(254,239,145,.4);
+  box-shadow:
+    inset 0 1px 0 rgba(254,239,145,.12),
+    0 4px 12px rgba(0,0,0,.5);
+  font-size: 12px;
+  font-weight: 700;
+  color: #feef91;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
+.tobol-board-notice-v3.team-red {
+  border-color: rgba(239,68,68,.55);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(239,68,68,.15), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.95), rgba(4,18,14,.95));
+}
+
+.tobol-board-notice-v3.team-blue {
+  border-color: rgba(59,130,246,.55);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(59,130,246,.15), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.95), rgba(4,18,14,.95));
+}
+
+.tobol-board-notice-v3.attack {
+  border-color: rgba(239,68,68,.55);
+  color: #fca5a5;
+}
+
+.tobol-board-notice-v3.trap {
+  border-color: rgba(251,146,60,.55);
+  color: #fdba74;
+}
+
+/* Team chip at the start of notice */
+.tobol-notice-team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.tobol-notice-team-chip.team-red {
+  background: rgba(239,68,68,.18);
+  border: 1px solid rgba(239,68,68,.45);
+  color: #fca5a5;
+}
+
+.tobol-notice-team-chip.team-blue {
+  background: rgba(59,130,246,.18);
+  border: 1px solid rgba(59,130,246,.45);
+  color: #93c5fd;
+}
+
+/* Notice text — wraps if long */
+.tobol-notice-text {
+  flex: 1;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  text-align: right;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tobol-notice-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 6px #34d399;
+  animation: tobolDotBlink 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.tobol-board-notice-v3.team-red .tobol-notice-dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+.tobol-board-notice-v3.team-blue .tobol-notice-dot { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+.tobol-board-notice-v3.attack .tobol-notice-dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+.tobol-board-notice-v3.trap .tobol-notice-dot { background: #fb923c; box-shadow: 0 0 6px #fb923c; }
+
+/* Bottom-center chat button (replaces chat in header) */
+.tobol-chat-fab {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.15), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.95), rgba(4,18,14,.95));
+  border: 1px solid rgba(254,239,145,.4);
+  box-shadow:
+    inset 0 1px 0 rgba(254,239,145,.12),
+    0 6px 18px rgba(0,0,0,.55);
+  color: #feef91;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tobol-chat-fab:hover {
+  border-color: rgba(254,239,145,.65);
+  box-shadow: 0 0 14px rgba(254,239,145,.32), inset 0 1px 0 rgba(254,239,145,.18);
+}
+
+.tobol-chat-fab:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.tobol-chat-fab img {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.tobol-chat-fab .chat-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: rgba(254,239,145,.18);
+  border: 1px solid rgba(254,239,145,.35);
+  color: #feef91;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* Chat panel — slides up from bottom */
+.tobol-chat-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.tobol-chat-panel {
+  width: 100%;
+  max-width: 420px;
+  height: 60vh;
+  max-height: 480px;
+  background: linear-gradient(180deg, #0e2a22, #061812);
+  border-top: 1.5px solid rgba(254,239,145,.3);
+  border-radius: 18px 18px 0 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -8px 28px rgba(0,0,0,.5);
+  overflow: hidden;
+}
+
+.tobol-chat-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(254,239,145,.15);
+  background: rgba(0,0,0,.25);
+}
+
+.tobol-chat-panel-title {
+  color: #feef91;
+  font-size: 13px;
+  font-weight: 800;
+  -webkit-text-stroke: 0.5px #aa6e1f;
+  paint-order: 'stroke fill';
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tobol-chat-panel-close {
+  background: none;
+  border: none;
+  color: #9fc4b4;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.tobol-chat-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tobol-chat-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.tobol-chat-msg.me { align-self: flex-end; align-items: flex-end; }
+.tobol-chat-msg.other { align-self: flex-start; align-items: flex-start; }
+
+.tobol-chat-msg .msg-sender {
+  font-size: 10px;
+  color: #9fc4b4;
+  margin-bottom: 2px;
+}
+
+.tobol-chat-msg .msg-bubble {
+  background: rgba(254,239,145,.08);
+  border: 1px solid rgba(254,239,145,.18);
+  border-radius: 10px;
+  padding: 6px 10px;
+  color: #cbd5e1;
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+.tobol-chat-msg.me .msg-bubble {
+  background: rgba(254,239,145,.15);
+  border-color: rgba(254,239,145,.35);
+  color: #feef91;
+}
+
+.tobol-chat-panel-input-row {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 8px);
+  border-top: 1px solid rgba(254,239,145,.15);
+  background: rgba(0,0,0,.25);
+}
+
+.tobol-chat-panel-input-row input {
+  flex: 1;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(254,239,145,.25);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 10px;
+  outline: none;
+}
+
+.tobol-chat-panel-input-row button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(254,239,145,.4);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tobol-chat-empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 11px;
+  padding: 20px 0;
+}
