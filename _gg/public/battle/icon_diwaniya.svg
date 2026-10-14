@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- خلفية دائرية -->
+  <circle cx="24" cy="24" r="22" fill="#10b981" opacity="0.2"/>
+  <!-- 3 أشخاص في دائرة (مجلس) -->
+  <!-- شخص 1 (أعلى) -->
+  <circle cx="24" cy="12" r="5" fill="#f5c889"/>
+  <rect x="20" y="16" width="8" height="8" rx="3" fill="#2d5f4e"/>
+  <!-- شخص 2 (أسفل يمين) -->
+  <circle cx="34" cy="32" r="5" fill="#f5c889"/>
+  <rect x="30" y="36" width="8" height="8" rx="3" fill="#2d5f4e"/>
+  <!-- شخص 3 (أسفل يسار) -->
+  <circle cx="14" cy="32" r="5" fill="#f5c889"/>
+  <rect x="10" y="36" width="8" height="8" rx="3" fill="#2d5f4e"/>
+  <!-- خطوط تربطهم (دائرة المجلس) -->
+  <path d="M24 17 Q30 22 34 27 M24 17 Q18 22 14 27 M34 37 Q24 40 14 37" 
+    stroke="#10b981" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2,2"/>
+</svg>

@@ -290,7 +290,7 @@ export default function BattlePage() {
           {/* العراب */}
           <ModeButton
             label="العراب"
-            icon="/battle/icon_godfather.webp"
+            icon="/battle/icon_godfather.svg"
             gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
             highlight="linear-gradient(180deg, rgba(255,255,255,.25) 0%, transparent 40%)"
             shadow="0 4px 16px rgba(245,158,11,.35)"
@@ -302,7 +302,7 @@ export default function BattlePage() {
           {/* الديوانية */}
           <ModeButton
             label="الديوانية"
-            icon="/battle/icon_diwaniya.png"
+            icon="/battle/icon_diwaniya.svg"
             gradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
             highlight="linear-gradient(180deg, rgba(255,255,255,.2) 0%, transparent 40%)"
             shadow="0 4px 16px rgba(16,185,129,.35)"
@@ -369,7 +369,7 @@ export default function BattlePage() {
           border: '1.5px solid rgba(255,214,94,.25)',
           boxShadow: '0 4px 16px rgba(0,0,0,.4)',
           padding: '6px 12px',
-          direction: 'ltr',
+          direction: 'rtl',
           overflowX: 'auto',
           scrollbarWidth: 'none',
           maxWidth: '92vw',

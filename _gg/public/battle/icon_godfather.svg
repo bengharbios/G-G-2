@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- خلفية دائرية -->
+  <circle cx="24" cy="24" r="22" fill="#f59e0b" opacity="0.2"/>
+  <!-- جسم الشخص -->
+  <rect x="16" y="28" width="16" height="12" rx="4" fill="#1a1a2e"/>
+  <!-- رأس -->
+  <circle cx="24" cy="22" r="8" fill="#f5c889"/>
+  <!-- قبعة -->
+  <path d="M14 20 Q24 8 34 20 Z" fill="#1a1a2e"/>
+  <rect x="14" y="19" width="20" height="3" rx="1.5" fill="#dc2626"/>
+  <!-- نظارات -->
+  <rect x="18" y="21" width="5" height="3" rx="1" fill="#1a1a2e"/>
+  <rect x="25" y="21" width="5" height="3" rx="1" fill="#1a1a2e"/>
+  <line x1="23" y1="22" x2="25" y2="22" stroke="#1a1a2e" stroke-width="1"/>
+  <!-- ابتسامة -->
+  <path d="M21 26 Q24 28 27 26" stroke="#1a1a2e" stroke-width="1.5" fill="none"/>
+</svg>
