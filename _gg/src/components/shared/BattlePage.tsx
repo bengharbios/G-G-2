@@ -164,46 +164,6 @@ export default function BattlePage() {
         onTouchEnd={handleTouchEnd}
         style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative', zIndex: 1 }}
       >
-        {/* ===== العنوان + البطاقة الرئيسية ===== */}
-        {/* اسم اللعبة فوق الصورة — ملتصق بحواف كغيمة + حركة موجة */}
-        <div
-          key={`title-${animKey}`}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '8px',
-            animation: reduceMotion ? 'none' : 'titleEnter 0.4s ease-out',
-          }}
-        >
-          <div style={{
-            display: 'inline-flex',
-            padding: '6px 24px',
-            borderRadius: '9999px',
-            background: `linear-gradient(135deg, ${stroke}40, ${stroke}20)`,
-            border: `1.5px solid ${stroke}60`,
-            boxShadow: `0 4px 12px ${stroke}30`,
-            backdropFilter: 'blur(4px)',
-          }}>
-            {activeBtn.label.split('').map((char, ci) => (
-              <span
-                key={ci}
-                style={{
-                  fontSize: '22px',
-                  fontWeight: 900,
-                  color: '#fff',
-                  textShadow: '0 2px 6px rgba(0,0,0,.8)',
-                  WebkitTextStroke: `1px ${stroke}`,
-                  display: 'inline-block',
-                  animation: reduceMotion ? 'none' : `wave 1.5s ease-in-out ${ci * 0.06}s infinite`,
-                  marginLeft: char === ' ' ? '4px' : '0',
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </div>
-        </div>
-
         {/* ===== البطاقة الرئيسية (Hero Card) ===== */}
         <div
           key={`hero-${animKey}`}
@@ -220,6 +180,34 @@ export default function BattlePage() {
             background: 'rgba(6,42,32,.4)',
           }}
         >
+          {/* اسم اللعبة فوق الصورة — داخل البطاقة في أعلاها */}
+          <div style={{
+            position: 'absolute', top: '8px', left: 0, right: 0,
+            display: 'flex', justifyContent: 'center',
+            pointerEvents: 'none', zIndex: 6,
+          }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '4px 20px',
+              borderRadius: '9999px',
+              background: `linear-gradient(135deg, ${stroke}50, ${stroke}25)`,
+              border: `1.5px solid ${stroke}70`,
+              boxShadow: `0 4px 12px ${stroke}40`,
+              backdropFilter: 'blur(4px)',
+            }}>
+              <span style={{
+                fontSize: '20px', fontWeight: 900, color: '#fff',
+                textShadow: '0 2px 6px rgba(0,0,0,.8)',
+                WebkitTextStroke: `1px ${stroke}`,
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+                animation: reduceMotion ? 'none' : `waveGroup 1.5s ease-in-out infinite`,
+              }}>
+                {activeBtn.label}
+              </span>
+            </div>
+          </div>
           {/* الصورة — خلفية داكنة خفيفة بدل البيضاء */}
           <img
             src={activeBtn.imageSrc}
@@ -302,7 +290,7 @@ export default function BattlePage() {
           {/* العراب */}
           <ModeButton
             label="العراب"
-            icon="👑"
+            icon="/battle/icon_godfather.webp"
             gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
             highlight="linear-gradient(180deg, rgba(255,255,255,.25) 0%, transparent 40%)"
             shadow="0 4px 16px rgba(245,158,11,.35)"
@@ -314,7 +302,7 @@ export default function BattlePage() {
           {/* الديوانية */}
           <ModeButton
             label="الديوانية"
-            icon="🏛️"
+            icon="/battle/icon_diwaniya.png"
             gradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
             highlight="linear-gradient(180deg, rgba(255,255,255,.2) 0%, transparent 40%)"
             shadow="0 4px 16px rgba(16,185,129,.35)"
@@ -453,6 +441,12 @@ export default function BattlePage() {
           50% { transform: translateY(0) scale(1); }
           75% { transform: translateY(3px) scale(0.97); }
         }
+        @keyframes waveGroup {
+          0%, 100% { transform: translateY(0); }
+          25% { transform: translateY(-3px); }
+          50% { transform: translateY(0); }
+          75% { transform: translateY(2px); }
+        }
         @keyframes titleEnter {
           from { opacity: 0; transform: translateY(-8px); }
           to { opacity: 1; transform: translateY(0); }
@@ -470,6 +464,8 @@ function ModeButton({
   shadow: string; delay: string; reduceMotion: boolean; isPrimary: boolean; onClick: () => void;
 }) {
   const [pressed, setPressed] = useState(false);
+  // حدد إذا كان icon مسار صورة أو emoji
+  const isImage = icon.startsWith('/');
   return (
     <button
       onClick={onClick}
@@ -477,13 +473,14 @@ function ModeButton({
       onMouseUp={() => setPressed(false)}
       onMouseLeave={() => setPressed(false)}
       style={{
-        flex: 1, minHeight: '90px', borderRadius: '16px', border: 'none', cursor: 'pointer',
+        flex: 1, minHeight: '70px', borderRadius: '16px', border: 'none', cursor: 'pointer',
         background: gradient, boxShadow: shadow,
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px',
+        display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '8px',
         position: 'relative', overflow: 'hidden',
         transform: pressed ? 'scale(0.95)' : 'scale(1)',
         transition: 'transform .1s ease-out',
         animation: reduceMotion ? 'none' : `btnEnter 0.4s ease-out ${delay} both${isPrimary ? ', btnPulse 2.5s ease-in-out 0.5s infinite' : ''}`,
+        padding: '0 16px',
       }}
     >
       {/* حافة علوية فاتحة (تأثير 3D بارز) */}
@@ -500,11 +497,28 @@ function ModeButton({
           animation: `ggShine ${3 + Math.random()}s ease-in-out ${delay} infinite`,
         }} />
       )}
+      {/* أيقونة (صورة أو emoji) */}
+      {isImage ? (
+        <img
+          src={icon}
+          alt={label}
+          style={{
+            width: '28px', height: '28px', objectFit: 'contain',
+            animation: reduceMotion ? 'none' : `btnPulse 2s ease-in-out ${Math.random()}s infinite`,
+          }}
+        />
+      ) : (
+        <span style={{
+          fontSize: '24px',
+          animation: reduceMotion ? 'none' : `btnPulse 2s ease-in-out ${Math.random()}s infinite`,
+        }}>{icon}</span>
+      )}
+      {/* نص */}
       <span style={{
-        fontSize: '28px',
-        animation: reduceMotion ? 'none' : `btnPulse 2s ease-in-out ${Math.random()}s infinite`,
-      }}>{icon}</span>
-      <span style={{ fontSize: '16px', fontWeight: 800, color: '#fff', textShadow: '0 1px 3px rgba(0,0,0,.3)' }}>{label}</span>
+        fontSize: '16px', fontWeight: 800, color: '#fff',
+        textShadow: '0 1px 3px rgba(0,0,0,.3)',
+        whiteSpace: 'nowrap',
+      }}>{label}</span>
     </button>
   );
 }
