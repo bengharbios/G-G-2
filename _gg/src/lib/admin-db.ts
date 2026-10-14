@@ -241,6 +241,8 @@ export interface AppUser {
   lastLoginAt: string | null;
   numericId: number | null;
   gold: number;
+  level: number;
+  xp: number;
   renameCount: number;
   renameDate: string;
   createdAt: string;
@@ -808,6 +810,9 @@ export async function ensureAdminTables(): Promise<void> {
     const userCols = await c.execute('PRAGMA table_info(AppUser)');
     if (!userCols.rows.some(r => r.name === 'level')) {
       await c.execute('ALTER TABLE AppUser ADD COLUMN level INTEGER DEFAULT 1');
+    }
+    if (!userCols.rows.some(r => r.name === 'xp')) {
+      await c.execute('ALTER TABLE AppUser ADD COLUMN xp INTEGER DEFAULT 0');
     }
   } catch { /* ignore */ }
 
@@ -2019,6 +2024,8 @@ function toAppUser(row: Record<string, unknown>): AppUser {
     lastLoginAt: (row.lastLoginAt as string) ?? null,
     numericId: row.numericId != null ? Number(row.numericId) : null,
     gold: row.gold != null ? Number(row.gold) : 0,
+    level: row.level != null ? Number(row.level) : 1,
+    xp: row.xp != null ? Number(row.xp) : 0,
     renameCount: row.renameCount != null ? Number(row.renameCount) : 0,
     renameDate: (row.renameDate as string) ?? '',
     createdAt: (row.createdAt as string) ?? new Date().toISOString(),

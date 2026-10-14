@@ -637,6 +637,7 @@ export default function AdminPage() {
     phone: string; avatar: string; role: string; isActive: boolean;
     subscriptionId: string | null; lastLoginAt: string | null; createdAt: string;
     numericId: number | null; gemsBalance: number; gold: number;
+    level: number; xp: number;
   }>>([]);
   const [usersLoading, setUsersLoading] = useState(false);
   const [userSearch, setUserSearch] = useState('');
@@ -5290,6 +5291,8 @@ export default function AdminPage() {
                           <TableHead className="text-slate-400 font-semibold text-right hidden md:table-cell">الهاتف</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right">💎 الجواهر</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">🪙 الذهب</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden md:table-cell">🏆 المستوى</TableHead>
+                          <TableHead className="text-slate-400 font-semibold text-right hidden md:table-cell">⚡ XP</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">الاشتراك</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden sm:table-cell">الحالة</TableHead>
                           <TableHead className="text-slate-400 font-semibold text-right hidden lg:table-cell">آخر دخول</TableHead>
@@ -5344,6 +5347,16 @@ export default function AdminPage() {
                               </TableCell>
                               <TableCell className="hidden sm:table-cell">
                                 <span className="text-sm text-amber-400" dir="ltr">{formatCompact(user.gold ?? 0)}</span>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                <span className="inline-flex items-center gap-1 text-sm font-bold text-emerald-400" dir="ltr">
+                                  <span className="text-[10px]">Lv.</span>{(user as { level?: number }).level ?? 1}
+                                </span>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                <span className="inline-flex items-center gap-1 text-sm font-bold text-sky-400" dir="ltr">
+                                  <span className="text-[10px]">⚡</span>{formatCompact((user as { xp?: number }).xp ?? 0)}
+                                </span>
                               </TableCell>
                               <TableCell className="hidden sm:table-cell">
                                 {(() => {
@@ -5485,6 +5498,22 @@ export default function AdminPage() {
                   <div className="bg-slate-800/40 rounded-lg p-3 space-y-1">
                     <p className="text-xs text-slate-500">البريد الإلكتروني</p>
                     <p className="text-sm text-slate-300" dir="ltr">{editingUser.email}</p>
+                  </div>
+
+                  {/* المستوى و XP — للقراءة فقط (XP يُحسب تلقائياً من سجل المكافآت) */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-emerald-950/30 border border-emerald-700/30 rounded-lg p-3 space-y-1">
+                      <p className="text-xs text-emerald-500/80">🏆 المستوى</p>
+                      <p className="text-lg font-bold text-emerald-300" dir="ltr">
+                        Lv.{(editingUser as { level?: number }).level ?? 1}
+                      </p>
+                    </div>
+                    <div className="bg-sky-950/30 border border-sky-700/30 rounded-lg p-3 space-y-1">
+                      <p className="text-xs text-sky-500/80">⚡ نقاط الخبرة (XP)</p>
+                      <p className="text-lg font-bold text-sky-300" dir="ltr">
+                        {(editingUser as { xp?: number }).xp ?? 0}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="space-y-1.5">

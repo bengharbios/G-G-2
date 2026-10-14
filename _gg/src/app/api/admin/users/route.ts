@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
       const likePattern = `%${search}%`;
       const result = await c.execute({
-        sql: `SELECT id, username, email, displayName, phone, avatar, role, isActive, subscriptionId, lastLoginAt, numericId, createdAt, updatedAt
+        sql: `SELECT id, username, email, displayName, phone, avatar, role, isActive, subscriptionId, lastLoginAt, numericId, level, createdAt, updatedAt
               FROM AppUser
               WHERE username LIKE ? OR displayName LIKE ? OR email LIKE ? OR id LIKE ? OR CAST(numericId AS TEXT) LIKE ?
               ORDER BY createdAt DESC
@@ -39,6 +39,13 @@ export async function GET(request: NextRequest) {
         gold: Number((b as Record<string, unknown>).gold ?? 0),
       }]));
 
+      // XP الكلي لكل مستخدم — مجموع ما ربحه من UserRewardLog
+      const xpRes = await c.execute({
+        sql: `SELECT userId, COALESCE(SUM(xpAwarded), 0) AS totalXp FROM UserRewardLog GROUP BY userId`,
+        args: [],
+      });
+      const xpById = new Map(xpRes.rows.map((x) => [String((x as Record<string, unknown>).userId), Number((x as Record<string, unknown>).totalXp ?? 0)]));
+
       const usersRaw = result.rows.map((r) => {
         const row = r as Record<string, unknown>;
         return {
@@ -53,13 +60,15 @@ export async function GET(request: NextRequest) {
           subscriptionId: (row.subscriptionId as string) ?? null,
           lastLoginAt: (row.lastLoginAt as string) ?? null,
           numericId: row.numericId != null ? Number(row.numericId) : null,
+          level: row.level != null ? Number(row.level) : 1,
           createdAt: (row.createdAt as string) ?? '',
           updatedAt: (row.updatedAt as string) ?? '',
         };
       });
       const users = usersRaw.map((u) => {
         const bal = balById.get(String(u.id));
-        return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0 };
+        const xp = xpById.get(String(u.id)) ?? 0;
+        return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0, xp };
       });
 
       return NextResponse.json({
@@ -82,9 +91,15 @@ export async function GET(request: NextRequest) {
       gems: Number(b.gems ?? 0),
       gold: Number(b.gold ?? 0),
     }]));
+    // XP الكلي لكل مستخدم — من UserRewardLog
+    const xpRes = await bc.execute(
+      `SELECT userId, COALESCE(SUM(xpAwarded), 0) AS totalXp FROM UserRewardLog GROUP BY userId`
+    );
+    const xpById = new Map(xpRes.rows.map((x) => [String((x as Record<string, unknown>).userId), Number((x as Record<string, unknown>).totalXp ?? 0)]));
     const users = allUsers.map((u) => {
       const bal = balById.get(String(u.id));
-      return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0 };
+      const xp = xpById.get(String(u.id)) ?? 0;
+      return { ...u, gemsBalance: bal?.gems ?? 0, gold: bal?.gold ?? 0, xp };
     });
 
     return NextResponse.json({
