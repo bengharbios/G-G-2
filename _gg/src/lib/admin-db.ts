@@ -1323,16 +1323,40 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore seed errors */ }
 
-  // ─── Migration: لو لا يوجد قالب نشط، فعّل yalla تلقائياً ─────────
+  // ─── Migration: فعّل yalla لو القالب النشط ليس له أزرار ─────────────
   try {
-    const activeCheck = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme WHERE isActive = 1");
-    const activeCnt = (activeCheck.rows[0] as Record<string, unknown>)?.cnt as number;
-    if (!activeCnt || activeCnt === 0) {
-      // فعّل yalla (لو موجود)
+    // ابحث عن القالب النشط
+    const activeRes = await c.execute("SELECT id, themeKey FROM BattleTheme WHERE isActive = 1 LIMIT 1");
+    if (activeRes.rows.length > 0) {
+      const activeRow = activeRes.rows[0] as Record<string, unknown>;
+      const activeId = activeRow.id as string;
+      const activeKey = activeRow.themeKey as string;
+      // عدّل أزرار القالب النشط
+      const btnCount = await c.execute({ sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ?", args: [activeId] });
+      const cnt = (btnCount.rows[0] as Record<string, unknown>)?.cnt as number;
+      // لو القالب النشط ليس له أزرار (مثل current) → فعّل yalla
+      if ((!cnt || cnt === 0) && activeKey !== 'yalla') {
+        // عطّل الحالي
+        await c.execute("UPDATE BattleTheme SET isActive = 0");
+        // فعّل yalla
+        const yallaRes = await c.execute("SELECT id FROM BattleTheme WHERE themeKey = 'yalla' LIMIT 1");
+        if (yallaRes.rows.length > 0) {
+          const yallaId = (yallaRes.rows[0] as Record<string, unknown>).id as string;
+          await c.execute({ sql: "UPDATE BattleTheme SET isActive = 1 WHERE id = ?", args: [yallaId] });
+        } else {
+          // لو yalla غير موجود، فعّل أول قالب لديه أزرار
+          const withButtons = await c.execute("SELECT themeId FROM BattleButton GROUP BY themeId HAVING COUNT(*) > 0 LIMIT 1");
+          if (withButtons.rows.length > 0) {
+            const themeWithButtons = (withButtons.rows[0] as Record<string, unknown>).themeId as string;
+            await c.execute({ sql: "UPDATE BattleTheme SET isActive = 1 WHERE id = ?", args: [themeWithButtons] });
+          }
+        }
+      }
+    } else {
+      // لا يوجد قالب نشط → فعّل yalla
       await c.execute("UPDATE BattleTheme SET isActive = 1 WHERE themeKey = 'yalla'");
-      // لو yalla غير موجود، فعّل أول قالب
-      const check2 = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme WHERE isActive = 1");
-      const cnt2 = (check2.rows[0] as Record<string, unknown>)?.cnt as number;
+      const check = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme WHERE isActive = 1");
+      const cnt2 = (check.rows[0] as Record<string, unknown>)?.cnt as number;
       if (!cnt2 || cnt2 === 0) {
         await c.execute("UPDATE BattleTheme SET isActive = 1 WHERE id = (SELECT id FROM BattleTheme LIMIT 1)");
       }
