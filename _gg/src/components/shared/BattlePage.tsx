@@ -164,6 +164,46 @@ export default function BattlePage() {
         onTouchEnd={handleTouchEnd}
         style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative', zIndex: 1 }}
       >
+        {/* ===== العنوان + البطاقة الرئيسية ===== */}
+        {/* اسم اللعبة فوق الصورة — ملتصق بحواف كغيمة + حركة موجة */}
+        <div
+          key={`title-${animKey}`}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '8px',
+            animation: reduceMotion ? 'none' : 'titleEnter 0.4s ease-out',
+          }}
+        >
+          <div style={{
+            display: 'inline-flex',
+            padding: '6px 24px',
+            borderRadius: '9999px',
+            background: `linear-gradient(135deg, ${stroke}40, ${stroke}20)`,
+            border: `1.5px solid ${stroke}60`,
+            boxShadow: `0 4px 12px ${stroke}30`,
+            backdropFilter: 'blur(4px)',
+          }}>
+            {activeBtn.label.split('').map((char, ci) => (
+              <span
+                key={ci}
+                style={{
+                  fontSize: '22px',
+                  fontWeight: 900,
+                  color: '#fff',
+                  textShadow: '0 2px 6px rgba(0,0,0,.8)',
+                  WebkitTextStroke: `1px ${stroke}`,
+                  display: 'inline-block',
+                  animation: reduceMotion ? 'none' : `wave 1.5s ease-in-out ${ci * 0.06}s infinite`,
+                  marginLeft: char === ' ' ? '4px' : '0',
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </div>
+        </div>
+
         {/* ===== البطاقة الرئيسية (Hero Card) ===== */}
         <div
           key={`hero-${animKey}`}
@@ -177,51 +217,28 @@ export default function BattlePage() {
             border: `2px solid ${stroke}60`,
             boxShadow: `0 10px 30px rgba(0,0,0,.5), 0 0 20px ${stroke}40`,
             flexShrink: 0,
+            background: 'rgba(6,42,32,.4)',
           }}
         >
-          {/* الصورة — brightness + saturate + zoom بطيء */}
+          {/* الصورة — خلفية داكنة خفيفة بدل البيضاء */}
           <img
             src={activeBtn.imageSrc}
             alt={activeBtn.label}
             style={{
               width: '100%', height: '100%', objectFit: 'contain', display: 'block',
-              filter: 'brightness(1.1) saturate(1.15)',
+              filter: 'brightness(1.05) saturate(1.1)',
               animation: reduceMotion ? 'none' : 'slowZoom 6s ease-in-out infinite alternate',
             }}
           />
           {/* Overlay بلون اللعبة */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: `linear-gradient(135deg, ${stroke}20 0%, transparent 50%, ${stroke}15 100%)`,
+            background: `linear-gradient(135deg, ${stroke}15 0%, transparent 50%, ${stroke}10 100%)`,
           }} />
-          {/* اسم اللعبة فوق الصورة — حروف متحركة كالموجة */}
-          <div style={{
-            position: 'absolute', top: '12px', left: 0, right: 0,
-            display: 'flex', justifyContent: 'center',
-            pointerEvents: 'none', zIndex: 6,
-          }}>
-            {activeBtn.label.split('').map((char, ci) => (
-              <span
-                key={ci}
-                style={{
-                  fontSize: '22px',
-                  fontWeight: 900,
-                  color: '#fff',
-                  textShadow: '0 2px 8px rgba(0,0,0,.9)',
-                  paintOrder: 'stroke fill',
-                  WebkitTextStroke: `1px ${stroke}`,
-                  display: 'inline-block',
-                  animation: reduceMotion ? 'none' : `wave 1.5s ease-in-out ${ci * 0.08}s infinite`,
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </div>
           {/* تدرج خفيف أسفل البطاقة */}
           <div style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%',
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 100%)',
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: '25%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.4) 100%)',
             pointerEvents: 'none',
           }} />
           {/* توهج نابض حول البطاقة */}
@@ -236,7 +253,7 @@ export default function BattlePage() {
           {!reduceMotion && (
             <div style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,.25) 50%, transparent 60%)',
+              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,.2) 50%, transparent 60%)',
               backgroundSize: '240% 100%', animation: 'ggShine 4.5s ease-in-out infinite',
             }} />
           )}
@@ -245,7 +262,7 @@ export default function BattlePage() {
             <div key={p.id} style={{
               position: 'absolute', left: `${p.x}%`, bottom: `${p.y}%`,
               width: `${p.size}px`, height: `${p.size}px`, borderRadius: '50%',
-              background: '#ffd75e', opacity: 0.5, pointerEvents: 'none',
+              background: '#ffd75e', opacity: 0.4, pointerEvents: 'none',
               boxShadow: '0 0 4px #ffd75e',
               animation: `floatParticle ${p.duration}s ease-in-out ${p.delay}s infinite`,
             }} />
@@ -253,7 +270,7 @@ export default function BattlePage() {
           {/* شارة HOT للألعاب الأكثر لعباً */}
           {isHot && (
             <div style={{
-              position: 'absolute', top: '10px', right: '10px',
+              position: 'absolute', top: '8px', left: '8px',
               background: 'linear-gradient(135deg, #ef4444, #dc2626)',
               color: '#fff', fontSize: '10px', fontWeight: 900,
               padding: '3px 10px', borderRadius: '8px',
@@ -268,7 +285,7 @@ export default function BattlePage() {
           {/* شارة maintenance */}
           {activeBtn.visibility === 'maintenance' && (
             <span style={{
-              position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)',
+              position: 'absolute', top: '8px', right: '8px',
               background: '#f59e0b', color: '#78350f', fontSize: '9px', fontWeight: 900,
               padding: '3px 10px', borderRadius: '6px', zIndex: 5,
             }}>🔧 صيانة</span>
@@ -352,16 +369,23 @@ export default function BattlePage() {
         </div>
       </div>
 
-      {/* ===== شريط أيقونات التصفح ===== */}
+      {/* ===== شريط أيقونات التصفح — مستطيل طويل قابل للانزلاق ===== */}
       <div style={{
-        position: 'fixed', bottom: '80px', left: '50%', transform: 'translateX(-50%)',
-        zIndex: 90, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
+        position: 'fixed', bottom: '80px', left: '0', right: '0',
+        zIndex: 90, display: 'flex', justifyContent: 'center',
       }}>
         <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-          background: 'url(/battle/battle_game_select_bg.png) center / 100% 100% no-repeat',
-          height: '45px', padding: '0 16px', direction: 'ltr',
-          overflowX: 'auto', scrollbarWidth: 'none', maxWidth: '95vw',
+          display: 'flex', alignItems: 'center', gap: '8px',
+          background: 'rgba(6,42,32,.95)',
+          borderRadius: '16px',
+          border: '1.5px solid rgba(255,214,94,.25)',
+          boxShadow: '0 4px 16px rgba(0,0,0,.4)',
+          padding: '6px 12px',
+          direction: 'ltr',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          maxWidth: '92vw',
+          height: '52px',
         }}>
           {buttons.map((btn, i) => {
             const icons = GAME_ICONS[btn.buttonKey];
@@ -370,27 +394,22 @@ export default function BattlePage() {
             return (
               <button key={btn.id} onClick={() => switchGame(i)} style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
-                background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0,
+                background: 'none', border: 'none', padding: '2px 4px', cursor: 'pointer',
+                flexShrink: 0,
+                borderBottom: isActive ? '2px solid #f59e0b' : '2px solid transparent',
+                borderRadius: '4px',
+                transition: 'all .15s',
               }}>
                 <img src={isActive ? icons.select : icons.unselect} alt={btn.label}
-                  style={{ width: '33px', height: '26px', objectFit: 'contain' }} />
+                  style={{ width: '28px', height: '22px', objectFit: 'contain' }} />
                 <span style={{
-                  fontSize: '9px', fontWeight: 'bold',
+                  fontSize: '8px', fontWeight: 'bold',
                   color: isActive ? '#f59e0b' : '#4AC595',
                   whiteSpace: 'nowrap', marginTop: '1px',
                 }}>{icons.label}</span>
               </button>
             );
           })}
-        </div>
-        <div style={{ display: 'flex', gap: '8px', direction: 'ltr' }}>
-          {buttons.map((_, i) => (
-            <div key={i} style={{
-              width: i === activeIndex ? '20px' : '6px', height: '6px', borderRadius: '3px',
-              background: i === activeIndex ? '#f59e0b' : 'rgba(255,255,255,.25)',
-              transition: 'all .2s',
-            }} />
-          ))}
         </div>
       </div>
 
@@ -430,9 +449,13 @@ export default function BattlePage() {
         }
         @keyframes wave {
           0%, 100% { transform: translateY(0) scale(1); }
-          25% { transform: translateY(-6px) scale(1.05); }
+          25% { transform: translateY(-5px) scale(1.03); }
           50% { transform: translateY(0) scale(1); }
-          75% { transform: translateY(4px) scale(0.95); }
+          75% { transform: translateY(3px) scale(0.97); }
+        }
+        @keyframes titleEnter {
+          from { opacity: 0; transform: translateY(-8px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>
