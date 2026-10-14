@@ -1323,6 +1323,22 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore seed errors */ }
 
+  // ─── Migration: لو لا يوجد قالب نشط، فعّل yalla تلقائياً ─────────
+  try {
+    const activeCheck = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme WHERE isActive = 1");
+    const activeCnt = (activeCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (!activeCnt || activeCnt === 0) {
+      // فعّل yalla (لو موجود)
+      await c.execute("UPDATE BattleTheme SET isActive = 1 WHERE themeKey = 'yalla'");
+      // لو yalla غير موجود، فعّل أول قالب
+      const check2 = await c.execute("SELECT COUNT(*) as cnt FROM BattleTheme WHERE isActive = 1");
+      const cnt2 = (check2.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!cnt2 || cnt2 === 0) {
+        await c.execute("UPDATE BattleTheme SET isActive = 1 WHERE id = (SELECT id FROM BattleTheme LIMIT 1)");
+      }
+    }
+  } catch { /* ignore */ }
+
   _tablesReady = true;
 }
 
