@@ -3911,3 +3911,157 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
   font-size: 11px;
   padding: 20px 0;
 }
+
+/* ============================================================ */
+/* GAME BOARD v4 — compact team panel + chat header badge       */
+/* ============================================================ */
+
+/* Compact team panel — name only (no input, no label), score below */
+.tobol-team-panel-compact {
+  position: relative;
+  background: linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96));
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+  padding: 8px 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.tobol-team-panel-compact::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1.5px;
+  background: var(--panel-border, linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.02)));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.tobol-team-panel-compact.team-red {
+  --panel-border: linear-gradient(180deg, #fca5a5, #ef4444);
+}
+
+.tobol-team-panel-compact.team-blue {
+  --panel-border: linear-gradient(180deg, #93c5fd, #3b82f6);
+}
+
+.tobol-team-panel-compact.active-turn.team-red {
+  box-shadow: 0 0 14px rgba(239,68,68,.35), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.tobol-team-panel-compact.active-turn.team-blue {
+  box-shadow: 0 0 14px rgba(59,130,246,.35), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.tobol-team-name-display {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,.7);
+  padding: 2px 4px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+
+.tobol-team-divider-compact {
+  margin-top: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--divider-color, rgba(255,255,255,.3)), transparent);
+  opacity: 1;
+}
+
+.tobol-team-panel-compact.team-red .tobol-team-divider-compact {
+  --divider-color: rgba(239,68,68,.5);
+}
+
+.tobol-team-panel-compact.team-blue .tobol-team-divider-compact {
+  --divider-color: rgba(59,130,246,.5);
+}
+
+.tobol-team-score-compact {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0,0,0,.7);
+  margin-top: 4px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+/* Header chat button with unread badge */
+.tobol-header-btn .chat-badge {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #061812;
+  box-shadow: 0 0 6px rgba(220,38,38,.65);
+  animation: tobolBadgePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes tobolBadgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Emoji picker grid inside chat panel */
+.tobol-emoji-picker {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  padding: 8px;
+  background: rgba(0,0,0,.35);
+  border-top: 1px solid rgba(254,239,145,.15);
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.tobol-emoji-picker button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tobol-emoji-picker button:hover {
+  background: rgba(254,239,145,.12);
+}
+
+.tobol-emoji-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(254,239,145,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tobol-emoji-btn img {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}

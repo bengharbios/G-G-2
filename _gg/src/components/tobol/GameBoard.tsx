@@ -24,6 +24,9 @@ const STROKE_STYLE: React.CSSProperties = {
   WebkitTextStroke: '1px #aa6e1f',
 };
 
+// Common emojis for the chat emoji picker
+const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '⚔️', '🛡️', '🎯', '💀', '🏆', '🥇', '🥁', '🎉', '💯', '❤️', '💔', '✨', '⚡', '🌟', '👑', '🤝', '🫡', '😤', '🤯'];
+
 // ============================================================
 // Render a single button cell (preserves original logic)
 // ============================================================
@@ -163,12 +166,10 @@ function NotificationPill() {
   const teamChipLabel = isRedTurn ? '🔴 أحمر' : '🔵 أزرق';
   const teamChipClass = isRedTurn ? 'team-red' : 'team-blue';
 
-  // Determine display text + style — team at the START
   let displayText = '';
   let containerClass = `tobol-board-notice-v3 team-${currentTurn}`;
 
   if (!lastAction) {
-    // Waiting — show turn indicator (just say "دورك الآن")
     displayText = `دورك الآن — ${turnName}`;
   } else {
     displayText = lastAction;
@@ -182,7 +183,6 @@ function NotificationPill() {
       className={containerClass}
       style={{ animation: 'tobolNoticeSlide 0.32s cubic-bezier(.34,1.56,.64,1)' }}
     >
-      {/* Team chip at START — so the player knows whose turn it is immediately */}
       <span className={`tobol-notice-team-chip ${teamChipClass}`}>
         {teamChipLabel}
       </span>
@@ -193,228 +193,113 @@ function NotificationPill() {
 }
 
 // ============================================================
-// Team Panel — EXACTLY matches setup TeamCard design
-// Same container, same border gradient, same header, divider under name
-// + score number below
+// Compact Team Panel — name display only + score (no input, no label)
 // ============================================================
 function TeamPanel({ team }: { team: Team }) {
-  const {
-    redName, blueName, redScore, blueScore, currentTurn,
-    setTeamNames, gameMode,
-  } = useTobolStore();
+  const { redName, blueName, redScore, blueScore, currentTurn } = useTobolStore();
 
   const isRed = team === 'red';
   const name = isRed ? redName : blueName;
   const score = isRed ? redScore : blueScore;
   const isActive = currentTurn === team;
-  const accent = isRed ? '#ef4444' : '#3b82f6';
-  const accentLight = isRed ? '#fca5a5' : '#93c5fd';
-  const teamLabel = isRed ? 'الأحمر' : 'الأزرق';
-  const teamEmoji = isRed ? '🔴' : '🔵';
-  const isSpectator = gameMode === 'diwaniya' && typeof window !== 'undefined' && !window.location.pathname.startsWith('/tobol');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`tobol-team-card ${isActive ? 'selected' : ''}`}
-      style={
-        {
-          flex: 1,
-          padding: '10px 8px',
-          '--card-border': isActive
-            ? `linear-gradient(180deg, ${accentLight}, ${accent})`
-            : 'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02))',
-          '--card-border-selected': `linear-gradient(180deg, ${accentLight}, ${accent})`,
-          background: isActive
-            ? `linear-gradient(180deg, ${accent}26, ${accent}0d 80%)`
-            : 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
-        } as React.CSSProperties
-      }
+    <div
+      className={`tobol-team-panel-compact team-${team} ${isActive ? 'active-turn' : ''}`}
     >
-      {/* Header row: emoji + label + active chip — same as setup */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        marginBottom: '8px',
-        position: 'relative',
-      }}>
-        <div
-          style={{
-            width: '26px',
-            height: '26px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${accent}55, ${accent}22)`,
-            border: `1.5px solid ${accent}80`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            boxShadow: isActive ? `0 0 8px ${accent}55` : 'none',
-          }}
-        >
-          <span style={{ fontSize: '13px' }}>{teamEmoji}</span>
-        </div>
-        <span
-          style={{
-            fontSize: '12px',
-            fontWeight: 800,
-            color: accent,
-            textShadow: `0 1px 2px rgba(0,0,0,.6)`,
-          }}
-        >
-          {teamLabel}
-        </span>
-        {isActive && (
-          <motion.span
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            style={{
-              fontSize: '9px',
-              fontWeight: 800,
-              color: '#feef91',
-              background: 'rgba(254,239,145,.15)',
-              border: '1px solid rgba(254,239,145,.4)',
-              padding: '2px 6px',
-              borderRadius: '999px',
-              marginRight: 'auto',
-            }}
-          >
-            دوره الآن
-          </motion.span>
-        )}
-      </div>
-
-      {/* Team name — editable (or read-only in spectator) */}
-      {isSpectator ? (
-        <div style={{
-          fontSize: '13px',
-          fontWeight: 700,
-          color: '#fff',
-          textShadow: '0 1px 2px rgba(0,0,0,.7)',
-          padding: '7px 8px',
-          textAlign: 'center',
-          background: 'rgba(0,0,0,.35)',
-          border: `1px solid ${isActive ? `${accent}55` : 'rgba(255,255,255,.08)'}`,
-          borderRadius: '10px',
-        }}>
-          {name}
-        </div>
-      ) : (
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => isRed ? setTeamNames(e.target.value, blueName) : setTeamNames(redName, e.target.value)}
-          placeholder={isRed ? 'اسم الجيش الأحمر' : 'اسم الجيش الأزرق'}
-          maxLength={20}
-          dir="rtl"
-          style={{
-            width: '100%',
-            background: 'rgba(0,0,0,.35)',
-            border: `1px solid ${isActive ? `${accent}55` : 'rgba(255,255,255,.08)'}`,
-            borderRadius: '10px',
-            color: '#fff',
-            fontSize: '12px',
-            fontWeight: 600,
-            padding: '7px 8px',
-            outline: 'none',
-            textAlign: 'center',
-            transition: 'border-color .15s',
-          }}
-        />
-      )}
-
-      {/* فاصل تحت اسم الفريق — same as setup */}
-      <div style={{
-        marginTop: '8px',
-        height: '2px',
-        background: `linear-gradient(90deg, transparent, ${accent}80, transparent)`,
-        opacity: isActive ? 1 : 0.4,
-      }} />
-
-      {/* Score below the divider */}
-      <div
-        className="tobol-score-number"
-        style={{
-          color: isActive ? accentLight : '#fff',
-          marginTop: '6px',
-          textAlign: 'center',
-        }}
-      >
-        {score}
-      </div>
-    </motion.div>
+      {/* Team name — read-only, just display what was chosen in setup */}
+      <div className="tobol-team-name-display">{name}</div>
+      {/* Divider under name */}
+      <div className="tobol-team-divider-compact" />
+      {/* Score below */}
+      <div className="tobol-team-score-compact">{score}</div>
+    </div>
   );
 }
 
 // ============================================================
-// Bottom Chat FAB — fixed at bottom-center
-// Ephemeral chat: messages stored in component state only, not persisted
+// Header Chat Button + Panel — functional, no bot, with emoji picker
+// Red badge shows unread messages count
 // ============================================================
 interface ChatMsg {
   id: number;
-  sender: string;
+  team: Team; // team that sent the message (current turn at the time)
   text: string;
-  me: boolean;
 }
 
-function BottomChatFAB() {
+function HeaderChatButton() {
+  const { currentTurn, redName, blueName } = useTobolStore();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState('');
   const [unread, setUnread] = useState(0);
+  const [showEmojis, setShowEmojis] = useState(false);
   const msgEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Track the team of the user currently typing — defaults to current turn's team
+  const senderTeam = currentTurn;
+  const senderName = senderTeam === 'red' ? redName : blueName;
 
+  // Reset unread when panel opens
   useEffect(() => {
     if (isOpen) {
       setUnread(0);
-      // Focus input when opening
       setTimeout(() => inputRef.current?.focus(), 200);
+    } else {
+      setShowEmojis(false);
     }
   }, [isOpen]);
 
+  // Auto-scroll to latest message
   useEffect(() => {
     if (isOpen && msgEndRef.current) {
       msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen]);
 
+  // If panel is closed and a new message arrives from the OTHER team, increment unread
+  // (In classic mode both players share the device — "unread" simulates that the other
+  //  team's message arrived while the current team wasn't looking.)
+  const lastMsgTeam = messages.length > 0 ? messages[messages.length - 1].team : null;
+  useEffect(() => {
+    if (!isOpen && lastMsgTeam && lastMsgTeam !== senderTeam) {
+      setUnread((u) => u + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMsgTeam, isOpen]);
+
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
     const newMsg: ChatMsg = {
       id: Date.now(),
-      sender: 'أنت',
+      team: senderTeam,
       text,
-      me: true,
     };
     setMessages((prev) => [...prev, newMsg]);
     setInput('');
-    // Simulate a system echo / opponent reply (ephemeral, no DB)
-    // In Diwaniya mode, this would be wired to a real-time backend.
-    setTimeout(() => {
-      setMessages((prev) => [...prev, {
-        id: Date.now() + 1,
-        sender: 'الخصم',
-        text: 'استلمت رسالتك ✓',
-        me: false,
-      }]);
-    }, 800);
+    setShowEmojis(false);
+    // NO bot reply — chat is for real conversation between teams/spectators
+    // (In Diwaniya mode, this would push to the room's chat backend.)
+  };
+
+  const handleEmojiClick = (emoji: string) => {
+    setInput((prev) => prev + emoji);
+    inputRef.current?.focus();
   };
 
   return (
     <>
       <button
-        className="tobol-chat-fab"
-        onClick={() => setIsOpen(true)}
+        type="button"
+        className={`tobol-header-btn ${isOpen ? 'active' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
         aria-label="دردشة الطاولة"
+        title="دردشة الطاولة"
+        style={{ position: 'relative' }}
       >
         <img src="/battle/icon_chat.webp" alt="chat" />
-        <span>دردشة الطاولة</span>
-        {unread > 0 && <span className="chat-count">{unread}</span>}
+        {unread > 0 && <span className="chat-badge">{unread > 9 ? '9+' : unread}</span>}
       </button>
 
       <AnimatePresence>
@@ -450,28 +335,77 @@ function BottomChatFAB() {
               <div className="tobol-chat-panel-body">
                 {messages.length === 0 ? (
                   <p className="tobol-chat-empty">
-                    لا رسائل بعد — أرسل أول رسالة للخصم.
+                    لا رسائل بعد — أرسل أول رسالة.
                     <br />
                     (الدردشة مؤقتة، تُحذف عند إغلاق الطاولة)
                   </p>
                 ) : (
-                  messages.map((m) => (
-                    <div key={m.id} className={`tobol-chat-msg ${m.me ? 'me' : 'other'}`}>
-                      <span className="msg-sender">{m.sender}</span>
-                      <span className="msg-bubble">{m.text}</span>
-                    </div>
-                  ))
+                  messages.map((m) => {
+                    const isMine = m.team === senderTeam;
+                    const mSender = m.team === 'red' ? redName : blueName;
+                    return (
+                      <div
+                        key={m.id}
+                        className={`tobol-chat-msg ${isMine ? 'me' : 'other'}`}
+                      >
+                        <span className="msg-sender">
+                          {m.team === 'red' ? '🔴' : '🔵'} {mSender}
+                        </span>
+                        <span className="msg-bubble">{m.text}</span>
+                      </div>
+                    );
+                  })
                 )}
                 <div ref={msgEndRef} />
               </div>
+
+              {/* Emoji picker (toggleable) */}
+              <AnimatePresence>
+                {showEmojis && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div className="tobol-emoji-picker">
+                      {EMOJIS.map((e, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => handleEmojiClick(e)}
+                          aria-label={`emoji ${e}`}
+                        >
+                          {e}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="tobol-chat-panel-input-row">
+                {/* Emoji picker toggle button */}
+                <button
+                  type="button"
+                  className="tobol-emoji-btn"
+                  onClick={() => setShowEmojis((p) => !p)}
+                  aria-label="إيموجي"
+                  title="إيموجي"
+                  style={{
+                    borderColor: showEmojis ? 'rgba(254,239,145,.7)' : 'rgba(254,239,145,.25)',
+                    boxShadow: showEmojis ? '0 0 10px rgba(254,239,145,.3)' : 'none',
+                  }}
+                >
+                  <img src="/battle/icon_chat_emoji.webp" alt="emoji" />
+                </button>
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-                  placeholder="اكتب رسالة..."
+                  placeholder={`أرسل كـ ${senderName}...`}
                   maxLength={200}
                   dir="rtl"
                 />
@@ -488,7 +422,7 @@ function BottomChatFAB() {
 }
 
 // ============================================================
-// Main GameBoard — restyled to match setup page EXACTLY
+// Main GameBoard — compact + chat in header + clean cards
 // ============================================================
 export default function GameBoard() {
   const router = useRouter();
@@ -521,8 +455,6 @@ export default function GameBoard() {
     setSoundOn(isSoundEnabled());
   }, []);
 
-  // NO auto-close — card stays visible and is replaced on next click (per user request)
-
   const toggleMusic = () => {
     const next = !musicOn;
     setMusicOn(next);
@@ -534,8 +466,6 @@ export default function GameBoard() {
     router.push('/tobol');
   };
 
-  // Show the "waiting" image ONLY when no card has been shown yet.
-  // Once a card is shown, keep it visible (replaced on next click).
   const hasAnyCardBeenShown = clickedBtns.size > 0;
 
   return (
@@ -549,11 +479,11 @@ export default function GameBoard() {
         flexDirection: 'column',
         alignItems: 'center',
         padding: '8px 14px 16px',
-        gap: '10px',
+        gap: '8px',
         overflow: 'hidden',
       }}
     >
-      {/* ══════════ Header (top-left) — sound + quit-game (no chat here, moved to bottom FAB) ══════════ */}
+      {/* ══════════ Header (top-left) — sound + chat + quit-game ══════════ */}
       <div className="tobol-header-actions">
         <button
           type="button"
@@ -567,6 +497,8 @@ export default function GameBoard() {
             alt="sound"
           />
         </button>
+
+        <HeaderChatButton />
 
         <button
           type="button"
@@ -651,7 +583,7 @@ export default function GameBoard() {
         </span>
       </motion.div>
 
-      {/* ══════════ Team cards + VS — EXACTLY like setup (46x46 VS, same team-card design) ══════════ */}
+      {/* ══════════ Compact team panels + VS ══════════ */}
       <div
         style={{
           position: 'relative',
@@ -665,7 +597,7 @@ export default function GameBoard() {
       >
         <TeamPanel team="red" />
 
-        {/* VS badge in middle — same as setup (46x46, pulsing glow) */}
+        {/* VS badge in middle */}
         <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
           <img
             src="/battle/vs_pk.webp"
@@ -677,7 +609,7 @@ export default function GameBoard() {
         <TeamPanel team="blue" />
       </div>
 
-      {/* ══════════ Notification pill v3 — team info at START, allows wrapping ══════════ */}
+      {/* ══════════ Notification pill ══════════ */}
       <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
         <NotificationPill />
       </div>
@@ -708,12 +640,10 @@ export default function GameBoard() {
                 </table>
               </td>
               <td colSpan={3}></td>
-              {/* CENTER: Waiting image (only before any card shown) OR latest weapon card (stays visible) */}
+              {/* CENTER: Waiting image OR latest card (clean — no overlays) */}
               <td colSpan={64} style={{ textAlign: 'center', verticalAlign: 'middle', position: 'relative' }}>
                 {!modalData ? (
-                  // Show waiting image ONLY when no card has been clicked yet
                   hasAnyCardBeenShown ? (
-                    // After cards started showing, show a placeholder (no main image, just empty)
                     <div style={{
                       width: '90%',
                       margin: '0 auto',
@@ -736,7 +666,7 @@ export default function GameBoard() {
                     />
                   )
                 ) : (
-                  // Show the latest card — stays visible, replaced on next click
+                  // CLEAN card — no points badge, no continue pill, just the weapon image
                   <div style={{ position: 'relative', display: 'inline-block', width: '90%' }}>
                     <img
                       src={modalData.cardImg}
@@ -745,19 +675,6 @@ export default function GameBoard() {
                       onClick={isSpectator ? undefined : closeModal}
                       style={{ width: '100%', display: 'block', cursor: 'pointer', borderRadius: '4%' }}
                     />
-                    {/* Points badge */}
-                    <div className={`tobol-card-points ${modalData.points > 0 ? 'attack' : ''}`}>
-                      {modalData.points > 0 ? `💥 ${modalData.points}` : '◍ فارغة'}
-                    </div>
-                    {/* Tap-to-continue overlay (still allows manual dismiss) */}
-                    <div className="tobol-card-overlay">
-                      <button
-                        className="tobol-card-continue-pill"
-                        onClick={isSpectator ? undefined : closeModal}
-                      >
-                        <span>اضغط للمتابعة ←</span>
-                      </button>
-                    </div>
                   </div>
                 )}
               </td>
@@ -821,13 +738,10 @@ export default function GameBoard() {
         </table>
       </div>
 
-      {/* ══════════ Battle log button (opens modal) ══════════ */}
+      {/* ══════════ Battle log button ══════════ */}
       <div style={{ marginTop: '4px' }}>
         <BattleLogButton />
       </div>
-
-      {/* ══════════ Bottom chat FAB (replaces bottom nav) ══════════ */}
-      <BottomChatFAB />
 
       {/* ══════════ Quit game dialog ══════════ */}
       <AnimatePresence>
