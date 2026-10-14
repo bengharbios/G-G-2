@@ -543,6 +543,8 @@ export default function YallaProfileDialog({
       if (e.key !== 'Escape') return;
       if (editWin) setEditWin(false);
       else if (basicWin) setBasicWin(false);
+      else if (levelInfoOpen) setLevelInfoOpen(false);
+      else if (royalInfoOpen) setRoyalInfoOpen(false);
       else if (decorPanel) setDecorPanel(null);
       else if (menuOpen) setMenuOpen(false);
       else onOpenChange(false);
@@ -1544,5 +1546,97 @@ export default function YallaProfileDialog({
       )}
     </AnimatePresence>
     </AnimatePresence>
+
+    {/* ═══════════ Modals: Level Info + Royal Info ═══════════ */}
+
+    {/* Level Info Modal — shows all 9 level tier badges + XP formula */}
+    {levelInfoOpen && (
+      <div className="yl-overlay" dir="rtl" onClick={() => setLevelInfoOpen(false)}>
+        <div className="yl-scroll" onClick={(e) => e.stopPropagation()}>
+          <button className="yl-close" onClick={() => setLevelInfoOpen(false)} aria-label="إغلاق">
+            <X className="w-6 h-6" />
+          </button>
+          <div className="yl-head">
+            <h2 className="yl-title">🏆 نظام المستويات</h2>
+            <p className="yl-subtitle">9 طبقات — كلما ارتفع مستواك، زاد تصميم الشارة</p>
+          </div>
+          <div className="yl-legend">
+            <b>المعادلة:</b> XP المطلوب من المستوى N إلى N+1 = <code dir="ltr">(2N + 1) × 500</code><br/>
+            <span className="yl-example">مثال: 1→2 = 1,500 XP | 2→3 = 2,500 XP | 3→4 = 3,500 XP (زيادة +1,000 لكل مستوى)</span>
+          </div>
+          <div className="yl-grid">
+            {[
+              { tier: 'level_big_1_9_ic.webp', name: 'المستوى 1-9', desc: 'درع أخضر بسيط (مبتدئ)', xp: '1,500 → 4,500' },
+              { tier: 'level_big_10_19_ic.webp', name: 'المستوى 10-19', desc: 'درع مُرقّى', xp: '5,500 → 9,500' },
+              { tier: 'level_big_20_29_ic.webp', name: 'المستوى 20-29', desc: 'درع متقدم', xp: '10,500 → 14,500' },
+              { tier: 'level_big_30_39_ic.webp', name: 'المستوى 30-39', desc: 'درع نخبوي', xp: '15,500 → 19,500' },
+              { tier: 'level_big_40_49_ic.webp', name: 'المستوى 40-49', desc: 'درع ملكي', xp: '20,500 → 24,500' },
+              { tier: 'level_big_50_59_ic.webp', name: 'المستوى 50-59', desc: 'درع أحمر + أجنحة ذهبية + ياقوت وردي', xp: '25,500 → 29,500' },
+              { tier: 'level_big_60_69_ic.webp', name: 'المستوى 60-69', desc: 'درع ذهبي مُرصّع', xp: '30,500 → 34,500' },
+              { tier: 'level_big_70_89_ic.webp', name: 'المستوى 70-89', desc: 'درع أسطوري', xp: '35,500 → 44,500' },
+              { tier: 'level_big_91_95_ic.webp', name: 'المستوى 91-95', desc: 'الطبقة العليا — درع ذهبي مرصّع بأرجواني وجواهر وردية', xp: 'المستوى الأقصى' },
+            ].map((item, i) => (
+              <div key={i} className="yl-card">
+                <div className="yl-badge-wrap">
+                  <img src={`/yalla-ui/levels/${item.tier}`} alt={item.name} className="yl-badge-img" />
+                  <span className="yl-badge-num">{i === 0 ? 1 : i === 8 ? 91 : (i + 1) * 10}</span>
+                </div>
+                <div className="yl-card-name">{item.name}</div>
+                <div className="yl-card-desc">{item.desc}</div>
+                <div className="yl-card-xp" dir="ltr">{item.xp}</div>
+              </div>
+            ))}
+          </div>
+          <div className="yl-current">
+            <span>مستواك الحالي:</span>
+            <b>Lv.{xp?.level ?? 1}</b>
+            <span>· XP: {xp ? new Intl.NumberFormat('en-US').format(xp.currentLevelXP) : 0}/{xp && !xp.isMaxLevel ? new Intl.NumberFormat('en-US').format(xp.nextLevelXP) : '∞'}</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Royal Info Modal — shows all 6 royal tiers + features + recharge rule */}
+    {royalInfoOpen && (
+      <div className="yr-overlay" dir="rtl" onClick={() => setRoyalInfoOpen(false)}>
+        <div className="yr-scroll" onClick={(e) => e.stopPropagation()}>
+          <button className="yr-close" onClick={() => setRoyalInfoOpen(false)} aria-label="إغلاق">
+            <X className="w-6 h-6" />
+          </button>
+          <div className="yr-head">
+            <h2 className="yr-title">👑 نظام Royal</h2>
+            <p className="yr-subtitle">6 طبقات — تُفتح بالشحن累计 للأموال الحقيقية</p>
+          </div>
+          <div className="yr-legend">
+            <b>آلية الترقية:</b> كل عملية شحن (شراء ذهب/جواهر/VIP بأموال حقيقية) تمنحك <b>Royal Points</b> (لا تنتهي صلاحيتها).
+            عند بلوغ حد معيّن → ترقية لمستوى Royal التالي.
+            <br/>
+            <span className="yr-example">دورة الامتياز: إذا لم تحصل على 30% من النقاط المطلوبة للترقية الحالية → تُخفض لمستوى أدنى</span>
+          </div>
+          <div className="yr-grid">
+            {[
+              { tier: 'royal_level_0.webp', name: 'Royal 0', range: 'افتراضي مجاني', features: 'تاج زجاجي أخضر — لا ميزات إضافية' },
+              { tier: 'royal_level_1.webp', name: 'Royal 1', range: 'الطبقة الأولى', features: 'تاج ذهبي + ياقوت فيروزي — شراء أسلحة/إطارات محدودة' },
+              { tier: 'royal_level_2.webp', name: 'Royal 2', range: 'الطبقة الثانية', features: 'تاج فضي/أزرق + جوهرة زرقاء — عناصر حصرية إضافية' },
+              { tier: 'royal_level_3.webp', name: 'Royal 3', range: 'الطبقة الثالثة', features: 'تاج ذهبي + جوهرة أرجوانية — عمولة يومية على الهدايا + تأثيرات دخول حصرية' },
+              { tier: 'royal_level_4.webp', name: 'Royal 4', range: 'الطبقة الرابعة', features: 'تاج ذهبي + زمرد أخضر — تخصيص ثيم الغرفة (1 فرصة شهرياً، صالحة 3 أيام)' },
+              { tier: 'royal_level_5.webp', name: 'Royal 5', range: 'الطبقة العليا', features: 'تاج ذهبي + ياقوت أحمر — مركبة حصرية + 2 فرص تخصيص + حماية من الإزالة + خصم سوبر + حد XP يومي أعلى' },
+            ].map((item, i) => (
+              <div key={i} className="yr-card">
+                <img src={`/yalla-ui/royal/${item.tier}`} alt={item.name} className="yr-badge-img" />
+                <div className="yr-card-name">{item.name}</div>
+                <div className="yr-card-range">{item.range}</div>
+                <div className="yr-card-features">{item.features}</div>
+              </div>
+            ))}
+          </div>
+          <div className="yr-current">
+            <span>مستواك الحالي:</span>
+            <b>Royal 0</b>
+            <span className="yr-note">(افتراضي — نظام تتبّع الشحن قيد التطوير)</span>
+          </div>
+        </div>
+      </div>
+    )}
   );
 }
