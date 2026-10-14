@@ -480,11 +480,26 @@ export default function GameBoard() {
   //    Also build the share link + direct link for the host.
   useEffect(() => {
     if (!isDiwaniyaHost || !roomCode) return;
-    // Build the share links
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    setShareLink(`${baseUrl}/join/tobol/${roomCode}`);
-    // Direct link: with ?direct=1, friends enter without typing the code
-    setDirectLink(`${baseUrl}/join/tobol/${roomCode}?direct=1`);
+    const pkg = 'com.bengharbios.ggames';
+    // Fetch the host's user ID for the 'from' tracking param
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(d => {
+        const hostUserId = d?.user?.id || '';
+        // Share link: opens the /r/tobol/[code] deep-link route (like YoYo)
+        // which is auto-intercepted by Android App Links (if APK has intent-filter)
+        // OR shows a fallback page that tries intent:// and offers "Open in browser".
+        const fromParam = hostUserId ? `&from=${encodeURIComponent(hostUserId)}` : '';
+        setShareLink(`${baseUrl}/r/tobol/${roomCode}?pkg=${pkg}${fromParam}`);
+        // Direct link: with ?direct=1, friends enter without typing the code
+        setDirectLink(`${baseUrl}/r/tobol/${roomCode}?pkg=${pkg}${fromParam}&direct=1`);
+      })
+      .catch(() => {
+        // Fallback: build links without 'from' param
+        setShareLink(`${baseUrl}/r/tobol/${roomCode}?pkg=${pkg}`);
+        setDirectLink(`${baseUrl}/r/tobol/${roomCode}?pkg=${pkg}&direct=1`);
+      });
     // Fetch viewer count
     const fetchViewers = () => {
       fetch(`/api/tobol-room/${roomCode}`)

@@ -23,6 +23,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Deep link: opens the app directly when a /join/tobol/[code] link
+                 is clicked in any app (Telegram, WhatsApp, etc.) — like YoYo.
+                 Requires autoVerify=true + .well-known/assetlinks.json on the
+                 web server. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="ggame3.vercel.app" />
+                <data android:pathPattern="/join/tobol/.*" />
+                <data android:pathPattern="/r/tobol/.*" />
+                <data android:pathPattern="/tobol" />
+                <data android:pathPattern="/" />
+            </intent-filter>
+
+            <!-- Backup scheme: gg-game:// links always open the app -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="gg-game" />
+                <data android:host="join" />
+            </intent-filter>
+
         </activity>
 
         <!-- RoomActivity — يحمّل غرفة يلا لودو الأصلية من XML -->
