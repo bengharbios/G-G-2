@@ -172,6 +172,40 @@ interface BottomNavTab {
   updatedAt: string;
 }
 
+// ─── Battle Theme System ───────────────────────────────────────────
+interface BattleThemeItem {
+  id: string;
+  themeKey: string;
+  themeName: string;
+  description: string;
+  isActive: boolean;
+}
+
+interface BattleButtonItem {
+  id: string;
+  themeId: string;
+  gameType: string;
+  buttonKey: string;
+  label: string;
+  imageSrc: string;
+  strokeColor: string;
+  width: number;
+  height: number;
+  tabHref: string;
+  tabOrder: number;
+  visibility: 'visible' | 'hidden' | 'maintenance';
+  isActive: boolean;
+}
+
+interface BattleConfigItem {
+  id: string;
+  themeId: string;
+  configKey: string;
+  configValue: string;
+  configType: 'image' | 'color' | 'number' | 'text' | 'boolean';
+  description: string;
+}
+
 interface Subscription {
   id: string;
   email: string;
@@ -288,7 +322,7 @@ interface LeaderboardEntry {
   isSpecialId: boolean;
 }
 
-type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'bottom-nav' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
+type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'bottom-nav' | 'battle-themes' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
 
 // ─── Navigation items ─────────────────────────────────────────────────
 
@@ -299,6 +333,7 @@ const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = 
   { id: 'role-multipliers', label: 'مضاعفات الأدوار', icon: <Users className="w-5 h-5" /> },
   { id: 'reward-log', label: 'سجل المكافآت', icon: <Activity className="w-5 h-5" /> },
   { id: 'bottom-nav', label: 'الشريط السفلي', icon: <LayoutDashboard className="w-5 h-5" /> },
+  { id: 'battle-themes', label: 'ألعاب yalla', icon: <Gamepad2 className="w-5 h-5" /> },
   { id: 'subscriptions', label: 'الاشتراكات', icon: <Users className="w-5 h-5" /> },
   { id: 'sessions', label: 'الجلسات', icon: <Activity className="w-5 h-5" /> },
   { id: 'messages', label: 'الرسائل', icon: <MessageSquare className="w-5 h-5" /> },
@@ -496,6 +531,14 @@ export default function AdminPage() {
   const [newNavTabLabel, setNewNavTabLabel] = useState('');
   const [newNavTabHref, setNewNavTabHref] = useState('');
   const [newNavTabIcon, setNewNavTabIcon] = useState('');
+  // ─── Battle Themes ───
+  const [battleThemes, setBattleThemes] = useState<BattleThemeItem[]>([]);
+  const [battleButtons, setBattleButtons] = useState<BattleButtonItem[]>([]);
+  const [battleConfigs, setBattleConfigs] = useState<BattleConfigItem[]>([]);
+  const [selectedBattleTheme, setSelectedBattleTheme] = useState<string>('');
+  const [editingBattleButton, setEditingBattleButton] = useState<BattleButtonItem | null>(null);
+  const [newThemeKey, setNewThemeKey] = useState('');
+  const [newThemeName, setNewThemeName] = useState('');
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [sessions, setSessions] = useState<GameSession[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -920,6 +963,134 @@ export default function AdminPage() {
     } catch { showToast('خطأ في الحذف', 'error'); }
   }, []);
 
+  // ─── fetch battle themes ──────────────────────────────────────────
+  const fetchBattleThemes = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/battle-themes');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setBattleThemes(data.themes || []);
+          // اختر القالب النشط افتراضياً
+          const active = (data.themes || []).find((t: BattleThemeItem) => t.isActive);
+          if (active && !selectedBattleTheme) {
+            setSelectedBattleTheme(active.id);
+            await fetchBattleThemeDetails(active.id);
+          }
+        }
+      }
+    } catch { /* ignore */ }
+  }, [selectedBattleTheme]);
+
+  // ─── fetch battle theme details (buttons + configs) ────────────────
+  const fetchBattleThemeDetails = useCallback(async (themeId: string) => {
+    try {
+      const res = await fetch(`/api/admin/battle-themes?themeId=${themeId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setBattleButtons(data.buttons || []);
+          setBattleConfigs(data.configs || []);
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ─── activate battle theme ─────────────────────────────────────────
+  const activateBattleTheme = useCallback(async (themeId: string) => {
+    try {
+      const res = await fetch('/api/admin/battle-themes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'activate', themeId }),
+      });
+      if (res.ok) {
+        showToast('تم تفعيل القالب');
+        fetchBattleThemes();
+      }
+    } catch { showToast('خطأ', 'error'); }
+  }, [fetchBattleThemes]);
+
+  // ─── create battle theme ──────────────────────────────────────────
+  const createBattleTheme = useCallback(async () => {
+    if (!newThemeKey.trim() || !newThemeName.trim()) {
+      showToast('مطلوب مفتاح واسم القالب', 'error');
+      return;
+    }
+    try {
+      const res = await fetch('/api/admin/battle-themes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ themeKey: newThemeKey.trim(), themeName: newThemeName.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setNewThemeKey('');
+          setNewThemeName('');
+          showToast('تم إنشاء القالب الجديد (نسخة من yalla)');
+          fetchBattleThemes();
+        }
+      }
+    } catch { showToast('خطأ في الإنشاء', 'error'); }
+  }, [newThemeKey, newThemeName, fetchBattleThemes]);
+
+  // ─── save battle button ───────────────────────────────────────────
+  const saveBattleButton = useCallback(async (btn: BattleButtonItem) => {
+    try {
+      const res = await fetch('/api/admin/battle-themes', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'button', buttonId: btn.id, ...btn }),
+      });
+      if (res.ok) {
+        showToast('تم حفظ الزر');
+        if (selectedBattleTheme) fetchBattleThemeDetails(selectedBattleTheme);
+      }
+    } catch { showToast('خطأ في الحفظ', 'error'); }
+  }, [selectedBattleTheme, fetchBattleThemeDetails]);
+
+  // ─── delete battle button ─────────────────────────────────────────
+  const deleteBattleButton = useCallback(async (buttonId: string) => {
+    if (!confirm('هل تريد حذف هذا الزر؟')) return;
+    try {
+      const res = await fetch(`/api/admin/battle-themes?buttonId=${buttonId}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('تم حذف الزر');
+        if (selectedBattleTheme) fetchBattleThemeDetails(selectedBattleTheme);
+      }
+    } catch { showToast('خطأ', 'error'); }
+  }, [selectedBattleTheme, fetchBattleThemeDetails]);
+
+  // ─── save battle config ───────────────────────────────────────────
+  const saveBattleConfig = useCallback(async (themeId: string, configKey: string, configValue: string) => {
+    try {
+      const res = await fetch('/api/admin/battle-themes', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'config', themeId, configKey, configValue }),
+      });
+      if (res.ok) {
+        showToast('تم حفظ الإعداد');
+      }
+    } catch { showToast('خطأ', 'error'); }
+  }, []);
+
+  // ─── delete battle theme ──────────────────────────────────────────
+  const deleteBattleTheme = useCallback(async (themeId: string) => {
+    if (!confirm('هل تريد حذف هذا القالب؟ (لا يمكن حذف القوالب الافتراضية أو النشطة)')) return;
+    try {
+      const res = await fetch(`/api/admin/battle-themes?themeId=${themeId}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('تم حذف القالب');
+        fetchBattleThemes();
+      } else {
+        const data = await res.json();
+        showToast(data.error || 'لا يمكن حذف هذا القالب', 'error');
+      }
+    } catch { showToast('خطأ', 'error'); }
+  }, [fetchBattleThemes]);
+
   const fetchSubscriptions = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/subscriptions');
@@ -1299,6 +1470,9 @@ export default function AdminPage() {
       case 'bottom-nav':
         fetchBottomNavTabs();
         break;
+      case 'battle-themes':
+        fetchBattleThemes();
+        break;
       case 'subscriptions':
         fetchSubscriptions();
         // بيانات المستخدمين لربط الاشتراكات وعرض المشترك المرتبط
@@ -1346,7 +1520,7 @@ export default function AdminPage() {
         fetchSettings();
         break;
     }
-  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, fetchGameRewards, fetchRoleMultipliers, fetchRewardLog, fetchBottomNavTabs, gamesLoadedOnce, games.length]);
+  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, fetchGameRewards, fetchRoleMultipliers, fetchRewardLog, fetchBottomNavTabs, fetchBattleThemes, gamesLoadedOnce, games.length]);
 
   // ─── Auto-refresh tables every 10 seconds ──────────────────────────
 
@@ -3387,6 +3561,231 @@ export default function AdminPage() {
                     >
                       حفظ
                     </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
+          {/* ─── Battle Themes (ألعاب yalla) ──────────────────────── */}
+          {activeSection === 'battle-themes' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">🎮 ألعاب yalla — نظام القوالب</h2>
+                  <p className="text-xs text-slate-400 mt-1">تحكم كامل: تفعيل/تعطيل قوالب + تعديل أزرار + تعديل صور وألوان</p>
+                </div>
+                <Button onClick={fetchBattleThemes} variant="outline" size="sm" className="border-slate-700 text-slate-300">
+                  <RefreshCw className="w-4 h-4 ml-2" /> تحديث
+                </Button>
+              </div>
+
+              {/* القوالب */}
+              <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-900/60 text-slate-400 text-xs">
+                    <tr>
+                      <th className="p-3 text-right">المفتاح</th>
+                      <th className="p-3 text-right">الاسم</th>
+                      <th className="p-3 text-right">الوصف</th>
+                      <th className="p-3 text-center">الحالة</th>
+                      <th className="p-3 text-center">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {battleThemes.length === 0 ? (
+                      <tr><td colSpan={5} className="p-8 text-center text-slate-500">جارٍ التحميل...</td></tr>
+                    ) : battleThemes.map((t) => (
+                      <tr key={t.id} className="hover:bg-slate-800/20">
+                        <td className="p-3 font-mono text-xs text-slate-300">{t.themeKey}</td>
+                        <td className="p-3 text-white font-medium">{t.themeName}</td>
+                        <td className="p-3 text-xs text-slate-400">{t.description || '—'}</td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded text-xs ${t.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>
+                            {t.isActive ? '✓ نشط' : 'معطّل'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center flex gap-1 justify-center">
+                          {!t.isActive && (
+                            <Button size="sm" variant="ghost" onClick={() => activateBattleTheme(t.id)} className="text-emerald-400 hover:text-emerald-300">
+                              تفعيل
+                            </Button>
+                          )}
+                          <Button size="sm" variant="ghost" onClick={() => { setSelectedBattleTheme(t.id); fetchBattleThemeDetails(t.id); }} className="text-sky-400 hover:text-sky-300">
+                            <Settings className="w-4 h-4" />
+                          </Button>
+                          {t.themeKey !== 'current' && t.themeKey !== 'yalla' && !t.isActive && (
+                            <Button size="sm" variant="ghost" onClick={() => deleteBattleTheme(t.id)} className="text-red-400 hover:text-red-300">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* إنشاء قالب جديد */}
+              <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/40 space-y-3">
+                <h3 className="text-sm font-bold text-white">➕ إنشاء قالب جديد (نسخة من yalla)</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <Input placeholder="مفتاح (مثلاً: dark)" value={newThemeKey} onChange={(e) => setNewThemeKey(e.target.value)} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                  <Input placeholder="الاسم (مثلاً: قالب داكن)" value={newThemeName} onChange={(e) => setNewThemeName(e.target.value)} className="bg-slate-800/50 border-slate-700/50 text-white" />
+                  <Button onClick={createBattleTheme} className="bg-emerald-600 hover:bg-emerald-500 text-white"><Plus className="w-4 h-4 ml-2" /> إنشاء</Button>
+                </div>
+              </div>
+
+              {/* أزرار + إعدادات القالب المحدد */}
+              {selectedBattleTheme && (
+                <>
+                  {/* الأزرار */}
+                  <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                    <div className="bg-slate-900/60 p-3 flex items-center justify-between">
+                      <h3 className="text-sm font-bold text-white">🎮 الأزرار ({battleButtons.length})</h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead className="bg-slate-900/40 text-slate-400">
+                          <tr>
+                            <th className="p-2 text-right">اللعبة</th>
+                            <th className="p-2 text-right">المفتاح</th>
+                            <th className="p-2 text-right">النص</th>
+                            <th className="p-2 text-center">الصورة</th>
+                            <th className="p-2 text-center">اللون</th>
+                            <th className="p-2 text-center">الحجم</th>
+                            <th className="p-2 text-center">الحالة</th>
+                            <th className="p-2 text-center">إجراء</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/40">
+                          {battleButtons.map((btn) => (
+                            <tr key={btn.id} className="hover:bg-slate-800/20">
+                              <td className="p-2 text-slate-300">{btn.gameType}</td>
+                              <td className="p-2 font-mono text-xs text-slate-400">{btn.buttonKey}</td>
+                              <td className="p-2 text-white">{btn.label}</td>
+                              <td className="p-2 text-center">{btn.imageSrc ? <img src={btn.imageSrc} alt="" className="w-8 h-7 inline-block" /> : '—'}</td>
+                              <td className="p-2 text-center"><span style={{ color: btn.strokeColor }}>●</span></td>
+                              <td className="p-2 text-center text-xs">{btn.width}×{btn.height}</td>
+                              <td className="p-2 text-center">
+                                <span className={`px-1.5 py-0.5 rounded text-[10px] ${btn.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>{btn.isActive ? '✓' : '✗'}</span>
+                              </td>
+                              <td className="p-2 text-center flex gap-1 justify-center">
+                                <Button size="sm" variant="ghost" onClick={() => setEditingBattleButton({ ...btn })} className="text-slate-300 hover:text-white"><Settings className="w-3.5 h-3.5" /></Button>
+                                <Button size="sm" variant="ghost" onClick={() => deleteBattleButton(btn.id)} className="text-red-400 hover:text-red-300"><Trash2 className="w-3.5 h-3.5" /></Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* الإعدادات */}
+                  <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                    <div className="bg-slate-900/60 p-3"><h3 className="text-sm font-bold text-white">🖼️ الإعدادات ({battleConfigs.length})</h3></div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead className="bg-slate-900/40 text-slate-400">
+                          <tr>
+                            <th className="p-2 text-right">المفتاح</th>
+                            <th className="p-2 text-right">الوصف</th>
+                            <th className="p-2 text-center">النوع</th>
+                            <th className="p-2 text-center">القيمة</th>
+                            <th className="p-2 text-center">معاينة</th>
+                            <th className="p-2 text-center">إجراء</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/40">
+                          {battleConfigs.map((cfg) => {
+                            return (
+                              <tr key={cfg.id} className="hover:bg-slate-800/20">
+                                <td className="p-2 font-mono text-xs text-slate-400">{cfg.configKey}</td>
+                                <td className="p-2 text-slate-300">{cfg.description}</td>
+                                <td className="p-2 text-center text-xs">{cfg.configType}</td>
+                                <td className="p-2 text-center">
+                                  <input
+                                    key={cfg.id}
+                                    defaultValue={cfg.configValue}
+                                    onBlur={(e) => { if (e.target.value !== cfg.configValue) saveBattleConfig(selectedBattleTheme, cfg.configKey, e.target.value); }}
+                                    className="bg-slate-800/50 border border-slate-700/50 text-white text-xs px-2 py-1 rounded w-full max-w-[200px]"
+                                    dir="ltr"
+                                  />
+                                </td>
+                                <td className="p-2 text-center">
+                                  {cfg.configType === 'image' && cfg.configValue ? <img src={cfg.configValue} alt="" className="w-8 h-7 inline-block" /> : cfg.configType === 'color' ? <span style={{ background: cfg.configValue, display: 'inline-block', width: 20, height: 20, borderRadius: 4 }} /> : '—'}
+                                </td>
+                                <td className="p-2 text-center text-xs text-slate-500">↵ للحفظ</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Modal تعديل زر */}
+              <Dialog open={!!editingBattleButton} onOpenChange={(open) => !open && setEditingBattleButton(null)}>
+                <DialogContent className="bg-slate-900 border-slate-800 max-w-md max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">تعديل زر: {editingBattleButton?.label}</DialogTitle>
+                  </DialogHeader>
+                  {editingBattleButton && (
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">النص (label)</Label>
+                        <Input value={editingBattleButton.label} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, label: e.target.value })} className="bg-slate-800/50 border-slate-700/50 text-white" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">مسار الصورة (imageSrc)</Label>
+                        <Input value={editingBattleButton.imageSrc} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, imageSrc: e.target.value })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">لون الحدود (strokeColor)</Label>
+                          <Input value={editingBattleButton.strokeColor} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, strokeColor: e.target.value })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">رابط (tabHref)</Label>
+                          <Input value={editingBattleButton.tabHref} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, tabHref: e.target.value })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3">
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">العرض</Label>
+                          <Input type="number" value={editingBattleButton.width} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, width: Number(e.target.value) })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">الارتفاع</Label>
+                          <Input type="number" value={editingBattleButton.height} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, height: Number(e.target.value) })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">الترتيب</Label>
+                          <Input type="number" value={editingBattleButton.tabOrder} onChange={(e) => setEditingBattleButton({ ...editingBattleButton, tabOrder: Number(e.target.value) })} className="bg-slate-800/50 border-slate-700/50 text-white" dir="ltr" />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الحالة (visibility)</Label>
+                        <Select value={editingBattleButton.visibility} onValueChange={(v) => setEditingBattleButton({ ...editingBattleButton, visibility: v as BattleButtonItem['visibility'] })}>
+                          <SelectTrigger className="bg-slate-800/50 border-slate-700/50 text-white"><SelectValue /></SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-slate-700">
+                            <SelectItem value="visible">🟢 مرئي</SelectItem>
+                            <SelectItem value="maintenance">🔧 صيانة</SelectItem>
+                            <SelectItem value="hidden">👁️ مخفي</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                        <Label className="text-slate-300 cursor-pointer">فعّال</Label>
+                        <Switch checked={editingBattleButton.isActive} onCheckedChange={(checked) => setEditingBattleButton({ ...editingBattleButton, isActive: checked })} />
+                      </div>
+                    </div>
+                  )}
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setEditingBattleButton(null)} className="border-slate-700 text-slate-300">إلغاء</Button>
+                    <Button onClick={() => { if (editingBattleButton) saveBattleButton(editingBattleButton); setEditingBattleButton(null); }} className="bg-emerald-600 hover:bg-emerald-500 text-white">حفظ</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
