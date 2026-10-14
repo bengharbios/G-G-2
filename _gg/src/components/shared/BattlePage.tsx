@@ -194,23 +194,36 @@ export default function BattlePage() {
             position: 'absolute', inset: 0, pointerEvents: 'none',
             background: `linear-gradient(135deg, ${stroke}20 0%, transparent 50%, ${stroke}15 100%)`,
           }} />
-          {/* تدرج داكن أسفل لاسم اللعبة */}
+          {/* اسم اللعبة فوق الصورة — حروف متحركة كالموجة */}
           <div style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%',
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.88) 100%)',
-            display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-            padding: '0 0 16px 0',
+            position: 'absolute', top: '12px', left: 0, right: 0,
+            display: 'flex', justifyContent: 'center',
+            pointerEvents: 'none', zIndex: 6,
           }}>
-            {/* اسم اللعبة فوق الصورة */}
-            <span style={{
-              fontSize: '22px', fontWeight: 900, color: '#fff',
-              textShadow: '0 2px 8px rgba(0,0,0,.9)',
-              paintOrder: 'stroke fill',
-              WebkitTextStroke: `1px ${stroke}`,
-            }}>
-              {activeBtn.label}
-            </span>
+            {activeBtn.label.split('').map((char, ci) => (
+              <span
+                key={ci}
+                style={{
+                  fontSize: '22px',
+                  fontWeight: 900,
+                  color: '#fff',
+                  textShadow: '0 2px 8px rgba(0,0,0,.9)',
+                  paintOrder: 'stroke fill',
+                  WebkitTextStroke: `1px ${stroke}`,
+                  display: 'inline-block',
+                  animation: reduceMotion ? 'none' : `wave 1.5s ease-in-out ${ci * 0.08}s infinite`,
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
           </div>
+          {/* تدرج خفيف أسفل البطاقة */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 100%)',
+            pointerEvents: 'none',
+          }} />
           {/* توهج نابض حول البطاقة */}
           {!reduceMotion && (
             <div style={{
@@ -414,6 +427,12 @@ export default function BattlePage() {
         @keyframes btnPulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.03); }
+        }
+        @keyframes wave {
+          0%, 100% { transform: translateY(0) scale(1); }
+          25% { transform: translateY(-6px) scale(1.05); }
+          50% { transform: translateY(0) scale(1); }
+          75% { transform: translateY(4px) scale(0.95); }
         }
       `}</style>
     </div>
