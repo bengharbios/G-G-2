@@ -1,33 +1,29 @@
 'use client';
 
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useEffect, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTobolStore } from '@/lib/tobol-store';
-import {
-  Trophy,
-  RotateCcw,
-  Swords,
-  Target,
-  Bomb,
-  Zap,
-  Shield,
-} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-// Confetti particle component
+// StrokeTextStyle_Yes (from yalla ludo styles.xml)
+const STROKE_STYLE: React.CSSProperties = {
+  color: '#feef91',
+  paintOrder: 'stroke fill',
+  WebkitTextStroke: '1px #aa6e1f',
+};
+
+// Confetti particles for the winner
 function Confetti() {
   const particles = useMemo(() => {
-    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899'];
-    return Array.from({ length: 50 }).map((_, i) => ({
+    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#feef91'];
+    return Array.from({ length: 40 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       color: colors[Math.floor(Math.random() * colors.length)],
-      delay: Math.random() * 2,
+      delay: Math.random() * 1.5,
       duration: 2 + Math.random() * 3,
       size: 4 + Math.random() * 8,
-      rotate: Math.random() * 360,
+      rotate: Math.random() * 720,
     }));
   }, []);
 
@@ -43,12 +39,13 @@ function Confetti() {
             delay: p.delay,
             ease: 'easeIn',
           }}
-          className="absolute confetti-piece"
+          className="tobol-confetti-piece"
           style={{
             width: p.size,
             height: p.size,
             backgroundColor: p.color,
             borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+            left: `${p.x}%`,
           }}
         />
       ))}
@@ -57,230 +54,262 @@ function Confetti() {
 }
 
 export default function TobolGameOver() {
-  const { redName, blueName, redScore, blueScore, battleLog, clickedBtns, resetGame } = useTobolStore();
+  const router = useRouter();
+  const { redName, blueName, redScore, blueScore, resetGame, gameMode, roomCode } = useTobolStore();
 
-  const winner = redScore > blueScore ? 'red' : blueScore > redScore ? 'blue' : 'draw';
+  // Godfather (host) info + rewards
+  const [godfather, setGodfather] = useState<{ name: string; avatar: string } | null>(null);
+  const [rewards, setRewards] = useState<{ xp: number; gold: number; leveledUp: boolean; newLevel: number | null } | null>(null);
+  const [rewardLoading, setRewardLoading] = useState(false);
+
+  // Determine winner
+  const winner: 'red' | 'blue' | 'draw' = redScore > blueScore ? 'red' : blueScore > redScore ? 'blue' : 'draw';
   const winnerName = winner === 'red' ? redName : winner === 'blue' ? blueName : 'تعادل!';
+  const loserName = winner === 'red' ? blueName : winner === 'blue' ? redName : '';
+  const winnerScore = winner === 'red' ? redScore : winner === 'blue' ? blueScore : 0;
+  const loserScore = winner === 'red' ? blueScore : winner === 'blue' ? redScore : 0;
   const scoreDiff = Math.abs(redScore - blueScore);
 
-  // Calculate stats from battle log
-  const totalClicks = battleLog.length;
-  const attacks = battleLog.filter(e => e.valueChange < 0 && e.message.includes('هجوم'));
-  const traps = battleLog.filter(e => e.message.includes('فخ'));
-  const emptyCards = battleLog.filter(e => e.message.includes('فارغة'));
+  // Apply body.in-game-setup so header chrome + bottom nav stay hidden on game over too
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('in-game-setup');
+    return () => {
+      document.body.classList.remove('in-game-setup');
+    };
+  }, []);
 
-  const redAttacks = battleLog.filter(e => e.team === 'red' && e.message.includes('هجوم'));
-  const blueAttacks = battleLog.filter(e => e.team === 'blue' && e.message.includes('هجوم'));
-  const redTraps = battleLog.filter(e => e.team === 'red' && e.message.includes('فخ'));
-  const blueTraps = battleLog.filter(e => e.team === 'blue' && e.message.includes('فخ'));
+  // Fetch godfather info + award rewards
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchGodfatherAndReward() {
+      try {
+        // 1) Get user info (avatar + displayName)
+        const meRes = await fetch('/api/auth/me');
+        const meData = await meRes.json();
+        if (cancelled) return;
+        if (meData.success && meData.user) {
+          const u = meData.user;
+          const avatarUrl = u.avatar || `/yalla-avatars/defaultPhoto_${((parseInt(u.id || '0', 10) || 0) % 12) + 1}.png`;
+          setGodfather({ name: u.displayName || u.username || 'العراب', avatar: avatarUrl });
+        }
 
-  const redTotalDamage = redAttacks.reduce((s, e) => s + Math.abs(e.valueChange), 0);
-  const blueTotalDamage = blueAttacks.reduce((s, e) => s + Math.abs(e.valueChange), 0);
-  const redSelfDamage = redTraps.reduce((s, e) => s + Math.abs(e.valueChange), 0);
-  const blueSelfDamage = blueTraps.reduce((s, e) => s + Math.abs(e.valueChange), 0);
+        // 2) Award rewards — only when there is a clear winner (not draw)
+        if (winner !== 'draw' && !rewardLoading) {
+          setRewardLoading(true);
+          try {
+            const rewardRes = await fetch('/api/game/reward', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                gameSlug: 'tobol',
+                outcome: 'win',
+                playerCount: 2,
+              }),
+            });
+            const rewardData = await rewardRes.json();
+            if (cancelled) return;
+            if (rewardData.success) {
+              setRewards({
+                xp: rewardData.xpAwarded || 0,
+                gold: rewardData.goldAwarded || 0,
+                leveledUp: !!rewardData.leveledUp,
+                newLevel: rewardData.newLevel ?? null,
+              });
+            } else {
+              // Reason: not_logged_in, daily_limit_reached, etc. — show 0 / no rewards
+              setRewards({ xp: 0, gold: 0, leveledUp: false, newLevel: null });
+            }
+          } catch {
+            if (!cancelled) setRewards({ xp: 0, gold: 0, leveledUp: false, newLevel: null });
+          } finally {
+            if (!cancelled) setRewardLoading(false);
+          }
+        } else if (winner === 'draw') {
+          // Draw — still award play XP
+          try {
+            const rewardRes = await fetch('/api/game/reward', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                gameSlug: 'tobol',
+                outcome: 'play',
+                playerCount: 2,
+              }),
+            });
+            const rewardData = await rewardRes.json();
+            if (cancelled) return;
+            if (rewardData.success) {
+              setRewards({
+                xp: rewardData.xpAwarded || 0,
+                gold: rewardData.goldAwarded || 0,
+                leveledUp: !!rewardData.leveledUp,
+                newLevel: rewardData.newLevel ?? null,
+              });
+            } else {
+              setRewards({ xp: 0, gold: 0, leveledUp: false, newLevel: null });
+            }
+          } catch {
+            if (!cancelled) setRewards({ xp: 0, gold: 0, leveledUp: false, newLevel: null });
+          }
+        }
+      } catch {
+        // silent
+      }
+    }
+    fetchGodfatherAndReward();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const loserTeam = winner === 'red' ? 'blue' : winner === 'blue' ? 'red' : null;
+  const handlePlayAgain = () => {
+    resetGame();
+    router.push('/tobol');
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-3 sm:p-4 tobol-bg">
-      {/* Confetti for winner */}
+    <div className="tobol-gameover-root">
+      {/* Confetti for clear winner */}
       {winner !== 'draw' && <Confetti />}
 
-      <div className="relative z-10 w-full max-w-sm sm:max-w-lg mx-auto py-6 sm:py-8">
-        {/* Winner Banner — like Mafia */}
+      {/* Trophy / Result card */}
+      <motion.div
+        initial={{ opacity: 0, y: -20, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.3 }}
+        className="tobol-gameover-trophy-card"
+      >
+        {/* Trophy image (shield + crossed swords from yalla source) */}
         <motion.div
-          initial={{ scale: 0, rotate: -10 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', damping: 10 }}
-          className="text-center mb-6 sm:mb-8"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="text-7xl sm:text-8xl mb-3 sm:mb-4"
-          >
-            {winner === 'draw' ? '🤝' : '🏆'}
-          </motion.div>
-          <h1
-            className={`text-3xl sm:text-4xl font-black mb-2 ${
-              winner === 'red'
-                ? 'text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-amber-300'
-                : winner === 'blue'
-                ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300'
-                : 'text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300'
-            }`}
-          >
-            {winner === 'draw'
-              ? 'تعادل! 🤝'
-              : `${winnerName} فاز! 🎉`
-            }
-          </h1>
-          <p className="text-slate-400 text-xs sm:text-sm">
-            {winner === 'draw'
-              ? 'الفرقان متعادلان بالنقاط'
-              : `فاز بالمعركة بفارق ${scoreDiff} نقطة`
-            }
-          </p>
+          <img
+            src="/battle/btn_winner_rewards.webp"
+            alt="winner"
+            className="tobol-gameover-trophy-img"
+          />
         </motion.div>
 
-        {/* Stats Grid — like Mafia */}
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Swords className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{totalClicks}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">تحركات</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Target className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{attacks.length}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">هجمات</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Bomb className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{traps.length}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">فخاخ</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{emptyCards.length}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">فارغة</p>
-            </CardContent>
-          </Card>
+        {/* Title — winner or draw */}
+        <h1 className="tobol-gameover-title">
+          {winner === 'draw' ? '🤝 تعادل!' : `🏆 الفائز: ${winnerName}`}
+        </h1>
+        <p className="tobol-gameover-subtitle">
+          {winner === 'draw'
+            ? 'الفرقان متعادلان بالنقاط'
+            : `فاز بفارق ${scoreDiff} نقطة`}
+        </p>
+
+        {/* Godfather row */}
+        <div className="tobol-godfather-row">
+          <div className="tobol-godfather-avatar">
+            <span className="tobol-godfather-crown">👑</span>
+            {godfather ? (
+              <img src={godfather.avatar} alt={godfather.name} />
+            ) : (
+              <span style={{ fontSize: '20px' }}>🥁</span>
+            )}
+          </div>
+          <div className="tobol-godfather-info">
+            <div className="tobol-godfather-name">
+              {godfather?.name || 'العراب'}
+            </div>
+            <span className="tobol-godfather-tag">العراب</span>
+          </div>
         </div>
 
-        {/* Teams Revealed — like Mafia's card reveal */}
-        <Card className="bg-slate-900/50 border-slate-700/50 mb-3 sm:mb-4">
-          <CardContent className="pt-3 sm:pt-4">
-            <h3 className="text-slate-200 font-bold mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
-              <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400" />
-              كشف نتائج الفرق
-            </h3>
+        {/* Reward chips: XP + Gold */}
+        <div className="tobol-reward-row">
+          <div className="tobol-reward-chip">
+            <img src="/yalla-ui/exp.png" alt="xp" />
+            <span className="reward-amount">
+              {rewards ? `+${rewards.xp}` : '...'}
+            </span>
+            <span>XP</span>
+          </div>
+          <div className="tobol-reward-chip">
+            <img src="/yalla-ui/coin.webp" alt="gold" />
+            <span className="reward-amount">
+              {rewards ? `+${rewards.gold}` : '...'}
+            </span>
+            <span>ذهب</span>
+          </div>
+        </div>
 
-            {/* Red Team */}
-            <div className="mb-3 sm:mb-4">
-              <Badge className={`text-xs mb-2 ${winner === 'red' ? 'bg-red-900/50 text-red-300 border border-red-500/30' : 'bg-slate-800/50 text-slate-400 border border-slate-700/30'}`}>
-                {winner === 'red' ? '🏆' : '💀'} {redName}
-              </Badge>
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className={`text-lg sm:text-xl font-black ${winner === 'red' ? 'text-red-300' : 'text-slate-400'}`}>{redScore}</p>
-                  <p className="text-[10px] text-slate-500">النقاط</p>
-                </div>
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className="text-lg sm:text-xl font-black text-red-400">{redTotalDamage}</p>
-                  <p className="text-[10px] text-slate-500">ضرر للخصم</p>
-                </div>
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className="text-lg sm:text-xl font-black text-orange-400">{redSelfDamage}</p>
-                  <p className="text-[10px] text-slate-500">ضرر ذاتي</p>
-                </div>
-              </div>
-            </div>
+        {rewards?.leveledUp && rewards.newLevel && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              marginTop: '8px',
+              color: '#fbbf24',
+              fontSize: '12px',
+              fontWeight: 800,
+              textShadow: '0 1px 2px rgba(0,0,0,.6)',
+            }}
+          >
+            🎉 ترقية للمستوى {rewards.newLevel}!
+          </motion.div>
+        )}
+      </motion.div>
 
-            {/* Blue Team */}
-            <div>
-              <Badge className={`text-xs mb-2 ${winner === 'blue' ? 'bg-blue-900/50 text-blue-300 border border-blue-500/30' : 'bg-slate-800/50 text-slate-400 border border-slate-700/30'}`}>
-                {winner === 'blue' ? '🏆' : '💀'} {blueName}
-              </Badge>
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className={`text-lg sm:text-xl font-black ${winner === 'blue' ? 'text-blue-300' : 'text-slate-400'}`}>{blueScore}</p>
-                  <p className="text-[10px] text-slate-500">النقاط</p>
-                </div>
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className="text-lg sm:text-xl font-black text-blue-400">{blueTotalDamage}</p>
-                  <p className="text-[10px] text-slate-500">ضرر للخصم</p>
-                </div>
-                <div className="rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 text-center">
-                  <p className="text-lg sm:text-xl font-black text-orange-400">{blueSelfDamage}</p>
-                  <p className="text-[10px] text-slate-500">ضرر ذاتي</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Score comparison bar */}
-            {redScore + blueScore > 0 && (
-              <div className="mt-4">
-                <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-                  <span>{redName}</span>
-                  <span>{blueName}</span>
-                </div>
-                <div className="flex h-3 rounded-full overflow-hidden bg-slate-800">
-                  <motion.div
-                    initial={{ width: '50%' }}
-                    animate={{ width: `${(redScore / (redScore + blueScore)) * 100}%` }}
-                    transition={{ delay: 0.5, duration: 1, ease: 'easeOut' }}
-                    className="bg-gradient-to-l from-red-500 to-red-700"
-                  />
-                  <motion.div
-                    initial={{ width: '50%' }}
-                    animate={{ width: `${(blueScore / (redScore + blueScore)) * 100}%` }}
-                    transition={{ delay: 0.5, duration: 1, ease: 'easeOut' }}
-                    className="bg-gradient-to-r from-blue-500 to-blue-700"
-                  />
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Battle Log — like Mafia's game log */}
-        <Card className="bg-slate-900/50 border-slate-700/50 mb-4 sm:mb-6">
-          <CardContent className="pt-3 sm:pt-4">
-            <h3 className="text-slate-200 font-bold mb-2 sm:mb-3 text-xs sm:text-sm">
-              📜 سجل المعركة
-            </h3>
-            <div className="space-y-1.5 sm:space-y-2 max-h-48 sm:max-h-56 overflow-y-auto tobol-scrollbar">
-              {battleLog.length === 0 ? (
-                <p className="text-center text-slate-600 text-xs py-4">لا توجد تحركات...</p>
-              ) : (
-                battleLog.map((entry) => (
-                  <div
-                    key={entry.id}
-                    className="flex items-start gap-2 text-xs sm:text-sm"
-                  >
-                    <span className="text-slate-600 text-[10px] sm:text-xs mt-0.5 shrink-0 w-5 sm:w-6">
-                      {entry.id}.
-                    </span>
-                    <span
-                      className={
-                        entry.message.includes('هجوم')
-                          ? entry.team === 'red' ? 'text-red-400' : 'text-blue-400'
-                          : entry.message.includes('فخ')
-                          ? 'text-orange-400'
-                          : 'text-slate-400'
-                      }
-                    >
-                      {entry.message}
-                    </span>
-                    {entry.valueChange !== 0 && (
-                      <span className={`text-[10px] font-black shrink-0 ${entry.valueChange < 0 ? 'text-red-400' : 'text-green-400'}`}>
-                        ({entry.valueChange})
-                      </span>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Play Again — like Mafia */}
-        <Button
-          onClick={resetGame}
-          className="w-full bg-gradient-to-l from-yellow-600 to-amber-700 hover:from-yellow-500 hover:to-amber-600 text-white font-bold text-base sm:text-lg py-5 sm:py-6 pulse-glow-gold"
+      {/* Teams comparison */}
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+          className="tobol-teams-row"
         >
-          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-          العب مرة أخرى
-        </Button>
-      </div>
+          {/* Winner (left side) */}
+          {winner !== 'draw' && (
+            <>
+              <div className={`tobol-team-result-card team-${winner} winner`}>
+                <div className="tobol-team-result-rank">🏆</div>
+                <div className="tobol-team-result-name">{winnerName}</div>
+                <div className="tobol-team-result-score">{winnerScore}</div>
+                <div className="tobol-team-result-label">نقطة — فائز</div>
+              </div>
+              <div className={`tobol-team-result-card team-${winner === 'red' ? 'blue' : 'red'} loser`}>
+                <div className="tobol-team-result-rank">💀</div>
+                <div className="tobol-team-result-name">{loserName}</div>
+                <div className="tobol-team-result-score">{loserScore}</div>
+                <div className="tobol-team-result-label">نقطة — خاسر</div>
+              </div>
+            </>
+          )}
+          {winner === 'draw' && (
+            <>
+              <div className="tobol-team-result-card team-red">
+                <div className="tobol-team-result-rank">🤝</div>
+                <div className="tobol-team-result-name">{redName}</div>
+                <div className="tobol-team-result-score">{redScore}</div>
+                <div className="tobol-team-result-label">نقطة</div>
+              </div>
+              <div className="tobol-team-result-card team-blue">
+                <div className="tobol-team-result-rank">🤝</div>
+                <div className="tobol-team-result-name">{blueName}</div>
+                <div className="tobol-team-result-score">{blueScore}</div>
+                <div className="tobol-team-result-label">نقطة</div>
+              </div>
+            </>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Play again button — Yalla style */}
+      <motion.button
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.3 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={handlePlayAgain}
+        className="tobol-play-again-btn"
+      >
+        <span style={{ fontSize: '16px' }}>🔄</span>
+        <span>العب مرة أخرى</span>
+      </motion.button>
     </div>
   );
 }

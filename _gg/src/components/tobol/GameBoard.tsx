@@ -430,6 +430,7 @@ export default function GameBoard() {
     clickedBtns,
     mainBgId,
     modalData,
+    pendingGameOver,
     handleButtonClick,
     closeModal,
     resetGame,
@@ -454,6 +455,17 @@ export default function GameBoard() {
     setMusicOn(isMusicEnabled());
     setSoundOn(isSoundEnabled());
   }, []);
+
+  // ── Bug fix: when pendingGameOver is set (after last button click OR a team reached 0),
+  // auto-close the modal after 2.2s so the game-over screen ALWAYS appears,
+  // even if the user does not tap the last card to dismiss it manually.
+  useEffect(() => {
+    if (!pendingGameOver) return;
+    const t = setTimeout(() => {
+      closeModal();
+    }, 2200);
+    return () => clearTimeout(t);
+  }, [pendingGameOver, closeModal]);
 
   const toggleMusic = () => {
     const next = !musicOn;

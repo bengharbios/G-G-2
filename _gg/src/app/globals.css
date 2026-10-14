@@ -4065,3 +4065,311 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
   height: 18px;
   pointer-events: none;
 }
+
+/* ============================================================ */
+/* GAME OVER — Yalla Ludo style result card                    */
+/* ============================================================ */
+
+.tobol-gameover-root {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 56px);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(254,239,145,.18), transparent 60%),
+    linear-gradient(180deg, #0a1d18 0%, #04140e 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 14px 20px;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tobol-gameover-trophy-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  padding: 18px 16px 16px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.15), transparent 70%),
+    linear-gradient(180deg, rgba(20,40,30,.96), rgba(8,18,14,.96));
+  border: 1.5px solid rgba(254,239,145,.3);
+  box-shadow:
+    inset 0 1px 0 rgba(254,239,145,.18),
+    0 8px 24px rgba(0,0,0,.5);
+  text-align: center;
+}
+
+.tobol-gameover-trophy-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(254,239,145,.4));
+  margin: 0 auto 8px;
+  display: block;
+}
+
+.tobol-gameover-title {
+  color: #feef91;
+  paint-order: 'stroke fill';
+  -webkit-text-stroke: 1px #aa6e1f;
+  text-shadow: 0 2px 6px rgba(0,0,0,.7);
+  font-size: 22px;
+  font-weight: 900;
+  margin: 0 0 4px;
+  line-height: 1;
+}
+
+.tobol-gameover-subtitle {
+  color: #9fc4b4;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Godfather (host) info row */
+.tobol-godfather-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,.3);
+  border: 1px solid rgba(254,239,145,.2);
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.tobol-godfather-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(254,239,145,.55);
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.tobol-godfather-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tobol-godfather-crown {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.6));
+}
+
+.tobol-godfather-info {
+  flex: 1;
+  text-align: right;
+}
+
+.tobol-godfather-name {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7);
+}
+
+.tobol-godfather-tag {
+  display: inline-block;
+  font-size: 10px;
+  color: #feef91;
+  background: rgba(254,239,145,.15);
+  border: 1px solid rgba(254,239,145,.4);
+  padding: 1px 8px;
+  border-radius: 999px;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+/* Reward chips: XP + Gold */
+.tobol-reward-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.tobol-reward-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.15), transparent 70%),
+    linear-gradient(180deg, rgba(8,28,22,.9), rgba(4,18,14,.9));
+  border: 1px solid rgba(254,239,145,.35);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #feef91;
+  box-shadow: inset 0 1px 0 rgba(254,239,145,.12);
+}
+
+.tobol-reward-chip img {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.tobol-reward-chip .reward-amount {
+  color: #fff;
+  font-size: 14px;
+}
+
+/* Teams comparison */
+.tobol-teams-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 4px;
+}
+
+.tobol-team-result-card {
+  flex: 1;
+  position: relative;
+  padding: 10px 8px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96));
+  text-align: center;
+  overflow: hidden;
+}
+
+.tobol-team-result-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1.5px;
+  background: var(--panel-border, rgba(255,255,255,.1));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.tobol-team-result-card.winner.team-red {
+  --panel-border: linear-gradient(180deg, #feef91, #f59e0b);
+  box-shadow: 0 0 16px rgba(254,239,145,.35), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.tobol-team-result-card.winner.team-blue {
+  --panel-border: linear-gradient(180deg, #feef91, #f59e0b);
+  box-shadow: 0 0 16px rgba(254,239,145,.35), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.tobol-team-result-card.loser.team-red {
+  --panel-border: linear-gradient(180deg, rgba(239,68,68,.3), rgba(239,68,68,.1));
+  opacity: 0.7;
+}
+
+.tobol-team-result-card.loser.team-blue {
+  --panel-border: linear-gradient(180deg, rgba(59,130,246,.3), rgba(59,130,246,.1));
+  opacity: 0.7;
+}
+
+.tobol-team-result-card.team-red {
+  background: linear-gradient(180deg, rgba(60,15,15,.7), rgba(30,8,8,.85));
+}
+
+.tobol-team-result-card.team-blue {
+  background: linear-gradient(180deg, rgba(15,30,60,.7), rgba(8,15,40,.85));
+}
+
+.tobol-team-result-rank {
+  font-size: 20px;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.tobol-team-result-name {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7);
+  margin-bottom: 4px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.tobol-team-result-score {
+  color: #feef91;
+  font-size: 22px;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0,0,0,.7);
+  line-height: 1;
+}
+
+.tobol-team-result-label {
+  color: #9fc4b4;
+  font-size: 9px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Play again button — Yalla style */
+.tobol-play-again-btn {
+  width: 100%;
+  max-width: 360px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(254,239,145,.18), transparent 70%),
+    linear-gradient(180deg, #1a1410, #0c0905);
+  color: #feef91;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  position: relative;
+  paint-order: 'stroke fill';
+  -webkit-text-stroke: 0.5px #aa6e1f;
+  text-shadow: 0 2px 6px rgba(0,0,0,.6);
+  box-shadow:
+    inset 0 1px 0 rgba(254,239,145,.18),
+    inset 0 -1px 0 rgba(170,110,31,.25),
+    0 6px 18px rgba(0,0,0,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tobol-play-again-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #feef91, #aa6e1f 50%, #feef91);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.tobol-play-again-btn:active {
+  transform: scale(0.97);
+}
+
+/* Confetti */
+.tobol-confetti-piece {
+  position: absolute;
+  top: -10px;
+  border-radius: 2px;
+  pointer-events: none;
+}

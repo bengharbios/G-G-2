@@ -478,9 +478,8 @@ function TobolContent() {
   // PLAYING / GAME OVER
   // ============================
   return (
-    <div className="flex flex-col min-h-screen tobol-bg">
-      <GameTopBar />
-      <main className="flex-1">
+    <div className="flex flex-col" style={{ height: '100vh', overflow: 'hidden' }}>
+      <main className="flex-1" style={{ overflow: 'hidden' }}>
         {phase === 'playing' && <GameBoard />}
         {phase === 'game_over' && <TobolGameOver />}
       </main>
