@@ -1267,6 +1267,33 @@ interface AuthUserData {
 // (src/components/shared/AppShell.tsx) — تُحمّل مرة واحدة عند التنقل بين
 // الألعاب/الأصدقاء/المجلس. هذه الصفحة تعرض فقط المحتوى المخصّص للألعاب.
 
+// ─── ThemeAwareGamesSection — يختار GamesSection أو BattlePage حسب القالب النشط ─
+function ThemeAwareGamesSection() {
+  const [themeKey, setThemeKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/battle/config', { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data?.success) setThemeKey(data.theme?.themeKey || 'current');
+        else setThemeKey('current');
+      })
+      .catch(() => setThemeKey('current'));
+  }, []);
+
+  if (themeKey === null) {
+    return <div className="flex items-center justify-center min-h-[40vh] text-slate-500 text-sm">جارٍ التحميل...</div>;
+  }
+
+  // القالب الأول (current) → GamesSection القديمة (شعار + فلترة + card-border-spin grid)
+  if (themeKey === 'current') {
+    return <GamesSection />;
+  }
+
+  // القالب الثاني (yalla) → BattlePage (yalla ludo style)
+  return <BattlePage />;
+}
+
 export default function HomePage() {
   return (
     <div dir="rtl" className="min-h-screen bg-slate-950 text-white">
@@ -1293,9 +1320,9 @@ export default function HomePage() {
         <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
       </header>
 
-      {/* Main Content — BattlePage ديناميكي من API (نظام القوالب) */}
+      {/* Main Content — يختار القالب تلقائياً من /api/battle/config */}
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 pb-24">
-        <BattlePage />
+        <ThemeAwareGamesSection />
       </main>
 
       {/* CSS keyframe for animated gradient border on cards */}
