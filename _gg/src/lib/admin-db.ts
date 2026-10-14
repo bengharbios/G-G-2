@@ -65,6 +65,21 @@ export interface RoleRewardMultiplier {
   updatedAt: string;
 }
 
+// ─── BottomNavConfig: إدارة الشريط السفلي (إخفاء/تعطيل/إضافة) ─────────
+export interface BottomNavConfig {
+  id: string;
+  tabKey: string;           // games / events / council / friends / custom
+  tabLabel: string;
+  tabIconOn: string;        // صورة active
+  tabIconOff: string;       // صورة inactive
+  tabHref: string;          // رابط الصفحة (للتبويبات الجديدة)
+  tabOrder: number;         // ترتيب العرض
+  visibility: 'visible' | 'hidden' | 'maintenance';
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Subscription {
   id: string;
   name: string;
@@ -1127,6 +1142,44 @@ export async function ensureAdminTables(): Promise<void> {
           sql: `INSERT INTO RoleRewardMultiplier (id, roleKey, roleName, xpMultiplier, goldMultiplier, description, isActive)
                 VALUES (?, ?, ?, ?, ?, ?, 1)`,
           args: [crypto.randomUUID(), r.key, r.name, r.xp, r.gold, r.desc],
+        });
+      }
+    }
+  } catch { /* ignore seed errors */ }
+
+  // ─── BottomNavConfig: إدارة الشريط السفلي (إخفاء/تعطيل/إضافة تبويبات) ────
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS BottomNavConfig (
+      id TEXT PRIMARY KEY,
+      tabKey TEXT NOT NULL UNIQUE,
+      tabLabel TEXT NOT NULL,
+      tabIconOn TEXT DEFAULT '',
+      tabIconOff TEXT DEFAULT '',
+      tabHref TEXT DEFAULT '',
+      tabOrder INTEGER DEFAULT 0,
+      visibility TEXT DEFAULT 'visible',
+      isActive INTEGER DEFAULT 1,
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // Seed الأربعة تبويبات الافتراضية (إن لم توجد)
+  try {
+    const tabsExist = await c.execute("SELECT COUNT(*) as cnt FROM BottomNavConfig");
+    const cnt = (tabsExist.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (!cnt || cnt === 0) {
+      const defaultTabs = [
+        { key: 'events',  label: 'الأحداث',  on: '/yalla-ui/event_select.png',   off: '/yalla-ui/event_unselect.png',   href: '',         order: 0 },
+        { key: 'games',   label: 'الألعاب', on: '/yalla-ui/battle_select.png',   off: '/yalla-ui/battle_unselect.png',  href: '/#games',  order: 1 },
+        { key: 'council', label: 'المجلس',  on: '/yalla-ui/room_select.png',    off: '/yalla-ui/room_unselect.png',    href: '/voice-rooms', order: 2 },
+        { key: 'friends', label: 'أصدقائي', on: '/yalla-ui/friend_select.png',  off: '/yalla-ui/friend_unselect.png',   href: '/friends', order: 3 },
+      ];
+      for (const t of defaultTabs) {
+        await c.execute({
+          sql: `INSERT INTO BottomNavConfig (id, tabKey, tabLabel, tabIconOn, tabIconOff, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), t.key, t.label, t.on, t.off, t.href, t.order],
         });
       }
     }
@@ -3498,6 +3551,137 @@ export async function createRoleMultiplier(data: { roleKey: string; roleName: st
     args: [data.roleKey],
   });
   return r.rows.length > 0 ? toRoleRewardMultiplier(r.rows[0] as Record<string, unknown>) : null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// ─── Bottom Nav Config (إدارة الشريط السفلي) ────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+
+function toBottomNavConfig(row: Record<string, unknown>): BottomNavConfig {
+  return {
+    id: row.id as string,
+    tabKey: row.tabKey as string,
+    tabLabel: (row.tabLabel as string) ?? '',
+    tabIconOn: (row.tabIconOn as string) ?? '',
+    tabIconOff: (row.tabIconOff as string) ?? '',
+    tabHref: (row.tabHref as string) ?? '',
+    tabOrder: Number(row.tabOrder ?? 0),
+    visibility: (row.visibility as BottomNavConfig['visibility']) ?? 'visible',
+    isActive: !!(row.isActive && row.isActive !== 0),
+    createdAt: (row.createdAt as string) ?? new Date().toISOString(),
+    updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
+  };
+}
+
+/** يحصل على كل تبويبات الشريط السفلي (للأدمن) */
+export async function getAllBottomNavTabs(): Promise<BottomNavConfig[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM BottomNavConfig ORDER BY tabOrder ASC',
+    args: [],
+  });
+  return r.rows.map((row) => toBottomNavConfig(row as Record<string, unknown>));
+}
+
+/** يحصل على التبويبات الظاهرة للجمهور (visible + maintenance) — للقراءة العامة */
+export async function getPublicBottomNavTabs(): Promise<BottomNavConfig[]> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: `SELECT * FROM BottomNavConfig
+          WHERE isActive = 1 AND visibility != 'hidden'
+          ORDER BY tabOrder ASC`,
+    args: [],
+  });
+  return r.rows.map((row) => toBottomNavConfig(row as Record<string, unknown>));
+}
+
+/** يحصل على تبويب محدد بواسطة tabKey */
+export async function getBottomNavTab(tabKey: string): Promise<BottomNavConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const r = await c.execute({
+    sql: 'SELECT * FROM BottomNavConfig WHERE tabKey = ?',
+    args: [tabKey],
+  });
+  if (r.rows.length === 0) return null;
+  return toBottomNavConfig(r.rows[0] as Record<string, unknown>);
+}
+
+/** يحدّث تبويب محدد (للأدمن) */
+export async function updateBottomNavTab(
+  tabKey: string,
+  data: Partial<Omit<BottomNavConfig, 'id' | 'tabKey' | 'createdAt' | 'updatedAt'>>
+): Promise<BottomNavConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const fields: string[] = [];
+  const values: unknown[] = [];
+
+  if (data.tabLabel !== undefined) { fields.push('tabLabel = ?'); values.push(data.tabLabel); }
+  if (data.tabIconOn !== undefined) { fields.push('tabIconOn = ?'); values.push(data.tabIconOn); }
+  if (data.tabIconOff !== undefined) { fields.push('tabIconOff = ?'); values.push(data.tabIconOff); }
+  if (data.tabHref !== undefined) { fields.push('tabHref = ?'); values.push(data.tabHref); }
+  if (data.tabOrder !== undefined) { fields.push('tabOrder = ?'); values.push(Number(data.tabOrder)); }
+  if (data.visibility !== undefined) { fields.push('visibility = ?'); values.push(data.visibility); }
+  if (data.isActive !== undefined) { fields.push('isActive = ?'); values.push(data.isActive ? 1 : 0); }
+
+  if (fields.length === 0) return getBottomNavTab(tabKey);
+
+  fields.push("updatedAt = datetime('now')");
+  values.push(tabKey);
+
+  await c.execute({
+    sql: `UPDATE BottomNavConfig SET ${fields.join(', ')} WHERE tabKey = ?`,
+    args: values,
+  });
+
+  return getBottomNavTab(tabKey);
+}
+
+/** ينشئ تبويب جديد (للأدمن — لإضافة تبويبات مخصصة) */
+export async function createBottomNavTab(data: {
+  tabKey: string;
+  tabLabel: string;
+  tabIconOn?: string;
+  tabIconOff?: string;
+  tabHref?: string;
+  tabOrder?: number;
+  visibility?: 'visible' | 'hidden' | 'maintenance';
+}): Promise<BottomNavConfig | null> {
+  await ensureAdminTables();
+  const c = getClient();
+  const id = crypto.randomUUID();
+  const order = data.tabOrder ?? 999;
+
+  await c.execute({
+    sql: `INSERT INTO BottomNavConfig (id, tabKey, tabLabel, tabIconOn, tabIconOff, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))`,
+    args: [
+      id,
+      data.tabKey,
+      data.tabLabel,
+      data.tabIconOn ?? '',
+      data.tabIconOff ?? '',
+      data.tabHref ?? '',
+      order,
+      data.visibility ?? 'visible',
+    ],
+  });
+
+  return getBottomNavTab(data.tabKey);
+}
+
+/** يحذف تبويب محدد (للأدمن — لإزالة التبويبات المخصصة) */
+export async function deleteBottomNavTab(tabKey: string): Promise<boolean> {
+  await ensureAdminTables();
+  const c = getClient();
+  await c.execute({
+    sql: 'DELETE FROM BottomNavConfig WHERE tabKey = ?',
+    args: [tabKey],
+  });
+  return true;
 }
 
 // ─── Player ID Generation ─────────────────────────────────────────────

@@ -157,6 +157,21 @@ interface UserRewardLog {
   createdAt: string;
 }
 
+// ─── Bottom Nav Tab (تبويبات الشريط السفلي) ─────────────────────────
+interface BottomNavTab {
+  id: string;
+  tabKey: string;
+  tabLabel: string;
+  tabIconOn: string;
+  tabIconOff: string;
+  tabHref: string;
+  tabOrder: number;
+  visibility: 'visible' | 'hidden' | 'maintenance';
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Subscription {
   id: string;
   email: string;
@@ -273,7 +288,7 @@ interface LeaderboardEntry {
   isSpecialId: boolean;
 }
 
-type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
+type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'bottom-nav' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
 
 // ─── Navigation items ─────────────────────────────────────────────────
 
@@ -283,6 +298,7 @@ const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = 
   { id: 'game-rewards', label: 'مكافآت الألعاب', icon: <Trophy className="w-5 h-5" /> },
   { id: 'role-multipliers', label: 'مضاعفات الأدوار', icon: <Users className="w-5 h-5" /> },
   { id: 'reward-log', label: 'سجل المكافآت', icon: <Activity className="w-5 h-5" /> },
+  { id: 'bottom-nav', label: 'الشريط السفلي', icon: <LayoutDashboard className="w-5 h-5" /> },
   { id: 'subscriptions', label: 'الاشتراكات', icon: <Users className="w-5 h-5" /> },
   { id: 'sessions', label: 'الجلسات', icon: <Activity className="w-5 h-5" /> },
   { id: 'messages', label: 'الرسائل', icon: <MessageSquare className="w-5 h-5" /> },
@@ -473,6 +489,13 @@ export default function AdminPage() {
   const [newRoleName, setNewRoleName] = useState('');
   const [newRoleXp, setNewRoleXp] = useState('1.0');
   const [newRoleGold, setNewRoleGold] = useState('1.0');
+  // ─── Bottom Nav ───
+  const [bottomNavTabs, setBottomNavTabs] = useState<BottomNavTab[]>([]);
+  const [editingNavTab, setEditingNavTab] = useState<BottomNavTab | null>(null);
+  const [newNavTabKey, setNewNavTabKey] = useState('');
+  const [newNavTabLabel, setNewNavTabLabel] = useState('');
+  const [newNavTabHref, setNewNavTabHref] = useState('');
+  const [newNavTabIcon, setNewNavTabIcon] = useState('');
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [sessions, setSessions] = useState<GameSession[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -812,6 +835,90 @@ export default function AdminPage() {
       }
     } catch { showToast('خطأ في الإنشاء', 'error'); }
   }, [newRoleKey, newRoleName, newRoleXp, newRoleGold]);
+
+  // ─── fetch bottom nav tabs (تبويبات الشريط السفلي) ─────────────────
+  const fetchBottomNavTabs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/bottom-nav');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) setBottomNavTabs(data.tabs);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ─── save bottom nav tab ───────────────────────────────────────────
+  const saveNavTab = useCallback(async (tab: BottomNavTab) => {
+    try {
+      const res = await fetch('/api/admin/bottom-nav', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tabKey: tab.tabKey,
+          tabLabel: tab.tabLabel,
+          tabIconOn: tab.tabIconOn,
+          tabIconOff: tab.tabIconOff,
+          tabHref: tab.tabHref,
+          tabOrder: tab.tabOrder,
+          visibility: tab.visibility,
+          isActive: tab.isActive,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setBottomNavTabs((prev) => prev.map((t) => (t.tabKey === tab.tabKey ? data.tab : t)));
+          showToast('تم حفظ التبويب');
+        }
+      }
+    } catch { showToast('خطأ في الحفظ', 'error'); }
+  }, []);
+
+  // ─── create new nav tab ────────────────────────────────────────────
+  const createNavTab = useCallback(async () => {
+    if (!newNavTabKey.trim() || !newNavTabLabel.trim()) {
+      showToast('مطلوب مفتاح وعنوان التبويب', 'error');
+      return;
+    }
+    try {
+      const res = await fetch('/api/admin/bottom-nav', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tabKey: newNavTabKey.trim(),
+          tabLabel: newNavTabLabel.trim(),
+          tabHref: newNavTabHref,
+          tabIconOn: newNavTabIcon,
+          tabIconOff: newNavTabIcon,
+          tabOrder: 999,
+          visibility: 'visible',
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setBottomNavTabs((prev) => [...prev, data.tab]);
+          setNewNavTabKey('');
+          setNewNavTabLabel('');
+          setNewNavTabHref('');
+          setNewNavTabIcon('');
+          showToast('تم إنشاء التبويب الجديد');
+        }
+      }
+    } catch { showToast('خطأ في الإنشاء', 'error'); }
+  }, [newNavTabKey, newNavTabLabel, newNavTabHref, newNavTabIcon]);
+
+  // ─── delete nav tab ────────────────────────────────────────────────
+  const deleteNavTab = useCallback(async (tabKey: string) => {
+    if (!confirm('هل تريد حذف هذا التبويب؟')) return;
+    try {
+      const res = await fetch(`/api/admin/bottom-nav?tabKey=${encodeURIComponent(tabKey)}`, { method: 'DELETE' });
+      if (res.ok) {
+        setBottomNavTabs((prev) => prev.filter((t) => t.tabKey !== tabKey));
+        showToast('تم حذف التبويب');
+      }
+    } catch { showToast('خطأ في الحذف', 'error'); }
+  }, []);
 
   const fetchSubscriptions = useCallback(async () => {
     try {
@@ -1189,6 +1296,9 @@ export default function AdminPage() {
       case 'reward-log':
         fetchRewardLog();
         break;
+      case 'bottom-nav':
+        fetchBottomNavTabs();
+        break;
       case 'subscriptions':
         fetchSubscriptions();
         // بيانات المستخدمين لربط الاشتراكات وعرض المشترك المرتبط
@@ -1236,7 +1346,7 @@ export default function AdminPage() {
         fetchSettings();
         break;
     }
-  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, fetchGameRewards, fetchRoleMultipliers, fetchRewardLog, gamesLoadedOnce, games.length]);
+  }, [activeSection, isAuthenticated, fetchStats, fetchGames, fetchSubscriptions, fetchSessions, fetchMessages, fetchSettings, fetchTables, fetchEvents, fetchGemCharges, fetchLeaderboard, fetchFrames, fetchUsers, fetchBackgrounds, fetchGameRewards, fetchRoleMultipliers, fetchRewardLog, fetchBottomNavTabs, gamesLoadedOnce, games.length]);
 
   // ─── Auto-refresh tables every 10 seconds ──────────────────────────
 
@@ -3061,6 +3171,225 @@ export default function AdminPage() {
                   </table>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* ─── Bottom Nav (الشريط السفلي) ────────────────────────── */}
+          {activeSection === 'bottom-nav' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">🎛️ الشريط السفلي</h2>
+                  <p className="text-xs text-slate-400 mt-1">تحكم في تبويبات الشريط السفلي: إخفاء / تعطيل / إضافة</p>
+                </div>
+                <Button onClick={fetchBottomNavTabs} variant="outline" size="sm" className="border-slate-700 text-slate-300">
+                  <RefreshCw className="w-4 h-4 ml-2" /> تحديث
+                </Button>
+              </div>
+
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-200">
+                💡 <strong>ملاحظة:</strong> عند تعطيل تبويب (maintenance) — يظهر فوقه شارة 🔧 صفراء، ولا يفتح الصفحة إلا للمدير/المشرف. عند الإخفاء (hidden) — يختفي تماماً والباقي يأخذ أبعاداً متساوية تلقائياً.
+              </div>
+
+              {/* جدول التبويبات */}
+              <div className="rounded-xl border border-slate-800/40 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-900/60 text-slate-400 text-xs">
+                    <tr>
+                      <th className="p-3 text-right">الترتيب</th>
+                      <th className="p-3 text-right">المفتاح</th>
+                      <th className="p-3 text-right">الاسم</th>
+                      <th className="p-3 text-center">الأيقونة</th>
+                      <th className="p-3 text-center">الرابط</th>
+                      <th className="p-3 text-center">الحالة</th>
+                      <th className="p-3 text-center">فعّال</th>
+                      <th className="p-3 text-center">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {bottomNavTabs.length === 0 ? (
+                      <tr><td colSpan={8} className="p-8 text-center text-slate-500">جارٍ التحميل...</td></tr>
+                    ) : bottomNavTabs.map((tab) => (
+                      <tr key={tab.tabKey} className="hover:bg-slate-800/20">
+                        <td className="p-3 text-center font-mono text-xs">{tab.tabOrder}</td>
+                        <td className="p-3 font-mono text-xs text-slate-300">{tab.tabKey}</td>
+                        <td className="p-3 text-white font-medium">{tab.tabLabel}</td>
+                        <td className="p-3 text-center">
+                          {tab.tabIconOn ? (
+                            <img src={tab.tabIconOn} alt={tab.tabLabel} className="w-7 h-7 inline-block" />
+                          ) : '—'}
+                        </td>
+                        <td className="p-3 text-center text-xs font-mono text-slate-400">{tab.tabHref || '—'}</td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded text-xs ${
+                            tab.visibility === 'visible' ? 'bg-emerald-500/20 text-emerald-400' :
+                            tab.visibility === 'maintenance' ? 'bg-amber-500/20 text-amber-400' :
+                            'bg-slate-700 text-slate-400'
+                          }`}>
+                            {tab.visibility === 'visible' ? 'مرئي' : tab.visibility === 'maintenance' ? 'صيانة 🔧' : 'مخفي 👁️‍🗨️'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded text-xs ${tab.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>
+                            {tab.isActive ? '✓' : '✗'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center flex gap-1 justify-center">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setEditingNavTab({ ...tab })}
+                            className="text-slate-300 hover:text-white"
+                          >
+                            <Settings className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => deleteNavTab(tab.tabKey)}
+                            className="text-red-400 hover:text-red-300"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* إضافة تبويب جديد */}
+              <div className="p-4 rounded-xl border border-slate-800/40 bg-slate-900/40 space-y-3">
+                <h3 className="text-sm font-bold text-white">➕ إضافة تبويب مخصص جديد</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                  <Input
+                    placeholder="مفتاح (مثلاً: vip)"
+                    value={newNavTabKey}
+                    onChange={(e) => setNewNavTabKey(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                  <Input
+                    placeholder="الاسم (مثلاً: VIP)"
+                    value={newNavTabLabel}
+                    onChange={(e) => setNewNavTabLabel(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                  />
+                  <Input
+                    placeholder="رابط (مثلاً: /vip)"
+                    value={newNavTabHref}
+                    onChange={(e) => setNewNavTabHref(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                  <Input
+                    placeholder="أيقونة (مسار صورة)"
+                    value={newNavTabIcon}
+                    onChange={(e) => setNewNavTabIcon(e.target.value)}
+                    className="bg-slate-800/50 border-slate-700/50 text-white"
+                    dir="ltr"
+                  />
+                </div>
+                <Button onClick={createNavTab} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+                  <Plus className="w-4 h-4 ml-2" /> إنشاء تبويب
+                </Button>
+              </div>
+
+              {/* Modal تعديل تبويب */}
+              <Dialog open={!!editingNavTab} onOpenChange={(open) => !open && setEditingNavTab(null)}>
+                <DialogContent className="bg-slate-900 border-slate-800 max-w-md max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">تعديل تبويب: {editingNavTab?.tabLabel}</DialogTitle>
+                    <DialogDescription className="text-slate-400">
+                      تحكم في الحالة — إخفاء، صيانة، أو تفعيل عادي
+                    </DialogDescription>
+                  </DialogHeader>
+                  {editingNavTab && (
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الاسم</Label>
+                        <Input
+                          value={editingNavTab.tabLabel}
+                          onChange={(e) => setEditingNavTab({ ...editingNavTab, tabLabel: e.target.value })}
+                          className="bg-slate-800/50 border-slate-700/50 text-white"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">رابط الصفحة (tabHref)</Label>
+                        <Input
+                          value={editingNavTab.tabHref}
+                          onChange={(e) => setEditingNavTab({ ...editingNavTab, tabHref: e.target.value })}
+                          className="bg-slate-800/50 border-slate-700/50 text-white"
+                          dir="ltr"
+                          placeholder="مثلاً: /#games أو /voice-rooms"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">أيقونة Active</Label>
+                          <Input
+                            value={editingNavTab.tabIconOn}
+                            onChange={(e) => setEditingNavTab({ ...editingNavTab, tabIconOn: e.target.value })}
+                            className="bg-slate-800/50 border-slate-700/50 text-white"
+                            dir="ltr"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-300">أيقونة Inactive</Label>
+                          <Input
+                            value={editingNavTab.tabIconOff}
+                            onChange={(e) => setEditingNavTab({ ...editingNavTab, tabIconOff: e.target.value })}
+                            className="bg-slate-800/50 border-slate-700/50 text-white"
+                            dir="ltr"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الترتيب</Label>
+                        <Input
+                          type="number"
+                          value={editingNavTab.tabOrder}
+                          onChange={(e) => setEditingNavTab({ ...editingNavTab, tabOrder: Number(e.target.value) })}
+                          className="bg-slate-800/50 border-slate-700/50 text-white"
+                          dir="ltr"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-300">الحالة (visibility)</Label>
+                        <Select
+                          value={editingNavTab.visibility}
+                          onValueChange={(v) => setEditingNavTab({ ...editingNavTab, visibility: v as BottomNavTab['visibility'] })}
+                        >
+                          <SelectTrigger className="bg-slate-800/50 border-slate-700/50 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-slate-700">
+                            <SelectItem value="visible">🟢 مرئي (يعمل عادي)</SelectItem>
+                            <SelectItem value="maintenance">🔧 صيانة (يظهر مع شارة صفراء — لا يفتح إلا للأدمين/المشرف)</SelectItem>
+                            <SelectItem value="hidden">👁️‍🗨️ مخفي (لا يظهر إطلاقاً)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
+                        <Label className="text-slate-300 cursor-pointer">فعّال (isActive)</Label>
+                        <Switch
+                          checked={editingNavTab.isActive}
+                          onCheckedChange={(checked) => setEditingNavTab({ ...editingNavTab, isActive: checked })}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setEditingNavTab(null)} className="border-slate-700 text-slate-300">إلغاء</Button>
+                    <Button
+                      onClick={() => { if (editingNavTab) saveNavTab(editingNavTab); setEditingNavTab(null); }}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                    >
+                      حفظ
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           )}
 
