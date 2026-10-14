@@ -5077,3 +5077,89 @@ body.in-game-setup [data-gg-hide="panel-toggle"] {
 .yp-clickable:active {
   transform: scale(0.96);
 }
+
+/* ============================================================ */
+/* Membership Info Modal (ym-*)                                */
+/* ============================================================ */
+
+.ym-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0 0;
+}
+
+.ym-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(254,239,145,.15);
+  border-radius: 8px;
+}
+
+.ym-label {
+  color: #9fc4b4;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ym-value {
+  color: #feef91;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.ym-code {
+  font-family: ui-monospace, monospace;
+  letter-spacing: 1px;
+  background: rgba(254,239,145,.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(254,239,145,.25);
+}
+
+.ym-features {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(254,239,145,.18);
+  border-radius: 10px;
+}
+
+.ym-features-title {
+  color: #feef91;
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.ym-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ym-features-list li {
+  color: #cbd5e1;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.ym-note {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(251,191,36,.1);
+  border: 1px solid rgba(251,191,36,.3);
+  border-radius: 8px;
+  color: #fbbf24;
+  font-size: 11px;
+  text-align: center;
+  font-style: italic;
+}

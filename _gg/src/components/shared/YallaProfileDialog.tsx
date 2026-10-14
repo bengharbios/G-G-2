@@ -202,6 +202,7 @@ export default function YallaProfileDialog({
   const [basicWin, setBasicWin] = useState(false);
   const [levelInfoOpen, setLevelInfoOpen] = useState(false);
   const [royalInfoOpen, setRoyalInfoOpen] = useState(false);
+  const [membershipInfoOpen, setMembershipInfoOpen] = useState(false);
   const [eAvatar, setEAvatar] = useState('');
   const [eGender, setEGender] = useState('');
   const [eBirth, setEBirth] = useState('');
@@ -551,6 +552,7 @@ export default function YallaProfileDialog({
       else if (basicWin) setBasicWin(false);
       else if (levelInfoOpen) setLevelInfoOpen(false);
       else if (royalInfoOpen) setRoyalInfoOpen(false);
+      else if (membershipInfoOpen) setMembershipInfoOpen(false);
       else if (decorPanel) setDecorPanel(null);
       else if (menuOpen) setMenuOpen(false);
       else onOpenChange(false);
@@ -857,19 +859,35 @@ export default function YallaProfileDialog({
                     {/* Royal level badge — based on cumulative gold recharged.
                         Royal 0 = default (green glass crown), Royal 1-5 unlock by recharging.
                         Currently defaults to Royal 0 since we don't track royal level yet. */}
-                    <span className="yp-royal-flag" title="مستوى رويال: 0 (افتراضي)">
+                    <button
+                      type="button"
+                      className="yp-royal-flag yp-clickable"
+                      onClick={() => setRoyalInfoOpen(true)}
+                      title="اضغط لمعرفة نظام Royal"
+                      aria-label="معلومات مستوى Royal"
+                    >
                       <img src="/yalla-ui/royal/royal_level_0.webp" alt="royal 0" />
-                    </span>
-                    <span className="yp-flag">
+                    </button>
+                    <button
+                      type="button"
+                      className="yp-flag yp-clickable"
+                      onClick={() => setLevelInfoOpen(true)}
+                      title="اضغط لمعرفة نظام المستويات"
+                      aria-label="معلومات المستوى"
+                    >
                       <img src={levelFlagSrc(xp?.level ?? 1)} alt="" className="yp-flag-img" />
                       <i className={`yp-flag-num length-${String(xp?.level ?? 1).length}`}>{xp?.level ?? 1}</i>
-                    </span>
-                    <img
-                      className="yp-mflag"
-                      src="/yalla-ui/membership.webp"
-                      alt="العضوية"
-                      title={`العضوية: ${plan.label}`}
-                    />
+                    </button>
+                    <button
+                      type="button"
+                      className="yp-mflag yp-clickable"
+                      onClick={() => setMembershipInfoOpen(true)}
+                      title={`العضوية: ${plan.label} — اضغط للتفاصيل`}
+                      aria-label="معلومات العضوية"
+                      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                    >
+                      <img src="/yalla-ui/membership.webp" alt="العضوية" />
+                    </button>
                     <span className="yp-sep" />
                     {(function () {
                       const g = (effectiveUser as YallaAuthUser & { gender?: string }).gender || '';
@@ -1639,6 +1657,55 @@ export default function YallaProfileDialog({
             <span>مستواك الحالي:</span>
             <b>Royal 0</b>
             <span className="yr-note">(افتراضي — نظام تتبّع الشحن قيد التطوير)</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Membership Info Modal — shows subscription status + plan info */}
+    {membershipInfoOpen && (
+      <div className="yl-overlay" dir="rtl" onClick={() => setMembershipInfoOpen(false)}>
+        <div className="yl-scroll" onClick={(e) => e.stopPropagation()}>
+          <button className="yl-close" onClick={() => setMembershipInfoOpen(false)} aria-label="إغلاق">
+            <X className="w-6 h-6" />
+          </button>
+          <div className="yl-head">
+            <h2 className="yl-title">💎 العضوية</h2>
+            <p className="yl-subtitle">حالة اشتراكك الحالي</p>
+          </div>
+          <div className="ym-body">
+            <div className="ym-row">
+              <span className="ym-label">الخطة:</span>
+              <span className="ym-value">{plan.label}</span>
+            </div>
+            <div className="ym-row">
+              <span className="ym-label">النوع:</span>
+              <span className="ym-value">
+                {plan.isTrial ? 'تجربة مجانية' : plan.isPaid ? 'مدفوع' : 'مجاني'}
+              </span>
+            </div>
+            <div className="ym-row">
+              <span className="ym-label">تاريخ الانتهاء:</span>
+              <span className="ym-value" dir="ltr">
+                {plan.endDate ? new Date(plan.endDate).toLocaleDateString('ar-SA') : '— لا يوجد —'}
+              </span>
+            </div>
+            <div className="ym-row">
+              <span className="ym-label">كود الاشتراك:</span>
+              <span className="ym-value ym-code" dir="ltr">{plan.code || '—'}</span>
+            </div>
+            <div className="ym-features">
+              <h3 className="ym-features-title">الميزات المتاحة:</h3>
+              <ul className="ym-features-list">
+                <li>✓ الوصول لجميع الألعاب المفعّلة في خطتك</li>
+                <li>✓ كسب XP وذهب عند الفوز في الألعاب</li>
+                <li>✓ حفظ تقدمك تلقائياً عبر الأجهزة</li>
+                <li>✓ المشاركة في غرف الديوانية كعراب أو مشاهد</li>
+              </ul>
+            </div>
+            <div className="ym-note">
+              للاشتراك أو التجديد، تواصل مع الإدارة أو زر صفحة الاشتراك.
+            </div>
           </div>
         </div>
       </div>
