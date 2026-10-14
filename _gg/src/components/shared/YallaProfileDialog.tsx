@@ -844,11 +844,17 @@ export default function YallaProfileDialog({
                     </span>
                   </div>
 
-                  {/* Info strip: level flag | membership | sep | gender | country (يلا) */}
+                  {/* Info strip: royal | level flag | membership | sep | gender | country (يلا) */}
                   <div className="yp-inforow">
+                    {/* Royal level badge — based on cumulative gold recharged.
+                        Royal 0 = default (green glass crown), Royal 1-5 unlock by recharging.
+                        Currently defaults to Royal 0 since we don't track royal level yet. */}
+                    <span className="yp-royal-flag" title="مستوى رويال: 0 (افتراضي)">
+                      <img src="/yalla-ui/royal/royal_level_0.webp" alt="royal 0" />
+                    </span>
                     <span className="yp-flag">
                       <img src={levelFlagSrc(xp?.level ?? 1)} alt="" className="yp-flag-img" />
-                      <i className="yp-flag-num">{xp?.level ?? 1}</i>
+                      <i className={`yp-flag-num length-${String(xp?.level ?? 1).length}`}>{xp?.level ?? 1}</i>
                     </span>
                     <img
                       className="yp-mflag"
@@ -1175,7 +1181,7 @@ export default function YallaProfileDialog({
                         </div>
                         <span className="yp-flag">
                           <img src={levelFlagSrc(xp?.level ?? 1)} alt="" className="yp-flag-img" />
-                          <i className="yp-flag-num">{xp?.level ?? 1}</i>
+                          <i className={`yp-flag-num length-${String(xp?.level ?? 1).length}`}>{xp?.level ?? 1}</i>
                         </span>
                       </div>
                     </div>

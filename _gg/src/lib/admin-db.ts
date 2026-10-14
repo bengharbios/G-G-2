@@ -2018,6 +2018,8 @@ function toAppUser(row: Record<string, unknown>): AppUser {
     frame: (row.frame as string) ?? '',
     ornament: (row.ornament as string) ?? '',
     card: (row.card as string) ?? '',
+    gender: (row.gender as string) ?? '',
+    birthDate: (row.birthDate as string) ?? '',
     role: ((row.role as string) ?? 'user') as AppUser['role'],
     isActive: !!(row.isActive && row.isActive !== 0),
     subscriptionId: (row.subscriptionId as string) ?? null,
@@ -3681,6 +3683,17 @@ export async function awardGameRewards(
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
       args: [logId, userId, subscriptionCode || '', gameSlug, outcome, xpAwarded, goldAwarded, userRole, userLevel, plan, today],
     });
+
+    // 11) تحديث عدّادات اللعبة في PlayerGameStats (يظهر في بروفايل اللاعب)
+    // outcome='win' → increment both played + won
+    // outcome='play'/'loss'/'achievement' → increment only played
+    try {
+      const playedInc = 1;
+      const wonInc = outcome === 'win' ? 1 : 0;
+      await incrementPlayerGameStats(userId, gameSlug, playedInc, wonInc);
+    } catch (e) {
+      console.error('[awardGameRewards] failed to update PlayerGameStats:', e);
+    }
 
     return {
       success: true,
