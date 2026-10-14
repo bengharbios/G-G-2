@@ -2965,3 +2965,32 @@ html, body {
   background: rgba(30, 41, 59, 0.8);
   color: #fff;
 }
+
+/* ===== موبايل: بطاقتان لكل صف بدلاً من 167px ثابت ===== */
+@media (max-width: 480px) {
+  .gg-grid {
+    gap: 10px !important;
+    padding: 12px 8px 8px !important;
+  }
+  .gg-card {
+    width: calc(50% - 5px) !important;
+    height: auto !important;
+    aspect-ratio: 167 / 134;
+  }
+  .gg-name {
+    font-size: 13px;
+  }
+  .gg-cat-badge, .gg-free-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+}
+
+/* تابلت: 3 بطاقات لكل صف */
+@media (min-width: 481px) and (max-width: 768px) {
+  .gg-card {
+    width: calc(33.333% - 12px) !important;
+    height: auto !important;
+    aspect-ratio: 167 / 134;
+  }
+}
