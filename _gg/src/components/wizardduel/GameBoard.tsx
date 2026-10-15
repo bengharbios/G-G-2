@@ -504,8 +504,8 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 10px 80px',
-        gap: '6px',
+        padding: '8px 8px 16px',
+        gap: '4px',
         overflowY: 'auto',
       }}
     >
@@ -552,75 +552,61 @@ export default function GameBoard() {
         </button>
       </div>
 
-      {/* ══════════ Title ══════════ */}
-      <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.92 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
-        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
-      >
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-          <img
-            src="/yalla-games/wizardduel.png"
-            alt="مبارزة السحرة"
-            style={{
-              width: '76px',
-              height: '64px',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
-            }}
-          />
-          <div style={{
-            position: 'absolute',
-            inset: '-12px',
-            background: 'radial-gradient(circle, rgba(168,85,247,.22), transparent 65%)',
-            filter: 'blur(6px)',
-            zIndex: -1,
-            borderRadius: '50%',
-          }} />
-        </div>
-        <h1
-          style={{
-            ...STROKE_STYLE,
-            fontSize: '22px',
-            fontWeight: 900,
-            textShadow: '0 2px 4px rgba(0,0,0,.85)',
-            margin: '2px 0 0',
-            lineHeight: 1,
-          }}
-        >
-          🔮 مبارزة السحرة
-        </h1>
-        <p style={{ color: '#c4a3e8', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
-          Wizard Duel — الدور {turnCount}
-        </p>
-      </motion.div>
-
-      {/* ══════════ Player + AI panels ══════════ */}
+      {/* ══════════ ENEMY at TOP — full width ══════════ */}
       <div
         style={{
-          position: 'relative',
           width: '100%',
-          maxWidth: '380px',
+          maxWidth: '400px',
           display: 'flex',
-          gap: '8px',
-          alignItems: 'stretch',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '8px 12px',
+          background: 'rgba(80,10,10,.4)',
+          border: '1.5px solid rgba(239,68,68,.3)',
+          borderRadius: '14px',
           marginTop: '4px',
         }}
       >
-        <PlayerPanel player={wizardPlayer} isCurrent={isWizardTurn} />
-        <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
-          <img
-            src="/battle/vs_pk.webp"
-            alt="VS"
-            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          />
+        <div style={{
+          width: '44px', height: '44px', borderRadius: '50%',
+          background: 'linear-gradient(135deg, #ef4444, #991b1b)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '24px', flexShrink: 0,
+          border: '2px solid rgba(239,68,68,.5)',
+          boxShadow: !isWizardTurn ? '0 0 12px rgba(239,68,68,.4)' : 'none',
+        }}>💀</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{
+            fontSize: '14px', fontWeight: 800, color: '#fca5a5',
+            textShadow: '0 1px 2px rgba(0,0,0,.7)',
+            display: 'flex', alignItems: 'center', gap: '6px',
+          }}>
+            {aiPlayer.name}
+            {!isWizardTurn && (
+              <span style={{
+                fontSize: '9px', color: '#fbbf24', background: 'rgba(251,191,36,.15)',
+                border: '1px solid rgba(251,191,36,.4)', padding: '1px 6px', borderRadius: '999px',
+              }}>دوره الآن</span>
+            )}
+          </div>
+          <div style={{ marginTop: '3px' }}>
+            <HpBar player={aiPlayer} isCurrent={!isWizardTurn} />
+          </div>
+          <ActiveEffects effects={aiPlayer.activeEffects} />
         </div>
-        <PlayerPanel player={aiPlayer} isCurrent={!isWizardTurn} />
+        <div style={{
+          fontSize: '11px', color: '#fca5a5', fontWeight: 700,
+          background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.3)',
+          padding: '3px 8px', borderRadius: '999px', flexShrink: 0,
+        }}>🃏 {aiPlayer.hand.length}</div>
       </div>
 
-      {/* ══════════ Notification pill ══════════ */}
-      <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
+      {/* ══════════ BATTLEFIELD CENTER — notification + last action ══════════ */}
+      <div style={{
+        width: '100%', maxWidth: '400px',
+        display: 'flex', justifyContent: 'center',
+        padding: '4px 0',
+      }}>
         <div
           className={`tobol-board-notice-v3 ${isWizardTurn ? 'team-red' : 'team-blue'}`}
           style={{ animation: 'tobolNoticeSlide 0.32s cubic-bezier(.34,1.56,.64,1)' }}
@@ -635,29 +621,28 @@ export default function GameBoard() {
         </div>
       </div>
 
-      {/* ══════════ Turn actions ══════════ */}
+      {/* ══════════ Action buttons ══════════ */}
       <div style={{
-        width: '100%', maxWidth: '380px',
+        width: '100%', maxWidth: '400px',
         display: 'flex', gap: '8px',
-        marginTop: '4px',
       }}>
         <button
           type="button"
           onClick={handleDraw}
           disabled={isSpectator || !isWizardTurn || movesLeft === 0}
           style={{
-            flex: 1, padding: '10px', borderRadius: '10px',
-            border: `1.5px solid ${isWizardTurn && movesLeft > 0 ? '#a855f7' : 'rgba(255,255,255,.08)'}`,
+            flex: 1, padding: '12px', borderRadius: '12px',
+            border: `2px solid ${isWizardTurn && movesLeft > 0 ? '#a855f7' : 'rgba(255,255,255,.08)'}`,
             background: isWizardTurn && movesLeft > 0
-              ? 'linear-gradient(135deg, rgba(168,85,247,.2), rgba(126,34,206,.08))'
+              ? 'linear-gradient(135deg, rgba(168,85,247,.25), rgba(126,34,206,.1))'
               : 'rgba(0,0,0,.3)',
             color: isWizardTurn && movesLeft > 0 ? '#c4a3e8' : '#6b7280',
-            fontSize: '13px', fontWeight: 700,
+            fontSize: '14px', fontWeight: 800,
             cursor: isWizardTurn && movesLeft > 0 && !isSpectator ? 'pointer' : 'not-allowed',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
           }}
         >
-          <span style={{ fontSize: '14px' }}>🃏</span>
+          <span style={{ fontSize: '18px' }}>🃏</span>
           اسحب بطاقة
         </button>
         <button
@@ -665,57 +650,112 @@ export default function GameBoard() {
           onClick={handleEndTurn}
           disabled={isSpectator || !isWizardTurn || movesLeft === MOVES_PER_TURN}
           style={{
-            flex: 1, padding: '10px', borderRadius: '10px',
-            border: `1.5px solid ${isWizardTurn ? '#f59e0b' : 'rgba(255,255,255,.08)'}`,
+            flex: 1, padding: '12px', borderRadius: '12px',
+            border: `2px solid ${isWizardTurn ? '#f59e0b' : 'rgba(255,255,255,.08)'}`,
             background: isWizardTurn
-              ? 'linear-gradient(135deg, rgba(245,158,11,.2), rgba(217,119,6,.08))'
+              ? 'linear-gradient(135deg, rgba(245,158,11,.25), rgba(217,119,6,.1))'
               : 'rgba(0,0,0,.3)',
             color: isWizardTurn ? '#fbbf24' : '#6b7280',
-            fontSize: '13px', fontWeight: 700,
+            fontSize: '14px', fontWeight: 800,
             cursor: isWizardTurn && !isSpectator ? 'pointer' : 'not-allowed',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
           }}
         >
-          <span style={{ fontSize: '14px' }}>⏭️</span>
+          <span style={{ fontSize: '18px' }}>⏭️</span>
           إنهاء الدور
         </button>
       </div>
 
-      {/* ══════════ Hand area (player 0) ══════════ */}
+      {/* ══════════ PLAYER at BOTTOM — info + hand ══════════ */}
+      <div style={{
+        width: '100%',
+        maxWidth: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '8px 12px',
+        background: 'rgba(40,10,80,.4)',
+        border: '1.5px solid rgba(168,85,247,.3)',
+        borderRadius: '14px',
+        marginTop: '4px',
+      }}>
+        <div style={{
+          width: '44px', height: '44px', borderRadius: '50%',
+          background: 'linear-gradient(135deg, #a855f7, #7c3aed)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '24px', flexShrink: 0,
+          border: '2px solid rgba(168,85,247,.5)',
+          boxShadow: isWizardTurn ? '0 0 12px rgba(168,85,247,.4)' : 'none',
+        }}>🔮</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{
+            fontSize: '14px', fontWeight: 800, color: '#c4a3e8',
+            textShadow: '0 1px 2px rgba(0,0,0,.7)',
+            display: 'flex', alignItems: 'center', gap: '6px',
+          }}>
+            {wizardPlayer.name}
+            {isWizardTurn && (
+              <span style={{
+                fontSize: '9px', color: '#fbbf24', background: 'rgba(251,191,36,.15)',
+                border: '1px solid rgba(251,191,36,.4)', padding: '1px 6px', borderRadius: '999px',
+              }}>دورك الآن</span>
+            )}
+          </div>
+          <div style={{ marginTop: '3px' }}>
+            <HpBar player={wizardPlayer} isCurrent={isWizardTurn} />
+          </div>
+          <ActiveEffects effects={wizardPlayer.activeEffects} />
+        </div>
+        <div style={{
+          fontSize: '11px', color: '#c4a3e8', fontWeight: 700,
+          background: 'rgba(168,85,247,.1)', border: '1px solid rgba(168,85,247,.3)',
+          padding: '3px 8px', borderRadius: '999px', flexShrink: 0,
+        }}>🃏 {wizardPlayer.hand.length}</div>
+      </div>
+
+      {/* ══════════ HAND — large cards, horizontal, at the very bottom ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.3 }}
+        transition={{ delay: 0.2, duration: 0.3 }}
         style={{
           width: '100%',
-          maxWidth: '380px',
-          marginTop: '6px',
-          padding: '8px',
-          background: 'rgba(26,8,51,.5)',
-          border: '1px solid rgba(168,85,247,.2)',
-          borderRadius: '12px',
+          maxWidth: '400px',
+          padding: '6px',
+          background: 'rgba(26,8,51,.6)',
+          border: '1.5px solid rgba(168,85,247,.25)',
+          borderRadius: '14px',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '200px',
         }}
       >
         <div style={{
           display: 'flex', alignItems: 'center', gap: '6px',
-          marginBottom: '6px', justifyContent: 'center',
+          marginBottom: '4px', justifyContent: 'space-between',
         }}>
-          <span style={{ fontSize: '12px', color: '#c4a3e8', fontWeight: 800 }}>
+          <span style={{ fontSize: '13px', color: '#c4a3e8', fontWeight: 800 }}>
             🃏 يدك — {wizardPlayer.hand.length} بطاقة
           </span>
+          <BattleLogButton />
         </div>
         <div style={{
           display: 'flex',
-          gap: '6px',
+          gap: '8px',
           overflowX: 'auto',
-          padding: '4px 2px',
-          minHeight: '170px',
+          overflowY: 'hidden',
+          padding: '6px 4px',
+          flex: 1,
           scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(168,85,247,.4) transparent',
+          WebkitOverflowScrolling: 'touch',
+          justifyContent: wizardPlayer.hand.length <= 3 ? 'center' : 'flex-start',
         }}>
           {wizardPlayer.hand.length === 0 ? (
             <div style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#6b7280', fontSize: '12px',
+              color: '#6b7280', fontSize: '14px',
             }}>
               يدك فارغة — اسحب بطاقة
             </div>
@@ -732,11 +772,6 @@ export default function GameBoard() {
           )}
         </div>
       </motion.div>
-
-      {/* ══════════ Battle log button ══════════ */}
-      <div style={{ marginTop: '4px' }}>
-        <BattleLogButton />
-      </div>
 
       {/* ══════════ Diwaniya share box ══════════ */}
       {isDiwaniyaHost && (
