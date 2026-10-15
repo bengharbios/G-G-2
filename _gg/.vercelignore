@@ -1,0 +1,4 @@
+*.test.ts
+*.test.tsx
+src/components/wizardduel/**/*.test.ts
+src/components/wizardduel/**/*.test.tsx

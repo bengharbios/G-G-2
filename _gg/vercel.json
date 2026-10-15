@@ -1,4 +1,9 @@
 {
+  "build": {
+    "env": {
+      "NEXT_TURBOPACK": "0"
+    }
+  },
   "headers": [
     {
       "source": "/.well-known/assetlinks.json",
