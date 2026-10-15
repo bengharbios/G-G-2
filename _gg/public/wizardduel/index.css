@@ -316,7 +316,7 @@ body {
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
-    min-height: 100vh;
+    min-height: auto;
     overflow-y: auto;
     padding: 4px !important;
     gap: 2px !important;
@@ -340,7 +340,7 @@ body {
   
   /* Remove void */
   .flex-grow-1 { flex-grow: 0 !important; }
-  .vh-100 { height: auto !important; }
+  .vh-100 { height: auto !important; min-height: auto !important; }
   
   /* === BIG CARDS === */
   img[src*="cards/front"] {
