@@ -306,91 +306,30 @@ body {
   bottom: 10px;
 }
 
-/* ============================================================ */
-/* MOBILE RESPONSIVE — force desktop layout to scale down       */
-/* ============================================================ */
 
+/* MOBILE RESPONSIVE — proper grid overrides */
 @media (max-width: 768px) {
-  /* Scale the entire game to fit mobile screen */
-  .container-fluid.vh-100 {
-    transform: scale(0.85);
-    transform-origin: top center;
-    height: auto !important;
-    min-height: 100vh;
-    overflow-y: auto;
-  }
-  
-  /* Make columns stack on mobile */
-  .row > .col-3 {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .row > .col-6 {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-  }
-  
-  /* Scale down stat panels */
-  .col-3 .card,
-  .col-3 .border {
-    transform: scale(0.9);
-    transform-origin: center;
-  }
-  
-  /* Scale down card images */
-  img[src*="cards"] {
-    max-width: 80px !important;
-    max-height: 120px !important;
-  }
-  
-  /* Make hand cards smaller */
-  .row.align-items-end img {
-    max-width: 60px !important;
-    max-height: 90px !important;
-  }
-  
-  /* Smaller font sizes */
-  .container-fluid {
-    font-size: 12px !important;
-  }
-  
-  .container-fluid h1,
-  .container-fluid h2,
-  .container-fluid h3 {
-    font-size: 16px !important;
-  }
-  
-  /* Scale down modal */
-  .modal-dialog {
-    max-width: 95% !important;
-    margin: 10px auto !important;
-  }
-  
-  .modal-content {
-    transform: scale(0.9);
-    transform-origin: center;
-  }
-  
-  /* Prevent overflow */
-  body {
-    overflow-x: hidden !important;
-  }
+  .container-fluid.vh-100 { height: auto !important; min-height: 100vh; overflow-y: auto; padding: 4px !important; }
+  .row { flex-wrap: wrap !important; }
+  .col-3 { flex: 0 0 50% !important; max-width: 50% !important; }
+  .col-6 { flex: 0 0 100% !important; max-width: 100% !important; order: -1; }
+  img[src*="cards/front"] { width: 70px !important; height: auto !important; }
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 50px !important; }
+  img[src*="avatars"] { width: 50px !important; height: 50px !important; }
+  .bg-board { background-size: cover !important; min-height: 100vh; }
+  .container-fluid * { font-size: 11px !important; }
+  .container-fluid h1, .container-fluid h2, .container-fluid h3, .container-fluid h4 { font-size: 14px !important; }
+  .modal-dialog { max-width: 95% !important; margin: 8px auto !important; }
+  .modal-body { max-height: 60vh !important; overflow-y: auto !important; padding: 12px !important; }
+  .btn { padding: 8px 16px !important; font-size: 13px !important; }
+  .col-3 .border, .col-3 div[class*="border"] { padding: 4px !important; margin-bottom: 4px; }
+  img[src*="pile"] { width: 40px !important; }
+  img[src*="icons"] { width: 16px !important; height: 16px !important; }
+  body { overflow-x: hidden !important; }
 }
-
 @media (max-width: 480px) {
-  /* Even smaller screens — scale down more */
-  .container-fluid.vh-100 {
-    transform: scale(0.75);
-  }
-  
-  img[src*="cards"] {
-    max-width: 60px !important;
-    max-height: 90px !important;
-  }
-  
-  .row.align-items-end img {
-    max-width: 50px !important;
-    max-height: 75px !important;
-  }
+  .col-3 { flex: 0 0 100% !important; max-width: 100% !important; }
+  img[src*="cards/front"] { width: 55px !important; }
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 40px !important; }
+  .container-fluid * { font-size: 10px !important; }
 }
