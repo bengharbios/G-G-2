@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-// Dynamically import the original wizard-duel game to avoid SSR issues
-// with boardgame.io and browser APIs
-function WizardDuelGame() {
+export default function WizardDuelPage() {
+  const [loaded, setLoaded] = useState(false);
   const [GameComponent, setGameComponent] = useState<React.ComponentType | null>(null);
 
   useEffect(() => {
@@ -16,8 +15,7 @@ function WizardDuelGame() {
       link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
       document.head.appendChild(link);
     }
-
-    // Load the game CSS
+    // Load game CSS
     if (!document.getElementById('wizardduel-css')) {
       const link = document.createElement('link');
       link.id = 'wizardduel-css';
@@ -25,26 +23,19 @@ function WizardDuelGame() {
       link.href = '/wizardduel/index.css';
       document.head.appendChild(link);
     }
-
-    // Dynamically import the game to avoid SSR/CSR issues
-    import('@/components/wizardduel/App').then((module) => {
-      setGameComponent(() => module.WizardDuelApp);
-    }).catch((err) => {
-      console.error('Failed to load wizard duel:', err);
+    // Dynamic import — only runs in browser, avoids build-time resolution
+    import('@/components/wizardduel/App').then((m) => {
+      setGameComponent(() => m.WizardDuelApp);
+      setLoaded(true);
+    }).catch((e) => {
+      console.error('Wizard duel load error:', e);
+      setLoaded(true);
     });
   }, []);
 
-  if (!GameComponent) {
+  if (!loaded) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #1a0833 0%, #0a0418 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#c4a3e8',
-        fontSize: '16px',
-      }}>
+      <div style={{ minHeight: '100vh', background: '#1a0833', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c4a3e8' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔮</div>
           <p>جاري تحميل مبارزة السحرة...</p>
@@ -53,9 +44,16 @@ function WizardDuelGame() {
     );
   }
 
-  return <GameComponent />;
-}
+  if (!GameComponent) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#1a0833', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c4a3e8' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+          <p>تعذر تحميل اللعبة. يرجى تحديث الصفحة.</p>
+        </div>
+      </div>
+    );
+  }
 
-export default function WizardDuelPage() {
-  return <WizardDuelGame />;
+  return <GameComponent />;
 }
