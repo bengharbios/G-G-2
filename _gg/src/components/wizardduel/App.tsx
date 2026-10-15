@@ -1,6 +1,6 @@
 'use client';
 
-import { Client } from 'boardgame.io/react';
+import { Client } from 'boardgame.io';
 import { MainMenu } from './board/MainMenu';
 import { WizardDuelBoard } from './board/WizardDuelBoard';
 import { WizardDuel } from './core/game/game';
