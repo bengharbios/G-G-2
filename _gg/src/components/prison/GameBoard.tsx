@@ -2,35 +2,382 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { usePrisonStore } from '@/lib/prison-store';
 import { CELL_ITEMS, getRemainingItems, GRID_CONFIGS } from '@/lib/prison-types';
 import type { CellItemType, PrisonTeam, PrisonPlayer, GridCell } from '@/lib/prison-types';
-import { Skull, Lock, Key, Eye, SkipForward, ScrollText } from 'lucide-react';
+import {
+  useInGameSetupMode,
+  useYallaSoundState,
+  useViewerCount,
+  useShareLinks,
+  STROKE_STYLE,
+} from '@/lib/yalla-game-helpers';
+
+// Common emojis for chat picker
+const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '🔒', '⛓️', '🔑', '💀', '🏆', '🎉', '💯', '❤️', '✨', '⚡', '👑', '🤝', '🫡', '😤', '🤯'];
 
 // ============================================================
-// Stats Bar — shows remaining items
+// Battle Log Modal — button + modal window
+// ============================================================
+function BattleLogButton() {
+  const { gameLog } = usePrisonStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const logEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen && logEndRef.current) {
+      logEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [gameLog, isOpen]);
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="tobol-log-btn"
+        aria-label="سجل اللعبة"
+      >
+        <span style={{ fontSize: '13px' }}>📜</span>
+        <span>سجل اللعبة</span>
+        <span className="log-count">{gameLog.length}</span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="tobol-log-modal-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-log-modal"
+            >
+              <div className="tobol-log-modal-header">
+                <span className="tobol-log-modal-title">📜 سجل اللعبة</span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="إغلاق"
+                  style={{
+                    background: 'none', border: 'none', color: '#9fc4b4',
+                    fontSize: '20px', cursor: 'pointer', lineHeight: 1, padding: 0,
+                  }}
+                >×</button>
+              </div>
+              <div className="tobol-log-modal-body">
+                {gameLog.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '12px', padding: '20px 0' }}>
+                    لا تحركات بعد...
+                  </p>
+                ) : (
+                  gameLog.map((entry) => (
+                    <div key={entry.id} className={`tobol-log-entry team-${entry.team}`}>
+                      <span className="entry-num">{entry.id}.</span>
+                      <span className="entry-msg">{entry.action}</span>
+                      <span className="entry-delta neutral">{CELL_ITEMS[entry.itemType].emoji}</span>
+                    </div>
+                  ))
+                )}
+                <div ref={logEndRef} />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================================
+// Notification Pill v3 — team info + current action
+// ============================================================
+function NotificationPill() {
+  const { interactionState, currentTeam, alphaName, betaName, currentPlayerId, players } = usePrisonStore();
+
+  const isAlphaTurn = currentTeam === 'alpha';
+  const turnName = isAlphaTurn ? alphaName : betaName;
+  const teamChipLabel = isAlphaTurn ? '🟡 أ' : '🔵 ب';
+  const teamChipClass = isAlphaTurn ? 'team-red' : 'team-blue';
+  const currentPlayer = players.find((p) => p.id === currentPlayerId);
+
+  let displayText = '';
+  let containerClass = `tobol-board-notice-v3 team-${isAlphaTurn ? 'red' : 'blue'}`;
+
+  if (interactionState === 'waiting_for_player') {
+    displayText = `اختر لاعب من فريق ${turnName}`;
+  } else if (interactionState === 'waiting_for_cell' && currentPlayer) {
+    displayText = `🔓 ${currentPlayer.name} — اختر زنزانة`;
+    containerClass = 'tobol-board-notice-v3 attack';
+  } else if (interactionState === 'picking_opponent_jail') {
+    displayText = '🏚️ اختر لاعب الخصم للسجن';
+    containerClass = 'tobol-board-notice-v3 trap';
+  } else if (interactionState === 'picking_teammate_free') {
+    displayText = '🔑 اختر سجين فريقك لتحريره';
+    containerClass = 'tobol-board-notice-v3 attack';
+  } else if (interactionState === 'showing_result') {
+    displayText = 'متابعة';
+  } else {
+    displayText = `دور فريق ${turnName}`;
+  }
+
+  return (
+    <div
+      key={displayText + currentTeam}
+      className={containerClass}
+      style={{ animation: 'tobolNoticeSlide 0.32s cubic-bezier(.34,1.56,.64,1)' }}
+    >
+      <span className={`tobol-notice-team-chip ${teamChipClass}`}>{teamChipLabel}</span>
+      <span className="notice-dot" />
+      <span className="tobol-notice-text">{displayText}</span>
+    </div>
+  );
+}
+
+// ============================================================
+// Compact Team Panel
+// ============================================================
+function TeamPanel({ team }: { team: PrisonTeam }) {
+  const { alphaName, betaName, currentTeam, players } = usePrisonStore();
+
+  const isAlpha = team === 'alpha';
+  const name = isAlpha ? alphaName : betaName;
+  const isActive = currentTeam === team;
+  const teamPlayers = players.filter((p) => p.team === team);
+  const alive = teamPlayers.filter((p) => p.status !== 'executed').length;
+  const active = teamPlayers.filter((p) => p.status === 'active').length;
+  const imprisoned = teamPlayers.filter((p) => p.status === 'imprisoned').length;
+
+  return (
+    <div
+      className={`tobol-team-panel-compact team-${isAlpha ? 'red' : 'blue'} ${isActive ? 'active-turn' : ''}`}
+    >
+      <div className="tobol-team-name-display">{name}</div>
+      <div className="tobol-team-divider-compact" />
+      <div style={{ display: 'flex', justifyContent: 'space-around', gap: '4px', marginTop: '4px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '13px', fontWeight: 900, color: '#34d399' }}>{active}</div>
+          <div style={{ fontSize: '8px', color: '#6b7280' }}>أحرار</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '13px', fontWeight: 900, color: '#fb923c' }}>{imprisoned}</div>
+          <div style={{ fontSize: '8px', color: '#6b7280' }}>سجناء</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '13px', fontWeight: 900, color: '#9fc4b4' }}>{alive}</div>
+          <div style={{ fontSize: '8px', color: '#6b7280' }}>أحياء</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Header Chat Button + Panel
+// ============================================================
+interface ChatMsg {
+  id: number;
+  team: PrisonTeam;
+  text: string;
+}
+
+function HeaderChatButton() {
+  const { currentTeam, alphaName, betaName } = usePrisonStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [input, setInput] = useState('');
+  const [unread, setUnread] = useState(0);
+  const [showEmojis, setShowEmojis] = useState(false);
+  const msgEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const senderTeam = currentTeam;
+  const senderName = senderTeam === 'alpha' ? alphaName : betaName;
+
+  useEffect(() => {
+    if (isOpen) {
+      setUnread(0);
+      setTimeout(() => inputRef.current?.focus(), 200);
+    } else {
+      setShowEmojis(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen && msgEndRef.current) {
+      msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isOpen]);
+
+  const lastMsgTeam = messages.length > 0 ? messages[messages.length - 1].team : null;
+  useEffect(() => {
+    if (!isOpen && lastMsgTeam && lastMsgTeam !== senderTeam) {
+      setUnread((u) => u + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMsgTeam, isOpen]);
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text) return;
+    const newMsg: ChatMsg = { id: Date.now(), team: senderTeam, text };
+    setMessages((prev) => [...prev, newMsg]);
+    setInput('');
+    setShowEmojis(false);
+  };
+
+  const handleEmojiClick = (emoji: string) => {
+    setInput((prev) => prev + emoji);
+    inputRef.current?.focus();
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className={`tobol-header-btn ${isOpen ? 'active' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="دردشة الطاولة"
+        title="دردشة الطاولة"
+        style={{ position: 'relative' }}
+      >
+        <img src="/battle/icon_chat.webp" alt="chat" />
+        {unread > 0 && <span className="chat-badge">{unread > 9 ? '9+' : unread}</span>}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="tobol-chat-panel-overlay"
+          >
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-chat-panel"
+            >
+              <div className="tobol-chat-panel-header">
+                <span className="tobol-chat-panel-title">
+                  <img src="/battle/icon_chat.webp" alt="" style={{ width: '16px', height: '16px' }} />
+                  دردشة الطاولة
+                </span>
+                <button onClick={() => setIsOpen(false)} className="tobol-chat-panel-close" aria-label="إغلاق">×</button>
+              </div>
+              <div className="tobol-chat-panel-body">
+                {messages.length === 0 ? (
+                  <p className="tobol-chat-empty">
+                    لا رسائل بعد — أرسل أول رسالة.
+                    <br />
+                    (الدردشة مؤقتة، تُحذف عند إغلاق الطاولة)
+                  </p>
+                ) : (
+                  messages.map((m) => {
+                    const isMine = m.team === senderTeam;
+                    const mSender = m.team === 'alpha' ? alphaName : betaName;
+                    return (
+                      <div key={m.id} className={`tobol-chat-msg ${isMine ? 'me' : 'other'}`}>
+                        <span className="msg-sender">
+                          {m.team === 'alpha' ? '🟡' : '🔵'} {mSender}
+                        </span>
+                        <span className="msg-bubble">{m.text}</span>
+                      </div>
+                    );
+                  })
+                )}
+                <div ref={msgEndRef} />
+              </div>
+
+              <AnimatePresence>
+                {showEmojis && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div className="tobol-emoji-picker">
+                      {EMOJIS.map((e, i) => (
+                        <button key={i} type="button" onClick={() => handleEmojiClick(e)} aria-label={`emoji ${e}`}>
+                          {e}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="tobol-chat-panel-input-row">
+                <button
+                  type="button"
+                  className="tobol-emoji-btn"
+                  onClick={() => setShowEmojis((p) => !p)}
+                  aria-label="إيموجي"
+                  title="إيموجي"
+                  style={{
+                    borderColor: showEmojis ? 'rgba(254,239,145,.7)' : 'rgba(254,239,145,.25)',
+                    boxShadow: showEmojis ? '0 0 10px rgba(254,239,145,.3)' : 'none',
+                  }}
+                >
+                  <img src="/battle/icon_chat_emoji.webp" alt="emoji" />
+                </button>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
+                  placeholder={`أرسل كـ ${senderName}...`}
+                  maxLength={200}
+                  dir="rtl"
+                />
+                <button onClick={handleSend} disabled={!input.trim()}>إرسال</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================================
+// Stats Bar — Yalla compact pills
 // ============================================================
 function StatsBar({ grid }: { grid: GridCell[] }) {
   const remaining = getRemainingItems(grid);
-
-  const items: { type: CellItemType; icon: React.ReactNode; label: string; color: string }[] = [
-    { type: 'skull', icon: <Skull className="w-3.5 h-3.5" />, label: 'إعدام', color: 'text-red-400' },
-    { type: 'open', icon: <Lock className="w-3.5 h-3.5" />, label: 'فارغة', color: 'text-cyan-400' },
-    { type: 'uniform', icon: <Eye className="w-3.5 h-3.5" />, label: 'ملابس', color: 'text-orange-400' },
-    { type: 'key', icon: <Key className="w-3.5 h-3.5" />, label: 'مفتاح', color: 'text-yellow-400' },
-    { type: 'skip', icon: <SkipForward className="w-3.5 h-3.5" />, label: 'ممتلئة', color: 'text-slate-400' },
+  const items: { type: CellItemType; emoji: string; label: string; color: string }[] = [
+    { type: 'skull', emoji: '💀', label: 'إعدام', color: '#f87171' },
+    { type: 'open', emoji: '🔓', label: 'فارغة', color: '#22d3ee' },
+    { type: 'uniform', emoji: '🏚️', label: 'ملابس', color: '#fb923c' },
+    { type: 'key', emoji: '🔑', label: 'مفتاح', color: '#fbbf24' },
+    { type: 'skip', emoji: '✋', label: 'ممتلئة', color: '#9ca3af' },
   ];
 
   return (
-    <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', flexWrap: 'wrap' }}>
       {items.map((item) => (
         <div
           key={item.type}
-          className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800/60 border border-slate-700/30 ${item.color}`}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '4px',
+            padding: '3px 8px', borderRadius: '8px',
+            background: 'rgba(6,42,32,.6)',
+            border: `1px solid ${item.color}33`,
+          }}
         >
-          {item.icon}
-          <span className="text-xs font-bold">{remaining[item.type]}</span>
-          <span className="text-[9px] text-slate-500 hidden sm:inline">{item.label}</span>
+          <span style={{ fontSize: '12px' }}>{item.emoji}</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: item.color }}>{remaining[item.type]}</span>
         </div>
       ))}
     </div>
@@ -38,30 +385,7 @@ function StatsBar({ grid }: { grid: GridCell[] }) {
 }
 
 // ============================================================
-// Team Indicator
-// ============================================================
-function TeamIndicator({ team, teamName }: { team: PrisonTeam; teamName: string }) {
-  const isAlpha = team === 'alpha';
-  return (
-    <motion.div
-      key={team}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className={`text-center py-1.5 px-4 rounded-xl border-2 ${
-        isAlpha
-          ? 'bg-amber-950/40 border-amber-500/50 text-amber-300'
-          : 'bg-cyan-950/40 border-cyan-500/50 text-cyan-300'
-      }`}
-    >
-      <p className="text-xs sm:text-sm font-bold">
-        {isAlpha ? '🟡' : '🔵'} دور فريق {teamName}
-      </p>
-    </motion.div>
-  );
-}
-
-// ============================================================
-// Player Panel — shows team players with status
+// Player Panel — team players with status
 // ============================================================
 function PlayerPanel({
   team,
@@ -80,35 +404,37 @@ function PlayerPanel({
 }) {
   const isAlpha = team === 'alpha';
   const teamPlayers = players.filter((p) => p.team === team);
-  const isCurrentTeam = interactionState.startsWith('waiting_for_') || interactionState === 'showing_result';
+  const accent = isAlpha ? '#ef4444' : '#3b82f6';
 
   return (
-    <div className={`rounded-xl border p-3 ${
-      isAlpha
-        ? 'border-amber-500/30 bg-amber-950/20'
-        : 'border-cyan-500/30 bg-cyan-950/20'
-    }`}>
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs">{isAlpha ? '🟡' : '🔵'}</span>
-        <h3 className={`text-xs font-bold ${isAlpha ? 'text-amber-300' : 'text-cyan-300'}`}>
+    <div
+      className="tobol-team-card"
+      style={
+        {
+          flex: 1,
+          padding: '8px 8px 10px',
+          '--card-border': `linear-gradient(180deg, ${accent}80, ${accent}20)`,
+          background: `linear-gradient(180deg, ${accent}14, ${accent}05 80%)`,
+        } as React.CSSProperties
+      }
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+        <span style={{ fontSize: '12px' }}>{isAlpha ? '🟡' : '🔵'}</span>
+        <span style={{ fontSize: '11px', fontWeight: 800, color: accent, textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>
           {teamName}
-        </h3>
-        <span className="text-[10px] text-slate-500">
+        </span>
+        <span style={{ fontSize: '10px', color: '#64748b', marginRight: 'auto' }}>
           ({teamPlayers.filter((p) => p.status !== 'executed').length} حي)
         </span>
       </div>
 
-      <div className="space-y-1.5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
         {teamPlayers.map((player) => {
           const isActive = player.status === 'active';
           const isImprisoned = player.status === 'imprisoned';
           const isExecuted = player.status === 'executed';
           const isCurrentPlayer = player.id === currentPlayerId;
-
-          const canSelect =
-            interactionState === 'waiting_for_player' &&
-            isActive &&
-            player.team === team;
+          const canSelect = interactionState === 'waiting_for_player' && isActive && player.team === team;
 
           return (
             <motion.button
@@ -116,37 +442,49 @@ function PlayerPanel({
               whileTap={canSelect ? { scale: 0.97 } : undefined}
               onClick={() => canSelect && onSelectPlayer(player.id)}
               disabled={!canSelect}
-              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all ${
-                isCurrentPlayer
-                  ? isAlpha
-                    ? 'bg-amber-900/40 border border-amber-500/50 text-amber-200 shadow-lg shadow-amber-950/30'
-                    : 'bg-cyan-900/40 border border-cyan-500/50 text-cyan-200 shadow-lg shadow-cyan-950/30'
+              style={{
+                width: '100%',
+                display: 'flex', alignItems: 'center', gap: '4px',
+                padding: '6px 8px', borderRadius: '8px',
+                cursor: canSelect ? 'pointer' : 'default',
+                border: isCurrentPlayer
+                  ? `1px solid ${accent}80`
                   : isExecuted
-                    ? 'bg-red-950/20 border border-red-900/20 text-red-400/50 line-through'
+                    ? '1px solid rgba(239,68,68,.15)'
                     : isImprisoned
-                      ? 'bg-orange-950/20 border border-orange-900/20 text-orange-400/70'
+                      ? '1px solid rgba(251,146,60,.25)'
                       : canSelect
-                        ? 'bg-slate-800/60 border border-slate-700/30 text-slate-200 hover:border-amber-500/40 hover:bg-slate-800/80 cursor-pointer'
-                        : 'bg-slate-800/40 border border-slate-700/20 text-slate-400'
-              }`}
+                        ? '1px solid rgba(255,255,255,.12)'
+                        : '1px solid rgba(255,255,255,.05)',
+                background: isCurrentPlayer
+                  ? `${accent}26`
+                  : isExecuted
+                    ? 'rgba(127,29,29,.15)'
+                    : isImprisoned
+                      ? 'rgba(124,45,18,.18)'
+                      : canSelect
+                        ? 'rgba(0,0,0,.35)'
+                        : 'rgba(0,0,0,.2)',
+                opacity: isExecuted ? 0.55 : 1,
+                textDecoration: isExecuted ? 'line-through' : 'none',
+              }}
             >
-              <span className="shrink-0">
+              <span style={{ fontSize: '12px' }}>
                 {isExecuted ? '💀' : isImprisoned ? '🏚️' : isActive ? '✅' : ''}
               </span>
-              <span className="flex-1 truncate">{player.name}</span>
+              <span style={{
+                flex: 1, fontSize: '11px', fontWeight: 600, color: '#e2e8f0',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              }}>{player.name}</span>
               {isImprisoned && (
-                <span className="text-[9px] bg-orange-900/40 px-1.5 py-0.5 rounded text-orange-300">
-                  مسجون {player.uniformCount}x
+                <span style={{ fontSize: '8px', padding: '2px 4px', borderRadius: '4px', background: 'rgba(251,146,60,.2)', color: '#fdba74' }}>
+                  {player.uniformCount}×
                 </span>
               )}
               {isCurrentPlayer && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="text-[9px] bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300"
-                >
+                <span style={{ fontSize: '8px', padding: '2px 4px', borderRadius: '4px', background: `${accent}33`, color: accent }}>
                   اللعب
-                </motion.span>
+                </span>
               )}
             </motion.button>
           );
@@ -175,42 +513,59 @@ function GridCellComponent({
       whileTap={cell.status === 'hidden' && onClick ? { scale: 0.95 } : undefined}
       onClick={onClick}
       disabled={!onClick}
-      className={`relative rounded-xl overflow-hidden transition-all ${
-        cell.status === 'hidden'
-          ? 'cursor-pointer hover:ring-2 hover:ring-amber-400/50 hover:scale-[1.02]'
-          : 'cursor-default'
-      }`}
-      style={{ aspectRatio: '1/1' }}
+      style={{
+        position: 'relative',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        aspectRatio: '1/1',
+        cursor: cell.status === 'hidden' && onClick ? 'pointer' : 'default',
+        transition: 'all .15s',
+      }}
     >
       {cell.status === 'hidden' ? (
-        <div className="w-full h-full bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 border-2 border-slate-600/50 rounded-xl flex items-center justify-center">
-          <div className="flex flex-col items-center gap-1">
-            <Lock className="w-5 h-5 sm:w-6 sm:h-6 text-slate-500" />
-            <span className="text-[10px] sm:text-xs font-bold text-slate-500">
-              {cell.index + 1}
-            </span>
-          </div>
+        <div style={{
+          width: '100%', height: '100%',
+          background: 'linear-gradient(135deg, rgba(30,41,59,.9), rgba(15,23,42,.95))',
+          border: '1.5px solid rgba(100,116,139,.4)',
+          borderRadius: '12px',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', gap: '2px',
+        }}>
+          <span style={{ fontSize: '14px', opacity: 0.5 }}>🔒</span>
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748b' }}>
+            {cell.index + 1}
+          </span>
         </div>
       ) : (
         <motion.div
           initial={{ scale: 0, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', damping: 12 }}
-          className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 border-2 rounded-xl flex items-center justify-center relative"
-          style={{ borderColor: `${item.color}40` }}
+          style={{
+            width: '100%', height: '100%',
+            background: 'linear-gradient(135deg, rgba(15,23,42,.95), rgba(2,6,23,.95))',
+            border: `1.5px solid ${item.color}66`,
+            borderRadius: '12px',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            position: 'relative',
+          }}
         >
-          <div className="relative w-[70%] h-[70%]">
+          <div style={{ width: '70%', height: '70%' }}>
             <img
               src={item.img}
               alt={item.title}
-              className="w-full h-full object-contain"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               draggable={false}
             />
           </div>
-          <div
-            className="absolute bottom-0 left-0 right-0 py-0.5 text-center text-[8px] sm:text-[9px] font-bold rounded-b-lg"
-            style={{ backgroundColor: `${item.color}30`, color: item.color }}
-          >
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0,
+            padding: '2px 0', textAlign: 'center',
+            fontSize: '8px', fontWeight: 700,
+            background: `${item.color}30`, color: item.color,
+            borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px',
+          }}>
             {item.label}
           </div>
         </motion.div>
@@ -239,84 +594,79 @@ function ResultModal({
 }) {
   const item = CELL_ITEMS[cell.type];
 
-  let actionLabel = 'متابعة';
-  if (cell.type === 'open' && interactionState === 'picking_opponent_jail') {
-    actionLabel = 'اختر لاعب للسجن';
-  } else if (cell.type === 'key' && interactionState === 'picking_teammate_free') {
-    actionLabel = 'اختر سجين للتحرير';
-  }
+  const allowBackdropClose = interactionState === 'showing_result';
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
-      onClick={(interactionState === 'showing_result' && cell.type !== 'open' && cell.type !== 'key') ? onClose : undefined}
+      onClick={allowBackdropClose ? onClose : undefined}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 100,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(0,0,0,.8)', padding: '20px',
+      }}
     >
       <motion.div
         initial={{ scale: 0.8, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.8, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center"
+        style={{
+          background: 'linear-gradient(180deg, #0e2a22, #061812)',
+          border: `1.5px solid ${item.color}55`,
+          borderRadius: '18px', padding: '24px',
+          maxWidth: '300px', width: '100%', textAlign: 'center',
+          boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+        }}
       >
-        {/* Item Image */}
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', damping: 10, delay: 0.1 }}
-          className="w-24 h-24 mx-auto mb-4 relative"
+          style={{ width: '88px', height: '88px', margin: '0 auto 12px' }}
         >
-          <img
-            src={item.img}
-            alt={item.title}
-            className="w-full h-full object-contain"
-            draggable={false}
-          />
+          <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} draggable={false} />
         </motion.div>
 
-        {/* Title */}
-        <h2
-          className="text-xl sm:text-2xl font-black mb-2"
-          style={{ color: item.color }}
-        >
+        <h3 style={{ ...STROKE_STYLE, fontSize: '18px', fontWeight: 900, marginBottom: '6px', color: item.color }}>
           {item.emoji} {item.title}
-        </h2>
+        </h3>
 
-        {/* Description */}
-        <p className="text-sm text-slate-300 mb-1">{item.desc}</p>
+        <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px' }}>{item.desc}</p>
 
-        {/* Current player info */}
-        <p className="text-xs text-slate-500 mb-4">
+        <p style={{ color: '#9fc4b4', fontSize: '11px', marginBottom: '12px' }}>
           {currentPlayerName}
         </p>
 
-        {/* Target info (if applicable) */}
         {selectedTargetName && interactionState === 'showing_result' && (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-sm font-bold text-slate-200 mb-4"
+            style={{ color: '#fbbf24', fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}
           >
             {cell.type === 'open' && `🏚️ تم سجن ${selectedTargetName}!`}
             {cell.type === 'key' && `🔓 تم تحرير ${selectedTargetName}!`}
           </motion.p>
         )}
 
-        {/* Action buttons */}
         {interactionState === 'showing_result' ? (
           <motion.button
             whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.97 }}
             onClick={onAction}
-            className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 text-white transition-all cursor-pointer"
-          >
-            متابعة ▶
-          </motion.button>
+            style={{
+              width: '100%', padding: '10px',
+              borderRadius: '10px', border: 'none', cursor: 'pointer',
+              background: 'linear-gradient(135deg, #4a8d7a, #3a7d6a)',
+              color: '#feef91', fontSize: '14px', fontWeight: 800,
+              boxShadow: '0 4px 12px rgba(74,141,122,.35)',
+            }}
+          >متابعة ▶</motion.button>
         ) : (
-          <p className="text-sm font-bold text-slate-300 py-2">
-            {actionLabel}
+          <p style={{ color: '#9fc4b4', fontSize: '13px', fontWeight: 700, padding: '8px' }}>
+            {cell.type === 'open' ? 'اختر لاعب للسجن' : 'اختر سجين للتحرير'}
           </p>
         )}
       </motion.div>
@@ -325,13 +675,10 @@ function ResultModal({
 }
 
 // ============================================================
-// Player Selection Overlay — for picking opponent or teammate
+// Player Selection Overlay
 // ============================================================
 function PlayerSelectionOverlay({
-  title,
-  players,
-  onSelect,
-  icon,
+  title, players, onSelect, icon,
 }: {
   title: string;
   players: PrisonPlayer[];
@@ -343,31 +690,46 @@ function PlayerSelectionOverlay({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/80 p-4"
+      style={{
+        position: 'fixed', inset: 0, zIndex: 100,
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+        background: 'rgba(0,0,0,.8)', padding: '20px',
+      }}
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
         transition={{ type: 'spring', damping: 20 }}
-        className="bg-slate-900 border border-slate-700 rounded-t-2xl sm:rounded-2xl p-5 max-w-sm w-full shadow-2xl"
+        style={{
+          background: 'linear-gradient(180deg, #0e2a22, #061812)',
+          border: '1.5px solid rgba(254,239,145,.25)',
+          borderRadius: '18px', padding: '20px',
+          maxWidth: '300px', width: '100%',
+          boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+        }}
       >
-        <div className="text-center mb-4">
-          <div className="text-3xl mb-2">{icon}</div>
-          <h3 className="text-base font-bold text-slate-200">{title}</h3>
+        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <div style={{ fontSize: '32px', marginBottom: '6px' }}>{icon}</div>
+          <h3 style={{ ...STROKE_STYLE, fontSize: '15px', fontWeight: 800 }}>{title}</h3>
         </div>
-
-        <div className="space-y-2 max-h-60 overflow-y-auto">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '240px', overflowY: 'auto' }}>
           {players.map((player) => (
             <motion.button
               key={player.id}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelect(player.id)}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700/50 hover:border-amber-500/50 transition-all text-right cursor-pointer"
+              style={{
+                width: '100%',
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
+                background: 'rgba(0,0,0,.35)',
+                border: '1px solid rgba(254,239,145,.15)',
+              }}
             >
-              <span className="text-lg">👤</span>
-              <span className="text-sm font-bold text-slate-200">{player.name}</span>
+              <span style={{ fontSize: '16px' }}>👤</span>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#e2e8f0' }}>{player.name}</span>
             </motion.button>
           ))}
         </div>
@@ -377,62 +739,10 @@ function PlayerSelectionOverlay({
 }
 
 // ============================================================
-// Game Log Panel — collapsible log
-// ============================================================
-function GameLogPanel() {
-  const { gameLog } = usePrisonStore();
-  const [isOpen, setIsOpen] = useState(false);
-  const logEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen && logEndRef.current) {
-      logEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [gameLog, isOpen]);
-
-  return (
-    <div className="w-full max-w-md mx-auto mt-2">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-2 bg-slate-800/80 border border-slate-700/50 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-700/80 transition-all cursor-pointer"
-      >
-        <span className="flex items-center gap-2">
-          <ScrollText className="w-3.5 h-3.5" />
-          سجل اللعبة ({gameLog.length})
-        </span>
-        <span className="text-slate-500">{isOpen ? '▲' : '▼'}</span>
-      </button>
-      {isOpen && (
-        <div className="mt-1 max-h-[40vh] overflow-y-auto bg-slate-900/80 border border-slate-700/30 rounded-xl p-3 space-y-1 prison-scrollbar">
-          {gameLog.length === 0 ? (
-            <p className="text-center text-slate-600 text-xs py-4">لا تحركات بعد...</p>
-          ) : (
-            gameLog.map((entry) => (
-              <div
-                key={entry.id}
-                className={`flex items-center gap-2 text-[11px] py-1 px-2 rounded-lg ${
-                  entry.team === 'alpha'
-                    ? 'bg-amber-950/30 text-amber-300'
-                    : 'bg-cyan-950/30 text-cyan-300'
-                }`}
-              >
-                <span className="font-bold text-slate-500 w-5 text-center">{entry.id}.</span>
-                <span className="flex-1">{entry.action}</span>
-                <span className="text-[10px] opacity-60">{CELL_ITEMS[entry.itemType].emoji}</span>
-              </div>
-            ))
-          )}
-          <div ref={logEndRef} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ============================================================
-// Main GameBoard Component
+// Main GameBoard
 // ============================================================
 export default function GameBoard() {
+  const router = useRouter();
   const {
     grid,
     gridSize,
@@ -444,13 +754,25 @@ export default function GameBoard() {
     interactionState,
     revealedCell,
     selectedTargetId,
+    gameMode,
+    roomCode,
     selectPlayer,
     revealCell,
     imprisonOpponent,
     freeTeammate,
     advanceTurn,
     closeModal,
+    resetGame,
   } = usePrisonStore();
+
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [showViewersModal, setShowViewersModal] = useState(false);
+
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+  const { viewerCount, viewers } = useViewerCount('prison', isDiwaniyaHost, roomCode);
+  const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('prison', isDiwaniyaHost, roomCode);
 
   const config = GRID_CONFIGS[gridSize];
   const cols = config?.cols ?? 4;
@@ -459,40 +781,134 @@ export default function GameBoard() {
   const selectedTarget = players.find((p) => p.id === selectedTargetId);
   const opponentTeam: PrisonTeam = currentTeam === 'alpha' ? 'beta' : 'alpha';
 
-  // Players available for targeting
-  const activeOpponents = players.filter(
-    (p) => p.team === opponentTeam && p.status === 'active'
-  );
-  const imprisonedTeammates = players.filter(
-    (p) => p.team === currentTeam && p.status === 'imprisoned'
-  );
+  const activeOpponents = players.filter((p) => p.team === opponentTeam && p.status === 'active');
+  const imprisonedTeammates = players.filter((p) => p.team === currentTeam && p.status === 'imprisoned');
+  const activeCurrentTeamPlayers = players.filter((p) => p.team === currentTeam && p.status === 'active');
 
-  // Active players on current team
-  const activeCurrentTeamPlayers = players.filter(
-    (p) => p.team === currentTeam && p.status === 'active'
-  );
+  // Suppress unused warnings — these come from store but are referenced via store actions
+  void activeCurrentTeamPlayers;
+
+  const handleQuitGame = () => {
+    resetGame();
+    router.push('/prison');
+  };
 
   return (
-    <div className="flex flex-col items-center px-3 sm:px-4 py-3 sm:py-4" dir="rtl">
-      {/* Title */}
-      <div className="text-center mb-3">
-        <h1 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-amber-400">
-          🔒 السجن
-        </h1>
+    <div
+      dir="rtl"
+      style={{
+        position: 'relative',
+        minHeight: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 14px 16px',
+        gap: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ══════════ Header — sound + chat + quit ══════════ */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
+
+        <HeaderChatButton />
+
+        {isDiwaniyaHost && (
+          <button
+            type="button"
+            className="tobol-eye-btn"
+            onClick={() => setShowViewersModal(true)}
+            aria-label="المشاهدون"
+            title={`${viewerCount} مشاهد — اضغط لعرض القائمة`}
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" />
+            {viewerCount > 0 && (
+              <span className="tobol-eye-count">{viewerCount > 9 ? '9+' : viewerCount}</span>
+            )}
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowQuitDialog(true)}
+          aria-label="إنهاء اللعبة بدون حفظ"
+          title="إنهاء اللعبة بدون حفظ"
+        >
+          <img src="/battle/btn_quit_game.webp" alt="quit" />
+        </button>
       </div>
 
-      {/* Stats Bar */}
-      <div className="mb-3 w-full">
+      {/* ══════════ Title ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
+      >
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src="/yalla-games/prison.png"
+            alt="السجن"
+            style={{ width: '76px', height: '64px', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))' }}
+          />
+          <div style={{
+            position: 'absolute', inset: '-12px',
+            background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+            filter: 'blur(6px)', zIndex: -1, borderRadius: '50%',
+          }} />
+        </div>
+        <h1 style={{ ...STROKE_STYLE, fontSize: '22px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)', margin: '2px 0 0', lineHeight: 1 }}>
+          السجن
+        </h1>
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Prison — Escape the cell 🔑
+        </p>
+      </motion.div>
+
+      {/* ══════════ Stats Bar ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px' }}>
         <StatsBar grid={grid} />
       </div>
 
-      {/* Team Turn Indicator */}
-      <div className="mb-3">
-        <TeamIndicator team={currentTeam} teamName={currentTeam === 'alpha' ? alphaName : betaName} />
+      {/* ══════════ Compact team panels + VS ══════════ */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'stretch',
+          marginTop: '2px',
+        }}
+      >
+        <TeamPanel team="alpha" />
+        <div className="tobol-vs-badge" style={{ width: '46px', height: '46px' }}>
+          <img src="/battle/vs_pk.webp" alt="VS" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
+        <TeamPanel team="beta" />
       </div>
 
-      {/* Player Panels */}
-      <div className="w-full max-w-md mx-auto grid grid-cols-2 gap-2 sm:gap-3 mb-4">
+      {/* ══════════ Notification pill ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
+        <NotificationPill />
+      </div>
+
+      {/* ══════════ Player panels (alpha/beta) ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px', display: 'flex', gap: '8px' }}>
         <PlayerPanel
           team="alpha"
           teamName={alphaName}
@@ -511,49 +927,14 @@ export default function GameBoard() {
         />
       </div>
 
-      {/* Interaction Instruction */}
-      <AnimatePresence mode="wait">
-        {interactionState === 'waiting_for_player' && (
-          <motion.div
-            key="waiting_player"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className={`w-full max-w-md mx-auto text-center py-2 px-4 rounded-xl border mb-3 ${
-              currentTeam === 'alpha'
-                ? 'bg-amber-950/30 border-amber-500/30 text-amber-300'
-                : 'bg-cyan-950/30 border-cyan-500/30 text-cyan-300'
-            }`}
-          >
-            <p className="text-xs sm:text-sm font-bold">
-              👆 اختر لاعب من فريق {currentTeam === 'alpha' ? alphaName : betaName}
-            </p>
-            <p className="text-[10px] text-slate-500 mt-0.5">
-              {activeCurrentTeamPlayers.length} لاعب متاح
-            </p>
-          </motion.div>
-        )}
-
-        {interactionState === 'waiting_for_cell' && currentPlayer && (
-          <motion.div
-            key="waiting_cell"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="w-full max-w-md mx-auto text-center py-2 px-4 rounded-xl border mb-3 bg-emerald-950/30 border-emerald-500/30 text-emerald-300"
-          >
-            <p className="text-xs sm:text-sm font-bold">
-              🔓 اختر زنزانة — {currentPlayer.name}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Grid */}
-      <div className="w-full max-w-md mx-auto mb-3">
+      {/* ══════════ Grid ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px' }}>
         <div
-          className="grid gap-2 sm:gap-2.5"
-          style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+          style={{
+            display: 'grid',
+            gap: '6px',
+            gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          }}
         >
           {grid.map((cell) => (
             <GridCellComponent
@@ -570,14 +951,100 @@ export default function GameBoard() {
         </div>
       </div>
 
-      {/* Game Log */}
-      <GameLogPanel />
+      {/* ══════════ Battle log button ══════════ */}
+      <div style={{ marginTop: '4px' }}>
+        <BattleLogButton />
+      </div>
 
-      {/* ================================ */}
-      {/* Overlays                         */}
-      {/* ================================ */}
+      {/* ══════════ Diwaniya share box ══════════ */}
+      {isDiwaniyaHost && (
+        <div className="tobol-share-box">
+          <div className="tobol-share-title">🔗 شارك مشاهدة اللعبة</div>
+          <div className="tobol-share-code-row">
+            <span className="tobol-share-code-label">كود المشاهدة:</span>
+            <span className="tobol-share-code-value">{roomCode}</span>
+          </div>
+          <div className="tobol-share-link-row">
+            <input
+              type="text"
+              readOnly
+              value={shareLink}
+              className="tobol-share-link-input"
+              onClick={(e) => (e.target as HTMLInputElement).select()}
+            />
+            <button type="button" className="tobol-share-btn" onClick={copyShareLink}>
+              {shareCopied ? '✓ تم النسخ' : '📋 نسخ'}
+            </button>
+          </div>
+          <div className="tobol-share-link-row">
+            <button type="button" className="tobol-share-direct-btn" onClick={shareExternally}>
+              <img src="/battle/iv_team_share.webp" alt="share" />
+              <span>مشاركة مباشرة (دون كود)</span>
+            </button>
+          </div>
+          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '9px', margin: '4px 0 0', lineHeight: 1.4 }}>
+            الرابط المباشر يفتح اللعبة فوراً للأصدقاء المسجلين، أو يفتح نافذة التسجيل للسماح بالدخول.
+          </p>
+        </div>
+      )}
 
-      {/* Result Modal */}
+      {/* ══════════ Viewers modal ══════════ */}
+      <AnimatePresence>
+        {showViewersModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowViewersModal(false)}
+            className="tobol-viewers-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-viewers-modal"
+            >
+              <div className="tobol-viewers-header">
+                <span className="tobol-viewers-title">
+                  <img src="/battle/icon_eye.webp" alt="viewers" />
+                  المشاهدون ({viewerCount})
+                </span>
+                <button
+                  onClick={() => setShowViewersModal(false)}
+                  className="tobol-viewers-close"
+                  aria-label="إغلاق"
+                >×</button>
+              </div>
+              <div className="tobol-viewers-body">
+                {viewers.length === 0 ? (
+                  <p className="tobol-viewers-empty">
+                    لا يوجد مشاهدون حالياً
+                    <br />
+                    شارك الكود أو الرابط المباشر لجلب المشاهدين
+                  </p>
+                ) : (
+                  viewers.map((spec, idx) => (
+                    <div key={spec.id} className="tobol-viewer-row">
+                      <div className="tobol-viewer-avatar">{spec.name.charAt(0)}</div>
+                      <div className="tobol-viewer-info">
+                        <div className="tobol-viewer-name">{spec.name}</div>
+                        <div className="tobol-viewer-meta">
+                          انضم منذ {Math.max(0, Math.floor((Date.now() - spec.joinedAt) / 60000))} دقيقة
+                        </div>
+                      </div>
+                      <span className="tobol-viewer-badge">#{idx + 1}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ Result modal ══════════ */}
       <AnimatePresence>
         {interactionState === 'showing_result' && revealedCell && (
           <ResultModal
@@ -589,8 +1056,6 @@ export default function GameBoard() {
             onClose={closeModal}
           />
         )}
-
-        {/* Picking opponent to jail (open cell) */}
         {interactionState === 'picking_opponent_jail' && revealedCell && (
           <ResultModal
             cell={revealedCell}
@@ -601,8 +1066,6 @@ export default function GameBoard() {
             onClose={closeModal}
           />
         )}
-
-        {/* Picking teammate to free (key cell) */}
         {interactionState === 'picking_teammate_free' && revealedCell && (
           <ResultModal
             cell={revealedCell}
@@ -615,7 +1078,7 @@ export default function GameBoard() {
         )}
       </AnimatePresence>
 
-      {/* Player Selection: Opponent to Jail */}
+      {/* ══════════ Player Selection ══════════ */}
       <AnimatePresence>
         {interactionState === 'picking_opponent_jail' && activeOpponents.length > 0 && (
           <PlayerSelectionOverlay
@@ -625,10 +1088,6 @@ export default function GameBoard() {
             icon="🏚️"
           />
         )}
-      </AnimatePresence>
-
-      {/* Player Selection: Teammate to Free */}
-      <AnimatePresence>
         {interactionState === 'picking_teammate_free' && imprisonedTeammates.length > 0 && (
           <PlayerSelectionOverlay
             title={`اختر سجين من فريق ${currentTeam === 'alpha' ? alphaName : betaName} للتحرير`}
@@ -636,6 +1095,66 @@ export default function GameBoard() {
             onSelect={freeTeammate}
             icon="🔓"
           />
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ Quit game dialog ══════════ */}
+      <AnimatePresence>
+        {showQuitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowQuitDialog(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(0,0,0,.72)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px', padding: '20px',
+                maxWidth: '300px', width: '100%', textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>⏻</div>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
+                إنهاء اللعبة بدون حفظ؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                سيتم إنهاء اللعبة الحالية دون حفظ التقدم، وستبدأ من الصفر.
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowQuitDialog(false)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                  }}
+                >إلغاء</button>
+                <button
+                  onClick={handleQuitGame}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >نعم، أنهِ</button>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

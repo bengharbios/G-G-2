@@ -1,49 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { useGameStore } from '@/lib/game-store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Home, Info, Users, ChevronLeft, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useGameStore } from '@/lib/game-store';
 
 interface LandingPageProps {
   onStartGodfather: () => void;
   onStartDiwaniya: () => void;
 }
 
+const FLOATING_EMOJIS = ['🕵️', '🌑', '🔦', '💼', '🔫', '💀', '🕵️', '🌑', '🔦', '💼'];
+
 export default function LandingPage({ onStartGodfather, onStartDiwaniya }: LandingPageProps) {
-  // Join (Player entry)
+  const router = useRouter();
+  const [selectedMode, setSelectedMode] = useState<'classic' | 'diwaniya' | null>(null);
   const [joinCode, setJoinCode] = useState('');
   const [joinName, setJoinName] = useState('');
   const [joinError, setJoinError] = useState('');
-
-  // Mode selection
-  const [selectedMode, setSelectedMode] = useState<'godfather' | 'diwaniya' | null>(null);
-
-  // Rules
   const [showRules, setShowRules] = useState(false);
 
   const handleJoin = () => {
-    if (!joinCode.trim()) {
-      setJoinError('يجب إدخال كود اللعبة');
-      return;
-    }
-    if (!joinName.trim()) {
-      setJoinError('يجب إدخال اسمك');
-      return;
-    }
+    if (!joinCode.trim()) { setJoinError('يجب إدخال كود اللعبة'); return; }
+    if (!joinName.trim()) { setJoinError('يجب إدخال اسمك'); return; }
     setJoinError('');
     window.location.href = `/join/${joinCode.trim().toUpperCase()}?name=${encodeURIComponent(joinName.trim())}`;
   };
 
-  const handleModeSelect = (mode: 'godfather' | 'diwaniya') => {
-    setSelectedMode(mode);
-  };
-
   const handleConfirmMode = () => {
-    if (selectedMode === 'godfather') {
+    if (selectedMode === 'classic') {
       useGameStore.getState().setGameMode('godfather');
       useGameStore.getState().setRoomCode(null);
       onStartGodfather();
@@ -54,52 +39,121 @@ export default function LandingPage({ onStartGodfather, onStartDiwaniya }: Landi
   };
 
   return (
-    <div className="flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 mafia-bg-night" dir="rtl">
-      {/* Stars background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div
+    <div
+      dir="rtl"
+      style={{
+        minHeight: 'calc(100vh - 130px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '16px 16px 120px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* floating emojis */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        {FLOATING_EMOJIS.map((emoji, i) => (
+          <motion.div
             key={i}
-            className="absolute rounded-full bg-white star-twinkle"
             style={{
-              width: Math.random() * 3 + 1 + 'px',
-              height: Math.random() * 3 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDelay: Math.random() * 3 + 's',
-              animationDuration: Math.random() * 3 + 2 + 's',
+              position: 'absolute',
+              left: `${10 + (i * 9) % 80}%`,
+              top: `${5 + (i * 13) % 70}%`,
+              fontSize: '24px',
+              opacity: 0.15,
             }}
-          />
+            animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0], opacity: [0.08, 0.2, 0.08] }}
+            transition={{ duration: 3 + (i % 3), repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}
+          >
+            {emoji}
+          </motion.div>
         ))}
+      </div>
+
+      {/* top mini toolbar */}
+      <div style={{
+        position: 'absolute', top: '8px', left: '12px', right: '12px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 50,
+      }}>
+        <button
+          onClick={() => router.push('/mafia')}
+          style={{
+            background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+            borderRadius: '10px', padding: '6px 10px', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '4px',
+          }}
+        >
+          <img src="/battle/room_refresh.webp" alt="استئناف" style={{ width: '20px', height: '20px' }} />
+          <span style={{ color: '#9fc4b4', fontSize: '11px', fontWeight: 'bold' }}>استئناف</span>
+        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src="/battle/setting.webp" alt="إعدادات" style={{ width: '20px', height: '20px' }} />
+          </button>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src="/battle/close.webp" alt="خروج" style={{ width: '20px', height: '20px' }} />
+          </button>
+        </div>
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto"
+        style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '380px', margin: '0 auto', marginTop: '40px' }}
       >
-        {/* Title */}
-        <div className="text-center mb-6 sm:mb-8">
+        {/* title + logo */}
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <motion.div
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2, type: 'spring' }}
-            className="text-6xl sm:text-7xl mb-3 sm:mb-4"
           >
-            🕴️
+            <img
+              src="/yalla-games/mafia.png"
+              alt="المافيا"
+              style={{
+                width: '120px', height: '96px', objectFit: 'contain', margin: '0 auto 8px',
+                filter: 'drop-shadow(0 6px 12px rgba(0,0,0,.5))',
+              }}
+            />
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-yellow-300 to-red-400 mb-2">
-            لعبة المافيا
+          <h1 style={{
+            fontSize: '28px', fontWeight: 900, color: '#feef91',
+            textShadow: '0 2px 4px rgba(0,0,0,.8)',
+            paintOrder: 'stroke fill',
+            WebkitTextStroke: '1px #aa6e1f',
+            marginBottom: '4px',
+          }}>
+            المافيا
           </h1>
-          <p className="text-slate-400 text-xs sm:text-sm font-bold">
-            لعبة ورقية تفاعلية 🔥
+          <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 'bold' }}>
+            Mafia — Who's the Killer? 🕵️
           </p>
         </div>
 
-        {/* ================================ */}
-        {/* BUTTON 1: CREATE GAME (HOST)     */}
-        {/* ================================ */}
+        {/* divider */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
+
+        {/* ===== bg_mode_select panel ===== */}
         <AnimatePresence mode="wait">
           {!selectedMode ? (
             <motion.div
@@ -109,72 +163,71 @@ export default function LandingPage({ onStartGodfather, onStartDiwaniya }: Landi
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              <Card className="bg-gradient-to-bl from-amber-950/40 via-slate-900/80 to-slate-900/80 border-amber-500/30 mb-4 sm:mb-6">
-                <CardContent className="pt-5 sm:pt-6">
-                  <div className="text-center mb-4">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.3, type: 'spring' }}
-                      className="inline-flex items-center gap-2 mb-2"
-                    >
-                      <Zap className="w-5 h-5 text-amber-400" />
-                      <h2 className="text-lg sm:text-xl font-bold text-amber-300">
-                        إنشاء لعبة جديدة
-                      </h2>
-                    </motion.div>
-                    <p className="text-[10px] sm:text-xs text-slate-400">
-                      اختر طريقة اللعب
-                    </p>
-                  </div>
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <h2 style={{
+                    fontSize: '16px', fontWeight: 'bold', color: '#8dd4ff',
+                    marginBottom: '2px',
+                  }}>إنشاء لعبة جديدة</h2>
+                  <p style={{ fontSize: '11px', color: '#9fc4b4' }}>اختر طريقة اللعب</p>
+                </div>
 
-                  <div className="space-y-3">
-                    {/* Godfather Mode */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handleModeSelect('godfather')}
-                      className="w-full rounded-xl p-3 sm:p-4 border-2 border-amber-500/30 bg-gradient-to-l from-amber-950/50 to-red-950/30 hover:border-amber-400/50 transition-all text-right cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-amber-900/50 border border-amber-500/30 flex items-center justify-center shrink-0">
-                          <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-amber-400" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-base sm:text-lg font-bold text-amber-200 mb-0.5">
-                            العراب
-                          </h3>
-                          <p className="text-[10px] sm:text-xs text-slate-400 leading-relaxed">
-                            أدخل أسماء اللاعبين على جهازك وتحكم باللعبة كاملة
-                          </p>
-                        </div>
-                      </div>
-                    </motion.button>
-
-                    {/* Diwaniya Mode */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handleModeSelect('diwaniya')}
-                      className="w-full rounded-xl p-3 sm:p-4 border-2 border-blue-500/30 bg-gradient-to-l from-blue-950/50 to-indigo-950/30 hover:border-blue-400/50 transition-all text-right cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-900/50 border border-blue-500/30 flex items-center justify-center shrink-0">
-                          <Home className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-base sm:text-lg font-bold text-blue-200 mb-0.5">
-                            الديوانية
-                          </h3>
-                          <p className="text-[10px] sm:text-xs text-slate-400 leading-relaxed">
-                            أنشئ غرفة وشارك الكود، اللاعبون ينضمون من أجهزتهم
-                          </p>
-                        </div>
-                      </div>
-                    </motion.button>
+                {/* العراب */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('classic')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(245,158,11,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(245,158,11,.15), rgba(217,119,6,.08))',
+                    marginBottom: '12px', padding: '14px', display: 'flex',
+                    alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
+                >
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(245,158,11,.2)', border: '1px solid rgba(245,158,11,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_godfather.svg" alt="عراب" style={{ width: '28px', height: '28px' }} />
                   </div>
-                </CardContent>
-              </Card>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#fbbf24', marginBottom: '2px' }}>العراب</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>أدخل أسماء اللاعبين على جهازك وتحكم باللعبة</p>
+                  </div>
+                </motion.button>
+
+                {/* الديوانية */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('diwaniya')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(16,185,129,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(16,185,129,.15), rgba(5,150,105,.08))',
+                    padding: '14px', display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
+                >
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(16,185,129,.2)', border: '1px solid rgba(16,185,129,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_diwaniya.svg" alt="ديوانية" style={{ width: '28px', height: '28px' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#34d399', marginBottom: '2px' }}>الديوانية</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>أنشئ غرفة وشارك الكود، اللاعبون ينضمون من أجهزتهم</p>
+                  </div>
+                </motion.button>
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -183,188 +236,152 @@ export default function LandingPage({ onStartGodfather, onStartDiwaniya }: Landi
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4, type: 'spring' }}
-              className="mb-4 sm:mb-6"
             >
-              <Card className={`bg-gradient-to-bl ${
-                selectedMode === 'godfather'
-                  ? 'from-amber-950/40 via-slate-900/80 to-slate-900/80 border-amber-500/30'
-                  : 'from-blue-950/40 via-slate-900/80 to-slate-900/80 border-blue-500/30'
-              }`}>
-                <CardContent className="pt-5 sm:pt-6">
-                  <div className="text-center mb-4">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: 'spring' }}
-                      className="text-4xl mb-2"
-                    >
-                      {selectedMode === 'godfather' ? '🕴️' : '🏠'}
-                    </motion.div>
-                    <h2 className={`text-lg sm:text-xl font-bold ${
-                      selectedMode === 'godfather' ? 'text-amber-300' : 'text-blue-300'
-                    }`}>
-                      {selectedMode === 'godfather' ? 'العراب' : 'الديوانية'}
-                    </h2>
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <div style={{ fontSize: '36px', marginBottom: '8px' }}>
+                    {selectedMode === 'classic' ? '🕴️' : '🏛️'}
                   </div>
+                  <h2 style={{
+                    fontSize: '18px', fontWeight: 'bold',
+                    color: selectedMode === 'classic' ? '#fbbf24' : '#34d399',
+                  }}>
+                    {selectedMode === 'classic' ? 'العراب' : 'الديوانية'}
+                  </h2>
+                </div>
 
-                  {selectedMode === 'godfather' && (
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Crown className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>أنت العراب - تدير اللعبة بالكامل</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Users className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>أدخل أسماء اللاعبين يدوياً</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>تحكم بكل المراحل: الليل، النهار، التصويت</span>
-                      </div>
+                {selectedMode === 'classic' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🕴️</span><span>أنت العراب — تدير اللعبة بالكامل</span>
                     </div>
-                  )}
-
-                  {selectedMode === 'diwaniya' && (
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Home className="w-4 h-4 text-blue-400 shrink-0" />
-                        <span>أنشئ غرفة واحصل على كود</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Users className="w-4 h-4 text-blue-400 shrink-0" />
-                        <span>شارك الكود مع الأصدقاء لينضموا</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-300">
-                        <Zap className="w-4 h-4 text-blue-400 shrink-0" />
-                        <span>وافق على الانضمام وابدأ اللعبة</span>
-                      </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👥</span><span>4-14 لاعب — توزيع أدوار تلقائي</span>
                     </div>
-                  )}
-
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => setSelectedMode(null)}
-                      variant="outline"
-                      className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-800 py-4 text-sm"
-                    >
-                      رجوع
-                    </Button>
-                    <Button
-                      onClick={handleConfirmMode}
-                      className={`flex-1 font-bold text-base sm:text-lg py-5 transition-all duration-300 ${
-                        selectedMode === 'godfather'
-                          ? 'bg-gradient-to-l from-amber-600 to-red-800 hover:from-amber-500 hover:to-red-700 text-white pulse-glow-gold'
-                          : 'bg-gradient-to-l from-blue-600 to-indigo-800 hover:from-blue-500 hover:to-indigo-700 text-white pulse-glow-blue'
-                      }`}
-                    >
-                      متابعة
-                      <ChevronLeft className="w-4 h-4 mr-2" />
-                    </Button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🌙</span><span>مراحل الليل والنهار والتصويت</span>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                )}
+
+                {selectedMode === 'diwaniya' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🏛️</span><span>أنشئ غرفة واحصل على كود</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👥</span><span>شارك الكود مع المشاهدين</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>⚡</span><span>بث مباشر بدون تدخل من المشاهدين</span>
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={() => setSelectedMode(null)}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,.15)',
+                      background: 'rgba(100,100,100,.3)', color: '#9fc4b4', fontSize: '14px', fontWeight: 'bold',
+                      cursor: 'pointer',
+                    }}
+                  >رجوع</button>
+                  <button
+                    onClick={handleConfirmMode}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: 'none',
+                      background: selectedMode === 'classic'
+                        ? 'linear-gradient(135deg, #f59e0b, #d97706)'
+                        : 'linear-gradient(135deg, #10b981, #059669)',
+                      color: '#fff', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
+                      boxShadow: selectedMode === 'classic'
+                        ? '0 4px 12px rgba(245,158,11,.3)'
+                        : '0 4px 12px rgba(16,185,129,.3)',
+                    }}
+                  >متابعة ←</button>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Divider */}
-        <div className="flex items-center gap-3 mb-4 sm:mb-6">
-          <div className="flex-1 h-px bg-gradient-to-l from-slate-600 to-transparent" />
-          <span className="text-xs text-slate-500 font-bold">أو</span>
-          <div className="flex-1 h-px bg-gradient-to-r from-slate-600 to-transparent" />
-        </div>
+        {/* divider */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
 
-        {/* ================================ */}
-        {/* BUTTON 2: JOIN GAME (PLAYER)     */}
-        {/* ================================ */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <Card className="bg-gradient-to-bl from-green-950/40 via-slate-900/80 to-slate-900/80 border-green-500/30 mb-4 sm:mb-6">
-            <CardContent className="pt-5 sm:pt-6">
-              <div className="text-center mb-4">
-                <div className="inline-flex items-center gap-2 mb-1">
-                  <Users className="w-5 h-5 text-green-400" />
-                  <h2 className="text-lg sm:text-xl font-bold text-green-300">
-                    دخول لاعب
-                  </h2>
-                </div>
-                <p className="text-[10px] sm:text-xs text-slate-400">
-                  عندك كود اللعبة؟ ادخل هنا
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs text-slate-400 mb-1 block">
-                    كود اللعبة
-                  </label>
-                  <Input
-                    value={joinCode}
-                    onChange={(e) => {
-                      setJoinCode(e.target.value.toUpperCase());
-                      setJoinError('');
-                    }}
-                    placeholder="مثال: ABC123"
-                    className="bg-slate-800/50 border-green-500/30 text-slate-200 placeholder:text-slate-500 text-center font-mono text-lg h-12 tracking-widest"
-                    maxLength={6}
-                    dir="ltr"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-slate-400 mb-1 block">
-                    اسمك
-                  </label>
-                  <Input
-                    value={joinName}
-                    onChange={(e) => {
-                      setJoinName(e.target.value);
-                      setJoinError('');
-                    }}
-                    placeholder="اسمك في اللعبة..."
-                    className="bg-slate-800/50 border-green-500/30 text-slate-200 placeholder:text-slate-500 text-right h-12"
-                    dir="rtl"
-                    maxLength={20}
-                  />
-                </div>
-
-                {joinError && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-red-400 text-xs text-center"
-                  >
-                    ⚠️ {joinError}
-                  </motion.p>
-                )}
-
-                <Button
-                  onClick={handleJoin}
-                  className="w-full bg-gradient-to-l from-green-600 to-emerald-800 hover:from-green-500 hover:to-emerald-700 text-white font-bold text-base sm:text-lg py-5 sm:py-6 transition-all duration-300 pulse-glow-blue"
-                >
-                  <Users className="w-5 h-5 ml-2" />
-                  انضم للعبة
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Rules Toggle */}
-        <div className="flex justify-center mb-3">
-          <Button
-            variant="ghost"
-            onClick={() => setShowRules(!showRules)}
-            className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10 gap-2 text-sm"
+        {/* join capsule */}
+        <div style={{
+          display: 'flex', alignItems: 'center',
+          background: 'rgba(6,42,32,.6)', backdropFilter: 'blur(4px)',
+          borderRadius: '12px', border: '1px solid rgba(255,255,255,.08)',
+          padding: '3px', marginBottom: '12px',
+        }}>
+          <input
+            type="text"
+            value={joinCode}
+            onChange={(e) => { setJoinCode(e.target.value.toUpperCase()); setJoinError(''); }}
+            placeholder="كود اللعبة..."
+            maxLength={6}
+            dir="ltr"
+            style={{
+              flex: 1, background: 'transparent', border: 'none', outline: 'none',
+              color: '#fff', fontSize: '14px', padding: '10px 12px', textAlign: 'center',
+              fontFamily: 'monospace', letterSpacing: '2px',
+            }}
+          />
+          <input
+            type="text"
+            value={joinName}
+            onChange={(e) => { setJoinName(e.target.value); setJoinError(''); }}
+            placeholder="اسمك..."
+            maxLength={20}
+            dir="rtl"
+            style={{
+              width: '100px', background: 'transparent', border: 'none', outline: 'none',
+              borderRight: '1px solid rgba(255,255,255,.1)',
+              color: '#9fc4b4', fontSize: '13px', padding: '10px 8px', textAlign: 'center',
+            }}
+          />
+          <button
+            onClick={handleJoin}
+            disabled={!joinCode.trim() || !joinName.trim()}
+            style={{
+              padding: '10px 16px', borderRadius: '9px', border: 'none',
+              cursor: joinCode.trim() && joinName.trim() ? 'pointer' : 'not-allowed',
+              background: joinCode.trim() && joinName.trim()
+                ? 'linear-gradient(135deg, #4a8d7a, #3a7d6a)'
+                : 'rgba(100,100,100,.3)',
+              color: '#fff', fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap',
+              display: 'flex', alignItems: 'center', gap: '5px',
+            }}
           >
-            <Info className="w-4 h-4" />
-            {showRules ? 'إخفاء القوانين' : '📜 عرض القوانين'}
-          </Button>
+            <img src="/battle/iv_team_share.webp" alt="" style={{ width: '16px', height: '16px' }} />
+            انضمام
+          </button>
         </div>
 
-        {/* Rules */}
+        {joinError && (
+          <p style={{ color: '#ef4444', fontSize: '12px', textAlign: 'center', marginBottom: '8px' }}>⚠️ {joinError}</p>
+        )}
+
+        {/* rules */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+          <button
+            onClick={() => setShowRules(!showRules)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#fbbf24', fontSize: '13px', fontWeight: 'bold',
+            }}
+          >{showRules ? 'إخفاء القوانين' : '📜 عرض القوانين'}</button>
+        </div>
+
         <AnimatePresence>
           {showRules && (
             <motion.div
@@ -372,37 +389,35 @@ export default function LandingPage({ onStartGodfather, onStartDiwaniya }: Landi
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="overflow-hidden mb-3"
+              style={{ overflow: 'hidden', marginBottom: '8px' }}
             >
-              <Card className="bg-slate-900/80 border-slate-700/50">
-                <CardContent className="pt-4 text-xs sm:text-sm text-slate-300 space-y-3">
-                  <div>
-                    <h4 className="font-bold text-red-400 mb-1">فريق المافيا:</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>🕴️ <strong className="text-slate-200">شيخ المافيا:</strong> يختار ضحية كل ليلة</li>
-                      <li>🤫 <strong className="text-slate-200">مافيا التسكيت:</strong> يسكت شخصاً كل ليلة</li>
-                      <li>🔪 <strong className="text-slate-200">مافيا عادي:</strong> يشارك القرارات</li>
-                    </ul>
+              <div style={{
+                background: 'rgba(6,42,32,.8)', borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,.08)', padding: '16px',
+              }}>
+                <div style={{ fontSize: '13px', color: '#cbd5e1' }}>
+                  <h4 style={{ fontWeight: 'bold', color: '#ef4444', marginBottom: '4px' }}>👿 فريق المافيا:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>• 🕴️ شيخ المافيا — يختار ضحية كل ليلة</li>
+                    <li>• 🤫 مافيا التسكيت — يسكت شخصاً كل ليلة</li>
+                    <li>• 🔪 مافيا عادي — يشارك القرارات</li>
+                  </ul>
+                  <h4 style={{ fontWeight: 'bold', color: '#3b82f6', marginBottom: '4px' }}>🛡️ فريق الصالحين:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>• 🏛️ العمده — يكشف بطاقته بأمان، صوته ٣ أصوات</li>
+                    <li>• 👦 الولد الصالح — يُخرج أحداً معه عند الإقصاء</li>
+                    <li>• 🏥 الطبيب — ينقذ الضحية إذا خمّن صح</li>
+                    <li>• 🎯 القناص — رصاصة واحدة، يقتل معه إذا أخطأ</li>
+                  </ul>
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '8px' }}>
+                    <p style={{ color: '#fbbf24', fontSize: '12px' }}>🏆 المواطنون يفوزون بإقصاء كل المافيا</p>
+                    <p style={{ color: '#ef4444', fontSize: '12px' }}>💀 المافيا تفوز بتفوق عددي على المواطنين</p>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-blue-400 mb-1">فريق الصالحين:</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>🏛️ <strong className="text-slate-200">العمده:</strong> يكشف بطاقته بأمان، صوته ٣ أصوات</li>
-                      <li>👦 <strong className="text-slate-200">الولد الصالح:</strong> يُخرج أحداً معه عند الإقصاء</li>
-                      <li>🏥 <strong className="text-slate-200">الطبيب:</strong> ينقذ الضحية إذا خمّن صح</li>
-                      <li>🎯 <strong className="text-slate-200">القناص:</strong> رصاصة واحدة، يقتل معه إذا أخطأ</li>
-                    </ul>
-                  </div>
-                  <div className="pt-2 border-t border-slate-700/50">
-                    <p className="text-yellow-400/80 text-xs">🏆 المواطنون يفوزون بإقصاء كل المافيا</p>
-                    <p className="text-red-400/80 text-xs">💀 المافيا تفوز بتبقية عدد المافيا مواطنين أو أقل</p>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
-
       </motion.div>
     </div>
   );

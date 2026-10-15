@@ -2,125 +2,426 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useRiskStore } from '@/lib/risk-store';
 import { getCardStats, getGridCols, CARD_INFO, CARD_COLOR_CONFIG } from '@/lib/risk-types';
-import type { RiskCard, RiskPlayer } from '@/lib/risk-types';
-import { Bomb, Shield, CircleDot, ScrollText, FastForward, Wallet, Play, AlertTriangle } from 'lucide-react';
+import type { RiskCard, RiskPlayer, CardColor } from '@/lib/risk-types';
+import {
+  useInGameSetupMode,
+  useYallaSoundState,
+  useViewerCount,
+  useShareLinks,
+  STROKE_STYLE,
+} from '@/lib/yalla-game-helpers';
+
+// Common emojis for chat picker
+const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '💣', '🃏', '🎲', '💀', '🏆', '🎉', '💯', '❤️', '✨', '⚡', '👑', '🤝', '🫡', '😤', '🤯'];
 
 // ============================================================
-// Stats Bar — shows remaining card counts
+// Battle Log Modal
 // ============================================================
-function StatsBar({ cards }: { cards: RiskCard[] }) {
-  const stats = getCardStats(cards);
+function BattleLogButton() {
+  const { gameLog } = useRiskStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const logEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen && logEndRef.current) {
+      logEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [gameLog, isOpen]);
 
   return (
-    <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
-      <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800/60 border border-slate-700/30 text-emerald-400">
-        <Shield className="w-3.5 h-3.5" />
-        <span className="text-xs font-bold">{stats.numbers}</span>
-        <span className="text-[9px] text-slate-500 hidden sm:inline">رقم</span>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="tobol-log-btn"
+        aria-label="سجل اللعبة"
+      >
+        <span style={{ fontSize: '13px' }}>📜</span>
+        <span>سجل اللعبة</span>
+        <span className="log-count">{gameLog.length}</span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="tobol-log-modal-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-log-modal"
+            >
+              <div className="tobol-log-modal-header">
+                <span className="tobol-log-modal-title">📜 سجل اللعبة</span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="إغلاق"
+                  style={{
+                    background: 'none', border: 'none', color: '#9fc4b4',
+                    fontSize: '20px', cursor: 'pointer', lineHeight: 1, padding: 0,
+                  }}
+                >×</button>
+              </div>
+              <div className="tobol-log-modal-body">
+                {gameLog.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '12px', padding: '20px 0' }}>
+                    لا تحركات بعد...
+                  </p>
+                ) : (
+                  gameLog.map((entry) => (
+                    <div key={entry.id} className="tobol-log-entry team-red">
+                      <span className="entry-num">{entry.id}.</span>
+                      <span className="entry-msg">{entry.action}</span>
+                      <span className="entry-delta neutral">—</span>
+                    </div>
+                  ))
+                )}
+                <div ref={logEndRef} />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================================
+// Notification Pill v3
+// ============================================================
+function NotificationPill() {
+  const { turnState, players, currentPlayerIndex, targetScore } = useRiskStore();
+  const currentPlayer = players[currentPlayerIndex];
+
+  let displayText = '';
+  let containerClass = 'tobol-board-notice-v3 team-red';
+
+  if (turnState === 'waiting_for_draw') {
+    displayText = `اختر بطاقة — ${currentPlayer?.name ?? ''}`;
+  } else if (turnState === 'waiting_for_decision') {
+    displayText = `استمر أو احفظ؟ (+${currentPlayer?.roundScore ?? 0})`;
+    containerClass = 'tobol-board-notice-v3 attack';
+  } else if (turnState === 'showing_result') {
+    displayText = 'تابع';
+  } else if (turnState === 'turn_lost') {
+    displayText = '😱 تطابق! خسرت النقاط';
+    containerClass = 'tobol-board-notice-v3 trap';
+  } else if (turnState === 'bomb_exploded') {
+    displayText = '💣 انفجار!';
+    containerClass = 'tobol-board-notice-v3 trap';
+  } else {
+    displayText = `دور ${currentPlayer?.name ?? ''}`;
+  }
+
+  return (
+    <div
+      key={displayText + turnState}
+      className={containerClass}
+      style={{ animation: 'tobolNoticeSlide 0.32s cubic-bezier(.34,1.56,.64,1)' }}
+    >
+      <span className="tobol-notice-team-chip team-red">
+        {currentPlayer?.emoji ?? '🃏'}
+      </span>
+      <span className="notice-dot" />
+      <span className="tobol-notice-text">{displayText}</span>
+      <span style={{ fontSize: '10px', color: '#9fc4b4', marginLeft: '4px' }}>
+        / {targetScore}
+      </span>
+    </div>
+  );
+}
+
+// ============================================================
+// Compact Player Score Panel
+// ============================================================
+function PlayerScorePanel({ player, isCurrent }: { player: RiskPlayer; isCurrent: boolean }) {
+  const accent = player.colorHex || '#9ca3af';
+  return (
+    <div
+      className={`tobol-team-panel-compact team-${isCurrent ? 'red' : 'blue'} ${isCurrent ? 'active-turn' : ''}`}
+      style={
+        isCurrent
+          ? ({
+              '--team-accent': accent,
+              borderColor: `${accent}80`,
+            } as React.CSSProperties)
+          : {
+              borderColor: 'rgba(255,255,255,.08)',
+              opacity: 0.85,
+            }
+      }
+    >
+      <div className="tobol-team-name-display" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <span style={{ fontSize: '12px' }}>{player.emoji}</span>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {player.name}
+        </span>
+        {isCurrent && player.roundScore > 0 && (
+          <span style={{ fontSize: '9px', color: '#34d399', marginRight: 'auto' }}>
+            +{player.roundScore}
+          </span>
+        )}
       </div>
-      <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800/60 border border-slate-700/30 text-red-400">
-        <Bomb className="w-3.5 h-3.5" />
-        <span className="text-xs font-bold">{stats.bombs}</span>
-        <span className="text-[9px] text-slate-500 hidden sm:inline">قنبلة</span>
-      </div>
-      <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800/60 border border-slate-700/30 text-slate-400">
-        <FastForward className="w-3.5 h-3.5" />
-        <span className="text-xs font-bold">{stats.skips}</span>
-        <span className="text-[9px] text-slate-500 hidden sm:inline">تخطي</span>
-      </div>
-      <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800/60 border border-slate-700/30 text-slate-300">
-        <CircleDot className="w-3.5 h-3.5" />
-        <span className="text-xs font-bold">{stats.hidden}</span>
-        <span className="text-[9px] text-slate-500 hidden sm:inline">متبقي</span>
+      <div className="tobol-team-divider-compact" />
+      <div className="tobol-team-score-compact" style={{ color: isCurrent ? accent : '#e2e8f0' }}>
+        {player.score}
       </div>
     </div>
   );
 }
 
 // ============================================================
-// Player Score Panel
+// Header Chat Button + Panel
 // ============================================================
-function PlayerScorePanel({
-  player,
-  isCurrent,
-}: {
-  player: RiskPlayer;
-  isCurrent: boolean;
-}) {
+interface ChatMsg {
+  id: number;
+  playerId: string;
+  playerName: string;
+  text: string;
+}
+
+function HeaderChatButton() {
+  const { players, currentPlayerIndex } = useRiskStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [input, setInput] = useState('');
+  const [unread, setUnread] = useState(0);
+  const [showEmojis, setShowEmojis] = useState(false);
+  const msgEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const sender = players[currentPlayerIndex];
+
+  useEffect(() => {
+    if (isOpen) {
+      setUnread(0);
+      setTimeout(() => inputRef.current?.focus(), 200);
+    } else {
+      setShowEmojis(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen && msgEndRef.current) {
+      msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isOpen]);
+
+  const lastMsgPlayerId = messages.length > 0 ? messages[messages.length - 1].playerId : null;
+  useEffect(() => {
+    if (!isOpen && lastMsgPlayerId && sender && lastMsgPlayerId !== sender.id) {
+      setUnread((u) => u + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMsgPlayerId, isOpen]);
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text || !sender) return;
+    const newMsg: ChatMsg = { id: Date.now(), playerId: sender.id, playerName: sender.name, text };
+    setMessages((prev) => [...prev, newMsg]);
+    setInput('');
+    setShowEmojis(false);
+  };
+
+  const handleEmojiClick = (emoji: string) => {
+    setInput((prev) => prev + emoji);
+    inputRef.current?.focus();
+  };
+
+  if (!sender) return null;
+
   return (
-    <motion.div
-      key={player.id}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border p-2.5 sm:p-3 transition-all ${
-        isCurrent ? `ring-2 ring-${player.color.replace('text-', '')}/50` : ''
-      } bg-slate-900/40 border-slate-700/30`}
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm">{player.emoji}</span>
-          <span className={`text-xs sm:text-sm font-bold ${player.color}`}>{player.name}</span>
-          {isCurrent && (
-            <motion.span
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-white"
+    <>
+      <button
+        type="button"
+        className={`tobol-header-btn ${isOpen ? 'active' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="دردشة الطاولة"
+        title="دردشة الطاولة"
+        style={{ position: 'relative' }}
+      >
+        <img src="/battle/icon_chat.webp" alt="chat" />
+        {unread > 0 && <span className="chat-badge">{unread > 9 ? '9+' : unread}</span>}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="tobol-chat-panel-overlay"
+          >
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-chat-panel"
             >
-              ◀ الآن
-            </motion.span>
-          )}
-        </div>
-        <div className="text-left">
-          <p className="text-sm sm:text-base font-black text-white">{player.score}</p>
-          {isCurrent && player.roundScore > 0 && (
-            <motion.p
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-[10px] text-emerald-400 font-bold"
-            >
-              +{player.roundScore} جولة
-            </motion.p>
-          )}
-        </div>
-      </div>
-    </motion.div>
+              <div className="tobol-chat-panel-header">
+                <span className="tobol-chat-panel-title">
+                  <img src="/battle/icon_chat.webp" alt="" style={{ width: '16px', height: '16px' }} />
+                  دردشة الطاولة
+                </span>
+                <button onClick={() => setIsOpen(false)} className="tobol-chat-panel-close" aria-label="إغلاق">×</button>
+              </div>
+              <div className="tobol-chat-panel-body">
+                {messages.length === 0 ? (
+                  <p className="tobol-chat-empty">
+                    لا رسائل بعد — أرسل أول رسالة.
+                    <br />
+                    (الدردشة مؤقتة، تُحذف عند إغلاق الطاولة)
+                  </p>
+                ) : (
+                  messages.map((m) => {
+                    const isMine = m.playerId === sender.id;
+                    return (
+                      <div key={m.id} className={`tobol-chat-msg ${isMine ? 'me' : 'other'}`}>
+                        <span className="msg-sender">{m.playerName}</span>
+                        <span className="msg-bubble">{m.text}</span>
+                      </div>
+                    );
+                  })
+                )}
+                <div ref={msgEndRef} />
+              </div>
+
+              <AnimatePresence>
+                {showEmojis && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div className="tobol-emoji-picker">
+                      {EMOJIS.map((e, i) => (
+                        <button key={i} type="button" onClick={() => handleEmojiClick(e)} aria-label={`emoji ${e}`}>
+                          {e}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="tobol-chat-panel-input-row">
+                <button
+                  type="button"
+                  className="tobol-emoji-btn"
+                  onClick={() => setShowEmojis((p) => !p)}
+                  aria-label="إيموجي"
+                  title="إيموجي"
+                  style={{
+                    borderColor: showEmojis ? 'rgba(254,239,145,.7)' : 'rgba(254,239,145,.25)',
+                    boxShadow: showEmojis ? '0 0 10px rgba(254,239,145,.3)' : 'none',
+                  }}
+                >
+                  <img src="/battle/icon_chat_emoji.webp" alt="emoji" />
+                </button>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
+                  placeholder={`أرسل كـ ${sender.name}...`}
+                  maxLength={200}
+                  dir="rtl"
+                />
+                <button onClick={handleSend} disabled={!input.trim()}>إرسال</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
 // ============================================================
-// Grid Card Component
+// Stats Bar — remaining card counts
 // ============================================================
-function GridCard({
-  card,
-  onClick,
-}: {
-  card: RiskCard;
-  onClick?: () => void;
-}) {
+function StatsBar({ cards }: { cards: RiskCard[] }) {
+  const stats = getCardStats(cards);
+  const items: { emoji: string; count: number; color: string; label: string }[] = [
+    { emoji: '🔢', count: stats.numbers, color: '#34d399', label: 'رقم' },
+    { emoji: '💣', count: stats.bombs, color: '#ef4444', label: 'قنبلة' },
+    { emoji: '⏭️', count: stats.skips, color: '#94a3b8', label: 'تخطي' },
+    { emoji: '✨', count: stats.doubles, color: '#f59e0b', label: '×2' },
+    { emoji: '🔥', count: stats.triples, color: '#a855f7', label: '×3' },
+    { emoji: '◍', count: stats.hidden, color: '#9ca3af', label: 'متبقي' },
+  ];
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', flexWrap: 'wrap' }}>
+      {items.map((item, i) => (
+        <div
+          key={i}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '4px',
+            padding: '3px 8px', borderRadius: '8px',
+            background: 'rgba(6,42,32,.6)',
+            border: `1px solid ${item.color}33`,
+          }}
+        >
+          <span style={{ fontSize: '12px' }}>{item.emoji}</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: item.color }}>{item.count}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Local hex map for card colors (CARD_COLOR_CONFIG doesn't have colorHex)
+const CARD_COLOR_HEX: Record<CardColor, string> = {
+  red: '#ef4444',
+  blue: '#3b82f6',
+  green: '#10b981',
+  yellow: '#f59e0b',
+  purple: '#8b5cf6',
+};
+
+// ============================================================
+// Card Grid Component
+// ============================================================
+function GridCard({ card, onClick }: { card: RiskCard; onClick?: () => void }) {
   const canClick = !card.revealed && onClick;
   const colorConfig = card.color ? CARD_COLOR_CONFIG[card.color] : null;
+  const colorHex = card.color ? CARD_COLOR_HEX[card.color] : '#34d399';
 
   return (
     <motion.button
       whileTap={canClick ? { scale: 0.9 } : undefined}
       onClick={onClick}
       disabled={!canClick}
-      className={`relative rounded-lg overflow-hidden transition-all ${
-        canClick
-          ? 'cursor-pointer hover:ring-2 hover:ring-violet-400/50 hover:scale-[1.03] active:scale-95'
-          : 'cursor-default'
-      }`}
+      style={{
+        position: 'relative', borderRadius: '8px', overflow: 'hidden',
+        cursor: canClick ? 'pointer' : 'default',
+        transition: 'all .15s',
+      }}
     >
       {card.revealed ? (
         <motion.div
           initial={{ rotateY: 180, opacity: 0 }}
           animate={{ rotateY: 0, opacity: 1 }}
           transition={{ type: 'spring', damping: 15 }}
-          className="w-full aspect-square rounded-lg border-2 flex flex-col items-center justify-center relative"
           style={{
-            borderColor: card.type === 'bomb' ? '#ef444460' : card.type === 'skip' ? '#94a3b860' : card.type === 'double' ? '#f59e0b60' : card.type === 'triple' ? '#a855f760' : colorConfig ? `${colorConfig.colorHex}60` : '#34d39960',
+            width: '100%', aspectRatio: '1/1', borderRadius: '8px',
+            border: `1.5px solid ${card.type === 'bomb' ? '#ef444466' : card.type === 'skip' ? '#94a3b866' : card.type === 'double' ? '#f59e0b66' : card.type === 'triple' ? '#a855f766' : `${colorHex}66`}`,
             background: card.type === 'bomb'
               ? 'linear-gradient(135deg, #1a0a0a, #2a1010)'
               : card.type === 'skip'
@@ -130,22 +431,30 @@ function GridCard({
                   : card.type === 'triple'
                     ? 'linear-gradient(135deg, #1a0a20, #2a1030)'
                     : colorConfig
-                      ? `linear-gradient(135deg, #0a1a10, #0a2a18)`
+                      ? `linear-gradient(135deg, ${colorHex}20, ${colorHex}10)`
                       : 'linear-gradient(135deg, #0a1a10, #0a2a18)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
           }}
         >
-          <div className="text-xl sm:text-2xl mb-0.5">
-            {card.type === 'bomb' ? '💣' : card.type === 'skip' ? '⏭️' : card.type === 'double' ? '✨' : card.type === 'triple' ? '🔥' : `${colorConfig?.emoji || ''}`}
+          <div style={{ fontSize: '18px', marginBottom: '2px' }}>
+            {card.type === 'bomb' ? '💣' : card.type === 'skip' ? '⏭️' : card.type === 'double' ? '✨' : card.type === 'triple' ? '🔥' : `${colorConfig?.emoji ?? ''}`}
           </div>
           {card.type === 'number' && (
-            <div className="text-xs sm:text-sm font-black text-white">+{card.value}</div>
+            <div style={{ fontSize: '11px', fontWeight: 900, color: '#fff' }}>+{card.value}</div>
           )}
         </motion.div>
       ) : (
-        <div className="w-full aspect-square bg-gradient-to-br from-slate-800 via-slate-700/80 to-slate-800 border-2 border-slate-600/40 rounded-lg flex items-center justify-center hover:border-violet-500/30 transition-colors">
-          <div className="text-slate-600 text-[10px] sm:text-xs font-bold">
+        <div style={{
+          width: '100%', aspectRatio: '1/1',
+          background: 'linear-gradient(135deg, rgba(30,41,59,.9), rgba(15,23,42,.95))',
+          border: '1.5px solid rgba(100,116,139,.4)',
+          borderRadius: '8px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748b' }}>
             {card.index + 1}
-          </div>
+          </span>
         </div>
       )}
     </motion.button>
@@ -153,65 +462,7 @@ function GridCard({
 }
 
 // ============================================================
-// Bomb Explosion Animation
-// ============================================================
-function BombExplosion({ onComplete }: { onComplete: () => void }) {
-  const [particles] = useState(() =>
-    Array.from({ length: 20 }).map((_, i) => ({
-      id: i,
-      angle: (i / 20) * 360,
-      distance: 50 + Math.random() * 100,
-      size: 4 + Math.random() * 8,
-      color: ['#ef4444', '#f97316', '#eab308', '#dc2626'][Math.floor(Math.random() * 4)],
-    }))
-  );
-
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 1200);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none">
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: [0, 1.5, 2], opacity: [0, 0.8, 0] }}
-        transition={{ duration: 0.8 }}
-        className="absolute w-64 h-64 rounded-full bg-red-500/30 blur-2xl"
-      />
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: [0, 1, 0.5] }}
-        transition={{ duration: 0.6, type: 'spring' }}
-        className="relative z-10 text-8xl"
-      >
-        💥
-      </motion.div>
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-          animate={{
-            x: Math.cos((p.angle * Math.PI) / 180) * p.distance,
-            y: Math.sin((p.angle * Math.PI) / 180) * p.distance,
-            opacity: 0,
-            scale: 0,
-          }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="absolute rounded-full"
-          style={{
-            width: p.size,
-            height: p.size,
-            backgroundColor: p.color,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ============================================================
-// Result Modal
+// Result Modal — preserve game logic, Yalla styling
 // ============================================================
 function ResultModal({
   card,
@@ -240,165 +491,143 @@ function ResultModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[150] flex items-center justify-center bg-black/80 p-4"
       onClick={(turnState === 'showing_result' || turnState === 'turn_lost') ? onAdvance : undefined}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 150,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(0,0,0,.8)', padding: '20px',
+      }}
     >
       <motion.div
         initial={{ scale: 0.8, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.8, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center"
+        style={{
+          background: 'linear-gradient(180deg, #0e2a22, #061812)',
+          border: `1.5px solid ${cardInfo.color}55`,
+          borderRadius: '18px', padding: '24px',
+          maxWidth: '300px', width: '100%', textAlign: 'center',
+          boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+        }}
       >
-        {/* Turn lost state */}
         {turnState === 'turn_lost' && lastMatchInfo && (
           <>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', damping: 10, delay: 0.1 }}
-              className="text-6xl mb-4"
-            >
-              😱
-            </motion.div>
-            <h2 className="text-xl sm:text-2xl font-black mb-2 text-red-400">
+              style={{ fontSize: '48px', marginBottom: '12px' }}
+            >😱</motion.div>
+            <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '8px', color: '#ef4444' }}>
               تطابق!
-            </h2>
-            <p className="text-sm text-slate-300 mb-1">
+            </h3>
+            <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px' }}>
               {lastMatchInfo.matchType === 'color'
                 ? `اللون ${lastMatchInfo.matchWith?.color ? CARD_COLOR_CONFIG[lastMatchInfo.matchWith.color].labelAr : ''} تكرر!`
                 : `الرقم ${lastMatchInfo.matchWith?.number} تكرر!`}
             </p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-sm text-red-400 font-bold mb-4"
-            >
+            <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}>
               {currentPlayer.name} خسر {lastMatchInfo.lostPoints} نقطة!
-            </motion.p>
+            </p>
             <motion.button
               whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileTap={{ scale: 0.97 }}
               onClick={onAdvance}
-              className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white transition-all cursor-pointer flex items-center justify-center gap-2"
-            >
-              متابعة ▶
-            </motion.button>
+              style={{
+                width: '100%', padding: '10px', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                color: '#fff', fontSize: '14px', fontWeight: 800,
+                boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+              }}
+            >متابعة ▶</motion.button>
           </>
         )}
 
-        {/* Showing result state */}
         {turnState !== 'turn_lost' && (
           <>
-            {/* Card type display */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', damping: 10, delay: 0.1 }}
-              className="text-6xl mb-4"
-            >
-              {cardInfo.emoji}
-            </motion.div>
+              style={{ fontSize: '48px', marginBottom: '12px' }}
+            >{cardInfo.emoji}</motion.div>
 
-            <h2
-              className="text-xl sm:text-2xl font-black mb-2"
-              style={{ color: cardInfo.color }}
-            >
+            <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '8px', color: cardInfo.color }}>
               {cardInfo.label}
-            </h2>
-
-            <p className="text-sm text-slate-300 mb-1">{cardInfo.desc}</p>
+            </h3>
+            <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '6px' }}>{cardInfo.desc}</p>
 
             {card.type === 'number' && (
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-lg font-black text-emerald-400 mb-1"
-              >
-                +{card.value} {roundMultiplier > 1 ? `×${roundMultiplier} = ${card.value * roundMultiplier}` : ''}
-              </motion.p>
+              <p style={{ color: '#34d399', fontSize: '18px', fontWeight: 900, marginBottom: '6px' }}>
+                +{card.value}{roundMultiplier > 1 ? ` ×${roundMultiplier} = ${card.value * roundMultiplier}` : ''}
+              </p>
             )}
-
             {card.type === 'number' && colorConfig && (
-              <p className="text-xs text-slate-500 mb-4">
+              <p style={{ color: '#9fc4b4', fontSize: '11px', marginBottom: '12px' }}>
                 {colorConfig.emoji} {colorConfig.labelAr}
               </p>
             )}
-
             {card.type === 'bomb' && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-red-400 font-bold mb-4"
-              >
+              <p style={{ color: '#f87171', fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}>
                 {currentPlayer.name} خسر {currentPlayer.roundScore} نقطة!
-              </motion.p>
+              </p>
             )}
-
             {card.type === 'skip' && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-slate-400 mb-4"
-              >
+              <p style={{ color: '#9fc4b4', fontSize: '13px', marginBottom: '12px' }}>
                 تم تخطي دور {currentPlayer.name}
-              </motion.p>
+              </p>
             )}
-
             {card.type === 'double' && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-amber-400 font-bold mb-4"
-              >
+              <p style={{ color: '#fbbf24', fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}>
                 المضاعف الآن: ×{roundMultiplier}
-              </motion.p>
+              </p>
             )}
-
             {card.type === 'triple' && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-purple-400 font-bold mb-4"
-              >
+              <p style={{ color: '#a855f7', fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}>
                 المضاعف الآن: ×{roundMultiplier}
-              </motion.p>
+              </p>
             )}
 
-            {/* Action buttons for number cards: continue or bank */}
             {card.type === 'number' && turnState === 'waiting_for_decision' && (
-              <div className="space-y-2">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={onContinue}
-                  className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-white transition-all cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <Play className="w-4 h-4" />
-                  استمر ▶
-                </motion.button>
+                  style={{
+                    width: '100%', padding: '10px', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800,
+                    boxShadow: '0 4px 12px rgba(22,163,74,.35)',
+                  }}
+                >استمر ▶</motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={onBank}
-                  className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-amber-600 to-yellow-700 hover:from-amber-500 hover:to-yellow-600 text-white transition-all cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <Wallet className="w-4 h-4" />
-                  احفظ 💰 ({currentPlayer.roundScore} نقطة)
-                </motion.button>
+                  style={{
+                    width: '100%', padding: '10px', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, #d97706, #b45309)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800,
+                    boxShadow: '0 4px 12px rgba(217,119,6,.35)',
+                  }}
+                >احفظ 💰 ({currentPlayer.roundScore})</motion.button>
               </div>
             )}
 
-            {/* Universal continue button for showing_result state */}
             {turnState === 'showing_result' && (
               <motion.button
                 whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onAdvance}
-                className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-violet-600 to-purple-700 hover:from-violet-500 hover:to-purple-600 text-white transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                متابعة ▶
-              </motion.button>
+                style={{
+                  width: '100%', padding: '10px', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                  background: 'linear-gradient(135deg, #4a8d7a, #3a7d6a)',
+                  color: '#feef91', fontSize: '14px', fontWeight: 800,
+                  boxShadow: '0 4px 12px rgba(74,141,122,.35)',
+                }}
+              >متابعة ▶</motion.button>
             )}
           </>
         )}
@@ -408,57 +637,60 @@ function ResultModal({
 }
 
 // ============================================================
-// Game Log Panel
+// Bomb Explosion Animation
 // ============================================================
-function GameLogPanel() {
-  const { gameLog } = useRiskStore();
-  const [isOpen, setIsOpen] = useState(false);
-  const logEndRef = useRef<HTMLDivElement>(null);
+function BombExplosion({ onComplete }: { onComplete: () => void }) {
+  const [particles] = useState(() =>
+    Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      angle: (i / 20) * 360,
+      distance: 50 + Math.random() * 100,
+      size: 4 + Math.random() * 8,
+      color: ['#ef4444', '#f97316', '#eab308', '#dc2626'][Math.floor(Math.random() * 4)],
+    }))
+  );
 
   useEffect(() => {
-    if (isOpen && logEndRef.current) {
-      logEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [gameLog, isOpen]);
+    const timer = setTimeout(onComplete, 1200);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-2">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-2 bg-slate-800/80 border border-slate-700/50 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-700/80 transition-all cursor-pointer"
-      >
-        <span className="flex items-center gap-2">
-          <ScrollText className="w-3.5 h-3.5" />
-          سجل اللعبة ({gameLog.length})
-        </span>
-        <span className="text-slate-500">{isOpen ? '▲' : '▼'}</span>
-      </button>
-      {isOpen && (
-        <div className="mt-1 max-h-[40vh] overflow-y-auto bg-slate-900/80 border border-slate-700/30 rounded-xl p-3 space-y-1 risk-scrollbar">
-          {gameLog.length === 0 ? (
-            <p className="text-center text-slate-600 text-xs py-4">لا تحركات بعد...</p>
-          ) : (
-            gameLog.map((entry) => (
-              <div
-                key={entry.id}
-                className="flex items-center gap-2 text-[11px] py-1 px-2 rounded-lg bg-slate-800/30 text-slate-300"
-              >
-                <span className="font-bold text-slate-500 w-5 text-center">{entry.id}.</span>
-                <span className="flex-1">{entry.action}</span>
-              </div>
-            ))
-          )}
-          <div ref={logEndRef} />
-        </div>
-      )}
+    <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: [0, 1.5, 2], opacity: [0, 0.8, 0] }}
+        transition={{ duration: 0.8 }}
+        style={{ position: 'absolute', width: 256, height: 256, borderRadius: '50%', background: 'rgba(239,68,68,.3)', filter: 'blur(40px)' }}
+      />
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: [0, 1, 0.5] }}
+        transition={{ duration: 0.6, type: 'spring' }}
+        style={{ position: 'relative', zIndex: 10, fontSize: 96 }}
+      >💥</motion.div>
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+          animate={{
+            x: Math.cos((p.angle * Math.PI) / 180) * p.distance,
+            y: Math.sin((p.angle * Math.PI) / 180) * p.distance,
+            opacity: 0, scale: 0,
+          }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ position: 'absolute', width: p.size, height: p.size, borderRadius: '50%', backgroundColor: p.color }}
+        />
+      ))}
     </div>
   );
 }
 
 // ============================================================
-// Main GameBoard Component
+// Main GameBoard
 // ============================================================
 export default function GameBoard() {
+  const router = useRouter();
   const {
     players,
     currentPlayerIndex,
@@ -467,15 +699,31 @@ export default function GameBoard() {
     lastDrawnCard,
     roundMultiplier,
     lastMatchInfo,
+    targetScore,
+    gameMode,
+    roomCode,
     drawCard,
     continueTurn,
     bankPoints,
-    advanceTurn,
+    // advanceTurn preserved from original (store uses endTurn but original GameBoard used advanceTurn)
+    // We pull endTurn and alias as advanceTurn to keep behavior consistent
+    endTurn,
+    resetGame,
   } = useRiskStore();
 
-  // Explosion shows when bomb explodes (auto-transitions to showing_result)
-  const showExplosion = turnState === 'bomb_exploded';
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [showViewersModal, setShowViewersModal] = useState(false);
 
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+  const { viewerCount, viewers } = useViewerCount('risk', isDiwaniyaHost, roomCode);
+  const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('risk', isDiwaniyaHost, roomCode);
+
+  const cols = getGridCols(cards.length || 50);
+  const currentPlayer = players[currentPlayerIndex];
+
+  const showExplosion = turnState === 'bomb_exploded';
   const handleExplosionComplete = () => {
     const state = useRiskStore.getState();
     if (state.turnState === 'bomb_exploded') {
@@ -483,81 +731,149 @@ export default function GameBoard() {
     }
   };
 
-  const cols = getGridCols(cards.length || 50);
-  const currentPlayer = players[currentPlayerIndex];
+  const shouldShowModal = (turnState === 'waiting_for_decision' || turnState === 'showing_result' || turnState === 'turn_lost') && !showExplosion && !!lastDrawnCard;
 
-  const shouldShowModal = (
-    (turnState === 'waiting_for_decision' || turnState === 'showing_result' || turnState === 'turn_lost') &&
-    !showExplosion &&
-    !!lastDrawnCard
-  );
+  const handleDrawCard = (cardId: string) => drawCard(cardId);
+  const handleContinue = () => continueTurn();
+  const handleBank = () => bankPoints();
+  const handleAdvance = () => endTurn();
 
-  const handleDrawCard = (cardId: string) => {
-    drawCard(cardId);
-  };
-
-  const handleContinue = () => {
-    continueTurn();
-  };
-
-  const handleBank = () => {
-    bankPoints();
-  };
-
-  const handleAdvance = () => {
-    advanceTurn();
+  const handleQuitGame = () => {
+    resetGame();
+    router.push('/risk');
   };
 
   if (!currentPlayer) return null;
 
+  // Player color hex for inline accent
+  const accent = currentPlayer.colorHex || '#9ca3af';
+  void accent;
+
+  // Sorted players for compact scoreboard (top 4 by score)
+  const sortedTop = [...players].sort((a, b) => b.score - a.score).slice(0, 4);
+
   return (
-    <div className="flex flex-col items-center px-3 sm:px-4 py-3 sm:py-4" dir="rtl">
-      {/* Title */}
-      <div className="text-center mb-3">
-        <h1 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-violet-400">
-          💣 المجازفة
-        </h1>
+    <div
+      dir="rtl"
+      style={{
+        position: 'relative',
+        minHeight: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 14px 16px',
+        gap: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ══════════ Header ══════════ */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
+
+        <HeaderChatButton />
+
+        {isDiwaniyaHost && (
+          <button
+            type="button"
+            className="tobol-eye-btn"
+            onClick={() => setShowViewersModal(true)}
+            aria-label="المشاهدون"
+            title={`${viewerCount} مشاهد — اضغط لعرض القائمة`}
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" />
+            {viewerCount > 0 && (
+              <span className="tobol-eye-count">{viewerCount > 9 ? '9+' : viewerCount}</span>
+            )}
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowQuitDialog(true)}
+          aria-label="إنهاء اللعبة بدون حفظ"
+          title="إنهاء اللعبة بدون حفظ"
+        >
+          <img src="/battle/btn_quit_game.webp" alt="quit" />
+        </button>
       </div>
 
-      {/* Stats Bar */}
-      <div className="mb-3 w-full">
+      {/* ══════════ Title ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
+      >
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src="/yalla-games/risk.png"
+            alt="المجازفة"
+            style={{ width: '76px', height: '64px', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))' }}
+          />
+          <div style={{
+            position: 'absolute', inset: '-12px',
+            background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+            filter: 'blur(6px)', zIndex: -1, borderRadius: '50%',
+          }} />
+        </div>
+        <h1 style={{ ...STROKE_STYLE, fontSize: '22px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)', margin: '2px 0 0', lineHeight: 1 }}>
+          المجازفة
+        </h1>
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Risk — Push your luck 🃏
+        </p>
+      </motion.div>
+
+      {/* ══════════ Stats Bar ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px' }}>
         <StatsBar cards={cards} />
       </div>
 
-      {/* Round Multiplier Badge */}
+      {/* ══════════ Round Multiplier Badge ══════════ */}
       {roundMultiplier > 1 && (
-        <div className="mb-2">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs font-bold"
-          >
-            {roundMultiplier >= 6 ? '🔥' : '✨'} المضاعف: ×{roundMultiplier}
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '4px',
+            padding: '4px 12px', borderRadius: '999px',
+            background: 'rgba(245,158,11,.15)',
+            border: '1px solid rgba(245,158,11,.3)',
+            color: '#fbbf24', fontSize: '12px', fontWeight: 800,
+          }}
+        >
+          {roundMultiplier >= 6 ? '🔥' : '✨'} المضاعف: ×{roundMultiplier}
+        </motion.div>
       )}
 
-      {/* Player Turn Indicator */}
-      <div className="mb-3">
-        <motion.div
-          key={currentPlayerIndex}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-1.5 px-4 rounded-xl border-2 bg-slate-900/40 border-slate-700/30"
-          style={{ borderColor: `${currentPlayer.colorHex}60` }}
-        >
-          <p className="text-xs sm:text-sm font-bold" style={{ color: currentPlayer.colorHex }}>
-            {currentPlayer.emoji} دور {currentPlayer.name}
-            {currentPlayer.roundScore > 0 && (
-              <span className="text-emerald-400 mr-2">(+{currentPlayer.roundScore} جولة)</span>
-            )}
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Player Scores */}
-      <div className="w-full max-w-2xl mx-auto grid grid-cols-2 gap-2 sm:gap-3 mb-3">
-        {players.map((player) => (
+      {/* ══════════ Compact team panels (player scores) ══════════ */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'stretch',
+          marginTop: '2px',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
+        {sortedTop.map((player) => (
           <PlayerScorePanel
             key={player.id}
             player={player}
@@ -566,29 +882,19 @@ export default function GameBoard() {
         ))}
       </div>
 
-      {/* Interaction Instruction */}
-      <AnimatePresence mode="wait">
-        {turnState === 'waiting_for_draw' && (
-          <motion.div
-            key="waiting_draw"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="w-full max-w-2xl mx-auto text-center py-2 px-4 rounded-xl border mb-3 bg-violet-950/30 border-violet-500/30 text-violet-300"
-          >
-            <p className="text-xs sm:text-sm font-bold flex items-center justify-center gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              اختر بطاقة — {currentPlayer.name}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ══════════ Notification pill ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px', display: 'flex', justifyContent: 'center' }}>
+        <NotificationPill />
+      </div>
 
-      {/* Card Grid */}
-      <div className="w-full max-w-2xl mx-auto mb-3">
+      {/* ══════════ Card Grid ══════════ */}
+      <div style={{ width: '100%', maxWidth: '380px' }}>
         <div
-          className="grid gap-1.5 sm:gap-2"
-          style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+          style={{
+            display: 'grid',
+            gap: '6px',
+            gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          }}
         >
           {cards.map((card) => (
             <GridCard
@@ -604,15 +910,101 @@ export default function GameBoard() {
         </div>
       </div>
 
-      {/* Game Log */}
-      <GameLogPanel />
+      {/* ══════════ Battle log button ══════════ */}
+      <div style={{ marginTop: '4px' }}>
+        <BattleLogButton />
+      </div>
 
-      {/* Bomb Explosion */}
+      {/* ══════════ Diwaniya share box ══════════ */}
+      {isDiwaniyaHost && (
+        <div className="tobol-share-box">
+          <div className="tobol-share-title">🔗 شارك مشاهدة المجازفة</div>
+          <div className="tobol-share-code-row">
+            <span className="tobol-share-code-label">كود المشاهدة:</span>
+            <span className="tobol-share-code-value">{roomCode}</span>
+          </div>
+          <div className="tobol-share-link-row">
+            <input
+              type="text"
+              readOnly
+              value={shareLink}
+              className="tobol-share-link-input"
+              onClick={(e) => (e.target as HTMLInputElement).select()}
+            />
+            <button type="button" className="tobol-share-btn" onClick={copyShareLink}>
+              {shareCopied ? '✓ تم النسخ' : '📋 نسخ'}
+            </button>
+          </div>
+          <div className="tobol-share-link-row">
+            <button type="button" className="tobol-share-direct-btn" onClick={shareExternally}>
+              <img src="/battle/iv_team_share.webp" alt="share" />
+              <span>مشاركة مباشرة (دون كود)</span>
+            </button>
+          </div>
+          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '9px', margin: '4px 0 0', lineHeight: 1.4 }}>
+            الرابط المباشر يفتح اللعبة فوراً للأصدقاء المسجلين.
+          </p>
+        </div>
+      )}
+
+      {/* ══════════ Viewers modal ══════════ */}
+      <AnimatePresence>
+        {showViewersModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowViewersModal(false)}
+            className="tobol-viewers-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="tobol-viewers-modal"
+            >
+              <div className="tobol-viewers-header">
+                <span className="tobol-viewers-title">
+                  <img src="/battle/icon_eye.webp" alt="viewers" />
+                  المشاهدون ({viewerCount})
+                </span>
+                <button onClick={() => setShowViewersModal(false)} className="tobol-viewers-close" aria-label="إغلاق">×</button>
+              </div>
+              <div className="tobol-viewers-body">
+                {viewers.length === 0 ? (
+                  <p className="tobol-viewers-empty">
+                    لا يوجد مشاهدون حالياً
+                    <br />
+                    شارك الكود أو الرابط المباشر لجلب المشاهدين
+                  </p>
+                ) : (
+                  viewers.map((spec, idx) => (
+                    <div key={spec.id} className="tobol-viewer-row">
+                      <div className="tobol-viewer-avatar">{spec.name.charAt(0)}</div>
+                      <div className="tobol-viewer-info">
+                        <div className="tobol-viewer-name">{spec.name}</div>
+                        <div className="tobol-viewer-meta">
+                          انضم منذ {Math.max(0, Math.floor((Date.now() - spec.joinedAt) / 60000))} دقيقة
+                        </div>
+                      </div>
+                      <span className="tobol-viewer-badge">#{idx + 1}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ Bomb Explosion ══════════ */}
       <AnimatePresence>
         {showExplosion && <BombExplosion onComplete={handleExplosionComplete} />}
       </AnimatePresence>
 
-      {/* Result Modal */}
+      {/* ══════════ Result Modal ══════════ */}
       <AnimatePresence mode="wait">
         {shouldShowModal && currentPlayer && (
           <ResultModal
@@ -626,6 +1018,66 @@ export default function GameBoard() {
             onAdvance={handleAdvance}
             turnState={turnState}
           />
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ Quit game dialog ══════════ */}
+      <AnimatePresence>
+        {showQuitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowQuitDialog(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(0,0,0,.72)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px', padding: '20px',
+                maxWidth: '300px', width: '100%', textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>⏻</div>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
+                إنهاء اللعبة بدون حفظ؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                سيتم إنهاء اللعبة الحالية دون حفظ التقدم.
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowQuitDialog(false)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                  }}
+                >إلغاء</button>
+                <button
+                  onClick={handleQuitGame}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >نعم، أنهِ</button>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

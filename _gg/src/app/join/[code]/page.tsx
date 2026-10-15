@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Timer, Eye } from 'lucide-react';
 import WelcomePopup from '@/components/mafia/WelcomePopup';
 import { playNightSound, playDaySound, playBgMusic } from '@/lib/sounds';
-import TabotSpectatorView from '@/components/tabot/TabotSpectatorView';
+import TabotSpectatorView from '@/components/tabot/SpectatorView';
 import ShifaratSpectatorView from '@/components/shifarat/ShifaratSpectatorView';
 
 // ============================================================

@@ -1,166 +1,388 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Home, Info, ChevronLeft, Users, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface LandingPageProps {
   onStartSetup: () => void;
   onStartDiwaniya: () => void;
 }
 
-const HORROR_EMOJIS = ['🪦', '⚰️', '👻', '🦇', '🕷️', '💀', '🌙', '🕯️', '🧛', '🐺', '🦉', '🐸', '🐍', '🦂', '🐉', '🧟'];
+const FLOATING_EMOJIS = ['🪦', '⚰️', '🦇', '🕯️', '🔒', '🔑', '🪦', '⚰️', '🦇', '🕯️'];
+
+// StrokeTextStyle_Yes (from yalla ludo styles.xml)
+// textColor: #aa6e1f (ذهبي داكن), stroke_color: #feef91 (ذهبي فاتح)
 
 export default function LandingPage({ onStartSetup, onStartDiwaniya }: LandingPageProps) {
+  const router = useRouter();
+  const [selectedMode, setSelectedMode] = useState<'classic' | 'diwaniya' | null>(null);
+  const [joinCode, setJoinCode] = useState('');
+  const [joinName, setJoinName] = useState('');
+  const [joinError, setJoinError] = useState('');
   const [showRules, setShowRules] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
-  // Generate stable floating emojis
-  const floatingEmojis = useMemo(() => {
-    return HORROR_EMOJIS.map((emoji, i) => ({
-      emoji,
-      top: `${10 + (i * 5.5) % 80}%`,
-      left: `${5 + (i * 6.2) % 90}%`,
-      size: 16 + (i % 4) * 6,
-      duration: 3 + (i % 5) * 1.5,
-      delay: i * 0.3,
-    }));
-  }, []);
+  const handleJoin = () => {
+    if (!joinCode.trim()) { setJoinError('يجب إدخال كود الغرفة'); return; }
+    if (!joinName.trim()) { setJoinError('يجب إدخال اسمك'); return; }
+    setJoinError('');
+    window.location.href = `/join/tabot/${joinCode.trim().toUpperCase()}?name=${encodeURIComponent(joinName.trim())}`;
+  };
+
+  const handleConfirmMode = () => {
+    if (selectedMode === 'classic') onStartSetup?.();
+    else if (selectedMode === 'diwaniya') onStartDiwaniya?.();
+  };
 
   return (
-    <div className="flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 relative overflow-hidden" dir="rtl">
-      {/* Floating horror emojis background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {floatingEmojis.map((item, i) => (
-          <div
+    <div
+      dir="rtl"
+      style={{
+        minHeight: 'calc(100vh - 130px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '16px 16px 120px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* جزيئات رعب متطايرة */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        {FLOATING_EMOJIS.map((emoji, i) => (
+          <motion.div
             key={i}
-            className="absolute coffin-float"
             style={{
-              top: item.top,
-              left: item.left,
-              fontSize: `${item.size}px`,
+              position: 'absolute',
+              left: `${10 + (i * 9) % 80}%`,
+              top: `${5 + (i * 13) % 70}%`,
+              fontSize: '24px',
               opacity: 0.15,
-              animationDuration: `${item.duration}s`,
-              animationDelay: `${item.delay}s`,
             }}
+            animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0], opacity: [0.08, 0.2, 0.08] }}
+            transition={{ duration: 3 + (i % 3), repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}
           >
-            {item.emoji}
-          </div>
+            {emoji}
+          </motion.div>
         ))}
-
-        {/* Subtle ambient glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-amber-900/5 rounded-full blur-[80px] pointer-events-none" />
       </div>
 
+      {/* شريط أيقونات صغيرة تحت الهيدر */}
+      <div style={{
+        position: 'absolute', top: '8px', left: '12px', right: '12px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 50,
+      }}>
+        {/* يسار: استئناف (room_refresh) */}
+        <button
+          onClick={() => router.push('/tabot')}
+          style={{
+            background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+            borderRadius: '10px', padding: '6px 10px', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '4px',
+          }}
+        >
+          <img src="/battle/room_refresh.webp" alt="استئناف" style={{ width: '20px', height: '20px' }} />
+          <span style={{ color: '#9fc4b4', fontSize: '11px', fontWeight: 'bold' }}>استئناف</span>
+        </button>
+        {/* يمين: إعدادات + إغلاق */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src="/battle/setting.webp" alt="إعدادات" style={{ width: '20px', height: '20px' }} />
+          </button>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src={pressed ? '/battle/close_click.webp' : '/battle/close.webp'} alt="خروج"
+              style={{ width: '20px', height: '20px' }}
+              onMouseDown={() => setPressed(true)}
+              onMouseUp={() => setPressed(false)}
+              onMouseLeave={() => setPressed(false)}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* المحتوى الرئيسي */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto"
+        style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '380px', margin: '0 auto', marginTop: '40px' }}
       >
-        {/* Title */}
-        <div className="text-center mb-6 sm:mb-8">
+        {/* العنوان + الشعار */}
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <motion.div
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2, type: 'spring' }}
-            className="text-6xl sm:text-7xl mb-3 sm:mb-4 coffin-float"
           >
-            ⚰️
+            <div style={{ fontSize: '64px', marginBottom: '4px', filter: 'drop-shadow(0 6px 12px rgba(0,0,0,.55))' }}>
+              ⚰️
+            </div>
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 mb-2">
+          <h1 style={{
+            fontSize: '28px', fontWeight: 900, color: '#feef91',
+            textShadow: '0 2px 4px rgba(0,0,0,.8)',
+            paintOrder: 'stroke fill',
+            WebkitTextStroke: '1px #aa6e1f',
+            marginBottom: '4px',
+          }}>
             الهروب من التابوت
           </h1>
-          <p className="text-slate-400 text-xs sm:text-sm font-bold">
-            لعبة أبواب الرعب 🦇
+          <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 'bold' }}>
+            Tabot — Escape the Coffin 🦇
           </p>
         </div>
 
-        {/* ================================ */}
-        {/* MODE SELECTION CARDS              */}
-        {/* ================================ */}
-        <Card className="bg-gradient-to-bl from-purple-950/40 via-slate-900/80 to-slate-900/80 border-purple-500/30 mb-4 sm:mb-6">
-          <CardContent className="pt-5 sm:pt-6">
-            <div className="text-center mb-4">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.3, type: 'spring' }}
-                className="inline-flex items-center gap-2 mb-2"
-              >
-                <Zap className="w-5 h-5 text-purple-400" />
-                <h2 className="text-lg sm:text-xl font-bold text-purple-300">
-                  اختر طريقة اللعب
-                </h2>
-              </motion.div>
-              <p className="text-[10px] sm:text-xs text-slate-400">
-                فريقين يتنافسون عبر 16 باب مليء بالمفاجآت
-              </p>
-            </div>
+        {/* فاصل yalla */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
 
-            <div className="space-y-3">
-              {/* العراب Mode — Active */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={onStartSetup}
-                className="w-full rounded-xl p-3 sm:p-4 border-2 border-amber-500/30 bg-gradient-to-l from-amber-950/50 to-purple-950/30 hover:border-amber-400/50 transition-all text-right cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-amber-900/50 border border-amber-500/30 flex items-center justify-center shrink-0">
-                    <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-amber-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-bold text-amber-200 mb-0.5">
-                      العراب
-                    </h3>
-                    <p className="text-[10px] sm:text-xs text-slate-400 leading-relaxed">
-                      أدخل أسماء اللاعبين على جهازك وتحكم باللعبة كاملة
-                    </p>
-                  </div>
+        {/* ===== لوحة اختيار الأوضاع (bg_mode_select) ===== */}
+        <AnimatePresence mode="wait">
+          {!selectedMode ? (
+            <motion.div
+              key="mode-select"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <h2 style={{
+                    fontSize: '16px', fontWeight: 'bold', color: '#8dd4ff',
+                    marginBottom: '2px',
+                  }}>إنشاء لعبة جديدة</h2>
+                  <p style={{ fontSize: '11px', color: '#9fc4b4' }}>اختر طريقة اللعب</p>
                 </div>
-              </motion.button>
 
-              {/* الديوانية Mode — Active */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={onStartDiwaniya}
-                className="w-full rounded-xl p-3 sm:p-4 border-2 border-blue-500/30 bg-gradient-to-l from-blue-950/50 to-indigo-950/30 hover:border-blue-400/50 transition-all text-right cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-900/50 border border-blue-500/30 flex items-center justify-center shrink-0">
-                    <Home className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
+                {/* العراب */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('classic')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(245,158,11,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(245,158,11,.15), rgba(217,119,6,.08))',
+                    marginBottom: '12px', padding: '14px', display: 'flex',
+                    alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
+                >
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(245,158,11,.2)', border: '1px solid rgba(245,158,11,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_godfather.svg" alt="عراب" style={{ width: '28px', height: '28px' }} />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-bold text-blue-200 mb-0.5">
-                      الديوانية
-                    </h3>
-                    <p className="text-[10px] sm:text-xs text-slate-400 leading-relaxed">
-                      أنشئ غرفة وشارك الكود، المتفرجون يشاهدون من أجهزتهم
-                    </p>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#fbbf24', marginBottom: '2px' }}>العراب</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>فريقين على جهاز واحد — العراب يتحكم باللعبة</p>
                   </div>
+                </motion.button>
+
+                {/* الديوانية */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('diwaniya')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(16,185,129,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(16,185,129,.15), rgba(5,150,105,.08))',
+                    padding: '14px', display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
+                >
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(16,185,129,.2)', border: '1px solid rgba(16,185,129,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_diwaniya.svg" alt="ديوانية" style={{ width: '28px', height: '28px' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#34d399', marginBottom: '2px' }}>الديوانية</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>أنشئ غرفة وشارك الكود، المشاهدون يشاهدون</p>
+                  </div>
+                </motion.button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="mode-confirm"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4, type: 'spring' }}
+            >
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <div style={{ fontSize: '36px', marginBottom: '8px' }}>
+                    {selectedMode === 'classic' ? '👑' : '🏛️'}
+                  </div>
+                  <h2 style={{
+                    fontSize: '18px', fontWeight: 'bold',
+                    color: selectedMode === 'classic' ? '#fbbf24' : '#34d399',
+                  }}>
+                    {selectedMode === 'classic' ? 'العراب' : 'الديوانية'}
+                  </h2>
                 </div>
-              </motion.button>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Rules Toggle */}
-        <div className="flex justify-center mb-3">
-          <Button
-            variant="ghost"
-            onClick={() => setShowRules(!showRules)}
-            className="text-amber-400 hover:text-amber-300 hover:bg-amber-400/10 gap-2 text-sm"
+                {selectedMode === 'classic' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👑</span><span>أنت العراب — تتحكم باللعبة بالكامل</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>⚰️</span><span>فريقان يفتحان 16 باباً مشئوماً</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🔑</span><span>9 أنواع من الأبواب — حبس/قتل/حرر/فخ</span>
+                    </div>
+                  </div>
+                )}
+
+                {selectedMode === 'diwaniya' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🏛️</span><span>أنشئ غرفة واحصل على كود</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👥</span><span>شارك الكود مع المشاهدين</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>⚡</span><span>بث مباشر بدون تدخل من المشاهدين</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* أزرار رجوع + متابعة */}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={() => setSelectedMode(null)}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,.15)',
+                      background: 'rgba(100,100,100,.3)', color: '#9fc4b4', fontSize: '14px', fontWeight: 'bold',
+                      cursor: 'pointer',
+                    }}
+                  >رجوع</button>
+                  <button
+                    onClick={handleConfirmMode}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: 'none',
+                      background: selectedMode === 'classic'
+                        ? 'linear-gradient(135deg, #f59e0b, #d97706)'
+                        : 'linear-gradient(135deg, #10b981, #059669)',
+                      color: '#fff', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
+                      boxShadow: selectedMode === 'classic'
+                        ? '0 4px 12px rgba(245,158,11,.3)'
+                        : '0 4px 12px rgba(16,185,129,.3)',
+                    }}
+                  >متابعة ←</button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* فاصل */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
+
+        {/* ===== كبسولة مشاهدة ===== */}
+        <div style={{
+          display: 'flex', alignItems: 'center',
+          background: 'rgba(6,42,32,.6)', backdropFilter: 'blur(4px)',
+          borderRadius: '12px', border: '1px solid rgba(255,255,255,.08)',
+          padding: '3px', marginBottom: '12px',
+        }}>
+          <input
+            type="text"
+            value={joinCode}
+            onChange={(e) => { setJoinCode(e.target.value.toUpperCase()); setJoinError(''); }}
+            placeholder="كود المشاهدة..."
+            maxLength={6}
+            dir="ltr"
+            style={{
+              flex: 1, background: 'transparent', border: 'none', outline: 'none',
+              color: '#fff', fontSize: '14px', padding: '10px 12px', textAlign: 'center',
+              fontFamily: 'monospace', letterSpacing: '2px',
+            }}
+          />
+          <input
+            type="text"
+            value={joinName}
+            onChange={(e) => { setJoinName(e.target.value); setJoinError(''); }}
+            placeholder="اسمك..."
+            maxLength={20}
+            dir="rtl"
+            style={{
+              width: '100px', background: 'transparent', border: 'none', outline: 'none',
+              borderRight: '1px solid rgba(255,255,255,.1)',
+              color: '#9fc4b4', fontSize: '13px', padding: '10px 8px', textAlign: 'center',
+            }}
+          />
+          <button
+            onClick={handleJoin}
+            disabled={!joinCode.trim() || !joinName.trim()}
+            style={{
+              padding: '10px 16px', borderRadius: '9px', border: 'none',
+              cursor: joinCode.trim() && joinName.trim() ? 'pointer' : 'not-allowed',
+              background: joinCode.trim() && joinName.trim()
+                ? 'linear-gradient(135deg, #4a8d7a, #3a7d6a)'
+                : 'rgba(100,100,100,.3)',
+              color: '#fff', fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap',
+              display: 'flex', alignItems: 'center', gap: '5px',
+            }}
           >
-            <Info className="w-4 h-4" />
-            {showRules ? 'إخفاء القوانين' : '📜 عرض القوانين'}
-          </Button>
+            <img src="/battle/iv_team_share.webp" alt="" style={{ width: '16px', height: '16px' }} />
+            مشاهدة
+          </button>
         </div>
 
-        {/* Rules */}
+        {joinError && (
+          <p style={{ color: '#ef4444', fontSize: '12px', textAlign: 'center', marginBottom: '8px' }}>⚠️ {joinError}</p>
+        )}
+
+        {/* القوانين */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+          <button
+            onClick={() => setShowRules(!showRules)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#fbbf24', fontSize: '13px', fontWeight: 'bold',
+            }}
+          >{showRules ? 'إخفاء القوانين' : '📜 عرض القوانين'}</button>
+        </div>
+
         <AnimatePresence>
           {showRules && (
             <motion.div
@@ -168,52 +390,43 @@ export default function LandingPage({ onStartSetup, onStartDiwaniya }: LandingPa
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="overflow-hidden mb-3"
+              style={{ overflow: 'hidden', marginBottom: '8px' }}
             >
-              <Card className="bg-slate-900/80 border-purple-700/30">
-                <CardContent className="pt-4 text-xs sm:text-sm text-slate-300 space-y-3">
-                  <div>
-                    <h4 className="font-bold text-purple-400 mb-1">⚡ طريقة اللعب:</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>👥 فريقان يتنافسان عبر 16 باب</li>
-                      <li>👑 القائد يختار من يفتح الباب كل جولة</li>
-                      <li>🚪 اللاعب يختار باباً وينتج عنه حدث</li>
-                      <li>🔄 الدور ينتقل للفريق الآخر</li>
-                    </ul>
+              <div style={{
+                background: 'rgba(6,42,32,.8)', borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,.08)', padding: '16px',
+              }}>
+                <div style={{ fontSize: '13px', color: '#cbd5e1' }}>
+                  <h4 style={{ fontWeight: 'bold', color: '#a855f7', marginBottom: '4px' }}>⚡ طريقة اللعب:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>👥 فريقان يتنافسان عبر 16 باب</li>
+                    <li>👑 القائد يختار من يفتح الباب كل جولة</li>
+                    <li>🚪 اللاعب يختار باباً وينتج عنه حدث</li>
+                    <li>🔄 الدور ينتقل للفريق الآخر</li>
+                  </ul>
+                  <h4 style={{ fontWeight: 'bold', color: '#fb923c', marginBottom: '4px' }}>🚪 الأبواب (16):</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>🪦 تابوت فارغ ×4 — لا شيء يحدث</li>
+                    <li>✨ ممر آمن ×2 — أمان تام</li>
+                    <li>⛓️ احبس عدوك ×2 — اختر خصماً ليُسجن</li>
+                    <li>🗡️ خيانة داخلية ×1 — الفريق يصوّت لحبس عضو</li>
+                    <li>🔑 مفتاح الحرية ×2 — حرر زميلاً محبوساً</li>
+                    <li>🔒 فخ التابوت ×2 — أنت تُحبس</li>
+                    <li>💀 موت محقق ×1 — أنت تُقتل</li>
+                    <li>☠️ إعدام ×1 — اختر خصماً لقتله</li>
+                    <li>🎭 انتحار ×1 — أنت تقتل نفسك</li>
+                  </ul>
+                  <h4 style={{ fontWeight: 'bold', color: '#f87171', marginBottom: '4px' }}>💀 الفوز:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>🏆 الفريق الفائز من يُخرج جميع أعضاء الخصم</li>
+                    <li>⚠️ المقتول لا يمكن إعادته أبداً</li>
+                    <li>🔓 المحبوس يمكن تحريره بمفتاح الحرية</li>
+                  </ul>
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '8px' }}>
+                    <p style={{ color: '#fbbf24', fontSize: '12px' }}>🏷️ الأدوار: 👑 قائد، ⭐ نائب، 🛡️ عضو، 👁️ ضيف</p>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-amber-400 mb-1">🚪 الأبواب (16 باب):</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>🪦 <strong className="text-slate-200">تابوت فارغ ×4:</strong> لا شيء يحدث</li>
-                      <li>✨ <strong className="text-slate-200">ممر آمن ×2:</strong> أمان تام</li>
-                      <li>⛓️ <strong className="text-slate-200">احبس عدوك ×2:</strong> اختر خصماً ليُسجن</li>
-                      <li>🗡️ <strong className="text-slate-200">خيانة داخلية ×1:</strong> الفريق يصوّت لحبس عضو</li>
-                      <li>🔑 <strong className="text-slate-200">مفتاح الحرية ×2:</strong> حرر زميلاً محبوساً</li>
-                      <li>🔒 <strong className="text-slate-200">فخ التابوت ×2:</strong> أنت تُحبس</li>
-                      <li>💀 <strong className="text-slate-200">موت محقق ×1:</strong> أنت تُقتل</li>
-                      <li>☠️ <strong className="text-slate-200">إعدام ×1:</strong> اختر خصماً لقتله</li>
-                      <li>🎭 <strong className="text-slate-200">انتحار ×1:</strong> أنت تقتل نفسك</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-red-400 mb-1">💀 الفوز:</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>🏆 الفريق الفائز هو من يُخرج جميع أعضاء الفريق الخصم (حبس أو قتل)</li>
-                      <li>⚠️ المقتول لا يمكن إعادته أبداً</li>
-                      <li>🔓 المحبوس يمكن تحريره بمفتاح الحرية</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-blue-400 mb-1">🏷️ الأدوار:</h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>👑 <strong className="text-slate-200">القائد:</strong> يختار من يفتح الباب</li>
-                      <li>⭐ <strong className="text-slate-200">النائب:</strong> يحل محل القائد</li>
-                      <li>🛡️ <strong className="text-slate-200">العضو:</strong> يشارك في اللعب</li>
-                      <li>👁️ <strong className="text-slate-200">الضيف:</strong> متفرج فقط</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

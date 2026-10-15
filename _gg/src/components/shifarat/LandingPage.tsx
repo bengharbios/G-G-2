@@ -1,433 +1,415 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Globe, Play, HelpCircle, ChevronLeft, ChevronRight, Eye, MessageCircle, CheckCircle, XCircle, Skull } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import HowToPlay from './HowToPlay';
-import GameWalkthrough from './GameWalkthrough';
+import { useRouter } from 'next/navigation';
 
 interface LandingPageProps {
   onSelectMode: (mode: 'godfather' | 'diwaniya') => void;
   onQuickStart?: () => void;
 }
 
-// ============================================================
-// MINI BOARD PREVIEW — shows a small 5x5 grid with colored cards
-// ============================================================
-
-const MINI_BOARD_COLORS: ('red' | 'blue' | 'neutral' | 'assassin')[] = [
-  'red', 'neutral', 'blue', 'red', 'neutral',
-  'blue', 'red', 'neutral', 'assassin', 'blue',
-  'neutral', 'blue', 'red', 'neutral', 'red',
-  'red', 'neutral', 'blue', 'neutral', 'blue',
-  'neutral', 'red', 'neutral', 'blue', 'red',
-];
-
-const MINI_WORDS = [
-  'شمس', 'قمر', 'بحر', 'جبل', 'نهر',
-  'سماء', 'تراب', 'هواء', 'ماء', 'رمل',
-  'ورد', 'شجر', 'ثلج', 'غيوم', 'ريح',
-  'صحراء', 'واحة', 'كهف', 'جسر', 'طريق',
-  'حديقة', 'برج', 'سيف', 'درع', 'تاج',
-];
-
-function MiniBoardPreview({ showColors }: { showColors: boolean }) {
-  return (
-    <div className="grid grid-cols-5 gap-[3px] sm:gap-1">
-      {MINI_BOARD_COLORS.map((color, i) => {
-        const bgColor = showColors
-          ? color === 'red'
-            ? 'bg-red-500/70'
-            : color === 'blue'
-              ? 'bg-blue-500/70'
-              : color === 'assassin'
-                ? 'bg-gray-800'
-                : 'bg-slate-600/50'
-          : 'bg-slate-700/80';
-
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.025, duration: 0.3 }}
-            className={`aspect-square rounded-[3px] sm:rounded-md border border-white/10 flex items-center justify-center ${bgColor} transition-all duration-500`}
-          >
-            <span className="text-[5px] sm:text-[7px] md:text-[8px] font-bold text-white/90 text-center leading-tight px-[1px]">
-              {showColors ? MINI_WORDS[i] : '؟'}
-            </span>
-            {showColors && color === 'assassin' && (
-              <span className="absolute text-[5px] sm:text-[7px]">💀</span>
-            )}
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ============================================================
-// STEP INDICATOR — simple numbered game flow
-// ============================================================
-
-function GameStepsPreview() {
-  const steps = [
-    { num: 1, text: 'الجاسوس يرى الألوان', emoji: '👁️' },
-    { num: 2, text: 'يعطي دليل: كلمة + رقم', emoji: '💬' },
-    { num: 3, text: 'الفريق يخمن الكلمات', emoji: '🎯' },
-    { num: 4, text: 'اكشف كل كلماتك أولاً!', emoji: '🏆' },
-  ];
-
-  return (
-    <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-1 scrollbar-none">
-      {steps.map((step, i) => (
-        <div key={i} className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-          <div className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 sm:py-2 rounded-lg bg-slate-800/40 border border-slate-700/30">
-            <span className="text-xs sm:text-sm">{step.emoji}</span>
-            <div>
-              <span className="text-[8px] sm:text-[9px] text-emerald-400 font-bold">{step.num}</span>
-              <p className="text-[7px] sm:text-[8px] text-slate-400 leading-tight">{step.text}</p>
-            </div>
-          </div>
-          {i < steps.length - 1 && (
-            <ChevronLeft className="w-3 h-3 text-slate-600 flex-shrink-0" />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ============================================================
-// MAIN LANDING PAGE
-// ============================================================
+const FLOATING_EMOJIS = ['🎯', '🔑', '🗝️', '💡', '🔍', '📜', '🎯', '🔑', '💡', '🔍'];
 
 export default function LandingPage({ onSelectMode, onQuickStart }: LandingPageProps) {
-  const [showHowToPlay, setShowHowToPlay] = useState(false);
-  const [showWalkthrough, setShowWalkthrough] = useState(false);
-  const [boardRevealed, setBoardRevealed] = useState(false);
+  const router = useRouter();
+  const [selectedMode, setSelectedMode] = useState<'classic' | 'diwaniya' | null>(null);
+  const [joinCode, setJoinCode] = useState('');
+  const [joinName, setJoinName] = useState('');
+  const [joinError, setJoinError] = useState('');
+  const [showRules, setShowRules] = useState(false);
 
-  // Check if walkthrough was already seen
-  useEffect(() => {
-    const seen = localStorage.getItem('shifarat-walkthrough-seen');
-    if (!seen) {
-      // Show walkthrough on first visit after a short delay
-      const timer = setTimeout(() => setShowWalkthrough(true), 800);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  const handleJoin = () => {
+    if (!joinCode.trim()) { setJoinError('يجب إدخال كود المشاهدة'); return; }
+    if (!joinName.trim()) { setJoinError('يجب إدخال اسمك'); return; }
+    setJoinError('');
+    window.location.href = `/join/shifarat/${joinCode.trim().toUpperCase()}?name=${encodeURIComponent(joinName.trim())}`;
+  };
 
-  // Toggle board colors animation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBoardRevealed((prev) => !prev);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  const handleConfirmMode = () => {
+    if (selectedMode === 'classic') onSelectMode('godfather');
+    else if (selectedMode === 'diwaniya') onSelectMode('diwaniya');
+  };
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6"
       dir="rtl"
       style={{
-        background: 'linear-gradient(135deg, #020617 0%, #0f172a 50%, #020617 100%)',
+        minHeight: 'calc(100vh - 130px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '16px 16px 120px',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* Decorative dots */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <div
+      {/* floating emojis */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        {FLOATING_EMOJIS.map((emoji, i) => (
+          <motion.div
             key={i}
-            className="absolute rounded-full"
             style={{
-              width: Math.random() * 3 + 1 + 'px',
-              height: Math.random() * 3 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              backgroundColor: `rgba(16, 185, 129, ${Math.random() * 0.3 + 0.1})`,
-              animation: `pulse ${Math.random() * 3 + 2}s ease-in-out infinite`,
-              animationDelay: Math.random() * 2 + 's',
+              position: 'absolute',
+              left: `${10 + (i * 9) % 80}%`,
+              top: `${5 + (i * 13) % 70}%`,
+              fontSize: '24px',
+              opacity: 0.15,
             }}
-          />
+            animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0], opacity: [0.08, 0.2, 0.08] }}
+            transition={{ duration: 3 + (i % 3), repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}
+          >
+            {emoji}
+          </motion.div>
         ))}
+      </div>
+
+      {/* top mini toolbar */}
+      <div style={{
+        position: 'absolute', top: '8px', left: '12px', right: '12px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 50,
+      }}>
+        <button
+          onClick={() => router.push('/shifarat')}
+          style={{
+            background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+            borderRadius: '10px', padding: '6px 10px', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '4px',
+          }}
+        >
+          <img src="/battle/room_refresh.webp" alt="استئناف" style={{ width: '20px', height: '20px' }} />
+          <span style={{ color: '#9fc4b4', fontSize: '11px', fontWeight: 'bold' }}>استئناف</span>
+        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src="/battle/setting.webp" alt="إعدادات" style={{ width: '20px', height: '20px' }} />
+          </button>
+          <button
+            onClick={() => router.push('/')}
+            style={{
+              background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
+              borderRadius: '10px', padding: '6px', cursor: 'pointer',
+            }}
+          >
+            <img src="/battle/close.webp" alt="خروج" style={{ width: '20px', height: '20px' }} />
+          </button>
+        </div>
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-md mx-auto"
+        style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '380px', margin: '0 auto', marginTop: '40px' }}
       >
-        {/* Header */}
-        <div className="text-center mb-5 sm:mb-7">
+        {/* title + logo */}
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <motion.div
-            initial={{ scale: 0.3 }}
+            initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="text-5xl sm:text-6xl mb-2"
+            transition={{ duration: 0.6, delay: 0.2, type: 'spring' }}
           >
-            🎯
+            <img
+              src="/yalla-games/shifarat.png"
+              alt="الشيفرات"
+              style={{
+                width: '120px', height: '96px', objectFit: 'contain', margin: '0 auto 8px',
+                filter: 'drop-shadow(0 6px 12px rgba(0,0,0,.5))',
+              }}
+            />
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-2xl sm:text-3xl font-black mb-1.5"
-            style={{
-              background: 'linear-gradient(to left, #34d399, #10b981, #6ee7b7)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            لعبة الشيفرات
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-slate-400 text-xs sm:text-sm"
-          >
-            لمّح بكلمة واحدة فقط! 🧠
-          </motion.p>
+          <h1 style={{
+            fontSize: '28px', fontWeight: 900, color: '#feef91',
+            textShadow: '0 2px 4px rgba(0,0,0,.8)',
+            paintOrder: 'stroke fill',
+            WebkitTextStroke: '1px #aa6e1f',
+            marginBottom: '4px',
+          }}>
+            الشيفرات
+          </h1>
+          <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 'bold' }}>
+            Shifarat — Codenames 🎯
+          </p>
         </div>
 
-        {/* ─── HOW TO PLAY BUTTON (prominent) ─── */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.4 }}
-          className="mb-4"
-        >
-          <Button
-            onClick={() => setShowHowToPlay(true)}
-            variant="outline"
-            className="w-full py-3 sm:py-3.5 border-emerald-500/40 text-emerald-300 hover:bg-emerald-950/30 hover:text-emerald-200 hover:border-emerald-500/60 gap-2 text-sm font-bold transition-all"
-            style={{ borderRadius: '0.75rem' }}
-          >
-            <HelpCircle className="w-5 h-5" />
-            كيف تلعب؟ — شرح القواعد بالتفصيل
-          </Button>
-        </motion.div>
+        {/* divider */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
 
-        {/* ─── QUICK START BUTTON ─── */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.4 }}
-          className="mb-5 sm:mb-7"
-        >
-          <Button
-            onClick={() => onQuickStart ? onQuickStart() : onSelectMode('godfather')}
-            className="w-full py-4 text-white font-bold text-base sm:text-lg gap-2 transition-all duration-300"
-            style={{
-              background: 'linear-gradient(to left, #059669, #10b981)',
-              borderRadius: '0.75rem',
-              boxShadow: '0 0 30px rgba(16, 185, 129, 0.3)',
-            }}
-          >
-            <Play className="w-5 h-5" />
-            ابدأ سريعًا ⚡
-          </Button>
-        </motion.div>
+        {/* ===== bg_mode_select panel ===== */}
+        <AnimatePresence mode="wait">
+          {!selectedMode ? (
+            <motion.div
+              key="mode-select"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <h2 style={{
+                    fontSize: '16px', fontWeight: 'bold', color: '#8dd4ff',
+                    marginBottom: '2px',
+                  }}>إنشاء معركة جديدة</h2>
+                  <p style={{ fontSize: '11px', color: '#9fc4b4' }}>اختر طريقة اللعب</p>
+                </div>
 
-        {/* ─── GAME EXPLANATION SECTION ─── */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.5 }}
-          className="mb-5 sm:mb-7 p-3 sm:p-4 rounded-2xl border border-slate-700/40"
-          style={{
-            background: 'rgba(15, 23, 42, 0.6)',
-          }}
-        >
-          {/* Game steps flow */}
-          <div className="mb-3">
-            <p className="text-[10px] sm:text-xs font-bold text-slate-400 mb-2 text-center">
-              🎮 سير اللعبة
-            </p>
-            <GameStepsPreview />
-          </div>
-
-          {/* Mini board preview */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-full max-w-[180px] sm:max-w-[220px]">
-              <MiniBoardPreview showColors={boardRevealed} />
-            </div>
-            <div className="text-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={boardRevealed ? 'spymaster' : 'team'}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  transition={{ duration: 0.3 }}
+                {/* العراب */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('classic')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(245,158,11,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(245,158,11,.15), rgba(217,119,6,.08))',
+                    marginBottom: '12px', padding: '14px', display: 'flex',
+                    alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
                 >
-                  <Badge className={`text-[9px] sm:text-[10px] px-2 py-0.5 mb-1 ${
-                    boardRevealed
-                      ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                      : 'bg-slate-700/50 text-slate-400 border-slate-600/30'
-                  }`}>
-                    {boardRevealed ? '👁️ رؤية الجاسوس' : '🔀 وجهة الفريق'}
-                  </Badge>
-                  <p className="text-[8px] sm:text-[9px] text-slate-500 leading-relaxed">
-                    {boardRevealed
-                      ? 'الجاسوس يرى الألوان المخفية'
-                      : 'الفريق يرى الكلمات فقط'}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(245,158,11,.2)', border: '1px solid rgba(245,158,11,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_godfather.svg" alt="عراب" style={{ width: '28px', height: '28px' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#fbbf24', marginBottom: '2px' }}>العراب</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>فريقين على جهاز واحد — العراب يتحكم باللعبة</p>
+                  </div>
+                </motion.button>
 
-              {/* Legend */}
-              <div className="mt-2 space-y-0.5">
-                <div className="flex items-center gap-1.5 justify-center">
-                  <div className="w-2.5 h-2.5 rounded-sm bg-red-500/70" />
-                  <span className="text-[7px] sm:text-[8px] text-red-300">أحمر (9)</span>
+                {/* الديوانية */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setSelectedMode('diwaniya')}
+                  style={{
+                    width: '100%', borderRadius: '16px', overflow: 'hidden',
+                    border: '2px solid rgba(16,185,129,.3)', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, rgba(16,185,129,.15), rgba(5,150,105,.08))',
+                    padding: '14px', display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'right',
+                    transition: 'border-color .15s',
+                  }}
+                >
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '50%',
+                    background: 'rgba(16,185,129,.2)', border: '1px solid rgba(16,185,129,.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <img src="/battle/icon_diwaniya.svg" alt="ديوانية" style={{ width: '28px', height: '28px' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#34d399', marginBottom: '2px' }}>الديوانية</h3>
+                    <p style={{ fontSize: '11px', color: '#9fc4b4' }}>أنشئ غرفة وشارك الكود، المشاهدون يشاهدون</p>
+                  </div>
+                </motion.button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="mode-confirm"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4, type: 'spring' }}
+            >
+              <div style={{
+                background: 'url(/battle/bg_mode_select.png) center / 100% 100% no-repeat',
+                borderRadius: '12px', padding: '20px 16px', marginBottom: '16px',
+              }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <div style={{ fontSize: '36px', marginBottom: '8px' }}>
+                    {selectedMode === 'classic' ? '👑' : '🏛️'}
+                  </div>
+                  <h2 style={{
+                    fontSize: '18px', fontWeight: 'bold',
+                    color: selectedMode === 'classic' ? '#fbbf24' : '#34d399',
+                  }}>
+                    {selectedMode === 'classic' ? 'العراب' : 'الديوانية'}
+                  </h2>
                 </div>
-                <div className="flex items-center gap-1.5 justify-center">
-                  <div className="w-2.5 h-2.5 rounded-sm bg-blue-500/70" />
-                  <span className="text-[7px] sm:text-[8px] text-blue-300">أزرق (8)</span>
-                </div>
-                <div className="flex items-center gap-1.5 justify-center">
-                  <div className="w-2.5 h-2.5 rounded-sm bg-slate-600/50" />
-                  <span className="text-[7px] sm:text-[8px] text-slate-400">محايدة (7)</span>
-                </div>
-                <div className="flex items-center gap-1.5 justify-center">
-                  <div className="w-2.5 h-2.5 rounded-sm bg-gray-800" />
-                  <span className="text-[7px] sm:text-[8px] text-gray-400">💀 القاتل</span>
+
+                {selectedMode === 'classic' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👑</span><span>أنت العراب — تتحكم باللعبة بالكامل</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🎯</span><span>فريقان أحمر/أزرق على لوحة 5×5</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👁️</span><span>الجاسوس يرى الألوان ويعطي دليلاً</span>
+                    </div>
+                  </div>
+                )}
+
+                {selectedMode === 'diwaniya' && (
+                  <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>🏛️</span><span>أنشئ غرفة واحصل على كود</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>👥</span><span>شارك الكود مع المشاهدين</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#cbd5e1' }}>
+                      <span>⚡</span><span>بث مباشر بدون تدخل من المشاهدين</span>
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={() => setSelectedMode(null)}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,.15)',
+                      background: 'rgba(100,100,100,.3)', color: '#9fc4b4', fontSize: '14px', fontWeight: 'bold',
+                      cursor: 'pointer',
+                    }}
+                  >رجوع</button>
+                  <button
+                    onClick={handleConfirmMode}
+                    style={{
+                      flex: 1, padding: '12px', borderRadius: '10px', border: 'none',
+                      background: selectedMode === 'classic'
+                        ? 'linear-gradient(135deg, #f59e0b, #d97706)'
+                        : 'linear-gradient(135deg, #10b981, #059669)',
+                      color: '#fff', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
+                      boxShadow: selectedMode === 'classic'
+                        ? '0 4px 12px rgba(245,158,11,.3)'
+                        : '0 4px 12px rgba(16,185,129,.3)',
+                    }}
+                  >متابعة ←</button>
                 </div>
               </div>
-            </div>
-          </div>
-        </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* ─── MODE SELECTION CARDS ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-          {/* Godfather Mode */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            whileHover={{ scale: 1.02, y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onSelectMode('godfather')}
-            className="cursor-pointer rounded-2xl p-4 sm:p-5 border-2 border-emerald-500/20 transition-all duration-300"
+        {/* divider */}
+        <div style={{
+          width: '100%', height: '1px',
+          background: 'url(/battle/divider_in_black_mode.webp) center / 100% 100% no-repeat',
+          marginBottom: '16px',
+        }} />
+
+        {/* watch capsule */}
+        <div style={{
+          display: 'flex', alignItems: 'center',
+          background: 'rgba(6,42,32,.6)', backdropFilter: 'blur(4px)',
+          borderRadius: '12px', border: '1px solid rgba(255,255,255,.08)',
+          padding: '3px', marginBottom: '12px',
+        }}>
+          <input
+            type="text"
+            value={joinCode}
+            onChange={(e) => { setJoinCode(e.target.value.toUpperCase()); setJoinError(''); }}
+            placeholder="كود المشاهدة..."
+            maxLength={6}
+            dir="ltr"
             style={{
-              background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.3) 0%, rgba(15, 23, 42, 0.8) 100%)',
+              flex: 1, background: 'transparent', border: 'none', outline: 'none',
+              color: '#fff', fontSize: '14px', padding: '10px 12px', textAlign: 'center',
+              fontFamily: 'monospace', letterSpacing: '2px',
+            }}
+          />
+          <input
+            type="text"
+            value={joinName}
+            onChange={(e) => { setJoinName(e.target.value); setJoinError(''); }}
+            placeholder="اسمك..."
+            maxLength={20}
+            dir="rtl"
+            style={{
+              width: '100px', background: 'transparent', border: 'none', outline: 'none',
+              borderRight: '1px solid rgba(255,255,255,.1)',
+              color: '#9fc4b4', fontSize: '13px', padding: '10px 8px', textAlign: 'center',
+            }}
+          />
+          <button
+            onClick={handleJoin}
+            disabled={!joinCode.trim() || !joinName.trim()}
+            style={{
+              padding: '10px 16px', borderRadius: '9px', border: 'none',
+              cursor: joinCode.trim() && joinName.trim() ? 'pointer' : 'not-allowed',
+              background: joinCode.trim() && joinName.trim()
+                ? 'linear-gradient(135deg, #4a8d7a, #3a7d6a)'
+                : 'rgba(100,100,100,.3)',
+              color: '#fff', fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap',
+              display: 'flex', alignItems: 'center', gap: '5px',
             }}
           >
-            <div
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-3 mx-auto"
-              style={{
-                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05))',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
-              }}
-            >
-              <span className="text-2xl sm:text-3xl">🎯</span>
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-emerald-300 text-center mb-1.5">
-              العب مع أصحابك
-            </h3>
-            <p className="text-[10px] sm:text-xs text-slate-400 text-center leading-relaxed mb-3">
-              العب على جهاز واحد — مرر الجهاز بين الفرق
-            </p>
-            {/* Numbered steps */}
-            <div className="space-y-1.5 text-right">
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">1</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">سجّل أسماء الفريقين والجاسوسين</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">2</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">الجاسوس يرى اللوحة ويعطي الدليل</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">3</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">مرر الجهاز للفريق ليخمن</span>
-              </div>
-            </div>
-            <div className="mt-3 text-center">
-              <span className="text-[9px] text-emerald-500/60 font-bold px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5">
-                وضع العراب
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Diwaniya Mode */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-            whileHover={{ scale: 1.02, y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onSelectMode('diwaniya')}
-            className="cursor-pointer rounded-2xl p-4 sm:p-5 border-2 border-emerald-500/20 transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%)',
-            }}
-          >
-            <div
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-3 mx-auto"
-              style={{
-                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05))',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
-              }}
-            >
-              <span className="text-2xl sm:text-3xl">🌐</span>
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-emerald-300 text-center mb-1.5">
-              الاعب أونلاين
-            </h3>
-            <p className="text-[10px] sm:text-xs text-slate-400 text-center leading-relaxed mb-3">
-              أنشئ غرفة وادعُ أصدقائك للعب من أجهزتهم
-            </p>
-            {/* Numbered steps */}
-            <div className="space-y-1.5 text-right">
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">1</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">أنشئ غرفة وشارك الكود</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">2</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">انضم الأصدقاء واختر الفرق</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold flex items-center justify-center mt-0.5">3</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400">كل واحد يلعب من جهازه!</span>
-              </div>
-            </div>
-            <div className="mt-3 text-center">
-              <span className="text-[9px] text-emerald-500/60 font-bold px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5">
-                وضع الديوانية
-              </span>
-            </div>
-          </motion.div>
+            <img src="/battle/iv_team_share.webp" alt="" style={{ width: '16px', height: '16px' }} />
+            مشاهدة
+          </button>
         </div>
 
-        {/* Footer hint */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="text-center text-[10px] text-slate-600 mt-6 sm:mt-8"
-        >
-          اختر طريقة اللعب للبدء
-        </motion.p>
+        {joinError && (
+          <p style={{ color: '#ef4444', fontSize: '12px', textAlign: 'center', marginBottom: '8px' }}>⚠️ {joinError}</p>
+        )}
+
+        {/* rules */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+          <button
+            onClick={() => setShowRules(!showRules)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#fbbf24', fontSize: '13px', fontWeight: 'bold',
+            }}
+          >{showRules ? 'إخفاء القوانين' : '📜 عرض القوانين'}</button>
+        </div>
+
+        <AnimatePresence>
+          {showRules && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              style={{ overflow: 'hidden', marginBottom: '8px' }}
+            >
+              <div style={{
+                background: 'rgba(6,42,32,.8)', borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,.08)', padding: '16px',
+              }}>
+                <div style={{ fontSize: '13px', color: '#cbd5e1' }}>
+                  <h4 style={{ fontWeight: 'bold', color: '#f87171', marginBottom: '4px' }}>🎯 الهدف:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>• فريق أحمر (9 كلمات) وفريق أزرق (8 كلمات)</li>
+                    <li>• الجاسوس يرى الألوان ويعطي دليلاً (كلمة + رقم)</li>
+                    <li>• الفريق يخمن الكلمات المرتبطة بالدليل</li>
+                  </ul>
+                  <h4 style={{ fontWeight: 'bold', color: '#fb923c', marginBottom: '4px' }}>💀 القاتل:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, marginBottom: '12px', color: '#9fc4b4', fontSize: '12px' }}>
+                    <li>• بطاقة قاتل سوداء واحدة على اللوحة</li>
+                    <li>• من يكشفها يخسر فوراً!</li>
+                  </ul>
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '8px' }}>
+                    <p style={{ color: '#fbbf24', fontSize: '12px' }}>🏆 الفريق الذي يكشف كل كلماته أولاً يفوز</p>
+                    <p style={{ color: '#64748b', fontSize: '11px' }}>5×5 لوحة — 25 كلمة — 7 محايدة</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
-
-      {/* How to Play Modal */}
-      <HowToPlay open={showHowToPlay} onOpenChange={setShowHowToPlay} />
-
-      {/* First-time Walkthrough */}
-      <GameWalkthrough
-        open={showWalkthrough}
-        onClose={() => {
-          setShowWalkthrough(false);
-          localStorage.setItem('shifarat-walkthrough-seen', 'true');
-        }}
-      />
     </div>
   );
 }

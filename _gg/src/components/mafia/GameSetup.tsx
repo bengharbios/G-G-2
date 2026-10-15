@@ -1,24 +1,27 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useGameStore } from '@/lib/game-store';
 import {
   MIN_PLAYERS,
   MAX_PLAYERS,
   getTeamComposition,
 } from '@/lib/game-types';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Play, Info, Plus, Minus, Shield, Skull, ArrowLeft } from 'lucide-react';
+import {
+  STROKE_STYLE,
+  useInGameSetupMode,
+  useYallaSoundState,
+} from '@/lib/yalla-game-helpers';
 
 interface GameSetupProps {
   onStartGame: () => void;
 }
 
 export default function GameSetup({ onStartGame }: GameSetupProps) {
+  const router = useRouter();
   const startGame = useGameStore((s) => s.startGame);
   const [playerCount, setPlayerCount] = useState(MIN_PLAYERS);
   const [playerNames, setPlayerNames] = useState<string[]>(
@@ -27,6 +30,10 @@ export default function GameSetup({ onStartGame }: GameSetupProps) {
   const [showRules, setShowRules] = useState(false);
   const [error, setError] = useState('');
   const [customMafiaCount, setCustomMafiaCount] = useState<number | undefined>(undefined);
+  const [showExitDialog, setShowExitDialog] = useState(false);
+
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
 
   const composition = useMemo(
     () => getTeamComposition(playerCount, customMafiaCount),
@@ -76,368 +83,498 @@ export default function GameSetup({ onStartGame }: GameSetupProps) {
     onStartGame();
   };
 
+  const handleExit = () => {
+    useGameStore.getState().resetGame();
+    router.push('/');
+  };
+
+  const isValid = playerNames.every((n) => n.trim().length > 0);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4 mafia-bg-night">
-      {/* Stars background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white star-twinkle"
-            style={{
-              width: Math.random() * 3 + 1 + 'px',
-              height: Math.random() * 3 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDelay: Math.random() * 3 + 's',
-              animationDuration: Math.random() * 3 + 2 + 's',
-            }}
+    <div
+      dir="rtl"
+      className="tobol-setup-root"
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 14px 16px',
+        gap: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ═══ header actions ═══ */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
           />
-        ))}
+        </button>
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowExitDialog(true)}
+          aria-label="خروج"
+          title="خروج"
+        >
+          <img src="/battle/btn_exit.webp" alt="exit" />
+        </button>
       </div>
 
+      {/* ═══ logo + title ═══ */}
       <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-sm sm:max-w-lg mx-auto"
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
       >
-        {/* Back button */}
-        <Button
-          onClick={() => useGameStore.getState().resetGame()}
-          variant="ghost"
-          className="text-slate-500 hover:text-slate-300 mb-3 gap-1 text-xs"
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src="/yalla-games/mafia.png"
+            alt="المافيا"
+            style={{
+              width: '76px',
+              height: '64px',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-12px',
+              background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+              filter: 'blur(6px)',
+              zIndex: -1,
+              borderRadius: '50%',
+            }}
+          />
+        </div>
+        <h1
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '22px',
+            fontWeight: 900,
+            textShadow: '0 2px 4px rgba(0,0,0,.85)',
+            margin: '2px 0 0',
+            lineHeight: 1,
+          }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          رجوع
-        </Button>
-
-        {/* Game Title */}
-        <div className="text-center mb-4 sm:mb-6">
-          <motion.div
-            initial={{ scale: 0.5 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, type: 'spring' }}
-            className="text-6xl sm:text-7xl mb-3 sm:mb-4"
-          >
-            🕴️
-          </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-yellow-300 to-red-400 mb-2">
-            لعبة المافيا
-          </h1>
-          <p className="text-slate-400 text-xs sm:text-sm font-bold">
-            {playerCount} لاعب • {composition.mafiaCount} مافيا •{' '}
-            {composition.citizenCount} مواطن صالح 🔥
-          </p>
-        </div>
-
-        {/* Player Count Selector */}
-        <Card className="bg-slate-900/80 border-slate-700/50 mb-3 sm:mb-4">
-          <CardContent className="pt-4">
-            <div className="flex items-center justify-center gap-4 sm:gap-6">
-              <div
-                onClick={() => handleCountChange(playerCount - 1)}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-900/50 border border-red-500/50 flex items-center justify-center cursor-pointer hover:bg-red-800/50 transition-colors"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ')
-                    handleCountChange(playerCount - 1);
-                }}
-              >
-                <Minus className="w-4 h-4 sm:w-5 sm:h-5 text-red-300" />
-              </div>
-
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-black text-slate-100">
-                  {playerCount}
-                </div>
-                <div className="text-[10px] sm:text-xs text-slate-500">
-                  عدد اللاعبين
-                </div>
-              </div>
-
-              <div
-                onClick={() => handleCountChange(playerCount + 1)}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-900/50 border border-green-500/50 flex items-center justify-center cursor-pointer hover:bg-green-800/50 transition-colors"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ')
-                    handleCountChange(playerCount + 1);
-                }}
-              >
-                <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-green-300" />
-              </div>
-            </div>
-
-            {/* Team Composition Display */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={playerCount}
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 5 }}
-                transition={{ duration: 0.3 }}
-                className="mt-3 sm:mt-4 grid grid-cols-2 gap-2 sm:gap-3"
-              >
-                {/* Mafia Team */}
-                <div className="bg-red-950/30 border border-red-500/30 rounded-xl p-2.5 sm:p-3">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Skull className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" />
-                    <span className="text-red-300 font-bold text-xs sm:text-sm">
-                      فريق المافيا ({composition.mafiaCount})
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    {composition.mafiaRoles.map((role, i) => (
-                      <div
-                        key={`${role.type}-${i}`}
-                        className="text-[10px] sm:text-xs text-slate-400"
-                      >
-                        {role.name}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Citizen Team */}
-                <div className="bg-blue-950/30 border border-blue-500/30 rounded-xl p-2.5 sm:p-3">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
-                    <span className="text-blue-300 font-bold text-xs sm:text-sm">
-                      فريق الصالحين ({composition.citizenCount})
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    {composition.citizenSpecialRoles.map((role) => (
-                      <div
-                        key={role.type}
-                        className="text-[10px] sm:text-xs text-slate-400"
-                      >
-                        {role.name}
-                      </div>
-                    ))}
-                    {composition.plainCitizens > 0 && (
-                      <div className="text-[10px] sm:text-xs text-slate-400">
-                        👤 مواطن عادي ×{composition.plainCitizens}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Win conditions */}
-            <div className="mt-3 sm:mt-4 flex items-center justify-between gap-2 text-[10px] sm:text-xs px-2">
-              <p className="text-yellow-400/80 text-center">
-                🏆 الصالحون يفوزون بإقصاء كل المافيا
-              </p>
-              <p className="text-red-400/80 text-center">
-                💀 المافيا تفوز بتفوق عددي على المواطنين
-              </p>
-            </div>
-
-            {/* Custom mafia count selector */}
-            <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2">
-              <span className="text-[10px] sm:text-xs text-slate-400">عدد المافيا:</span>
-              {([undefined, 2, 3, 4] as const).map((count) => (
-                <motion.button
-                  key={count ?? 'auto'}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() => {
-                    setCustomMafiaCount(count);
-                    setError('');
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all ${
-                    (customMafiaCount === count)
-                      ? 'bg-red-900/60 text-red-200 border-2 border-red-500/50'
-                      : 'bg-slate-800/60 text-slate-400 border-2 border-slate-700/50 hover:bg-slate-700/60 hover:text-slate-300'
-                  }`}
-                >
-                  {count === undefined ? 'تلقائي' : `${count} مافيا`}
-                </motion.button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Rules Toggle */}
-        <div className="flex justify-center mb-3 sm:mb-4">
-          <Button
-            variant="ghost"
-            onClick={() => setShowRules(!showRules)}
-            className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10 gap-2 text-sm"
-          >
-            <Info className="w-4 h-4" />
-            {showRules ? 'إخفاء القوانين' : 'عرض القوانين'}
-          </Button>
-        </div>
-
-        {/* Rules */}
-        <AnimatePresence>
-          {showRules && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden mb-3 sm:mb-4"
-            >
-              <Card className="bg-slate-900/80 border-slate-700/50 mb-3">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-yellow-400 text-base sm:text-lg">
-                    📜 القوانين
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-xs sm:text-sm text-slate-300 space-y-3">
-                  <div>
-                    <h4 className="font-bold text-red-400 mb-1">
-                      الجانية (فريق المافيا):
-                    </h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>
-                        🕴️{' '}
-                        <strong className="text-slate-200">
-                          شيخ المافيا:
-                        </strong>{' '}
-                        يختار ضحية كل ليلة
-                      </li>
-                      <li>
-                        🤫{' '}
-                        <strong className="text-slate-200">
-                          مافيا التسكيت:
-                        </strong>{' '}
-                        يسكت شخصاً كل ليلة
-                      </li>
-                      <li>
-                        🔪{' '}
-                        <strong className="text-slate-200">
-                          مافيا عادي:
-                        </strong>{' '}
-                        يشارك القرارات
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-blue-400 mb-1">
-                      الصالحين (فريق المواطنين):
-                    </h4>
-                    <ul className="space-y-1 text-slate-400 pr-4">
-                      <li>
-                        🏛️{' '}
-                        <strong className="text-slate-200">
-                          العمده:
-                        </strong>{' '}
-                        يكشف بطاقته بأمان، صوته ٣ أصوات
-                      </li>
-                      {composition.citizenSpecialRoles.some(
-                        (r) => r.type === 'good_son'
-                      ) && (
-                        <li>
-                          👦{' '}
-                          <strong className="text-slate-200">
-                            الولد الصالح:
-                          </strong>{' '}
-                          يُخرج أحداً معه عند الإقصاء
-                        </li>
-                      )}
-                      <li>
-                        🏥{' '}
-                        <strong className="text-slate-200">
-                          الطبيب:
-                        </strong>{' '}
-                        ينقذ الضحية إذا خمّن صح
-                      </li>
-                      {composition.citizenSpecialRoles.some(
-                        (r) => r.type === 'sniper'
-                      ) && (
-                        <li>
-                          🎯{' '}
-                          <strong className="text-slate-200">
-                            القناص:
-                          </strong>{' '}
-                          رصاصة واحدة، يقتل معه إذا أخطأ
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                  <div className="pt-2 border-t border-slate-700/50">
-                    <p className="text-yellow-400/80 text-xs sm:text-sm">
-                      🏆 المواطنون يفوزون بإقصاء كل المافيا
-                    </p>
-                    <p className="text-red-400/80 text-xs sm:text-sm">
-                      💀 المافيا تفوز بتبقية{' '}
-                      {composition.mafiaCount} مواطنين أو أقل
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Player Names */}
-        <Card className="bg-slate-900/80 border-slate-700/50">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center justify-between text-sm sm:text-base">
-              <span className="text-slate-200 flex items-center gap-2">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-                أسماء اللاعبين
-              </span>
-              <Badge
-                variant="secondary"
-                className="bg-yellow-500/20 text-yellow-400 text-xs"
-              >
-                {playerCount} لاعب
-              </Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 max-h-60 sm:max-h-72 overflow-y-auto mafia-scrollbar pl-2">
-              {playerNames.map((name, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.02 }}
-                  className="flex items-center gap-2"
-                >
-                  <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-800 border border-slate-600/50 flex items-center justify-center text-[10px] sm:text-xs font-bold text-slate-400 shrink-0">
-                    {index + 1}
-                  </span>
-                  <Input
-                    value={name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
-                    placeholder={`اسم اللاعب ${index + 1}`}
-                    className="bg-slate-800/50 border-slate-600/50 text-slate-200 placeholder:text-slate-500 text-right text-sm h-11"
-                    dir="rtl"
-                  />
-                </motion.div>
-              ))}
-            </div>
-
-            {error && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-red-400 text-xs sm:text-sm mt-3 text-center"
-              >
-                ⚠️ {error}
-              </motion.p>
-            )}
-
-            <Button
-              onClick={handleStart}
-              className="w-full mt-4 sm:mt-6 bg-gradient-to-l from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold text-base sm:text-lg py-5 sm:py-6 transition-all duration-300 pulse-glow-red"
-            >
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              ابدأ اللعبة 🔥
-            </Button>
-          </CardContent>
-        </Card>
-
+          المافيا
+        </h1>
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Mafia — {playerCount} لاعب • {composition.mafiaCount} مافيا • {composition.citizenCount} صالح
+        </p>
       </motion.div>
+
+      {/* ═══ تجهيز المعركة pill ═══ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '4px 14px',
+          borderRadius: '999px',
+          background: 'rgba(6,42,32,.65)',
+          border: '1px solid rgba(254,239,145,.18)',
+        }}
+      >
+        <span style={{ fontSize: '13px' }}>🕵️</span>
+        <span
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '13px',
+            fontWeight: 800,
+            letterSpacing: '0.4px',
+          }}
+        >
+          تجهيز المعركة
+        </span>
+      </motion.div>
+
+      {/* ═══ player count + composition ═══ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22, duration: 0.3 }}
+        className="tobol-score-frame"
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          padding: '8px 12px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          marginTop: '4px',
+        }}
+      >
+        {/* player count row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'space-between' }}>
+          <button
+            onClick={() => handleCountChange(playerCount - 1)}
+            disabled={playerCount <= MIN_PLAYERS}
+            style={{
+              width: '30px', height: '30px', borderRadius: '50%',
+              background: 'rgba(220,38,38,.2)', border: '1px solid rgba(239,68,68,.5)',
+              color: '#fca5a5', fontSize: '18px', fontWeight: 900, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: playerCount <= MIN_PLAYERS ? 0.4 : 1,
+            }}
+          >−</button>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              ...STROKE_STYLE, fontSize: '24px', fontWeight: 900, lineHeight: 1,
+            }}>{playerCount}</div>
+            <div style={{ fontSize: '10px', color: '#9fc4b4', fontWeight: 700 }}>عدد اللاعبين</div>
+          </div>
+          <button
+            onClick={() => handleCountChange(playerCount + 1)}
+            disabled={playerCount >= MAX_PLAYERS}
+            style={{
+              width: '30px', height: '30px', borderRadius: '50%',
+              background: 'rgba(16,185,129,.2)', border: '1px solid rgba(16,185,129,.5)',
+              color: '#6ee7b7', fontSize: '18px', fontWeight: 900, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: playerCount >= MAX_PLAYERS ? 0.4 : 1,
+            }}
+          >+</button>
+        </div>
+
+        {/* custom mafia count */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '10px', color: '#9fc4b4' }}>عدد المافيا:</span>
+          {([undefined, 2, 3, 4] as const).map((count) => (
+            <button
+              key={count ?? 'auto'}
+              onClick={() => { setCustomMafiaCount(count); setError(''); }}
+              style={{
+                padding: '4px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800,
+                border: customMafiaCount === count
+                  ? '1px solid rgba(254,239,145,.55)'
+                  : '1px solid rgba(255,255,255,.12)',
+                background: customMafiaCount === count ? 'rgba(254,239,145,.18)' : 'rgba(0,0,0,.35)',
+                color: customMafiaCount === count ? '#feef91' : '#9fc4b4',
+                cursor: 'pointer',
+              }}
+            >
+              {count === undefined ? 'تلقائي' : `${count} مافيا`}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ═══ team composition cards (mafia vs citizens) ═══ */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'stretch',
+        }}
+      >
+        <div
+          className="tobol-team-card selected"
+          style={{
+            flex: 1,
+            padding: '8px',
+            '--card-border': 'linear-gradient(180deg, #fca5a5, #ef4444)',
+            '--card-border-selected': 'linear-gradient(180deg, #fca5a5, #ef4444)',
+            background: 'linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.05) 80%)',
+          } as React.CSSProperties}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+            <div style={{
+              width: '22px', height: '22px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(239,68,68,.4), rgba(239,68,68,.15))',
+              border: '1.5px solid rgba(239,68,68,.5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: '11px' }}>👿</span>
+            </div>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#ef4444', textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>
+              المافيا ({composition.mafiaCount})
+            </span>
+          </div>
+          <div style={{ fontSize: '9px', color: '#9fc4b4', lineHeight: 1.4 }}>
+            {composition.mafiaRoles.map((role, i) => (
+              <div key={`${role.type}-${i}`}>{role.name}</div>
+            ))}
+          </div>
+        </div>
+
+        <div className="tobol-vs-badge" style={{ width: '32px', height: '32px', alignSelf: 'center' }}>
+          <img
+            src="/battle/vs_pk.webp"
+            alt="VS"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+
+        <div
+          className="tobol-team-card selected"
+          style={{
+            flex: 1,
+            padding: '8px',
+            '--card-border': 'linear-gradient(180deg, #93c5fd, #3b82f6)',
+            '--card-border-selected': 'linear-gradient(180deg, #93c5fd, #3b82f6)',
+            background: 'linear-gradient(180deg, rgba(59,130,246,.18), rgba(59,130,246,.05) 80%)',
+          } as React.CSSProperties}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+            <div style={{
+              width: '22px', height: '22px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(59,130,246,.4), rgba(59,130,246,.15))',
+              border: '1.5px solid rgba(59,130,246,.5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: '11px' }}>🛡️</span>
+            </div>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#3b82f6', textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>
+              الصالحون ({composition.citizenCount})
+            </span>
+          </div>
+          <div style={{ fontSize: '9px', color: '#9fc4b4', lineHeight: 1.4 }}>
+            {composition.citizenSpecialRoles.map((role) => (
+              <div key={role.type}>{role.name}</div>
+            ))}
+            {composition.plainCitizens > 0 && (
+              <div>👤 مواطن عادي ×{composition.plainCitizens}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ player names scrollable ═══ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.3 }}
+        style={{
+          width: '100%', maxWidth: '380px', flex: 1, minHeight: 0,
+          background: 'rgba(6,42,32,.6)',
+          border: '1px solid rgba(254,239,145,.15)',
+          borderRadius: '12px',
+          padding: '8px',
+          overflowY: 'auto',
+        }}
+      >
+        <div style={{
+          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px',
+        }}>
+          {playerNames.map((name, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: Math.min(index * 0.02, 0.5) }}
+              className="flex items-center gap-2"
+            >
+              <span style={{
+                width: '24px', height: '24px', borderRadius: '50%',
+                background: 'rgba(0,0,0,.4)', border: '1px solid rgba(254,239,145,.3)',
+                color: '#9fc4b4', fontSize: '10px', fontWeight: 800,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                {index + 1}
+              </span>
+              <Input
+                value={name}
+                onChange={(e) => handleNameChange(index, e.target.value)}
+                placeholder={`لاعب ${index + 1}`}
+                className="bg-slate-800/50 border-slate-600/50 text-slate-200 placeholder:text-slate-500 text-right text-xs h-9"
+                dir="rtl"
+                maxLength={20}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {error && (
+        <p style={{ color: '#ef4444', fontSize: '11px', textAlign: 'center' }}>⚠️ {error}</p>
+      )}
+
+      {/* ═══ rules toggle + start button ═══ */}
+      <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '380px', alignItems: 'center' }}>
+        <button
+          onClick={() => setShowRules(!showRules)}
+          style={{
+            padding: '10px 12px', borderRadius: '10px',
+            border: '1px solid rgba(254,239,145,.3)',
+            background: 'rgba(254,239,145,.08)', color: '#feef91',
+            fontSize: '11px', fontWeight: 700, cursor: 'pointer',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {showRules ? 'إخفاء' : '📜'} القوانين
+        </button>
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.44, duration: 0.3 }}
+          whileHover={isValid ? { scale: 1.02 } : {}}
+          whileTap={isValid ? { scale: 0.97 } : {}}
+          onClick={handleStart}
+          disabled={!isValid}
+          className="tobol-start-btn"
+          style={{
+            flex: 1,
+            padding: '14px 16px',
+            border: 'none',
+            color: '#feef91',
+            fontSize: '17px',
+            fontWeight: 900,
+            cursor: isValid ? 'pointer' : 'not-allowed',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            paintOrder: 'stroke fill',
+            WebkitTextStroke: '0.5px #aa6e1f',
+            textShadow: '0 2px 6px rgba(0,0,0,.6)',
+          }}
+        >
+          <span className="tobol-start-icon">
+            <span style={{ fontSize: '18px' }}>🕵️</span>
+          </span>
+          <span>ابدأ اللعبة</span>
+        </motion.button>
+      </div>
+
+      {/* ═══ rules panel ═══ */}
+      <AnimatePresence>
+        {showRules && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ overflow: 'hidden', width: '100%', maxWidth: '380px' }}
+          >
+            <div style={{
+              background: 'rgba(6,42,32,.85)', borderRadius: '10px',
+              border: '1px solid rgba(254,239,145,.18)', padding: '12px',
+              fontSize: '11px', color: '#cbd5e1',
+            }}>
+              <h4 style={{ fontWeight: 'bold', color: '#ef4444', marginBottom: '4px' }}>👿 فريق المافيا:</h4>
+              <ul style={{ listStyle: 'none', padding: 0, marginBottom: '8px', color: '#9fc4b4' }}>
+                <li>• 🕴️ <strong>شيخ المافيا:</strong> يختار ضحية كل ليلة</li>
+                <li>• 🤫 <strong>مافيا التسكيت:</strong> يسكت شخصاً كل ليلة</li>
+                <li>• 🔪 <strong>مافيا عادي:</strong> يشارك القرارات</li>
+              </ul>
+              <h4 style={{ fontWeight: 'bold', color: '#3b82f6', marginBottom: '4px' }}>🛡️ فريق الصالحين:</h4>
+              <ul style={{ listStyle: 'none', padding: 0, marginBottom: '8px', color: '#9fc4b4' }}>
+                <li>• 🏛️ <strong>العمده:</strong> يكشف بطاقته بأمان، صوته ٣ أصوات</li>
+                {composition.citizenSpecialRoles.some(r => r.type === 'good_son') && (
+                  <li>• 👦 <strong>الولد الصالح:</strong> يُخرج أحداً معه عند الإقصاء</li>
+                )}
+                <li>• 🏥 <strong>الطبيب:</strong> ينقذ الضحية إذا خمّن صح</li>
+                {composition.citizenSpecialRoles.some(r => r.type === 'sniper') && (
+                  <li>• 🎯 <strong>القناص:</strong> رصاصة واحدة، يقتل معه إذا أخطأ</li>
+                )}
+              </ul>
+              <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '6px' }}>
+                <p style={{ color: '#fbbf24' }}>🏆 المواطنون يفوزون بإقصاء كل المافيا</p>
+                <p style={{ color: '#ef4444' }}>💀 المافيا تفوز بتفوق عددي على المواطنين</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ═══ exit dialog ═══ */}
+      <AnimatePresence>
+        {showExitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowExitDialog(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,.72)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+              padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px',
+                padding: '20px',
+                width: '100%',
+                maxWidth: '300px',
+                textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
+              <h3
+                style={{
+                  ...STROKE_STYLE,
+                  fontSize: '17px',
+                  fontWeight: 900,
+                  marginBottom: '6px',
+                }}
+              >
+                الخروج من اللعبة؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                سيتم إنهاء الجلسة وعدم حفظ أي تقدم. هل أنت متأكد؟
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowExitDialog(false)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                  }}
+                >إلغاء</button>
+                <button
+                  onClick={handleExit}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >نعم، اخرج</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

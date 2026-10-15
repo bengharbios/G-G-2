@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTabotStore } from '@/lib/tabot-store';
 import {
   getTeamInfo,
@@ -11,66 +13,66 @@ import {
 } from '@/lib/tabot-types';
 import DoorCard from './DoorCard';
 import PenaltyDialog from './PenaltyDialog';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import { ChevronDown, Crown, Hand } from 'lucide-react';
+import {
+  isMusicEnabled,
+  setMusicEnabled,
+  isSoundEnabled,
+  setSoundEnabled,
+} from '@/lib/sounds';
+
+// StrokeTextStyle_Yes (from yalla ludo styles.xml)
+const STROKE_STYLE: React.CSSProperties = {
+  color: '#feef91',
+  paintOrder: 'stroke fill',
+  WebkitTextStroke: '1px #aa6e1f',
+};
 
 // ============================================================
-// Player Row Component — Visual styling for states (NO emoji)
+// Player Row — Display-only
 // ============================================================
-
 function PlayerRow({ player }: { player: Player }) {
   return (
     <motion.div
       layout
-      className={`
-        flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all duration-300
-        ${player.status === 'active' ? 'bg-white/5' : ''}
-        ${player.status === 'imprisoned' ? 'opacity-60' : ''}
-        ${player.status === 'killed' ? 'opacity-30' : ''}
-      `}
+      style={{
+        display: 'flex', alignItems: 'center', gap: '6px',
+        padding: '5px 8px', borderRadius: '8px',
+        background: player.status === 'active' ? 'rgba(255,255,255,.04)' : 'transparent',
+        opacity: player.status === 'active' ? 1 : player.status === 'imprisoned' ? 0.6 : 0.3,
+        transition: 'opacity .3s',
+      }}
     >
-      {/* Avatar */}
-      <span className="text-lg">{player.avatar}</span>
-
-      {/* Name with role badge */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span
-            className={`
-              text-xs sm:text-sm font-bold truncate
-              ${player.status === 'killed' ? 'line-through text-red-300/60' : 'text-slate-200'}
-            `}
-          >
+      <span style={{ fontSize: '15px' }}>{player.avatar}</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span style={{
+            fontSize: '11px', fontWeight: 700, color: '#cbd5e1',
+            textDecoration: player.status === 'killed' ? 'line-through' : 'none',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
             {player.name}
           </span>
-          {/* Role badge (leader/deputy) — small and inline */}
           {player.role === 'leader' && (
-            <span className="text-[10px] text-amber-400 shrink-0" title="قائد">👑</span>
+            <span style={{ fontSize: '9px' }}>👑</span>
           )}
           {player.role === 'deputy' && (
-            <span className="text-[10px] text-blue-400 shrink-0" title="نائب">⭐</span>
+            <span style={{ fontSize: '9px' }}>⭐</span>
           )}
         </div>
       </div>
-
-      {/* Chain indicator for imprisoned */}
       {player.status === 'imprisoned' && (
-        <span className="text-amber-500/60 text-xs shrink-0">⛓️</span>
+        <span style={{ fontSize: '10px' }}>⛓️</span>
       )}
-
-      {/* Death indicator for killed */}
       {player.status === 'killed' && (
-        <span className="text-red-500/40 text-xs shrink-0">💀</span>
+        <span style={{ fontSize: '10px' }}>💀</span>
       )}
     </motion.div>
   );
 }
 
 // ============================================================
-// Current Team Panel — Shows ONLY the current team
+// Compact Team Panel — Shows only the current team (compact, no scroll)
 // ============================================================
-
 function CurrentTeamPanel({
   teamId,
   teamName,
@@ -78,56 +80,59 @@ function CurrentTeamPanel({
   teamId: TabotTeam;
   teamName: string;
 }) {
-  const { players, currentPlayerIndex } = useTabotStore();
+  const { players } = useTabotStore();
   const teamInfo = getTeamInfo(players, teamId, teamName);
   const config = TEAM_CONFIG[teamId];
+  const accent = teamId === 'alpha' ? '#ef4444' : '#3b82f6';
+  const accentLight = teamId === 'alpha' ? '#fca5a5' : '#93c5fd';
 
   return (
     <motion.div
       key={teamId}
-      initial={{ opacity: 0, y: -10 }}
+      initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl border overflow-hidden ${
-        teamId === 'alpha'
-          ? 'border-red-500/30 bg-gradient-to-b from-red-950/30 to-slate-900/50'
-          : 'border-blue-500/30 bg-gradient-to-b from-blue-950/30 to-slate-900/50'
-      }`}
+      style={{
+        borderRadius: '12px',
+        overflow: 'hidden',
+        border: `1px solid ${accent}40`,
+        background: `linear-gradient(180deg, ${accent}1a, rgba(8,28,22,.7))`,
+      }}
     >
-      {/* Team header */}
-      <div className={`px-3 py-2 border-b ${
-        teamId === 'alpha' ? 'border-red-500/20 bg-red-950/30' : 'border-blue-500/20 bg-blue-950/30'
-      }`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{config.icon}</span>
-            <span className={`text-sm font-bold ${config.color}`}>{teamInfo.name}</span>
-          </div>
-          <div className="flex gap-2 text-[10px]">
-            <span className="text-emerald-400">نشط {teamInfo.activeCount}</span>
-            <span className="text-amber-400">حبس {teamInfo.imprisonedCount}</span>
-            <span className="text-red-400">قتل {teamInfo.killedCount}</span>
-          </div>
+      {/* Header */}
+      <div style={{
+        padding: '6px 10px',
+        background: `linear-gradient(90deg, ${accent}33, transparent)`,
+        borderBottom: `1px solid ${accent}20`,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ fontSize: '15px' }}>{config.icon}</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: accentLight, textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>
+            {teamInfo.name}
+          </span>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', fontSize: '9px' }}>
+          <span style={{ color: '#34d399' }}>نشط {teamInfo.activeCount}</span>
+          <span style={{ color: '#fbbf24' }}>حبس {teamInfo.imprisonedCount}</span>
+          <span style={{ color: '#f87171' }}>قتل {teamInfo.killedCount}</span>
         </div>
       </div>
-
-      {/* Players list — display only, no click handling here */}
-      <div className="p-2 space-y-0.5 max-h-40 overflow-y-auto mafia-scrollbar">
-        {teamInfo.players.map((player) => {
-          return <PlayerRow key={player.id} player={player} />;
-        })}
+      {/* Players — display only */}
+      <div style={{ padding: '4px', maxHeight: '100px', overflowY: 'auto' }} className="tobol-scrollbar">
+        {teamInfo.players.map((player) => (
+          <PlayerRow key={player.id} player={player} />
+        ))}
       </div>
     </motion.div>
   );
 }
 
 // ============================================================
-// Leader Picker Dialog — Popup for leader to choose who opens
+// Leader Picker Dialog
 // ============================================================
-
 function LeaderPickerDialog() {
   const { players, currentTeam, teamAlphaName, teamBetaName, selectPicker } = useTabotStore();
-
   const teamName = currentTeam === 'alpha' ? teamAlphaName : teamBetaName;
   const config = TEAM_CONFIG[currentTeam];
   const teamMembers = players.filter(
@@ -140,51 +145,63 @@ function LeaderPickerDialog() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4"
+      style={{
+        position: 'fixed', inset: 0, zIndex: 60,
+        background: 'rgba(0,0,0,.8)', backdropFilter: 'blur(4px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px',
+      }}
     >
       <motion.div
         initial={{ scale: 0.8, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.8, y: 20 }}
-        className="bg-[#1a1025] border border-amber-700/50 rounded-2xl p-5 max-w-sm w-full shadow-2xl"
+        style={{
+          background: 'linear-gradient(180deg, #0e2a22, #061812)',
+          border: '1.5px solid rgba(254,239,145,.25)',
+          borderRadius: '18px',
+          padding: '16px',
+          width: '100%', maxWidth: '300px',
+          boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+        }}
       >
-        {/* Header */}
-        <div className="text-center mb-4">
+        <div style={{ textAlign: 'center', marginBottom: '12px' }}>
           <motion.div
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="text-4xl mb-2"
-          >
-            👑
-          </motion.div>
-          <h3 className="text-lg font-bold text-amber-300">القائد يختار</h3>
-          <p className="text-xs text-slate-400">
+            style={{ fontSize: '32px', marginBottom: '4px' }}
+          >👑</motion.div>
+          <h3 style={{ ...STROKE_STYLE, fontSize: '15px', fontWeight: 900 }}>القائد يختار</h3>
+          <p style={{ fontSize: '11px', color: '#9fc4b4', marginTop: '2px' }}>
             {config.icon} {teamName} — اختر من يفتح الباب
           </p>
           {leader && (
-            <p className="text-[10px] text-amber-500/70 mt-1">
+            <p style={{ fontSize: '10px', color: '#fbbf24', marginTop: '2px' }}>
               القائد: {leader.name}
             </p>
           )}
         </div>
-
-        {/* Player selection */}
-        <div className="space-y-2 max-h-60 overflow-y-auto mafia-scrollbar">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '200px', overflowY: 'auto' }} className="tobol-scrollbar">
           {teamMembers.map((player, i) => (
             <motion.button
               key={player.id}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.05 }}
+              whileTap={{ scale: 0.97 }}
               whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               onClick={() => selectPicker(player.id)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer bg-slate-800/50 border-slate-700/50 hover:border-amber-500/50 hover:bg-amber-950/20"
+              style={{
+                width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '8px', borderRadius: '10px', cursor: 'pointer',
+                background: 'rgba(0,0,0,.35)', border: '1px solid rgba(254,239,145,.2)',
+              }}
             >
-              <span className="text-xl">{player.avatar}</span>
-              <div className="flex-1 text-right">
-                <span className="text-sm font-bold text-slate-200">{player.name}</span>
-                <span className="text-[10px] text-slate-500 block">
+              <span style={{ fontSize: '18px' }}>{player.avatar}</span>
+              <div style={{ flex: 1, textAlign: 'right' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#cbd5e1' }}>
+                  {player.name}
+                </span>
+                <span style={{ fontSize: '9px', color: '#9fc4b4', display: 'block' }}>
                   {ROLE_CONFIG[player.role].emoji} {ROLE_CONFIG[player.role].label}
                 </span>
               </div>
@@ -197,53 +214,70 @@ function LeaderPickerDialog() {
 }
 
 // ============================================================
-// Game Log
+// Game Log — collapsible
 // ============================================================
-
-function GameLog({ defaultExpanded = true }: { defaultExpanded?: boolean }) {
+function GameLog() {
   const { roundLog } = useTabotStore();
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const [isExpanded, setIsExpanded] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (logRef.current) {
+    if (logRef.current && isExpanded) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
-  }, [roundLog]);
+  }, [roundLog, isExpanded]);
 
   return (
-    <div className="border-t border-purple-800/30 bg-black/30">
+    <div style={{
+      borderTop: '1px solid rgba(168,85,247,.25)',
+      background: 'rgba(0,0,0,.3)',
+    }}>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between px-3 py-2 hover:bg-white/5 transition-colors"
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '6px 12px', background: 'none', border: 'none', cursor: 'pointer',
+        }}
       >
-        <span className="text-xs font-bold text-slate-400">📋 سجل الأحداث ({roundLog.length})</span>
-        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+        <span style={{ fontSize: '10px', fontWeight: 700, color: '#9fc4b4' }}>
+          📋 سجل الأحداث ({roundLog.length})
+        </span>
+        <motion.span animate={{ rotate: isExpanded ? 180 : 0 }} style={{ fontSize: '10px', color: '#9fc4b4' }}>
+          ▼
+        </motion.span>
       </button>
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             initial={{ height: 0 }}
-            animate={{ height: 200 }}
+            animate={{ height: 140 }}
             exit={{ height: 0 }}
-            className="overflow-hidden"
+            style={{ overflow: 'hidden' }}
           >
             <div
               ref={logRef}
-              className="px-3 pb-3 space-y-1 overflow-y-auto max-h-48 mafia-scrollbar"
+              className="tobol-scrollbar"
+              style={{ padding: '0 12px 10px', display: 'flex', flexDirection: 'column', gap: '2px', overflowY: 'auto', maxHeight: '130px' }}
             >
               {roundLog.map((entry, i) => (
                 <div
                   key={i}
-                  className={`text-[11px] px-2 py-1 rounded ${
-                    entry.type === 'danger' ? 'text-red-300/80 bg-red-950/20' :
-                    entry.type === 'success' ? 'text-emerald-300/80 bg-emerald-950/20' :
-                    entry.type === 'system' ? 'text-amber-300/80 bg-amber-950/20 font-bold' :
-                    entry.type === 'action' ? 'text-purple-300/80 bg-purple-950/20' :
-                    'text-slate-400/80'
-                  }`}
+                  style={{
+                    fontSize: '10px', padding: '3px 6px', borderRadius: '6px',
+                    color: entry.type === 'danger' ? '#fca5a5' :
+                      entry.type === 'success' ? '#86efac' :
+                      entry.type === 'system' ? '#fbbf24' :
+                      entry.type === 'action' ? '#c4b5fd' :
+                      '#9fc4b4',
+                    background: entry.type === 'danger' ? 'rgba(239,68,68,.15)' :
+                      entry.type === 'success' ? 'rgba(34,197,94,.15)' :
+                      entry.type === 'system' ? 'rgba(251,191,36,.15)' :
+                      entry.type === 'action' ? 'rgba(168,85,247,.15)' :
+                      'transparent',
+                    fontWeight: entry.type === 'system' ? 700 : 400,
+                  }}
                 >
-                  <span className="text-slate-600 ml-1">R{entry.round}</span>
+                  <span style={{ color: '#64748b', marginLeft: '4px' }}>R{entry.round}</span>
                   {entry.message}
                 </div>
               ))}
@@ -256,9 +290,8 @@ function GameLog({ defaultExpanded = true }: { defaultExpanded?: boolean }) {
 }
 
 // ============================================================
-// MAIN GAME BOARD
+// MAIN GAME BOARD (Yalla Ludo style — no vertical scroll)
 // ============================================================
-
 export default function GameBoard() {
   const {
     doors,
@@ -270,9 +303,46 @@ export default function GameBoard() {
     revealDoor,
     advanceTurn,
     currentPlayerIndex,
+    currentRound,
+    gameMode,
+    roomCode,
   } = useTabotStore();
 
-  // Determine what the door grid should look like
+  const [musicOn, setMusicOn] = useState(true);
+  const [soundOn, setSoundOn] = useState(true);
+  const [showChat, setShowChat] = useState(false);
+  const [showExitDialog, setShowExitDialog] = useState(false);
+  const [showViewers, setShowViewers] = useState(false);
+  const [viewerCount, setViewerCount] = useState(0);
+  const [spectators, setSpectators] = useState<Array<{ id: string; name: string; joinedAt: number }>>([]);
+
+  useEffect(() => {
+    setMusicOn(isMusicEnabled());
+    setSoundOn(isSoundEnabled());
+  }, []);
+
+  const toggleMusic = () => { const next = !musicOn; setMusicOn(next); setMusicEnabled(next); };
+  const toggleSound = () => { const next = !soundOn; setSoundOn(next); setSoundEnabled(next); };
+
+  // Poll viewers in diwaniya mode
+  useEffect(() => {
+    if (gameMode !== 'diwaniya' || !roomCode) return;
+    const fetchViewers = () => {
+      fetch(`/api/room/${roomCode}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(d => {
+          if (d?.room?.spectators) {
+            setSpectators(d.room.spectators);
+            setViewerCount(d.room.spectators.length);
+          }
+        })
+        .catch(() => {});
+    };
+    fetchViewers();
+    const iv = setInterval(fetchViewers, 5000);
+    return () => clearInterval(iv);
+  }, [gameMode, roomCode, showViewers]);
+
   const isWaitingForPlayer = interactionState === 'waiting_for_player';
   const isWaitingForLeader = interactionState === 'waiting_for_leader';
   const isShowingResult = interactionState === 'showing_result';
@@ -286,133 +356,313 @@ export default function GameBoard() {
   const currentTeamName = currentTeam === 'alpha' ? teamAlphaName : teamBetaName;
   const teamConfig = TEAM_CONFIG[currentTeam];
   const openedDoors = doors.filter(d => d.isRevealed).length;
+  const accent = currentTeam === 'alpha' ? '#ef4444' : '#3b82f6';
 
   return (
-    <div className="flex flex-col min-h-full" dir="rtl">
-      {/* Main content area */}
-      <div className="flex-1 flex flex-col gap-3 p-3 sm:p-4 max-w-lg mx-auto w-full">
-        {/* Turn Indicator */}
-        <motion.div
-          key={`${currentTeam}-${interactionState}`}
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`rounded-xl border p-3 text-center ${
-            currentTeam === 'alpha'
-              ? 'border-red-500/30 bg-red-950/20'
-              : 'border-blue-500/30 bg-blue-950/20'
-          }`}
+    <div
+      dir="rtl"
+      style={{
+        height: '100%',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* ══════════ 1) Yalla Ludo Header — sound + chat + quit ══════════ */}
+      <div className="tobol-header-actions" style={{ justifyContent: 'space-between' }}>
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label="sound"
         >
-          {/* Waiting for leader */}
-          {isWaitingForLeader && (
-            <div>
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Crown className="w-4 h-4 text-amber-400" />
-                <span className="text-xs font-bold text-amber-300">القائد يختار من يفتح الباب</span>
-              </div>
-              <p className="text-[10px] text-slate-500">
-                {teamConfig.icon} {currentTeamName}
-              </p>
-            </div>
-          )}
+          <img src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'} alt="sound" />
+        </button>
 
-          {/* Waiting for player to pick door */}
-          {isWaitingForPlayer && (
-            <div>
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Hand className="w-4 h-4 text-purple-400" />
-                <span className="text-xs font-bold text-purple-300">
-                  {players[currentPlayerIndex]?.name} — اختر باباً
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-500">
-                {teamConfig.icon} {currentTeamName}
-              </p>
-            </div>
-          )}
-
-          {/* Showing result */}
-          {isShowingResult && (
-            <div>
-              <motion.span
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="text-xs font-bold text-slate-300"
-              >
-                انتظر النتيجة...
-              </motion.span>
-            </div>
-          )}
-
-          {/* Interacting */}
-          {isInteracting && (
-            <div>
-              <motion.span
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="text-xs font-bold text-amber-300"
-              >
-                اختر الهدف...
-              </motion.span>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Current team panel (display only, selection in popup) */}
-        <CurrentTeamPanel
-          teamId={currentTeam}
-          teamName={currentTeamName}
-        />
-
-        {/* Door grid */}
-        <div className="mt-1">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-slate-500">🚪 الأبواب</span>
-            <span className="text-[10px] text-slate-600">{openedDoors}/16</span>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {doors.map((door, i) => (
-              <DoorCard
-                key={door.id}
-                door={door}
-                index={i}
-                isSelectable={isWaitingForPlayer}
-                onSelect={revealDoor}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Skip interaction button (when no valid targets) */}
-        {interactionState === 'showing_result' && (
-          <div className="flex justify-center">
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              onClick={advanceTurn}
-              className="px-6 py-2 rounded-lg bg-purple-600/30 border border-purple-500/30 text-sm text-purple-300 hover:bg-purple-600/40 transition-colors cursor-pointer"
-            >
-              التالي ←
-            </motion.button>
-          </div>
+        {gameMode === 'diwaniya' && (
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setShowViewers(true)}
+            className="tobol-header-btn"
+            aria-label="viewers"
+          >
+            <span style={{ fontSize: '14px' }}>👁</span>
+            <span style={{ fontSize: '10px', color: '#9fc4b4', fontWeight: 700 }}>{viewerCount}</span>
+          </motion.button>
         )}
+
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowChat(true)}
+          aria-label="chat"
+        >
+          <img src="/battle/icon_chat.webp" alt="chat" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <span style={{ fontSize: '12px' }}>💬</span>
+        </button>
+
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowExitDialog(true)}
+          aria-label="exit"
+        >
+          <img src="/battle/btn_exit.webp" alt="exit" />
+        </button>
       </div>
 
-      {/* Game Log — auto-expanded */}
-      <GameLog defaultExpanded={true} />
+      {/* ══════════ 2) Notification pill — current turn ══════════ */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '0 12px', marginTop: '4px' }}>
+        <div className={`tobol-notice-pill ${currentTeam === 'alpha' ? 'team-red' : 'team-blue'}`}>
+          <span className="notice-dot" />
+          <span style={{ fontSize: '12px' }}>{teamConfig.icon}</span>
+          <span style={{ fontSize: '11px' }}>
+            {isWaitingForLeader && '👑 القائد يختار'}
+            {isWaitingForPlayer && `${players[currentPlayerIndex]?.name} — اختر باباً`}
+            {isShowingResult && 'انتظر النتيجة...'}
+            {isInteracting && 'اختر الهدف...'}
+          </span>
+          <span style={{ fontSize: '9px', color: '#9fc4b4', borderRight: '1px solid rgba(255,255,255,.1)', paddingRight: '6px', marginRight: '2px' }}>
+            جولة {currentRound}
+          </span>
+        </div>
+      </div>
 
-      {/* All Dialogs */}
+      {/* ══════════ 3) Compact team panel (current team only) ══════════ */}
+      <div style={{ padding: '6px 12px' }}>
+        <CurrentTeamPanel teamId={currentTeam} teamName={currentTeamName} />
+      </div>
+
+      {/* ══════════ 4) Door grid (16 doors, no scroll) ══════════ */}
+      <div style={{ padding: '0 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#9fc4b4' }}>🚪 الأبواب</span>
+          <span style={{ fontSize: '10px', color: '#9fc4b4', background: 'rgba(254,239,145,.1)', padding: '1px 6px', borderRadius: '8px', border: '1px solid rgba(254,239,145,.2)' }}>
+            {openedDoors}/16
+          </span>
+        </div>
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px',
+          flex: 1, minHeight: 0,
+        }}>
+          {doors.map((door, i) => (
+            <DoorCard
+              key={door.id}
+              door={door}
+              index={i}
+              isSelectable={isWaitingForPlayer}
+              onSelect={revealDoor}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════ 5) Advance button ══════════ */}
+      {interactionState === 'showing_result' && (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '6px 12px' }}>
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={advanceTurn}
+            className="tobol-start-btn"
+            style={{
+              padding: '10px 24px', border: 'none', cursor: 'pointer',
+              fontSize: '14px', fontWeight: 800,
+              color: '#feef91',
+              paintOrder: 'stroke fill',
+              WebkitTextStroke: '0.5px #aa6e1f',
+              textShadow: '0 2px 6px rgba(0,0,0,.6)',
+            }}
+          >
+            التالي ←
+          </motion.button>
+        </div>
+      )}
+
+      {/* ══════════ 6) Game Log ══════════ */}
+      <GameLog />
+
+      {/* ══════════ 7) Dialogs ══════════ */}
       <AnimatePresence>
-        {/* Leader picker popup */}
         {isWaitingForLeader && <LeaderPickerDialog />}
-
-        {/* Result overlay */}
         {isShowingResult && (
           <PenaltyDialog onDismiss={advanceTurn} />
         )}
-
-        {/* Interaction dialogs (pick enemy, free teammate, vote) */}
         {isInteracting && (
           <PenaltyDialog onDismiss={() => {}} />
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ 8) Viewers Modal (Diwaniya) ══════════ */}
+      <AnimatePresence>
+        {showViewers && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowViewers(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(0,0,0,.75)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px', padding: '16px',
+                width: '100%', maxWidth: '300px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <h3 style={{ ...STROKE_STYLE, fontSize: '14px', fontWeight: 900 }}>
+                  👁 المشاهدون
+                </h3>
+                <button onClick={() => setShowViewers(false)} style={{ background: 'none', border: 'none', color: '#9fc4b4', cursor: 'pointer', fontSize: '14px' }}>✕</button>
+              </div>
+              {spectators.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>👥</div>
+                  <p style={{ color: '#9fc4b4', fontSize: '12px' }}>لا يوجد مشاهدون حالياً</p>
+                  <p style={{ color: '#64748b', fontSize: '10px', marginTop: '4px' }}>شارك كود الغرفة ليصلك المشاهدون</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '200px', overflowY: 'auto' }} className="tobol-scrollbar">
+                  {spectators.map((spec, idx) => (
+                    <div key={spec.id} style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      background: 'rgba(0,0,0,.35)', border: '1px solid rgba(254,239,145,.1)',
+                      borderRadius: '10px', padding: '6px 10px',
+                    }}>
+                      <div style={{
+                        width: '28px', height: '28px', borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #4a8d7a, #3a7d6a)',
+                        color: '#fff', fontSize: '11px', fontWeight: 700,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}>
+                        {spec.name.charAt(0)}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {spec.name}
+                        </p>
+                        <p style={{ fontSize: '9px', color: '#64748b' }}>
+                          انضم منذ {Math.floor((Date.now() - spec.joinedAt) / 60000)} دقيقة
+                        </p>
+                      </div>
+                      <span style={{ fontSize: '9px', color: '#64748b', flexShrink: 0 }}>#{idx + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                <p style={{ fontSize: '9px', color: '#64748b' }}>
+                  إجمالي المشاهدين: {spectators.length}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ 9) Exit Dialog ══════════ */}
+      <AnimatePresence>
+        {showExitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowExitDialog(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(0,0,0,.75)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px', padding: '20px',
+                width: '100%', maxWidth: '300px', textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
+                الخروج من اللعبة؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                {gameMode === 'diwaniya'
+                  ? 'سيتم إنهاء الجلسة وسيخرج جميع المشاهدين.'
+                  : 'سيتم إعادة تعيين اللعبة بالكامل. هل تريد المتابعة؟'}
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowExitDialog(false)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                  }}
+                >إلغاء</button>
+                <button
+                  onClick={() => {
+                    useTabotStore.getState().resetGame();
+                    setShowExitDialog(false);
+                  }}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >نعم، اخرج</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══════════ 10) Chat drawer ══════════ */}
+      <AnimatePresence>
+        {showChat && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', bounce: 0 }}
+            style={{
+              position: 'absolute', top: 0, right: 0, bottom: 0, width: '280px',
+              background: 'rgba(6,42,32,.95)', backdropFilter: 'blur(8px)',
+              borderLeft: '1px solid rgba(254,239,145,.15)',
+              zIndex: 90, display: 'flex', flexDirection: 'column',
+            }}
+          >
+            <div style={{ padding: '12px', borderBottom: '1px solid rgba(254,239,145,.15)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '13px', fontWeight: 900 }}>💬 الدردشة</h3>
+              <button onClick={() => setShowChat(false)} style={{ background: 'none', border: 'none', color: '#9fc4b4', cursor: 'pointer', fontSize: '14px' }}>✕</button>
+            </div>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }} className="tobol-scrollbar">
+              <p style={{ textAlign: 'center', color: '#64748b', fontSize: '11px', marginTop: '20px' }}>
+                الدردشة غير متاحة حالياً
+              </p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

@@ -27,6 +27,14 @@ import {
   Smartphone,
 } from 'lucide-react';
 import { playNightSound } from '@/lib/sounds';
+import {
+  STROKE_STYLE,
+  useInGameSetupMode,
+  useYallaSoundState,
+  useHostHeartbeat,
+  useViewerCount,
+  useShareLinks,
+} from '@/lib/yalla-game-helpers';
 
 // ============================================================
 // Helper: sync host's night action choice to room DB
@@ -63,9 +71,17 @@ export default function NightPhase() {
   } = useGameStore();
 
   const isDiwaniya = gameMode === 'diwaniya';
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
   const [showConfirm, setShowConfirm] = useState(false);
   const [remoteNightAction, setRemoteNightAction] = useState<{ targetName: string | null; actionType: string | null; playerName: string | null } | null>(null);
   const [pollError, setPollError] = useState(false);
+
+  // ===== Yalla Ludo shared hooks (sound, viewers, share, heartbeat) =====
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
+  useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
+  const { viewerCount } = useViewerCount('mafia', isDiwaniyaHost, roomCode);
+  const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('mafia', isDiwaniyaHost, roomCode);
 
   const aliveMafia = getAliveMafia(players);
   const boss = getMafiaBoss(players);
@@ -371,46 +387,68 @@ export default function NightPhase() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4 mafia-bg-night">
-      {/* Moon */}
-      <div className="fixed top-8 right-8 sm:top-10 sm:right-10 z-0">
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
-          className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-yellow-200 to-yellow-400 opacity-80 moon-glow"
-          style={{
-            boxShadow: '0 0 40px rgba(234, 179, 8, 0.3), 0 0 80px rgba(234, 179, 8, 0.1)',
-          }}
-        />
-      </div>
-
-      {/* Stars */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white star-twinkle"
-            style={{
-              width: Math.random() * 2 + 1 + 'px',
-              height: Math.random() * 2 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDelay: Math.random() * 3 + 's',
-            }}
+    <div
+      dir="rtl"
+      className="tobol-setup-root"
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '8px 14px 16px',
+        gap: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ===== Yalla header actions: sound + viewers + quit ===== */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label="sound"
+          title="الصوت"
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
           />
-        ))}
+        </button>
+        {isDiwaniyaHost && (
+          <div
+            className="tobol-eye-btn"
+            style={{ position: 'relative', cursor: 'default' }}
+            aria-label="viewers"
+            title="المشاهدون"
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+            <span className="tobol-eye-count">{viewerCount}</span>
+          </div>
+        )}
       </div>
 
+      {/* ===== Title row (StrokeTextStyle_Yes) ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '2px' }}
+      >
+        <img
+          src="/yalla-games/mafia.png"
+          alt="المافيا"
+          style={{ width: '38px', height: '32px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.5))' }}
+        />
+        <h1 style={{ ...STROKE_STYLE, fontSize: '16px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)', margin: 0 }}>
+          الليل
+        </h1>
+        <span style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 700 }}>جولة {round}</span>
+      </motion.div>
+
+      {/* ===== Content area (preserved logic — phase cards + target selection) ===== */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto">
-        {/* Round indicator */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <Badge variant="outline" className="border-yellow-500/50 text-yellow-400 text-xs">
-            الجولة {round}
-          </Badge>
-          <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
-            🌙 الليل
-          </Badge>
-        </div>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -420,16 +458,22 @@ export default function NightPhase() {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Phase title */}
+            {/* Phase title — StrokeTextStyle_Yes */}
             <div className="text-center mb-6 sm:mb-8">
               <motion.h2
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="text-2xl sm:text-3xl font-black text-slate-100 mb-2"
+                style={{
+                  ...STROKE_STYLE,
+                  fontSize: '22px',
+                  fontWeight: 900,
+                  textShadow: '0 2px 4px rgba(0,0,0,.85)',
+                  marginBottom: '6px',
+                }}
               >
                 {getPhaseTitle()}
               </motion.h2>
-              <p className="text-slate-400 text-sm sm:text-base">{getPhaseDescription()}</p>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 600, lineHeight: 1.5 }}>{getPhaseDescription()}</p>
             </div>
 
             {/* Phase content */}
@@ -439,9 +483,15 @@ export default function NightPhase() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.5, type: 'spring' }}
-                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-900 to-slate-950 border-2 border-indigo-500/30 flex items-center justify-center pulse-glow-blue"
+                  style={{
+                    width: '96px', height: '96px', borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(254,239,145,.18), rgba(170,110,31,.05))',
+                    border: '2px solid rgba(254,239,145,.45)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 0 28px rgba(254,239,145,.18)',
+                  }}
                 >
-                  <span className="text-5xl sm:text-6xl">🌙</span>
+                  <span style={{ fontSize: '48px' }}>🌙</span>
                 </motion.div>
               </div>
             )}
@@ -735,7 +785,7 @@ export default function NightPhase() {
                 >
                   🌅
                 </motion.div>
-                <p className="text-yellow-400 text-base sm:text-lg font-bold">
+                <p style={{ ...STROKE_STYLE, fontSize: '18px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)' }}>
                   افتحوا أعينكم...
                 </p>
               </motion.div>
@@ -743,22 +793,75 @@ export default function NightPhase() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Action buttons */}
+        {/* Action button — Yalla tobol-start-btn style */}
         {phase !== 'night_start' && phase !== 'night_mafia_sleep' && phase !== 'night_end' && (
           <div className="mt-6 sm:mt-8 flex justify-center">
-            <Button
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              whileHover={canProceed() ? { scale: 1.02 } : {}}
               onClick={handleNextPhase}
               disabled={!canProceed()}
-              className="bg-gradient-to-l from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white font-bold px-6 sm:px-8 py-4 sm:py-5 text-sm sm:text-base disabled:opacity-40"
+              className="tobol-start-btn"
+              style={{
+                padding: '14px 28px',
+                border: 'none',
+                color: '#feef91',
+                fontSize: '16px',
+                fontWeight: 900,
+                cursor: canProceed() ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                paintOrder: 'stroke fill',
+                WebkitTextStroke: '0.5px #aa6e1f',
+                textShadow: '0 2px 6px rgba(0,0,0,.6)',
+                opacity: canProceed() ? 1 : 0.5,
+              }}
             >
-              {phase === 'night_mafia_wake' && currentMafiaViewIndex < aliveMafia.length - 1
-                ? 'اللاعب التالي'
-                : 'التالي'}
-              <ChevronLeft className="w-4 h-4 mr-2" />
-            </Button>
+              <span className="tobol-start-icon">
+                <span style={{ fontSize: '16px' }}>{phase === 'night_mafia_wake' && currentMafiaViewIndex < aliveMafia.length - 1 ? '➡️' : '🌙'}</span>
+              </span>
+              <span>{phase === 'night_mafia_wake' && currentMafiaViewIndex < aliveMafia.length - 1 ? 'اللاعب التالي' : 'التالي'}</span>
+            </motion.button>
           </div>
         )}
       </div>
+      </div>
+
+      {/* ===== Diwaniya host: share link capsule ===== */}
+      {isDiwaniyaHost && shareLink && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+          <button
+            onClick={copyShareLink}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '6px 12px', borderRadius: '999px',
+              background: 'rgba(6,42,32,.65)',
+              border: '1px solid rgba(254,239,145,.25)',
+              color: shareCopied ? '#34d399' : '#feef91',
+              fontSize: '10px', fontWeight: 700, cursor: 'pointer',
+            }}
+          >
+            <span>{shareCopied ? '✓' : '🔗'}</span>
+            <span>{shareCopied ? 'تم نسخ الرابط' : 'رابط المشاهدة'}</span>
+          </button>
+          <button
+            onClick={shareExternally}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '6px 12px', borderRadius: '999px',
+              background: 'rgba(16,185,129,.18)',
+              border: '1px solid rgba(16,185,129,.35)',
+              color: '#34d399',
+              fontSize: '10px', fontWeight: 700, cursor: 'pointer',
+              marginRight: '6px',
+            }}
+          >
+            <span>📤</span><span>مشاركة</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

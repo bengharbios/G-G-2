@@ -35,6 +35,121 @@ import {
   Eye,
 } from 'lucide-react';
 import { playDaySound } from '@/lib/sounds';
+import {
+  STROKE_STYLE,
+  useInGameSetupMode,
+  useYallaSoundState,
+  useHostHeartbeat,
+  useViewerCount,
+} from '@/lib/yalla-game-helpers';
+
+// ============================================================
+// Yalla Day Shell — Yalla Ludo header for DayPhase blocks
+// Provides: sound toggle, diwaniya viewer count, quit button,
+// + Yalla-styled title with StrokeTextStyle + notice pill
+// ============================================================
+function YallaDayShell({
+  title,
+  subtitle,
+  children,
+  isNight = false,
+  phase,
+  round,
+  gameMode,
+  roomCode,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+  isNight?: boolean;
+  phase?: string;
+  round?: number;
+  gameMode?: string | null;
+  roomCode?: string | null;
+}) {
+  const { musicOn, toggleMusic } = useYallaSoundState();
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+  const { viewerCount } = useViewerCount('mafia', isDiwaniyaHost, roomCode ?? null);
+
+  return (
+    <div
+      dir="rtl"
+      className={isNight ? 'mafia-bg-night' : 'mafia-bg-day'}
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 12px',
+        gap: '6px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Yalla header actions */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label="sound"
+          title="الصوت"
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
+        {isDiwaniyaHost && (
+          <div
+            className="tobol-eye-btn"
+            style={{ position: 'relative', cursor: 'default' }}
+            aria-label="viewers"
+            title="المشاهدون"
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+            <span className="tobol-eye-count">{viewerCount}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Title row */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '2px' }}
+      >
+        <img
+          src="/yalla-games/mafia.png"
+          alt="المافيا"
+          style={{ width: '38px', height: '32px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.5))' }}
+        />
+        <h1 style={{ ...STROKE_STYLE, fontSize: '16px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)', margin: 0 }}>
+          {title}
+        </h1>
+        {round !== undefined && (
+          <span style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 700 }}>جولة {round}</span>
+        )}
+      </motion.div>
+
+      {/* Notice pill */}
+      {subtitle && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="tobol-board-notice-v3">
+            <span className="tobol-notice-dot" />
+            <span className="tobol-notice-text">{subtitle}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Content area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 // ============================================================
 // Live Voting Board Component
@@ -756,6 +871,11 @@ export default function DayPhase() {
     gameMode,
     roomCode,
   } = useGameStore();
+
+  // Yalla Ludo: hide global header chrome + bottom nav during in-game phases
+  useInGameSetupMode();
+  // Yalla Ludo: shared host heartbeat (posts to /api/mafia-room/[code]/heartbeat)
+  useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
 
   const [selectedPreset, setSelectedPreset] = useState(2);
   const [discussionTimer, setDiscussionTimer] = useState(0);

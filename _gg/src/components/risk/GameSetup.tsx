@@ -1,21 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useRiskStore } from '@/lib/risk-store';
-import { Plus, Minus, ChevronLeft, Users, Trophy } from 'lucide-react';
-import { DEFAULT_PLAYER_NAMES, TARGET_SCORE_OPTIONS } from '@/lib/risk-types';
+import { DEFAULT_PLAYER_NAMES, TARGET_SCORE_OPTIONS, PLAYER_COLORS } from '@/lib/risk-types';
 import type { RiskGameConfig } from '@/lib/risk-types';
+import { useInGameSetupMode, useYallaSoundState, STROKE_STYLE } from '@/lib/yalla-game-helpers';
 
 const PLAYER_COUNT_OPTIONS = [2, 3, 4, 5, 6, 7, 8];
 
+// Local PLAYER_COLORS with hex for inline styles
+const PLAYER_HEX = ['#a78bfa', '#34d399', '#fbbf24', '#fb7185', '#22d3ee', '#fb923c', '#f472b6', '#2dd4bf'];
+
 export default function GameSetup() {
-  const { startGame } = useRiskStore();
+  const router = useRouter();
+  const { startGame, resetGame } = useRiskStore();
 
   const [playerCount, setPlayerCount] = useState(2);
   const [playerNames, setPlayerNames] = useState<string[]>(DEFAULT_PLAYER_NAMES);
   const [targetScore, setTargetScore] = useState(50);
+  const [showExitDialog, setShowExitDialog] = useState(false);
+
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
 
   const updatePlayerName = (index: number, name: string) => {
     const updated = [...playerNames];
@@ -33,166 +41,440 @@ export default function GameSetup() {
 
   const playerNamesValid = playerNames.slice(0, playerCount).every(n => n.trim().length > 0);
 
-  const PLAYER_COLORS = [
-    { bg: 'bg-violet-950/40', border: 'border-violet-500/30', text: 'text-violet-300', dot: 'bg-violet-500' },
-    { bg: 'bg-emerald-950/40', border: 'border-emerald-500/30', text: 'text-emerald-300', dot: 'bg-emerald-500' },
-    { bg: 'bg-amber-950/40', border: 'border-amber-500/30', text: 'text-amber-300', dot: 'bg-amber-500' },
-    { bg: 'bg-rose-950/40', border: 'border-rose-500/30', text: 'text-rose-300', dot: 'bg-rose-500' },
-    { bg: 'bg-cyan-950/40', border: 'border-cyan-500/30', text: 'text-cyan-300', dot: 'bg-cyan-500' },
-    { bg: 'bg-orange-950/40', border: 'border-orange-500/30', text: 'text-orange-300', dot: 'bg-orange-500' },
-    { bg: 'bg-pink-950/40', border: 'border-pink-500/30', text: 'text-pink-300', dot: 'bg-pink-500' },
-    { bg: 'bg-teal-950/40', border: 'border-teal-500/30', text: 'text-teal-300', dot: 'bg-teal-500' },
-  ];
+  const handleExit = () => {
+    resetGame();
+    router.push('/');
+  };
 
   return (
-    <div className="flex flex-col items-center px-4 py-6 sm:py-8" dir="rtl">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-sm mx-auto"
-      >
-        {/* Title */}
-        <motion.div
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring' }}
-          className="text-center mb-6"
+    <div
+      dir="rtl"
+      className="tobol-setup-root"
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 14px 16px',
+        gap: '10px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ══════════ 1) أيقونات الهيدر — صوت + خروج ══════════ */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
+          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
         >
-          <div className="text-4xl mb-2">💣</div>
-          <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-400">
-            تجهيز المجازفة
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">أعدّ اللاعبين واختر الهدف!</p>
-        </motion.div>
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
+          />
+        </button>
 
-        {/* Target Score */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="mb-4 rounded-2xl border border-slate-700/40 bg-slate-900/60 p-4"
+        <button
+          type="button"
+          className="tobol-header-btn"
+          onClick={() => setShowExitDialog(true)}
+          aria-label="خروج"
+          title="خروج"
         >
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Trophy className="w-4 h-4 text-amber-400" />
-            <p className="text-xs text-slate-400 font-bold">الهدف</p>
+          <img src="/battle/btn_exit.webp" alt="exit" />
+        </button>
+      </div>
+
+      {/* ══════════ صورة اللعبة + اسمها ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: -12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
+      >
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src="/yalla-games/risk.png"
+            alt="المجازفة"
+            style={{
+              width: '76px',
+              height: '64px',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,.55))',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-12px',
+              background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
+              filter: 'blur(6px)',
+              zIndex: -1,
+              borderRadius: '50%',
+            }}
+          />
+        </div>
+        <h1
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '22px',
+            fontWeight: 900,
+            textShadow: '0 2px 4px rgba(0,0,0,.85)',
+            margin: '2px 0 0',
+            lineHeight: 1,
+          }}
+        >
+          المجازفة
+        </h1>
+        <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+          Risk — Push your luck 🃏
+        </p>
+      </motion.div>
+
+      {/* ══════════ عنوان "تجهيز المعركة" ══════════ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '4px 14px',
+          borderRadius: '999px',
+          background: 'rgba(6,42,32,.65)',
+          border: '1px solid rgba(254,239,145,.18)',
+        }}
+      >
+        <span style={{ fontSize: '13px' }}>💣</span>
+        <span
+          style={{
+            ...STROKE_STYLE,
+            fontSize: '13px',
+            fontWeight: 800,
+            letterSpacing: '0.4px',
+          }}
+        >
+          تجهيز المجازفة
+        </span>
+      </motion.div>
+
+      {/* ══════════ إطار الهدف ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22, duration: 0.3 }}
+        className="tobol-score-frame"
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          padding: '8px 14px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '6px',
+          marginTop: '4px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(254,239,145,.22), rgba(170,110,31,.08))',
+              border: '1px solid rgba(254,239,145,.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <span style={{ fontSize: '14px' }}>🏆</span>
           </div>
-          <div className="flex gap-1.5 flex-wrap justify-center">
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#feef91', whiteSpace: 'nowrap' }}>
+            الهدف
+          </span>
+          <div style={{ flex: 1, display: 'flex', gap: '4px' }}>
             {TARGET_SCORE_OPTIONS.map((score) => (
               <button
                 key={score}
                 onClick={() => setTargetScore(score)}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer border ${
-                  targetScore === score
-                    ? 'border-amber-500 bg-amber-950/60 text-amber-200 shadow-lg shadow-amber-950/30'
-                    : 'border-slate-700/40 bg-slate-800/40 text-slate-400 hover:border-amber-500/40'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '5px 4px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  border: targetScore === score
+                    ? '1px solid rgba(254,239,145,.55)'
+                    : '1px solid rgba(255,255,255,.1)',
+                  background: targetScore === score
+                    ? 'rgba(254,239,145,.12)'
+                    : 'rgba(0,0,0,.25)',
+                  color: targetScore === score ? '#feef91' : '#9fc4b4',
+                }}
               >
                 {score}
               </button>
             ))}
           </div>
-          <p className="text-center text-[10px] text-slate-500 mt-2">
-            أول لاعب يوصل لـ {targetScore} نقطة يفوز 🏆
-          </p>
-        </motion.div>
-
-        {/* Player Count */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-4 rounded-2xl border border-slate-700/40 bg-slate-900/60 p-4"
-        >
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Users className="w-4 h-4 text-violet-400" />
-            <p className="text-xs text-slate-400 font-bold">عدد اللاعبين</p>
-          </div>
-          <div className="flex gap-1.5 flex-wrap">
-            {PLAYER_COUNT_OPTIONS.map((count) => (
-              <button
-                key={count}
-                onClick={() => setPlayerCount(count)}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer border-2 ${
-                  playerCount === count
-                    ? 'border-violet-500 bg-violet-950/60 text-violet-200 shadow-lg shadow-violet-950/30'
-                    : 'border-slate-700/40 bg-slate-800/40 text-slate-400 hover:border-violet-500/40'
-                }`}
-              >
-                <div className="text-sm sm:text-base">{count}</div>
-              </button>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Player Names */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="mb-4 space-y-2"
-        >
-          {Array.from({ length: playerCount }).map((_, idx) => {
-            const color = PLAYER_COLORS[idx];
-            return (
-              <div key={idx} className={`rounded-xl border ${color.border} ${color.bg} p-3`}>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className={`w-3 h-3 rounded-full ${color.dot}`} />
-                  <span className={`text-xs font-bold ${color.text}`}>لاعب {idx + 1}</span>
-                </div>
-                <input
-                  type="text"
-                  value={playerNames[idx]}
-                  onChange={(e) => updatePlayerName(idx, e.target.value)}
-                  placeholder={DEFAULT_PLAYER_NAMES[idx]}
-                  className="w-full bg-slate-800/60 border border-slate-700/30 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-500/50 transition-colors"
-                  maxLength={20}
-                />
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Deck Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-4 rounded-2xl border border-slate-700/40 bg-slate-900/60 p-3"
-        >
-          <p className="text-xs text-slate-400 font-bold mb-2 text-center">🃏 محتوى مجموعة البطاقات</p>
-          <div className="flex flex-wrap justify-center gap-1.5">
-            <span className="text-[10px] px-2 py-1 rounded-lg bg-red-950/30 border border-red-500/20 text-red-400">٤٥ رقم</span>
-            <span className="text-[10px] px-2 py-1 rounded-lg bg-slate-800/50 border border-slate-600/20 text-slate-400">💣 ×٢</span>
-            <span className="text-[10px] px-2 py-1 rounded-lg bg-slate-800/50 border border-slate-600/20 text-slate-400">⏭️ ×١</span>
-            <span className="text-[10px] px-2 py-1 rounded-lg bg-violet-950/30 border border-violet-500/20 text-violet-400">✨ ×٢</span>
-            <span className="text-[10px] px-2 py-1 rounded-lg bg-amber-950/30 border border-amber-500/20 text-amber-400">🔥 ×٣</span>
-          </div>
-        </motion.div>
-
-        {/* Start Button */}
-        <motion.button
-          whileHover={{ scale: playerNamesValid ? 1.02 : 1 }}
-          whileTap={{ scale: playerNamesValid ? 0.98 : 1 }}
-          onClick={handleStart}
-          disabled={!playerNamesValid}
-          className={`w-full rounded-2xl py-4 font-bold text-base sm:text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-            playerNamesValid
-              ? 'bg-gradient-to-l from-violet-600 via-purple-600 to-violet-700 hover:from-violet-500 hover:via-purple-500 hover:to-violet-600 text-white shadow-lg shadow-violet-950/50'
-              : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-          }`}
-        >
-          <span>💣</span>
-          <span>ابدأ المجازفة 🃏</span>
-          <ChevronLeft className="w-5 h-5" />
-        </motion.button>
-
-        {!playerNamesValid && (
-          <p className="text-center text-[10px] text-red-400/70 mt-2">
-            تأكد من إدخال أسماء جميع اللاعبين
-          </p>
-        )}
+        </div>
+        <p style={{ fontSize: '10px', color: '#9fc4b4', textAlign: 'center' }}>
+          أول لاعب يصل إلى {targetScore} نقطة يفوز 🏆
+        </p>
       </motion.div>
+
+      {/* ══════════ عدد اللاعبين ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.3 }}
+        className="tobol-score-frame"
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          padding: '8px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginTop: '4px',
+        }}
+      >
+        <div
+          style={{
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(254,239,145,.22), rgba(170,110,31,.08))',
+            border: '1px solid rgba(254,239,145,.35)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>👥</span>
+        </div>
+        <span style={{ fontSize: '12px', fontWeight: 800, color: '#feef91', whiteSpace: 'nowrap' }}>
+          اللاعبون
+        </span>
+        <div style={{ flex: 1, display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          {PLAYER_COUNT_OPTIONS.map((count) => (
+            <button
+              key={count}
+              onClick={() => setPlayerCount(count)}
+              style={{
+                flex: '1 1 32px',
+                padding: '5px 4px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '11px',
+                fontWeight: 800,
+                border: playerCount === count
+                  ? '1px solid rgba(254,239,145,.55)'
+                  : '1px solid rgba(255,255,255,.1)',
+                background: playerCount === count
+                  ? 'rgba(254,239,145,.12)'
+                  : 'rgba(0,0,0,.25)',
+                color: playerCount === count ? '#feef91' : '#9fc4b4',
+              }}
+            >
+              {count}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ══════════ قائمة أسماء اللاعبين ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.36, duration: 0.3 }}
+        style={{ width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '2px', maxHeight: '180px', overflowY: 'auto' }}
+      >
+        {Array.from({ length: playerCount }).map((_, idx) => {
+          const color = PLAYER_COLORS[idx % PLAYER_COLORS.length];
+          const hex = PLAYER_HEX[idx % PLAYER_HEX.length];
+          return (
+            <div
+              key={idx}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '6px 8px', borderRadius: '10px',
+                background: `${hex}10`,
+                border: `1px solid ${hex}40`,
+              }}
+            >
+              <div style={{
+                width: '20px', height: '20px', borderRadius: '50%',
+                background: `${hex}40`, border: `1px solid ${hex}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <span style={{ fontSize: '10px' }}>{color.emoji}</span>
+              </div>
+              <input
+                type="text"
+                value={playerNames[idx]}
+                onChange={(e) => updatePlayerName(idx, e.target.value)}
+                placeholder={DEFAULT_PLAYER_NAMES[idx]}
+                maxLength={20}
+                dir="rtl"
+                style={{
+                  flex: 1,
+                  background: 'rgba(0,0,0,.35)',
+                  border: `1px solid ${hex}33`,
+                  borderRadius: '8px',
+                  color: '#fff',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  padding: '6px 8px',
+                  outline: 'none',
+                  textAlign: 'center',
+                }}
+              />
+            </div>
+          );
+        })}
+      </motion.div>
+
+      {/* ══════════ معلومات مجموعة البطاقات ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.42, duration: 0.3 }}
+        style={{
+          width: '100%', maxWidth: '380px',
+          display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center',
+          marginTop: '2px',
+        }}
+      >
+        <span style={{ fontSize: '9px', padding: '3px 6px', borderRadius: '6px', background: 'rgba(34,211,238,.1)', border: '1px solid rgba(34,211,238,.3)', color: '#22d3ee' }}>٤٥ رقم</span>
+        <span style={{ fontSize: '9px', padding: '3px 6px', borderRadius: '6px', background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.3)', color: '#f87171' }}>💣 ×٢</span>
+        <span style={{ fontSize: '9px', padding: '3px 6px', borderRadius: '6px', background: 'rgba(148,163,184,.1)', border: '1px solid rgba(148,163,184,.3)', color: '#94a3b8' }}>⏭️ ×١</span>
+        <span style={{ fontSize: '9px', padding: '3px 6px', borderRadius: '6px', background: 'rgba(245,158,11,.1)', border: '1px solid rgba(245,158,11,.3)', color: '#fbbf24' }}>✨ ×١</span>
+        <span style={{ fontSize: '9px', padding: '3px 6px', borderRadius: '6px', background: 'rgba(168,85,247,.1)', border: '1px solid rgba(168,85,247,.3)', color: '#a855f7' }}>🔥 ×١</span>
+      </motion.div>
+
+      {/* ══════════ زر بدء المعركة ══════════ */}
+      <motion.button
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.48, duration: 0.3 }}
+        whileHover={playerNamesValid ? { scale: 1.02 } : {}}
+        whileTap={playerNamesValid ? { scale: 0.97 } : {}}
+        onClick={handleStart}
+        disabled={!playerNamesValid}
+        className="tobol-start-btn"
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          padding: '14px 16px',
+          border: 'none',
+          color: '#feef91',
+          fontSize: '17px',
+          fontWeight: 900,
+          cursor: playerNamesValid ? 'pointer' : 'not-allowed',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '10px',
+          paintOrder: 'stroke fill',
+          WebkitTextStroke: '0.5px #aa6e1f',
+          textShadow: '0 2px 6px rgba(0,0,0,.6)',
+          marginTop: '6px',
+        }}
+      >
+        <span className="tobol-start-icon">
+          <span style={{ fontSize: '18px' }}>💣</span>
+        </span>
+        <span>ابدأ المجازفة</span>
+      </motion.button>
+
+      {!playerNamesValid && (
+        <p style={{ color: '#ef4444', fontSize: '11px', marginTop: '2px' }}>
+          ⚠ تأكد من إدخال أسماء جميع اللاعبين
+        </p>
+      )}
+
+      {/* ══════════ حوار الخروج ══════════ */}
+      <AnimatePresence>
+        {showExitDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowExitDialog(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,.72)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+              padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(180deg, #0e2a22, #061812)',
+                border: '1.5px solid rgba(254,239,145,.25)',
+                borderRadius: '18px',
+                padding: '20px',
+                width: '100%',
+                maxWidth: '300px',
+                textAlign: 'center',
+                boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+              }}
+            >
+              <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
+              <h3
+                style={{
+                  ...STROKE_STYLE,
+                  fontSize: '17px',
+                  fontWeight: 900,
+                  marginBottom: '6px',
+                }}
+              >
+                الخروج من المجازفة؟
+              </h3>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
+                سيتم إنهاء الجلسة وعدم حفظ أي تقدم. هل أنت متأكد؟
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setShowExitDialog(false)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,.12)',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                  }}
+                >إلغاء</button>
+                <button
+                  onClick={handleExit}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
+                  }}
+                >نعم، اخرج</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

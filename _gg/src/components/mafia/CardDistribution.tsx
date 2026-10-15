@@ -1,10 +1,16 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/lib/game-store';
 import RoleCard from './RoleCard';
-import { Eye, EyeOff } from 'lucide-react';
+import {
+  STROKE_STYLE,
+  useInGameSetupMode,
+  useYallaSoundState,
+  useHostHeartbeat,
+  useViewerCount,
+  useShareLinks,
+} from '@/lib/yalla-game-helpers';
 
 export default function CardDistribution() {
   const {
@@ -15,7 +21,15 @@ export default function CardDistribution() {
     setShowCard,
     markCardSeen,
     setPhase,
+    gameMode,
+    roomCode,
   } = useGameStore();
+
+  useInGameSetupMode();
+  const { musicOn, toggleMusic } = useYallaSoundState();
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+  useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
+  const { viewerCount } = useViewerCount('mafia', isDiwaniyaHost, roomCode);
 
   const currentPlayer = players[currentDistributionIndex];
   const isLastPlayer = currentDistributionIndex >= players.length - 1;
@@ -36,47 +50,101 @@ export default function CardDistribution() {
     setShowCard(true);
   };
 
+  const progress = ((currentDistributionIndex + 1) / players.length) * 100;
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4 mafia-bg-night">
-      {/* Stars */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white star-twinkle"
-            style={{
-              width: Math.random() * 2 + 1 + 'px',
-              height: Math.random() * 2 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDelay: Math.random() * 3 + 's',
-            }}
+    <div
+      dir="rtl"
+      className="tobol-setup-root"
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '8px 14px 16px',
+        gap: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ═══ header actions ═══ */}
+      <div className="tobol-header-actions">
+        <button
+          type="button"
+          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
+          onClick={toggleMusic}
+          aria-label="sound"
+          title="الصوت"
+        >
+          <img
+            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
+            alt="sound"
           />
-        ))}
+        </button>
+        {isDiwaniyaHost && (
+          <div
+            className="tobol-eye-btn"
+            style={{ position: 'relative', cursor: 'default' }}
+            aria-label="viewers"
+            title="المشاهدون"
+          >
+            <img src="/battle/icon_eye.webp" alt="viewers" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+            <span className="tobol-eye-count">{viewerCount}</span>
+          </div>
+        )}
       </div>
 
-      <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto">
-        {/* Progress */}
-        <div className="mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-slate-400 text-xs sm:text-sm">
-              توزيع البطاقات
-            </span>
-            <span className="text-yellow-400 font-bold text-xs sm:text-sm">
-              {currentDistributionIndex + 1} / {players.length}
-            </span>
-          </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-l from-yellow-500 to-amber-600 rounded-full"
-              animate={{
-                width: `${((currentDistributionIndex + 1) / players.length) * 100}%`,
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
-        </div>
+      {/* ═══ title row ═══ */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '2px' }}
+      >
+        <img
+          src="/yalla-games/mafia.png"
+          alt="المافيا"
+          style={{ width: '38px', height: '32px', objectFit: 'contain', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.5))' }}
+        />
+        <h1 style={{ ...STROKE_STYLE, fontSize: '16px', fontWeight: 900, textShadow: '0 2px 4px rgba(0,0,0,.85)', margin: 0 }}>
+          توزيع البطاقات
+        </h1>
+        <span style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 700 }}>
+          {currentDistributionIndex + 1}/{players.length}
+        </span>
+      </motion.div>
 
+      {/* ═══ notice pill ═══ */}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className="tobol-board-notice-v3">
+          <span className="tobol-notice-dot" />
+          <span className="tobol-notice-text">
+            {showCard ? '👁️ احفظ دورك — لا يراك أحد' : '🕵️ اضغط لرؤية بطاقتك'}
+          </span>
+        </div>
+      </div>
+
+      {/* ═══ progress bar ═══ */}
+      <div style={{ width: '100%', maxWidth: '380px' }}>
+        <div style={{
+          width: '100%', height: '6px', borderRadius: '999px',
+          background: 'rgba(0,0,0,.5)', overflow: 'hidden',
+          border: '1px solid rgba(254,239,145,.15)',
+        }}>
+          <motion.div
+            style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, #f59e0b, #feef91)',
+              borderRadius: '999px',
+            }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.4 }}
+          />
+        </div>
+      </div>
+
+      {/* ═══ main content ═══ */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentDistributionIndex}
@@ -85,6 +153,7 @@ export default function CardDistribution() {
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: 0.4 }}
             className="flex flex-col items-center"
+            style={{ width: '100%', maxWidth: '320px' }}
           >
             {/* Player name banner */}
             {!showCard && (
@@ -92,25 +161,40 @@ export default function CardDistribution() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: 'spring' }}
-                className="text-center mb-6 sm:mb-8"
+                className="text-center mb-4"
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-800 border-2 border-yellow-500/50 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <span className="text-2xl sm:text-3xl font-bold text-yellow-400">
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%',
+                  background: 'radial-gradient(circle, rgba(254,239,145,.25), rgba(170,110,31,.05))',
+                  border: '2px solid rgba(254,239,145,.5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  margin: '0 auto 12px',
+                  boxShadow: '0 0 14px rgba(254,239,145,.25)',
+                }}>
+                  <span style={{
+                    fontSize: '24px', fontWeight: 900, color: '#feef91',
+                    textShadow: '0 2px 4px rgba(0,0,0,.7)',
+                    paintOrder: 'stroke fill',
+                    WebkitTextStroke: '1px #aa6e1f',
+                  }}>
                     {currentPlayer?.name.charAt(0)}
                   </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-100 mb-2">
+                <h2 style={{
+                  ...STROKE_STYLE,
+                  fontSize: '20px', fontWeight: 900, marginBottom: '4px',
+                }}>
                   أنا {currentPlayer?.name}
                 </h2>
-                <p className="text-slate-400 text-xs sm:text-sm">
+                <p style={{ color: '#9fc4b4', fontSize: '11px' }}>
                   اضغط لرؤية بطاقتك - لا يراك أحد!
                 </p>
               </motion.div>
             )}
 
-            {/* Card */}
+            {/* RoleCard */}
             {currentPlayer?.role && (
-              <div className="mb-6 sm:mb-8">
+              <div className="mb-4">
                 <RoleCard
                   role={currentPlayer.role}
                   playerName={showCard ? currentPlayer.name : undefined}
@@ -123,13 +207,25 @@ export default function CardDistribution() {
             {/* Action buttons */}
             <div className="flex flex-col gap-3 w-full max-w-xs">
               {!showCard ? (
-                <Button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={handleShowCard}
-                  className="bg-gradient-to-l from-yellow-600 to-amber-700 hover:from-yellow-500 hover:to-amber-600 text-white font-bold text-base sm:text-lg py-5 sm:py-6 pulse-glow-gold"
+                  className="tobol-start-btn"
+                  style={{
+                    padding: '14px 16px', border: 'none',
+                    color: '#feef91', fontSize: '16px', fontWeight: 900, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                    paintOrder: 'stroke fill',
+                    WebkitTextStroke: '0.5px #aa6e1f',
+                    textShadow: '0 2px 6px rgba(0,0,0,.6)',
+                  }}
                 >
-                  <Eye className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                  أرى بطاقتي
-                </Button>
+                  <span className="tobol-start-icon">
+                    <span style={{ fontSize: '16px' }}>👁️</span>
+                  </span>
+                  <span>أرى بطاقتي</span>
+                </motion.button>
               ) : (
                 <>
                   {/* Show team members for mafia */}
@@ -138,12 +234,19 @@ export default function CardDistribution() {
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-red-950/50 border border-red-500/30 rounded-xl p-3 sm:p-4 mb-2"
+                        style={{
+                          background: 'rgba(127,29,29,.3)',
+                          border: '1px solid rgba(239,68,68,.4)',
+                          borderRadius: '12px', padding: '10px 12px',
+                          marginBottom: '8px',
+                        }}
                       >
-                        <p className="text-red-300 text-xs sm:text-sm font-bold mb-2">
+                        <p style={{
+                          color: '#fca5a5', fontSize: '11px', fontWeight: 800, marginBottom: '6px',
+                        }}>
                           🔴 زميلائك في المافيا:
                         </p>
-                        <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center' }}>
                           {players
                             .filter(
                               (p) =>
@@ -153,7 +256,14 @@ export default function CardDistribution() {
                             .map((p) => (
                               <span
                                 key={p.id}
-                                className="bg-red-900/50 text-red-200 px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold"
+                                style={{
+                                  background: 'rgba(239,68,68,.3)',
+                                  color: '#fca5a5',
+                                  padding: '4px 10px',
+                                  borderRadius: '999px',
+                                  fontSize: '11px', fontWeight: 700,
+                                  border: '1px solid rgba(239,68,68,.5)',
+                                }}
                               >
                                 {p.name}
                               </span>
@@ -163,13 +273,25 @@ export default function CardDistribution() {
                     )
                   )}
 
-                  <Button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={handleConfirm}
-                    className="bg-gradient-to-l from-emerald-700 to-green-900 hover:from-emerald-600 hover:to-green-800 text-white font-bold text-base sm:text-lg py-5 sm:py-6"
+                    className="tobol-start-btn"
+                    style={{
+                      padding: '14px 16px', border: 'none',
+                      color: '#feef91', fontSize: '15px', fontWeight: 900, cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                      paintOrder: 'stroke fill',
+                      WebkitTextStroke: '0.5px #aa6e1f',
+                      textShadow: '0 2px 6px rgba(0,0,0,.6)',
+                    }}
                   >
-                    <EyeOff className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                    {isLastPlayer ? 'جميع اللاعبين رأوا بطاقاتهم ✅' : 'رأيت كرتي - التالي'}
-                  </Button>
+                    <span className="tobol-start-icon">
+                      <span style={{ fontSize: '14px' }}>{isLastPlayer ? '🌙' : '➡️'}</span>
+                    </span>
+                    <span>{isLastPlayer ? 'ابدأ الليل' : 'التالي'}</span>
+                  </motion.button>
                 </>
               )}
             </div>

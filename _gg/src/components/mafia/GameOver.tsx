@@ -1,24 +1,67 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useGameStore } from '@/lib/game-store';
 import PlayerAvatar from './PlayerAvatar';
 import { ROLE_CONFIGS, RoleType } from '@/lib/game-types';
 import {
-  Trophy,
-  RotateCcw,
-  Skull,
-  Users,
-  Shield,
-  Crown,
-} from 'lucide-react';
+  useInGameSetupMode,
+  useGameRewards,
+} from '@/lib/yalla-game-helpers';
+
+// Confetti particles
+function Confetti() {
+  const particles = useMemo(() => {
+    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#feef91'];
+    return Array.from({ length: 50 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      delay: Math.random() * 1.8,
+      duration: 2 + Math.random() * 3.5,
+      size: 4 + Math.random() * 9,
+      rotate: Math.random() * 1080,
+    }));
+  }, []);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-50">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ y: -20, x: `${p.x}vw`, rotate: 0, opacity: 1 }}
+          animate={{ y: '110vh', rotate: p.rotate + 720, opacity: 0 }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            ease: 'easeIn',
+          }}
+          style={{
+            position: 'absolute',
+            top: '-10px',
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+            borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function GameOver() {
-  const { players, gameWinner, round, eliminatedPlayers, gameLog, resetGame } =
-    useGameStore();
+  const { players, gameWinner, round, eliminatedPlayers, gameLog, resetGame } = useGameStore();
+
+  useInGameSetupMode();
+
+  const isCitizensWin = gameWinner === 'citizen';
+  const playerCount = players.length;
+  const outcome = isCitizensWin ? 'win' : 'loss';
+  const { godfather, rewards } = useGameRewards(true, 'mafia', outcome, playerCount);
 
   const alivePlayers = players.filter((p) => p.isAlive);
   const mafiaPlayers = players.filter(
@@ -28,173 +71,242 @@ export default function GameOver() {
     (p) => p.role && ROLE_CONFIGS[p.role].team === 'citizen'
   );
 
-  const isCitizensWin = gameWinner === 'citizen';
+  const handlePlayAgain = () => {
+    resetGame();
+  };
+
+  const handleCloseGame = () => {
+    resetGame();
+    window.location.href = '/';
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-3 sm:p-4 mafia-bg-night">
-      {/* Confetti-like particles for winner */}
-      {isCitizensWin && (
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          {Array.from({ length: 30 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute confetti-piece"
-              style={{
-                backgroundColor: ['#fbbf24', '#3b82f6', '#10b981', '#f59e0b', '#6366f1'][
-                  i % 5
-                ],
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${2 + Math.random() * 3}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
+    <div className="tobol-gameover-v2-root">
+      {/* Confetti for citizen win */}
+      {isCitizensWin && <Confetti />}
 
-      <div className="relative z-10 w-full max-w-sm sm:max-w-lg mx-auto py-6 sm:py-8">
-        {/* Winner banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -16, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.3 }}
+        className="tobol-gameover-card-v2"
+      >
+        {/* Trophy */}
         <motion.div
-          initial={{ scale: 0, rotate: -10 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', damping: 10 }}
-          className="text-center mb-6 sm:mb-8"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ width: '100px', height: '100px', marginTop: '-20px' }}
         >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="text-7xl sm:text-8xl mb-3 sm:mb-4"
-          >
-            {isCitizensWin ? '🏆' : '💀'}
-          </motion.div>
-          <h1
-            className={`text-3xl sm:text-4xl font-black mb-2 ${
-              isCitizensWin
-                ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-300'
-                : 'text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500'
-            }`}
-          >
-            {isCitizensWin ? 'الصالحون فازوا! 🎉' : 'المافيا فازت! 😈'}
-          </h1>
-          <p className="text-slate-400 text-xs sm:text-sm">
-            الجولة {round} • {eliminatedPlayers.length} إقصاءات
-          </p>
+          <img
+            src="/battle/segment_award.webp"
+            alt="trophy"
+            className="tobol-gameover-trophy-v2"
+          />
         </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{alivePlayers.length}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">نجوا</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Skull className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{eliminatedPlayers.length}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">أُقصوا</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900/50 border-slate-700/50">
-            <CardContent className="pt-3 sm:pt-4 text-center">
-              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mx-auto mb-1" />
-              <p className="text-xl sm:text-2xl font-black text-slate-200">{round}</p>
-              <p className="text-[10px] sm:text-xs text-slate-500">جولات</p>
-            </CardContent>
-          </Card>
+        {/* Title */}
+        <h1 className="tobol-gameover-title-v2">
+          {isCitizensWin ? 'الصالحون فازوا!' : 'المافيا فازت!'}
+        </h1>
+
+        {/* Description */}
+        <p className="tobol-gameover-desc-v2">
+          الجولة {round} • {eliminatedPlayers.length} إقصاءات
+        </p>
+
+        {/* Godfather row */}
+        <div className="tobol-gameover-godfather">
+          <div className="tobol-gameover-godfather-avatar">
+            <span className="tobol-gameover-godfather-crown">👑</span>
+            {godfather ? (
+              <img src={godfather.avatar} alt={godfather.name} />
+            ) : (
+              <span style={{ fontSize: '18px' }}>🕵️</span>
+            )}
+          </div>
+          <div className="tobol-gameover-godfather-info">
+            <div className="tobol-gameover-godfather-name">
+              {godfather?.name || 'العراب'}
+            </div>
+            <span className="tobol-gameover-godfather-tag">العراب</span>
+          </div>
+          <div className="tobol-gameover-godfather-rewards">
+            <div className="tobol-gameover-reward-chip">
+              <img src="/yalla-ui/exp.png" alt="xp" />
+              <span className="reward-amount">{rewards ? `+${rewards.xp}` : '...'}</span>
+            </div>
+            <div className="tobol-gameover-reward-chip">
+              <img src="/yalla-ui/coin.webp" alt="gold" />
+              <span className="reward-amount">{rewards ? `+${rewards.gold}` : '...'}</span>
+            </div>
+          </div>
         </div>
 
-        {/* All players revealed */}
-        <Card className="bg-slate-900/50 border-slate-700/50 mb-3 sm:mb-4">
-          <CardContent className="pt-3 sm:pt-4">
-            <h3 className="text-slate-200 font-bold mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
-              <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400" />
-              كشف جميع البطاقات
-            </h3>
+        {/* Level-up */}
+        {rewards?.leveledUp && rewards.newLevel && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="tobol-gameover-levelup"
+          >
+            🎉 ترقية للمستوى {rewards.newLevel}!
+          </motion.div>
+        )}
 
-            {/* Mafia team */}
-            <div className="mb-3 sm:mb-4">
-              <Badge className="bg-red-900/50 text-red-300 border-red-500/30 mb-2 text-xs">
-                👿 فريق المافيا
-              </Badge>
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 mt-2">
-                {mafiaPlayers.map((player) => (
-                  <PlayerAvatar
-                    key={player.id}
-                    name={player.name}
-                    isAlive={player.isAlive}
-                    role={player.role as RoleType}
-                    showRole={true}
-                    size="sm"
-                  />
-                ))}
-              </div>
+        {/* Teams comparison row */}
+        <div className="tobol-gameover-teams-row">
+          <div className={`tobol-team-result-card team-red ${isCitizensWin ? 'loser' : 'winner'}`}>
+            <div className="tobol-team-result-rank">{isCitizensWin ? '💀' : '🏆'}</div>
+            <div className="tobol-team-result-name">المافيا</div>
+            <div className="tobol-team-result-score">{mafiaPlayers.filter(p => p.isAlive).length}/{mafiaPlayers.length}</div>
+            <div className="tobol-team-result-label">{isCitizensWin ? 'خاسر' : 'فائز'}</div>
+          </div>
+          <div className={`tobol-team-result-card team-blue ${isCitizensWin ? 'winner' : 'loser'}`}>
+            <div className="tobol-team-result-rank">{isCitizensWin ? '🏆' : '💀'}</div>
+            <div className="tobol-team-result-name">الصالحون</div>
+            <div className="tobol-team-result-score">{alivePlayers.length}/{citizenPlayers.length}</div>
+            <div className="tobol-team-result-label">{isCitizensWin ? 'فائز' : 'خاسر'}</div>
+          </div>
+        </div>
+
+        {/* Stats card */}
+        <div className="tobol-gameover-stats-card">
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon">
+              <span style={{ fontSize: '14px' }}>👥</span>
             </div>
-
-            {/* Citizen team */}
-            <div>
-              <Badge className="bg-blue-900/50 text-blue-300 border-blue-500/30 mb-2 text-xs">
-                🛡️ فريق الصالحين
-              </Badge>
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 mt-2">
-                {citizenPlayers.map((player) => (
-                  <PlayerAvatar
-                    key={player.id}
-                    name={player.name}
-                    isAlive={player.isAlive}
-                    role={player.role as RoleType}
-                    showRole={true}
-                    size="sm"
-                  />
-                ))}
-              </div>
+            <div className="tobol-gameover-stat-label">نجوا</div>
+            <div className="tobol-gameover-stat-value">{alivePlayers.length}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon">
+              <span style={{ fontSize: '14px' }}>💀</span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="tobol-gameover-stat-label">أُقصوا</div>
+            <div className="tobol-gameover-stat-value">{eliminatedPlayers.length}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon">
+              <span style={{ fontSize: '14px' }}>🌙</span>
+            </div>
+            <div className="tobol-gameover-stat-label">الجولات</div>
+            <div className="tobol-gameover-stat-value">{round}</div>
+          </div>
+        </div>
 
-        {/* Game Log */}
-        <Card className="bg-slate-900/50 border-slate-700/50 mb-4 sm:mb-6">
-          <CardContent className="pt-3 sm:pt-4">
-            <h3 className="text-slate-200 font-bold mb-2 sm:mb-3 text-xs sm:text-sm">
-              📜 سجل اللعبة
-            </h3>
-            <div className="space-y-1.5 sm:space-y-2 max-h-40 sm:max-h-48 overflow-y-auto mafia-scrollbar">
-              {gameLog.map((entry, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-2 text-xs sm:text-sm"
-                >
-                  <span className="text-slate-600 text-[10px] sm:text-xs mt-0.5 shrink-0 w-5 sm:w-6">
-                    {entry.round}
-                  </span>
-                  <span
-                    className={
-                      entry.phase === 'night'
-                        ? 'text-indigo-400'
-                        : entry.message.includes('إقصاء') || entry.message.includes('قتل')
-                        ? 'text-red-400'
-                        : 'text-slate-400'
-                    }
-                  >
-                    {entry.message}
-                  </span>
-                </div>
+        {/* Players reveal */}
+        <div style={{
+          background: 'rgba(6,42,32,.6)',
+          border: '1px solid rgba(254,239,145,.15)',
+          borderRadius: '12px',
+          padding: '10px',
+          marginTop: '10px',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{ color: '#feef91', fontSize: '12px', fontWeight: 700 }}>🔍 كشف جميع البطاقات</span>
+          </div>
+          {/* Mafia team */}
+          <div style={{ marginBottom: '8px' }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '4px',
+              padding: '2px 8px', borderRadius: '999px',
+              background: 'rgba(239,68,68,.18)', border: '1px solid rgba(239,68,68,.5)',
+              color: '#fca5a5', fontSize: '10px', fontWeight: 800, marginBottom: '6px',
+            }}>
+              👿 فريق المافيا
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
+              {mafiaPlayers.map((player) => (
+                <PlayerAvatar
+                  key={player.id}
+                  name={player.name}
+                  isAlive={player.isAlive}
+                  role={player.role as RoleType}
+                  showRole={true}
+                  size="sm"
+                />
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          {/* Citizen team */}
+          <div>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '4px',
+              padding: '2px 8px', borderRadius: '999px',
+              background: 'rgba(59,130,246,.18)', border: '1px solid rgba(59,130,246,.5)',
+              color: '#93c5fd', fontSize: '10px', fontWeight: 800, marginBottom: '6px',
+            }}>
+              🛡️ فريق الصالحين
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
+              {citizenPlayers.map((player) => (
+                <PlayerAvatar
+                  key={player.id}
+                  name={player.name}
+                  isAlive={player.isAlive}
+                  role={(player.role ?? 'citizen') as RoleType}
+                  showRole={true}
+                  size="sm"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
 
-        {/* Play again */}
-        <Button
-          onClick={resetGame}
-          className="w-full bg-gradient-to-l from-yellow-600 to-amber-700 hover:from-yellow-500 hover:to-amber-600 text-white font-bold text-base sm:text-lg py-5 sm:py-6 pulse-glow-gold"
-        >
-          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-          العب مرة أخرى
-        </Button>
-      </div>
+        {/* Game log preview */}
+        {gameLog.length > 0 && (
+          <div style={{
+            background: 'rgba(6,42,32,.6)',
+            border: '1px solid rgba(254,239,145,.15)',
+            borderRadius: '12px',
+            padding: '10px',
+            marginTop: '10px',
+            maxHeight: '120px',
+            overflowY: 'auto',
+          }}>
+          <div style={{ textAlign: 'center', marginBottom: '6px' }}>
+            <span style={{ color: '#feef91', fontSize: '12px', fontWeight: 700 }}>📜 سجل اللعبة</span>
+          </div>
+          {gameLog.slice(-10).reverse().map((entry, i) => (
+            <div key={i} style={{
+              display: 'flex', gap: '6px', fontSize: '10px', padding: '2px 0',
+            }}>
+              <span style={{ color: '#6b7280', fontSize: '9px', flexShrink: 0, width: '18px' }}>
+                {entry.round}
+              </span>
+              <span style={{
+                color: entry.phase === 'night' ? '#a78bfa' :
+                  (entry.message.includes('إقصاء') || entry.message.includes('قتل')) ? '#fca5a5' : '#cbd5e1',
+              }}>
+                {entry.message}
+              </span>
+            </div>
+          ))}
+        </div>
+        )}
+
+        {/* Two-button row */}
+        <div className="tobol-gameover-buttons-row">
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handlePlayAgain}
+            className="tobol-gameover-btn btn-yes"
+          >
+            <span style={{ fontSize: '14px' }}>🔄</span>
+            <span>إعادة اللعبة</span>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handleCloseGame}
+            className="tobol-gameover-btn btn-no"
+          >
+            <span style={{ fontSize: '14px' }}>✕</span>
+            <span>إغلاق اللعبة</span>
+          </motion.button>
+        </div>
+      </motion.div>
     </div>
   );
 }

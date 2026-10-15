@@ -1,120 +1,258 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useRisk2Store } from '@/lib/risk2-store';
-import { RotateCcw, Home } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useInGameSetupMode, useGameRewards } from '@/lib/yalla-game-helpers';
 
-// ============================================================
-// Game Over — المجازفة 2
-// ============================================================
+// Confetti particles for the winner (Yalla celebration style)
+function Confetti() {
+  const particles = useMemo(() => {
+    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#feef91'];
+    return Array.from({ length: 50 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      delay: Math.random() * 1.8,
+      duration: 2 + Math.random() * 3.5,
+      size: 4 + Math.random() * 9,
+      rotate: Math.random() * 1080,
+    }));
+  }, []);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-50">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ y: -20, x: `${p.x}vw`, rotate: 0, opacity: 1 }}
+          animate={{ y: '110vh', rotate: p.rotate + 720, opacity: 0 }}
+          transition={{ duration: p.duration, delay: p.delay, ease: 'easeIn' }}
+          style={{
+            position: 'absolute', top: '-10px', left: `${p.x}%`,
+            width: p.size, height: p.size,
+            backgroundColor: p.color,
+            borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function Risk2GameOver() {
-  const { winner, winReason, players, config, resetGame } = useRisk2Store();
   const router = useRouter();
+  const {
+    players, gameLog, winner, winReason, config,
+    resetGame, gameMode, setGameMode, setPhase,
+  } = useRisk2Store();
 
+  // Sort players by score descending
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
+  const winnerPlayer = sortedPlayers[0];
+  const isDraw = !winner && sortedPlayers.length > 1 && sortedPlayers[0].score === sortedPlayers[1].score;
+
+  // Stats from game log
+  const totalSaves = gameLog.filter(e => e.action.includes('حفظ')).length;
+  const totalBombs = gameLog.filter(e => e.action.includes('قنبلة')).length;
+  const totalSkips = gameLog.filter(e => e.action.includes('تخطي')).length;
+  const totalMatches = gameLog.filter(e => e.action.includes('تطابق') || e.action.includes('خسر')).length;
+  const totalPoints = players.reduce((sum, p) => sum + p.score, 0);
+
+  const playerCount = players.length || 2;
+  const outcome = winner ? 'win' : isDraw ? 'play' : 'win';
+  const { godfather, rewards } = useGameRewards(true, 'risk2', outcome, playerCount);
+
+  useInGameSetupMode();
 
   const handlePlayAgain = () => {
+    const prevMode = gameMode;
     resetGame();
+    setGameMode(prevMode);
+    setPhase('setup');
   };
 
-  const handleHome = () => {
+  const handleCloseGame = () => {
     resetGame();
     router.push('/');
   };
 
+  // Winner & runner-up data
+  const topPlayer = sortedPlayers[0];
+  const runnerUp = sortedPlayers[1];
+  const topScore = topPlayer?.score ?? 0;
+  const runnerScore = runnerUp?.score ?? 0;
+
   return (
-    <div className="flex flex-col items-center px-4 py-8 min-h-[70vh]" dir="rtl">
-      {/* Winner */}
+    <div className="tobol-gameover-v2-root">
+      {winner && <Confetti />}
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center mb-8"
+        initial={{ opacity: 0, y: -16, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, type: 'spring', bounce: 0.3 }}
+        className="tobol-gameover-card-v2"
       >
+        {/* Trophy */}
         <motion.div
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          transition={{ type: 'spring', damping: 10 }}
-          className="text-6xl mb-4"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ width: '100px', height: '100px', marginTop: '-20px' }}
         >
-          🏆
+          <img
+            src="/battle/segment_award.webp"
+            alt="trophy"
+            className="tobol-gameover-trophy-v2"
+          />
         </motion.div>
-        <h1 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-400 mb-2">
-          انتهت اللعبة!
+
+        {/* Title */}
+        <h1 className="tobol-gameover-title-v2">
+          {winner ? 'تهانينا!' : isDraw ? 'تعادل!' : 'انتهت اللعبة!'}
         </h1>
-        {winner && (
-          <>
-            <p className="text-lg font-bold text-amber-300 mb-1">{winner.name}</p>
-            <p className="text-sm text-slate-400">{winReason}</p>
-            <div className="mt-3 inline-block px-4 py-2 rounded-xl bg-yellow-950/30 border border-yellow-500/30">
-              <span className="text-2xl font-black text-yellow-400">{winner.score}</span>
-              <span className="text-xs text-slate-500 mr-1">نقطة</span>
+
+        {/* Description */}
+        <p className="tobol-gameover-desc-v2">
+          {winner
+            ? `${winner.name} وصل للهدف (${config.targetScore}) أولاً!`
+            : isDraw
+              ? `تعادل بـ ${topScore} نقطة`
+              : winReason || `${winnerPlayer?.name ?? ''} تصدر القائمة بـ ${topScore} نقطة`}
+        </p>
+
+        {/* Godfather row */}
+        <div className="tobol-gameover-godfather">
+          <div className="tobol-gameover-godfather-avatar">
+            <span className="tobol-gameover-godfather-crown">👑</span>
+            {godfather ? (
+              <img src={godfather.avatar} alt={godfather.name} />
+            ) : (
+              <span style={{ fontSize: '18px' }}>🎴</span>
+            )}
+          </div>
+          <div className="tobol-gameover-godfather-info">
+            <div className="tobol-gameover-godfather-name">
+              {godfather?.name || 'العراب'}
             </div>
-          </>
+            <span className="tobol-gameover-godfather-tag">العراب</span>
+          </div>
+          <div className="tobol-gameover-godfather-rewards">
+            <div className="tobol-gameover-reward-chip">
+              <img src="/yalla-ui/exp.png" alt="xp" />
+              <span className="reward-amount">{rewards ? `+${rewards.xp}` : '...'}</span>
+            </div>
+            <div className="tobol-gameover-reward-chip">
+              <img src="/yalla-ui/coin.webp" alt="gold" />
+              <span className="reward-amount">{rewards ? `+${rewards.gold}` : '...'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Level-up badge */}
+        {rewards?.leveledUp && rewards.newLevel && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="tobol-gameover-levelup"
+          >
+            🎉 ترقية للمستوى {rewards.newLevel}!
+          </motion.div>
         )}
-      </motion.div>
 
-      {/* Final Scores */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="w-full max-w-md space-y-2 mb-8"
-      >
-        {sortedPlayers.map((player, idx) => {
-          const isWinner = winner?.id === player.id;
-          const medals = ['🥇', '🥈', '🥉'];
-          const medal = idx < 3 ? medals[idx] : `#${idx + 1}`;
-
-          return (
-            <motion.div
+        {/* Teams comparison row — show winner + runner-up */}
+        <div className="tobol-gameover-teams-row">
+          {sortedPlayers.slice(0, 2).map((player, idx) => (
+            <div
               key={player.id}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 + idx * 0.1 }}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl ${
-                isWinner
-                  ? 'bg-yellow-950/20 border border-yellow-500/30'
-                  : 'bg-slate-800/30 border border-slate-700/20'
-              }`}
+              className={`tobol-team-result-card ${idx === 0 ? 'team-red winner' : 'team-blue loser'}`}
             >
-              <span className="text-lg w-8 text-center">{medal}</span>
-              <span className={`flex-1 text-sm font-bold ${isWinner ? 'text-yellow-300' : 'text-slate-300'}`}>
+              <div className="tobol-team-result-rank">
+                {idx === 0 ? '🏆' : '🥈'}
+              </div>
+              <div className="tobol-team-result-name">
                 {player.name}
-              </span>
-              <span className={`text-sm font-black ${isWinner ? 'text-yellow-400' : 'text-slate-400'}`}>
-                {player.score}
-              </span>
-            </motion.div>
-          );
-        })}
-      </motion.div>
+              </div>
+              <div className="tobol-team-result-score">{player.score}</div>
+              <div className="tobol-team-result-label">نقطة</div>
+            </div>
+          ))}
+        </div>
 
-      {/* Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="flex gap-3 w-full max-w-md"
-      >
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handleHome}
-          className="flex-1 py-3 rounded-xl font-bold text-sm bg-slate-800/60 border border-slate-700/30 text-slate-300 hover:bg-slate-700/60 transition-all cursor-pointer flex items-center justify-center gap-2"
-        >
-          <Home className="w-4 h-4" />
-          الرئيسية
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handlePlayAgain}
-          className="flex-1 py-3 rounded-xl font-bold text-sm bg-gradient-to-l from-orange-600 to-red-700 hover:from-orange-500 hover:to-red-600 text-white transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
-        >
-          <RotateCcw className="w-4 h-4" />
-          لعب مرة أخرى
-        </motion.button>
+        {/* Stats card */}
+        <div className="tobol-gameover-stats-card">
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon"><span style={{ fontSize: '14px' }}>🏆</span></div>
+            <div className="tobol-gameover-stat-label">الهدف</div>
+            <div className="tobol-gameover-stat-value">{config.targetScore}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon"><span style={{ fontSize: '14px' }}>💎</span></div>
+            <div className="tobol-gameover-stat-label">مجموع النقاط</div>
+            <div className="tobol-gameover-stat-value">{totalPoints}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon"><span style={{ fontSize: '14px' }}>💰</span></div>
+            <div className="tobol-gameover-stat-label">حفظ</div>
+            <div className="tobol-gameover-stat-value">{totalSaves}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon"><span style={{ fontSize: '14px' }}>💣</span></div>
+            <div className="tobol-gameover-stat-label">قنابل</div>
+            <div className="tobol-gameover-stat-value">{totalBombs}</div>
+          </div>
+          <div className="tobol-gameover-stat-row">
+            <div className="tobol-gameover-stat-icon"><span style={{ fontSize: '14px' }}>😱</span></div>
+            <div className="tobol-gameover-stat-label">خسائر (تخطي + تطابق)</div>
+            <div className="tobol-gameover-stat-value">{totalSkips + totalMatches}</div>
+          </div>
+        </div>
+
+        {/* All players ranking — for games with more than 2 players */}
+        {sortedPlayers.length > 2 && (
+          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {sortedPlayers.slice(2).map((player, idx) => (
+              <div
+                key={player.id}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '6px 12px', borderRadius: '8px',
+                  background: 'rgba(0,0,0,.25)', border: '1px solid rgba(255,255,255,.05)',
+                }}
+              >
+                <span style={{ fontSize: '12px', color: '#9fc4b4', width: '20px' }}>#{idx + 3}</span>
+                <span style={{ fontSize: '12px' }}>🎴</span>
+                <span style={{ flex: 1, fontSize: '12px', fontWeight: 700, color: '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {player.name}
+                </span>
+                <span style={{ fontSize: '13px', fontWeight: 900, color: '#fff' }}>{player.score}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Two-button row */}
+        <div className="tobol-gameover-buttons-row">
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handlePlayAgain}
+            className="tobol-gameover-btn btn-yes"
+          >
+            <span style={{ fontSize: '14px' }}>🔄</span>
+            <span>إعادة اللعبة</span>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={handleCloseGame}
+            className="tobol-gameover-btn btn-no"
+          >
+            <span style={{ fontSize: '14px' }}>✕</span>
+            <span>إغلاق اللعبة</span>
+          </motion.button>
+        </div>
       </motion.div>
     </div>
   );
