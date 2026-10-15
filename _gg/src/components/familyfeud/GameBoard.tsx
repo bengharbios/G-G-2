@@ -13,6 +13,7 @@ import {
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
 import { getQuestionCategory, getDifficultyInfo } from '@/lib/familyfeud-questions';
+import { playClickSound, playNotifySound, playTickSound } from '@/lib/sounds';
 
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '⚔️', '🌊', '🎯', '💀', '🏆', '🥇', '⚓', '🎉', '💯', '❤️', '💔', '✨', '⚡', '🌟', '👑', '🤝', '🫡', '😤', '🤯'];
 
@@ -177,6 +178,8 @@ export default function GameBoard() {
   const fastMoneyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (timerRunning && timeLeft > 0) {
+      // Tick every second to give the "fast money timer tick" feel.
+      playTickSound();
       if (timeLeft <= 5) playCountdown();
       fastMoneyTimerRef.current = setTimeout(() => tickFastMoneyTimer(), 1000);
     } else if (timerRunning && timeLeft === 0) {
@@ -226,6 +229,20 @@ export default function GameBoard() {
     playReveal();
     handleUseHint();
   }, [playReveal, handleUseHint]);
+
+  // Wrap pass-to-other-team + skip-question with a click sound so the
+  // current turn change is announced audibly.
+  const onPassToOtherTeam = useCallback(() => {
+    playClickSound();
+    playNotifySound();
+    handlePassToOtherTeam();
+  }, [handlePassToOtherTeam]);
+
+  const onSkipQuestion = useCallback(() => {
+    playClickSound();
+    playNotifySound();
+    handleSkipQuestion();
+  }, [handleSkipQuestion]);
 
   const onFaceOffStart = useCallback((team: 1 | 2) => {
     playCorrect();
@@ -301,13 +318,13 @@ export default function GameBoard() {
       className="tobol-setup-root"
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
-        padding: '6px 8px',
+        padding: '6px 8px 100px',
         gap: '6px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ أيقونات الهيدر ══════════ */}
@@ -587,7 +604,7 @@ export default function GameBoard() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
                     }}
                   >✗ ضربة</motion.button>
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={handlePassToOtherTeam}
+                  <motion.button whileTap={{ scale: 0.97 }} onClick={onPassToOtherTeam}
                     style={{
                       padding: '10px', borderRadius: '10px', border: '1px solid rgba(255,255,255,.12)',
                       background: 'rgba(100,100,100,.3)',
@@ -605,7 +622,7 @@ export default function GameBoard() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
                     }}
                   >💡 تلميح ({2 - hintsUsedThisRound})</motion.button>
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={handleSkipQuestion}
+                  <motion.button whileTap={{ scale: 0.97 }} onClick={onSkipQuestion}
                     style={{
                       padding: '10px', borderRadius: '10px', border: '1px solid rgba(255,255,255,.12)',
                       background: 'rgba(100,100,100,.3)',

@@ -18,6 +18,7 @@ import {
   setMusicEnabled,
   isSoundEnabled,
   setSoundEnabled,
+  playNotifySound,
 } from '@/lib/sounds';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
@@ -315,18 +316,55 @@ export default function GameBoard() {
   const [showViewers, setShowViewers] = useState(false);
   const [viewerCount, setViewerCount] = useState(0);
   const [spectators, setSpectators] = useState<Array<{ id: string; name: string; joinedAt: number }>>([]);
+  const [shareLink, setShareLink] = useState('');
+  const [directLink, setDirectLink] = useState('');
+  const [shareCopied, setShareCopied] = useState(false);
+
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
 
   useEffect(() => {
     setMusicOn(isMusicEnabled());
     setSoundOn(isSoundEnabled());
   }, []);
 
+  // Play a soft notify bell whenever the active team swaps.
+  const prevTeamRef = useRef<TabotTeam | undefined>(undefined);
+  useEffect(() => {
+    if (prevTeamRef.current !== undefined && prevTeamRef.current !== currentTeam) {
+      playNotifySound();
+    }
+    prevTeamRef.current = currentTeam;
+  }, [currentTeam]);
+
+  // Play a soft notify bell when the round number increments.
+  const prevRoundRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (prevRoundRef.current !== undefined && prevRoundRef.current !== currentRound) {
+      playNotifySound();
+    }
+    prevRoundRef.current = currentRound;
+  }, [currentRound]);
+
   const toggleMusic = () => { const next = !musicOn; setMusicOn(next); setMusicEnabled(next); };
   const toggleSound = () => { const next = !soundOn; setSoundOn(next); setSoundEnabled(next); };
 
-  // Poll viewers in diwaniya mode
+  // Poll viewers in diwaniya mode + build share links for the host
   useEffect(() => {
-    if (gameMode !== 'diwaniya' || !roomCode) return;
+    if (!isDiwaniyaHost || !roomCode) return;
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const pkg = 'com.bengharbios.ggames';
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(d => {
+        const hostUserId = d?.user?.id || '';
+        const fromParam = hostUserId ? `&from=${encodeURIComponent(hostUserId)}` : '';
+        setShareLink(`${baseUrl}/r/tabot/${roomCode}?pkg=${pkg}${fromParam}`);
+        setDirectLink(`${baseUrl}/r/tabot/${roomCode}?pkg=${pkg}${fromParam}&direct=1`);
+      })
+      .catch(() => {
+        setShareLink(`${baseUrl}/r/tabot/${roomCode}?pkg=${pkg}`);
+        setDirectLink(`${baseUrl}/r/tabot/${roomCode}?pkg=${pkg}&direct=1`);
+      });
     const fetchViewers = () => {
       fetch(`/api/room/${roomCode}`)
         .then(r => r.ok ? r.json() : null)
@@ -341,7 +379,47 @@ export default function GameBoard() {
     fetchViewers();
     const iv = setInterval(fetchViewers, 5000);
     return () => clearInterval(iv);
-  }, [gameMode, roomCode, showViewers]);
+  }, [isDiwaniyaHost, roomCode]);
+
+  // Copy share link to clipboard
+  const copyShareLink = () => {
+    if (!shareLink) return;
+    navigator.clipboard.writeText(shareLink).then(() => {
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = shareLink;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    });
+  };
+
+  // Native Web Share API for external app sharing
+  const shareExternally = async () => {
+    if (!directLink) return;
+    const shareData = {
+      title: 'شاهد معركة الهروب من التابوت',
+      text: 'انضم لمشاهدة المعركة على G-G:',
+      url: directLink,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        navigator.clipboard.writeText(directLink).then(() => {
+          setShareCopied(true);
+          setTimeout(() => setShareCopied(false), 2000);
+        });
+      }
+    } catch {
+      // User cancelled — silent
+    }
+  };
 
   const isWaitingForPlayer = interactionState === 'waiting_for_player';
   const isWaitingForLeader = interactionState === 'waiting_for_leader';
@@ -362,12 +440,13 @@ export default function GameBoard() {
     <div
       dir="rtl"
       style={{
-        height: '100%',
+        minHeight: 'calc(100vh - 56px)',
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflowY: 'auto',
         position: 'relative',
+        paddingBottom: '100px',
       }}
     >
       {/* ══════════ 1) Yalla Ludo Header — sound + chat + quit ══════════ */}
@@ -484,6 +563,38 @@ export default function GameBoard() {
 
       {/* ══════════ 6) Game Log ══════════ */}
       <GameLog />
+
+      {/* ══════════ 6.5) Diwaniya share box — appears under game log ══════════ */}
+      {isDiwaniyaHost && (
+        <div className="tobol-share-box">
+          <div className="tobol-share-title">🔗 شارك مشاهدة المعركة</div>
+          <div className="tobol-share-code-row">
+            <span className="tobol-share-code-label">كود المشاهدة:</span>
+            <span className="tobol-share-code-value">{roomCode}</span>
+          </div>
+          <div className="tobol-share-link-row">
+            <input
+              type="text"
+              readOnly
+              value={shareLink}
+              className="tobol-share-link-input"
+              onClick={(e) => (e.target as HTMLInputElement).select()}
+            />
+            <button type="button" className="tobol-share-btn" onClick={copyShareLink}>
+              {shareCopied ? '✓ تم النسخ' : '📋 نسخ'}
+            </button>
+          </div>
+          <div className="tobol-share-link-row">
+            <button type="button" className="tobol-share-direct-btn" onClick={shareExternally}>
+              <img src="/battle/iv_team_share.webp" alt="share" />
+              <span>مشاركة مباشرة (دون كود)</span>
+            </button>
+          </div>
+          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '9px', margin: '4px 0 0', lineHeight: 1.4 }}>
+            الرابط المباشر يفتح اللعبة فوراً للأصدقاء المسجلين، أو يفتح نافذة التسجيل للسماح بالدخول.
+          </p>
+        </div>
+      )}
 
       {/* ══════════ 7) Dialogs ══════════ */}
       <AnimatePresence>

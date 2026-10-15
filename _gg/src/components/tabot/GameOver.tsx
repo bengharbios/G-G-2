@@ -10,6 +10,7 @@ import {
   ROLE_CONFIG,
 } from '@/lib/tabot-types';
 import { useGameRewards } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
@@ -98,6 +99,14 @@ export default function GameOver() {
     winner !== 'draw' ? 'win' : 'play',
     playerCount
   );
+
+  // Play end-of-game sounds
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === 'draw' ? null : true,
+    isDraw,
+    rewards,
+  });
 
   // Stats from round log
   const kills = roundLog.filter(e => e.message.includes('قَتَل') || e.message.includes('قتل') || e.message.includes('قُتِل') || e.message.includes('انتحر')).length;

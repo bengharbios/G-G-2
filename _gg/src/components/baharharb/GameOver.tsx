@@ -9,6 +9,7 @@ import {
   useGameRewards,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // Confetti particles for the winner (Yalla celebration style)
 function Confetti() {
@@ -85,6 +86,14 @@ export default function BaharHarbGameOver() {
   const playerCount = playMode === 'individuals' ? 2 : 2;
   const outcome = winner !== 'draw' ? 'win' : 'play';
   const { godfather, rewards } = useGameRewards(true, 'baharharb', outcome, playerCount);
+
+  // Play end-of-game sounds
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === 'draw' ? null : true,
+    isDraw: winner === 'draw',
+    rewards,
+  });
 
   // Play Again: reset + restore gameMode + go directly to setup
   const handlePlayAgain = () => {

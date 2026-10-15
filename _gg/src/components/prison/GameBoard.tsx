@@ -13,6 +13,14 @@ import {
   useShareLinks,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import {
+  playClickSound,
+  playCellOpenSound,
+  playImprisonSound,
+  playFreeSound,
+  playNotifySound,
+  playErrorSound,
+} from '@/lib/sounds';
 
 // Common emojis for chat picker
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '🔒', '⛓️', '🔑', '💀', '🏆', '🎉', '💯', '❤️', '✨', '⚡', '👑', '🤝', '🫡', '😤', '🤯'];
@@ -787,7 +795,51 @@ export default function GameBoard() {
   // Suppress unused warnings — these come from store but are referenced via store actions
   void activeCurrentTeamPlayers;
 
+  // ── Sound effects ───────────────────────────────────────────
+  // Wrap cell reveal so a click + cell-open sound plays on every tap.
+  const handleRevealCell = (cellId: string) => {
+    playClickSound();
+    playCellOpenSound();
+    revealCell(cellId);
+  };
+
+  // Wrap selectPlayer — plays a click on every selection.
+  const handleSelectPlayer = (id: string) => {
+    playClickSound();
+    selectPlayer(id);
+  };
+
+  // Wrap imprisonOpponent — low ominous tone when a player gets sent to prison.
+  const handleImprison = (id: string) => {
+    playImprisonSound();
+    imprisonOpponent(id);
+  };
+
+  // Wrap freeTeammate — high bright tone when a prisoner is freed.
+  const handleFree = (id: string) => {
+    playFreeSound();
+    freeTeammate(id);
+  };
+
+  // Wrap advanceTurn — plays error buzz when called on an invalid action,
+  // otherwise plays a notify bell so players know it's the other team's turn.
+  const handleAdvanceTurn = () => {
+    playNotifySound();
+    advanceTurn();
+  };
+
+  // Play a soft notify bell whenever the active team swaps.
+  const prevTeamRef = useRef<PrisonTeam | undefined>(undefined);
+  useEffect(() => {
+    if (prevTeamRef.current !== undefined && prevTeamRef.current !== currentTeam) {
+      playNotifySound();
+    }
+    prevTeamRef.current = currentTeam;
+  }, [currentTeam]);
+
+  // Define handleQuitGame BEFORE it's used (so we can also play a click on quit).
   const handleQuitGame = () => {
+    playClickSound();
     resetGame();
     router.push('/prison');
   };
@@ -802,9 +854,9 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header — sound + chat + quit ══════════ */}
@@ -914,7 +966,7 @@ export default function GameBoard() {
           players={players}
           currentPlayerId={currentPlayerId}
           interactionState={interactionState}
-          onSelectPlayer={selectPlayer}
+          onSelectPlayer={handleSelectPlayer}
         />
         <PlayerPanel
           team="beta"
@@ -922,7 +974,7 @@ export default function GameBoard() {
           players={players}
           currentPlayerId={currentPlayerId}
           interactionState={interactionState}
-          onSelectPlayer={selectPlayer}
+          onSelectPlayer={handleSelectPlayer}
         />
       </div>
 
@@ -942,7 +994,7 @@ export default function GameBoard() {
               cols={cols}
               onClick={
                 interactionState === 'waiting_for_cell' && cell.status === 'hidden'
-                  ? () => revealCell(cell.id)
+                  ? () => handleRevealCell(cell.id)
                   : undefined
               }
             />
@@ -1051,7 +1103,7 @@ export default function GameBoard() {
             interactionState={interactionState}
             currentPlayerName={currentPlayer?.name ?? ''}
             selectedTargetName={selectedTarget?.name ?? null}
-            onAction={advanceTurn}
+            onAction={handleAdvanceTurn}
             onClose={closeModal}
           />
         )}
@@ -1061,7 +1113,7 @@ export default function GameBoard() {
             interactionState={interactionState}
             currentPlayerName={currentPlayer?.name ?? ''}
             selectedTargetName={null}
-            onAction={advanceTurn}
+            onAction={handleAdvanceTurn}
             onClose={closeModal}
           />
         )}
@@ -1071,7 +1123,7 @@ export default function GameBoard() {
             interactionState={interactionState}
             currentPlayerName={currentPlayer?.name ?? ''}
             selectedTargetName={null}
-            onAction={advanceTurn}
+            onAction={handleAdvanceTurn}
             onClose={closeModal}
           />
         )}
@@ -1083,7 +1135,7 @@ export default function GameBoard() {
           <PlayerSelectionOverlay
             title={`اختر لاعب من فريق ${opponentTeam === 'alpha' ? alphaName : betaName} للسجن`}
             players={activeOpponents}
-            onSelect={imprisonOpponent}
+            onSelect={handleImprison}
             icon="🏚️"
           />
         )}
@@ -1091,7 +1143,7 @@ export default function GameBoard() {
           <PlayerSelectionOverlay
             title={`اختر سجين من فريق ${currentTeam === 'alpha' ? alphaName : betaName} للتحرير`}
             players={imprisonedTeammates}
-            onSelect={freeTeammate}
+            onSelect={handleFree}
             icon="🔓"
           />
         )}

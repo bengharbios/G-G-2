@@ -8,6 +8,7 @@ import {
   useInGameSetupMode,
   useGameRewards,
 } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // Confetti particles for the winner (Yalla celebration style)
 function Confetti() {
@@ -125,6 +126,14 @@ export default function GameOver() {
   const outcome = winner !== null ? 'win' : 'play';
   const playerCount = 2;
   const { godfather, rewards } = useGameRewards(true, 'shifarat', outcome, playerCount);
+
+  // Play end-of-game sounds (win/lose/tie/levelup/coin)
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === null ? null : true,
+    isDraw: winner === null,
+    rewards,
+  });
 
   const winnerName = winner === 'red' ? redTeam.name : winner === 'blue' ? blueTeam.name : 'تعادل';
   const loserName = winner === 'red' ? blueTeam.name : winner === 'blue' ? redTeam.name : '';

@@ -107,14 +107,14 @@ export default function GameSetup() {
       className="tobol-setup-root"
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ أيقونات الهيدر — صوت + خروج ══════════ */}

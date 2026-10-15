@@ -13,6 +13,13 @@ import {
   useShareLinks,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import {
+  playClickSound,
+  playCardFlipSound,
+  playBombSound,
+  playCoinSound,
+  playNotifySound,
+} from '@/lib/sounds';
 
 // Common emojis for chat picker
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '💣', '🃏', '🎲', '💀', '🏆', '🎉', '💯', '❤️', '✨', '⚡', '👑', '🤝', '🫡', '😤', '🤯'];
@@ -732,12 +739,42 @@ export default function GameBoard() {
 
   const shouldShowModal = (turnState === 'waiting_for_decision' || turnState === 'showing_result' || turnState === 'turn_lost') && !showExplosion && !!lastDrawnCard;
 
-  const handleDrawCard = (cardId: string) => drawCard(cardId);
-  const handleContinue = () => continueTurn();
-  const handleBank = () => bankPoints();
-  const handleAdvance = () => endTurn();
+  const handleDrawCard = (cardId: string) => {
+    playCardFlipSound();
+    drawCard(cardId);
+  };
+  const handleContinue = () => { playClickSound(); continueTurn(); };
+  const handleBank = () => {
+    playClickSound();
+    playCoinSound();
+    bankPoints();
+  };
+  const handleAdvance = () => {
+    playClickSound();
+    playNotifySound();
+    endTurn();
+  };
+
+  // Bomb sound when the bomb explodes.
+  useEffect(() => {
+    if (turnState === 'bomb_exploded') {
+      playBombSound();
+    } else if (turnState === 'turn_lost') {
+      playBombSound();
+    }
+  }, [turnState]);
+
+  // Notify bell when the active player changes.
+  const prevPlayerIdxRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (prevPlayerIdxRef.current !== undefined && prevPlayerIdxRef.current !== currentPlayerIndex) {
+      playNotifySound();
+    }
+    prevPlayerIdxRef.current = currentPlayerIndex;
+  }, [currentPlayerIndex]);
 
   const handleQuitGame = () => {
+    playClickSound();
     resetGame();
     router.push('/risk');
   };
@@ -761,9 +798,9 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header ══════════ */}

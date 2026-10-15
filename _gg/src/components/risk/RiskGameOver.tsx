@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useRiskStore } from '@/lib/risk-store';
 import { useRouter } from 'next/navigation';
 import { useInGameSetupMode, useGameRewards } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // Confetti particles for the winner
 function Confetti() {
@@ -66,6 +67,14 @@ export default function RiskGameOver() {
   const { godfather, rewards } = useGameRewards(true, 'risk', outcome, playerCount);
 
   useInGameSetupMode();
+
+  // Play end-of-game sounds
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: isDraw ? null : !!winner,
+    isDraw,
+    rewards,
+  });
 
   const handlePlayAgain = () => {
     const prevMode = gameMode;

@@ -9,6 +9,7 @@ import {
   useInGameSetupMode,
   useGameRewards,
 } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // Confetti particles
 function Confetti() {
@@ -62,6 +63,14 @@ export default function GameOver() {
   const playerCount = players.length;
   const outcome = isCitizensWin ? 'win' : 'loss';
   const { godfather, rewards } = useGameRewards(true, 'mafia', outcome, playerCount);
+
+  // Play end-of-game sounds — citizen win = player win, mafia win = player lose
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: isCitizensWin,
+    isDraw: false,
+    rewards,
+  });
 
   const alivePlayers = players.filter((p) => p.isAlive);
   const mafiaPlayers = players.filter(

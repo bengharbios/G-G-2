@@ -10,6 +10,12 @@ import {
   setMusicEnabled,
   isSoundEnabled,
   setSoundEnabled,
+  playRoleSound,
+  playNightSound,
+  playDaySound,
+  playVoteSound,
+  playRevealSound,
+  playDeathSound,
 } from '@/lib/sounds';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
@@ -361,13 +367,38 @@ function NightPhase() {
   const role = NIGHT_SEQUENCE[nightStep];
   const activePlayers = role ? getActiveRolePlayers(players, role) : [];
 
+  // Reveal result modal for 'see' actions (owl + fortune teller)
+  // Stores: { targetId, title, info, color, emoji }
+  const [reveal, setReveal] = useState<null | {
+    targetId: string;
+    title: string;
+    info: string;
+    color: string;
+    bg: string;
+    emoji: string;
+  }>(null);
+
+  // Play role sound whenever nightStep changes
+  useEffect(() => {
+    if (role) {
+      // Small delay so the wake-up sound plays after the previous modal closes
+      const t = setTimeout(() => playRoleSound(role), 250);
+      return () => clearTimeout(t);
+    }
+  }, [role, nightStep]);
+
   // If no one has this role (e.g., no doctor with 6 players), auto-advance
   useEffect(() => {
-    if (role && activePlayers.length === 0) {
+    if (role && activePlayers.length === 0 && !reveal) {
       const t = setTimeout(() => advanceNightStep(), 800);
       return () => clearTimeout(t);
     }
-  }, [role, activePlayers.length, advanceNightStep]);
+  }, [role, activePlayers.length, advanceNightStep, reveal]);
+
+  // Clear reveal modal when nightStep changes
+  useEffect(() => {
+    setReveal(null);
+  }, [nightStep]);
 
   if (!role) {
     return (
@@ -385,6 +416,59 @@ function NightPhase() {
   const cfg = ROLE_CONFIG[role];
   const actors = activePlayers;
   const targets = players.filter(p => p.isAlive); // can target any alive (incl. self if allowed)
+  const isSeeAction = role === 'owl' || role === 'fortuneTeller';
+
+  const handleSelectTarget = (targetId: string) => {
+    if (actors.length === 0) return;
+    const actor = actors[0];
+    submitNightAction(actor.id, targetId);
+
+    if (isSeeAction) {
+      const target = players.find(p => p.id === targetId);
+      if (!target) {
+        setTimeout(() => advanceNightStep(), 300);
+        return;
+      }
+      const targetCfg = ROLE_CONFIG[target.role];
+      if (role === 'owl') {
+        // Owl sees the player's exact role
+        setReveal({
+          targetId,
+          title: 'رأت البومة',
+          info: `${target.name} — دوره: ${targetCfg.emoji} ${targetCfg.label}`,
+          color: targetCfg.team === 'evil' ? '#f87171' : '#86efac',
+          bg: targetCfg.team === 'evil' ? 'rgba(248,113,113,.12)' : 'rgba(134,239,163,.12)',
+          emoji: targetCfg.emoji,
+        });
+      } else {
+        // Fortune teller sees the player's alignment
+        const teamLabel = targetCfg.team === 'evil' ? '😈 من فريق الشر' : '😇 من فريق الخير';
+        setReveal({
+          targetId,
+          title: 'رأت العرافة',
+          info: `${target.name} — ${teamLabel}`,
+          color: targetCfg.team === 'evil' ? '#f87171' : '#86efac',
+          bg: targetCfg.team === 'evil' ? 'rgba(248,113,113,.12)' : 'rgba(134,239,163,.12)',
+          emoji: targetCfg.team === 'evil' ? '😈' : '😇',
+        });
+      }
+    } else {
+      // Kill/protect actions just advance
+      setTimeout(() => advanceNightStep(), 600);
+    }
+  };
+
+  const handleSkip = () => {
+    if (actors.length > 0) {
+      submitNightAction(actors[0].id, null);
+    }
+    setTimeout(() => advanceNightStep(), 300);
+  };
+
+  const handleAcknowledgeReveal = () => {
+    setReveal(null);
+    setTimeout(() => advanceNightStep(), 300);
+  };
 
   return (
     <div
@@ -461,13 +545,9 @@ function NightPhase() {
               whileTap={!isForbiddenSelf ? { scale: 0.96 } : {}}
               onClick={() => {
                 if (isForbiddenSelf) return;
-                // Treat as: primary actor (first actor) submits the action
-                if (actors.length === 0) return;
-                submitNightAction(actors[0].id, t.id);
-                // After short delay, advance
-                setTimeout(() => advanceNightStep(), 600);
+                handleSelectTarget(t.id);
               }}
-              disabled={isForbiddenSelf}
+              disabled={isForbiddenSelf || !!reveal}
               style={{
                 padding: '8px 4px', borderRadius: '8px', cursor: isForbiddenSelf ? 'not-allowed' : 'pointer',
                 background: hasVoted
@@ -495,19 +575,79 @@ function NightPhase() {
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        onClick={() => {
-          // Submit null action for this role then advance
-          if (actors.length > 0) {
-            submitNightAction(actors[0].id, null);
-          }
-          setTimeout(() => advanceNightStep(), 300);
-        }}
+        onClick={handleSkip}
+        disabled={!!reveal}
         style={{
           marginTop: '8px', padding: '8px 14px', borderRadius: '8px', border: 'none',
           background: 'rgba(100,100,100,.25)', color: '#9fc4b4',
-          fontSize: '11px', fontWeight: 700, cursor: 'pointer',
+          fontSize: '11px', fontWeight: 700, cursor: reveal ? 'not-allowed' : 'pointer',
         }}
       >تخطّي ←</motion.button>
+
+      {/* Reveal modal for owl/fortune teller see actions */}
+      <AnimatePresence>
+        {reveal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'fixed', inset: 0,
+              background: 'rgba(0,0,0,.85)', backdropFilter: 'blur(6px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              zIndex: 200, padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 16 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.32 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: `linear-gradient(180deg, #0e2a22, #061812)`,
+                border: `1.5px solid ${reveal.color}`,
+                borderRadius: '18px', padding: '20px', width: '100%', maxWidth: '300px',
+                textAlign: 'center', boxShadow: `0 14px 36px rgba(0,0,0,.6), 0 0 20px ${reveal.color}30`,
+              }}
+            >
+              <div style={{ fontSize: '48px', marginBottom: '8px' }}>
+                {reveal.emoji}
+              </div>
+              <div style={{
+                ...STROKE_STYLE,
+                fontSize: '16px', fontWeight: 900, marginBottom: '8px',
+              }}>
+                {reveal.title}
+              </div>
+              <div style={{
+                padding: '10px 12px', borderRadius: '12px',
+                background: reveal.bg,
+                border: `1px solid ${reveal.color}55`,
+                color: reveal.color, fontSize: '13px', fontWeight: 800,
+                marginBottom: '14px',
+              }}>
+                {reveal.info}
+              </div>
+              <p style={{ color: '#9fc4b4', fontSize: '11px', marginBottom: '14px', lineHeight: 1.5 }}>
+                🔮 احفظ هذه المعلومة لنفسك — مرّر الجهاز للاعب التالي
+              </p>
+              <button
+                onClick={handleAcknowledgeReveal}
+                style={{
+                  width: '100%', padding: '12px', borderRadius: '10px', border: 'none',
+                  background: `linear-gradient(135deg, ${reveal.color}, ${reveal.color}cc)`,
+                  color: '#041F18', fontSize: '14px', fontWeight: 900, cursor: 'pointer',
+                  boxShadow: `0 4px 12px ${reveal.color}55`,
+                }}
+              >
+                ✓ رأيت — التالي
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -988,6 +1128,19 @@ export default function GameBoard() {
     setSoundOn(isSoundEnabled());
   }, []);
 
+  // Play phase-based ambient sound when phase changes
+  // roleReveal → flip sound, night → night owl, day → day rooster, vote → vote ding
+  useEffect(() => {
+    if (phase === 'roleReveal') playRevealSound();
+    else if (phase === 'night') playNightSound();
+    else if (phase === 'day') {
+      // If there's a death, play death sound; otherwise play day rooster
+      const { lastNightDeathId } = useMustathibStore.getState();
+      if (lastNightDeathId) playDeathSound();
+      else playDaySound();
+    } else if (phase === 'vote') playVoteSound();
+  }, [phase]);
+
   // Diwaniya: fetch viewer count + build share link
   useEffect(() => {
     if (!isDiwaniyaHost || !roomCode) return;
@@ -1082,14 +1235,14 @@ export default function GameBoard() {
       dir="rtl"
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header actions ══════════ */}

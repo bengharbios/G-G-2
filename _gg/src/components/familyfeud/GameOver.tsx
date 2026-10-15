@@ -9,6 +9,7 @@ import {
   useGameRewards,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // Confetti particles for the winner (Yalla celebration style)
 function Confetti() {
@@ -82,6 +83,14 @@ export default function FamilyFeudGameOver() {
   // Godfather + rewards (Yalla Ludo style)
   const outcome = winner !== 'draw' ? 'win' : 'play';
   const { godfather, rewards } = useGameRewards(true, 'familyfeud', outcome, 2);
+
+  // Play end-of-game sounds
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === 'draw' ? null : true,
+    isDraw: winner === 'draw',
+    rewards,
+  });
 
   const handlePlayAgain = () => {
     handleReset();

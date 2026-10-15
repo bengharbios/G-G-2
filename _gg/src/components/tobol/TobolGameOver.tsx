@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTobolStore } from '@/lib/tobol-store';
 import { useRouter } from 'next/navigation';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
@@ -138,6 +139,14 @@ export default function TobolGameOver() {
     fetchGodfatherAndReward();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Play end-of-game sounds (win / tie / levelup / coin)
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === 'draw' ? null : true,
+    isDraw: winner === 'draw',
+    rewards,
+  });
 
   // Play Again: reset + restore gameMode + go directly to setup (skip LandingPage)
   const handlePlayAgain = () => {

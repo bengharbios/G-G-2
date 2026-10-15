@@ -21,10 +21,10 @@ import {
 
 // ============================================================
 // Night Sequence Order
-// Owl, Crow/Werewolf, Fortune Teller, Doctor
+// Per game design: Crow/Werewolf → Owl → Fortune teller → Doctor
 // (Crow + Werewolf are both evil killers — we treat them together)
 // ============================================================
-const NIGHT_SEQUENCE: Role[] = ['crow', 'doctor', 'owl', 'fortuneTeller'];
+const NIGHT_SEQUENCE: Role[] = ['crow', 'owl', 'fortuneTeller', 'doctor'];
 
 // ============================================================
 // State

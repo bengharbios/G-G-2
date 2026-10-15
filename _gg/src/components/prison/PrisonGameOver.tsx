@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { usePrisonStore } from '@/lib/prison-store';
 import { useRouter } from 'next/navigation';
 import { useInGameSetupMode, useGameRewards } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 import type { PrisonTeam } from '@/lib/prison-types';
 
 // Confetti particles for the winner (Yalla celebration style)
@@ -72,6 +73,14 @@ export default function PrisonGameOver() {
   const { godfather, rewards } = useGameRewards(true, 'prison', outcome, playerCount);
 
   useInGameSetupMode();
+
+  // Play end-of-game sounds
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: isDraw ? null : true,
+    isDraw,
+    rewards,
+  });
 
   const handlePlayAgain = () => {
     const prevMode = gameMode;

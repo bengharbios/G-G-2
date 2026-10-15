@@ -15,6 +15,9 @@ import {
   setMusicEnabled,
   isSoundEnabled,
   setSoundEnabled,
+  playClickSound,
+  playCardFlipSound,
+  playNotifySound,
 } from '@/lib/sounds';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
@@ -436,6 +439,7 @@ export default function GameBoard() {
     resetGame,
     gameMode,
     roomCode,
+    currentTurn,
   } = useTobolStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -450,6 +454,23 @@ export default function GameBoard() {
   const [shareCopied, setShareCopied] = useState(false);
   const isSpectator = gameMode === 'diwaniya' && typeof window !== 'undefined' && !window.location.pathname.startsWith('/tobol');
   const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+
+  // Wrap handleButtonClick to play click + card-flip sounds on each tap.
+  // (Sounds respect the global `getMuted()` flag.)
+  const handleCellClick = (id: string) => {
+    playClickSound();
+    playCardFlipSound();
+    handleButtonClick(id);
+  };
+
+  // Play a soft notify bell whenever the turn swaps to the other team.
+  const prevTurnRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (prevTurnRef.current !== undefined && prevTurnRef.current !== currentTurn) {
+      playNotifySound();
+    }
+    prevTurnRef.current = currentTurn;
+  }, [currentTurn]);
 
   // Hide header chrome + bottom nav + floating panel tab
   useEffect(() => {
@@ -582,9 +603,9 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header (top-left) — sound + chat + quit-game ══════════ */}
@@ -717,7 +738,7 @@ export default function GameBoard() {
                 <table className="btnTable">
                   <tbody>
                     {RIGHT_COL1.map((btn) => (
-                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleButtonClick)}</tr>
+                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleCellClick)}</tr>
                     ))}
                   </tbody>
                 </table>
@@ -726,7 +747,7 @@ export default function GameBoard() {
                 <table className="btnTable">
                   <tbody>
                     {RIGHT_COL2.map((btn) => (
-                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleButtonClick)}</tr>
+                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleCellClick)}</tr>
                     ))}
                   </tbody>
                 </table>
@@ -775,7 +796,7 @@ export default function GameBoard() {
                 <table className="btnTable">
                   <tbody>
                     {LEFT_COL1.map((btn) => (
-                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleButtonClick)}</tr>
+                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleCellClick)}</tr>
                     ))}
                   </tbody>
                 </table>
@@ -784,7 +805,7 @@ export default function GameBoard() {
                 <table className="btnTable">
                   <tbody>
                     {LEFT_COL2.map((btn) => (
-                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleButtonClick)}</tr>
+                      <tr key={btn.id}>{renderBtnTable(btn, 1, clickedBtns, isSpectator ? () => {} : handleCellClick)}</tr>
                     ))}
                   </tbody>
                 </table>
@@ -798,7 +819,7 @@ export default function GameBoard() {
                 <table className="btnTable2">
                   <tbody>
                     <tr>
-                      {BOTTOM_ROW1.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleButtonClick))}
+                      {BOTTOM_ROW1.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleCellClick))}
                     </tr>
                   </tbody>
                 </table>
@@ -809,7 +830,7 @@ export default function GameBoard() {
                 <table className="btnTable2">
                   <tbody>
                     <tr>
-                      {BOTTOM_ROW2.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleButtonClick))}
+                      {BOTTOM_ROW2.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleCellClick))}
                     </tr>
                   </tbody>
                 </table>
@@ -820,7 +841,7 @@ export default function GameBoard() {
                 <table className="btnTable2">
                   <tbody>
                     <tr>
-                      {BOTTOM_ROW3.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleButtonClick))}
+                      {BOTTOM_ROW3.map((btn) => renderBtnTable(btn, 6, clickedBtns, isSpectator ? () => {} : handleCellClick))}
                     </tr>
                   </tbody>
                 </table>

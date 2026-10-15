@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useMustathibStore } from '@/lib/mustathib-store';
 import { ROLE_CONFIG } from '@/lib/mustathib-types';
 import { useGameRewards } from '@/lib/yalla-game-helpers';
+import { useGameOverSounds } from '@/lib/game-sound-hooks';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
@@ -82,6 +83,14 @@ export default function MustathibGameOver() {
     winner === 'good' ? 'win' : winner === 'evil' ? 'loss' : 'play',
     playerCount
   );
+
+  // Play end-of-game sounds — good wins = player win, evil wins = player lose
+  useGameOverSounds({
+    trigger: !!rewards,
+    playerWon: winner === 'good' ? true : winner === 'evil' ? false : null,
+    isDraw: winner !== 'good' && winner !== 'evil',
+    rewards,
+  });
 
   // Winning team players (alive) vs losing team players (dead)
   const winnerTeamPlayers = players.filter(p =>

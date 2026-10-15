@@ -77,13 +77,13 @@ function YallaDayShell({
       className={isNight ? 'mafia-bg-night' : 'mafia-bg-day'}
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 12px',
+        padding: '8px 12px 100px',
         gap: '6px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* Yalla header actions */}

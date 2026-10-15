@@ -13,6 +13,14 @@ import {
   useShareLinks,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import {
+  playClickSound,
+  playCardFlipSound,
+  playBombSound,
+  playCoinSound,
+  playSparkleSound,
+  playNotifySound,
+} from '@/lib/sounds';
 
 // Common emojis for chat picker
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👎', '👏', '🙏', '💪', '🔥', '🎴', '🎰', '🌈', '⭐', '💫', '🃏', '🎉', '💯', '❤️', '✨', '⚡', '👑', '🤝', '🫡', '😤', '🤯'];
@@ -844,12 +852,54 @@ export default function GameBoard() {
 
   const shouldShowModal = (turnState === 'waiting_for_decision' || turnState === 'showing_result' || turnState === 'turn_lost') && !showExplosion && !!lastDrawnCard;
 
+  // Bomb sound on explosion.
+  useEffect(() => {
+    if (turnState === 'bomb_exploded') {
+      playBombSound();
+    } else if (turnState === 'turn_lost') {
+      playBombSound();
+    }
+  }, [turnState]);
+
+  // Sparkle sound when a multiplier (double/triple) card is drawn — lastDrawnCard.type.
+  const prevDrawnIdRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!lastDrawnCard) return;
+    if (prevDrawnIdRef.current !== lastDrawnCard.id) {
+      prevDrawnIdRef.current = lastDrawnCard.id;
+      // card flip for every new draw
+      playCardFlipSound();
+      // sparkle for multiplier cards
+      if (lastDrawnCard.type === 'double' || lastDrawnCard.type === 'triple') {
+        playSparkleSound();
+      }
+    }
+  }, [lastDrawnCard]);
+
+  // Notify bell when the active player changes.
+  const prevPlayerIdxRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (prevPlayerIdxRef.current !== undefined && prevPlayerIdxRef.current !== currentPlayerIndex) {
+      playNotifySound();
+    }
+    prevPlayerIdxRef.current = currentPlayerIndex;
+  }, [currentPlayerIndex]);
+
   const handleDrawCard = (cardId: string) => drawCard(cardId);
-  const handleContinue = () => continueTurn();
-  const handleBank = () => bankPoints();
-  const handleAdvance = () => advanceTurn();
+  const handleContinue = () => { playClickSound(); continueTurn(); };
+  const handleBank = () => {
+    playClickSound();
+    playCoinSound();
+    bankPoints();
+  };
+  const handleAdvance = () => {
+    playClickSound();
+    playNotifySound();
+    advanceTurn();
+  };
 
   const handleQuitGame = () => {
+    playClickSound();
     resetGame();
     router.push('/risk2');
   };
@@ -869,9 +919,9 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
+        padding: '8px 14px 100px',
         gap: '8px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header ══════════ */}

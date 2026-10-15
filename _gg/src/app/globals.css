@@ -3128,9 +3128,11 @@ body.in-game-setup .yalla-tabbar {
   box-shadow: 0 0 14px rgba(254,239,145,.35), inset 0 0 8px rgba(254,239,145,.1);
 }
 
-/* Setup container — no scroll */
+/* Setup container — allow vertical scroll, clip horizontal */
 .tobol-setup-root {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================================================ */

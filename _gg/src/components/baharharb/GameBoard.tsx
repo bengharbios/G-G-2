@@ -12,6 +12,11 @@ import {
   useShareLinks,
   STROKE_STYLE,
 } from '@/lib/yalla-game-helpers';
+import {
+  playClickSound,
+  playNotifySound,
+  playRevealSound,
+} from '@/lib/sounds';
 
 // ============================================================
 // Sound effects (Web Audio API) — preserved from inline page
@@ -142,19 +147,19 @@ export default function GameBoard() {
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
   const handleRevealClue1 = useCallback(() => {
-    if (!showClue1) playReveal();
+    if (!showClue1) { playReveal(); playRevealSound(); }
     revealClue1();
   }, [showClue1, playReveal, revealClue1]);
   const handleRevealClue2 = useCallback(() => {
-    if (!showClue2) playReveal();
+    if (!showClue2) { playReveal(); playRevealSound(); }
     revealClue2();
   }, [showClue2, playReveal, revealClue2]);
   const handleRevealAnswer1 = useCallback(() => {
-    if (!showAnswer1) playReveal();
+    if (!showAnswer1) { playReveal(); playRevealSound(); }
     revealAnswer1();
   }, [showAnswer1, playReveal, revealAnswer1]);
   const handleRevealAnswer2 = useCallback(() => {
-    if (!showAnswer2) playReveal();
+    if (!showAnswer2) { playReveal(); playRevealSound(); }
     revealAnswer2();
   }, [showAnswer2, playReveal, revealAnswer2]);
   const handleTeam1Score = useCallback(() => {
@@ -170,9 +175,17 @@ export default function GameBoard() {
       playWin();
       goToGameOver();
     } else {
+      playClickSound();
+      playNotifySound();
       nextQuestion();
     }
   }, [isLastQuestion, playWin, goToGameOver, nextQuestion]);
+
+  // Wrap prevQuestion to also play a click on the back button.
+  const handlePrevQuestion = useCallback(() => {
+    playClickSound();
+    prevQuestion();
+  }, [prevQuestion]);
 
   if (!question) {
     return (
@@ -190,13 +203,13 @@ export default function GameBoard() {
       className="tobol-setup-root"
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
         background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
-        padding: '6px 8px',
+        padding: '6px 8px 100px',
         gap: '6px',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ أيقونات الهيدر ══════════ */}
@@ -506,7 +519,7 @@ export default function GameBoard() {
 
         <div style={{ display: 'flex', gap: '6px' }}>
           <button
-            onClick={prevQuestion}
+            onClick={handlePrevQuestion}
             disabled={currentQuestionIndex === 0}
             style={{
               flex: 1, padding: '10px', borderRadius: '10px',

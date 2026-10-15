@@ -3,6 +3,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Door, OUTCOME_CONFIG } from '@/lib/tabot-types';
+import {
+  playClickSound,
+  playCardFlipSound,
+  playCoffinSound,
+  playKeySound,
+  playNotifySound,
+} from '@/lib/sounds';
 
 interface DoorCardProps {
   door: Door;
@@ -20,10 +27,27 @@ export default function DoorCard({ door, index, isSelectable, onSelect }: DoorCa
 
   const handleClick = () => {
     if (isDisabled) return;
+    // Play click + card flip immediately on tap
+    playClickSound();
+    playCardFlipSound();
     setIsShaking(true);
     setTimeout(() => {
       setIsShaking(false);
       setIsRevealing(true);
+      // After the reveal animation, play a sound that depends on the outcome type.
+      const oc = door.outcome;
+      const attackOutcomes = ['imprison_enemy', 'kill_enemy', 'imprison_teammate'];
+      const defenseOutcomes = ['safe_passage', 'free_teammate', 'empty'];
+      const coffinOutcomes = ['kill_player', 'kill_self', 'self_imprison'];
+      if (attackOutcomes.includes(oc)) {
+        playCoffinSound();
+      } else if (defenseOutcomes.includes(oc)) {
+        playKeySound();
+      } else if (coffinOutcomes.includes(oc)) {
+        playCoffinSound();
+      } else {
+        playNotifySound();
+      }
       setTimeout(() => {
         onSelect(door.id);
       }, 600);
