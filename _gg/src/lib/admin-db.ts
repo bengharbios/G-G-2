@@ -1561,6 +1561,17 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     isComingSoon: false,
   },
   {
+    gameSlug: 'aiwerewolf',
+    gameName: 'المستذئب AI',
+    isEnabled: true,
+    order: 8,
+    playerRange: '9-12',
+    description: 'لعبة استنتاج اجتماعي كاملة ضد لاعبين ذكاء اصطناعي! متجاوبة مع الجوال.',
+    icon: '🐺',
+    color: 'rose',
+    isComingSoon: false,
+  },
+  {
     gameSlug: 'wizardduel',
     gameName: 'مبارزة السحرة',
     isEnabled: true,
