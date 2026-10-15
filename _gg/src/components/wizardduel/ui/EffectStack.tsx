@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import { Effect, EffectGroupName } from '../../model/cardEffects';
-import { icon } from '../../utils/assetUtils';
+import { Effect, EffectGroupName } from '../model/cardEffects';
+import { icon } from '../utils/assetUtils';
 
 interface EffectStackProps {
   readonly opponentEffects: Effect[];

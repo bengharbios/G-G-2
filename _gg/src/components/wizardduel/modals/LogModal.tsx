@@ -1,7 +1,7 @@
 "use client";
 
-import { LogEntry } from '../../hooks/useLog';
-import { click } from '../../utils/assetUtils';
+import { LogEntry } from '../hooks/useLog';
+import { click } from '../utils/assetUtils';
 import { Modal } from './Modal';
 
 interface LogModalProps {

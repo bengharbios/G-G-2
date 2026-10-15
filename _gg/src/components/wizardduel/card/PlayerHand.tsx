@@ -1,6 +1,6 @@
 "use client";
 
-import { Player } from '../../model/player';
+import { Player } from '../model/player';
 import { CardType, CardView } from './CardView';
 
 interface PlayerHandProps {

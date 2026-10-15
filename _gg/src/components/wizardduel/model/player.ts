@@ -1,4 +1,4 @@
-import { PlayerID } from 'boardgame.io';
+import { PlayerID } from '../boardgame-stubs';
 import { Effect } from './cardEffects';
 import { Card } from './cards';
 

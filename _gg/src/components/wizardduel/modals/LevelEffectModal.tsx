@@ -1,12 +1,12 @@
 "use client";
 
-import { FINAL_LEVEL } from '../../core/level/level';
-import { click, getLocationForLevel } from '../../utils/assetUtils';
+import { FINAL_LEVEL } from '../core/level/level';
+import { click, getLocationForLevel } from '../utils/assetUtils';
 import {
   getBattleInstructions,
   getBattleStartCaption,
   getRuleByPower,
-} from '../../utils/scriptUtils';
+} from '../utils/scriptUtils';
 import { Modal } from './Modal';
 
 interface LevelEffectModalProps {

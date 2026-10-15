@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import { useAudioPlayer } from '../../hooks/useAudioPlayer';
-import { usePreloadAssets } from '../../hooks/usePreloadAssets';
-import { CardId } from '../../model/cards';
+import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { usePreloadAssets } from '../hooks/usePreloadAssets';
+import { CardId } from '../model/cards';
 import {
   ANIMATION,
   AUDIO,
@@ -11,7 +11,7 @@ import {
   click,
   IMAGES,
   MUSIC,
-} from '../../utils/assetUtils';
+} from '../utils/assetUtils';
 import { CardGalleryModal } from '../modals/CardGalleryModal';
 import { HelpModal } from '../modals/HelpModal';
 

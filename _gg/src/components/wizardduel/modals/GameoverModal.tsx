@@ -1,9 +1,9 @@
 "use client";
 
-import { PlayerID } from 'boardgame.io';
-import { FINAL_LEVEL } from '../../core/level/level';
-import { click } from '../../utils/assetUtils';
-import { exitToMenu, resetGame, startLevel } from '../../utils/commonUtils';
+import { PlayerID } from '../boardgame-stubs';
+import { FINAL_LEVEL } from '../core/level/level';
+import { click } from '../utils/assetUtils';
+import { exitToMenu, resetGame, startLevel } from '../utils/commonUtils';
 import { Modal } from './Modal';
 
 interface GameoverModalProps {

@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from 'react';
-import { EffectType } from '../../model/cardEffects';
-import { Player } from '../../model/player';
+import { EffectType } from '../model/cardEffects';
+import { Player } from '../model/player';
 import {
   AnimationProps,
   getAvatarForLevel,
   icon,
-} from '../../utils/assetUtils';
-import { getEnemyName } from '../../utils/scriptUtils';
+} from '../utils/assetUtils';
+import { getEnemyName } from '../utils/scriptUtils';
 
 export const AVATAR_HEIGHT = 125;
 export const AVATAR_WIDTH = 125;

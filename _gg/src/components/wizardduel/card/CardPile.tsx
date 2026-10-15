@@ -1,6 +1,6 @@
 "use client";
 
-import { cardPile } from '../../utils/assetUtils';
+import { cardPile } from '../utils/assetUtils';
 import { CARD_HEIGHT, CARD_SMALL_SCALE, CARD_WIDTH } from './CardView';
 
 interface CardPileProps {

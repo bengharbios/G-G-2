@@ -1,4 +1,4 @@
-import { Ctx } from 'boardgame.io';
+import { Ctx } from '../boardgame-stubs';
 import { Card } from '../model/cards';
 import { WizardDuelState } from '../model/shared';
 import { filterActions } from './strategies/filter';

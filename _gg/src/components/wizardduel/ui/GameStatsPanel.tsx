@@ -1,7 +1,7 @@
 "use client";
 
-import { WizardDuelState } from '../../model/shared';
-import { icon } from '../../utils/assetUtils';
+import { WizardDuelState } from '../model/shared';
+import { icon } from '../utils/assetUtils';
 import { CardPile } from '../card/CardPile';
 
 interface GameStatsPanelProps {

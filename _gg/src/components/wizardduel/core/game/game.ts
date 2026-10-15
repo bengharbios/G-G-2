@@ -1,4 +1,4 @@
-import { Game, Move } from 'boardgame.io';
+import { Game, Move } from '../boardgame-stubs';
 
 import { EffectType } from '../../model/cardEffects';
 import { CardId } from '../../model/cards';

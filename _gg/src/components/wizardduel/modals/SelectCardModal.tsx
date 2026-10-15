@@ -1,7 +1,7 @@
 "use client";
 
-import { CardId } from '../../model/cards';
-import { cardFront } from '../../utils/assetUtils';
+import { CardId } from '../model/cards';
+import { cardFront } from '../utils/assetUtils';
 import { CARD_HEIGHT, CARD_WIDTH } from '../card/CardView';
 import { Modal } from './Modal';
 

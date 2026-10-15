@@ -1,6 +1,6 @@
 "use client";
 
-import { click } from '../../utils/assetUtils';
+import { click } from '../utils/assetUtils';
 import { Modal } from './Modal';
 
 interface HelpModalProps {

@@ -1,4 +1,4 @@
-import { Ctx } from 'boardgame.io';
+import { Ctx } from '../boardgame-stubs';
 
 import { Effect, EffectType } from '../../model/cardEffects';
 import {

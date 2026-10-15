@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from 'react';
-import { GameDifficulty, PowerClass } from '../../core/power/power';
-import { click, getAvatarForLevel } from '../../utils/assetUtils';
-import { startLevel } from '../../utils/commonUtils';
-import { powers, PowerSelectionProps } from '../../utils/scriptUtils';
+import { GameDifficulty, PowerClass } from '../core/power/power';
+import { click, getAvatarForLevel } from '../utils/assetUtils';
+import { startLevel } from '../utils/commonUtils';
+import { powers, PowerSelectionProps } from '../utils/scriptUtils';
 import {
   AVATAR_HEIGHT,
   AVATAR_SMALL_SCALE,

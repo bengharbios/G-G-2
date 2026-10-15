@@ -1,4 +1,4 @@
-import { Ctx, PlayerID } from 'boardgame.io';
+import { Ctx, PlayerID } from '../boardgame-stubs';
 
 import {
   Effect,

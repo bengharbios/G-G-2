@@ -1,9 +1,9 @@
 "use client";
 
-import { PlayerID } from 'boardgame.io';
+import { PlayerID } from '../boardgame-stubs';
 import { JSX } from 'react';
-import { CardId } from '../../model/cards';
-import { cardBack, cardFront, cardPlaceholder } from '../../utils/assetUtils';
+import { CardId } from '../model/cards';
+import { cardBack, cardFront, cardPlaceholder } from '../utils/assetUtils';
 
 export const CARD_HEIGHT = 210;
 export const CARD_WIDTH = 150;

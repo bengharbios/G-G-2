@@ -1,4 +1,4 @@
-import { Ctx } from 'boardgame.io';
+import { Ctx } from '../boardgame-stubs';
 import { useState } from 'react';
 import { PowerClass } from '../core/power/power';
 import { EffectType } from '../model/cardEffects';

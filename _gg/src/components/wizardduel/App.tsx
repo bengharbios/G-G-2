@@ -1,6 +1,6 @@
 'use client';
 
-import { Client } from 'boardgame.io';
+import { Client } from './boardgame-stubs';
 import { MainMenu } from './board/MainMenu';
 import { WizardDuelBoard } from './board/WizardDuelBoard';
 import { WizardDuel } from './core/game/game';

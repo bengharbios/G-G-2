@@ -1,13 +1,13 @@
 "use client";
 
-import { FINAL_LEVEL } from '../../core/level/level';
-import { getAvatarForLevel } from '../../utils/assetUtils';
+import { FINAL_LEVEL } from '../core/level/level';
+import { getAvatarForLevel } from '../utils/assetUtils';
 import {
   getBattleInstructions,
   getBattleStartCaption,
   getEnemyName,
   getRuleByPower,
-} from '../../utils/scriptUtils';
+} from '../utils/scriptUtils';
 import {
   AVATAR_HEIGHT,
   AVATAR_SMALL_SCALE,

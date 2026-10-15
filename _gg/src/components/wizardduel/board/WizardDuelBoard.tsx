@@ -1,32 +1,31 @@
 "use client";
 
-import { PlayerID } from 'boardgame.io';
-// BoardProps type — replaced from boardgame.io/dist to avoid build issues
-type BoardProps = any;
+import { PlayerID, BoardProps } from '../boardgame-stubs';
+import { PlayerID } from '../boardgame-stubs';
 import { useEffect, useState } from 'react';
 
-import { useAudioPlayer } from '../../hooks/useAudioPlayer';
-import { useBsTooltip } from '../../hooks/useBsTooltip';
-import { useCardAnimation } from '../../hooks/useCardAnimation';
-import { useLog } from '../../hooks/useLog';
-import { useMusicPlayer } from '../../hooks/useMusicPlayer';
-import { usePersistentState } from '../../hooks/usePersistentState';
+import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { useBsTooltip } from '../hooks/useBsTooltip';
+import { useCardAnimation } from '../hooks/useCardAnimation';
+import { useLog } from '../hooks/useLog';
+import { useMusicPlayer } from '../hooks/useMusicPlayer';
+import { usePersistentState } from '../hooks/usePersistentState';
 
-import { AI, Strategy } from '../../ai/ai';
-import { Card, CardId } from '../../model/cards';
-import { DrawMode, WizardDuelState } from '../../model/shared';
+import { AI, Strategy } from '../ai/ai';
+import { Card, CardId } from '../model/cards';
+import { DrawMode, WizardDuelState } from '../model/shared';
 import {
   click,
   defeat,
   getLocationForLevel,
   getMusicForLevel,
   victory,
-} from '../../utils/assetUtils';
-import { sleep } from '../../utils/commonUtils';
+} from '../utils/assetUtils';
+import { sleep } from '../utils/commonUtils';
 import {
   getSelectableCardIds,
   resolveCardAudio,
-} from '../../utils/presentationUtils';
+} from '../utils/presentationUtils';
 
 import { CardPreview } from '../card/CardPreview';
 import { PlayerHand } from '../card/PlayerHand';

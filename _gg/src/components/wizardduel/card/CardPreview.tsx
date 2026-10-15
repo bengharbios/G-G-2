@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from '../../model/cards';
+import { Card } from '../model/cards';
 import { CARD_MEDIUM_SCALE, CardType, CardView } from './CardView';
 
 interface CardPreviewProps {

@@ -1,7 +1,7 @@
 "use client";
 
-import { getNextCardsForLevel } from '../../utils/assetUtils';
-import { startLevel } from '../../utils/commonUtils';
+import { getNextCardsForLevel } from '../utils/assetUtils';
+import { startLevel } from '../utils/commonUtils';
 import { CARD_HEIGHT, CARD_WIDTH } from '../card/CardView';
 import { Modal } from './Modal';
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { click, icon } from '../../utils/assetUtils';
+import { click, icon } from '../utils/assetUtils';
 
 interface IconListProps {
   readonly setShowLevelEffectModal: React.Dispatch<

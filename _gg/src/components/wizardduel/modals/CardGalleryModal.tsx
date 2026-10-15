@@ -1,6 +1,6 @@
 "use client";
 
-import { click } from '../../utils/assetUtils';
+import { click } from '../utils/assetUtils';
 import { CARD_HEIGHT, CARD_SMALL_SCALE, CARD_WIDTH } from '../card/CardView';
 import { Modal } from './Modal';
 
