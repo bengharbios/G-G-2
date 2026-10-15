@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import { useGameStore } from '@/lib/game-store';
 import RoleCard from './RoleCard';
 import {
@@ -28,6 +29,12 @@ export default function CardDistribution() {
     setPhase,
     gameMode,
     roomCode,
+    phase,
+    round,
+    eliminatedPlayers,
+    revealedCards,
+    gameWinner,
+    gameLog,
   } = useGameStore();
 
   useInGameSetupMode();
@@ -35,6 +42,44 @@ export default function CardDistribution() {
   const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
   useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
   const { viewerCount } = useViewerCount('mafia', isDiwaniyaHost, roomCode);
+
+  // Push full game state to the room so spectators see the latest phase,
+  // players, current distribution index, and round number in real time.
+  // The mafia zustand store's syncToRoom() goes to the generic /api/room
+  // endpoint; this hook mirrors the same payload to /api/mafia-room so
+  // our game-specific spectator route serves the freshest state.
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    const body = {
+      phase,
+      round,
+      players,
+      currentDistributionIndex,
+      showCard,
+      eliminatedPlayers,
+      revealedCards,
+      gameWinner,
+      gameLog,
+    };
+    fetch(`/api/mafia-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isDiwaniyaHost,
+    roomCode,
+    phase,
+    round,
+    players,
+    currentDistributionIndex,
+    showCard,
+    eliminatedPlayers,
+    revealedCards,
+    gameWinner,
+    gameLog,
+  ]);
 
   const currentPlayer = players[currentDistributionIndex];
   const isLastPlayer = currentDistributionIndex >= players.length - 1;

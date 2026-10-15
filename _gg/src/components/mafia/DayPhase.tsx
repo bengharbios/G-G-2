@@ -874,12 +874,55 @@ export default function DayPhase() {
     showRolesToHost,
     gameMode,
     roomCode,
+    eliminatedPlayers,
+    revealedCards,
+    gameLog,
+    votes,
+    nightEvents,
   } = useGameStore();
 
   // Yalla Ludo: hide global header chrome + bottom nav during in-game phases
   useInGameSetupMode();
   // Yalla Ludo: shared host heartbeat (posts to /api/mafia-room/[code]/heartbeat)
   useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
+
+  // Push full game state to the room so spectators see the latest phase
+  // (day announcements / discussion / voting / elimination), players, day
+  // results, vote results, and game over in real time.
+  useEffect(() => {
+    if (gameMode !== 'diwaniya' || !roomCode) return;
+    const body = {
+      phase,
+      round,
+      players,
+      dayResults,
+      gameWinner,
+      eliminatedPlayers,
+      revealedCards,
+      gameLog,
+      votes,
+      nightEvents,
+    };
+    fetch(`/api/mafia-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    gameMode,
+    roomCode,
+    phase,
+    round,
+    players,
+    dayResults,
+    gameWinner,
+    eliminatedPlayers,
+    revealedCards,
+    gameLog,
+    votes,
+    nightEvents,
+  ]);
 
   const [selectedPreset, setSelectedPreset] = useState(2);
   const [discussionTimer, setDiscussionTimer] = useState(0);

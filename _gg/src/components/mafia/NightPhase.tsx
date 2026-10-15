@@ -68,6 +68,11 @@ export default function NightPhase() {
     showRolesToHost,
     gameMode,
     roomCode,
+    eliminatedPlayers,
+    revealedCards,
+    gameLog,
+    nightEvents,
+    nightLog,
   } = useGameStore();
 
   const isDiwaniya = gameMode === 'diwaniya';
@@ -82,6 +87,48 @@ export default function NightPhase() {
   useHostHeartbeat('mafia', gameMode ?? undefined, roomCode);
   const { viewerCount } = useViewerCount('mafia', isDiwaniyaHost, roomCode);
   const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('mafia', isDiwaniyaHost, roomCode);
+
+  // Push full game state to the room so spectators see the latest night phase
+  // (boss kill / silencer / medic / sniper / night_end), players, night
+  // actions, night events, and game winner in real time.
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    const body = {
+      phase,
+      round,
+      players,
+      currentMafiaViewIndex,
+      nightActions,
+      selectedTarget,
+      eliminatedPlayers,
+      revealedCards,
+      gameWinner,
+      gameLog,
+      nightEvents,
+      nightLog,
+    };
+    fetch(`/api/mafia-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isDiwaniyaHost,
+    roomCode,
+    phase,
+    round,
+    players,
+    currentMafiaViewIndex,
+    nightActions,
+    selectedTarget,
+    eliminatedPlayers,
+    revealedCards,
+    gameWinner,
+    gameLog,
+    nightEvents,
+    nightLog,
+  ]);
 
   const aliveMafia = getAliveMafia(players);
   const boss = getMafiaBoss(players);

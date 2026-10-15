@@ -366,7 +366,7 @@ export default function GameBoard() {
         setDirectLink(`${baseUrl}/r/tabot/${roomCode}?pkg=${pkg}&direct=1`);
       });
     const fetchViewers = () => {
-      fetch(`/api/room/${roomCode}`)
+      fetch(`/api/tabot-room/${roomCode}`)
         .then(r => r.ok ? r.json() : null)
         .then(d => {
           if (d?.room?.spectators) {

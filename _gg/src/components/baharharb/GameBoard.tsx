@@ -97,6 +97,7 @@ const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', 
 export default function GameBoard() {
   const router = useRouter();
   const {
+    phase,
     playMode,
     team1Name,
     team2Name,
@@ -109,6 +110,8 @@ export default function GameBoard() {
     showClue2,
     showAnswer1,
     showAnswer2,
+    battleLog,
+    logCounter,
     gameMode,
     roomCode,
     revealClue1,
@@ -130,6 +133,56 @@ export default function GameBoard() {
   const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
   const { viewerCount, viewers } = useViewerCount('baharharb', isDiwaniyaHost, roomCode);
   const { shareLink, directLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('baharharb', isDiwaniyaHost, roomCode);
+
+  // Push full game state to the room whenever it changes so spectators
+  // see reveals, scores, question index, and game_over in real time.
+  // The zustand store only sends partial updates from awardTeam1/2 +
+  // nextQuestion + goToGameOver; this hook fills in the gaps (team names,
+  // totalQuestions, showClue1/2, showAnswer1/2, battleLog).
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    const body = {
+      phase,
+      playMode,
+      team1Name,
+      team2Name,
+      totalQuestions,
+      currentQuestionIndex,
+      questions,
+      team1Score,
+      team2Score,
+      showClue1,
+      showClue2,
+      showAnswer1,
+      showAnswer2,
+      battleLog,
+      logCounter,
+    };
+    fetch(`/api/baharharb-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isDiwaniyaHost,
+    roomCode,
+    phase,
+    playMode,
+    team1Name,
+    team2Name,
+    totalQuestions,
+    currentQuestionIndex,
+    questions,
+    team1Score,
+    team2Score,
+    showClue1,
+    showClue2,
+    showAnswer1,
+    showAnswer2,
+    battleLog,
+    logCounter,
+  ]);
 
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showBattleLog, setShowBattleLog] = useState(false);

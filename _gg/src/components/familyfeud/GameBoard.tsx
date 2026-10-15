@@ -139,6 +139,90 @@ export default function GameBoard() {
   const { viewerCount, viewers } = useViewerCount('familyfeud', isDiwaniyaHost, roomCode);
   const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('familyfeud', isDiwaniyaHost, roomCode);
 
+  // Push full game state to the room whenever it changes so spectators see
+  // revealed answers, strikes, score changes, fast money state, and game over
+  // in real time. The zustand store only sends partial updates from
+  // handleEndGame; this hook fills in the gaps.
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    const body = {
+      phase: gamePhase,
+      uiPhase,
+      gamePhase,
+      showGameOver,
+      team1Name,
+      team2Name,
+      team1Emoji,
+      team2Emoji,
+      team1Score,
+      team2Score,
+      currentTeam,
+      strikes,
+      round,
+      totalRounds,
+      selectedQuestions,
+      currentAnswers,
+      roundScore,
+      fmQuestions,
+      fmAnswers1,
+      fmAnswers2,
+      fmRevealed1,
+      fmRevealed2,
+      fmScore1,
+      fmScore2,
+      fmPhase,
+      fmSelected1,
+      fmSelected2,
+      timeLeft,
+      timerRunning,
+      regularRoundScore1,
+      regularRoundScore2,
+      roundHistory,
+      gameStats,
+    };
+    fetch(`/api/familyfeud-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isDiwaniyaHost,
+    roomCode,
+    gamePhase,
+    uiPhase,
+    showGameOver,
+    team1Name,
+    team2Name,
+    team1Emoji,
+    team2Emoji,
+    team1Score,
+    team2Score,
+    currentTeam,
+    strikes,
+    round,
+    totalRounds,
+    selectedQuestions,
+    currentAnswers,
+    roundScore,
+    fmQuestions,
+    fmAnswers1,
+    fmAnswers2,
+    fmRevealed1,
+    fmRevealed2,
+    fmScore1,
+    fmScore2,
+    fmPhase,
+    fmSelected1,
+    fmSelected2,
+    timeLeft,
+    timerRunning,
+    regularRoundScore1,
+    regularRoundScore2,
+    roundHistory,
+    gameStats,
+  ]);
+
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showBattleLog, setShowBattleLog] = useState(false);
   const [showChat, setShowChat] = useState(false);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   getTeamInfo,
@@ -17,21 +17,111 @@ const STROKE_STYLE: React.CSSProperties = {
 };
 
 interface SpectatorViewProps {
-  stateJson: string;
+  /** Optional initial state (used by the join page for instant render before the first poll) */
+  stateJson?: string;
   roomCode: string;
   hostName?: string;
 }
 
 export default function SpectatorView({ stateJson, roomCode, hostName }: SpectatorViewProps) {
   const [state, setState] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(!stateJson);
+  const [error, setError] = useState<string>('');
+  const pollFailCount = useRef(0);
 
+  // Hydrate from the optional initial stateJson prop (if provided)
   useEffect(() => {
+    if (!stateJson) return;
     try {
-      setState(JSON.parse(stateJson || '{}'));
+      setState(JSON.parse(stateJson));
     } catch {
-      setState({});
+      /* ignore */
     }
   }, [stateJson]);
+
+  // Self-poll /api/tabot-room/[code] every 2s — same pattern as TobolSpectatorView
+  const pollRoom = useCallback(async () => {
+    if (!roomCode) return;
+    try {
+      const res = await fetch(`/api/tabot-room/${roomCode}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          setError('الغرفة غير موجودة أو انتهت صلاحيتها');
+          setLoading(false);
+          return;
+        }
+        pollFailCount.current += 1;
+        if (pollFailCount.current > 5) {
+          setError('تعذر تحميل بيانات الغرفة');
+          setLoading(false);
+        }
+        return;
+      }
+      const data = await res.json();
+      if (data?.success && data?.room) {
+        // The room stateJson is merged with the row-level fields in the store,
+        // so we can use it directly.
+        setState(data.room);
+        setLoading(false);
+        setError('');
+        pollFailCount.current = 0;
+      }
+    } catch {
+      pollFailCount.current += 1;
+      if (pollFailCount.current > 5) {
+        setError('تعذر الاتصال بالخادم');
+        setLoading(false);
+      }
+    }
+  }, [roomCode]);
+
+  useEffect(() => {
+    pollRoom();
+    const iv = setInterval(pollRoom, 2000);
+    return () => clearInterval(iv);
+  }, [pollRoom]);
+
+  if (loading && !state?.players) {
+    return (
+      <div className="min-h-screen flex items-center justify-center tobol-bg" dir="rtl">
+        <div className="text-center">
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ fontSize: '48px', marginBottom: '12px' }}
+          >⚰️</motion.div>
+          <p style={{ color: '#9fc4b4', fontSize: '14px' }}>جاري تحميل الغرفة...</p>
+          {roomCode && (
+            <p style={{ color: '#64748b', fontSize: '12px', marginTop: '6px' }}>
+              كود: <span style={{ fontFamily: 'monospace', color: '#fff' }}>{roomCode}</span>
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center tobol-bg" dir="rtl">
+        <div className="text-center max-w-sm mx-auto p-4">
+          <div style={{ fontSize: '48px', marginBottom: '12px' }}>💔</div>
+          <p style={{ color: '#f87171', fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>{error}</p>
+          {roomCode && (
+            <p style={{ color: '#64748b', fontSize: '12px', marginBottom: '12px' }}>
+              كود: <span style={{ fontFamily: 'monospace', color: '#fff' }}>{roomCode}</span>
+            </p>
+          )}
+          <a
+            href="/tabot"
+            className="inline-block text-sm text-amber-400 hover:text-amber-300 underline"
+          >
+            العودة للصفحة الرئيسية
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   const players: Player[] = state?.players || [];
   const teamAlphaName: string = state?.teamAlphaName || TEAM_CONFIG.alpha.defaultName;

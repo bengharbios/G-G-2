@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Check, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -32,9 +32,10 @@ interface SpectatorState {
 }
 
 interface ShifaratSpectatorViewProps {
-  stateJson: string;
+  /** Optional initial state (used by the join page for instant render before the first poll) */
+  stateJson?: string;
   roomCode: string;
-  hostName: string;
+  hostName?: string;
   playerName?: string;
 }
 
@@ -97,9 +98,13 @@ export default function ShifaratSpectatorView({
   playerName,
 }: ShifaratSpectatorViewProps) {
   const [state, setState] = useState<SpectatorState | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const pollFailCount = useRef(0);
 
-  // Parse initial state
+  // Hydrate from the optional initial stateJson prop (if provided)
   const parsedState = useMemo(() => {
+    if (!stateJson) return null;
     try {
       return JSON.parse(stateJson) as SpectatorState;
     } catch {
@@ -108,30 +113,95 @@ export default function ShifaratSpectatorView({
   }, [stateJson]);
 
   useEffect(() => {
-    setState(parsedState);
+    if (parsedState) {
+      setState(parsedState);
+      setLoading(false);
+    }
   }, [parsedState]);
 
-  // Poll for updates
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`/api/room/${roomCode}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.stateJson) {
-            try {
-              setState(JSON.parse(data.stateJson));
-            } catch {
-              // ignore
-            }
-          }
+  // Self-poll /api/shifarat-room/[code] every 2s — TobolSpectatorView pattern
+  const pollRoom = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/shifarat-room/${roomCode}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          setError('الغرفة غير موجودة أو انتهت صلاحيتها');
+          setLoading(false);
+          return;
         }
-      } catch {
-        // silent
+        pollFailCount.current += 1;
+        if (pollFailCount.current > 5) {
+          setError('تعذر تحميل بيانات الغرفة');
+          setLoading(false);
+        }
+        return;
       }
-    }, 2000);
-    return () => clearInterval(interval);
+      const data = await res.json();
+      if (data?.success && data?.room) {
+        // The room state from /api/shifarat-room/[code] is already merged
+        // (stateJson parsed + row-level fields). Use it directly.
+        const roomState = data.room as SpectatorState;
+        setState(roomState);
+        setLoading(false);
+        setError('');
+        pollFailCount.current = 0;
+      } else {
+        pollFailCount.current += 1;
+        if (pollFailCount.current > 5) {
+          setError('تعذر تحميل بيانات الغرفة');
+          setLoading(false);
+        }
+      }
+    } catch {
+      pollFailCount.current += 1;
+      if (pollFailCount.current > 5) {
+        setError('تعذر الاتصال بالخادم');
+        setLoading(false);
+      }
+    }
   }, [roomCode]);
+
+  useEffect(() => {
+    pollRoom();
+    const interval = setInterval(pollRoom, 2000);
+    return () => clearInterval(interval);
+  }, [pollRoom]);
+
+  if (loading && !state) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900" dir="rtl">
+        <div className="text-center">
+          <div className="text-5xl mb-4 animate-bounce">🎯</div>
+          <p className="text-slate-400">جاري تحميل اللعبة...</p>
+          {roomCode && (
+            <p className="text-slate-500 text-xs mt-2 font-mono">كود: {roomCode}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900" dir="rtl">
+        <div className="text-center max-w-sm mx-auto p-4">
+          <div className="text-5xl mb-4">💔</div>
+          <p className="text-red-400 text-lg font-bold mb-2">{error}</p>
+          {roomCode && (
+            <p className="text-slate-500 text-xs mb-4">
+              كود: <span className="font-mono text-white">{roomCode}</span>
+            </p>
+          )}
+          <a
+            href="/shifarat"
+            className="inline-block text-sm text-amber-400 hover:text-amber-300 underline"
+          >
+            العودة للصفحة الرئيسية
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   if (!state) {
     return (
@@ -143,6 +213,8 @@ export default function ShifaratSpectatorView({
       </div>
     );
   }
+
+  void hostName; // hostName is unused for now (kept for API compat)
 
   const isGameOver = state.phase === 'game_over';
   const winnerTeam = state.winner;

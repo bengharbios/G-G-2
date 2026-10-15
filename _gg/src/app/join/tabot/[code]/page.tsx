@@ -32,30 +32,15 @@ function TabotJoinContent() {
   const [stateJson, setStateJson] = useState('{}');
   const [hostName, setHostName] = useState('');
 
-  // Poll room state
-  useEffect(() => {
-    if (!connected || !code) return;
-    let cancelled = false;
-    const poll = async () => {
-      try {
-        const res = await fetch(`/api/room/${code}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (cancelled) return;
-        if (data?.stateJson) setStateJson(data.stateJson);
-        if (data?.hostName) setHostName(data.hostName);
-      } catch { /* silent */ }
-    };
-    poll();
-    const iv = setInterval(poll, 2000);
-    return () => { cancelled = true; clearInterval(iv); };
-  }, [connected, code]);
+  // Note: the SpectatorView self-polls /api/tabot-room/${code} every 2s,
+  // so we don't need to poll here. We only fetch once on connect to get
+  // an initial stateJson for instant render + the hostName.
 
   // Send heartbeat to keep spectator alive
   useEffect(() => {
     if (!spectatorId || !code) return;
     const beat = () => {
-      fetch(`/api/room/${code}/spectator`, {
+      fetch(`/api/tabot-room/${code}/spectator`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ spectatorId }),
@@ -70,7 +55,7 @@ function TabotJoinContent() {
   useEffect(() => {
     if (!spectatorId || !code) return;
     return () => {
-      fetch(`/api/room/${code}/spectator?id=${spectatorId}`, { method: 'DELETE' }).catch(() => {});
+      fetch(`/api/tabot-room/${code}/spectator?id=${spectatorId}`, { method: 'DELETE' }).catch(() => {});
     };
   }, [spectatorId, code]);
 
@@ -85,7 +70,7 @@ function TabotJoinContent() {
 
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        const roomRes = await fetch(`/api/room/${code}`);
+        const roomRes = await fetch(`/api/tabot-room/${code}`);
         if (!roomRes.ok) {
           if (roomRes.status === 404) {
             setError('الغرفة غير موجودة أو انتهت صلاحيتها');
@@ -102,13 +87,20 @@ function TabotJoinContent() {
         }
 
         const roomData = await roomRes.json();
-        if (roomData?.stateJson) setStateJson(roomData.stateJson);
-        if (roomData?.hostName) setHostName(roomData.hostName);
+        if (roomData?.room?.hostName) setHostName(roomData.room.hostName);
+        // Pass an initial stateJson snapshot to SpectatorView for instant render
+        if (roomData?.room) {
+          try {
+            setStateJson(JSON.stringify(roomData.room));
+          } catch {
+            /* ignore */
+          }
+        }
 
-        const specRes = await fetch(`/api/room/${code}/spectator`, {
+        const specRes = await fetch(`/api/tabot-room/${code}/spectator`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: pName, gameType: 'tabot' }),
+          body: JSON.stringify({ name: pName }),
         });
 
         if (!specRes.ok) {

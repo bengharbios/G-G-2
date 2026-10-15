@@ -1120,6 +1120,14 @@ export default function PlayingPhase() {
     resetGame,
     roomCode,
     lastGuessResult,
+    startingTeam,
+    timerDuration,
+    timerRemaining,
+    isTimerActive,
+    winner,
+    winReason,
+    selectedCategories,
+    players,
   } = useShifaratStore();
 
   useInGameSetupMode();
@@ -1128,6 +1136,68 @@ export default function PlayingPhase() {
   useHostHeartbeat('shifarat', gameMode ?? undefined, roomCode);
   const { viewerCount, viewers } = useViewerCount('shifarat', isDiwaniyaHost, roomCode);
   const { shareLink, directLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('shifarat', isDiwaniyaHost, roomCode);
+
+  // Push full game state to the room whenever it changes so spectators see
+  // the latest board, clue, guess result, timer, and game over in real time.
+  // The shifarat zustand store's syncToRoom() goes to the generic /api/room
+  // endpoint; this hook mirrors the same payload to /api/shifarat-room so
+  // our game-specific spectator route serves the freshest state.
+  useEffect(() => {
+    if (!isDiwaniyaHost || !roomCode) return;
+    const body = {
+      phase,
+      viewMode,
+      board,
+      redTeam,
+      blueTeam,
+      startingTeam,
+      currentTeam,
+      roundNumber,
+      currentClue,
+      guessesThisTurn,
+      guessesAllowed,
+      lastGuessResult,
+      timerDuration,
+      timerRemaining,
+      isTimerActive,
+      clues,
+      gameLog,
+      selectedCategories,
+      winner,
+      winReason,
+      players,
+    };
+    fetch(`/api/shifarat-room/${roomCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isDiwaniyaHost,
+    roomCode,
+    phase,
+    viewMode,
+    board,
+    redTeam,
+    blueTeam,
+    startingTeam,
+    currentTeam,
+    roundNumber,
+    currentClue,
+    guessesThisTurn,
+    guessesAllowed,
+    lastGuessResult,
+    timerDuration,
+    timerRemaining,
+    isTimerActive,
+    clues,
+    gameLog,
+    selectedCategories,
+    winner,
+    winReason,
+    players,
+  ]);
 
   const [showLog, setShowLog] = useState(false);
   const [showViewers, setShowViewers] = useState(false);
