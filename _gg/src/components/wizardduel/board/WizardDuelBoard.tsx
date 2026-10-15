@@ -1,6 +1,5 @@
 "use client";
 
-import { PlayerID, BoardProps } from '../boardgame-stubs';
 import { PlayerID } from '../boardgame-stubs';
 import { useEffect, useState } from 'react';
 
