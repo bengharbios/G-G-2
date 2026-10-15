@@ -27,7 +27,7 @@ function WizardDuelGame() {
     }
 
     // Dynamically import the game to avoid SSR/CSR issues
-    import('./App').then((module) => {
+    import('@/components/wizardduel/App').then((module) => {
       setGameComponent(() => module.WizardDuelApp);
     }).catch((err) => {
       console.error('Failed to load wizard duel:', err);
