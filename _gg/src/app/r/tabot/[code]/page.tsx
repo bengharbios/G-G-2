@@ -1,5 +1,3 @@
-import { redirect } from 'next/server';
-
 // /r/tabot/[code]?from=HOST_USER_ID&pkg=com.bengharbios.ggames
 //
 // Smart deep-link redirect route for الهروب من التابوت (Tabot — Escape the Coffin).

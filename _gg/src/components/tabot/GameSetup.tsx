@@ -76,6 +76,7 @@ export default function GameSetup() {
   const handleStart = () => {
     const err = validate();
     if (err) { setError(err); return; }
+    if (!selectedFirstTeam) { setError('اختر الفريق الذي يبدأ أولاً'); return; }
     setError('');
     setupTeams(
       alpha.name || TEAM_CONFIG.alpha.defaultName,

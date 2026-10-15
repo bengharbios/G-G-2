@@ -3,7 +3,7 @@
 import { useSyncExternalStore, useCallback, useState, useEffect, useRef } from 'react';
 import { useTabotStore } from '@/lib/tabot-store';
 import LandingPage from '@/components/tabot/LandingPage';
-import TeamSetup from '@/components/tabot/TeamSetup';
+import GameSetup from '@/components/tabot/GameSetup';
 import GameBoard from '@/components/tabot/GameBoard';
 import GameOver from '@/components/tabot/GameOver';
 import { Button } from '@/components/ui/button';
@@ -349,7 +349,7 @@ function TabotContent() {
   if (phase === 'setup') {
     return (
       <main>
-        <TeamSetup />
+        <GameSetup />
       </main>
     );
   }
