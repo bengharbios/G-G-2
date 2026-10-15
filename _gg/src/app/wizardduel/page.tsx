@@ -1,129 +1,61 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
-import { useSyncExternalStore } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { useWizardDuelStore } from '@/lib/wizardduel-store';
-import { useHostHeartbeat } from '@/lib/yalla-game-helpers';
-import LandingPage from '@/components/wizardduel/LandingPage';
-import GameSetup from '@/components/wizardduel/GameSetup';
-import GameBoard from '@/components/wizardduel/GameBoard';
-import WizardDuelGameOver from '@/components/wizardduel/WizardDuelGameOver';
+import { useEffect, useState } from 'react';
 
-// ============================================================
-// Hydration guard — avoids SSR/CSR mismatch from persisted store
-// ============================================================
-function useHydrated() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
+// Dynamically import the original wizard-duel game to avoid SSR issues
+// with boardgame.io and browser APIs
+function WizardDuelGame() {
+  const [GameComponent, setGameComponent] = useState<React.ComponentType | null>(null);
 
-// ============================================================
-// WizardDuelPage — top-level wrapper for مبارزة السحرة
-// ============================================================
-export default function WizardDuelPage() {
-  const {
-    phase,
-    gameMode,
-    roomCode,
-    setPhase,
-    setGameMode,
-  } = useWizardDuelStore();
-
-  const mounted = useHydrated();
-  const searchParams = useSearchParams();
-
-  // Host heartbeat for diwaniya mode (5s interval + cleanup on unload)
-  useHostHeartbeat('wizardduel', gameMode, roomCode);
-
-  // ===== ?mode=godfather or ?mode=diwaniya from /play/[gameId] =====
-  // If a mode is passed, skip LandingPage and go straight to setup
   useEffect(() => {
-    if (!mounted) return;
-    const mode = searchParams.get('mode');
-    if (mode === 'godfather' && phase === 'landing') {
-      setGameMode('classic');
-      setPhase('setup');
-    } else if (mode === 'diwaniya' && phase === 'landing') {
-      setGameMode('diwaniya');
-      setPhase('setup');
+    // Load Bootstrap CSS
+    if (!document.getElementById('bootstrap-css')) {
+      const link = document.createElement('link');
+      link.id = 'bootstrap-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
+      document.head.appendChild(link);
     }
-  }, [mounted, searchParams, phase, setGameMode, setPhase]);
 
-  const handleStartLocal = useCallback(() => {
-    setGameMode('classic');
-    setPhase('setup');
-  }, [setPhase, setGameMode]);
+    // Load the game CSS
+    if (!document.getElementById('wizardduel-css')) {
+      const link = document.createElement('link');
+      link.id = 'wizardduel-css';
+      link.rel = 'stylesheet';
+      link.href = '/wizardduel/index.css';
+      document.head.appendChild(link);
+    }
 
-  const handleStartDiwaniya = useCallback(() => {
-    setGameMode('diwaniya');
-    setPhase('setup');
-  }, [setPhase, setGameMode]);
+    // Dynamically import the game to avoid SSR/CSR issues
+    import('./App').then((module) => {
+      setGameComponent(() => module.WizardDuelApp);
+    }).catch((err) => {
+      console.error('Failed to load wizard duel:', err);
+    });
+  }, []);
 
-  // ── Pre-hydration splash ──
-  if (!mounted) {
+  if (!GameComponent) {
     return (
-      <div
-        dir="rtl"
-        style={{
-          minHeight: '100vh',
-          background: 'url(/battle/game_bg.webp) center / cover no-repeat, #1a0833',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#c4a3e8',
-          fontFamily: 'system-ui, sans-serif',
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '56px', marginBottom: '12px', animation: 'wdpulse 1.6s ease-in-out infinite' }}>🔮</div>
-          <p style={{ fontSize: '14px', fontWeight: 700, color: '#c4a3e8' }}>جاري تحميل المبارزة...</p>
-        </div>
-        <style>{`@keyframes wdpulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }`}</style>
-      </div>
-    );
-  }
-
-  // ── Landing ──
-  if (phase === 'landing') {
-    return (
-      <div style={{ height: '100vh', overflow: 'hidden' }}>
-        <main style={{ height: '100%', overflow: 'auto' }}>
-          <LandingPage onStartLocal={handleStartLocal} onStartDiwaniya={handleStartDiwaniya} />
-        </main>
-      </div>
-    );
-  }
-
-  // ── Setup ──
-  if (phase === 'setup') {
-    return (
-      <div style={{ height: '100vh', overflow: 'hidden' }}>
-        <main style={{ height: '100%', overflow: 'auto' }}>
-          <GameSetup />
-        </main>
-      </div>
-    );
-  }
-
-  // ── Playing / Game Over (fill viewport, scroll inside board) ──
-  return (
-    <div
-      style={{
-        height: '100vh',
-        overflow: 'hidden',
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #1a0833 0%, #0a0418 100%)',
         display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <main style={{ flex: 1, overflow: 'auto' }}>
-        {phase === 'playing' && <GameBoard />}
-        {phase === 'game_over' && <WizardDuelGameOver />}
-      </main>
-    </div>
-  );
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#c4a3e8',
+        fontSize: '16px',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔮</div>
+          <p>جاري تحميل مبارزة السحرة...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return <GameComponent />;
 }
 
+export default function WizardDuelPage() {
+  return <WizardDuelGame />;
+}
