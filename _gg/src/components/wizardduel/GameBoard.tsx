@@ -39,11 +39,11 @@ function HpBar({ player, isCurrent }: { player: Player; isCurrent: boolean }) {
     <div
       style={{
         width: '100%',
-        height: '14px',
+        height: '18px',
         background: 'rgba(0,0,0,.5)',
         borderRadius: '999px',
         overflow: 'hidden',
-        border: `1px solid ${color}50`,
+        border: `1.5px solid ${color}50`,
         position: 'relative',
         boxShadow: isCurrent ? `0 0 8px ${color}40` : 'none',
       }}
@@ -66,7 +66,7 @@ function HpBar({ player, isCurrent }: { player: Player; isCurrent: boolean }) {
           alignItems: 'center',
           justifyContent: 'center',
           color: '#fff',
-          fontSize: '10px',
+          fontSize: '12px',
           fontWeight: 800,
           textShadow: '0 1px 2px rgba(0,0,0,.9)',
         }}
@@ -134,11 +134,11 @@ function PlayerPanel({ player, isCurrent }: { player: Player; isCurrent: boolean
         '--card-border-selected': `linear-gradient(180deg, ${accent}cc, ${accent})`,
       } as React.CSSProperties}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
-        <span style={{ fontSize: '14px' }}>{player.isWizard ? '🔮' : '💀'}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+        <span style={{ fontSize: '20px' }}>{player.isWizard ? '🔮' : '💀'}</span>
         <span style={{
-          fontSize: '12px', fontWeight: 800, color: accent,
-          textShadow: '0 1px 2px rgba(0,0,0,.6)',
+          fontSize: '14px', fontWeight: 800, color: accent,
+          textShadow: '0 1px 3px rgba(0,0,0,.7)',
         }}>
           {player.name}
         </span>
@@ -148,7 +148,7 @@ function PlayerPanel({ player, isCurrent }: { player: Player; isCurrent: boolean
         <HpBar player={player} isCurrent={isCurrent} />
       </div>
       <ActiveEffects effects={player.activeEffects} />
-      <div style={{ marginTop: '4px', fontSize: '10px', color: '#9fc4b4', fontWeight: 700 }}>
+      <div style={{ marginTop: '6px', fontSize: '12px', color: '#9fc4b4', fontWeight: 700 }}>
         🃏 {player.hand.length} بطاقة
       </div>
     </div>
@@ -180,21 +180,21 @@ function HandCard({
       onClick={() => !disabled && onPlay(index)}
       disabled={disabled}
       style={{
-        flex: '0 0 110px',
-        width: '110px',
-        height: '160px',
+        flex: '0 0 130px',
+        width: '130px',
+        height: '190px',
         background: cardGradient(card),
-        border: `1.5px solid ${disabled ? `${border}40` : border}`,
-        borderRadius: '10px',
-        padding: '6px',
+        border: `2px solid ${disabled ? `${border}40` : border}`,
+        borderRadius: '12px',
+        padding: '8px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '2px',
+        gap: '4px',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.5 : 1,
         position: 'relative',
-        boxShadow: disabled ? 'none' : `0 0 10px ${border}30`,
+        boxShadow: disabled ? 'none' : `0 0 14px ${border}40, inset 0 1px 0 rgba(255,255,255,.08)`,
         transition: 'all .15s',
       }}
     >
@@ -203,30 +203,31 @@ function HandCard({
           src={card.artPath}
           alt={card.name}
           style={{
-            width: '36px', height: '36px', objectFit: 'contain',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))',
+            width: '56px', height: '56px', objectFit: 'contain',
+            filter: 'drop-shadow(0 3px 6px rgba(0,0,0,.6))',
           }}
         />
       )}
       {!card.artPath && (
-        <div style={{ fontSize: '24px', marginTop: '4px' }}>🪄</div>
+        <div style={{ fontSize: '36px', marginTop: '6px' }}>🪄</div>
       )}
       <div style={{
-        fontSize: '10px', fontWeight: 800, color: '#fff',
-        textShadow: '0 1px 2px rgba(0,0,0,.8)', textAlign: 'center',
+        fontSize: '13px', fontWeight: 800, color: '#fff',
+        textShadow: '0 1px 3px rgba(0,0,0,.9)', textAlign: 'center',
         lineHeight: 1.15,
       }}>
         {card.name}
       </div>
       <div style={{
-        fontSize: '8px', color: '#cbd5e1', textAlign: 'center',
-        lineHeight: 1.2, overflow: 'hidden', flex: 1,
+        fontSize: '10px', color: '#cbd5e1', textAlign: 'center',
+        lineHeight: 1.25, overflow: 'hidden', flex: 1,
+        textShadow: '0 1px 2px rgba(0,0,0,.7)',
       }}>
-        {card.text.slice(0, 60)}{card.text.length > 60 ? '…' : ''}
+        {card.text.slice(0, 80)}{card.text.length > 80 ? '…' : ''}
       </div>
       <div style={{
-        fontSize: '8px', fontWeight: 700, color: border,
-        background: `${border}15`, padding: '1px 4px', borderRadius: '999px',
+        fontSize: '9px', fontWeight: 700, color: border,
+        background: `${border}15`, padding: '2px 6px', borderRadius: '999px',
         border: `1px solid ${border}40`,
       }}>
         {card.keywords.join(' · ')}
@@ -499,12 +500,12 @@ export default function GameBoard() {
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #1a0833',
+        background: 'linear-gradient(180deg, rgba(26,8,51,.85) 0%, rgba(10,4,20,.95) 100%), url(/battle/game_bg.webp) center / cover no-repeat',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 100px',
-        gap: '8px',
+        padding: '8px 10px 80px',
+        gap: '6px',
         overflowY: 'auto',
       }}
     >
