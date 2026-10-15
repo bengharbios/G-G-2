@@ -1303,6 +1303,8 @@ export async function ensureAdminTables(): Promise<void> {
         { game: 'ggames', key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', w: 167, h: 134, order: 6 },
         { game: 'ggames', key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', w: 167, h: 134, order: 7 },
         { game: 'ggames', key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', w: 167, h: 134, order: 8 },
+        { game: 'ggames', key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', w: 167, h: 134, order: 9 },
+        { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 10 },
       ];
       for (const btn of yallaButtons) {
         await c.execute({
@@ -1333,6 +1335,8 @@ export async function ensureAdminTables(): Promise<void> {
           { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
           { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
           { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
+          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
+          { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
         ];
         for (const btn of ggamesButtons) {
           await c.execute({
@@ -1363,6 +1367,8 @@ export async function ensureAdminTables(): Promise<void> {
           { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
           { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
           { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
+          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
+          { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
         ];
         for (const btn of ggamesButtons) {
           await c.execute({
@@ -1411,6 +1417,33 @@ export async function ensureAdminTables(): Promise<void> {
       const cnt2 = (check.rows[0] as Record<string, unknown>)?.cnt as number;
       if (!cnt2 || cnt2 === 0) {
         await c.execute("UPDATE BattleTheme SET isActive = 1 WHERE id = (SELECT id FROM BattleTheme LIMIT 1)");
+      }
+    }
+  } catch { /* ignore */ }
+
+  // ── Migration: أضف أزرار mustathib + spotdiff لكل القوالب الموجودة ──────
+  // (يُشغّل مرة واحدة لكل قالب — إذا لم يكن الزر موجوداً يُدرجه)
+  try {
+    const themes = await c.execute("SELECT id FROM BattleTheme");
+    const newButtons = [
+      { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
+      { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
+    ];
+    for (const themeRow of themes.rows) {
+      const themeId = (themeRow as Record<string, unknown>).id as string;
+      for (const btn of newButtons) {
+        // تحقق إن كان الزر موجوداً بالفعل لهذا القالب
+        const existing = await c.execute({
+          sql: "SELECT id FROM BattleButton WHERE themeId = ? AND buttonKey = ?",
+          args: [themeId, btn.key],
+        });
+        if (existing.rows.length === 0) {
+          await c.execute({
+            sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                  VALUES (?, ?, 'ggames', ?, ?, ?, ?, 167, 134, ?, ?, 'visible', 1, datetime('now'), datetime('now'))`,
+            args: [crypto.randomUUID(), themeId, btn.key, btn.label, btn.img, btn.stroke, `/${btn.key}`, btn.order],
+          });
+        }
       }
     }
   } catch { /* ignore */ }
@@ -1518,6 +1551,28 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     description: 'لعبة الشيفرات الحصرية! فكّر الشفرات وتوصّل لكلمات فريقك قبل نفاد الوقت. فريقين مع تصنيفات متنوعة.',
     icon: '🎯',
     color: 'emerald',
+    isComingSoon: false,
+  },
+  {
+    gameSlug: 'mustathib',
+    gameName: 'المستئذب',
+    isEnabled: true,
+    order: 9,
+    playerRange: '6-16',
+    description: 'لعبة الاستنتاج الاجتماعي بأدوارها المتعددة! البومة ترى، الغراب يقتل، العرافة تكشف، المستذئب يفترس.',
+    icon: '🐺',
+    color: 'rose',
+    isComingSoon: false,
+  },
+  {
+    gameSlug: 'spotdiff',
+    gameName: 'اختلاف الصور',
+    isEnabled: true,
+    order: 10,
+    playerRange: '1-10',
+    description: 'اختبر قوة ملاحظتك! اعثر على الفروقات بين الصورتين قبل انتهاء الوقت. 5 جولات و3 مستويات صعوبة.',
+    icon: '🔍',
+    color: 'cyan',
     isComingSoon: false,
   },
 ];
