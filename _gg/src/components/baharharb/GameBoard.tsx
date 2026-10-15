@@ -248,8 +248,6 @@ export default function GameBoard() {
     );
   }
 
-  const battleLog = useBaharHarbStore.getState().battleLog;
-
   return (
     <div
       dir="rtl"
