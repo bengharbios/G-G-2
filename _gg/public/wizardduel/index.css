@@ -309,27 +309,24 @@ body {
 
 
 
-/* MOBILE RESPONSIVE — flat vertical layout with big cards */
+
+/* MOBILE RESPONSIVE — opponent stats under cards + big center card */
 @media (max-width: 768px) {
-  /* Flatten the container */
+  /* Container — flat flex column */
   .container-fluid.vh-100 {
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
-    min-height: auto;
+    min-height: auto !important;
     overflow-y: auto;
     padding: 4px !important;
     gap: 2px !important;
   }
   
-  /* Flatten all rows — show their children as direct flex children */
-  .row {
-    display: contents !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+  /* Flatten rows */
+  .row { display: contents !important; margin: 0 !important; padding: 0 !important; }
   
-  /* ALL columns → full width */
+  /* ALL columns full width */
   .col-3, .col-6, .col-4, .col-8, .col-12 {
     flex: 0 0 100% !important;
     max-width: 100% !important;
@@ -338,31 +335,66 @@ body {
     text-align: center;
   }
   
-  /* Remove void */
   .flex-grow-1 { flex-grow: 0 !important; }
   .vh-100 { height: auto !important; min-height: auto !important; }
   
-  /* === BIG CARDS === */
+  /* === REORDER: opponent cards FIRST, then opponent stats === */
+  /* Row 1 has: [left panel] [opponent hand cards] [opponent stats] */
+  /* We want: [opponent hand cards] → [opponent stats] → [play area] → [player hand] → [player stats] */
+  
+  /* Opponent hand cards → order 1 */
+  .row:first-child .col-6 { order: 1; }
+  /* Opponent stats → order 2 (UNDER their cards) */
+  .row:first-child .col-3:last-child { order: 2; }
+  /* Opponent left panel → hidden (not needed on mobile) */
+  .row:first-child .col-3:first-child { order: 0; display: none !important; }
+  
+  /* Play area (center card) → order 3 */
+  .row.flex-grow-1 .col-6,
+  .row:nth-child(2) .col-6 { order: 3; }
+  .row.flex-grow-1 .col-3,
+  .row:nth-child(2) .col-3 { display: none !important; }
+  
+  /* Player hand → order 4 */
+  .row.align-items-end .col-6,
+  .row:last-child .col-6 { order: 4; }
+  /* Player deck/draw → order 4 (same row) */
+  .row.align-items-end .col-3:first-child,
+  .row:last-child .col-3:first-child { order: 4; display: flex !important; justify-content: center; }
+  
+  /* Player stats → order 5 (UNDER player's cards) */
+  .row.align-items-end .col-3:last-child,
+  .row:last-child .col-3:last-child { order: 5; }
+  
+  /* === BIG CENTER CARD === */
+  /* The card in the play area (center) — make it MUCH bigger */
+  .row.flex-grow-1 img[src*="cards/front"],
+  .row:nth-child(2) img[src*="cards/front"] {
+    width: 130px !important;
+    max-height: 182px !important;
+  }
+  
+  /* Hand cards — medium */
   img[src*="cards/front"] {
-    width: 85px !important;
-    height: auto !important;
-    max-height: 119px !important;
-    object-fit: contain;
+    width: 75px !important;
+    max-height: 105px !important;
   }
+  
+  /* Face-down cards — medium */
   img[src*="cards/back"], img[src*="cards/placeholder"] {
-    width: 50px !important;
-    height: auto !important;
-    max-height: 70px !important;
+    width: 45px !important;
+    max-height: 63px !important;
   }
-  img[src*="pile"] { width: 45px !important; }
-  img[src*="avatars"] { width: 50px !important; height: 50px !important; }
+  
+  img[src*="pile"] { width: 40px !important; }
+  img[src*="avatars"] { width: 45px !important; height: 45px !important; }
   img[src*="icons"] { width: 14px !important; height: 14px !important; }
   
-  /* === FONTS === */
+  /* Fonts */
   .container-fluid * { font-size: 10px !important; line-height: 1.3 !important; }
-  h1, h2, h3, h4, h5, h6 { font-size: 14px !important; }
+  h1, h2, h3, h4 { font-size: 14px !important; }
   
-  /* === STAT PANELS === */
+  /* Stats panels */
   .border, div[class*="border"] {
     padding: 4px 8px !important;
     margin: 2px 0 !important;
@@ -373,20 +405,19 @@ body {
     border-radius: 8px;
   }
   
-  /* === MODAL === */
+  /* Modal */
   .modal-dialog { max-width: 92% !important; margin: 4px auto !important; }
   .modal-body { max-height: 50vh !important; overflow-y: auto !important; }
   
-  /* === BUTTONS === */
   .btn { padding: 6px 12px !important; font-size: 11px !important; }
-  
-  /* === BG === */
   body { overflow-x: hidden !important; }
   .bg-board::before { opacity: 0.25 !important; }
 }
 
 @media (max-width: 480px) {
-  img[src*="cards/front"] { width: 70px !important; max-height: 98px !important; }
-  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 40px !important; max-height: 56px !important; }
+  .row.flex-grow-1 img[src*="cards/front"],
+  .row:nth-child(2) img[src*="cards/front"] { width: 100px !important; max-height: 140px !important; }
+  img[src*="cards/front"] { width: 60px !important; max-height: 84px !important; }
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 35px !important; max-height: 49px !important; }
   .container-fluid * { font-size: 9px !important; }
 }
