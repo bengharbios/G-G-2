@@ -37,7 +37,7 @@ export default function GameSetup() {
     setRoundTimerDuration: setStoreRoundTimer,
     setDifficultyFilter: setStoreDiff,
     handleStartGame,
-    resetGame: storeReset,
+    handleReset: storeReset,
   } = useFamilyFeudStore();
 
   const [team1Name, setTeam1Name] = useState('فريق 1');
