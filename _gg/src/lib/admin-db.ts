@@ -1303,7 +1303,9 @@ export async function ensureAdminTables(): Promise<void> {
         { game: 'ggames', key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', w: 167, h: 134, order: 6 },
         { game: 'ggames', key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', w: 167, h: 134, order: 7 },
         { game: 'ggames', key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', w: 167, h: 134, order: 8 },
-        { game: 'ggames', key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', w: 167, h: 134, order: 9 },
+        { game: 'ggames', key: 'wizardduel', label: 'مبارزة السحرة',     img: '/yalla-games/wizardduel.png', stroke: '#4A2E75', w: 167, h: 134, order: 9 },
+        { game: 'ggames', key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', w: 167, h: 134, order: 10 },
+        { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 11 },
         { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 10 },
       ];
       for (const btn of yallaButtons) {
@@ -1335,7 +1337,9 @@ export async function ensureAdminTables(): Promise<void> {
           { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
           { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
           { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
-          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
+          { key: 'wizardduel', label: 'مبارزة السحرة',     img: '/yalla-games/wizardduel.png', stroke: '#4A2E75', order: 9 },
+          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 10 },
+          { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 11 },
           { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
         ];
         for (const btn of ggamesButtons) {
@@ -1367,7 +1371,9 @@ export async function ensureAdminTables(): Promise<void> {
           { key: 'baharharb', label: 'بحر و حرب',         img: '/yalla-games/baharharb.png', stroke: '#14405C', order: 6 },
           { key: 'familyfeud',label: 'فاميلي فيود',       img: '/yalla-games/familyfeud.png',stroke: '#A0631C', order: 7 },
           { key: 'shifarat',  label: 'الشيفرات',           img: '/yalla-games/shifarat.png',  stroke: '#387E12', order: 8 },
-          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
+          { key: 'wizardduel', label: 'مبارزة السحرة',     img: '/yalla-games/wizardduel.png', stroke: '#4A2E75', order: 9 },
+          { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 10 },
+          { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 11 },
           { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
         ];
         for (const btn of ggamesButtons) {
@@ -1426,8 +1432,9 @@ export async function ensureAdminTables(): Promise<void> {
   try {
     const themes = await c.execute("SELECT id FROM BattleTheme");
     const newButtons = [
-      { key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', order: 9 },
-      { key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', order: 10 },
+      { key: 'wizardduel', label: 'مبارزة السحرة',     img: '/yalla-games/wizardduel.png', stroke: '#4A2E75', order: 9 },
+      { key: 'mustathib',  label: 'المستئذب',           img: '/yalla-games/mustathib.png',  stroke: '#7A1F4A', order: 10 },
+      { key: 'spotdiff',   label: 'اختلاف الصور',       img: '/yalla-games/spotdiff.png',   stroke: '#0E5A6B', order: 11 },
     ];
     for (const themeRow of themes.rows) {
       const themeId = (themeRow as Record<string, unknown>).id as string;
@@ -1551,6 +1558,17 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     description: 'لعبة الشيفرات الحصرية! فكّر الشفرات وتوصّل لكلمات فريقك قبل نفاد الوقت. فريقين مع تصنيفات متنوعة.',
     icon: '🎯',
     color: 'emerald',
+    isComingSoon: false,
+  },
+  {
+    gameSlug: 'wizardduel',
+    gameName: 'مبارزة السحرة',
+    isEnabled: true,
+    order: 9,
+    playerRange: '1-4',
+    description: 'ساحر شاب في صراع سحري ضد أعداء أقوياء! العب بطاقاتك بحكمة لتخطّي خصمك وخفض صحته إلى الصفر.',
+    icon: '🔮',
+    color: 'purple',
     isComingSoon: false,
   },
   {
