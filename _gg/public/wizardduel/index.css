@@ -310,9 +310,10 @@ body {
 
 
 
-/* MOBILE RESPONSIVE — opponent stats under cards + big center card */
+
+/* MOBILE RESPONSIVE — CSS only, no JS */
 @media (max-width: 768px) {
-  /* Container — flat flex column */
+  /* Container */
   .container-fluid.vh-100 {
     display: flex !important;
     flex-direction: column !important;
@@ -324,101 +325,55 @@ body {
   }
   
   /* Flatten rows */
-  .row { display: contents !important; margin: 0 !important; padding: 0 !important; }
+  .row { display: contents !important; margin: 0 !important; }
   
-  /* ALL columns full width */
-  .col-3, .col-6, .col-4, .col-8, .col-12 {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 2px 4px !important;
-    text-align: center;
-  }
+  /* ALL cols full width */
+  .col-3, .col-6 { flex: 0 0 100% !important; max-width: 100% !important; width: 100% !important; padding: 2px !important; text-align: center !important; }
   
+  /* No void */
   .flex-grow-1 { flex-grow: 0 !important; }
   .vh-100 { height: auto !important; min-height: auto !important; }
   
-  /* === REORDER: opponent cards FIRST, then opponent stats === */
-  /* Row 1 has: [left panel] [opponent hand cards] [opponent stats] */
-  /* We want: [opponent hand cards] → [opponent stats] → [play area] → [player hand] → [player stats] */
+  /* === BIG CARDS === */
+  /* ALL card front images — big */
+  img[src*="cards/front"] { width: 90px !important; height: auto !important; max-height: 126px !important; object-fit: contain !important; }
   
-  /* Opponent hand cards → order 1 */
-  .row:first-child .col-6 { order: 1; }
-  /* Opponent stats → order 2 (UNDER their cards) */
-  .row:first-child .col-3:last-child { order: 2; }
-  /* Opponent left panel → hidden (not needed on mobile) */
-  .row:first-child .col-3:first-child { order: 0; display: none !important; }
+  /* Face-down cards */
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 50px !important; height: auto !important; max-height: 70px !important; }
   
-  /* Play area (center card) → order 3 */
-  .row.flex-grow-1 .col-6,
-  .row:nth-child(2) .col-6 { order: 3; }
-  .row.flex-grow-1 .col-3,
-  .row:nth-child(2) .col-3 { display: none !important; }
-  
-  /* Player hand → order 4 */
-  .row.align-items-end .col-6,
-  .row:last-child .col-6 { order: 4; }
-  /* Player deck/draw → order 4 (same row) */
-  .row.align-items-end .col-3:first-child,
-  .row:last-child .col-3:first-child { order: 4; display: flex !important; justify-content: center; }
-  
-  /* Player stats → order 5 (UNDER player's cards) */
-  .row.align-items-end .col-3:last-child,
-  .row:last-child .col-3:last-child { order: 5 !important; display: flex !important; }
-  .row.align-items-end > .col-3:last-child { order: 5 !important; display: flex !important; }
-  
-  /* === BIG CENTER CARD === */
-  /* The card in the play area (center) — make it MUCH bigger */
-  .row.flex-grow-1 img[src*="cards/front"],
-  .row:nth-child(2) img[src*="cards/front"] {
-    width: 130px !important;
-    max-height: 182px !important;
-  }
-  
-  /* Hand cards — medium */
-  img[src*="cards/front"] {
-    width: 75px !important;
-    max-height: 105px !important;
-  }
-  
-  /* Face-down cards — medium */
-  img[src*="cards/back"], img[src*="cards/placeholder"] {
-    width: 45px !important;
-    max-height: 63px !important;
-  }
-  
+  /* Card pile */
   img[src*="pile"] { width: 40px !important; }
-  img[src*="avatars"] { width: 45px !important; height: 45px !important; }
+  
+  /* Avatars */
+  img[src*="avatars"] { width: 48px !important; height: 48px !important; }
+  
+  /* Icons */
   img[src*="icons"] { width: 14px !important; height: 14px !important; }
   
-  /* Fonts */
+  /* Location images — small */
+  img[src*="locations"] { width: 40px !important; }
+  
+  /* === FONTS === */
   .container-fluid * { font-size: 10px !important; line-height: 1.3 !important; }
   h1, h2, h3, h4 { font-size: 14px !important; }
   
-  /* Stats panels */
-  .border, div[class*="border"] {
-    padding: 4px 8px !important;
-    margin: 2px 0 !important;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 8px;
-  }
+  /* === STATS === */
+  .border, div[class*="border"] { padding: 4px 8px !important; margin: 2px 0 !important; display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px !important; border-radius: 8px !important; }
   
-  /* Modal */
+  /* === MODAL === */
   .modal-dialog { max-width: 92% !important; margin: 4px auto !important; }
-  .modal-body { max-height: 50vh !important; overflow-y: auto !important; }
+  .modal-body { max-height: 50vh !important; overflow-y: auto !important; padding: 8px !important; }
   
+  /* === BUTTONS === */
   .btn { padding: 6px 12px !important; font-size: 11px !important; }
+  
+  /* === BG === */
   body { overflow-x: hidden !important; }
   .bg-board::before { opacity: 0.25 !important; }
 }
 
 @media (max-width: 480px) {
-  .row.flex-grow-1 img[src*="cards/front"],
-  .row:nth-child(2) img[src*="cards/front"] { width: 100px !important; max-height: 140px !important; }
-  img[src*="cards/front"] { width: 60px !important; max-height: 84px !important; }
-  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 35px !important; max-height: 49px !important; }
+  img[src*="cards/front"] { width: 70px !important; max-height: 98px !important; }
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 38px !important; max-height: 53px !important; }
   .container-fluid * { font-size: 9px !important; }
 }
