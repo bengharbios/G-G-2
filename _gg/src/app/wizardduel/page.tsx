@@ -83,11 +83,23 @@ function rearrangeMobileLayout() {
   const elements = [oppHand, oppStats, centerPlay, playerHand, playerDraw, playerStats].filter(Boolean);
   elements.forEach(el => container.appendChild(el));
   
-  // Make center play card BIG
-  const centerCard = centerPlay?.querySelector('img[src*="cards/front"]') as HTMLImageElement;
-  if (centerCard) {
-    centerCard.style.width = '130px';
-    centerCard.style.maxHeight = '182px';
+  // Make center play card BIG — ALL images in center area
+  if (centerPlay) {
+    centerPlay.style.minHeight = '150px';
+    centerPlay.style.display = 'flex';
+    centerPlay.style.justifyContent = 'center';
+    centerPlay.style.alignItems = 'center';
+    centerPlay.style.padding = '8px';
+    const centerImgs = centerPlay.querySelectorAll('img');
+    centerImgs.forEach((img: Element) => {
+      const imgEl = img as HTMLImageElement;
+      if (imgEl.src.includes('cards/front') || imgEl.src.includes('cards/back') || imgEl.src.includes('cards/placeholder')) {
+        imgEl.style.width = '120px';
+        imgEl.style.maxHeight = '168px';
+        imgEl.style.height = 'auto';
+        imgEl.style.objectFit = 'contain';
+      }
+    });
   }
   
   // Make hand cards medium
