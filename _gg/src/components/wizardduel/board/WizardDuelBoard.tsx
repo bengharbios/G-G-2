@@ -1,7 +1,8 @@
 "use client";
 
 import { PlayerID } from 'boardgame.io';
-import { BoardProps } from 'boardgame.io/dist/types/packages/react';
+// BoardProps type — replaced from boardgame.io/dist to avoid build issues
+type BoardProps = any;
 import { useEffect, useState } from 'react';
 
 import { useAudioPlayer } from '../../hooks/useAudioPlayer';
