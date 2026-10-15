@@ -68,6 +68,5 @@ export function useGameOverSounds(opts: GameOverSoundOptions) {
       if (levelT) clearTimeout(levelT);
       if (coinT) clearTimeout(coinT);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
 }

@@ -436,13 +436,10 @@ export function playStrikeSound() {
 }
 
 // Reveal answer — for baharharb answer reveal
-export function playRevealSound() {
-  if (typeof window === 'undefined') return;
-  if (globalMuted) return;
-  tone(440, 0.10, 'triangle', 0.16, 0);
-  tone(660, 0.14, 'triangle', 0.18, 0.08);
-  tone(880, 0.18, 'sine', 0.18, 0.18);
-}
+// NOTE: `playRevealSound` is already defined above for the mustathib role
+// reveal phase. It works fine for baharharb answer reveals too (same swish-
+// slap tone profile), so we reuse it instead of declaring a duplicate.
+export { playRevealSound as playAnswerRevealSound };
 
 // Tick — fast money timer tick
 export function playTickSound() {

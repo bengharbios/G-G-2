@@ -165,6 +165,3 @@ export default async function SpotDiffDeepLinkPage({ params, searchParams }: Pag
     <div dangerouslySetInnerHTML={{ __html: html }} />
   );
 }
-
-// Suppress unused warning for redirect — kept for potential future use
-void redirect;

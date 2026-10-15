@@ -11,6 +11,11 @@ import {
   useViewerCount,
   useShareLinks,
 } from '@/lib/yalla-game-helpers';
+import {
+  playCardFlipSound,
+  playClickSound,
+  playRevealSound,
+} from '@/lib/sounds';
 
 export default function CardDistribution() {
   const {
@@ -35,6 +40,7 @@ export default function CardDistribution() {
   const isLastPlayer = currentDistributionIndex >= players.length - 1;
 
   const handleConfirm = () => {
+    playClickSound();
     if (currentPlayer) {
       markCardSeen(currentPlayer.id);
     }
@@ -47,6 +53,9 @@ export default function CardDistribution() {
   };
 
   const handleShowCard = () => {
+    // Card flip + reveal sound for role card distribution.
+    playCardFlipSound();
+    playRevealSound();
     setShowCard(true);
   };
 

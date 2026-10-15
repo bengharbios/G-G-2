@@ -26,7 +26,7 @@ import {
   WifiOff,
   Smartphone,
 } from 'lucide-react';
-import { playNightSound } from '@/lib/sounds';
+import { playNightSound, playEliminationSound, playClickSound } from '@/lib/sounds';
 import {
   STROKE_STYLE,
   useInGameSetupMode,
@@ -166,6 +166,10 @@ export default function NightPhase() {
       // Play owl sound when night starts
       if (phase === 'night_start') {
         playNightSound();
+      }
+      // When the night ends and eliminations are processed, play the elimination sound.
+      if (phase === 'night_end') {
+        playEliminationSound();
       }
       const timer = setTimeout(() => {
         handleNextPhase();
@@ -349,6 +353,12 @@ export default function NightPhase() {
     // Host can always choose (even in Diwaniya, in case player disconnects)
     const isReadOnly = false;
 
+    // Wrap onSelect so each selection plays a short click.
+    const handleSelect = (id: string | null) => {
+      playClickSound();
+      onSelect(id);
+    };
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -360,10 +370,10 @@ export default function NightPhase() {
           {selectable.map((player) => (
             <div
               key={player.id}
-              onClick={isReadOnly ? undefined : () => onSelect(player.id)}
+              onClick={isReadOnly ? undefined : () => handleSelect(player.id)}
               role={isReadOnly ? undefined : "button"}
               tabIndex={isReadOnly ? undefined : 0}
-              onKeyDown={isReadOnly ? undefined : (e) => { if (e.key === 'Enter' || e.key === ' ') onSelect(player.id); }}
+              onKeyDown={isReadOnly ? undefined : (e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(player.id); }}
               className={`rounded-xl p-2 sm:p-3 border-2 transition-all duration-200 ${
                 isReadOnly ? 'cursor-default ' : 'cursor-pointer '
               }${

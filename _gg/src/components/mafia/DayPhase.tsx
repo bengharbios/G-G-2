@@ -34,7 +34,7 @@ import {
   WifiOff,
   Eye,
 } from 'lucide-react';
-import { playDaySound } from '@/lib/sounds';
+import { playDaySound, playVoteSound, playClickSound } from '@/lib/sounds';
 import {
   STROKE_STYLE,
   useInGameSetupMode,
@@ -321,6 +321,10 @@ function LiveVotingBoard({
         ]);
       }
     }
+
+    // Play a vote ding for each vote cast (or skipped).
+    playVoteSound();
+    playClickSound();
 
     castVote(voterId, targetId);
 

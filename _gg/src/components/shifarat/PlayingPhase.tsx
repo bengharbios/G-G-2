@@ -31,6 +31,12 @@ import {
   useShareLinks,
 } from '@/lib/yalla-game-helpers';
 import { generateClueSuggestions, type ClueSuggestion } from '@/lib/shifarat-clue-engine';
+import {
+  playCardFlipSound,
+  playAssassinateSound,
+  playSpymasterSound,
+  playClickSound,
+} from '@/lib/sounds';
 
 // ============================================================
 // SOUND SYSTEM — Web Audio API (preserved)
@@ -409,6 +415,8 @@ function SpymasterView() {
     if (err) {
       setError(err);
     } else {
+      // Spymaster clue sound — a soft chime to announce the clue has been given.
+      playSpymasterSound();
       setClueWord('');
       setClueNumber(1);
       setError('');
@@ -767,6 +775,10 @@ function TeamGuessingView() {
 
     isProcessingRef.current = true;
 
+    // Card flip sound for the word-card tap (in addition to the existing
+    // result-specific sounds below).
+    playCardFlipSound();
+
     try {
       const guessResponse = currentState.selectCard(cardId);
       const { result, gameEnded, error } = guessResponse;
@@ -777,6 +789,7 @@ function TeamGuessingView() {
         playSound('wrong');
       } else if (result === 'assassin') {
         playSound('assassin');
+        playAssassinateSound();
       }
       if (gameEnded) {
         setTimeout(() => playSound('win'), 500);
@@ -798,6 +811,7 @@ function TeamGuessingView() {
   }, []);
 
   const handlePass = useCallback(() => {
+    playClickSound();
     passTurn();
   }, [passTurn]);
 

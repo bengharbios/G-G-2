@@ -16,6 +16,9 @@ import {
   playVoteSound,
   playRevealSound,
   playDeathSound,
+  playClickSound,
+  playCardFlipSound,
+  playNotifySound,
 } from '@/lib/sounds';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
@@ -255,7 +258,10 @@ function RoleRevealPhase() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
-        onClick={() => setFlipped(f => !f)}
+        onClick={() => {
+          playCardFlipSound();
+          setFlipped(f => !f);
+        }}
         style={{
           width: '220px', height: '300px', position: 'relative', cursor: 'pointer',
           perspective: '1000px',
@@ -322,7 +328,11 @@ function RoleRevealPhase() {
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          onClick={() => setRevealed(true)}
+          onClick={() => {
+            playClickSound();
+            playRevealSound();
+            setRevealed(true);
+          }}
           style={{
             padding: '10px 20px', borderRadius: '10px',
             border: '1px solid rgba(254,239,145,.3)',
@@ -338,7 +348,11 @@ function RoleRevealPhase() {
         <motion.button
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          onClick={advanceRoleReveal}
+          onClick={() => {
+            playClickSound();
+            playNotifySound();
+            advanceRoleReveal();
+          }}
           className="tobol-start-btn"
           style={{
             padding: '12px 24px', border: 'none', color: '#feef91',
@@ -545,6 +559,8 @@ function NightPhase() {
               whileTap={!isForbiddenSelf ? { scale: 0.96 } : {}}
               onClick={() => {
                 if (isForbiddenSelf) return;
+                playClickSound();
+                playVoteSound();
                 handleSelectTarget(t.id);
               }}
               disabled={isForbiddenSelf || !!reveal}
@@ -575,7 +591,10 @@ function NightPhase() {
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        onClick={handleSkip}
+        onClick={() => {
+          playClickSound();
+          handleSkip();
+        }}
         disabled={!!reveal}
         style={{
           marginTop: '8px', padding: '8px 14px', borderRadius: '8px', border: 'none',
@@ -634,7 +653,10 @@ function NightPhase() {
                 🔮 احفظ هذه المعلومة لنفسك — مرّر الجهاز للاعب التالي
               </p>
               <button
-                onClick={handleAcknowledgeReveal}
+                onClick={() => {
+                  playClickSound();
+                  handleAcknowledgeReveal();
+                }}
                 style={{
                   width: '100%', padding: '12px', borderRadius: '10px', border: 'none',
                   background: `linear-gradient(135deg, ${reveal.color}, ${reveal.color}cc)`,
@@ -757,7 +779,10 @@ function DayPhase() {
         transition={{ delay: 0.5 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.97 }}
-        onClick={startVote}
+        onClick={() => {
+          playClickSound();
+          startVote();
+        }}
         className="tobol-start-btn"
         style={{
           marginTop: '8px', padding: '14px 28px', border: 'none',
@@ -833,7 +858,10 @@ function VotePhase() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
-          onClick={resolveDayVote}
+          onClick={() => {
+            playClickSound();
+            resolveDayVote();
+          }}
           className="tobol-start-btn"
           style={{
             padding: '12px 24px', border: 'none', color: '#feef91',
@@ -902,7 +930,11 @@ function VotePhase() {
               key={c.id}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              onClick={() => submitDayVote(currentVoter.id, c.id)}
+              onClick={() => {
+                playVoteSound();
+                playClickSound();
+                submitDayVote(currentVoter.id, c.id);
+              }}
               style={{
                 padding: '10px 4px', borderRadius: '8px', cursor: 'pointer',
                 background: votedFor ? 'rgba(248,113,113,.25)' : 'rgba(6,42,32,.55)',

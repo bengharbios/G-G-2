@@ -72,6 +72,8 @@ function getThemeGradient(game: GameData): string {
     'text-blue-400': 'from-blue-500 via-indigo-500 to-blue-600',
     'text-pink-400': 'from-pink-500 via-rose-500 to-pink-600',
     'text-emerald-400': 'from-emerald-500 via-green-500 to-emerald-600',
+    'text-cyan-400': 'from-cyan-500 via-sky-500 to-cyan-600',
+    'text-rose-400': 'from-rose-500 via-pink-500 to-rose-600',
   };
   return colorMap[game.themeColor] || 'from-amber-500 via-yellow-500 to-amber-600';
 }
@@ -87,6 +89,8 @@ function getThemeGlowColor(game: GameData): string {
     'text-blue-400': 'rgba(59, 130, 246, 0.3)',
     'text-pink-400': 'rgba(236, 72, 153, 0.3)',
     'text-emerald-400': 'rgba(16, 185, 129, 0.3)',
+    'text-cyan-400': 'rgba(6, 182, 212, 0.3)',
+    'text-rose-400': 'rgba(244, 63, 94, 0.3)',
   };
   return colorMap[game.themeColor] || 'rgba(245, 158, 11, 0.3)';
 }
@@ -102,6 +106,8 @@ function getThemeSolidColor(game: GameData): string {
     'text-blue-400': 'bg-blue-500',
     'text-pink-400': 'bg-pink-500',
     'text-emerald-400': 'bg-emerald-500',
+    'text-cyan-400': 'bg-cyan-500',
+    'text-rose-400': 'bg-rose-500',
   };
   return colorMap[game.themeColor] || 'bg-amber-500';
 }
