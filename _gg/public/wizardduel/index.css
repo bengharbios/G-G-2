@@ -364,7 +364,8 @@ body {
   
   /* Player stats → order 5 (UNDER player's cards) */
   .row.align-items-end .col-3:last-child,
-  .row:last-child .col-3:last-child { order: 5; }
+  .row:last-child .col-3:last-child { order: 5 !important; display: flex !important; }
+  .row.align-items-end > .col-3:last-child { order: 5 !important; display: flex !important; }
   
   /* === BIG CENTER CARD === */
   /* The card in the play area (center) — make it MUCH bigger */
