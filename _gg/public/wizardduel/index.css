@@ -350,6 +350,9 @@ body {
   /* Buttons */
   .btn { padding: 4px 8px !important; font-size: 10px !important; }
   
+  /* Middle row — compact, no void */
+  .row.flex-grow-1 { flex: 0 0 auto !important; min-height: 80px !important; max-height: 120px !important; }
+  
   /* Background */
   body { overflow-x: hidden !important; }
 }
