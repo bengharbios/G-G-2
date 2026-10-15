@@ -308,114 +308,85 @@ body {
 
 
 
-/* MOBILE RESPONSIVE — vertical card game table layout */
+
+/* MOBILE RESPONSIVE — flat vertical layout with big cards */
 @media (max-width: 768px) {
-  /* Container — scrollable, dark bg */
+  /* Flatten the container */
   .container-fluid.vh-100 {
+    display: flex !important;
+    flex-direction: column !important;
     height: auto !important;
     min-height: 100vh;
     overflow-y: auto;
     padding: 4px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
+    gap: 2px !important;
   }
   
-  /* ALL rows — full width, no side columns */
+  /* Flatten all rows — show their children as direct flex children */
   .row {
-    flex-wrap: wrap !important;
+    display: contents !important;
     margin: 0 !important;
     padding: 0 !important;
-    gap: 0 !important;
   }
   
   /* ALL columns → full width */
   .col-3, .col-6, .col-4, .col-8, .col-12 {
     flex: 0 0 100% !important;
     max-width: 100% !important;
-    padding: 2px !important;
+    width: 100% !important;
+    padding: 2px 4px !important;
     text-align: center;
   }
   
-  /* Remove flex-grow void */
-  .flex-grow-1, .row.flex-grow-1 {
-    flex-grow: 0 !important;
-    flex: 0 0 auto !important;
-  }
+  /* Remove void */
+  .flex-grow-1 { flex-grow: 0 !important; }
+  .vh-100 { height: auto !important; }
   
-  .vh-100 { height: auto !important; min-height: 100vh; }
-  
-  /* === LAYOUT ORDER === */
-  /* Row 1 (opponent hand) → FIRST, compact */
-  .row:first-child { order: 1; }
-  /* Row 1 col-3 (opponent stats) → SECOND */
-  .row:first-child .col-3:last-child { order: 2; }
-  /* Row 2 (middle play area) → THIRD, big */
-  .row.flex-grow-1, .row:nth-child(2) { order: 3; min-height: 120px; }
-  /* Row 3 (player hand) → FOURTH */
-  .row.align-items-end, .row:last-child { order: 4; }
-  /* Player stats → FIFTH */
-  .row.align-items-end .col-3:last-child { order: 5; }
-  
-  /* === CARD SIZES — BIG AND CLEAR === */
+  /* === BIG CARDS === */
   img[src*="cards/front"] {
-    width: 80px !important;
+    width: 85px !important;
     height: auto !important;
-    max-height: 112px !important;
+    max-height: 119px !important;
     object-fit: contain;
   }
-  
-  /* Face-down cards (opponent hand + deck) — bigger */
-  img[src*="cards/back"],
-  img[src*="cards/placeholder"] {
-    width: 45px !important;
+  img[src*="cards/back"], img[src*="cards/placeholder"] {
+    width: 50px !important;
     height: auto !important;
-    max-height: 63px !important;
+    max-height: 70px !important;
   }
-  
-  /* Card pile (draw deck) — medium */
-  img[src*="pile"] { width: 40px !important; }
-  
-  /* Avatars — BIGGER */
-  img[src*="avatars"] { width: 48px !important; height: 48px !important; }
-  
-  /* Location images — small */
-  img[src*="locations"] { width: 40px !important; }
-  
-  /* Icons — readable */
+  img[src*="pile"] { width: 45px !important; }
+  img[src*="avatars"] { width: 50px !important; height: 50px !important; }
   img[src*="icons"] { width: 14px !important; height: 14px !important; }
   
   /* === FONTS === */
-  .container-fluid * { font-size: 10px !important; line-height: 1.25 !important; }
+  .container-fluid * { font-size: 10px !important; line-height: 1.3 !important; }
   h1, h2, h3, h4, h5, h6 { font-size: 14px !important; }
   
-  /* === STAT PANELS — compact but visible === */
+  /* === STAT PANELS === */
   .border, div[class*="border"] {
     padding: 4px 8px !important;
     margin: 2px 0 !important;
-    display: inline-flex !important;
+    display: flex !important;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     border-radius: 8px;
   }
   
   /* === MODAL === */
   .modal-dialog { max-width: 92% !important; margin: 4px auto !important; }
-  .modal-body { max-height: 50vh !important; overflow-y: auto !important; padding: 8px !important; }
+  .modal-body { max-height: 50vh !important; overflow-y: auto !important; }
   
   /* === BUTTONS === */
   .btn { padding: 6px 12px !important; font-size: 11px !important; }
   
-  /* === PREVENT OVERFLOW === */
+  /* === BG === */
   body { overflow-x: hidden !important; }
-  
-  /* Hide location bg on mobile (too distracting) */
-  .bg-board::before { opacity: 0.3 !important; }
+  .bg-board::before { opacity: 0.25 !important; }
 }
 
 @media (max-width: 480px) {
-  img[src*="cards/front"] { width: 65px !important; max-height: 91px !important; }
-  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 35px !important; max-height: 49px !important; }
-  img[src*="avatars"] { width: 40px !important; height: 40px !important; }
+  img[src*="cards/front"] { width: 70px !important; max-height: 98px !important; }
+  img[src*="cards/back"], img[src*="cards/placeholder"] { width: 40px !important; max-height: 56px !important; }
   .container-fluid * { font-size: 9px !important; }
 }
