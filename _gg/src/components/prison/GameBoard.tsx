@@ -219,7 +219,6 @@ function HeaderChatButton() {
     if (!isOpen && lastMsgTeam && lastMsgTeam !== senderTeam) {
       setUnread((u) => u + 1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMsgTeam, isOpen]);
 
   const handleSend = () => {
