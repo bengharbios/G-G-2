@@ -1,80 +1,47 @@
-// ============================================================
-// خمن الصورة (Guess the Image) — Game Types
-// ============================================================
+// ════════════════════════════════════════════════════════════════════════
+// خمن الصورة (Guess the Image / Memory Match-2) — Game Types
+// Mirrors spotdiff-types.ts structure but adapted for Memory game.
+//
+// Game flow:
+//   1. Host picks grid size (16/25/36/49 squares) + theme (1..6)
+//   2. N pairs of images are placed face-down in the grid (2 of each)
+//   3. Player flips 2 cards per turn — if they match, stays revealed (+1 score)
+//   4. If no match, cards flip back after 1s
+//   5. Round ends when all pairs are found OR time runs out
+//   6. Score = matches × scorePerMatch - misses × penaltyPerMiss
+// ════════════════════════════════════════════════════════════════════════
 
 export type GamePhase = 'landing' | 'setup' | 'playing' | 'game_over';
-
 export type GameMode = 'classic' | 'diwaniya';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
-// ─── Normalized coords (0..1, 0..1) relative to image bounds ──────────
-// Used by legacy SVG rounds (GUESSIMAGE_ROUNDS) — kept for fallback.
-export interface DifferenceSpot {
-  id: string;
-  x: number;
-  y: number;
-  radius: number;
-  found: boolean;
+// A single card in the grid
+export interface GuessCard {
+  id: number;          // card ID (1..N)
+  imageId: number;     // which image (1..890) is on this card
+  imageUrl: string;    // pre-built URL for performance
+  flipped: boolean;    // currently face-up (showing image)
+  matched: boolean;    // permanently revealed (matched pair)
 }
 
-// ─── Flashi diff coords (top/left in vmin units relative to a 100vmin × 100vmin viewport frame) ──
-// Per flashi source: a single flashi image bundles TWO stacked photos
-// (image A on top, image B on bottom, shifted by `imageShift` vmin).
-// Each difference appears once in image A (top/left) and once in image B
-// (top + imageShift / left). User clicks on image B.
-export interface FlashiDiffCoords {
-  topVmin: number;     // top position in vmin (image A coords)
-  leftVmin: number;    // left position in vmin
+// A pair that has been matched (for the score log)
+export interface MatchedPair {
+  imageId: number;
+  cardIds: [number, number];
+  matchedAt: number;
 }
 
-// ─── A single round (either SVG-style or flashi-style) ──────────────────
-export interface GuessImageRound {
-  id: string;
-  title: string;        // Arabic title
-  // Legacy: separate SVG imageA / imageB data URLs
-  imageA: string;
-  imageB: string;
-  differences: DifferenceSpot[];
-  // Flashi-style: single bundled image (A + B stacked) + vmin coords
-  imageUrl?: string;            // path to flashi image (contains A on top + B on bottom)
-  imageShift?: number;          // vertical vmin offset between A and B (53.5 / 67.5 / 68.5)
-  flashiDiffs?: FlashiDiffCoords[]; // decoded from filename — top/left in vmin
-  flashiCategory?: string;      // 'photo' | 'vmisc' | 'vscenes' | 'vphoto' | 'photo3' | 'vector3'
-  // Guess-the-Image specific:
-  answer?: string;              // the correct answer (the word the player must guess)
-  hint?: string;                // a hint shown to the player (e.g., 'مكان للنزهة')
-}
-
-// ─── Per-difficulty config ───
+// Per-difficulty config
 export const DIFFICULTY_CONFIG: Record<Difficulty, {
   label: string;
   timePerRoundSec: number;
-  scorePerHit: number;
+  scorePerMatch: number;
   penaltyPerMiss: number;
-  hintRadiusMultiplier: number;
 }> = {
-  easy: {
-    label: 'سهل',
-    timePerRoundSec: 90,
-    scorePerHit: 100,
-    penaltyPerMiss: 10,
-    hintRadiusMultiplier: 1.0,
-  },
-  medium: {
-    label: 'متوسط',
-    timePerRoundSec: 60,
-    scorePerHit: 150,
-    penaltyPerMiss: 20,
-    hintRadiusMultiplier: 1.0,
-  },
-  hard: {
-    label: 'صعب',
-    timePerRoundSec: 40,
-    scorePerHit: 250,
-    penaltyPerMiss: 35,
-    hintRadiusMultiplier: 1.0,
-  },
+  easy: { label: 'سهل', timePerRoundSec: 90, scorePerMatch: 100, penaltyPerMiss: 10 },
+  medium: { label: 'متوسط', timePerRoundSec: 60, scorePerMatch: 150, penaltyPerMiss: 20 },
+  hard: { label: 'صعب', timePerRoundSec: 40, scorePerMatch: 250, penaltyPerMiss: 35 },
 };
 
 export interface RoundCountOption {
@@ -95,16 +62,25 @@ export interface GameLogEntry {
   timestamp: number;
 }
 
-// ─── Flashi category metadata ───────────────────────────────────────────
+// ─── A single round ──────────────────────────────────────────────────────
+export interface GuessImageRound {
+  id: string;
+  title: string;
+  // Grid config (set by host in GameSetup)
+  gridSquares: number;     // 16/25/36/49
+  gridRows: number;        // 4/5/6/7
+  pairsCount: number;      // 8/12/18/24
+  themeId: number;         // 1..6
+  // Cards (shuffled into the grid)
+  cards: GuessCard[];
+  // Matched pairs (for game-over display)
+  matchedPairs: MatchedPair[];
+}
+
+// Flashi category labels (kept for compat with the spotdiff-style setup UI)
 export const FLASHI_CATEGORY_LABELS: Record<string, string> = {
   random: 'عشوائي',
-  photo: 'فوتوغرافي',
-  vmisc: 'رسوم (منوعات)',
-  vscenes: 'رسوم (مشاهد)',
-  vphoto: 'فوتوغرافي 2',
-  photo3: 'فوتوغرافي 3',
-  vector3: 'رسوم 3',
 };
 
-// Hit radius (in vmin) — half of the visible circle (9.5 vmin) plus tolerance
+// Hit radius (kept for compat — unused in Memory game)
 export const FLASHI_HIT_RADIUS_VMIN = 5.5;

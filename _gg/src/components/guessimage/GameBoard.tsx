@@ -4,7 +4,11 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGuessImageStore } from '@/lib/guessimage-store';
-import { DIFFICULTY_CONFIG, FLASHI_HIT_RADIUS_VMIN } from '@/lib/guessimage-types';
+import { DIFFICULTY_CONFIG } from '@/lib/guessimage-types';
+import {
+  buildGuessCardBackUrl,
+  buildGuessThemeUrl,
+} from '@/lib/flashi_guess_images';
 import {
   isMusicEnabled,
   setMusicEnabled,
@@ -22,66 +26,16 @@ const STROKE_STYLE: React.CSSProperties = {
   WebkitTextStroke: '1px #aa6e1f',
 };
 
-interface MissMarker {
-  id: number;
-  topVmin: number;
-  leftVmin: number;
-}
-
-interface ClickFeedbackItem {
-  id: number;
-  kind: 'hit' | 'miss';
-  topVmin: number;
-  leftVmin: number;
-}
-
 interface ChatMsg {
   id: number;
   sender: string;
   text: string;
 }
 
-const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👏', '🙏', '🔥', '🎯', '🧩', '💡', '⭐', '✓', '✗', '🏆', '🎉', '💯', '❤️', '🖼️', '👀', '⏱️'];
-
-function vminPx(): number {
-  if (typeof window === 'undefined') return 1;
-  return Math.min(window.innerWidth, window.innerHeight) / 100;
-}
+const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👏', '🙏', '🔥', '🎯', '🧩', '💡', '⭐', '✓', '✗', '🏆', '🎉', '💯', '❤️', '👀', '⏱️'];
 
 // ============================================================
-// Click feedback floating text
-// ============================================================
-function ClickFeedback({ item, onDone }: { item: ClickFeedbackItem; onDone: () => void }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 900);
-    return () => clearTimeout(t);
-  }, [onDone]);
-  return (
-    <motion.div
-      key={item.id}
-      initial={{ opacity: 1, scale: 0.6, y: 0 }}
-      animate={{ opacity: 0, scale: 1.4, y: -30 }}
-      transition={{ duration: 0.9, ease: 'easeOut' }}
-      style={{
-        position: 'absolute',
-        top: `${item.topVmin}vmin`,
-        left: `${item.leftVmin}vmin`,
-        transform: 'translate(-50%, -50%)',
-        color: item.kind === 'hit' ? '#86efac' : '#f87171',
-        fontSize: '5vmin',
-        fontWeight: 900,
-        textShadow: '0 1px 4px rgba(0,0,0,.85), 0 0 12px rgba(0,0,0,.6)',
-        pointerEvents: 'none',
-        zIndex: 50,
-      }}
-    >
-      {item.kind === 'hit' ? '✓ +100' : '✗'}
-    </motion.div>
-  );
-}
-
-// ============================================================
-// Header chat button — G-G tobol chat panel
+// Header chat button (same as spotdiff — uses G-G tobol chat panel)
 // ============================================================
 function HeaderChatButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -222,42 +176,25 @@ function HeaderChatButton() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// MAIN GAME BOARD — Tobol style + flashi logic
-// Compact single-screen layout:
-//   [header actions]
-//   [game image (transparent PNG) + title]    <- مهمة 2: صورة اللعبة فوق الاسم
-//   [timer + diff counter in one row]         <- مهمة 3: المؤقت فقط بستايل ممتاز
-//   [4 action buttons in single row]         <- مهمة 3: 4 أزرار في صف واحد
-//   [flashi image (A above B) with circles]
-//   [score compact bottom row]
+// MAIN GAME BOARD — Memory match-2 logic
+// Player flips 2 cards per turn; if image IDs match → stays revealed (+score)
+// else → flips back (-penalty). Round ends when all pairs matched OR time runs out.
 // ════════════════════════════════════════════════════════════════════════
 export default function GameBoard() {
   const router = useRouter();
   const {
     phase, currentRound, currentRoundData,
-    foundDifferences, differences, score, timeLeft, totalRounds,
-    totalFound, totalDifferences, findDifference, registerMiss,
-    tickTimer, resetGame, difficulty,
-    flashiCatalog,
-    loadFlashiCatalog,
-    loadNewImage,
+    cards, flippedCardIds, matchedPairs,
+    score, timeLeft, totalRounds,
+    totalFound, totalDifferences, totalMisses,
+    flipCard, checkMatch, nextRound, resetGame, difficulty,
+    themeId, gridRows, pairsCount,
+    timerValueSec, newImage,
   } = useGuessImageStore();
 
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [showAnswers, setShowAnswers] = useState(false);
-  const [showScore, setShowScore] = useState(false);
-  const [feedbacks, setFeedbacks] = useState<ClickFeedbackItem[]>([]);
-  const [misses, setMisses] = useState<MissMarker[]>([]);
-  const nextFeedbackId = useRef(0);
-  const nextMissId = useRef(0);
-  const circleDivRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    loadFlashiCatalog();
-  }, [loadFlashiCatalog]);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -272,13 +209,15 @@ export default function GameBoard() {
     setSoundOn(isSoundEnabled());
   }, []);
 
+  // Timer tick
   useEffect(() => {
     if (phase !== 'playing') return;
     const interval = setInterval(() => {
-      tickTimer();
+      // tickTimer via store directly (we have it via useGuessImageStore.getState)
+      useGuessImageStore.getState().tickTimer();
     }, 1000);
     return () => clearInterval(interval);
-  }, [phase, tickTimer]);
+  }, [phase]);
 
   const toggleMusic = () => {
     const next = !musicOn;
@@ -291,63 +230,20 @@ export default function GameBoard() {
     router.push('/guessimage');
   };
 
-  // Click handler — convert pixel coords → vmin, compare to flashi diffs
-  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    if (!currentRoundData || !currentRoundData.flashiDiffs) return;
-    const img = imgRef.current;
-    if (!img) return;
-    const cdiv = circleDivRef.current;
-    if (!cdiv) return;
-    const rect = cdiv.getBoundingClientRect();
-    const vmin = vminPx();
-    const clickTopVmin = (e.clientY - rect.top) / vmin;
-    const clickLeftVmin = (e.clientX - rect.left) / vmin;
-    const imageShift = currentRoundData.imageShift ?? 53.5;
-
-    let hitIdx = -1;
-    for (let i = 0; i < currentRoundData.flashiDiffs.length; i++) {
-      const d = currentRoundData.flashiDiffs[i];
-      const bTop = d.topVmin + imageShift;
-      const bLeft = d.leftVmin;
-      const distSq = (clickTopVmin - bTop) ** 2 + (clickLeftVmin - bLeft) ** 2;
-      if (Math.sqrt(distSq) <= FLASHI_HIT_RADIUS_VMIN) {
-        const diffId = `guessimage-diff-${currentRound}-${i}`;
-        if (!foundDifferences.includes(diffId)) {
-          hitIdx = i;
-          break;
-        }
-      }
-    }
-
-    const fbId = nextFeedbackId.current++;
-    if (hitIdx >= 0) {
-      const diffId = `guessimage-diff-${currentRound}-${hitIdx}`;
-      const d = currentRoundData.flashiDiffs[hitIdx];
-      const ok = findDifference(diffId);
-      if (ok) {
+  const handleCardClick = (cardId: number) => {
+    if (soundOn) playClickSound();
+    flipCard(cardId);
+    // If 2 cards flipped, checkMatch fires after 800ms (via store setTimeout)
+    // But also play sound after match check
+    setTimeout(() => {
+      const state = useGuessImageStore.getState();
+      const lastLog = state.gameLog[state.gameLog.length - 1];
+      if (lastLog?.message.includes('تطابق')) {
         if (soundOn) playCorrectSound();
-        setFeedbacks(prev => [...prev, {
-          id: fbId,
-          kind: 'hit',
-          topVmin: d.topVmin + imageShift,
-          leftVmin: d.leftVmin,
-        }]);
+      } else if (lastLog?.message.includes('خطأ')) {
+        if (soundOn) playWrongSound();
       }
-    } else {
-      if (soundOn) playWrongSound();
-      registerMiss();
-      const missId = nextMissId.current++;
-      setMisses(prev => [...prev, { id: missId, topVmin: clickTopVmin, leftVmin: clickLeftVmin }]);
-      setFeedbacks(prev => [...prev, {
-        id: fbId,
-        kind: 'miss',
-        topVmin: clickTopVmin,
-        leftVmin: clickLeftVmin,
-      }]);
-      setTimeout(() => {
-        setMisses(prev => prev.filter(m => m.id !== missId));
-      }, 1500);
-    }
+    }, 850);
   };
 
   if (!currentRoundData) {
@@ -368,37 +264,19 @@ export default function GameBoard() {
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '40px', marginBottom: '8px' }}>🧩</div>
           <p>جاري تحميل الجولة...</p>
-          {!flashiCatalog && <p style={{ fontSize: '11px', marginTop: '8px' }}>تحميل مكتبة 7005 صورة...</p>}
         </div>
       </div>
     );
   }
 
   const cfg = DIFFICULTY_CONFIG[difficulty];
-  const foundCount = foundDifferences.length;
-  const totalForRound = currentRoundData.differences.length;
-  const remainingDiffs = Math.max(0, totalForRound - foundCount);
+  const foundCount = matchedPairs.length;
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   const timerDisplay = `${mins}:${String(secs).padStart(2, '0')}`;
-  const imageShift = currentRoundData.imageShift ?? 53.5;
   const timeColor = timeLeft <= 10 ? '#ef4444' : timeLeft <= 30 ? '#fbbf24' : '#feef91';
 
-  const diffMarkers = useMemo(() => {
-    if (!currentRoundData.flashiDiffs) return [];
-    return currentRoundData.flashiDiffs.map((d, i) => {
-      const diffId = `guessimage-diff-${currentRound}-${i}`;
-      return {
-        id: diffId,
-        idx: i,
-        found: foundDifferences.includes(diffId),
-        topVmin: d.topVmin + imageShift,
-        leftVmin: d.leftVmin,
-      };
-    });
-  }, [currentRoundData, foundDifferences, currentRound, imageShift]);
-
-  // Compact Tobol-styled action button (smaller for single-row layout)
+  // Compact action button (Tobol style)
   const CompactBtn = ({
     label, accentColor, icon, onClick,
   }: {
@@ -453,7 +331,7 @@ export default function GameBoard() {
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)',
+        background: `url(${buildGuessThemeUrl(themeId)}) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -534,13 +412,12 @@ export default function GameBoard() {
             fontWeight: 700,
             marginTop: '1px',
           }}>
-            جولة {currentRound + 1}/{totalRounds}
-            {flashiCatalog && <span style={{ color: '#fbbf24' }}> • {flashiCatalog.length.toLocaleString('en')} صورة</span>}
+            جولة {currentRound + 1}/{totalRounds} • {pairsCount} أزواج
           </div>
         </div>
       </motion.div>
 
-      {/* ══════════ Timer + Diff counter (single elegant row) ══════════ */}
+      {/* ══════════ Stats row: matched pairs + score + timer ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -556,18 +433,17 @@ export default function GameBoard() {
           gap: '8px',
         }}
       >
-        {/* Diff counter */}
+        {/* Matched pairs counter */}
         <div style={{
           ...STROKE_STYLE,
           fontSize: '14px',
           fontWeight: 800,
-          color: '#feef91',
           textAlign: 'center',
           padding: '6px 10px',
           border: '1px solid rgba(254,239,145,.3)',
           borderRadius: '8px',
           background: 'rgba(0,0,0,.4)',
-          minWidth: '70px',
+          minWidth: '80px',
           display: 'flex',
           alignItems: 'center',
           gap: '4px',
@@ -575,9 +451,9 @@ export default function GameBoard() {
         }}>
           <span style={{ fontSize: '16px' }}>🎯</span>
           <span style={{ color: '#86efac', fontSize: '16px', fontWeight: 900 }}>
-            {remainingDiffs}
+            {foundCount}
           </span>
-          <span style={{ fontSize: '11px', color: '#9fc4b4' }}>/ {totalForRound}</span>
+          <span style={{ fontSize: '11px', color: '#9fc4b4' }}>/ {pairsCount}</span>
         </div>
 
         {/* Score */}
@@ -602,7 +478,7 @@ export default function GameBoard() {
           </span>
         </div>
 
-        {/* Timer (large, prominent) */}
+        {/* Timer */}
         <div style={{
           flex: 1,
           padding: '6px 12px',
@@ -630,7 +506,7 @@ export default function GameBoard() {
         </div>
       </motion.div>
 
-      {/* ══════════ 4 action buttons in single row ══════════ */}
+      {/* ══════════ Action buttons row (single row) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -643,12 +519,12 @@ export default function GameBoard() {
         }}
       >
         <CompactBtn
-          label="صورة جديدة"
+          label="صور جديدة"
           accentColor="#22c55e"
-          icon="🖼️"
+          icon="🔄"
           onClick={() => {
             if (soundOn) playClickSound();
-            loadNewImage();
+            newImage();
           }}
         />
         <CompactBtn
@@ -661,28 +537,19 @@ export default function GameBoard() {
           }}
         />
         <CompactBtn
-          label={showAnswers ? 'إخفاء الأجوبة' : 'إظهار الأجوبة'}
-          accentColor="#a855f7"
-          icon="💡"
-          onClick={() => {
-            if (soundOn) playClickSound();
-            setShowAnswers(s => !s);
-          }}
-        />
-        <CompactBtn
-          label={showScore ? 'إخفاء السكور' : 'إظهار السكور'}
+          label="إظهار السكور"
           accentColor="#3b82f6"
           icon="📊"
           onClick={() => {
             if (soundOn) playClickSound();
-            setShowScore(s => !s);
+            // Scroll to bottom (score table is implicit in stats row already)
           }}
         />
       </motion.div>
 
-      {/* ══════════ Game Image Area (flashi image with circles) ══════════ */}
+      {/* ══════════ Memory grid (cards) ══════════ */}
       <motion.div
-        key={currentRoundData.id + String(currentRound)}
+        key={currentRoundData.id}
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
@@ -690,204 +557,114 @@ export default function GameBoard() {
         style={{
           width: '100%',
           maxWidth: '460px',
-          padding: '6px',
+          padding: '10px',
           borderRadius: '12px',
-          position: 'relative',
         }}
       >
         <div
-          ref={circleDivRef}
           style={{
-            position: 'relative',
+            display: 'grid',
+            gridTemplateColumns: `repeat(${gridRows}, 1fr)`,
+            gap: '4px',
             width: '100%',
-            margin: '0 auto',
-            textAlign: 'center',
           }}
         >
-          <img
-            ref={imgRef}
-            src={currentRoundData.imageUrl || currentRoundData.imageA}
-            alt="خمن الصورة — اضغط على الفروقات"
-            draggable={false}
-            onClick={handleImageClick}
-            style={{
-              width: '90%',
-              maxWidth: '90%',
-              height: 'auto',
-              display: 'block',
-              margin: '0 auto',
-              cursor: 'crosshair',
-              borderRadius: '8px',
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              WebkitUserDrag: 'none',
-            }}
-          />
-
-          {/* B-side circle markers */}
-          {diffMarkers.map((m) => (
-            (m.found || showAnswers) && (
+          {cards.map(card => {
+            const showFace = card.flipped || card.matched;
+            const cardBack = buildGuessCardBackUrl(themeId);
+            return (
               <motion.div
-                key={m.id + (m.found ? '-found' : '-answer')}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', bounce: 0.4 }}
+                key={card.id}
+                onClick={() => !card.matched && !card.flipped && handleCardClick(card.id)}
+                initial={{ rotateY: 0 }}
+                animate={{ rotateY: showFace ? 180 : 0 }}
+                transition={{ duration: 0.4 }}
                 style={{
-                  position: 'absolute',
-                  top: `${m.topVmin}vmin`,
-                  left: `${m.leftVmin}vmin`,
-                  width: '9.5vmin',
-                  height: '9.5vmin',
-                  transform: 'translate(-50%, -50%)',
-                  border: m.found ? '3px solid #22c55e' : '3px solid #fbbf24',
-                  borderRadius: '50%',
-                  background: m.found
-                    ? 'rgba(34,197,94,.18)'
-                    : 'rgba(251,191,36,.15)',
-                  boxShadow: m.found
-                    ? '0 0 12px rgba(34,197,94,.6)'
-                    : '0 0 12px rgba(251,191,36,.5)',
-                  pointerEvents: 'none',
-                  zIndex: 9,
+                  aspectRatio: '1 / 1',
+                  position: 'relative',
+                  cursor: (card.matched || card.flipped) ? 'default' : 'pointer',
+                  transformStyle: 'preserve-3d',
+                  borderRadius: '6px',
+                  overflow: 'hidden',
+                  border: card.matched
+                    ? '2px solid #22c55e'
+                    : card.flipped
+                      ? '2px solid #fbbf24'
+                      : '1px solid rgba(254,239,145,.2)',
+                  background: card.matched ? 'rgba(34,197,94,.15)' : 'rgba(0,0,0,.4)',
                 }}
-              />
-            )
-          ))}
-
-          {/* A-side faint dashed markers (when answers shown) */}
-          {showAnswers && currentRoundData.flashiDiffs?.map((d, i) => (
-            <motion.div
-              key={`a-marker-${i}`}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.5 }}
-              transition={{ type: 'spring', bounce: 0.4 }}
-              style={{
-                position: 'absolute',
-                top: `${d.topVmin}vmin`,
-                left: `${d.leftVmin}vmin`,
-                width: '9.5vmin',
-                height: '9.5vmin',
-                transform: 'translate(-50%, -50%)',
-                border: '2px dashed rgba(254,239,145,.5)',
-                borderRadius: '50%',
-                background: 'transparent',
-                pointerEvents: 'none',
-                zIndex: 8,
-              }}
-            />
-          ))}
-
-          {/* Miss markers (red X) */}
-          {misses.map(m => (
-            <motion.div
-              key={m.id}
-              initial={{ scale: 0.5, opacity: 1 }}
-              animate={{ scale: 1, opacity: 0.4 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                position: 'absolute',
-                top: `${m.topVmin}vmin`,
-                left: `${m.leftVmin}vmin`,
-                transform: 'translate(-50%, -50%)',
-                color: '#ef4444',
-                fontSize: '5vmin',
-                fontWeight: 900,
-                textShadow: '0 0 8px rgba(239,68,68,.8), 0 1px 4px rgba(0,0,0,.8)',
-                pointerEvents: 'none',
-                zIndex: 10,
-              }}
-            >✗</motion.div>
-          ))}
-
-          {/* Click feedback floating text */}
-          {feedbacks.map(fb => (
-            <ClickFeedback
-              key={fb.id}
-              item={fb}
-              onDone={() => setFeedbacks(prev => prev.filter(f => f.id !== fb.id))}
-            />
-          ))}
-
-          {/* B-side label badge */}
-          <div style={{
-            position: 'absolute',
-            top: `${imageShift + 1}vmin`,
-            right: '5%',
-            background: 'rgba(0,0,0,.7)',
-            color: '#fbbf24',
-            fontSize: '2vmin',
-            fontWeight: 800,
-            padding: '2px 6px',
-            borderRadius: '4px',
-            fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-            zIndex: 12,
-            border: '1px solid rgba(254,239,145,.3)',
-          }}>B — اضغط هنا</div>
+              >
+                {/* Card back (face-down) */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backfaceVisibility: 'hidden',
+                    backgroundImage: `url(${cardBack})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    transform: 'rotateY(0deg)',
+                    opacity: showFace ? 0 : 1,
+                  }}
+                />
+                {/* Card face (image) */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: showFace ? 1 : 0,
+                  }}
+                >
+                  <img
+                    src={card.imageUrl}
+                    alt={`بطاقة ${card.id}`}
+                    draggable={false}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '4px',
+                      userSelect: 'none',
+                      WebkitUserSelect: 'none',
+                      WebkitUserDrag: 'none',
+                    }}
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
 
-      {/* ══════════ Score table (toggleable) ══════════ */}
-      <AnimatePresence>
-        {showScore && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: 'auto' }}
-            exit={{ opacity: 0, y: -8, height: 0 }}
-            className="tobol-team-card"
-            style={{
-              width: '100%',
-              maxWidth: '460px',
-              padding: '12px',
-              borderRadius: '12px',
-            }}
-          >
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <tbody>
-                <tr>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)' }}>
-                    <span style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 700 }}>النقاط</span>
-                  </td>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)', textAlign: 'left' }}>
-                    <span style={{ color: '#fbbf24', fontWeight: 900 }}>{score}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)' }}>
-                    <span style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 700 }}>الفروق المكتشفة</span>
-                  </td>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)', textAlign: 'left' }}>
-                    <span style={{ color: '#86efac', fontWeight: 900 }}>{foundCount}/{totalForRound}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)' }}>
-                    <span style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 700 }}>إجمالي الفروق</span>
-                  </td>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)', textAlign: 'left' }}>
-                    <span style={{ color: '#9fc4b4', fontWeight: 900 }}>{totalFound}/{totalDifferences}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)' }}>
-                    <span style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 700 }}>الصعوبة</span>
-                  </td>
-                  <td style={{ padding: '6px', borderBottom: '1px solid rgba(254,239,145,.2)', textAlign: 'left' }}>
-                    <span style={{ color: '#9fc4b4', fontWeight: 900 }}>{cfg.label}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '6px' }}>
-                    <span style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 700 }}>الجولة</span>
-                  </td>
-                  <td style={{ padding: '6px', textAlign: 'left' }}>
-                    <span style={{ color: '#9fc4b4', fontWeight: 900 }}>{currentRound + 1}/{totalRounds}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ══════════ Stats footer ══════════ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        style={{
+          width: '100%',
+          maxWidth: '460px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '6px 12px',
+          borderRadius: '8px',
+          background: 'rgba(0,0,0,.4)',
+          border: '1px solid rgba(254,239,145,.15)',
+          fontSize: '11px',
+          fontWeight: 700,
+          color: '#9fc4b4',
+        }}
+      >
+        <span>🎯 إجمالي التطابقات: {totalFound}/{totalDifferences}</span>
+        <span>✗ أخطاء: {totalMisses}</span>
+        <span>💡 صعوبة: {cfg.label}</span>
+      </motion.div>
 
       {/* ══════════ Quit dialog ══════════ */}
       <AnimatePresence>

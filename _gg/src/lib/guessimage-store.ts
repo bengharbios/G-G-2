@@ -1,6 +1,6 @@
-// ============================================================
-// خمن الصورة (Guess the Image) — Zustand Store
-// ============================================================
+// ════════════════════════════════════════════════════════════════════════
+// خمن الصورة (Guess the Image / Memory Match-2) — Zustand Store
+// ════════════════════════════════════════════════════════════════════════
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -8,25 +8,23 @@ import {
   GamePhase,
   GameMode,
   Difficulty,
-  DifferenceSpot,
   GuessImageRound,
+  GuessCard,
+  MatchedPair,
   GameLogEntry,
   DIFFICULTY_CONFIG,
+  ROUND_COUNT_OPTIONS,
 } from './guessimage-types';
-import { GUESSIMAGE_ROUNDS } from './guessimage-rounds';
 import {
-  loadFlashiCatalog as loadFlashiCatalogFn,
-  pickRandomImages,
-  decodeFlashiFilename,
-  buildFlashiUrl,
-  getImageShift,
-  type FlashiCategory,
-  type FlashiImage,
-} from './flashi_images';
+  getGuessImageCatalog,
+  pickRandomGuessImages,
+  buildGuessImageUrl,
+  GUESS_GRID_OPTIONS,
+  GUESS_IMAGE_COUNT,
+  type GuessImage,
+} from './flashi_guess_images';
 
-// ============================================================
-// State
-// ============================================================
+// ─── State ────────────────────────────────────────────────────────────
 export interface GuessImageState {
   // Phase + meta
   phase: GamePhase;
@@ -37,32 +35,32 @@ export interface GuessImageState {
   hostName: string | null;
   playerName: string | null;
 
-  // Flashi catalog (loaded async before startGame)
-  flashiCatalog: FlashiImage[] | null;
-  flashiCategory: FlashiCategory | 'random';  // user-selected image type filter
-
-  // User-configurable game settings (set in GameSetup before startGame)
-  timerValueSec: number;       // 15, 30, 45, 60, 90, 120, 150, 180, 240, 300
-  fastestFinish: boolean;      // الأسرع (yes/no)
-  wrongCount: number;          // عدد الأخطaئ (1-10) — used to filter flashi catalog
-
+  // Round config (host picks in GameSetup)
+  gridSquares: number;     // 16/25/36/49
+  gridRows: number;        // 4/5/6/7
+  pairsCount: number;      // 8/12/18/24
+  themeId: number;         // 1..6
+  timerValueSec: number;
+  flashiCategory: 'random'; // unused (kept for compat)
 
   // Current round state
-  currentRound: number;        // 0-based index
+  currentRound: number;
   currentRoundData: GuessImageRound | null;
-  foundDifferences: string[]; // difference IDs that were found
-  differences: DifferenceSpot[]; // merged with found state for current round
+  // Per-round cards (mapped from currentRoundData.cards for the UI)
+  cards: GuessCard[];
+  // Currently-flipped cards (max 2 — when both are non-matching, flip back)
+  flippedCardIds: number[];
+  // Matched pairs in the current round (for score)
+  matchedPairs: MatchedPair[];
   score: number;
   timeLeft: number;
-  totalDifferences: number;   // total across all rounds
-  totalFound: number;
+  totalDifferences: number;  // = pairsCount (kept for compat)
+  totalFound: number;       // = matchedPairs.length (kept for compat)
   totalMisses: number;
   roundsPlayed: number;
 
-  // Game log (for diwaniya spectator)
+  // Game log
   gameLog: GameLogEntry[];
-
-  // Last action feedback (for spectator display)
   lastAction: string | null;
   lastActionAt: number | null;
 
@@ -74,58 +72,25 @@ export interface GuessImageState {
   setRoomCode: (code: string | null) => void;
   setHostName: (name: string | null) => void;
   setPlayerName: (name: string | null) => void;
+  setGridSquares: (n: number) => void;
+  setThemeId: (n: number) => void;
+  setTimerValueSec: (n: number) => void;
 
   // Game flow
   startGame: () => void;
   loadRound: (index: number) => void;
-  findDifference: (diffId: string) => boolean;  // returns true if it was a valid find
-  registerMiss: () => void;                     // when user clicks outside any diff
-  nextRound: () => void;                        // advance, or trigger game_over if last
+  flipCard: (cardId: number) => void;  // flip a card; if 2 flipped, evaluate match
+  checkMatch: () => void;              // called after 2 cards flipped
+  nextRound: () => void;
   resetGame: () => void;
-  tickTimer: () => void;                        // decrement timer by 1 sec; if 0 → next round
+  tickTimer: () => void;
+  newImage: () => void;  // reshuffle current round (no page reload)
 
   // Helpers
   syncToRoom: () => void;
-
-  // Flashi catalog management
-  loadFlashiCatalog: () => Promise<void>;
-  setFlashiCategory: (cat: FlashiCategory | 'random') => void;
-  loadNewImage: () => void;  // pick a new random image without reloading
 }
 
-// ============================================================
-// Initial state
-// ============================================================
-const initialState = {
-  phase: 'landing' as GamePhase,
-  gameMode: 'classic' as GameMode,
-  difficulty: 'medium' as Difficulty,
-  totalRounds: 5,
-  roomCode: null as string | null,
-  hostName: null as string | null,
-  playerName: null as string | null,
-
-  currentRound: 0,
-  currentRoundData: null as GuessImageRound | null,
-  foundDifferences: [] as string[],
-  differences: [] as DifferenceSpot[],
-  score: 0,
-  timeLeft: 0,
-  totalDifferences: 0,
-  totalFound: 0,
-  totalMisses: 0,
-  roundsPlayed: 0,
-
-  gameLog: [] as GameLogEntry[],
-  lastAction: null as string | null,
-  lastActionAt: null as number | null,
-  flashiCatalog: null as FlashiImage[] | null,
-  flashiCategory: 'random' as FlashiCategory | 'random',
-  timerValueSec: 60,
-  fastestFinish: false,
-  wrongCount: 5,
-};
-
+// ─── Helpers ────────────────────────────────────────────────────────────
 function generateRoomCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -139,81 +104,134 @@ function makeLog(round: number, message: string, type: GameLogEntry['type'] = 'i
   return { round, message, type, timestamp: Date.now() };
 }
 
-// Pick N rounds from the flashi catalog if loaded (preferred),
-// otherwise fall back to legacy SVG rounds (GUESSIMAGE_ROUNDS).
-function pickRounds(total: number, catalog: FlashiImage[] | null, category: FlashiCategory | 'random'): GuessImageRound[] {
-  // Flashi branch: pick N random images and convert each to a GuessImageRound
-  if (catalog && catalog.length > 0) {
-    const picks = pickRandomImages(catalog, category, total);
-    return picks.map((img, idx) => {
-      const diffs = decodeFlashiFilename(img.filename);
-      const shift = getImageShift(img.category);
-      return {
-        id: `flashi-${idx}-${img.filename.slice(0, 20)}`,
-        title: `خمن الصورة — ${img.category}`,
-        imageA: '',  // unused for flashi — imageUrl holds the bundled image
-        imageB: '',  // unused
-        imageUrl: img.url,
-        imageShift: shift,
-        flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
-        flashiCategory: img.category,
-        differences: diffs.map((d, i) => ({
-          id: `guessimage-diff-${idx}-${i}`,
-          x: 0, y: 0, radius: 0,  // unused for flashi — kept for type compat
-          found: false,
-        })),
-      } as GuessImageRound;
-    });
-  }
-  // Legacy fallback: cycle through the SVG GUESSIMAGE_ROUNDS
-  const out: GuessImageRound[] = [];
-  for (let i = 0; i < total; i++) {
-    out.push(GUESSIMAGE_ROUNDS[i % GUESSIMAGE_ROUNDS.length]);
-  }
-  return out;
+// Pick a random grid option (default = 16 cards = 8 pairs)
+function defaultGridOption() {
+  return GUESS_GRID_OPTIONS[0];
 }
 
-// ============================================================
+// Build a shuffled grid of cards for a round
+function buildShuffledCards(pairsCount: number, catalog: GuessImage[]): GuessCard[] {
+  const picks = pickRandomGuessImages(catalog, pairsCount);
+  // Each image appears twice
+  const cards: GuessCard[] = [];
+  let cardId = 1;
+  for (const img of picks) {
+    cards.push({
+      id: cardId,
+      imageId: img.id,
+      imageUrl: img.url,
+      flipped: false,
+      matched: false,
+    });
+    cardId++;
+    cards.push({
+      id: cardId,
+      imageId: img.id,
+      imageUrl: img.url,
+      flipped: false,
+      matched: false,
+    });
+    cardId++;
+  }
+  // Fisher-Yates shuffle
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  return cards;
+}
+
+// ─── Initial state ───────────────────────────────────────────────────────
+const initialGrid = defaultGridOption();
+
+const initialState = {
+  phase: 'landing' as GamePhase,
+  gameMode: 'classic' as GameMode,
+  difficulty: 'medium' as Difficulty,
+  totalRounds: 5,
+  roomCode: null as string | null,
+  hostName: null as string | null,
+  playerName: null as string | null,
+
+  gridSquares: initialGrid.squares,
+  gridRows: initialGrid.rows,
+  pairsCount: initialGrid.pairs,
+  themeId: 1,
+  timerValueSec: 60,
+  flashiCategory: 'random' as const,
+
+  currentRound: 0,
+  currentRoundData: null as GuessImageRound | null,
+  cards: [] as GuessCard[],
+  flippedCardIds: [] as number[],
+  matchedPairs: [] as MatchedPair[],
+  score: 0,
+  timeLeft: 0,
+  totalDifferences: initialGrid.pairs,
+  totalFound: 0,
+  totalMisses: 0,
+  roundsPlayed: 0,
+  gameLog: [] as GameLogEntry[],
+  lastAction: null as string | null,
+  lastActionAt: null as number | null,
+};
+
+// ─── Build a new round (called by startGame + loadRound + newImage) ──────
+function buildRound(state: GuessImageState): GuessImageRound {
+  const catalog = getGuessImageCatalog();
+  const cards = buildShuffledCards(state.pairsCount, catalog);
+  return {
+    id: `round-${state.currentRound}-${Date.now()}`,
+    title: `الجولة ${state.currentRound + 1} — ${state.pairsCount} أزواج`,
+    gridSquares: state.gridSquares,
+    gridRows: state.gridRows,
+    pairsCount: state.pairsCount,
+    themeId: state.themeId,
+    cards,
+    matchedPairs: [],
+  };
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // Store
-// ============================================================
+// ════════════════════════════════════════════════════════════════════════
 export const useGuessImageStore = create<GuessImageState>()(
   persist(
     (set, get) => ({
       ...initialState,
 
-      setPhase: (phase) => {
-        set({ phase });
-        get().syncToRoom();
-      },
+      setPhase: (phase) => { set({ phase }); get().syncToRoom(); },
       setGameMode: (gameMode) => set({ gameMode }),
       setDifficulty: (difficulty) => set({ difficulty }),
       setTotalRounds: (totalRounds) => set({ totalRounds }),
       setRoomCode: (roomCode) => set({ roomCode }),
       setHostName: (hostName) => set({ hostName }),
       setPlayerName: (playerName) => set({ playerName }),
+      setGridSquares: (gridSquares) => {
+        const opt = GUESS_GRID_OPTIONS.find(o => o.squares === gridSquares) || GUESS_GRID_OPTIONS[0];
+        set({ gridSquares: opt.squares, gridRows: opt.rows, pairsCount: opt.pairs });
+      },
+      setThemeId: (themeId) => set({ themeId }),
+      setTimerValueSec: (timerValueSec) => set({ timerValueSec }),
 
       startGame: () => {
         const state = get();
-        const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
-        const firstRound = rounds[0];
-        // Use ONLY the user-selected timer value (no fallback to difficulty)
-        const timeForRound = state.timerValueSec;
-        const totalDiffs = rounds.reduce(
-          (sum, r) => sum + r.differences.length, 0
-        );
+        const firstRound = buildRound(state);
+        const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         set({
           phase: 'playing',
           currentRound: 0,
           currentRoundData: firstRound,
-          foundDifferences: [],
-          differences: firstRound.differences.map(d => ({ ...d, found: false })),
+          cards: firstRound.cards,
+          flippedCardIds: [],
+          matchedPairs: [],
           score: 0,
           timeLeft: timeForRound,
-          totalDifferences: totalDiffs,
+          totalDifferences: state.pairsCount,
           totalFound: 0,
           totalMisses: 0,
           roundsPlayed: 0,
-          gameLog: [makeLog(0, `🎯 بدأت اللعبة — ${state.totalRounds} جولات، مستوى ${state.difficulty}`, 'system')],
+          gameLog: [makeLog(0, `🎯 بدأت اللعبة — ${state.totalRounds} جولات، ${state.pairsCount} أزواج`, 'system')],
           lastAction: '🎯 بدأت اللعبة',
           lastActionAt: Date.now(),
         });
@@ -222,78 +240,111 @@ export const useGuessImageStore = create<GuessImageState>()(
 
       loadRound: (index) => {
         const state = get();
-        const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
-        const round = rounds[index];
+        // Re-use the same state, just build a new round
+        const next = { ...state, currentRound: index };
+        const round = buildRound(next);
         if (!round) return;
-        // Use ONLY the user-selected timer value (independent of difficulty)
         const timeForRound = state.timerValueSec;
         set({
           currentRound: index,
           currentRoundData: round,
-          foundDifferences: [],
-          differences: round.differences.map(d => ({ ...d, found: false })),
+          cards: round.cards,
+          flippedCardIds: [],
+          matchedPairs: [],
           timeLeft: timeForRound,
-          gameLog: [
-            ...state.gameLog,
-            makeLog(index + 1, `🖼️ الجولة ${index + 1} — ${round.title}`, 'info'),
-          ],
+          totalDifferences: state.pairsCount,
+          totalFound: 0,
+          gameLog: [...state.gameLog, makeLog(index + 1, `🖼️ الجولة ${index + 1} — ${round.title}`, 'info')],
           lastAction: `🖼️ الجولة ${index + 1}`,
           lastActionAt: Date.now(),
         });
         get().syncToRoom();
       },
 
-      findDifference: (diffId) => {
+      // Flip a card — if 2 are flipped, check match
+      flipCard: (cardId) => {
         const state = get();
-        if (!state.currentRoundData) return false;
-        if (state.foundDifferences.includes(diffId)) return false;
-        const spot = state.differences.find(d => d.id === diffId);
-        if (!spot) return false;
+        if (!state.cards.length) return;
+        const card = state.cards.find(c => c.id === cardId);
+        if (!card || card.matched || card.flipped) return;
+        if (state.flippedCardIds.length >= 2) return; // wait for check
 
-        // Fixed scoring (decoupled from difficulty selector)
-        const scorePerHit = 100;
-        const newFound = [...state.foundDifferences, diffId];
-        const newDiffs = state.differences.map(d => d.id === diffId ? { ...d, found: true } : d);
-        const newScore = state.score + scorePerHit;
-        const newTotalFound = state.totalFound + 1;
-        const roundComplete = newFound.length >= (state.currentRoundData.differences.length);
+        const newCards = state.cards.map(c =>
+          c.id === cardId ? { ...c, flipped: true } : c
+        );
+        const newFlipped = [...state.flippedCardIds, cardId];
+        set({ cards: newCards, flippedCardIds: newFlipped });
 
-        set({
-          foundDifferences: newFound,
-          differences: newDiffs,
-          score: newScore,
-          totalFound: newTotalFound,
-          gameLog: [
-            ...state.gameLog,
-            makeLog(state.currentRound + 1, `✓ تم العثور على فرق! +${scorePerHit}`, 'success'),
-          ],
-          lastAction: `✓ فرق جديد! +${scorePerHit}`,
-          lastActionAt: Date.now(),
-        });
-
-        // If round complete → auto-advance after delay
-        if (roundComplete) {
-          setTimeout(() => {
-            get().nextRound();
-          }, 1200);
+        // If 2 cards are flipped, evaluate after 800ms
+        if (newFlipped.length === 2) {
+          setTimeout(() => get().checkMatch(), 800);
         }
-
-        get().syncToRoom();
-        return true;
       },
 
-      registerMiss: () => {
+      // Called when 2 cards are flipped — check if they match
+      checkMatch: () => {
         const state = get();
-        // Fixed penalty (decoupled from difficulty selector)
-        const penaltyPerMiss = 10;
-        const newScore = Math.max(0, state.score - penaltyPerMiss);
-        const newMisses = state.totalMisses + 1;
-        set({
-          score: newScore,
-          totalMisses: newMisses,
-          lastAction: `✗ خطأ! -${penaltyPerMiss}`,
-          lastActionAt: Date.now(),
-        });
+        if (state.flippedCardIds.length !== 2) return;
+        const [id1, id2] = state.flippedCardIds;
+        const c1 = state.cards.find(c => c.id === id1);
+        const c2 = state.cards.find(c => c.id === id2);
+        if (!c1 || !c2) return;
+
+        const cfg = DIFFICULTY_CONFIG[state.difficulty];
+        const isMatch = c1.imageId === c2.imageId;
+
+        if (isMatch) {
+          // Mark both as matched
+          const newCards = state.cards.map(c =>
+            (c.id === id1 || c.id === id2) ? { ...c, matched: true } : c
+          );
+          const newPair: MatchedPair = {
+            imageId: c1.imageId,
+            cardIds: [id1, id2],
+            matchedAt: Date.now(),
+          };
+          const newMatchedPairs = [...state.matchedPairs, newPair];
+          const newScore = state.score + cfg.scorePerMatch;
+          const newTotalFound = state.totalFound + 1;
+          const roundComplete = newMatchedPairs.length >= state.pairsCount;
+
+          set({
+            cards: newCards,
+            flippedCardIds: [],
+            matchedPairs: newMatchedPairs,
+            score: newScore,
+            totalFound: newTotalFound,
+            gameLog: [
+              ...state.gameLog,
+              makeLog(state.currentRound + 1, `✓ تطابق! +${cfg.scorePerMatch}`, 'success'),
+            ],
+            lastAction: `✓ تطابق جديد! +${cfg.scorePerMatch}`,
+            lastActionAt: Date.now(),
+          });
+
+          // If round complete → advance after 1s
+          if (roundComplete) {
+            setTimeout(() => get().nextRound(), 1000);
+          }
+        } else {
+          // Flip both back
+          const newCards = state.cards.map(c =>
+            (c.id === id1 || c.id === id2) ? { ...c, flipped: false } : c
+          );
+          const newScore = Math.max(0, state.score - cfg.penaltyPerMiss);
+          set({
+            cards: newCards,
+            flippedCardIds: [],
+            score: newScore,
+            totalMisses: state.totalMisses + 1,
+            gameLog: [
+              ...state.gameLog,
+              makeLog(state.currentRound + 1, `✗ لا تطابق -${cfg.penaltyPerMiss}`, 'danger'),
+            ],
+            lastAction: `✗ خطأ -${cfg.penaltyPerMiss}`,
+            lastActionAt: Date.now(),
+          });
+        }
         get().syncToRoom();
       },
 
@@ -308,7 +359,7 @@ export const useGuessImageStore = create<GuessImageState>()(
             roundsPlayed: newRoundsPlayed,
             gameLog: [
               ...state.gameLog,
-              makeLog(state.currentRound + 1, `🏆 انتهت اللعبة — نقاطك النهائية: ${state.score}`, 'system'),
+              makeLog(state.currentRound + 1, `🏆 انتهت اللعبة — نقاطك: ${state.score}`, 'system'),
             ],
             lastAction: `🏆 انتهت اللعبة — ${state.score} نقطة`,
             lastActionAt: Date.now(),
@@ -332,87 +383,47 @@ export const useGuessImageStore = create<GuessImageState>()(
         if (state.phase !== 'playing') return;
         const newTime = state.timeLeft - 1;
         if (newTime <= 0) {
-          // Time up → next round (or game over)
           set({
             timeLeft: 0,
-            gameLog: [
-              ...state.gameLog,
-              makeLog(state.currentRound + 1, `⏰ انتهى الوقت!`, 'danger'),
-            ],
+            gameLog: [...state.gameLog, makeLog(state.currentRound + 1, `⏰ انتهى الوقت!`, 'danger')],
             lastAction: '⏰ انتهى الوقت!',
             lastActionAt: Date.now(),
           });
           setTimeout(() => get().nextRound(), 500);
         } else {
           set({ timeLeft: newTime });
-          // Sync less frequently to avoid spam (every 5 seconds)
-          if (newTime % 5 === 0) {
-            get().syncToRoom();
-          }
+          if (newTime % 5 === 0) get().syncToRoom();
         }
       },
 
-      loadFlashiCatalog: async () => {
-        if (get().flashiCatalog) return; // already loaded
-        try {
-          const catalog = await loadFlashiCatalogFn();
-          set({ flashiCatalog: catalog });
-        } catch (e) {
-          console.warn('Failed to load flashi catalog:', e);
-        }
-      },
-
-      loadNewImage: () => {
-        // Pick a fresh random flashi image and replace currentRoundData
-        // (without reloading the page — fixes the 'صورة جديدة' button)
+      // Reshuffle the current round (no page reload)
+      newImage: () => {
         const state = get();
-        if (!state.flashiCatalog || state.flashiCatalog.length === 0) return;
-        const picks = pickRandomImages(state.flashiCatalog, state.flashiCategory, 1);
-        if (picks.length === 0) return;
-        const img = picks[0];
-        const diffs = decodeFlashiFilename(img.filename);
-        const shift = getImageShift(img.category);
-        const roundIdx = state.currentRound;
+        if (!state.currentRoundData) return;
+        const catalog = getGuessImageCatalog();
+        const cards = buildShuffledCards(state.pairsCount, catalog);
         const newRound: GuessImageRound = {
-          id: `flashi-${roundIdx}-${img.filename.slice(0, 20)}-${Date.now()}`,
-          title: `خمن الصورة — ${img.category}`,
-          imageA: '',
-          imageB: '',
-          imageUrl: img.url,
-          imageShift: shift,
-          flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
-          flashiCategory: img.category,
-          differences: diffs.map((_, i) => ({
-            id: `guessimage-diff-${roundIdx}-${i}`,
-            x: 0, y: 0, radius: 0,
-            found: false,
-          })),
+          ...state.currentRoundData,
+          cards,
+          matchedPairs: [],
         };
         set({
           currentRoundData: newRound,
-          foundDifferences: [],
-          differences: newRound.differences.map(d => ({ ...d, found: false })),
-          score: 0,  // reset score on new image (matches flashi behavior)
+          cards,
+          flippedCardIds: [],
+          matchedPairs: [],
+          score: 0,
           timeLeft: state.timerValueSec,
-          totalForRound: diffs.length,
-          lastAction: `🖼️ صورة جديدة — ${img.category}`,
+          totalFound: 0,
+          lastAction: '🔄 صور جديدة',
           lastActionAt: Date.now(),
         });
         get().syncToRoom();
       },
 
-      setFlashiCategory: (cat) => set({ flashiCategory: cat }),
-
-      // Note: setters for timerValueSec, fastestFinish, wrongCount can be
-      // added inline in GameSetup using useGuessImageStore.setState().
-      // For brevity we expose the loadNewImage action here and let
-      // GameSetup use setState() for the other settings.
-
-
       syncToRoom: () => {
         const state = get();
         if (state.gameMode !== 'diwaniya' || !state.roomCode) return;
-
         const syncData = {
           phase: state.phase,
           round: state.currentRound,
@@ -420,8 +431,8 @@ export const useGuessImageStore = create<GuessImageState>()(
             difficulty: state.difficulty,
             totalRounds: state.totalRounds,
             currentRound: state.currentRound,
-            currentRoundId: state.currentRoundData?.id,
-            foundDifferences: state.foundDifferences,
+            cards: state.cards,
+            matchedPairs: state.matchedPairs,
             score: state.score,
             timeLeft: state.timeLeft,
             totalDifferences: state.totalDifferences,
@@ -431,9 +442,12 @@ export const useGuessImageStore = create<GuessImageState>()(
             gameLog: state.gameLog,
             lastAction: state.lastAction,
             playerName: state.playerName,
+            gridSquares: state.gridSquares,
+            gridRows: state.gridRows,
+            pairsCount: state.pairsCount,
+            themeId: state.themeId,
           }),
         };
-
         fetch(`/api/guessimage-room/${state.roomCode}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -454,8 +468,9 @@ export const useGuessImageStore = create<GuessImageState>()(
         playerName: state.playerName,
         currentRound: state.currentRound,
         currentRoundData: state.currentRoundData,
-        foundDifferences: state.foundDifferences,
-        differences: state.differences,
+        cards: state.cards,
+        flippedCardIds: state.flippedCardIds,
+        matchedPairs: state.matchedPairs,
         score: state.score,
         timeLeft: state.timeLeft,
         totalDifferences: state.totalDifferences,
@@ -465,11 +480,11 @@ export const useGuessImageStore = create<GuessImageState>()(
         gameLog: state.gameLog,
         lastAction: state.lastAction,
         lastActionAt: state.lastActionAt,
-        flashiCatalog: state.flashiCatalog,
-        flashiCategory: state.flashiCategory,
+        gridSquares: state.gridSquares,
+        gridRows: state.gridRows,
+        pairsCount: state.pairsCount,
+        themeId: state.themeId,
         timerValueSec: state.timerValueSec,
-        fastestFinish: state.fastestFinish,
-        wrongCount: state.wrongCount,
       }),
     }
   )

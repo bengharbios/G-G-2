@@ -11,16 +11,20 @@ import {
   setSoundEnabled,
 } from '@/lib/sounds';
 import {
+  Difficulty,
+  DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
-  FLASHI_CATEGORY_LABELS,
 } from '@/lib/guessimage-types';
-import type { FlashiCategory } from '@/lib/flashi_images';
+import {
+  GUESS_GRID_OPTIONS,
+  GUESS_THEME_COUNT,
+  getGuessThemeCatalog,
+  buildGuessThemeUrl,
+} from '@/lib/flashi_guess_images';
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
 
-// Minimal authUser shape (subset of AppShellUser) — we fetch it directly
-// from /api/auth/me because /guessimage is NOT in SHELL_ROUTES, so the
-// AppShellContext.Provider doesn't wrap this page (AppShell early-returns
-// <>{children}</> for non-shell routes).
+// Minimal authUser shape (subset of AppShellUser) — fetched directly from
+// /api/auth/me because /guessimage is NOT in SHELL_ROUTES.
 interface AuthUser {
   id: string;
   username: string;
@@ -29,23 +33,12 @@ interface AuthUser {
   frame?: string;
 }
 
-// StrokeTextStyle_Yes (from yalla ludo styles.xml)
-const STROKE_STYLE: React.CSSProperties = {
-  color: '#feef91',
-  paintOrder: 'stroke fill',
-  WebkitTextStroke: '1px #aa6e1f',
-};
-
-// Timer duration options (matching flashi) — user-requested selector.
-// This controls the round timer independent of any difficulty selector.
+// Timer duration options (matching flashi)
 const TIMER_OPTIONS: Array<{ value: number; label: string }> = [
-  { value: 15, label: '15 ثانية' },
   { value: 30, label: '30 ثانية' },
-  { value: 45, label: '45 ثانية' },
   { value: 60, label: 'دقيقة' },
   { value: 90, label: 'دقيقة ونصف' },
   { value: 120, label: 'دقيقتان' },
-  { value: 150, label: 'دقيقتان ونصف' },
   { value: 180, label: '3 دقائق' },
   { value: 240, label: '4 دقائق' },
   { value: 300, label: '5 دقائق' },
@@ -64,354 +57,11 @@ function avatarSrc(avatar?: string, id?: string): string {
   return `/yalla-avatars/defaultPhoto_${seed}.png`;
 }
 
-// ============================================================
-// DiwaniyaApprovalCard — host-only component shown in GameSetup
-// Polls the spectator list every 2s, shows pending spectators with
-// approve/reject buttons, then a 'start battle' button once ≥1 is approved.
-// ============================================================
-interface DiwaniyaSpectator {
-  id: string;
-  name: string;
-  status: 'pending' | 'approved' | 'rejected' | 'playing' | 'finished';
-  joinedAt: number;
-  lastSeen: number;
-  score: number;
-  totalFound: number;
-  totalMisses: number;
-  hasFinished: boolean;
-  avatar?: string | null;
-  frame?: string | null;
-  displayName?: string | null;
-}
-
-function DiwaniyaApprovalCard({ roomCode }: { roomCode: string }) {
-  const router = useRouter();
-  const { flashiCatalog, flashiCategory, timerValueSec, loadFlashiCatalog } = useGuessImageStore();
-  const [spectators, setSpectators] = useState<DiwaniyaSpectator[]>([]);
-  const [roomPhase, setRoomPhase] = useState<string>('setup');
-  const [starting, setStarting] = useState(false);
-  const [error, setError] = useState('');
-
-  // Poll spectator list
-  useEffect(() => {
-    let cancelled = false;
-    const poll = async () => {
-      try {
-        const res = await fetch(`/api/guessimage-room/${roomCode}/spectator`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (cancelled) return;
-        if (data.success) {
-          setSpectators(data.spectators || []);
-          setRoomPhase(data.roomPhase || 'setup');
-        }
-      } catch { /* silent */ }
-    };
-    poll();
-    const iv = setInterval(poll, 2000);
-    return () => { cancelled = true; clearInterval(iv); };
-  }, [roomCode]);
-
-  // If battle has started → navigate to GameBoard (host view)
-  useEffect(() => {
-    if (roomPhase === 'playing' || roomPhase === 'game_over') {
-      // Use Phase update instead of direct navigation — GameBoard will render
-      useGuessImageStore.setState({ phase: 'playing' });
-    }
-  }, [roomPhase]);
-
-  const handleApprove = async (spectatorId: string) => {
-    try {
-      await fetch(`/api/guessimage-room/${roomCode}/spectator`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'approve', spectatorId }),
-      });
-    } catch { /* ignore */ }
-  };
-
-  const handleReject = async (spectatorId: string) => {
-    try {
-      await fetch(`/api/guessimage-room/${roomCode}/spectator`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'reject', spectatorId }),
-      });
-    } catch { /* ignore */ }
-  };
-
-  const handleStartBattle = async () => {
-    setStarting(true);
-    setError('');
-    try {
-      // Ensure catalog loaded (need to pick a random image)
-      if (!flashiCatalog || flashiCatalog.length === 0) {
-        await loadFlashiCatalog();
-      }
-      const catalog = useGuessImageStore.getState().flashiCatalog || [];
-      if (catalog.length === 0) {
-        setError('لا توجد صور متاحة');
-        setStarting(false);
-        return;
-      }
-      // Pick a random image matching the user's selected category
-      const pool = flashiCategory === 'random'
-        ? catalog
-        : catalog.filter(img => img.category === flashiCategory);
-      const picks = pool.length > 0
-        ? pool[Math.floor(Math.random() * pool.length)]
-        : catalog[Math.floor(Math.random() * catalog.length)];
-      if (!picks) {
-        setError('تعذر اختيار صورة');
-        setStarting(false);
-        return;
-      }
-      // Decode filename to get diff coords + imageShift
-      const { decodeFlashiFilename, getImageShift } = await import('@/lib/flashi_images');
-      const diffs = decodeFlashiFilename(picks.filename);
-      const imageShift = getImageShift(picks.category);
-      const currentRoundId = `flashi-0-${picks.filename.slice(0, 30)}-${Date.now()}`;
-
-      const res = await fetch(`/api/guessimage-room/${roomCode}/start`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          currentRoundId,
-          currentRoundImageUrl: picks.url,
-          currentRoundImageShift: imageShift,
-          currentRoundFlashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
-          totalDifferences: diffs.length,
-          timerValueSec,
-        }),
-      });
-      if (!res.ok) {
-        setError('فشل بدء المعركة');
-        setStarting(false);
-        return;
-      }
-      // Stash the round image info in store so GameBoard (host view) can render it
-      useGuessImageStore.setState({
-        currentRoundData: {
-          id: currentRoundId,
-          title: `خمن الصورة — ${picks.category}`,
-          imageA: '',
-          imageB: '',
-          imageUrl: picks.url,
-          imageShift,
-          flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
-          flashiCategory: picks.category,
-          differences: diffs.map((_, i) => ({
-            id: `guessimage-diff-0-${i}`,
-            x: 0, y: 0, radius: 0, found: false,
-          })),
-        },
-        phase: 'playing',
-      });
-    } catch (e) {
-      setError('خطأ في بدء المعركة');
-      setStarting(false);
-    }
-  };
-
-  const pending = spectators.filter(s => s.status === 'pending');
-  const approved = spectators.filter(s => s.status === 'approved' || s.status === 'playing' || s.status === 'finished');
-  const canStart = approved.length > 0 && roomPhase === 'setup' && !starting;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.3 }}
-      className="tobol-team-card"
-      style={{
-        width: '100%',
-        maxWidth: '380px',
-        padding: '10px 14px',
-        borderRadius: '12px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-      }}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        <span style={{
-          ...STROKE_STYLE,
-          fontSize: '12px',
-          fontWeight: 800,
-        }}>
-          👥 المشاركون ({spectators.length})
-        </span>
-        <span style={{
-          fontSize: '10px',
-          color: '#9fc4b4',
-          fontWeight: 700,
-        }}>
-          معتمدون: {approved.length} • بانتظار: {pending.length}
-        </span>
-      </div>
-
-      {spectators.length === 0 ? (
-        <p style={{
-          fontSize: '11px',
-          color: '#9fc4b4',
-          textAlign: 'center',
-          padding: '8px 0',
-        }}>
-          ⏳ لا يوجد مشاركون بعد — شارك الرابط مع أصدقائك
-        </p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          {spectators.map(spec => (
-            <div
-              key={spec.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: spec.status === 'rejected' ? 'rgba(239,68,68,.05)' : 'rgba(0,0,0,.4)',
-                border: `1px solid ${
-                  spec.status === 'approved' ? 'rgba(34,197,94,.3)' :
-                  spec.status === 'rejected' ? 'rgba(239,68,68,.3)' :
-                  spec.status === 'playing' ? 'rgba(251,191,36,.4)' :
-                  spec.status === 'finished' ? 'rgba(34,197,94,.4)' :
-                  'rgba(254,239,145,.18)'
-                }`,
-                borderRadius: '8px',
-                padding: '6px 8px',
-              }}
-            >
-              {/* Avatar */}
-              <div style={{
-                width: '28px', height: '28px', borderRadius: '50%',
-                overflow: 'hidden', flexShrink: 0,
-                border: '1px solid rgba(254,239,145,.3)',
-              }}>
-                <img
-                  src={spec.avatar || avatarSrc(undefined, spec.id)}
-                  alt={spec.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={(e) => {
-                    const t = e.target as HTMLImageElement;
-                    t.src = '/yalla-avatars/defaultPhoto_1.png';
-                  }}
-                />
-              </div>
-              {/* Name + status */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
-                  color: '#feef91',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}>
-                  {spec.name}
-                </div>
-                <div style={{
-                  fontSize: '9px',
-                  color: spec.status === 'approved' ? '#86efac' :
-                         spec.status === 'rejected' ? '#f87171' :
-                         spec.status === 'playing' ? '#fbbf24' :
-                         spec.status === 'finished' ? '#86efac' :
-                         '#9fc4b4',
-                  fontWeight: 700,
-                }}>
-                  {spec.status === 'pending' && '⏳ بانتظار الموافقة'}
-                  {spec.status === 'approved' && '✓ معتمد'}
-                  {spec.status === 'rejected' && '✗ مرفوض'}
-                  {spec.status === 'playing' && `🎮 يلعب — ${spec.score} نقطة`}
-                  {spec.status === 'finished' && `🏆 انتهى — ${spec.score} نقطة`}
-                </div>
-              </div>
-              {/* Approve/Reject buttons (only for pending) */}
-              {spec.status === 'pending' && (
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  <button
-                    onClick={() => handleApprove(spec.id)}
-                    style={{
-                      background: 'linear-gradient(135deg, #22c55e, #15803d)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '6px',
-                      padding: '4px 8px',
-                      fontSize: '10px',
-                      fontWeight: 800,
-                      cursor: 'pointer',
-                      flexShrink: 0,
-                    }}
-                  >
-                    ✓
-                  </button>
-                  <button
-                    onClick={() => handleReject(spec.id)}
-                    style={{
-                      background: 'linear-gradient(135deg, #ef4444, #991b1b)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '6px',
-                      padding: '4px 8px',
-                      fontSize: '10px',
-                      fontWeight: 800,
-                      cursor: 'pointer',
-                      flexShrink: 0,
-                    }}
-                  >
-                    ✗
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {error && (
-        <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center' }}>
-          ⚠️ {error}
-        </p>
-      )}
-
-      {/* Start battle button */}
-      <button
-        onClick={handleStartBattle}
-        disabled={!canStart}
-        style={{
-          width: '100%',
-          padding: '12px 16px',
-          border: 'none',
-          borderRadius: '10px',
-          background: canStart
-            ? 'linear-gradient(135deg, #fbbf24, #aa6e1f)'
-            : 'rgba(80,80,80,.4)',
-          color: canStart ? '#000' : '#9fc4b4',
-          fontSize: '14px',
-          fontWeight: 900,
-          cursor: canStart ? 'pointer' : 'not-allowed',
-          marginTop: '4px',
-          boxShadow: canStart ? '0 4px 12px rgba(251,191,36,.35)' : 'none',
-        }}
-      >
-        {starting ? '⏳ جاري البدء...' :
-         roomPhase === 'playing' ? '🎮 المعركة قائمة' :
-         roomPhase === 'game_over' ? '🏆 انتهت المعركة' :
-         approved.length === 0 ? '⏳ بانتظار اعتماد مشارك واحد على الأقل' :
-         `⚔️ ابدأ المعركة (${approved.length} مشارك)`}
-      </button>
-    </motion.div>
-  );
-}
-
 export default function GameSetup() {
   const router = useRouter();
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 
-  // Fetch authed user directly — AppShellContext.Provider doesn't wrap
-  // /guessimage (it's not in SHELL_ROUTES), so useAppShell() returns null.
+  // Fetch authed user directly
   useEffect(() => {
     let cancelled = false;
     fetch('/api/auth/me')
@@ -423,13 +73,14 @@ export default function GameSetup() {
       .catch(() => { /* silent */ });
     return () => { cancelled = true; };
   }, []);
+
   const {
     setPlayerName, setTotalRounds,
     startGame, resetGame, gameMode, setRoomCode,
     totalRounds,
-    loadFlashiCatalog,
-    flashiCategory, setFlashiCategory,
-    timerValueSec, fastestFinish, wrongCount,
+    gridSquares, setGridSquares,
+    themeId, setThemeId,
+    timerValueSec,
     roomCode,
   } = useGuessImageStore();
 
@@ -440,56 +91,6 @@ export default function GameSetup() {
   const [frameImg, setFrameImg] = useState<string | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
   const [copied, setCopied] = useState<'code' | 'link' | null>(null);
-
-  // Build the shareable watch link for the host to send to others.
-  // The deep-link route /r/guessimage/[code] handles in-app vs external browser.
-  const watchLink = typeof window !== 'undefined' && roomCode
-    ? `${window.location.origin}/r/guessimage/${roomCode}`
-    : '';
-  const handleCopyCode = async () => {
-    if (!roomCode) return;
-    try {
-      await navigator.clipboard.writeText(roomCode);
-      setCopied('code');
-      setTimeout(() => setCopied(null), 1800);
-    } catch { /* ignore */ }
-  };
-  const handleCopyLink = async () => {
-    if (!watchLink) return;
-    try {
-      await navigator.clipboard.writeText(watchLink);
-      setCopied('link');
-      setTimeout(() => setCopied(null), 1800);
-    } catch { /* ignore */ }
-  };
-  const handleShareLink = async () => {
-    if (!watchLink || !navigator.share) return;
-    try {
-      await navigator.share({
-        title: 'خمن الصورة — انضم كمشاهد',
-        text: `انضم لمشاهدة لعبة خمن الصورة في غرفتي (كود: ${roomCode})`,
-        url: watchLink,
-      });
-    } catch { /* user cancelled */ }
-  };
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    document.body.classList.add('in-game-setup');
-    return () => {
-      document.body.classList.remove('in-game-setup');
-    };
-  }, []);
-
-  useEffect(() => {
-    setMusicOn(isMusicEnabled());
-    setSoundOn(isSoundEnabled());
-  }, []);
-
-  // Preload flashi catalog
-  useEffect(() => {
-    loadFlashiCatalog().catch(() => {});
-  }, [loadFlashiCatalog]);
 
   // Load frame for authed user
   useEffect(() => {
@@ -519,18 +120,6 @@ export default function GameSetup() {
     }
   }, [authUser?.displayName, setPlayerName]);
 
-  const toggleMusic = () => {
-    const next = !musicOn;
-    setMusicOn(next);
-    setMusicEnabled(next);
-  };
-
-  const toggleSound = () => {
-    const next = !soundOn;
-    setSoundOn(next);
-    setSoundEnabled(next);
-  };
-
   // For diwaniya mode: create room on mount
   useEffect(() => {
     if (gameMode !== 'diwaniya') return;
@@ -545,20 +134,27 @@ export default function GameSetup() {
     }
   }, [gameMode, setRoomCode, playerName, authUser?.displayName]);
 
-  const handleStart = async () => {
+  const toggleMusic = () => {
+    const next = !musicOn;
+    setMusicOn(next);
+    setMusicEnabled(next);
+  };
+
+  const handleStart = () => {
     const name = playerName.trim() || authUser?.displayName || 'اللاعب';
     setPlayerName(name);
     setTotalRounds(totalRounds);
-    // Persist settings via setState — timerValueSec controls round time
     useGuessImageStore.setState({
       timerValueSec,
-      fastestFinish,
-      wrongCount,
+      gridSquares,
+      themeId,
     });
     setCatalogLoading(true);
-    try { await loadFlashiCatalog(); } catch (e) { /* ignore — fallback to SVG */ }
-    setCatalogLoading(false);
-    startGame();
+    // No async fetch needed — catalog is built statically in getGuessImageCatalog
+    setTimeout(() => {
+      setCatalogLoading(false);
+      startGame();
+    }, 100);
   };
 
   const handleExit = () => {
@@ -568,10 +164,32 @@ export default function GameSetup() {
 
   const isValid = !!authUser || playerName.trim().length > 0;
 
-  // Helper: small section header
+  // Build the shareable watch link (diwaniya mode)
+  const watchLink = typeof window !== 'undefined' && roomCode
+    ? `${window.location.origin}/r/guessimage/${roomCode}`
+    : '';
+  const handleCopyCode = async () => {
+    if (!roomCode) return;
+    try {
+      await navigator.clipboard.writeText(roomCode);
+      setCopied('code');
+      setTimeout(() => setCopied(null), 1800);
+    } catch { /* ignore */ }
+  };
+  const handleCopyLink = async () => {
+    if (!watchLink) return;
+    try {
+      await navigator.clipboard.writeText(watchLink);
+      setCopied('link');
+      setTimeout(() => setCopied(null), 1800);
+    } catch { /* ignore */ }
+  };
+
   const SectionLabel = ({ children }: { children: React.ReactNode }) => (
     <div style={{
-      ...STROKE_STYLE,
+      color: '#feef91',
+      paintOrder: 'stroke fill',
+      WebkitTextStroke: '1px #aa6e1f',
       fontSize: '11px',
       fontWeight: 800,
       letterSpacing: '0.3px',
@@ -580,38 +198,8 @@ export default function GameSetup() {
     }}>{children}</div>
   );
 
-  // Helper: Tobol-style select
-  const TobolSelect = ({
-    value, onChange, options, ariaLabel,
-  }: {
-    value: string | number;
-    onChange: (v: string) => void;
-    options: Array<{ value: string | number; label: string }>;
-    ariaLabel: string;
-  }) => (
-    <select
-      aria-label={ariaLabel}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      style={{
-        width: '100%',
-        background: 'rgba(8,28,22,.85)',
-        color: '#feef91',
-        border: '1px solid rgba(254,239,145,.3)',
-        borderRadius: '8px',
-        padding: '8px 10px',
-        fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-        fontSize: '13px',
-        fontWeight: 'bold',
-        cursor: 'pointer',
-        outline: 'none',
-      }}
-    >
-      {options.map((o) => (
-        <option key={String(o.value)} value={o.value}>{o.label}</option>
-      ))}
-    </select>
-  );
+  // Theme catalog (1..6)
+  const themes = getGuessThemeCatalog();
 
   return (
     <div
@@ -627,6 +215,7 @@ export default function GameSetup() {
         padding: '8px 14px 30px',
         gap: '8px',
         overflowY: 'auto',
+        fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
       }}
     >
       {/* ══════════ Header actions: sound + exit ══════════ */}
@@ -655,14 +244,13 @@ export default function GameSetup() {
         </button>
       </div>
 
-      {/* ══════════ Title + game image (Tobol style) ══════════ */}
+      {/* ══════════ Title + game image ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -12, scale: 0.92 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
         style={{ textAlign: 'center', marginTop: '50px', marginBottom: '4px' }}
       >
-        {/* Game cover image (transparent PNG, no white bg) */}
         <img
           src="/yalla-games/guessimage.png"
           alt="خمن الصورة"
@@ -676,7 +264,9 @@ export default function GameSetup() {
           }}
         />
         <h1 style={{
-          ...STROKE_STYLE,
+          color: '#feef91',
+          paintOrder: 'stroke fill',
+          WebkitTextStroke: '1px #aa6e1f',
           fontSize: '22px',
           fontWeight: 900,
           textShadow: '0 2px 4px rgba(0,0,0,.85)',
@@ -686,7 +276,7 @@ export default function GameSetup() {
           خمن الصورة
         </h1>
         <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
-          Guess the Image
+          Guess the Image — Memory Match-2
         </p>
       </motion.div>
 
@@ -707,7 +297,9 @@ export default function GameSetup() {
       >
         <span style={{ fontSize: '13px' }}>🧩</span>
         <span style={{
-          ...STROKE_STYLE,
+          color: '#feef91',
+          paintOrder: 'stroke fill',
+          WebkitTextStroke: '1px #aa6e1f',
           fontSize: '13px',
           fontWeight: 800,
           letterSpacing: '0.4px',
@@ -734,20 +326,9 @@ export default function GameSetup() {
         }}
       >
         {authUser ? (
-          // Logged-in: show avatar + frame (no input)
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-            <div style={{
-              position: 'relative',
-              width: '56px',
-              height: '56px',
-              flexShrink: 0,
-            }}>
+            <div style={{ position: 'relative', width: '56px', height: '56px', flexShrink: 0 }}>
               <span className="avatar-frame-wrap" style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
-                {/* Wrap avatar in a div so .avatar-frame-wrap > img CSS
-                    rule (which applies inset:-17% enlargement) does NOT
-                    apply to the avatar — only to the SvgaOrImg frame.
-                    This way the avatar stays at 100% size inside the
-                    frame (the frame is the bigger overlay). */}
                 <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
                   <img
                     src={avatarSrc(authUser.avatar, authUser.id)}
@@ -755,20 +336,18 @@ export default function GameSetup() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     onError={(e) => {
                       const t = e.target as HTMLImageElement;
-                      if (!t.src.includes('defaultPhoto_')) {
-                        t.src = '/yalla-avatars/defaultPhoto_1.png';
-                      }
+                      if (!t.src.includes('defaultPhoto_')) t.src = '/yalla-avatars/defaultPhoto_1.png';
                     }}
                   />
                 </div>
-                {frameImg && (
-                  <SvgaOrImg src={frameImg} alt="" />
-                )}
+                {frameImg && <SvgaOrImg src={frameImg} alt="" />}
               </span>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
-                ...STROKE_STYLE,
+                color: '#feef91',
+                paintOrder: 'stroke fill',
+                WebkitTextStroke: '1px #aa6e1f',
                 fontSize: '13px',
                 fontWeight: 800,
                 overflow: 'hidden',
@@ -783,7 +362,6 @@ export default function GameSetup() {
             </div>
           </div>
         ) : (
-          // Not logged in: show input
           <>
             <div style={{
               width: '40px', height: '40px', borderRadius: '50%',
@@ -821,7 +399,7 @@ export default function GameSetup() {
         )}
       </motion.div>
 
-      {/* ══════════ Diwaniya share card (only in diwaniya mode) ══════════ */}
+      {/* ══════════ Diwaniya share card ══════════ */}
       {gameMode === 'diwaniya' && roomCode && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -839,14 +417,15 @@ export default function GameSetup() {
           }}
         >
           <div style={{
-            ...STROKE_STYLE,
+            color: '#feef91',
+            paintOrder: 'stroke fill',
+            WebkitTextStroke: '1px #aa6e1f',
             fontSize: '12px',
             fontWeight: 800,
             textAlign: 'center',
           }}>
             📡 شارك الغرفة مع أصدقائك
           </div>
-          {/* Code row */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -856,12 +435,7 @@ export default function GameSetup() {
             borderRadius: '8px',
             padding: '8px 12px',
           }}>
-            <span style={{
-              ...STROKE_STYLE,
-              fontSize: '11px',
-              fontWeight: 700,
-              flexShrink: 0,
-            }}>كود:</span>
+            <span style={{ color: '#feef91', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>كود:</span>
             <span style={{
               fontFamily: 'ui-monospace, monospace',
               fontSize: '20px',
@@ -890,70 +464,34 @@ export default function GameSetup() {
               {copied === 'code' ? '✓ تم' : 'نسخ'}
             </button>
           </div>
-          {/* Link row */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}>
-            <button
-              onClick={handleCopyLink}
-              style={{
-                flex: 1,
-                background: 'rgba(8,28,22,.85)',
-                border: '1px solid rgba(254,239,145,.25)',
-                borderRadius: '6px',
-                padding: '8px 10px',
-                color: copied === 'link' ? '#86efac' : '#feef91',
-                fontSize: '11px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-              title={watchLink}
-            >
-              {copied === 'link' ? '✓ تم نسخ الرابط' : '🔗 نسخ رابط المشاهدة'}
-            </button>
-            {typeof navigator !== 'undefined' && navigator.share && (
-              <button
-                onClick={handleShareLink}
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6, #1e40af)',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '8px 12px',
-                  color: '#fff',
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                }}
-              >
-                مشاركة
-              </button>
-            )}
-          </div>
-          <p style={{
-            fontSize: '10px',
-            color: '#9fc4b4',
-            textAlign: 'center',
-            fontWeight: 600,
-            marginTop: '2px',
-          }}>
+          <button
+            onClick={handleCopyLink}
+            style={{
+              width: '100%',
+              background: 'rgba(8,28,22,.85)',
+              border: '1px solid rgba(254,239,145,.25)',
+              borderRadius: '6px',
+              padding: '8px 10px',
+              color: copied === 'link' ? '#86efac' : '#feef91',
+              fontSize: '11px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              textAlign: 'center',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            title={watchLink}
+          >
+            {copied === 'link' ? '✓ تم نسخ الرابط' : '🔗 نسخ رابط المشاهدة'}
+          </button>
+          <p style={{ fontSize: '10px', color: '#9fc4b4', textAlign: 'center', fontWeight: 600, marginTop: '2px' }}>
             💡 من يفتح الرابط سيدخل تلقائياً إن كان مسجّلاً، أو سيُطلب منه إدخال اسمه
           </p>
         </motion.div>
       )}
 
-      {/* ══════════ Diwaniya approval list (host only) ══════════ */}
-      {gameMode === 'diwaniya' && roomCode && (
-        <DiwaniyaApprovalCard roomCode={roomCode} />
-      )}
-
-      {/* ══════════ Settings grid (نوع الصور + الوقت + عدد الأخطائ + الأسرع) ══════════ */}
+      {/* ══════════ Grid size + theme selectors ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -968,42 +506,96 @@ export default function GameSetup() {
       >
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           <div>
-            <SectionLabel>نوع الصور</SectionLabel>
-            <TobolSelect
-              value={flashiCategory}
-              onChange={(v) => setFlashiCategory(v as FlashiCategory | 'random')}
-              options={Object.entries(FLASHI_CATEGORY_LABELS).map(([val, label]) => ({ value: val, label }))}
-              ariaLabel="نوع الصور"
-            />
+            <SectionLabel>حجم الشبكة</SectionLabel>
+            <select
+              value={gridSquares}
+              onChange={(e) => setGridSquares(parseInt(e.target.value))}
+              aria-label="حجم الشبكة"
+              style={{
+                width: '100%',
+                background: 'rgba(8,28,22,.85)',
+                color: '#feef91',
+                border: '1px solid rgba(254,239,145,.3)',
+                borderRadius: '8px',
+                padding: '8px 10px',
+                fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
+                fontSize: '13px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                outline: 'none',
+              }}
+            >
+              {GUESS_GRID_OPTIONS.map(opt => (
+                <option key={opt.squares} value={opt.squares}>{opt.label}</option>
+              ))}
+            </select>
           </div>
           <div>
-            <SectionLabel>الوقت</SectionLabel>
-            <TobolSelect
-              value={timerValueSec}
-              onChange={(v) => useGuessImageStore.setState({ timerValueSec: parseInt(v) })}
-              options={TIMER_OPTIONS}
-              ariaLabel="الوقت"
-            />
-          </div>
-          <div>
-            <SectionLabel>عدد الأخطائ</SectionLabel>
-            <TobolSelect
-              value={wrongCount}
-              onChange={(v) => useGuessImageStore.setState({ wrongCount: parseInt(v) })}
-              options={[1,2,3,4,5,6,7,8,9,10].map(n => ({ value: n, label: String(n) }))}
-              ariaLabel="عدد الأخطائ"
-            />
-          </div>
-          <div>
-            <SectionLabel>الأسرع</SectionLabel>
-            <TobolSelect
-              value={fastestFinish ? 'yes' : 'no'}
-              onChange={(v) => useGuessImageStore.setState({ fastestFinish: v === 'yes' })}
-              options={[{ value: 'yes', label: 'نعم' }, { value: 'no', label: 'لا' }]}
-              ariaLabel="الأسرع"
-            />
+            <SectionLabel>الثيم</SectionLabel>
+            <select
+              value={themeId}
+              onChange={(e) => setThemeId(parseInt(e.target.value))}
+              aria-label="الثيم"
+              style={{
+                width: '100%',
+                background: 'rgba(8,28,22,.85)',
+                color: '#feef91',
+                border: '1px solid rgba(254,239,145,.3)',
+                borderRadius: '8px',
+                padding: '8px 10px',
+                fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
+                fontSize: '13px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                outline: 'none',
+              }}
+            >
+              {themes.map(t => (
+                <option key={t.id} value={t.id}>ثيم {t.id}</option>
+              ))}
+            </select>
           </div>
         </div>
+      </motion.div>
+
+      {/* ══════════ Theme preview image ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.36, duration: 0.3 }}
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '6px',
+          overflowX: 'auto',
+        }}
+      >
+        {themes.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setThemeId(t.id)}
+            style={{
+              flex: '0 0 60px',
+              width: '60px',
+              height: '48px',
+              borderRadius: '6px',
+              border: themeId === t.id ? '2px solid #fbbf24' : '1px solid rgba(254,239,145,.2)',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              padding: 0,
+              background: 'rgba(0,0,0,.4)',
+              boxShadow: themeId === t.id ? '0 0 10px rgba(251,191,36,.4)' : 'none',
+            }}
+          >
+            <img
+              src={t.previewUrl}
+              alt={`ثيم ${t.id}`}
+              draggable={false}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </button>
+        ))}
       </motion.div>
 
       {/* ══════════ Round count selector ══════════ */}
@@ -1023,7 +615,7 @@ export default function GameSetup() {
           return (
             <button
               key={opt.value}
-              onClick={() => setTotalRounds(opt.value)}
+              onClick={() => useGuessImageStore.setState({ totalRounds: opt.value })}
               style={{
                 flex: 1, padding: '8px 4px', borderRadius: '10px',
                 border: `1.5px solid ${selected ? 'rgba(254,239,145,.65)' : 'rgba(255,255,255,.12)'}`,
@@ -1043,7 +635,44 @@ export default function GameSetup() {
         })}
       </motion.div>
 
-
+      {/* ══════════ Difficulty selector ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.42, duration: 0.3 }}
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          display: 'flex',
+          gap: '6px',
+        }}
+      >
+        {(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map((d) => {
+          const cfg = DIFFICULTY_CONFIG[d];
+          const selected = useGuessImageStore.getState().difficulty === d;
+          const color = d === 'easy' ? '#34d399' : d === 'medium' ? '#fbbf24' : '#ef4444';
+          return (
+            <button
+              key={d}
+              onClick={() => useGuessImageStore.setState({ difficulty: d })}
+              style={{
+                flex: 1, padding: '8px 4px', borderRadius: '10px',
+                border: `1.5px solid ${selected ? color + 'AA' : 'rgba(255,255,255,.12)'}`,
+                background: selected
+                  ? `linear-gradient(135deg, ${color}26, ${color}0d)`
+                  : 'rgba(6,42,32,.55)',
+                color: selected ? color : '#9fc4b4',
+                fontSize: '11px', fontWeight: 800, cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
+                boxShadow: selected ? `0 0 10px ${color}33` : 'none',
+              }}
+            >
+              <span style={{ fontSize: '13px' }}>{cfg.timePerRoundSec}s</span>
+              {cfg.label}
+            </button>
+          );
+        })}
+      </motion.div>
 
       {/* ══════════ Start button ══════════ */}
       <motion.button
@@ -1077,7 +706,7 @@ export default function GameSetup() {
         <span className="tobol-start-icon">
           <span style={{ fontSize: '18px' }}>{catalogLoading ? '⏳' : '🧩'}</span>
         </span>
-        <span>{catalogLoading ? 'جاري تحميل الصور...' : 'ابدأ اللعبة'}</span>
+        <span>{catalogLoading ? 'جاري تحميل...' : 'ابدأ اللعبة'}</span>
       </motion.button>
 
       {/* ══════════ Exit dialog ══════════ */}
@@ -1109,7 +738,9 @@ export default function GameSetup() {
             >
               <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
               <h3 style={{
-                ...STROKE_STYLE,
+                color: '#feef91',
+                paintOrder: 'stroke fill',
+                WebkitTextStroke: '1px #aa6e1f',
                 fontSize: '17px',
                 fontWeight: 900,
                 marginBottom: '6px',
