@@ -233,10 +233,19 @@ export default function PlayGamePage() {
               {/* Game Header */}
               <motion.div variants={itemVariants} className="text-center mb-8">
                 <motion.div
-                  className="text-5xl sm:text-6xl mb-4 inline-block"
+                  className="mb-4 inline-block"
                   {...floatEmoji}
                 >
-                  {game.emoji}
+                  {game.bgImage ? (
+                    <img
+                      src={game.bgImage}
+                      alt={game.title}
+                      className="rounded-2xl shadow-2xl border-2 border-white/10"
+                      style={{ width: '180px', height: '144px', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: '5rem' }}>{game.emoji}</span>
+                  )}
                 </motion.div>
                 <h1 className="text-2xl sm:text-3xl font-black text-white mb-2">{game.title}</h1>
                 <p className="text-slate-400 text-sm">انضم إلى غرفة موجودة</p>
@@ -406,12 +415,21 @@ export default function PlayGamePage() {
           >
             {/* Game Hero */}
             <motion.div variants={itemVariants} className="text-center mb-8 sm:mb-10">
-              {/* Game Emoji */}
+              {/* Game Image (bgImage) — fallback to emoji if not set */}
               <motion.div
-                className="text-7xl sm:text-8xl mb-5 inline-block drop-shadow-2xl"
+                className="mb-5 inline-block drop-shadow-2xl"
                 {...floatEmoji}
               >
-                {game.emoji}
+                {game.bgImage ? (
+                  <img
+                    src={game.bgImage}
+                    alt={game.title}
+                    className="rounded-3xl shadow-2xl border-2 border-white/15"
+                    style={{ width: '240px', height: '192px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <span style={{ fontSize: '7rem' }}>{game.emoji}</span>
+                )}
               </motion.div>
 
               {/* Game Title */}
