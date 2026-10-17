@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGuessImageStore } from '@/lib/guessimage-store';
 import { DIFFICULTY_CONFIG } from '@/lib/guessimage-types';
 import {
-  buildGuessCardBackUrl,
   buildGuessThemeUrl,
+  buildGuessCardBackUrl,
 } from '@/lib/flashi_guess_images';
 import {
   isMusicEnabled,
@@ -19,7 +19,6 @@ import {
   playWrongSound,
 } from '@/lib/sounds';
 
-// G-G Tobol style: gold stroke text
 const STROKE_STYLE: React.CSSProperties = {
   color: '#feef91',
   paintOrder: 'stroke fill',
@@ -34,9 +33,6 @@ interface ChatMsg {
 
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👏', '🙏', '🔥', '🎯', '🧩', '💡', '⭐', '✓', '✗', '🏆', '🎉', '💯', '❤️', '👀', '⏱️'];
 
-// ============================================================
-// Header chat button (same as spotdiff — uses G-G tobol chat panel)
-// ============================================================
 function HeaderChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMsg[]>([]);
@@ -64,15 +60,9 @@ function HeaderChatButton() {
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
-    const newMsg: ChatMsg = { id: Date.now(), sender: 'لاعب', text };
-    setMessages(prev => [...prev, newMsg]);
+    setMessages(prev => [...prev, { id: Date.now(), sender: 'لاعب', text }]);
     setInput('');
     setShowEmojis(false);
-  };
-
-  const handleEmojiClick = (emoji: string) => {
-    setInput(prev => prev + emoji);
-    inputRef.current?.focus();
   };
 
   return (
@@ -114,11 +104,7 @@ function HeaderChatButton() {
               </div>
               <div className="tobol-chat-panel-body">
                 {messages.length === 0 ? (
-                  <p className="tobol-chat-empty">
-                    لا رسائل بعد — أرسل أول رسالة.
-                    <br />
-                    (الدردشة مؤقتة، تُحذف عند إغلاق اللعبة)
-                  </p>
+                  <p className="tobol-chat-empty">لا رسائل بعد</p>
                 ) : (
                   messages.map((m) => (
                     <div key={m.id} className="tobol-chat-msg me">
@@ -129,32 +115,7 @@ function HeaderChatButton() {
                 )}
                 <div ref={msgEndRef} />
               </div>
-              <AnimatePresence>
-                {showEmojis && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    style={{ overflow: 'hidden' }}
-                  >
-                    <div className="tobol-emoji-picker">
-                      {EMOJIS.map((e, i) => (
-                        <button key={i} type="button" onClick={() => handleEmojiClick(e)} aria-label={`emoji ${e}`}>{e}</button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
               <div className="tobol-chat-panel-input-row">
-                <button
-                  type="button"
-                  className="tobol-emoji-btn"
-                  onClick={() => setShowEmojis(p => !p)}
-                  aria-label="إيموجي"
-                  title="إيموجي"
-                >
-                  <img src="/battle/icon_chat_emoji.webp" alt="emoji" />
-                </button>
                 <input
                   ref={inputRef}
                   type="text"
@@ -176,32 +137,29 @@ function HeaderChatButton() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// MAIN GAME BOARD — Memory match-2 logic
-// Player flips 2 cards per turn; if image IDs match → stays revealed (+score)
-// else → flips back (-penalty). Round ends when all pairs matched OR time runs out.
+// MAIN GAME BOARD — خمن الصورة (reveal squares + guess answer)
 // ════════════════════════════════════════════════════════════════════════
 export default function GameBoard() {
   const router = useRouter();
   const {
     phase, currentRound, currentRoundData,
-    cards, flippedCardIds, matchedPairs,
+    squares, revealedCount, guessed, wrongGuesses,
     score, timeLeft, totalRounds,
     totalFound, totalDifferences, totalMisses,
-    flipCard, checkMatch, nextRound, resetGame, difficulty,
-    themeId, gridRows, pairsCount,
-    timerValueSec, newImage,
+    revealSquare, submitGuess, nextRound, resetGame, difficulty,
+    themeId, timerValueSec, newImage,
   } = useGuessImageStore();
 
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [guessInput, setGuessInput] = useState('');
+  const [guessFeedback, setGuessFeedback] = useState<'correct' | 'wrong' | null>(null);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
     document.body.classList.add('in-game-setup');
-    return () => {
-      document.body.classList.remove('in-game-setup');
-    };
+    return () => { document.body.classList.remove('in-game-setup'); };
   }, []);
 
   useEffect(() => {
@@ -209,11 +167,9 @@ export default function GameBoard() {
     setSoundOn(isSoundEnabled());
   }, []);
 
-  // Timer tick
   useEffect(() => {
     if (phase !== 'playing') return;
     const interval = setInterval(() => {
-      // tickTimer via store directly (we have it via useGuessImageStore.getState)
       useGuessImageStore.getState().tickTimer();
     }, 1000);
     return () => clearInterval(interval);
@@ -230,20 +186,24 @@ export default function GameBoard() {
     router.push('/guessimage');
   };
 
-  const handleCardClick = (cardId: number) => {
+  const handleSquareClick = (sqId: number) => {
     if (soundOn) playClickSound();
-    flipCard(cardId);
-    // If 2 cards flipped, checkMatch fires after 800ms (via store setTimeout)
-    // But also play sound after match check
-    setTimeout(() => {
-      const state = useGuessImageStore.getState();
-      const lastLog = state.gameLog[state.gameLog.length - 1];
-      if (lastLog?.message.includes('تطابق')) {
-        if (soundOn) playCorrectSound();
-      } else if (lastLog?.message.includes('خطأ')) {
-        if (soundOn) playWrongSound();
-      }
-    }, 850);
+    revealSquare(sqId);
+  };
+
+  const handleGuessSubmit = () => {
+    if (!guessInput.trim() || guessed) return;
+    if (soundOn) playClickSound();
+    const correct = submitGuess(guessInput);
+    if (correct) {
+      if (soundOn) playCorrectSound();
+      setGuessFeedback('correct');
+    } else {
+      if (soundOn) playWrongSound();
+      setGuessFeedback('wrong');
+      setGuessInput('');
+      setTimeout(() => setGuessFeedback(null), 1000);
+    }
   };
 
   if (!currentRoundData) {
@@ -258,7 +218,6 @@ export default function GameBoard() {
           alignItems: 'center',
           justifyContent: 'center',
           color: '#9fc4b4',
-          fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
         }}
       >
         <div style={{ textAlign: 'center' }}>
@@ -270,20 +229,14 @@ export default function GameBoard() {
   }
 
   const cfg = DIFFICULTY_CONFIG[difficulty];
-  const foundCount = matchedPairs.length;
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   const timerDisplay = `${mins}:${String(secs).padStart(2, '0')}`;
   const timeColor = timeLeft <= 10 ? '#ef4444' : timeLeft <= 30 ? '#fbbf24' : '#feef91';
+  const remainingReveals = cfg.maxReveals - revealedCount;
 
-  // Compact action button (Tobol style)
-  const CompactBtn = ({
-    label, accentColor, icon, onClick,
-  }: {
-    label: string;
-    accentColor: string;
-    icon: string;
-    onClick: () => void;
+  const CompactBtn = ({ label, accentColor, icon, onClick }: {
+    label: string; accentColor: string; icon: string; onClick: () => void;
   }) => (
     <button
       onClick={onClick}
@@ -297,26 +250,12 @@ export default function GameBoard() {
         padding: '8px 6px',
         textAlign: 'center',
         cursor: 'pointer',
-        fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
         fontWeight: 'bold',
         fontSize: '11px',
-        lineHeight: '1.3',
-        boxShadow: `0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 ${accentColor}33`,
-        transition: 'all .15s ease',
         display: 'flex',
         flexDirection: 'column' as const,
         alignItems: 'center',
         gap: '2px',
-        WebkitUserSelect: 'none',
-        userSelect: 'none',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.filter = 'brightness(1.15)';
-        e.currentTarget.style.boxShadow = `0 4px 14px rgba(0,0,0,.5), inset 0 1px 0 ${accentColor}55, 0 0 12px ${accentColor}40`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.filter = 'brightness(1)';
-        e.currentTarget.style.boxShadow = `0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 ${accentColor}33`;
       }}
     >
       <span style={{ fontSize: '14px' }}>{icon}</span>
@@ -341,7 +280,7 @@ export default function GameBoard() {
         fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
       }}
     >
-      {/* ══════════ Header actions ══════════ */}
+      {/* Header actions */}
       <div className="tobol-header-actions">
         <button
           type="button"
@@ -368,7 +307,7 @@ export default function GameBoard() {
         </button>
       </div>
 
-      {/* ══════════ Game image + title (compact header) ══════════ */}
+      {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -406,18 +345,13 @@ export default function GameBoard() {
           }}>
             خمن الصورة
           </h1>
-          <div style={{
-            color: '#9fc4b4',
-            fontSize: '10px',
-            fontWeight: 700,
-            marginTop: '1px',
-          }}>
-            جولة {currentRound + 1}/{totalRounds} • {pairsCount} أزواج
+          <div style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 700, marginTop: '1px' }}>
+            جولة {currentRound + 1}/{totalRounds} • {cfg.label}
           </div>
         </div>
       </motion.div>
 
-      {/* ══════════ Stats row: matched pairs + score + timer ══════════ */}
+      {/* Stats row */}
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -433,121 +367,55 @@ export default function GameBoard() {
           gap: '8px',
         }}
       >
-        {/* Matched pairs counter */}
         <div style={{
-          ...STROKE_STYLE,
-          fontSize: '14px',
-          fontWeight: 800,
-          textAlign: 'center',
-          padding: '6px 10px',
-          border: '1px solid rgba(254,239,145,.3)',
-          borderRadius: '8px',
-          background: 'rgba(0,0,0,.4)',
-          minWidth: '80px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          justifyContent: 'center',
+          ...STROKE_STYLE, fontSize: '14px', fontWeight: 800, textAlign: 'center',
+          padding: '6px 10px', border: '1px solid rgba(254,239,145,.3)',
+          borderRadius: '8px', background: 'rgba(0,0,0,.4)', minWidth: '80px',
+          display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center',
         }}>
-          <span style={{ fontSize: '16px' }}>🎯</span>
-          <span style={{ color: '#86efac', fontSize: '16px', fontWeight: 900 }}>
-            {foundCount}
-          </span>
-          <span style={{ fontSize: '11px', color: '#9fc4b4' }}>/ {pairsCount}</span>
+          <span style={{ fontSize: '16px' }}>🔍</span>
+          <span style={{ color: '#86efac', fontSize: '16px', fontWeight: 900 }}>{remainingReveals}</span>
+          <span style={{ fontSize: '11px', color: '#9fc4b4' }}>/ {cfg.maxReveals}</span>
         </div>
-
-        {/* Score */}
         <div style={{
-          ...STROKE_STYLE,
-          fontSize: '14px',
-          fontWeight: 800,
-          textAlign: 'center',
-          padding: '6px 10px',
-          border: '1px solid rgba(254,239,145,.3)',
-          borderRadius: '8px',
-          background: 'rgba(0,0,0,.4)',
-          minWidth: '70px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          justifyContent: 'center',
+          ...STROKE_STYLE, fontSize: '14px', fontWeight: 800, textAlign: 'center',
+          padding: '6px 10px', border: '1px solid rgba(254,239,145,.3)',
+          borderRadius: '8px', background: 'rgba(0,0,0,.4)', minWidth: '70px',
+          display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center',
         }}>
           <span style={{ fontSize: '16px' }}>🏆</span>
-          <span style={{ color: '#fbbf24', fontSize: '16px', fontWeight: 900 }}>
-            {score}
-          </span>
+          <span style={{ color: '#fbbf24', fontSize: '16px', fontWeight: 900 }}>{score}</span>
         </div>
-
-        {/* Timer */}
         <div style={{
-          flex: 1,
-          padding: '6px 12px',
-          border: `1px solid ${timeColor}55`,
-          borderRadius: '8px',
-          background: 'rgba(0,0,0,.55)',
-          textAlign: 'center',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          justifyContent: 'center',
+          flex: 1, padding: '6px 12px', border: `1px solid ${timeColor}55`,
+          borderRadius: '8px', background: 'rgba(0,0,0,.55)', textAlign: 'center',
+          display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center',
           boxShadow: `0 0 16px ${timeColor}22, inset 0 0 8px ${timeColor}11`,
         }}>
           <span style={{ fontSize: '20px' }}>⏱️</span>
           <span style={{
-            fontSize: '28px',
-            fontWeight: 900,
-            color: timeColor,
+            fontSize: '28px', fontWeight: 900, color: timeColor,
             fontVariantNumeric: 'tabular-nums',
             textShadow: `0 0 8px ${timeColor}44, 0 2px 4px rgba(0,0,0,.85)`,
-            fontFamily: 'ltBukraBold, Noto Sans Arabic, monospace',
           }}>
             {timerDisplay}
           </span>
         </div>
       </motion.div>
 
-      {/* ══════════ Action buttons row (single row) ══════════ */}
+      {/* Action buttons */}
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          display: 'flex',
-          gap: '6px',
-        }}
+        style={{ width: '100%', maxWidth: '460px', display: 'flex', gap: '6px' }}
       >
-        <CompactBtn
-          label="صور جديدة"
-          accentColor="#22c55e"
-          icon="🔄"
-          onClick={() => {
-            if (soundOn) playClickSound();
-            newImage();
-          }}
-        />
-        <CompactBtn
-          label="بدء اللعبة"
-          accentColor="#fbbf24"
-          icon="▶️"
-          onClick={() => {
-            if (soundOn) playClickSound();
-            router.push('/guessimage');
-          }}
-        />
-        <CompactBtn
-          label="إظهار السكور"
-          accentColor="#3b82f6"
-          icon="📊"
-          onClick={() => {
-            if (soundOn) playClickSound();
-            // Scroll to bottom (score table is implicit in stats row already)
-          }}
-        />
+        <CompactBtn label="صورة جديدة" accentColor="#22c55e" icon="🔄" onClick={() => { if (soundOn) playClickSound(); newImage(); }} />
+        <CompactBtn label="بدء اللعبة" accentColor="#fbbf24" icon="▶️" onClick={() => { if (soundOn) playClickSound(); router.push('/guessimage'); }} />
+        <CompactBtn label="إظهار السكور" accentColor="#3b82f6" icon="📊" onClick={() => { if (soundOn) playClickSound(); }} />
       </motion.div>
 
-      {/* ══════════ Memory grid (cards) ══════════ */}
+      {/* Image with grid overlay */}
       <motion.div
         key={currentRoundData.id}
         initial={{ opacity: 0, scale: 0.96 }}
@@ -559,93 +427,150 @@ export default function GameBoard() {
           maxWidth: '460px',
           padding: '10px',
           borderRadius: '12px',
+          position: 'relative',
         }}
       >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${gridRows}, 1fr)`,
-            gap: '4px',
+        <div style={{ position: 'relative', width: '100%', margin: '0 auto', textAlign: 'center' }}>
+          {/* The actual image (hidden behind grid) */}
+          <img
+            src={currentRoundData.imageUrl}
+            alt="خمن الصورة"
+            draggable={false}
+            style={{
+              width: '100%',
+              maxWidth: '400px',
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto',
+              borderRadius: '8px',
+              filter: guessed ? 'none' : 'blur(2px)', // slight blur when not guessed
+              transition: 'filter 0.3s ease',
+            }}
+          />
+          {/* Grid overlay */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: '50%',
+            transform: 'translateX(-50%)',
             width: '100%',
-          }}
-        >
-          {cards.map(card => {
-            const showFace = card.flipped || card.matched;
-            const cardBack = buildGuessCardBackUrl(themeId);
-            return (
-              <motion.div
-                key={card.id}
-                onClick={() => !card.matched && !card.flipped && handleCardClick(card.id)}
-                initial={{ rotateY: 0 }}
-                animate={{ rotateY: showFace ? 180 : 0 }}
-                transition={{ duration: 0.4 }}
+            maxWidth: '400px',
+            height: '100%',
+            display: 'grid',
+            gridTemplateColumns: `repeat(${currentRoundData.gridRows}, 1fr)`,
+            gridTemplateRows: `repeat(${currentRoundData.gridRows}, 1fr)`,
+            gap: '2px',
+            padding: '0',
+            borderRadius: '8px',
+            overflow: 'hidden',
+          }}>
+            {squares.map(sq => (
+              <div
+                key={sq.id}
+                onClick={() => !sq.revealed && !guessed && remainingReveals > 0 && handleSquareClick(sq.id)}
                 style={{
-                  aspectRatio: '1 / 1',
-                  position: 'relative',
-                  cursor: (card.matched || card.flipped) ? 'default' : 'pointer',
-                  transformStyle: 'preserve-3d',
-                  borderRadius: '6px',
-                  overflow: 'hidden',
-                  border: card.matched
-                    ? '2px solid #22c55e'
-                    : card.flipped
-                      ? '2px solid #fbbf24'
-                      : '1px solid rgba(254,239,145,.2)',
-                  background: card.matched ? 'rgba(34,197,94,.15)' : 'rgba(0,0,0,.4)',
+                  background: sq.revealed
+                    ? 'transparent'
+                    : remainingReveals > 0 && !guessed
+                      ? `url(${buildGuessCardBackUrl(themeId)}) center / cover, rgba(0,0,0,.7)`
+                      : 'rgba(0,0,0,.85)',
+                  cursor: sq.revealed || guessed || remainingReveals === 0 ? 'default' : 'pointer',
+                  border: sq.revealed
+                    ? '1px solid transparent'
+                    : '1px solid rgba(254,239,145,.2)',
+                  borderRadius: '2px',
+                  transition: 'background 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                {/* Card back (face-down) */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backfaceVisibility: 'hidden',
-                    backgroundImage: `url(${cardBack})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    transform: 'rotateY(0deg)',
-                    opacity: showFace ? 0 : 1,
-                  }}
-                />
-                {/* Card face (image) */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: showFace ? 1 : 0,
-                  }}
-                >
-                  <img
-                    src={card.imageUrl}
-                    alt={`بطاقة ${card.id}`}
-                    draggable={false}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      borderRadius: '4px',
-                      userSelect: 'none',
-                      WebkitUserSelect: 'none',
-                      WebkitUserDrag: 'none',
-                    }}
-                  />
-                </div>
-              </motion.div>
-            );
-          })}
+                {!sq.revealed && remainingReveals > 0 && !guessed && (
+                  <span style={{ fontSize: '12px', color: 'rgba(255,255,255,.3)' }}>?</span>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
-      {/* ══════════ Stats footer ══════════ */}
+      {/* Guess input */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="tobol-team-card"
+        style={{
+          width: '100%',
+          maxWidth: '460px',
+          padding: '10px 14px',
+          borderRadius: '12px',
+        }}
+      >
+        <div style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
+          {guessed ? '✓ تم التخمين! انتظر الجولة القادمة...' : '💡 اكتب رقم الصورة التي تظنها صحيحة'}
+        </div>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="text"
+            value={guessInput}
+            onChange={(e) => setGuessInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleGuessSubmit(); }}
+            placeholder="اكتب رقم الصورة..."
+            disabled={guessed}
+            dir="rtl"
+            style={{
+              flex: 1,
+              background: guessFeedback === 'correct' ? 'rgba(34,197,94,.15)' :
+                         guessFeedback === 'wrong' ? 'rgba(239,68,68,.15)' :
+                         'rgba(0,0,0,.4)',
+              border: guessFeedback === 'correct' ? '1px solid #22c55e' :
+                      guessFeedback === 'wrong' ? '1px solid #ef4444' :
+                      '1px solid rgba(254,239,145,.3)',
+              borderRadius: '8px',
+              padding: '10px 14px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: 700,
+              textAlign: 'center',
+              outline: 'none',
+              fontFamily: 'ui-monospace, monospace',
+            }}
+          />
+          <button
+            onClick={handleGuessSubmit}
+            disabled={!guessInput.trim() || guessed}
+            style={{
+              background: guessed ? 'rgba(80,80,80,.4)' : 'linear-gradient(135deg, #fbbf24, #aa6e1f)',
+              color: guessed ? '#9fc4b4' : '#000',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              fontSize: '14px',
+              fontWeight: 800,
+              cursor: guessed ? 'default' : 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            {guessed ? '✓' : 'خمّن'}
+          </button>
+        </div>
+        {guessFeedback === 'wrong' && (
+          <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
+            ✗ إجابة خاطئة — حاول مرة أخرى
+          </p>
+        )}
+        {guessFeedback === 'correct' && (
+          <p style={{ color: '#86efac', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
+            ✓ إجابة صحيحة! أحسنت
+          </p>
+        )}
+      </motion.div>
+
+      {/* Footer stats */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.25 }}
         style={{
           width: '100%',
           maxWidth: '460px',
@@ -661,12 +586,12 @@ export default function GameBoard() {
           color: '#9fc4b4',
         }}
       >
-        <span>🎯 إجمالي التطابقات: {totalFound}/{totalDifferences}</span>
+        <span>✓ إجابات صحيحة: {totalFound}/{totalDifferences}</span>
         <span>✗ أخطاء: {totalMisses}</span>
         <span>💡 صعوبة: {cfg.label}</span>
       </motion.div>
 
-      {/* ══════════ Quit dialog ══════════ */}
+      {/* Quit dialog */}
       <AnimatePresence>
         {showQuitDialog && (
           <motion.div
@@ -675,15 +600,10 @@ export default function GameBoard() {
             exit={{ opacity: 0 }}
             onClick={() => setShowQuitDialog(false)}
             style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,.72)',
-              backdropFilter: 'blur(4px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 100,
-              padding: '20px',
+              position: 'fixed', inset: 0,
+              background: 'rgba(0,0,0,.72)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              zIndex: 100, padding: '20px',
             }}
           >
             <motion.div
@@ -693,58 +613,31 @@ export default function GameBoard() {
               transition={{ type: 'spring', bounce: 0.32 }}
               onClick={(e) => e.stopPropagation()}
               className="tobol-team-card"
-              style={{
-                padding: '20px',
-                width: '100%',
-                maxWidth: '300px',
-                textAlign: 'center',
-                borderRadius: '18px',
-              }}
+              style={{ padding: '20px', width: '100%', maxWidth: '300px', textAlign: 'center', borderRadius: '18px' }}
             >
               <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
-              <h3 style={{
-                ...STROKE_STYLE,
-                fontSize: '17px',
-                fontWeight: 900,
-                marginBottom: '6px',
-              }}>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
                 إنهاء اللعبة؟
               </h3>
-              <p style={{
-                color: '#9fc4b4',
-                fontSize: '12px',
-                marginBottom: '16px',
-                lineHeight: 1.5,
-              }}>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
                 نقاطك: {score} — سيتم إعادة تعيين اللعبة.
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button
                   onClick={() => setShowQuitDialog(false)}
                   style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '10px',
+                    flex: 1, padding: '10px', borderRadius: '10px',
                     border: '1px solid rgba(255,255,255,.12)',
-                    background: 'rgba(80,80,80,.3)',
-                    color: '#cbd5e1',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    cursor: 'pointer',
+                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
+                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
                   }}
                 >إلغاء</button>
                 <button
                   onClick={handleQuitGame}
                   style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '10px',
-                    border: 'none',
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
                     background: 'linear-gradient(135deg, #dc2626, #991b1b)',
-                    color: '#fff',
-                    fontSize: '14px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
+                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
                     boxShadow: '0 4px 12px rgba(220,38,38,.35)',
                   }}
                 >نعم، اخرج</button>

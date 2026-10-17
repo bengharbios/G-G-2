@@ -1,14 +1,10 @@
 // ════════════════════════════════════════════════════════════════════════
-// خمن الصورة (Guess the Image / Memory Match-2) — Game Types
-// Mirrors spotdiff-types.ts structure but adapted for Memory game.
-//
-// Game flow:
-//   1. Host picks grid size (16/25/36/49 squares) + theme (1..6)
-//   2. N pairs of images are placed face-down in the grid (2 of each)
-//   3. Player flips 2 cards per turn — if they match, stays revealed (+1 score)
-//   4. If no match, cards flip back after 1s
-//   5. Round ends when all pairs are found OR time runs out
-//   6. Score = matches × scorePerMatch - misses × penaltyPerMiss
+// خمن الصورة (Guess the Image) — Game Types
+// Logic: image is covered by a grid of squares. Player reveals squares
+// one at a time (limited reveals per round). After each reveal, player
+// can submit a guess. If correct → score based on remaining reveals.
+// If wrong → penalty + continue. Round ends on correct guess OR
+// reveals exhausted OR time runs out.
 // ════════════════════════════════════════════════════════════════════════
 
 export type GamePhase = 'landing' | 'setup' | 'playing' | 'game_over';
@@ -16,32 +12,18 @@ export type GameMode = 'classic' | 'diwaniya';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
-// A single card in the grid
-export interface GuessCard {
-  id: number;          // card ID (1..N)
-  imageId: number;     // which image (1..890) is on this card
-  imageUrl: string;    // pre-built URL for performance
-  flipped: boolean;    // currently face-up (showing image)
-  matched: boolean;    // permanently revealed (matched pair)
-}
-
-// A pair that has been matched (for the score log)
-export interface MatchedPair {
-  imageId: number;
-  cardIds: [number, number];
-  matchedAt: number;
-}
-
 // Per-difficulty config
 export const DIFFICULTY_CONFIG: Record<Difficulty, {
   label: string;
   timePerRoundSec: number;
-  scorePerMatch: number;
-  penaltyPerMiss: number;
+  scorePerCorrect: number;       // base score for correct guess
+  penaltyPerWrong: number;       // penalty per wrong guess
+  maxReveals: number;            // max squares player can reveal
+  gridRows: number;              // grid size (NxN)
 }> = {
-  easy: { label: 'سهل', timePerRoundSec: 90, scorePerMatch: 100, penaltyPerMiss: 10 },
-  medium: { label: 'متوسط', timePerRoundSec: 60, scorePerMatch: 150, penaltyPerMiss: 20 },
-  hard: { label: 'صعب', timePerRoundSec: 40, scorePerMatch: 250, penaltyPerMiss: 35 },
+  easy:   { label: 'سهل',   timePerRoundSec: 90,  scorePerCorrect: 500, penaltyPerWrong: 20, maxReveals: 12, gridRows: 4 },
+  medium: { label: 'متوسط', timePerRoundSec: 60,  scorePerCorrect: 700, penaltyPerWrong: 30, maxReveals: 10, gridRows: 5 },
+  hard:   { label: 'صعب',   timePerRoundSec: 40,  scorePerCorrect: 1000, penaltyPerWrong: 50, maxReveals: 8,  gridRows: 6 },
 };
 
 export interface RoundCountOption {
@@ -62,25 +44,32 @@ export interface GameLogEntry {
   timestamp: number;
 }
 
-// ─── A single round ──────────────────────────────────────────────────────
+// A single revealed square in the grid
+export interface RevealSquare {
+  id: number;          // 1..N (N = gridRows × gridRows)
+  row: number;
+  col: number;
+  revealed: boolean;   // is this square currently shown?
+}
+
+// A single round
 export interface GuessImageRound {
   id: string;
   title: string;
-  // Grid config (set by host in GameSetup)
-  gridSquares: number;     // 16/25/36/49
-  gridRows: number;        // 4/5/6/7
-  pairsCount: number;      // 8/12/18/24
-  themeId: number;         // 1..6
-  // Cards (shuffled into the grid)
-  cards: GuessCard[];
-  // Matched pairs (for game-over display)
-  matchedPairs: MatchedPair[];
+  imageId: number;        // 1..890
+  imageUrl: string;       // /img/guess/pics/{id}.png
+  themeId: number;        // 1..6
+  gridRows: number;       // 4/5/6
+  maxReveals: number;     // 8/10/12
+  squares: RevealSquare[];
+  revealedCount: number;  // how many squares revealed so far
+  guessed: boolean;       // did player guess correctly?
+  wrongGuesses: number;  // count of wrong guesses
 }
 
-// Flashi category labels (kept for compat with the spotdiff-style setup UI)
+// Flashi category labels (compat — only 'random' for guessimage)
 export const FLASHI_CATEGORY_LABELS: Record<string, string> = {
   random: 'عشوائي',
 };
 
-// Hit radius (kept for compat — unused in Memory game)
 export const FLASHI_HIT_RADIUS_VMIN = 5.5;

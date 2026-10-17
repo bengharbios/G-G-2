@@ -1,5 +1,13 @@
 // ════════════════════════════════════════════════════════════════════════
-// خمن الصورة (Guess the Image / Memory Match-2) — Zustand Store
+// خمن الصورة (Guess the Image) — Zustand Store
+// Game flow:
+//   1. Pick random image from catalog (1..890)
+//   2. Cover it with NxN grid of squares (N from difficulty)
+//   3. Player reveals squares (max maxReveals per round)
+//   4. After each reveal, player can submit a guess
+//   5. Correct guess → score = scorePerCorrect - (revealedCount × 50) - (wrongGuesses × penalty)
+//   6. Wrong guess → penalty + continue
+//   7. Round ends on: correct guess OR reveals exhausted OR time runs out
 // ════════════════════════════════════════════════════════════════════════
 
 import { create } from 'zustand';
@@ -9,24 +17,18 @@ import {
   GameMode,
   Difficulty,
   GuessImageRound,
-  GuessCard,
-  MatchedPair,
+  RevealSquare,
   GameLogEntry,
   DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
 } from './guessimage-types';
 import {
   getGuessImageCatalog,
-  pickRandomGuessImages,
-  buildGuessImageUrl,
-  GUESS_GRID_OPTIONS,
   GUESS_IMAGE_COUNT,
   type GuessImage,
 } from './flashi_guess_images';
 
-// ─── State ────────────────────────────────────────────────────────────
 export interface GuessImageState {
-  // Phase + meta
   phase: GamePhase;
   gameMode: GameMode;
   difficulty: Difficulty;
@@ -35,31 +37,22 @@ export interface GuessImageState {
   hostName: string | null;
   playerName: string | null;
 
-  // Round config (host picks in GameSetup)
-  gridSquares: number;     // 16/25/36/49
-  gridRows: number;        // 4/5/6/7
-  pairsCount: number;      // 8/12/18/24
-  themeId: number;         // 1..6
   timerValueSec: number;
-  flashiCategory: 'random'; // unused (kept for compat)
+  themeId: number;
 
-  // Current round state
   currentRound: number;
   currentRoundData: GuessImageRound | null;
-  // Per-round cards (mapped from currentRoundData.cards for the UI)
-  cards: GuessCard[];
-  // Currently-flipped cards (max 2 — when both are non-matching, flip back)
-  flippedCardIds: number[];
-  // Matched pairs in the current round (for score)
-  matchedPairs: MatchedPair[];
+  squares: RevealSquare[];
+  revealedCount: number;
+  guessed: boolean;
+  wrongGuesses: number;
   score: number;
   timeLeft: number;
-  totalDifferences: number;  // = pairsCount (kept for compat)
-  totalFound: number;       // = matchedPairs.length (kept for compat)
+  totalFound: number;       // rounds won
+  totalDifferences: number; // = totalRounds (compat)
   totalMisses: number;
   roundsPlayed: number;
 
-  // Game log
   gameLog: GameLogEntry[];
   lastAction: string | null;
   lastActionAt: number | null;
@@ -72,25 +65,21 @@ export interface GuessImageState {
   setRoomCode: (code: string | null) => void;
   setHostName: (name: string | null) => void;
   setPlayerName: (name: string | null) => void;
-  setGridSquares: (n: number) => void;
-  setThemeId: (n: number) => void;
   setTimerValueSec: (n: number) => void;
+  setThemeId: (n: number) => void;
 
-  // Game flow
   startGame: () => void;
   loadRound: (index: number) => void;
-  flipCard: (cardId: number) => void;  // flip a card; if 2 flipped, evaluate match
-  checkMatch: () => void;              // called after 2 cards flipped
+  revealSquare: (squareId: number) => void;
+  submitGuess: (guess: string) => boolean;  // returns true if correct
   nextRound: () => void;
+  newImage: () => void;  // skip to next image (forfeit current)
   resetGame: () => void;
   tickTimer: () => void;
-  newImage: () => void;  // reshuffle current round (no page reload)
 
-  // Helpers
   syncToRoom: () => void;
 }
 
-// ─── Helpers ────────────────────────────────────────────────────────────
 function generateRoomCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -104,45 +93,37 @@ function makeLog(round: number, message: string, type: GameLogEntry['type'] = 'i
   return { round, message, type, timestamp: Date.now() };
 }
 
-// Pick a random grid option (default = 16 cards = 8 pairs)
-function defaultGridOption() {
-  return GUESS_GRID_OPTIONS[0];
-}
+// Build a round: pick random image + create grid of squares
+function buildRound(state: GuessImageState): GuessImageRound {
+  const cfg = DIFFICULTY_CONFIG[state.difficulty];
+  const catalog = getGuessImageCatalog();
+  const pick = catalog[Math.floor(Math.random() * catalog.length)];
+  const gridRows = cfg.gridRows;
+  const totalSquares = gridRows * gridRows;
 
-// Build a shuffled grid of cards for a round
-function buildShuffledCards(pairsCount: number, catalog: GuessImage[]): GuessCard[] {
-  const picks = pickRandomGuessImages(catalog, pairsCount);
-  // Each image appears twice
-  const cards: GuessCard[] = [];
-  let cardId = 1;
-  for (const img of picks) {
-    cards.push({
-      id: cardId,
-      imageId: img.id,
-      imageUrl: img.url,
-      flipped: false,
-      matched: false,
-    });
-    cardId++;
-    cards.push({
-      id: cardId,
-      imageId: img.id,
-      imageUrl: img.url,
-      flipped: false,
-      matched: false,
-    });
-    cardId++;
+  const squares: RevealSquare[] = [];
+  let sqId = 1;
+  for (let r = 0; r < gridRows; r++) {
+    for (let c = 0; c < gridRows; c++) {
+      squares.push({ id: sqId, row: r, col: c, revealed: false });
+      sqId++;
+    }
   }
-  // Fisher-Yates shuffle
-  for (let i = cards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
-  }
-  return cards;
-}
 
-// ─── Initial state ───────────────────────────────────────────────────────
-const initialGrid = defaultGridOption();
+  return {
+    id: `round-${state.currentRound}-${Date.now()}`,
+    title: `الجولة ${state.currentRound + 1}`,
+    imageId: pick.id,
+    imageUrl: pick.url,
+    themeId: state.themeId,
+    gridRows,
+    maxReveals: cfg.maxReveals,
+    squares,
+    revealedCount: 0,
+    guessed: false,
+    wrongGuesses: 0,
+  };
+}
 
 const initialState = {
   phase: 'landing' as GamePhase,
@@ -152,23 +133,18 @@ const initialState = {
   roomCode: null as string | null,
   hostName: null as string | null,
   playerName: null as string | null,
-
-  gridSquares: initialGrid.squares,
-  gridRows: initialGrid.rows,
-  pairsCount: initialGrid.pairs,
-  themeId: 1,
   timerValueSec: 60,
-  flashiCategory: 'random' as const,
-
+  themeId: 1,
   currentRound: 0,
   currentRoundData: null as GuessImageRound | null,
-  cards: [] as GuessCard[],
-  flippedCardIds: [] as number[],
-  matchedPairs: [] as MatchedPair[],
+  squares: [] as RevealSquare[],
+  revealedCount: 0,
+  guessed: false,
+  wrongGuesses: 0,
   score: 0,
   timeLeft: 0,
-  totalDifferences: initialGrid.pairs,
   totalFound: 0,
+  totalDifferences: 5,
   totalMisses: 0,
   roundsPlayed: 0,
   gameLog: [] as GameLogEntry[],
@@ -176,25 +152,6 @@ const initialState = {
   lastActionAt: null as number | null,
 };
 
-// ─── Build a new round (called by startGame + loadRound + newImage) ──────
-function buildRound(state: GuessImageState): GuessImageRound {
-  const catalog = getGuessImageCatalog();
-  const cards = buildShuffledCards(state.pairsCount, catalog);
-  return {
-    id: `round-${state.currentRound}-${Date.now()}`,
-    title: `الجولة ${state.currentRound + 1} — ${state.pairsCount} أزواج`,
-    gridSquares: state.gridSquares,
-    gridRows: state.gridRows,
-    pairsCount: state.pairsCount,
-    themeId: state.themeId,
-    cards,
-    matchedPairs: [],
-  };
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// Store
-// ════════════════════════════════════════════════════════════════════════
 export const useGuessImageStore = create<GuessImageState>()(
   persist(
     (set, get) => ({
@@ -203,35 +160,32 @@ export const useGuessImageStore = create<GuessImageState>()(
       setPhase: (phase) => { set({ phase }); get().syncToRoom(); },
       setGameMode: (gameMode) => set({ gameMode }),
       setDifficulty: (difficulty) => set({ difficulty }),
-      setTotalRounds: (totalRounds) => set({ totalRounds }),
+      setTotalRounds: (totalRounds) => set({ totalRounds, totalDifferences: totalRounds }),
       setRoomCode: (roomCode) => set({ roomCode }),
       setHostName: (hostName) => set({ hostName }),
       setPlayerName: (playerName) => set({ playerName }),
-      setGridSquares: (gridSquares) => {
-        const opt = GUESS_GRID_OPTIONS.find(o => o.squares === gridSquares) || GUESS_GRID_OPTIONS[0];
-        set({ gridSquares: opt.squares, gridRows: opt.rows, pairsCount: opt.pairs });
-      },
-      setThemeId: (themeId) => set({ themeId }),
       setTimerValueSec: (timerValueSec) => set({ timerValueSec }),
+      setThemeId: (themeId) => set({ themeId }),
 
       startGame: () => {
         const state = get();
-        const firstRound = buildRound(state);
+        const round = buildRound(state);
         const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         set({
           phase: 'playing',
           currentRound: 0,
-          currentRoundData: firstRound,
-          cards: firstRound.cards,
-          flippedCardIds: [],
-          matchedPairs: [],
+          currentRoundData: round,
+          squares: round.squares,
+          revealedCount: 0,
+          guessed: false,
+          wrongGuesses: 0,
           score: 0,
           timeLeft: timeForRound,
-          totalDifferences: state.pairsCount,
+          totalDifferences: state.totalRounds,
           totalFound: 0,
           totalMisses: 0,
           roundsPlayed: 0,
-          gameLog: [makeLog(0, `🎯 بدأت اللعبة — ${state.totalRounds} جولات، ${state.pairsCount} أزواج`, 'system')],
+          gameLog: [makeLog(0, `🎯 بدأت اللعبة — ${state.totalRounds} جولات`, 'system')],
           lastAction: '🎯 بدأت اللعبة',
           lastActionAt: Date.now(),
         });
@@ -240,112 +194,119 @@ export const useGuessImageStore = create<GuessImageState>()(
 
       loadRound: (index) => {
         const state = get();
-        // Re-use the same state, just build a new round
         const next = { ...state, currentRound: index };
         const round = buildRound(next);
-        if (!round) return;
-        const timeForRound = state.timerValueSec;
+        const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         set({
           currentRound: index,
           currentRoundData: round,
-          cards: round.cards,
-          flippedCardIds: [],
-          matchedPairs: [],
+          squares: round.squares,
+          revealedCount: 0,
+          guessed: false,
+          wrongGuesses: 0,
           timeLeft: timeForRound,
-          totalDifferences: state.pairsCount,
-          totalFound: 0,
-          gameLog: [...state.gameLog, makeLog(index + 1, `🖼️ الجولة ${index + 1} — ${round.title}`, 'info')],
+          gameLog: [...state.gameLog, makeLog(index + 1, `🖼️ الجولة ${index + 1}`, 'info')],
           lastAction: `🖼️ الجولة ${index + 1}`,
           lastActionAt: Date.now(),
         });
         get().syncToRoom();
       },
 
-      // Flip a card — if 2 are flipped, check match
-      flipCard: (cardId) => {
+      revealSquare: (squareId) => {
         const state = get();
-        if (!state.cards.length) return;
-        const card = state.cards.find(c => c.id === cardId);
-        if (!card || card.matched || card.flipped) return;
-        if (state.flippedCardIds.length >= 2) return; // wait for check
+        if (!state.currentRoundData || state.guessed) return;
+        const cfg = DIFFICULTY_CONFIG[state.difficulty];
+        if (state.revealedCount >= cfg.maxReveals) return; // no more reveals
 
-        const newCards = state.cards.map(c =>
-          c.id === cardId ? { ...c, flipped: true } : c
+        const newSquares = state.squares.map(sq =>
+          sq.id === squareId && !sq.revealed ? { ...sq, revealed: true } : sq
         );
-        const newFlipped = [...state.flippedCardIds, cardId];
-        set({ cards: newCards, flippedCardIds: newFlipped });
+        const newRevealedCount = state.revealedCount + 1;
+        const newRoundData = { ...state.currentRoundData, squares: newSquares, revealedCount: newRevealedCount };
 
-        // If 2 cards are flipped, evaluate after 800ms
-        if (newFlipped.length === 2) {
-          setTimeout(() => get().checkMatch(), 800);
+        set({
+          squares: newSquares,
+          revealedCount: newRevealedCount,
+          currentRoundData: newRoundData,
+          lastAction: `🔍 كشفت ${newRevealedCount}/${cfg.maxReveals} مربعات`,
+          lastActionAt: Date.now(),
+        });
+
+        // If reveals exhausted → end round (player didn't guess)
+        if (newRevealedCount >= cfg.maxReveals) {
+          set({
+            gameLog: [...state.gameLog, makeLog(state.currentRound + 1, `⏰ نفدت الكشوفات — لم تُخمن!`, 'danger')],
+            lastAction: `⏰ نفدت الكشوفات`,
+            lastActionAt: Date.now(),
+          });
+          setTimeout(() => get().nextRound(), 1500);
         }
+        get().syncToRoom();
       },
 
-      // Called when 2 cards are flipped — check if they match
-      checkMatch: () => {
+      submitGuess: (guess) => {
         const state = get();
-        if (state.flippedCardIds.length !== 2) return;
-        const [id1, id2] = state.flippedCardIds;
-        const c1 = state.cards.find(c => c.id === id1);
-        const c2 = state.cards.find(c => c.id === id2);
-        if (!c1 || !c2) return;
-
+        if (!state.currentRoundData || state.guessed) return false;
         const cfg = DIFFICULTY_CONFIG[state.difficulty];
-        const isMatch = c1.imageId === c2.imageId;
+        const trimmed = guess.trim().toLowerCase();
 
-        if (isMatch) {
-          // Mark both as matched
-          const newCards = state.cards.map(c =>
-            (c.id === id1 || c.id === id2) ? { ...c, matched: true } : c
-          );
-          const newPair: MatchedPair = {
-            imageId: c1.imageId,
-            cardIds: [id1, id2],
-            matchedAt: Date.now(),
-          };
-          const newMatchedPairs = [...state.matchedPairs, newPair];
-          const newScore = state.score + cfg.scorePerMatch;
+        // The imageId is the "answer" — player must guess the number
+        // (since images are just numbered 1..890, the player can't really
+        // guess what the image IS without more context).
+        //
+        // For a real "guess the image" game, we'd need labeled images
+        // (e.g., image 1 = "قطة", image 2 = "شجرة", etc.). Since flashi's
+        // images are unlabeled (just numbered), we'll accept:
+        //   - The image's number as the "answer" (player types the number)
+        //   - OR a fuzzy match on any label we assign
+        //
+        // For now: the answer is the image ID (number). Player types the number.
+        const correctAnswer = String(state.currentRoundData.imageId);
+        const isCorrect = trimmed === correctAnswer.toLowerCase();
+
+        if (isCorrect) {
+          const remainingReveals = cfg.maxReveals - state.revealedCount;
+          const earnedScore = Math.max(50, cfg.scorePerCorrect - (state.revealedCount * 50) - (state.wrongGuesses * cfg.penaltyPerWrong));
+          const newScore = state.score + earnedScore;
           const newTotalFound = state.totalFound + 1;
-          const roundComplete = newMatchedPairs.length >= state.pairsCount;
 
           set({
-            cards: newCards,
-            flippedCardIds: [],
-            matchedPairs: newMatchedPairs,
+            guessed: true,
             score: newScore,
             totalFound: newTotalFound,
             gameLog: [
               ...state.gameLog,
-              makeLog(state.currentRound + 1, `✓ تطابق! +${cfg.scorePerMatch}`, 'success'),
+              makeLog(state.currentRound + 1, `✓ إجابة صحيحة! +${earnedScore} نقطة`, 'success'),
             ],
-            lastAction: `✓ تطابق جديد! +${cfg.scorePerMatch}`,
+            lastAction: `✓ صحيحة! +${earnedScore}`,
             lastActionAt: Date.now(),
           });
 
-          // If round complete → advance after 1s
-          if (roundComplete) {
-            setTimeout(() => get().nextRound(), 1000);
-          }
+          // Reveal all squares
+          const allRevealed = state.squares.map(sq => ({ ...sq, revealed: true }));
+          set({ squares: allRevealed });
+
+          // Advance after 2s
+          setTimeout(() => get().nextRound(), 2000);
+          get().syncToRoom();
+          return true;
         } else {
-          // Flip both back
-          const newCards = state.cards.map(c =>
-            (c.id === id1 || c.id === id2) ? { ...c, flipped: false } : c
-          );
-          const newScore = Math.max(0, state.score - cfg.penaltyPerMiss);
+          const newScore = Math.max(0, state.score - cfg.penaltyPerWrong);
+          const newWrong = state.wrongGuesses + 1;
           set({
-            cards: newCards,
-            flippedCardIds: [],
+            wrongGuesses: newWrong,
             score: newScore,
             totalMisses: state.totalMisses + 1,
             gameLog: [
               ...state.gameLog,
-              makeLog(state.currentRound + 1, `✗ لا تطابق -${cfg.penaltyPerMiss}`, 'danger'),
+              makeLog(state.currentRound + 1, `✗ إجابة خاطئة -${cfg.penaltyPerWrong}`, 'danger'),
             ],
-            lastAction: `✗ خطأ -${cfg.penaltyPerMiss}`,
+            lastAction: `✗ خاطئة -${cfg.penaltyPerWrong}`,
             lastActionAt: Date.now(),
           });
+          get().syncToRoom();
+          return false;
         }
-        get().syncToRoom();
       },
 
       nextRound: () => {
@@ -353,14 +314,10 @@ export const useGuessImageStore = create<GuessImageState>()(
         const nextIdx = state.currentRound + 1;
         const newRoundsPlayed = state.roundsPlayed + 1;
         if (nextIdx >= state.totalRounds) {
-          // Game over
           set({
             phase: 'game_over',
             roundsPlayed: newRoundsPlayed,
-            gameLog: [
-              ...state.gameLog,
-              makeLog(state.currentRound + 1, `🏆 انتهت اللعبة — نقاطك: ${state.score}`, 'system'),
-            ],
+            gameLog: [...state.gameLog, makeLog(state.currentRound + 1, `🏆 انتهت اللعبة — نقاطك: ${state.score}`, 'system')],
             lastAction: `🏆 انتهت اللعبة — ${state.score} نقطة`,
             lastActionAt: Date.now(),
           });
@@ -368,6 +325,12 @@ export const useGuessImageStore = create<GuessImageState>()(
           get().loadRound(nextIdx);
         }
         get().syncToRoom();
+      },
+
+      newImage: () => {
+        const state = get();
+        // Skip current round (forfeit) → load next
+        get().loadRound(state.currentRound);
       },
 
       resetGame: () => {
@@ -396,68 +359,29 @@ export const useGuessImageStore = create<GuessImageState>()(
         }
       },
 
-      // Reshuffle the current round (no page reload)
-      newImage: () => {
-        const state = get();
-        if (!state.currentRoundData) return;
-        const catalog = getGuessImageCatalog();
-        const cards = buildShuffledCards(state.pairsCount, catalog);
-        const newRound: GuessImageRound = {
-          ...state.currentRoundData,
-          cards,
-          matchedPairs: [],
-        };
-        set({
-          currentRoundData: newRound,
-          cards,
-          flippedCardIds: [],
-          matchedPairs: [],
-          score: 0,
-          timeLeft: state.timerValueSec,
-          totalFound: 0,
-          lastAction: '🔄 صور جديدة',
-          lastActionAt: Date.now(),
-        });
-        get().syncToRoom();
-      },
-
       syncToRoom: () => {
         const state = get();
         if (state.gameMode !== 'diwaniya' || !state.roomCode) return;
-        const syncData = {
-          phase: state.phase,
-          round: state.currentRound,
-          stateJson: JSON.stringify({
-            difficulty: state.difficulty,
-            totalRounds: state.totalRounds,
-            currentRound: state.currentRound,
-            cards: state.cards,
-            matchedPairs: state.matchedPairs,
-            score: state.score,
-            timeLeft: state.timeLeft,
-            totalDifferences: state.totalDifferences,
-            totalFound: state.totalFound,
-            totalMisses: state.totalMisses,
-            roundsPlayed: state.roundsPlayed,
-            gameLog: state.gameLog,
-            lastAction: state.lastAction,
-            playerName: state.playerName,
-            gridSquares: state.gridSquares,
-            gridRows: state.gridRows,
-            pairsCount: state.pairsCount,
-            themeId: state.themeId,
-          }),
-        };
         fetch(`/api/guessimage-room/${state.roomCode}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(syncData),
+          body: JSON.stringify({
+            phase: state.phase,
+            stateJson: JSON.stringify({
+              currentRound: state.currentRound,
+              currentRoundData: state.currentRoundData,
+              revealedCount: state.revealedCount,
+              guessed: state.guessed,
+              score: state.score,
+              timeLeft: state.timeLeft,
+            }),
+          }),
         }).catch(() => {});
       },
     }),
     {
       name: 'guessimage-game-storage',
-      version: 1,
+      version: 2,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,
@@ -468,29 +392,25 @@ export const useGuessImageStore = create<GuessImageState>()(
         playerName: state.playerName,
         currentRound: state.currentRound,
         currentRoundData: state.currentRoundData,
-        cards: state.cards,
-        flippedCardIds: state.flippedCardIds,
-        matchedPairs: state.matchedPairs,
+        squares: state.squares,
+        revealedCount: state.revealedCount,
+        guessed: state.guessed,
+        wrongGuesses: state.wrongGuesses,
         score: state.score,
         timeLeft: state.timeLeft,
-        totalDifferences: state.totalDifferences,
         totalFound: state.totalFound,
         totalMisses: state.totalMisses,
         roundsPlayed: state.roundsPlayed,
         gameLog: state.gameLog,
         lastAction: state.lastAction,
         lastActionAt: state.lastActionAt,
-        gridSquares: state.gridSquares,
-        gridRows: state.gridRows,
-        pairsCount: state.pairsCount,
-        themeId: state.themeId,
         timerValueSec: state.timerValueSec,
+        themeId: state.themeId,
       }),
     }
   )
 );
 
-// Helper for room code generation (used by GameSetup)
 export function generateGuessImageRoomCode(): string {
   return generateRoomCode();
 }
