@@ -1472,6 +1472,42 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore */ }
 
+  // ─── Migration: أضف guessimage + battleship لكل القوالب الموجودة ───
+  // (للترقية من النسخ القديمة التي لم تكن تحوي هاتين اللعبتين في
+  // BattleButton table)
+  try {
+    const themes = await c.execute("SELECT id, themeKey FROM BattleTheme");
+    for (const themeRow of themes.rows) {
+      const themeId = (themeRow as Record<string, unknown>).id as string;
+      // تحقق إذا guessimage موجود لهذا القالب
+      const guessCheck = await c.execute({
+        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'guessimage'",
+        args: [themeId],
+      });
+      const guessCnt = (guessCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!guessCnt || guessCnt === 0) {
+        await c.execute({
+          sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, 'ggames', 'guessimage', 'خمن الصورة', '/yalla-games/guessimage.png', '#7C3AED', 167, 134, '/guessimage', 12, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), themeId],
+        });
+      }
+      // تحقق إذا battleship موجود لهذا القالب
+      const shipCheck = await c.execute({
+        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'battleship'",
+        args: [themeId],
+      });
+      const shipCnt = (shipCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!shipCnt || shipCnt === 0) {
+        await c.execute({
+          sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, 'ggames', 'battleship', 'سفن', '/yalla-games/battleship.png', '#581C87', 167, 134, '/battleship', 13, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), themeId],
+        });
+      }
+    }
+  } catch { /* ignore migration errors */ }
+
   _tablesReady = true;
 }
 
