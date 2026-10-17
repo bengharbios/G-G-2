@@ -11,8 +11,6 @@ import {
   setSoundEnabled,
 } from '@/lib/sounds';
 import {
-  Difficulty,
-  DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
   FLASHI_CATEGORY_LABELS,
 } from '@/lib/spotdiff-types';
@@ -37,6 +35,21 @@ const STROKE_STYLE: React.CSSProperties = {
   paintOrder: 'stroke fill',
   WebkitTextStroke: '1px #aa6e1f',
 };
+
+// Timer duration options (matching flashi) — user-requested selector.
+// This controls the round timer independent of any difficulty selector.
+const TIMER_OPTIONS: Array<{ value: number; label: string }> = [
+  { value: 15, label: '15 ثانية' },
+  { value: 30, label: '30 ثانية' },
+  { value: 45, label: '45 ثانية' },
+  { value: 60, label: 'دقيقة' },
+  { value: 90, label: 'دقيقة ونصف' },
+  { value: 120, label: 'دقيقتان' },
+  { value: 150, label: 'دقيقتان ونصف' },
+  { value: 180, label: '3 دقائق' },
+  { value: 240, label: '4 دقائق' },
+  { value: 300, label: '5 دقائق' },
+];
 
 // Frame asset path helper (matching SiteHeader logic)
 function frameSrcFallback(frameId?: string | null): string | null {
@@ -69,12 +82,12 @@ export default function GameSetup() {
     return () => { cancelled = true; };
   }, []);
   const {
-    setPlayerName, setDifficulty, setTotalRounds,
+    setPlayerName, setTotalRounds,
     startGame, resetGame, gameMode, setRoomCode,
-    difficulty, totalRounds,
+    totalRounds,
     loadFlashiCatalog,
     flashiCategory, setFlashiCategory,
-    fastestFinish, wrongCount,
+    timerValueSec, fastestFinish, wrongCount,
   } = useSpotDiffStore();
 
   const [playerName, setPlayerNameState] = useState('');
@@ -159,10 +172,10 @@ export default function GameSetup() {
   const handleStart = async () => {
     const name = playerName.trim() || authUser?.displayName || 'اللاعب';
     setPlayerName(name);
-    setDifficulty(difficulty);
     setTotalRounds(totalRounds);
-    // Persist settings via setState (Difficulty selector owns the time)
+    // Persist settings via setState — timerValueSec controls round time
     useSpotDiffStore.setState({
+      timerValueSec,
       fastestFinish,
       wrongCount,
     });
@@ -354,17 +367,24 @@ export default function GameSetup() {
               flexShrink: 0,
             }}>
               <span className="avatar-frame-wrap" style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
-                <img
-                  src={avatarSrc(authUser.avatar, authUser.id)}
-                  alt={authUser.displayName || 'اللاعب'}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-                  onError={(e) => {
-                    const t = e.target as HTMLImageElement;
-                    if (!t.src.includes('defaultPhoto_')) {
-                      t.src = '/yalla-avatars/defaultPhoto_1.png';
-                    }
-                  }}
-                />
+                {/* Wrap avatar in a div so .avatar-frame-wrap > img CSS
+                    rule (which applies inset:-17% enlargement) does NOT
+                    apply to the avatar — only to the SvgaOrImg frame.
+                    This way the avatar stays at 100% size inside the
+                    frame (the frame is the bigger overlay). */}
+                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
+                  <img
+                    src={avatarSrc(authUser.avatar, authUser.id)}
+                    alt={authUser.displayName || 'اللاعب'}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    onError={(e) => {
+                      const t = e.target as HTMLImageElement;
+                      if (!t.src.includes('defaultPhoto_')) {
+                        t.src = '/yalla-avatars/defaultPhoto_1.png';
+                      }
+                    }}
+                  />
+                </div>
                 {frameImg && (
                   <SvgaOrImg src={frameImg} alt="" />
                 )}
@@ -425,7 +445,7 @@ export default function GameSetup() {
         )}
       </motion.div>
 
-      {/* ══════════ Settings grid (نوع الصور + عدد الأخطائ + الأسرع (الوقت عبر Difficulty)) ══════════ */}
+      {/* ══════════ Settings grid (نوع الصور + الوقت + عدد الأخطائ + الأسرع) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -438,7 +458,7 @@ export default function GameSetup() {
           borderRadius: '12px',
         }}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           <div>
             <SectionLabel>نوع الصور</SectionLabel>
             <TobolSelect
@@ -446,6 +466,15 @@ export default function GameSetup() {
               onChange={(v) => setFlashiCategory(v as FlashiCategory | 'random')}
               options={Object.entries(FLASHI_CATEGORY_LABELS).map(([val, label]) => ({ value: val, label }))}
               ariaLabel="نوع الصور"
+            />
+          </div>
+          <div>
+            <SectionLabel>الوقت</SectionLabel>
+            <TobolSelect
+              value={timerValueSec}
+              onChange={(v) => useSpotDiffStore.setState({ timerValueSec: parseInt(v) })}
+              options={TIMER_OPTIONS}
+              ariaLabel="الوقت"
             />
           </div>
           <div>
@@ -506,44 +535,7 @@ export default function GameSetup() {
         })}
       </motion.div>
 
-      {/* ══════════ Difficulty selector ══════════ */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.42, duration: 0.3 }}
-        style={{
-          width: '100%',
-          maxWidth: '380px',
-          display: 'flex',
-          gap: '6px',
-        }}
-      >
-        {(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map((d) => {
-          const cfg = DIFFICULTY_CONFIG[d];
-          const selected = difficulty === d;
-          const color = d === 'easy' ? '#34d399' : d === 'medium' ? '#fbbf24' : '#ef4444';
-          return (
-            <button
-              key={d}
-              onClick={() => setDifficulty(d)}
-              style={{
-                flex: 1, padding: '8px 4px', borderRadius: '10px',
-                border: `1.5px solid ${selected ? color + 'AA' : 'rgba(255,255,255,.12)'}`,
-                background: selected
-                  ? `linear-gradient(135deg, ${color}26, ${color}0d)`
-                  : 'rgba(6,42,32,.55)',
-                color: selected ? color : '#9fc4b4',
-                fontSize: '11px', fontWeight: 800, cursor: 'pointer',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
-                boxShadow: selected ? `0 0 10px ${color}33` : 'none',
-              }}
-            >
-              <span style={{ fontSize: '13px' }}>{cfg.timePerRoundSec}s</span>
-              {cfg.label}
-            </button>
-          );
-        })}
-      </motion.div>
+
 
       {/* ══════════ Start button ══════════ */}
       <motion.button

@@ -196,8 +196,8 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         const state = get();
         const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
         const firstRound = rounds[0];
-        // Use user-selected timer value (default to difficulty-based if not set)
-        const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
+        // Use ONLY the user-selected timer value (no fallback to difficulty)
+        const timeForRound = state.timerValueSec;
         const totalDiffs = rounds.reduce(
           (sum, r) => sum + r.differences.length, 0
         );
@@ -225,7 +225,8 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
         const round = rounds[index];
         if (!round) return;
-        const timeForRound = DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
+        // Use ONLY the user-selected timer value (independent of difficulty)
+        const timeForRound = state.timerValueSec;
         set({
           currentRound: index,
           currentRoundData: round,
@@ -249,10 +250,11 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         const spot = state.differences.find(d => d.id === diffId);
         if (!spot) return false;
 
-        const cfg = DIFFICULTY_CONFIG[state.difficulty];
+        // Fixed scoring (decoupled from difficulty selector)
+        const scorePerHit = 100;
         const newFound = [...state.foundDifferences, diffId];
         const newDiffs = state.differences.map(d => d.id === diffId ? { ...d, found: true } : d);
-        const newScore = state.score + cfg.scorePerHit;
+        const newScore = state.score + scorePerHit;
         const newTotalFound = state.totalFound + 1;
         const roundComplete = newFound.length >= (state.currentRoundData.differences.length);
 
@@ -263,9 +265,9 @@ export const useSpotDiffStore = create<SpotDiffState>()(
           totalFound: newTotalFound,
           gameLog: [
             ...state.gameLog,
-            makeLog(state.currentRound + 1, `✓ تم العثور على فرق! +${cfg.scorePerHit}`, 'success'),
+            makeLog(state.currentRound + 1, `✓ تم العثور على فرق! +${scorePerHit}`, 'success'),
           ],
-          lastAction: `✓ فرق جديد! +${cfg.scorePerHit}`,
+          lastAction: `✓ فرق جديد! +${scorePerHit}`,
           lastActionAt: Date.now(),
         });
 
@@ -282,13 +284,14 @@ export const useSpotDiffStore = create<SpotDiffState>()(
 
       registerMiss: () => {
         const state = get();
-        const cfg = DIFFICULTY_CONFIG[state.difficulty];
-        const newScore = Math.max(0, state.score - cfg.penaltyPerMiss);
+        // Fixed penalty (decoupled from difficulty selector)
+        const penaltyPerMiss = 10;
+        const newScore = Math.max(0, state.score - penaltyPerMiss);
         const newMisses = state.totalMisses + 1;
         set({
           score: newScore,
           totalMisses: newMisses,
-          lastAction: `✗ خطأ! -${cfg.penaltyPerMiss}`,
+          lastAction: `✗ خطأ! -${penaltyPerMiss}`,
           lastActionAt: Date.now(),
         });
         get().syncToRoom();
