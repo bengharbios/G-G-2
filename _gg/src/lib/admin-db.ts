@@ -1621,6 +1621,28 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     color: 'cyan',
     isComingSoon: false,
   },
+  {
+    gameSlug: 'guessimage',
+    gameName: 'خمن الصورة',
+    isEnabled: true,
+    order: 11,
+    playerRange: '1-10',
+    description: 'تظهر لك صورة مكشوفة تدريجياً! خمّن ما هي قبل انتهاء الوقت. 5 جولات، صور متنوعة، تحدي ذكي.',
+    icon: '🧩',
+    color: 'amber',
+    isComingSoon: false,
+  },
+  {
+    gameSlug: 'battleship',
+    gameName: 'سفن',
+    isEnabled: true,
+    order: 12,
+    playerRange: '1-4',
+    description: 'لعبة السفن الكلاسيكية! ضع أسطولك بذكاء ثم قصف سفن خصمك. 5 أنواع من السفن، ثيمان، أونلاين بين لاعبين.',
+    icon: '🚢',
+    color: 'purple',
+    isComingSoon: false,
+  },
 ];
 
 // ── RoomBookmark functions ──
