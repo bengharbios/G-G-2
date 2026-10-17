@@ -64,6 +64,348 @@ function avatarSrc(avatar?: string, id?: string): string {
   return `/yalla-avatars/defaultPhoto_${seed}.png`;
 }
 
+// ============================================================
+// DiwaniyaApprovalCard — host-only component shown in GameSetup
+// Polls the spectator list every 2s, shows pending spectators with
+// approve/reject buttons, then a 'start battle' button once ≥1 is approved.
+// ============================================================
+interface DiwaniyaSpectator {
+  id: string;
+  name: string;
+  status: 'pending' | 'approved' | 'rejected' | 'playing' | 'finished';
+  joinedAt: number;
+  lastSeen: number;
+  score: number;
+  totalFound: number;
+  totalMisses: number;
+  hasFinished: boolean;
+  avatar?: string | null;
+  frame?: string | null;
+  displayName?: string | null;
+}
+
+function DiwaniyaApprovalCard({ roomCode }: { roomCode: string }) {
+  const router = useRouter();
+  const { flashiCatalog, flashiCategory, timerValueSec, loadFlashiCatalog } = useSpotDiffStore();
+  const [spectators, setSpectators] = useState<DiwaniyaSpectator[]>([]);
+  const [roomPhase, setRoomPhase] = useState<string>('setup');
+  const [starting, setStarting] = useState(false);
+  const [error, setError] = useState('');
+
+  // Poll spectator list
+  useEffect(() => {
+    let cancelled = false;
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/spotdiff-room/${roomCode}/spectator`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        if (data.success) {
+          setSpectators(data.spectators || []);
+          setRoomPhase(data.roomPhase || 'setup');
+        }
+      } catch { /* silent */ }
+    };
+    poll();
+    const iv = setInterval(poll, 2000);
+    return () => { cancelled = true; clearInterval(iv); };
+  }, [roomCode]);
+
+  // If battle has started → navigate to GameBoard (host view)
+  useEffect(() => {
+    if (roomPhase === 'playing' || roomPhase === 'game_over') {
+      // Use Phase update instead of direct navigation — GameBoard will render
+      useSpotDiffStore.setState({ phase: 'playing' });
+    }
+  }, [roomPhase]);
+
+  const handleApprove = async (spectatorId: string) => {
+    try {
+      await fetch(`/api/spotdiff-room/${roomCode}/spectator`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'approve', spectatorId }),
+      });
+    } catch { /* ignore */ }
+  };
+
+  const handleReject = async (spectatorId: string) => {
+    try {
+      await fetch(`/api/spotdiff-room/${roomCode}/spectator`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reject', spectatorId }),
+      });
+    } catch { /* ignore */ }
+  };
+
+  const handleStartBattle = async () => {
+    setStarting(true);
+    setError('');
+    try {
+      // Ensure catalog loaded (need to pick a random image)
+      if (!flashiCatalog || flashiCatalog.length === 0) {
+        await loadFlashiCatalog();
+      }
+      const catalog = useSpotDiffStore.getState().flashiCatalog || [];
+      if (catalog.length === 0) {
+        setError('لا توجد صور متاحة');
+        setStarting(false);
+        return;
+      }
+      // Pick a random image matching the user's selected category
+      const pool = flashiCategory === 'random'
+        ? catalog
+        : catalog.filter(img => img.category === flashiCategory);
+      const picks = pool.length > 0
+        ? pool[Math.floor(Math.random() * pool.length)]
+        : catalog[Math.floor(Math.random() * catalog.length)];
+      if (!picks) {
+        setError('تعذر اختيار صورة');
+        setStarting(false);
+        return;
+      }
+      // Decode filename to get diff coords + imageShift
+      const { decodeFlashiFilename, getImageShift } = await import('@/lib/flashi_images');
+      const diffs = decodeFlashiFilename(picks.filename);
+      const imageShift = getImageShift(picks.category);
+      const currentRoundId = `flashi-0-${picks.filename.slice(0, 30)}-${Date.now()}`;
+
+      const res = await fetch(`/api/spotdiff-room/${roomCode}/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentRoundId,
+          currentRoundImageUrl: picks.url,
+          currentRoundImageShift: imageShift,
+          currentRoundFlashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
+          totalDifferences: diffs.length,
+          timerValueSec,
+        }),
+      });
+      if (!res.ok) {
+        setError('فشل بدء المعركة');
+        setStarting(false);
+        return;
+      }
+      // Stash the round image info in store so GameBoard (host view) can render it
+      useSpotDiffStore.setState({
+        currentRoundData: {
+          id: currentRoundId,
+          title: `اختلاف الصور — ${picks.category}`,
+          imageA: '',
+          imageB: '',
+          imageUrl: picks.url,
+          imageShift,
+          flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
+          flashiCategory: picks.category,
+          differences: diffs.map((_, i) => ({
+            id: `flashi-diff-0-${i}`,
+            x: 0, y: 0, radius: 0, found: false,
+          })),
+        },
+        phase: 'playing',
+      });
+    } catch (e) {
+      setError('خطأ في بدء المعركة');
+      setStarting(false);
+    }
+  };
+
+  const pending = spectators.filter(s => s.status === 'pending');
+  const approved = spectators.filter(s => s.status === 'approved' || s.status === 'playing' || s.status === 'finished');
+  const canStart = approved.length > 0 && roomPhase === 'setup' && !starting;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 0.3 }}
+      className="tobol-team-card"
+      style={{
+        width: '100%',
+        maxWidth: '380px',
+        padding: '10px 14px',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <span style={{
+          ...STROKE_STYLE,
+          fontSize: '12px',
+          fontWeight: 800,
+        }}>
+          👥 المشاركون ({spectators.length})
+        </span>
+        <span style={{
+          fontSize: '10px',
+          color: '#9fc4b4',
+          fontWeight: 700,
+        }}>
+          معتمدون: {approved.length} • بانتظار: {pending.length}
+        </span>
+      </div>
+
+      {spectators.length === 0 ? (
+        <p style={{
+          fontSize: '11px',
+          color: '#9fc4b4',
+          textAlign: 'center',
+          padding: '8px 0',
+        }}>
+          ⏳ لا يوجد مشاركون بعد — شارك الرابط مع أصدقائك
+        </p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {spectators.map(spec => (
+            <div
+              key={spec.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: spec.status === 'rejected' ? 'rgba(239,68,68,.05)' : 'rgba(0,0,0,.4)',
+                border: `1px solid ${
+                  spec.status === 'approved' ? 'rgba(34,197,94,.3)' :
+                  spec.status === 'rejected' ? 'rgba(239,68,68,.3)' :
+                  spec.status === 'playing' ? 'rgba(251,191,36,.4)' :
+                  spec.status === 'finished' ? 'rgba(34,197,94,.4)' :
+                  'rgba(254,239,145,.18)'
+                }`,
+                borderRadius: '8px',
+                padding: '6px 8px',
+              }}
+            >
+              {/* Avatar */}
+              <div style={{
+                width: '28px', height: '28px', borderRadius: '50%',
+                overflow: 'hidden', flexShrink: 0,
+                border: '1px solid rgba(254,239,145,.3)',
+              }}>
+                <img
+                  src={spec.avatar || avatarSrc(undefined, spec.id)}
+                  alt={spec.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => {
+                    const t = e.target as HTMLImageElement;
+                    t.src = '/yalla-avatars/defaultPhoto_1.png';
+                  }}
+                />
+              </div>
+              {/* Name + status */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  color: '#feef91',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {spec.name}
+                </div>
+                <div style={{
+                  fontSize: '9px',
+                  color: spec.status === 'approved' ? '#86efac' :
+                         spec.status === 'rejected' ? '#f87171' :
+                         spec.status === 'playing' ? '#fbbf24' :
+                         spec.status === 'finished' ? '#86efac' :
+                         '#9fc4b4',
+                  fontWeight: 700,
+                }}>
+                  {spec.status === 'pending' && '⏳ بانتظار الموافقة'}
+                  {spec.status === 'approved' && '✓ معتمد'}
+                  {spec.status === 'rejected' && '✗ مرفوض'}
+                  {spec.status === 'playing' && `🎮 يلعب — ${spec.score} نقطة`}
+                  {spec.status === 'finished' && `🏆 انتهى — ${spec.score} نقطة`}
+                </div>
+              </div>
+              {/* Approve/Reject buttons (only for pending) */}
+              {spec.status === 'pending' && (
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button
+                    onClick={() => handleApprove(spec.id)}
+                    style={{
+                      background: 'linear-gradient(135deg, #22c55e, #15803d)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '4px 8px',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✓
+                  </button>
+                  <button
+                    onClick={() => handleReject(spec.id)}
+                    style={{
+                      background: 'linear-gradient(135deg, #ef4444, #991b1b)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '4px 8px',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✗
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center' }}>
+          ⚠️ {error}
+        </p>
+      )}
+
+      {/* Start battle button */}
+      <button
+        onClick={handleStartBattle}
+        disabled={!canStart}
+        style={{
+          width: '100%',
+          padding: '12px 16px',
+          border: 'none',
+          borderRadius: '10px',
+          background: canStart
+            ? 'linear-gradient(135deg, #fbbf24, #aa6e1f)'
+            : 'rgba(80,80,80,.4)',
+          color: canStart ? '#000' : '#9fc4b4',
+          fontSize: '14px',
+          fontWeight: 900,
+          cursor: canStart ? 'pointer' : 'not-allowed',
+          marginTop: '4px',
+          boxShadow: canStart ? '0 4px 12px rgba(251,191,36,.35)' : 'none',
+        }}
+      >
+        {starting ? '⏳ جاري البدء...' :
+         roomPhase === 'playing' ? '🎮 المعركة قائمة' :
+         roomPhase === 'game_over' ? '🏆 انتهت المعركة' :
+         approved.length === 0 ? '⏳ بانتظار اعتماد مشارك واحد على الأقل' :
+         `⚔️ ابدأ المعركة (${approved.length} مشارك)`}
+      </button>
+    </motion.div>
+  );
+}
+
 export default function GameSetup() {
   const router = useRouter();
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
@@ -604,6 +946,11 @@ export default function GameSetup() {
             💡 من يفتح الرابط سيدخل تلقائياً إن كان مسجّلاً، أو سيُطلب منه إدخال اسمه
           </p>
         </motion.div>
+      )}
+
+      {/* ══════════ Diwaniya approval list (host only) ══════════ */}
+      {gameMode === 'diwaniya' && roomCode && (
+        <DiwaniyaApprovalCard roomCode={roomCode} />
       )}
 
       {/* ══════════ Settings grid (نوع الصور + الوقت + عدد الأخطائ + الأسرع) ══════════ */}
