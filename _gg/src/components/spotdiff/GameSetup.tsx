@@ -17,8 +17,19 @@ import {
   FLASHI_CATEGORY_LABELS,
 } from '@/lib/spotdiff-types';
 import type { FlashiCategory } from '@/lib/flashi_images';
-import { useAppShell } from '@/components/shared/AppShellContext';
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
+
+// Minimal authUser shape (subset of AppShellUser) — we fetch it directly
+// from /api/auth/me because /spotdiff is NOT in SHELL_ROUTES, so the
+// AppShellContext.Provider doesn't wrap this page (AppShell early-returns
+// <>{children}</> for non-shell routes).
+interface AuthUser {
+  id: string;
+  username: string;
+  displayName?: string;
+  avatar?: string;
+  frame?: string;
+}
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
@@ -26,20 +37,6 @@ const STROKE_STYLE: React.CSSProperties = {
   paintOrder: 'stroke fill',
   WebkitTextStroke: '1px #aa6e1f',
 };
-
-// Timer duration options (matching flashi)
-const TIMER_OPTIONS: Array<{ value: number; label: string }> = [
-  { value: 15, label: '15 ثانية' },
-  { value: 30, label: '30 ثانية' },
-  { value: 45, label: '45 ثانية' },
-  { value: 60, label: 'دقيقة' },
-  { value: 90, label: 'دقيقة ونصف' },
-  { value: 120, label: 'دقيقتان' },
-  { value: 150, label: 'دقيقتان ونصف' },
-  { value: 180, label: '3 دقائق' },
-  { value: 240, label: '4 دقائق' },
-  { value: 300, label: '5 دقائق' },
-];
 
 // Frame asset path helper (matching SiteHeader logic)
 function frameSrcFallback(frameId?: string | null): string | null {
@@ -56,15 +53,28 @@ function avatarSrc(avatar?: string, id?: string): string {
 
 export default function GameSetup() {
   const router = useRouter();
-  const appShell = useAppShell();
-  const authUser = appShell?.authUser || null;
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+
+  // Fetch authed user directly — AppShellContext.Provider doesn't wrap
+  // /spotdiff (it's not in SHELL_ROUTES), so useAppShell() returns null.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/auth/me')
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.success && data.user) setAuthUser(data.user as AuthUser);
+      })
+      .catch(() => { /* silent */ });
+    return () => { cancelled = true; };
+  }, []);
   const {
     setPlayerName, setDifficulty, setTotalRounds,
     startGame, resetGame, gameMode, setRoomCode,
     difficulty, totalRounds,
     loadFlashiCatalog,
     flashiCategory, setFlashiCategory,
-    timerValueSec, fastestFinish, wrongCount,
+    fastestFinish, wrongCount,
   } = useSpotDiffStore();
 
   const [playerName, setPlayerNameState] = useState('');
@@ -151,9 +161,8 @@ export default function GameSetup() {
     setPlayerName(name);
     setDifficulty(difficulty);
     setTotalRounds(totalRounds);
-    // Persist settings via setState (state has them already from selectors)
+    // Persist settings via setState (Difficulty selector owns the time)
     useSpotDiffStore.setState({
-      timerValueSec,
       fastestFinish,
       wrongCount,
     });
@@ -416,7 +425,7 @@ export default function GameSetup() {
         )}
       </motion.div>
 
-      {/* ══════════ Settings grid (نوع الصور + عدد الأخطائ + الوقت + الأسرع) ══════════ */}
+      {/* ══════════ Settings grid (نوع الصور + عدد الأخطائ + الأسرع (الوقت عبر Difficulty)) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -429,7 +438,7 @@ export default function GameSetup() {
           borderRadius: '12px',
         }}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
           <div>
             <SectionLabel>نوع الصور</SectionLabel>
             <TobolSelect
@@ -446,15 +455,6 @@ export default function GameSetup() {
               onChange={(v) => useSpotDiffStore.setState({ wrongCount: parseInt(v) })}
               options={[1,2,3,4,5,6,7,8,9,10].map(n => ({ value: n, label: String(n) }))}
               ariaLabel="عدد الأخطائ"
-            />
-          </div>
-          <div>
-            <SectionLabel>الوقت</SectionLabel>
-            <TobolSelect
-              value={timerValueSec}
-              onChange={(v) => useSpotDiffStore.setState({ timerValueSec: parseInt(v) })}
-              options={TIMER_OPTIONS}
-              ariaLabel="الوقت"
             />
           </div>
           <div>
