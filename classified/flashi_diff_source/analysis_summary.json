@@ -1,0 +1,40 @@
+{
+  "page_title": "لعبة اختلاف الصور",
+  "page_url": "https://www.flashi.me/f10/diff",
+  "published_time": "",
+  "html_total_length": 2298291,
+  "external_scripts": [
+    "https://www.googletagmanager.com/gtag/js?id=G-XV87Q160MQ&amp;cx=c&amp;gtm=4e6ae1",
+    "https://www.googletagmanager.com/gtag/js?id=UA-162133640-1",
+    "https://gstatic.com/firebasejs/8.6.5/firebase-app.js",
+    "https://gstatic.com/firebasejs/8.6.5/firebase-analytics.js",
+    "https://gstatic.com/firebasejs/8.6.5/firebase-firestore.js",
+    "https://gstatic.com/firebasejs/8.6.5/firebase-auth.js",
+    "../flashi-js/diff.js",
+    "https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092"
+  ],
+  "inline_scripts_count": 3,
+  "inline_scripts_lengths": [
+    154,
+    2284243,
+    921
+  ],
+  "link_hrefs": [
+    "../img/home/favicon1.png"
+  ],
+  "image_srcs": [
+    "../img/diff/rights/f10.png"
+  ],
+  "iframe_srcs": [],
+  "anchor_hrefs": [
+    "games"
+  ],
+  "css_url_references": [
+    "../fonts/29ltbukrabold.otf",
+    "../fonts/AlHurraFontBold.ttf",
+    "../img/diff/background.png"
+  ],
+  "meta_tags": [
+    "<meta charset=\"utf-8\" name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">"
+  ]
+}
