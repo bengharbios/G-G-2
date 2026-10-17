@@ -54,6 +54,7 @@ export default function GameBoard() {
     playMode, placingTeam, currentTeam, hideHands,
     message, sunkShipName, winner,
     toggleHideHands, hideMessage, switchTurn,
+    playerShipsSunk, aiShipsSunk,
   } = useShipsStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -318,6 +319,17 @@ export default function GameBoard() {
             {shipTypes.map((s, i) => {
               const modelNum = i + 1;
               const placed = i < currentShipIndex;
+              // flashi prepareLegend pattern: sunk ships → greyed legend
+              const isSunk = phase === 'attacking' && (
+                (playMode === 'ai' && aiShipsSunk[i]) ||
+                (playMode === 'teams' && currentTeam === 'team1' && aiShipsSunk[i]) ||
+                (playMode === 'teams' && currentTeam === 'team2' && playerShipsSunk[i])
+              );
+              const isOpponentSunk = phase === 'attacking' && (
+                (playMode === 'ai' && aiShipsSunk[i]) ||
+                (playMode === 'teams' && currentTeam === 'team1' && aiShipsSunk[i]) ||
+                (playMode === 'teams' && currentTeam === 'team2' && playerShipsSunk[i])
+              );
               return (
                 <img
                   key={s.id}
@@ -325,8 +337,9 @@ export default function GameBoard() {
                   alt={s.name}
                   style={{
                     width: '24px', height: '20px', objectFit: 'contain',
-                    opacity: placed ? 0.3 : 1,
-                    filter: placed ? 'grayscale(1)' : 'none',
+                    opacity: placed || isOpponentSunk ? 0.3 : 1,
+                    filter: placed || isOpponentSunk ? 'grayscale(1)' : 'none',
+                    transition: 'opacity 0.3s ease, filter 0.3s ease',
                   }}
                 />
               );
@@ -415,13 +428,13 @@ export default function GameBoard() {
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <div style={{ flex: '1 1 200px', maxWidth: '220px' }}>
               <p style={{ fontSize: '11px', color: '#86efac', textAlign: 'center', marginBottom: '4px', fontWeight: 700 }}>
-                أسطولك
+                {playMode === 'teams' ? (currentTeam === 'team1' ? 'أسطول الفريق الأول' : 'أسطول الفريق الثاني') : 'أسطولك'}
               </p>
               {renderGrid(playerGrid, true)}
             </div>
             <div style={{ flex: '1 1 200px', maxWidth: '220px' }}>
               <p style={{ fontSize: '11px', color: '#fbbf24', textAlign: 'center', marginBottom: '4px', fontWeight: 700 }}>
-                خصمك — اضغط للهجوم
+                {playMode === 'teams' ? (currentTeam === 'team1' ? 'أسطول الفريق الثاني — اضغط للهجوم' : 'أسطول الفريق الأول — اضغط للهجوم') : 'خصمك — اضغط للهجوم'}
               </p>
               {renderGrid(aiGrid, false)}
             </div>
@@ -566,6 +579,39 @@ export default function GameBoard() {
             >
               {winner === 'team1' ? '🏆 الفريق الأول فاز!' : '🏆 الفريق الثاني فاز!'}
             </motion.p>
+            {/* flashi goFireworks pattern: confetti particles */}
+            {message === 'win' && (
+              <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 140, overflow: 'hidden' }}>
+                {Array.from({ length: 40 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{
+                      x: `${Math.random() * 100}vw`,
+                      y: '-10px',
+                      opacity: 1,
+                      scale: Math.random() * 0.5 + 0.5,
+                    }}
+                    animate={{
+                      y: '110vh',
+                      opacity: 0,
+                      rotate: Math.random() * 1080,
+                    }}
+                    transition={{
+                      duration: Math.random() * 2 + 2,
+                      delay: Math.random() * 1.5,
+                      ease: 'easeIn',
+                    }}
+                    style={{
+                      position: 'absolute',
+                      width: Math.random() * 10 + 4,
+                      height: Math.random() * 10 + 4,
+                      background: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#feef91'][i % 7],
+                      borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

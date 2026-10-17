@@ -52,6 +52,10 @@ export interface ShipsState {
   aiHits: number;
   aiMisses: number;
 
+  // Ship sunk tracking (flashi pattern: model1Sunk, model2Sunk, ...)
+  playerShipsSunk: boolean[];  // [false, false, false, false, false] — which of player's ships are sunk
+  aiShipsSunk: boolean[];     // [false, false, false, false, false] — which of AI's ships are sunk
+
   // Two-team + message support
   playMode: 'ai' | 'teams' | 'watch';
   placingTeam: 'team1' | 'team2' | null;
@@ -218,6 +222,11 @@ const initialState = {
   message: null as 'explosion' | 'win' | 'sunk' | null,
   sunkShipName: null as string | null,
   winner: null as 'team1' | 'team2' | null,
+  aiLastHit: null as { row: number; col: number } | null,
+  aiHuntMode: false,
+  // AI hunt mode (flashi pattern: after hit, attack adjacent)
+  aiLastHit: { row: number; col: number } | null,
+  aiHuntMode: boolean,
   playerScore: 0,
   aiScore: 0,
   playerHits: 0,
@@ -563,17 +572,39 @@ export const useShipsStore = create<ShipsState>()(
         if (!state.currentRoundData) return;
         const cfg = DIFFICULTY_CONFIG[state.difficulty];
 
-        // AI picks a random unattacked cell on player's grid
-        const availableCells: Array<{ row: number; col: number }> = [];
-        for (let r = 0; r < GRID_SIZE; r++) {
-          for (let c = 0; c < GRID_SIZE; c++) {
-            if (state.playerGrid[r][c].state === 'empty' || state.playerGrid[r][c].state === 'ship') {
-              availableCells.push({ row: r, col: c });
+        // AI attack logic (flashi pattern: random + hunt mode after hit)
+        let target: { row: number; col: number } | null = null;
+
+        // Hunt mode: if last hit was successful, try adjacent cells
+        if (state.aiHuntMode && state.aiLastHit) {
+          const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+          for (const [dr, dc] of directions) {
+            const nr = state.aiLastHit.row + dr;
+            const nc = state.aiLastHit.col + dc;
+            if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+              const cell = state.playerGrid[nr][nc];
+              if (cell.state === 'empty' || cell.state === 'ship') {
+                target = { row: nr, col: nc };
+                break;
+              }
             }
           }
         }
-        if (availableCells.length === 0) return;
-        const target = availableCells[Math.floor(Math.random() * availableCells.length)];
+
+        // If no hunt target, pick random (flashi original pattern)
+        if (!target) {
+          const availableCells: Array<{ row: number; col: number }> = [];
+          for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+              const cell = state.playerGrid[r][c];
+              if (cell.state === 'empty' || cell.state === 'ship') {
+                availableCells.push({ row: r, col: c });
+              }
+            }
+          }
+          if (availableCells.length === 0) return;
+          target = availableCells[Math.floor(Math.random() * availableCells.length)];
+        }
 
         const cell = state.playerGrid[target.row][target.col];
         const isHit = cell.state === 'ship';
@@ -589,11 +620,15 @@ export const useShipsStore = create<ShipsState>()(
           ? state.aiScore + cfg.scorePerHit
           : Math.max(0, state.aiScore - cfg.penaltyPerMiss);
 
+        // AI hunt mode: if hit, set hunt mode + remember position (flashi pattern)
+        // If miss, clear hunt mode
         set({
           playerGrid: newPlayerGrid,
           aiHits: newAiHits,
           aiMisses: newAiMisses,
           aiScore: newAiScore,
+          aiHuntMode: isHit,
+          aiLastHit: isHit ? { row: target.row, col: target.col } : null,
           currentTurn: 'player',
           gameLog: [
             ...state.gameLog,
@@ -620,26 +655,30 @@ export const useShipsStore = create<ShipsState>()(
       checkWin: () => {
         const state = get();
         if (!state.currentRoundData) return null;
+        // flashi pattern: check each model array — if all cells hit → sunk
         // Check if all AI ships are sunk (player wins)
-        const aiShipsSunk = state.currentRoundData.aiShips.every(s => {
-          // Recalculate sunk from grid
+        const aiAllSunk = state.currentRoundData.aiShips.every(s => {
           return s.cells.every(c => state.aiGrid[c.row][c.col].state === 'hit');
         });
-        if (aiShipsSunk) return 'player';
-
+        if (aiAllSunk) return 'player';
         // Check if all player ships are sunk (AI wins)
-        // Count player ship cells that are 'hit'
-        let playerShipCells = 0;
-        let playerHitCells = 0;
-        for (let r = 0; r < GRID_SIZE; r++) {
-          for (let c = 0; c < GRID_SIZE; c++) {
-            if (state.playerGrid[r][c].state === 'ship' || state.playerGrid[r][c].state === 'hit') {
-              playerShipCells++;
-              if (state.playerGrid[r][c].state === 'hit') playerHitCells++;
+        const playerShips = state.currentRoundData.playerShips || [];
+        if (playerShips.length > 0) {
+          const playerAllSunk = playerShips.every(s => {
+            return s.cells.every(c => state.playerGrid[c.row][c.col].state === 'hit');
+          });
+          if (playerAllSunk) return 'ai';
+        } else {
+          // Fallback: count ship cells
+          let shipCells = 0, hitCells = 0;
+          for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+              const st = state.playerGrid[r][c].state;
+              if (st === 'ship' || st === 'hit') { shipCells++; if (st === 'hit') hitCells++; }
             }
           }
+          if (shipCells > 0 && hitCells >= shipCells) return 'ai';
         }
-        if (playerShipCells > 0 && playerHitCells >= playerShipCells) return 'ai';
         return null;
       },
 
@@ -664,7 +703,7 @@ export const useShipsStore = create<ShipsState>()(
     }),
     {
       name: 'ships-game-storage',
-      version: 4,
+      version: 5,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,
