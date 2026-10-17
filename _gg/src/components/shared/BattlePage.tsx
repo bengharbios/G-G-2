@@ -34,6 +34,7 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   familyfeud:  { select: '/battle/game_select_family_icon_select.webp',      unselect: '/battle/game_select_family_icon_unselect.webp',      label: 'فاميلي' },
   shifarat:    { select: '/battle/game_select_cipher_icon_select.webp',      unselect: '/battle/game_select_cipher_icon_unselect.webp',      label: 'الشيفرات' },
   spotdiff:    { select: '/battle/game_select_spotdiff_icon_select.webp',    unselect: '/battle/game_select_spotdiff_icon_unselect.webp',    label: 'اختلاف الصور' },
+  guessimage:  { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'خمن الصورة' },
 };
 
 // ألعاب "الأكثر لعباً" (شارة HOT)

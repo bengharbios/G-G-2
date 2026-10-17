@@ -1288,6 +1288,11 @@ export async function ensureAdminTables(): Promise<void> {
         { key: 'spotdiff_select_icon_129x108', value: '/battle/game_select_spotdiff_icon_select_129x108.webp', type: 'image', desc: 'زر اختلاف الصور 129x108 (نشط)' },
         { key: 'spotdiff_unselect_icon_129x108', value: '/battle/game_select_spotdiff_icon_unselect_129x108.webp', type: 'image', desc: 'زر اختلاف الصور 129x108 (عادي)' },
         { key: 'spotdiff_bg', value: '/img/games/spotdiff/bg.jpg', type: 'image', desc: 'صورة لعبة اختلاف الصور' },
+        { key: 'guessimage_select_icon', value: '/battle/game_select_guessimage_icon_select.webp', type: 'image', desc: 'زر خمن الصورة (نشط)' },
+        { key: 'guessimage_unselect_icon', value: '/battle/game_select_guessimage_icon_unselect.webp', type: 'image', desc: 'زر خمن الصورة (عادي)' },
+        { key: 'guessimage_select_icon_129x108', value: '/battle/game_select_guessimage_icon_select_129x108.webp', type: 'image', desc: 'زر خمن الصورة 129x108 (نشط)' },
+        { key: 'guessimage_unselect_icon_129x108', value: '/battle/game_select_guessimage_icon_unselect_129x108.webp', type: 'image', desc: 'زر خمن الصورة 129x108 (عادي)' },
+        { key: 'guessimage_bg', value: '/img/games/guessimage/bg.png', type: 'image', desc: 'صورة لعبة خمن الصورة' },
       ];
       for (const cfg of yallaConfigs) {
         await c.execute({
@@ -1311,6 +1316,7 @@ export async function ensureAdminTables(): Promise<void> {
         { game: 'ggames', key: 'wizardduel', label: 'مبارزة السحرة',     img: '/yalla-games/wizardduel.png', stroke: '#4A2E75', w: 167, h: 134, order: 9 },
         { game: 'ggames', key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', w: 167, h: 134, order: 10 },
         { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 11 },
+        { game: 'ggames', key: 'guessimage', label: 'خمن الصورة',        img: '/yalla-games/guessimage.png', stroke: '#7C3AED', w: 167, h: 134, order: 12 },
         { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 10 },
       ];
       for (const btn of yallaButtons) {
