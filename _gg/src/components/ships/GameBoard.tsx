@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useShipsStore } from '@/lib/ships-store';
 import {
   GRID_SIZE, SHIP_TYPES_THEME_1, SHIP_TYPES_THEME_2,
-  DIFFICULTY_CONFIG, type GridCell,
+  DIFFICULTY_CONFIG, type GridCell, type CellState,
 } from '@/lib/ships-types';
 import {
   isMusicEnabled, setMusicEnabled,
-  isSoundEnabled, setSoundEnabled,
   playClickSound, playCorrectSound, playWrongSound,
 } from '@/lib/sounds';
 
@@ -19,78 +18,30 @@ const STROKE_STYLE: React.CSSProperties = {
   WebkitTextStroke: '1px #aa6e1f',
 };
 
-function HeaderChatButton() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ id: number; sender: string; text: string }>>([]);
-  const [input, setInput] = useState('');
-  const msgEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 200);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen && msgEndRef.current) {
-      msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, isOpen]);
-
-  const handleSend = () => {
-    const text = input.trim();
-    if (!text) return;
-    setMessages(prev => [...prev, { id: Date.now(), sender: 'لاعب', text }]);
-    setInput('');
-  };
-
-  return (
-    <>
-      <button
-        type="button"
-        className={`tobol-header-btn ${isOpen ? 'active' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="دردشة"
-        style={{ position: 'relative' }}
-      >
-        <img src="/battle/icon_chat.webp" alt="chat" style={{ width: '26px', height: '26px' }} />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="tobol-chat-panel-overlay"
-          >
-            <motion.div
-              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-              transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-              onClick={(e) => e.stopPropagation()}
-              className="tobol-chat-panel"
-            >
-              <div className="tobol-chat-panel-header">
-                <span className="tobol-chat-panel-title">دردشة الطاولة</span>
-                <button onClick={() => setIsOpen(false)} className="tobol-chat-panel-close" aria-label="إغلاق">×</button>
-              </div>
-              <div className="tobol-chat-panel-body">
-                {messages.length === 0 ? <p className="tobol-chat-empty">لا رسائل بعد</p> :
-                  messages.map(m => <div key={m.id} className="tobol-chat-msg me"><span className="msg-bubble">{m.text}</span></div>)}
-                <div ref={msgEndRef} />
-              </div>
-              <div className="tobol-chat-panel-input-row">
-                <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-                  placeholder="أرسل رسالة..." maxLength={200} dir="rtl" />
-                <button onClick={handleSend} disabled={!input.trim()}>إرسال</button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
+// Build URL for a ship model segment image
+function shipModelUrl(themeId: number, modelNum: number, orientation: 'horizontal' | 'vertical', segment: number): string {
+  return `/img/ship/themes/theme${themeId}/model${modelNum}/${orientation}/${segment}.png`;
 }
+
+// Build URL for hit/miss markers
+function hitUrl(themeId: number) { return `/img/ship/themes/theme${themeId}/hit.png`; }
+function hitBlackUrl(themeId: number) { return `/img/ship/themes/theme${themeId}/hit_black.png`; }
+function missUrl(themeId: number) { return `/img/ship/themes/theme${themeId}/miss.png`; }
+
+// Build URL for legend image
+function legendEmptyUrl(themeId: number, length: number) { return `/img/ship/themes/theme${themeId}/legend/empty/${length}.png`; }
+
+// Map shipTypeId to model number (1-5)
+function shipTypeToModelNum(shipTypeId: string): number {
+  const map: Record<string, number> = {
+    carrier: 1, submarine: 2, destroyer: 3, battleship: 4, patrol: 5,
+    fighter: 1, helicopter: 2, tank: 3, camp: 4, armored: 5,
+  };
+  return map[shipTypeId] || 1;
+}
+
+// Letters for row headers (A-J)
+const ROW_LETTERS = ['A','B','C','D','E','F','G','H','I','J'];
 
 export default function GameBoard() {
   const router = useRouter();
@@ -107,11 +58,7 @@ export default function GameBoard() {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [hoverCell, setHoverCell] = useState<{ row: number; col: number } | null>(null);
 
-  useEffect(() => {
-    setMusicOn(isMusicEnabled());
-    setSoundOn(isSoundEnabled());
-  }, []);
-
+  useEffect(() => { setMusicOn(isMusicEnabled()); }, []);
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.body.classList.add('in-game-setup');
@@ -119,26 +66,18 @@ export default function GameBoard() {
     }
   }, []);
 
-  const toggleMusic = () => {
-    const next = !musicOn;
-    setMusicOn(next);
-    setMusicEnabled(next);
-  };
-
-  const handleQuit = () => {
-    resetGame();
-    router.push('/ships');
-  };
+  const toggleMusic = () => { const n = !musicOn; setMusicOn(n); setMusicEnabled(n); };
+  const handleQuit = () => { resetGame(); router.push('/ships'); };
 
   const shipTypes = themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
   const currentShip = currentShipIndex < shipsToPlace.length ? shipsToPlace[currentShipIndex] : null;
+  const currentModelNum = currentShip ? shipTypeToModelNum(currentShip.id) : 1;
 
   // Preview cells for ship placement
   const previewCells = useMemo(() => {
     if (!hoverCell || !currentShip || phase !== 'placing') return new Set<string>();
     const cells = new Set<string>();
-    const len = currentShip.length;
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < currentShip.length; i++) {
       if (currentOrientation === 'horizontal') {
         if (hoverCell.col + i < GRID_SIZE) cells.add(`${hoverCell.row}-${hoverCell.col + i}`);
       } else {
@@ -150,86 +89,154 @@ export default function GameBoard() {
 
   const canPlace = hoverCell ? canPlaceShip(hoverCell.row, hoverCell.col) : false;
 
+  // Render a single grid with coordinate headers
   const renderGrid = (grid: GridCell[][], isPlayer: boolean) => {
+    // Build a map of shipId → placed ship cells (for rendering real ship images)
+    const shipCellMap = new Map<string, { shipId: string; segment: number; orientation: 'horizontal' | 'vertical' }>();
+    if (isPlayer) {
+      // Scan grid for ship cells and build segment info
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          const cell = grid[r][c];
+          if (cell.state === 'ship' || cell.state === 'hit') {
+            // Find which ship this cell belongs to + segment number
+            // For now, use simple heuristic: find contiguous ship cells
+            if (cell.shipId) {
+              // Count segments by scanning left-to-right (horizontal) or top-to-bottom (vertical)
+              let segment = 1;
+              // Check if horizontal (cell to the left has same shipId)
+              if (c > 0 && grid[r][c-1].shipId === cell.shipId) {
+                segment = 2;
+                if (c > 1 && grid[r][c-2].shipId === cell.shipId) segment = 3;
+                if (c > 2 && grid[r][c-3].shipId === cell.shipId) segment = 4;
+                if (c > 3 && grid[r][c-4].shipId === cell.shipId) segment = 5;
+                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment, orientation: 'horizontal' });
+              } else if (r > 0 && grid[r-1][c].shipId === cell.shipId) {
+                segment = 2;
+                if (r > 1 && grid[r-2][c].shipId === cell.shipId) segment = 3;
+                if (r > 2 && grid[r-3][c].shipId === cell.shipId) segment = 4;
+                if (r > 3 && grid[r-4][c].shipId === cell.shipId) segment = 5;
+                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment, orientation: 'vertical' });
+              } else {
+                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment: 1, orientation: 'horizontal' });
+              }
+            }
+          }
+        }
+      }
+    }
+
     return (
       <div style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
-        gap: '1px',
+        gridTemplateColumns: `auto repeat(${GRID_SIZE}, 1fr)`,
+        gap: '0',
         width: '100%',
-        aspectRatio: '1 / 1',
+        aspectRatio: '1.1 / 1',
         background: `url(/img/ship/themes/theme${themeId}/board_background.png) center / cover`,
         borderRadius: '8px',
-        padding: '4px',
+        padding: '2px',
         overflow: 'hidden',
         border: '2px solid rgba(254,239,145,.2)',
       }}>
-        {grid.map((row, r) => row.map((cell, c) => {
-          const key = `${r}-${c}`;
-          const isPreview = !isPlayer && false || (isPlayer && previewCells.has(key));
-          let bg = 'rgba(0,0,0,.15)';
-          let cursor = 'default';
-          let onClick = () => {};
-          let content = '';
+        {/* Top-left corner (empty) */}
+        <div style={{ width: '18px', background: 'rgba(0,0,0,.3)' }} />
+        {/* Top row: numbers 1-10 */}
+        {Array.from({ length: GRID_SIZE }, (_, i) => (
+          <div key={`col-${i}`} style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '8px', fontWeight: 900, color: '#feef91',
+            background: 'rgba(0,0,0,.3)', minHeight: '18px',
+          }}>{i + 1}</div>
+        ))}
+        {/* Grid rows */}
+        {grid.map((row, r) => (
+          <div key={`row-${r}`} style={{ display: 'contents' }}>
+            {/* Row header: letter A-J */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '8px', fontWeight: 900, color: '#feef91',
+              background: 'rgba(0,0,0,.3)', width: '18px',
+            }}>{ROW_LETTERS[r]}</div>
+            {/* Cells */}
+            {row.map((cell, c) => {
+              const key = `${r}-${c}`;
+              const isPreview = isPlayer && previewCells.has(key);
+              const shipInfo = shipCellMap.get(key);
+              let bg = 'rgba(0,0,0,.15)';
+              let cursor = 'default';
+              let onClick = () => {};
+              let imgSrc = '';
+              let imgStyle: React.CSSProperties = {};
 
-          if (isPlayer) {
-            if (cell.state === 'ship') { bg = 'rgba(99,102,241,.5)'; content = '⬛'; }
-            else if (cell.state === 'hit') { bg = 'rgba(239,68,68,.8)'; content = '💥'; }
-            else if (cell.state === 'miss') { bg = 'rgba(255,255,255,.15)'; content = '•'; }
+              if (isPlayer) {
+                if (cell.state === 'ship' && shipInfo) {
+                  // Show real ship image segment
+                  const modelNum = shipTypeToModelNum(shipInfo.shipId);
+                  imgSrc = shipModelUrl(themeId, modelNum, shipInfo.orientation, shipInfo.segment);
+                  imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
+                } else if (cell.state === 'hit') {
+                  imgSrc = hitUrl(themeId);
+                  imgStyle = { width: '80%', height: '80%', objectFit: 'contain' };
+                } else if (cell.state === 'miss') {
+                  imgSrc = missUrl(themeId);
+                  imgStyle = { width: '60%', height: '60%', objectFit: 'contain' };
+                }
 
-            if (phase === 'placing' && currentShip) {
-              cursor = canPlace && isPreview ? 'pointer' : (canPlaceShip(r, c) ? 'pointer' : 'not-allowed');
-              onClick = () => placeShip(r, c);
-              if (isPreview && canPlace) bg = 'rgba(34,197,94,.4)';
-              else if (isPreview && !canPlace) bg = 'rgba(239,68,68,.3)';
-            }
-          } else {
-            // AI grid
-            if (cell.state === 'hit') { bg = 'rgba(239,68,68,.8)'; content = '💥'; }
-            else if (cell.state === 'miss') { bg = 'rgba(255,255,255,.15)'; content = '•'; }
-            else { bg = 'rgba(0,30,60,.3)'; }
+                if (phase === 'placing' && currentShip) {
+                  cursor = canPlaceShip(r, c) ? 'pointer' : 'not-allowed';
+                  onClick = () => { if (soundOn) playClickSound(); placeShip(r, c); };
+                  if (isPreview && canPlace) bg = 'rgba(34,197,94,.3)';
+                  else if (isPreview && !canPlace) bg = 'rgba(239,68,68,.2)';
+                }
+              } else {
+                // AI grid
+                if (cell.state === 'hit') {
+                  imgSrc = hitBlackUrl(themeId);
+                  imgStyle = { width: '80%', height: '80%', objectFit: 'contain' };
+                } else if (cell.state === 'miss') {
+                  imgSrc = missUrl(themeId);
+                  imgStyle = { width: '60%', height: '60%', objectFit: 'contain' };
+                } else { bg = 'rgba(0,30,60,.2)'; }
 
-            if (phase === 'attacking' && currentTurn === 'player' && cell.state !== 'hit' && cell.state !== 'miss') {
-              cursor = 'crosshair';
-              onClick = () => {
-                if (soundOn) playClickSound();
-                attackCell(r, c);
-                // Play sound after AI responds
-                setTimeout(() => {
-                  const lastLog = useShipsStore.getState().gameLog[useShipsStore.getState().gameLog.length - 1];
-                  if (lastLog?.message.includes('إصابة')) {
-                    if (soundOn) playCorrectSound();
-                  } else if (lastLog?.message.includes('خطأ')) {
-                    if (soundOn) playWrongSound();
-                  }
-                }, 1100);
-              };
-            }
-          }
+                if (phase === 'attacking' && currentTurn === 'player' && cell.state !== 'hit' && cell.state !== 'miss') {
+                  cursor = 'crosshair';
+                  onClick = () => {
+                    if (soundOn) playClickSound();
+                    attackCell(r, c);
+                    setTimeout(() => {
+                      const lastLog = useShipsStore.getState().gameLog[useShipsStore.getState().gameLog.length - 1];
+                      if (lastLog?.message.includes('إصابة')) { if (soundOn) playCorrectSound(); }
+                      else if (lastLog?.message.includes('خطأ')) { if (soundOn) playWrongSound(); }
+                    }, 1100);
+                  };
+                }
+              }
 
-          return (
-            <div
-              key={key}
-              onClick={onClick}
-              onMouseEnter={() => { if (isPlayer && phase === 'placing') setHoverCell({ row: r, col: c }); }}
-              onMouseLeave={() => { if (isPlayer && phase === 'placing') setHoverCell(null); }}
-              style={{
-                background: bg,
-                cursor,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '8px',
-                color: '#fff',
-                transition: 'background 0.15s ease',
-                borderRadius: '1px',
-                userSelect: 'none',
-              }}
-            >
-              {content}
-            </div>
-          );
-        }))}
+              return (
+                <div
+                  key={key}
+                  onClick={onClick}
+                  onMouseEnter={() => { if (isPlayer && phase === 'placing') setHoverCell({ row: r, col: c }); }}
+                  onMouseLeave={() => { if (isPlayer && phase === 'placing') setHoverCell(null); }}
+                  style={{
+                    background: bg,
+                    cursor,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    transition: 'background 0.15s ease',
+                    border: '0.5px solid rgba(255,255,255,.03)',
+                    userSelect: 'none',
+                  }}
+                >
+                  {imgSrc && <img src={imgSrc} alt="" draggable={false} style={imgStyle} />}
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
     );
   };
@@ -261,7 +268,6 @@ export default function GameBoard() {
         >
           <img src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'} alt="sound" style={{ width: '26px', height: '26px' }} />
         </button>
-        <HeaderChatButton />
         <button
           type="button"
           className="tobol-header-btn"
@@ -294,38 +300,73 @@ export default function GameBoard() {
         </div>
       </motion.div>
 
-      {/* Placement phase: current ship info + orientation toggle */}
+      {/* Placement phase: ship info + orientation + legend */}
       {phase === 'placing' && currentShip && (
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="tobol-team-card"
-          style={{ width: '100%', maxWidth: '460px', padding: '10px 14px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}
-        >
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ ...STROKE_STYLE, fontSize: '14px', fontWeight: 800 }}>
-              🚢 {currentShip.name}
-            </div>
-            <div style={{ fontSize: '10px', color: '#9fc4b4', fontWeight: 600 }}>
-              الطول: {currentShip.length} خلايا • المتبقي: {shipsToPlace.length - currentShipIndex} سفن
-            </div>
-          </div>
-          <button
-            onClick={() => { if (soundOn) playClickSound(); toggleOrientation(); }}
-            style={{
-              background: 'rgba(99,102,241,.5)',
-              border: '1px solid rgba(255,255,255,.2)',
-              borderRadius: '8px', padding: '8px 14px',
-              color: '#fff', fontSize: '12px', fontWeight: 800,
-              cursor: 'pointer', flexShrink: 0,
-            }}
+        <>
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="tobol-team-card"
+            style={{ width: '100%', maxWidth: '460px', padding: '10px 14px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
-            ↻ {currentOrientation === 'horizontal' ? 'أفقي' : 'عمودي'}
-          </button>
-        </motion.div>
+            {/* Ship preview image */}
+            <img
+              src={shipModelUrl(themeId, currentModelNum, currentOrientation, 1)}
+              alt={currentShip.name}
+              style={{ width: '30px', height: '30px', objectFit: 'contain', flexShrink: 0 }}
+            />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ ...STROKE_STYLE, fontSize: '14px', fontWeight: 800 }}>
+                🚢 {currentShip.name}
+              </div>
+              <div style={{ fontSize: '10px', color: '#9fc4b4', fontWeight: 600 }}>
+                الطول: {currentShip.length} خلايا • المتبقي: {shipsToPlace.length - currentShipIndex} سفن
+              </div>
+            </div>
+            <button
+              onClick={() => { if (soundOn) playClickSound(); toggleOrientation(); }}
+              style={{
+                background: 'rgba(99,102,241,.5)',
+                border: '1px solid rgba(255,255,255,.2)',
+                borderRadius: '8px', padding: '8px 14px',
+                color: '#fff', fontSize: '12px', fontWeight: 800,
+                cursor: 'pointer', flexShrink: 0,
+              }}
+            >
+              ↻ {currentOrientation === 'horizontal' ? 'أفقي' : 'عمودي'}
+            </button>
+          </motion.div>
+
+          {/* Legend panel */}
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="tobol-team-card"
+            style={{ width: '100%', maxWidth: '460px', padding: '8px 12px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <span style={{ ...STROKE_STYLE, fontSize: '11px', fontWeight: 700 }}>الأسطول:</span>
+            {shipTypes.map((s, i) => {
+              const modelNum = i + 1;
+              const placed = i < currentShipIndex;
+              return (
+                <img
+                  key={s.id}
+                  src={legendEmptyUrl(themeId, s.length)}
+                  alt={s.name}
+                  style={{
+                    width: '24px', height: '20px', objectFit: 'contain',
+                    opacity: placed ? 0.3 : 1,
+                    filter: placed ? 'grayscale(1)' : 'none',
+                  }}
+                />
+              );
+            })}
+          </motion.div>
+        </>
       )}
 
-      {/* Attacking phase: stats + turn indicator */}
+      {/* Attacking phase: score + turn */}
       {(phase === 'attacking' || phase === 'game_over') && (
         <motion.div
           initial={{ opacity: 0, y: -6 }}
@@ -367,7 +408,7 @@ export default function GameBoard() {
         </motion.div>
       )}
 
-      {/* Game grids */}
+      {/* Grids */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -376,7 +417,6 @@ export default function GameBoard() {
         style={{ width: '100%', maxWidth: '460px', padding: '10px', borderRadius: '12px' }}
       >
         {phase === 'placing' ? (
-          // Placement: only player grid
           <div>
             <p style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
               شبكتك — اضغط لوضع السفينة
@@ -384,7 +424,6 @@ export default function GameBoard() {
             {renderGrid(playerGrid, true)}
           </div>
         ) : (
-          // Attacking: both grids side by side
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <div style={{ flex: '1 1 200px', maxWidth: '220px' }}>
               <p style={{ fontSize: '11px', color: '#86efac', textAlign: 'center', marginBottom: '4px', fontWeight: 700 }}>
