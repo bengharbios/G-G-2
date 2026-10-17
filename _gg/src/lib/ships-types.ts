@@ -4,7 +4,10 @@
 // opponent's grid. Hit/miss. First to sink all opponent ships wins.
 // ════════════════════════════════════════════════════════════════════════
 
-export type GamePhase = 'landing' | 'setup' | 'placing' | 'attacking' | 'game_over';
+export type GamePhase = 'landing' | 'setup' | 'placing' | 'attacking' | 'game_over' | 'pass_phone' | 'show_message';
+export type PlayMode = 'ai' | 'teams' | 'watch';
+export type Team = 'team1' | 'team2';
+export type MessageType = 'explosion' | 'win' | 'sunk' | null;
 export type GameMode = 'classic' | 'diwaniya';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';

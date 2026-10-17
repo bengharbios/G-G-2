@@ -52,9 +52,27 @@ export interface ShipsState {
   aiHits: number;
   aiMisses: number;
 
+  // Two-team + message support
+  playMode: 'ai' | 'teams' | 'watch';
+  placingTeam: 'team1' | 'team2' | null;
+  currentTeam: 'team1' | 'team2';
+  hideHands: boolean;
+  message: 'explosion' | 'win' | 'sunk' | null;
+  sunkShipName: string | null;
+  winner: 'team1' | 'team2' | null;
+
   gameLog: GameLogEntry[];
   lastAction: string | null;
   lastActionAt: number | null;
+
+  // Two-team + message actions
+  setPlayMode: (mode: 'ai' | 'teams' | 'watch') => void;
+  startPlacingTeam: (team: 'team1' | 'team2') => void;
+  confirmPlacement: () => void;  // team finished placing → next team or start attack
+  toggleHideHands: () => void;
+  showMessage: (type: 'explosion' | 'win' | 'sunk', shipName?: string) => void;
+  hideMessage: () => void;
+  switchTurn: () => void;  // switch between team1/team2 (or player/AI)
 
   // Actions
   setPhase: (phase: GamePhase) => void;
@@ -193,6 +211,13 @@ const initialState = {
   currentShipIndex: 0,
   currentOrientation: 'horizontal' as 'horizontal' | 'vertical',
   currentTurn: 'player' as 'player' | 'ai',
+  playMode: 'ai' as 'ai' | 'teams' | 'watch',
+  placingTeam: null as 'team1' | 'team2' | null,
+  currentTeam: 'team1' as 'team1' | 'team2',
+  hideHands: false,
+  message: null as 'explosion' | 'win' | 'sunk' | null,
+  sunkShipName: null as string | null,
+  winner: null as 'team1' | 'team2' | null,
   playerScore: 0,
   aiScore: 0,
   playerHits: 0,
@@ -218,27 +243,106 @@ export const useShipsStore = create<ShipsState>()(
       setPlayerName: (playerName) => set({ playerName }),
       setThemeId: (themeId) => set({ themeId }),
 
-      startGame: () => {
+      setPlayMode: (mode) => set({ playMode: mode }),
+
+      startPlacingTeam: (team) => {
         const state = get();
         const shipTypes = state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
+        // Reset the grid for this team
+        const emptyGrid = createEmptyGrid();
         set({
           phase: 'placing',
-          currentRound: 0,
-          playerGrid: createEmptyGrid(),
-          aiGrid: createEmptyGrid(),
+          placingTeam: team,
+          currentTeam: team,
+          playerGrid: team === 'team1' ? emptyGrid : state.playerGrid,
+          aiGrid: team === 'team2' ? emptyGrid : state.aiGrid,
           shipsToPlace: shipTypes,
           currentShipIndex: 0,
           currentOrientation: 'horizontal',
-          playerScore: 0,
-          aiScore: 0,
-          playerHits: 0,
-          playerMisses: 0,
-          aiHits: 0,
-          aiMisses: 0,
-          gameLog: [makeLog(0, `🎯 بدأت اللعبة — ضع سفنك على الشبكة`, 'system')],
-          lastAction: '🎯 ضع سفنك',
+          hideHands: false,
+          gameLog: [...state.gameLog, makeLog(0, `🚢 ${team === 'team1' ? 'الفريق الأول' : 'الفريق الثاني'} — ضع سفنك`, 'system')],
+          lastAction: `${team === 'team1' ? 'الفريق الأول' : 'الفريق الثاني'} ضع سفنك`,
           lastActionAt: Date.now(),
         });
+      },
+
+      confirmPlacement: () => {
+        const state = get();
+        if (state.placingTeam === 'team1') {
+          // Team 1 done → Team 2 places
+          set({
+            phase: 'pass_phone',
+            placingTeam: 'team2',
+            hideHands: true,
+            message: null,
+            gameLog: [...state.gameLog, makeLog(0, '📱 مرر الهاتف للفريق الثاني', 'system')],
+            lastAction: '📱 مرر الهاتف للفريق الثاني',
+          });
+        } else if (state.placingTeam === 'team2') {
+          // Both teams done → start attacking
+          get().startAttacking();
+        }
+      },
+
+      toggleHideHands: () => set({ hideHands: !get().hideHands }),
+
+      showMessage: (type, shipName) => set({
+        message: type,
+        sunkShipName: shipName || null,
+      }),
+
+      hideMessage: () => set({ message: null, sunkShipName: null }),
+
+      switchTurn: () => {
+        const state = get();
+        if (state.playMode === 'ai') {
+          // AI mode: toggle player/AI
+          set({ currentTurn: state.currentTurn === 'player' ? 'ai' : 'player' });
+        } else if (state.playMode === 'teams') {
+          // Teams mode: show pass phone overlay then switch
+          set({
+            phase: 'pass_phone',
+            hideHands: true,
+            currentTeam: state.currentTeam === 'team1' ? 'team2' : 'team1',
+            currentTurn: state.currentTurn === 'player' ? 'ai' : 'player',
+            message: null,
+          });
+        }
+      },
+
+      startGame: () => {
+        const state = get();
+        const shipTypes = state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
+        if (state.playMode === 'teams') {
+          // Two-team mode: team 1 places first
+          get().startPlacingTeam('team1');
+        } else {
+          // AI mode (عرّاب): single player places ships
+          set({
+            phase: 'placing',
+            currentRound: 0,
+            playerGrid: createEmptyGrid(),
+            aiGrid: createEmptyGrid(),
+            shipsToPlace: shipTypes,
+            currentShipIndex: 0,
+            currentOrientation: 'horizontal',
+            currentTeam: 'team1',
+            placingTeam: 'team1',
+            playerScore: 0,
+            aiScore: 0,
+            playerHits: 0,
+            playerMisses: 0,
+            aiHits: 0,
+            aiMisses: 0,
+            hideHands: false,
+            message: null,
+            sunkShipName: null,
+            winner: null,
+            gameLog: [makeLog(0, `🎯 بدأت اللعبة — ضع سفنك على الشبكة`, 'system')],
+            lastAction: '🎯 ضع سفنك',
+            lastActionAt: Date.now(),
+          });
+        }
       },
 
       toggleOrientation: () => {
@@ -305,13 +409,19 @@ export const useShipsStore = create<ShipsState>()(
         });
 
         if (allPlaced) {
-          get().startAttacking();
+          if (state.playMode === 'teams' && state.placingTeam === 'team1') {
+            get().confirmPlacement();
+          } else {
+            get().startAttacking();
+          }
         }
       },
 
       startAttacking: () => {
         const state = get();
         const shipTypes = state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
+        // In AI mode: AI places ships
+        // In teams mode: both teams already placed their ships
         // AI places its ships (with model + segment info on grid cells)
         const modelNumMap: Record<string, number> = {
           carrier: 1, submarine: 2, destroyer: 3, battleship: 4, patrol: 5,
@@ -405,19 +515,46 @@ export const useShipsStore = create<ShipsState>()(
           lastActionAt: Date.now(),
         });
 
+        // Check if a ship was sunk → show explosion message
+        let sunkShipName = '';
+        if (isHit && state.currentRoundData?.aiShips) {
+          const ship = state.currentRoundData.aiShips.find(s =>
+            s.cells.some(c => c.row === row && c.col === col)
+          );
+          if (ship) {
+            ship.hits++;
+            const allHit = ship.cells.every(c => newAiGrid[c.row][c.col].state === 'hit');
+            if (allHit && !ship.sunk) {
+              ship.sunk = true;
+              const shipType = (state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2).find(s => s.id === ship.shipTypeId);
+              sunkShipName = shipType?.name || '';
+              // Show explosion message
+              set({ message: 'explosion', sunkShipName });
+              setTimeout(() => set({ message: null, sunkShipName: null }), 2000);
+            }
+          }
+        }
+
         // Check win
         const winner = get().checkWin();
         if (winner) {
+          const winTeam = winner === 'player' ? 'team1' : 'team2';
           set({
             phase: 'game_over',
+            winner: winTeam,
+            message: 'win',
             gameLog: [...get().gameLog, makeLog(0, winner === 'player' ? `🏆 فزت!` : `💀 خسرت`, 'system')],
             lastAction: winner === 'player' ? '🏆 فزت!' : '💀 خسرت',
           });
           return;
         }
 
-        // AI's turn
-        setTimeout(() => get().aiAttack(), 1000);
+        // Switch turn: AI mode → AI attacks after 1s; Teams mode → pass phone
+        if (state.playMode === 'ai') {
+          setTimeout(() => get().aiAttack(), 1000);
+        } else if (state.playMode === 'teams') {
+          setTimeout(() => get().switchTurn(), 1500);
+        }
       },
 
       aiAttack: () => {
@@ -469,8 +606,11 @@ export const useShipsStore = create<ShipsState>()(
         // Check win
         const winner = get().checkWin();
         if (winner) {
+          const winTeam = winner === 'player' ? 'team1' : 'team2';
           set({
             phase: 'game_over',
+            winner: winTeam,
+            message: 'win',
             gameLog: [...get().gameLog, makeLog(0, winner === 'player' ? `🏆 فزت!` : `💀 خسرت`, 'system')],
             lastAction: winner === 'player' ? '🏆 فزت!' : '💀 خسرت',
           });
@@ -524,7 +664,7 @@ export const useShipsStore = create<ShipsState>()(
     }),
     {
       name: 'ships-game-storage',
-      version: 3,
+      version: 4,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,
