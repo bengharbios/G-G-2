@@ -296,11 +296,11 @@ export const games: GameData[] = [
   },
   {
     id: 'battleship',
-    title: 'سفن',
-    titleEn: 'Battleship',
-    emoji: '🚢',
+    title: 'مطابقة البطاقات',
+    titleEn: 'Memory Match',
+    emoji: '🃏',
     description:
-      'لعبة السفن الكلاسيكية! ضع أسطولك بذكاء ثم قصف سفن خصمك قبل أن يقصف سفنك. 5 أنواع من السفن، ثيمان (بحري/جوي)، أونلاين بين لاعبين.',
+      'لعبة مطابقة البطاقات الكلاسيكية! اقلب البطاقات واعثر على الأزواج المتطابقة قبل انتهاء الوقت. 4 أحجام شبكة (4×4، 5×5، 6×6، 7×7)، 6 ثيمات، 890 صورة متنوعة.',
     href: '/play/battleship',
     bgImage: '/yalla-games/battleship.png',
     iconSelect: '/img/games/battleship/icon_select.webp',
@@ -309,10 +309,10 @@ export const games: GameData[] = [
     themeBorder: 'border-purple-500/30 hover:border-purple-500/60',
     themeBg: 'from-purple-950/80 to-indigo-900/40',
     themeBadge: 'bg-purple-500/20 border-purple-500/40 text-purple-300',
-    features: ['العراب', 'الديوانية', '5 سفن', 'ثيمان', 'أونلاين'],
+    features: ['العراب', 'الديوانية', '4 أحجام', '6 ثيمات', '890 صورة'],
     status: 'available',
     players: '1-4 لاعبين',
-    category: 'إستراتيجية',
+    category: 'ذكاء',
     joinPath: '/join/battleship/{code}?name={name}',
   },
   {

@@ -1322,7 +1322,8 @@ export async function ensureAdminTables(): Promise<void> {
         { game: 'ggames', key: 'mustathib', label: 'المستئذب',          img: '/yalla-games/mustathib.png', stroke: '#7A1F4A', w: 167, h: 134, order: 10 },
         { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 11 },
         { game: 'ggames', key: 'guessimage', label: 'خمن الصورة',        img: '/yalla-games/guessimage.png', stroke: '#7C3AED', w: 167, h: 134, order: 12 },
-        { game: 'ggames', key: 'battleship', label: 'سفن',             img: '/yalla-games/battleship.png', stroke: '#581C87', w: 167, h: 134, order: 13 },
+        { game: 'ggames', key: 'battleship', label: 'مطابقة البطاقات',  img: '/yalla-games/battleship.png', stroke: '#581C87', w: 167, h: 134, order: 13 },
+        { game: 'ggames', key: 'ships',       label: 'سفن',             img: '/yalla-games/ships.png',      stroke: '#1E3A8A', w: 167, h: 134, order: 14 },
         { game: 'ggames', key: 'spotdiff',  label: 'اختلاف الصور',      img: '/yalla-games/spotdiff.png',  stroke: '#0E5A6B', w: 167, h: 134, order: 10 },
       ];
       for (const btn of yallaButtons) {
@@ -1492,7 +1493,7 @@ export async function ensureAdminTables(): Promise<void> {
           args: [crypto.randomUUID(), themeId],
         });
       }
-      // تحقق إذا battleship موجود لهذا القالب
+      // تحقق إذا battleship موجود لهذا القالب (note: battleship slug now means "مطابقة البطاقات")
       const shipCheck = await c.execute({
         sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'battleship'",
         args: [themeId],
@@ -1501,7 +1502,20 @@ export async function ensureAdminTables(): Promise<void> {
       if (!shipCnt || shipCnt === 0) {
         await c.execute({
           sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
-                VALUES (?, ?, 'ggames', 'battleship', 'سفن', '/yalla-games/battleship.png', '#581C87', 167, 134, '/battleship', 13, 'visible', 1, datetime('now'), datetime('now'))`,
+                VALUES (?, ?, 'ggames', 'battleship', 'مطابقة البطاقات', '/yalla-games/battleship.png', '#581C87', 167, 134, '/battleship', 13, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), themeId],
+        });
+      }
+      // تحقق إذا ships (سفن الجديدة) موجود لهذا القالب
+      const shipsCheck = await c.execute({
+        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'ships'",
+        args: [themeId],
+      });
+      const shipsCnt = (shipsCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!shipsCnt || shipsCnt === 0) {
+        await c.execute({
+          sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, 'ggames', 'ships', 'سفن', '/yalla-games/ships.png', '#1E3A8A', 167, 134, '/ships', 14, 'visible', 1, datetime('now'), datetime('now'))`,
           args: [crypto.randomUUID(), themeId],
         });
       }
@@ -1670,13 +1684,24 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   {
     gameSlug: 'battleship',
-    gameName: 'سفن',
+    gameName: 'مطابقة البطاقات',
     isEnabled: true,
     order: 12,
     playerRange: '1-4',
-    description: 'لعبة السفن الكلاسيكية! ضع أسطولك بذكاء ثم قصف سفن خصمك. 5 أنواع من السفن، ثيمان، أونلاين بين لاعبين.',
-    icon: '🚢',
+    description: 'لعبة مطابقة البطاقات الكلاسيكية! اقلب البطاقات واعثر على الأزواج المتطابقة. 4 أحجام، 6 ثيمات، 890 صورة.',
+    icon: '🃏',
     color: 'purple',
+    isComingSoon: false,
+  },
+  {
+    gameSlug: 'ships',
+    gameName: 'سفن',
+    isEnabled: true,
+    order: 13,
+    playerRange: '1-2',
+    description: 'لعبة السفن الكلاسيكية (Battleship)! ضع أسطولك بذكاء ثم قصف سفن خصمك. 5 أنواع من السفن، ثيمان (بحري/جوي).',
+    icon: '🚢',
+    color: 'indigo',
     isComingSoon: false,
   },
 ];

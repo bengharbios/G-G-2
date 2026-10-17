@@ -35,7 +35,8 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   shifarat:    { select: '/battle/game_select_cipher_icon_select.webp',      unselect: '/battle/game_select_cipher_icon_unselect.webp',      label: 'الشيفرات' },
   spotdiff:    { select: '/battle/game_select_spotdiff_icon_select.webp',    unselect: '/battle/game_select_spotdiff_icon_unselect.webp',    label: 'اختلاف الصور' },
   guessimage:  { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'خمن الصورة' },
-  battleship:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'سفن' },
+  battleship:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'مطابقة البطاقات' },
+  ships:        { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'سفن' },
 };
 
 // ألعاب "الأكثر لعباً" (شارة HOT)
