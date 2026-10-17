@@ -51,6 +51,9 @@ export default function GameBoard() {
     canPlaceShip, placeShip, attackCell, currentTurn,
     playerScore, aiScore, playerHits, playerMisses,
     aiHits, aiMisses, gameLog, lastAction, resetGame,
+    playMode, placingTeam, currentTeam, hideHands,
+    message, sunkShipName, winner,
+    toggleHideHands, hideMessage, switchTurn,
   } = useShipsStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -261,13 +264,13 @@ export default function GameBoard() {
             سفن
           </h1>
           <div style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 700, marginTop: '1px' }}>
-            {phase === 'placing' ? 'وضع السفن' : phase === 'attacking' ? 'المعركة' : 'انتهت'}
+            {phase === 'placing' ? `${placingTeam === 'team2' ? 'الفريق الثاني' : 'الفريق الأول'} — وضع السفن` : phase === 'attacking' ? 'المعركة' : phase === 'pass_phone' ? 'مرر الهاتف' : 'انتهت'}
           </div>
         </div>
       </motion.div>
 
       {/* Placement phase: ship info + orientation + legend */}
-      {phase === 'placing' && currentShip && (
+      {phase === 'placing' && currentShip && playMode !== 'watch' && (
         <>
           <motion.div
             initial={{ opacity: 0, y: -6 }}
@@ -374,6 +377,25 @@ export default function GameBoard() {
         </motion.div>
       )}
 
+
+      {/* All ships placed — confirm (teams mode) */}
+      {phase === 'placing' && !currentShip && playMode === 'teams' && (
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          onClick={() => useShipsStore.getState().confirmPlacement()}
+          style={{
+            width: '100%', maxWidth: '460px', padding: '14px 16px', border: 'none',
+            background: 'linear-gradient(135deg, #22c55e, #15803d)',
+            color: '#fff', fontSize: '17px', fontWeight: 900, cursor: 'pointer',
+            borderRadius: '12px', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', gap: '10px',
+            boxShadow: '0 4px 16px rgba(34,197,94,.35)',
+          }}
+        >
+          ✓ {placingTeam === 'team1' ? 'الفريق الأول جاهز — مرر الهاتف' : 'كلا الفريقين جاهزان — ابدأ المعركة!'}
+        </motion.button>
+      )}
       {/* Grids */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
@@ -437,6 +459,116 @@ export default function GameBoard() {
           </div>
         </div>
       )}
+
+      {/* Pass phone overlay (teams mode — between turns) */}
+      <AnimatePresence>
+        {(phase === 'pass_phone' || hideHands) && phase !== 'game_over' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0,
+              background: 'rgba(0,0,0,.9)',
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center',
+              zIndex: 200, color: '#fff', textAlign: 'center',
+            }}
+          >
+            <div style={{ fontSize: '60px', marginBottom: '20px' }}>📱</div>
+            <h2 style={{
+              color: '#feef91', fontSize: '24px', fontWeight: 900,
+              textShadow: '0 2px 6px rgba(0,0,0,.85)',
+              marginBottom: '12px',
+              paintOrder: 'stroke fill',
+              WebkitTextStroke: '1px #aa6e1f',
+            }}>
+              مرر الهاتف
+            </h2>
+            <p style={{ color: '#9fc4b4', fontSize: '14px', marginBottom: '20px' }}>
+              {currentTeam === 'team1' ? 'الفريق الأول' : 'الفريق الثاني'} — دورك للهجوم
+            </p>
+            <button
+              onClick={() => {
+                toggleHideHands();
+                if (phase === 'pass_phone') {
+                  useShipsStore.setState({ phase: 'attacking', hideHands: false });
+                }
+              }}
+              style={{
+                background: 'linear-gradient(135deg, #fbbf24, #aa6e1f)',
+                color: '#000', border: 'none', borderRadius: '12px',
+                padding: '14px 30px', fontSize: '16px', fontWeight: 900,
+                cursor: 'pointer',
+              }}
+            >
+              ✓ جاهز — ابدأ دورك
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Explosion message (ship sunk) */}
+      <AnimatePresence>
+        {message === 'explosion' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ type: 'spring', bounce: 0.4 }}
+            style={{
+              position: 'fixed', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              zIndex: 150, pointerEvents: 'none',
+            }}
+          >
+            <motion.img
+              src={`/img/ship/themes/theme${themeId}/explosion_message.png`}
+              alt="انفجار!"
+              initial={{ rotate: -5 }}
+              animate={{ rotate: 5 }}
+              transition={{ duration: 0.3, repeat: 3, repeatType: 'reverse' }}
+              style={{ maxWidth: '80vw', maxHeight: '40vh', objectFit: 'contain' }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Win message (game over) */}
+      <AnimatePresence>
+        {message === 'win' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.3 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', bounce: 0.5, duration: 0.6 }}
+            style={{
+              position: 'fixed', inset: 0,
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center',
+              zIndex: 150, pointerEvents: 'none',
+            }}
+          >
+            <motion.img
+              src={`/img/ship/themes/theme${themeId}/win_message.png`}
+              alt="فوز!"
+              style={{ maxWidth: '80vw', maxHeight: '40vh', objectFit: 'contain' }}
+            />
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              style={{
+                color: '#fbbf24', fontSize: '20px', fontWeight: 900,
+                marginTop: '16px', textShadow: '0 2px 6px rgba(0,0,0,.85)',
+                paintOrder: 'stroke fill',
+                WebkitTextStroke: '1px #aa6e1f',
+              }}
+            >
+              {winner === 'team1' ? '🏆 الفريق الأول فاز!' : '🏆 الفريق الثاني فاز!'}
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quit dialog */}
       <AnimatePresence>

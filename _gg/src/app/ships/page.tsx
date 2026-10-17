@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, Suspense } from 'react';
 import { useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -15,11 +15,15 @@ function useHydrated() {
   return useSyncExternalStore(() => () => {}, () => true, () => false);
 }
 
+import { Suspense } from 'react';
+
 export default function ShipsPage() {
   return (
     <SubscriptionGuard gameSlug="ships">
       <GameLayout gameSlug="ships" gameName="سفن" gameEmoji="🚢" accentColor="indigo">
-        <ShipsContent />
+        <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9fc4b4' }}>جاري التحميل...</div>}>
+          <ShipsContent />
+        </Suspense>
       </GameLayout>
     </SubscriptionGuard>
   );
@@ -44,11 +48,13 @@ function ShipsContent() {
 
   const handleStartLocal = useCallback(() => {
     setGameMode('classic');
+    useShipsStore.getState().setPlayMode('ai');
     setPhase('setup');
   }, [setPhase, setGameMode]);
 
   const handleStartDiwaniya = useCallback(() => {
     setGameMode('diwaniya');
+    useShipsStore.getState().setPlayMode('teams');
     setPhase('setup');
   }, [setPhase, setGameMode]);
 
