@@ -1,0 +1,453 @@
+/* ════════════════════════════════════════════════════════════════════════
+   Flashi.me Spot-the-Difference — Game Style
+   Adapted from https://www.flashi.me/f10/diff internal CSS
+   Applied only to .flashi-game-root in 'classic' (العرّاب) mode.
+   ════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'ltBukraBold';
+  src: url('/fonts/NotoSansArabic.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AlHurraBold';
+  src: url('/fonts/NotoSansArabic.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+/* ─── Body / page background ─────────────────────────────────────────────── */
+.flashi-game-root {
+  padding: 0;
+  margin: 0;
+  background-image: url('/img/spotdiff/flashi-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #000309;
+  color: white;
+  font-family: 'ltBukraBold', 'Noto Sans Arabic', system-ui, sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/* ─── Game container ────────────────────────────────────────────────────── */
+.flashi-game-div {
+  position: relative;
+  margin: 0 auto;
+  width: 98%;
+  max-width: 95vmin;
+  padding: 1vmin 0;
+}
+
+/* ─── Logo / header table ────────────────────────────────────────────────── */
+.flashi-logo-table {
+  table-layout: fixed;
+  margin: 0 auto;
+  width: 100%;
+  border-spacing: 1vmin;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.flashi-logo-table td {
+  text-align: center;
+}
+
+/* ─── Announcement (animated rainbow title) ─────────────────────────────── */
+.flashi-announcement {
+  font: 5.5vmin 'AlHurraBold', 'Noto Sans Arabic', sans-serif;
+  text-decoration: none;
+  user-select: none;
+  color: white;
+  background: repeating-linear-gradient(
+    -45deg,
+    red 0%,
+    yellow 7.14%,
+    rgb(0, 255, 0) 14.28%,
+    rgb(0, 255, 255) 21.4%,
+    cyan 28.56%,
+    blue 35.7%,
+    magenta 42.84%,
+    red 50%
+  );
+  background-size: 600vw 600vw;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: flashi-slide 10s linear infinite forwards;
+  display: inline-block;
+  font-weight: bold;
+  cursor: default;
+}
+@keyframes flashi-slide {
+  0% { background-position-x: 0%; }
+  100% { background-position-x: 600vw; }
+}
+
+/* ─── Settings table ─────────────────────────────────────────────────────── */
+.flashi-settings-table {
+  table-layout: fixed;
+  margin: 0 auto;
+  width: 100%;
+  border-spacing: 1vmin;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  padding-bottom: 2vmin;
+}
+.flashi-settings-table td {
+  border: 1px solid white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ─── Title cells (labels) ───────────────────────────────────────────────── */
+.flashi-title {
+  font: 3vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  line-height: 9vmin;
+  font-weight: bold;
+}
+
+/* ─── Selects ─────────────────────────────────────────────────────────────── */
+.flashi-select {
+  font: 3vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  height: 9vmin;
+  width: 100%;
+  background-color: #0a1a2c;
+  color: white;
+  border: 1px solid #2a5298;
+  padding: 0 1vmin;
+  cursor: pointer;
+  font-weight: bold;
+}
+.flashi-select option {
+  background: #0a1a2c;
+  color: white;
+}
+
+/* ─── Timer / diff counter ───────────────────────────────────────────────── */
+.flashi-timer {
+  font: 6vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  color: white;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  font-weight: bold;
+}
+
+/* ─── Buttons (color-coded as in flashi) ─────────────────────────────────── */
+.flashi-btn {
+  font: 3vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  line-height: 9vmin;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  text-align: center;
+  border: none;
+  padding: 0 1vmin;
+  font-weight: bold;
+  transition: filter 0.15s ease-in-out;
+}
+.flashi-btn:hover {
+  filter: brightness(1.15);
+}
+.flashi-btn:active {
+  filter: brightness(0.85);
+}
+
+/* "صورة جديدة" — yellow */
+.flashi-btn-new {
+  background-color: #ffdd00;
+  color: #000000;
+}
+/* "بدء اللعبة" — green */
+.flashi-btn-start {
+  background-color: #017d07;
+  color: #ffffff;
+}
+/* "إظهار الأجوبة" — purple */
+.flashi-btn-answers {
+  background-color: #63006c;
+  color: #ffffff;
+}
+/* "إظهار السكور" — blue */
+.flashi-btn-score {
+  background-color: #0361b9;
+  color: #ffffff;
+  line-height: 9vmin;
+}
+
+/* ─── Big blue button (.button2 style) for entries ──────────────────────── */
+.flashi-button2 {
+  width: 30%;
+  cursor: pointer;
+  text-decoration: none;
+  font: 5vmin 'AlHurraBold', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  padding: 0.5em 0.5em 0.4em 0.5em;
+  display: inline-block;
+  position: relative;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: hsl(208, 100%, 75%);
+  color: hsl(208, 50%, 40%) !important;
+  box-shadow:
+    inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em,
+    inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em,
+    hsl(208, 50%, 55%) 0 0.1em 3px,
+    hsl(208, 50%, 40%) 0 0.3em 1px,
+    rgba(0, 0, 0, 0.2) 0 0.5em 5px;
+  transition: background 0.2s ease-in-out;
+  border: none;
+  text-align: center;
+}
+.flashi-button2:hover {
+  background-color: hsl(208, 100%, 80%);
+}
+
+/* ─── Game image area ────────────────────────────────────────────────────── */
+.flashi-game-table {
+  table-layout: fixed;
+  margin: 0 auto;
+  width: 100%;
+  border-spacing: 1vmin;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.flashi-game-table > tbody > tr > td {
+  position: relative;
+  text-align: center;
+}
+.flashi-puzz-img {
+  width: 90%;
+  max-width: 90%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  -webkit-user-drag: none;
+  user-select: none;
+  cursor: crosshair;
+}
+
+/* ─── Circle markers (for found differences) ─────────────────────────────── */
+.flashi-circle-div {
+  position: absolute;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.flashi-circle-img {
+  position: absolute;
+  width: 9.5vmin;
+  height: 9.5vmin;
+  z-index: 9;
+  display: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.flashi-circle-img.shown {
+  display: block;
+}
+
+/* ─── Score table ────────────────────────────────────────────────────────── */
+.flashi-score-table {
+  margin: 0 auto;
+  table-layout: fixed;
+  width: 92%;
+  font: 3vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  padding-top: 4vmin;
+  border-collapse: collapse;
+}
+.flashi-score-table td {
+  border: 2px solid rgba(255, 255, 255, 0.568);
+  padding: 2vmin;
+  text-align: center;
+  color: white;
+}
+
+/* ─── Watch link (unused but kept for parity) ────────────────────────────── */
+.flashi-watch-table {
+  table-layout: fixed;
+  margin: 0 auto;
+  width: 100%;
+  border-spacing: 1vmin;
+}
+.flashi-watch-text {
+  text-align: center;
+  color: white;
+  font: 3vmin Arial, sans-serif;
+}
+
+/* ─── Pass / overlay (post-game) ─────────────────────────────────────────── */
+.flashi-pass-text {
+  text-decoration: none;
+  color: white;
+  font: 4vmin 'AlHurraBold', 'Noto Sans Arabic', sans-serif;
+  line-height: 5vmin;
+  text-align: center;
+}
+
+/* ─── Header actions (sound / chat / quit) — adapted to flashi palette ─── */
+.flashi-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 4px 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+.flashi-header-btn {
+  background: rgba(3, 6, 9, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease-in-out;
+}
+.flashi-header-btn:hover {
+  background: rgba(35, 60, 90, 0.9);
+}
+.flashi-header-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* ─── Round indicator pill (small badge under header) ────────────────────── */
+.flashi-round-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1vmin 3vmin;
+  border-radius: 999px;
+  background: rgba(0, 10, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font: 3vmin 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  margin: 1vmin auto 0;
+}
+
+/* ─── Miss marker (red X) ────────────────────────────────────────────────── */
+.flashi-miss-marker {
+  position: absolute;
+  color: #ef4444;
+  font-size: 5vmin;
+  font-weight: 900;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 1px 4px rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Click feedback floating text ───────────────────────────────────────── */
+.flashi-click-feedback {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 50;
+}
+.flashi-click-feedback.hit {
+  color: #86efac;
+}
+.flashi-click-feedback.miss {
+  color: #f87171;
+}
+
+/* ─── Quit dialog (overlay) ─────────────────────────────────────────────── */
+.flashi-quit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.flashi-quit-dialog {
+  background: linear-gradient(180deg, #0e2a22, #061812);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 18px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+}
+.flashi-quit-dialog h3 {
+  color: #feef91;
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.flashi-quit-dialog p {
+  color: #9fc4b4;
+  font-size: 12px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.flashi-quit-dialog .actions {
+  display: flex;
+  gap: 10px;
+}
+.flashi-quit-dialog .actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.flashi-quit-dialog .actions .cancel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(80, 80, 80, 0.3);
+  color: #cbd5e1;
+}
+.flashi-quit-dialog .actions .quit {
+  border: none;
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+/* ─── Loading state ──────────────────────────────────────────────────────── */
+.flashi-loading {
+  text-align: center;
+  padding: 40px 16px;
+  color: #9fc4b4;
+  font-family: 'ltBukraBold', 'Noto Sans Arabic', sans-serif;
+}
