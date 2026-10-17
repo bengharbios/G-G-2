@@ -64,7 +64,8 @@ function ShipsContent() {
   }
 
   if (phase === 'landing') return <main><LandingPage onStartLocal={handleStartLocal} onStartDiwaniya={handleStartDiwaniya} /></main>;
-  if (phase === 'setup' || phase === 'placing') return <main><GameSetup /></main>;
+  if (phase === 'setup') return <main><GameSetup /></main>;
+  // phase 'placing' (ship placement) + 'attacking' → GameBoard
   return (
     <div className="flex flex-col" style={{ height: '100vh', overflow: 'hidden' }}>
       <main className="flex-1" style={{ overflow: 'hidden' }}>

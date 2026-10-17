@@ -1477,6 +1477,17 @@ export async function ensureAdminTables(): Promise<void> {
   // (للترقية من النسخ القديمة التي لم تكن تحوي هاتين اللعبتين في
   // BattleButton table)
   try {
+    // أولاً: حدّث label لـbattleship الموجود من 'سفن' → 'مطابقة البطاقات'
+    await c.execute({
+      sql: "UPDATE BattleButton SET label = 'مطابقة البطاقات' WHERE buttonKey = 'battleship' AND label != 'مطابقة البطاقات'",
+      args: [],
+    });
+    // حدّث gameName في GameConfig أيضاً
+    await c.execute({
+      sql: "UPDATE GameConfig SET gameName = 'مطابقة البطاقات' WHERE gameSlug = 'battleship' AND gameName != 'مطابقة البطاقات'",
+      args: [],
+    });
+
     const themes = await c.execute("SELECT id, themeKey FROM BattleTheme");
     for (const themeRow of themes.rows) {
       const themeId = (themeRow as Record<string, unknown>).id as string;
