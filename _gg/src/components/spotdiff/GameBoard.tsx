@@ -4,8 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useSpotDiffStore } from '@/lib/spotdiff-store';
-import { DIFFICULTY_CONFIG, FLASHI_CATEGORY_LABELS, FLASHI_HIT_RADIUS_VMIN } from '@/lib/spotdiff-types';
-import type { FlashiCategory } from '@/lib/flashi_images';
+import { DIFFICULTY_CONFIG, FLASHI_HIT_RADIUS_VMIN } from '@/lib/spotdiff-types';
 import {
   isMusicEnabled,
   setMusicEnabled,
@@ -16,7 +15,7 @@ import {
   playWrongSound,
 } from '@/lib/sounds';
 
-// G-G Tobol style: gold stroke text (from yalla ludo styles.xml)
+// G-G Tobol style: gold stroke text
 const STROKE_STYLE: React.CSSProperties = {
   color: '#feef91',
   paintOrder: 'stroke fill',
@@ -50,7 +49,7 @@ function vminPx(): number {
 }
 
 // ============================================================
-// Click feedback floating text (✓ hit, ✗ miss)
+// Click feedback floating text
 // ============================================================
 function ClickFeedback({ item, onDone }: { item: ClickFeedbackItem; onDone: () => void }) {
   useEffect(() => {
@@ -82,7 +81,7 @@ function ClickFeedback({ item, onDone }: { item: ClickFeedbackItem; onDone: () =
 }
 
 // ============================================================
-// Header chat button — uses G-G tobol-* chat panel
+// Header chat button — G-G tobol chat panel
 // ============================================================
 function HeaderChatButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -132,7 +131,7 @@ function HeaderChatButton() {
         title="دردشة الطاولة"
         style={{ position: 'relative' }}
       >
-        <img src="/battle/icon_chat.webp" alt="chat" />
+        <img src="/battle/icon_chat.webp" alt="chat" style={{ width: '26px', height: '26px' }} />
         {unread > 0 && <span className="chat-badge">{unread > 9 ? '9+' : unread}</span>}
       </button>
       <AnimatePresence>
@@ -223,12 +222,14 @@ function HeaderChatButton() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// MAIN GAME BOARD — Tobol visual style + flashi game logic
-// Per user instruction: take the LOGIC + STRUCTURE from flashi (the
-// settings table layout with diffNum/timer/type-select/wrong-select
-// + 4 color-coded action buttons), but the VISUAL DESIGN from the
-// Tobol (طبول الحرب) game page — dark green/black background, gold
-// stroke text, tobol-team-card panels, tobol-action-btn circular buttons.
+// MAIN GAME BOARD — Tobol style + flashi logic
+// Compact single-screen layout:
+//   [header actions]
+//   [game image (transparent PNG) + title]    <- مهمة 2: صورة اللعبة فوق الاسم
+//   [timer + diff counter in one row]         <- مهمة 3: المؤقت فقط بستايل ممتاز
+//   [4 action buttons in single row]         <- مهمة 3: 4 أزرار في صف واحد
+//   [flashi image (A above B) with circles]
+//   [score compact bottom row]
 // ════════════════════════════════════════════════════════════════════════
 export default function GameBoard() {
   const router = useRouter();
@@ -237,8 +238,9 @@ export default function GameBoard() {
     foundDifferences, differences, score, timeLeft, totalRounds,
     totalFound, totalDifferences, findDifference, registerMiss,
     tickTimer, resetGame, difficulty,
-    flashiCatalog, flashiCategory, setFlashiCategory,
+    flashiCatalog,
     loadFlashiCatalog,
+    loadNewImage,
   } = useSpotDiffStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -396,34 +398,37 @@ export default function GameBoard() {
     });
   }, [currentRoundData, foundDifferences, currentRound, imageShift]);
 
-  // Tobol-styled action button: gold gradient + accent border-top
-  const TobolBtn = ({
-    label, accentColor, icon, onClick, colSpan = 5,
+  // Compact Tobol-styled action button (smaller for single-row layout)
+  const CompactBtn = ({
+    label, accentColor, icon, onClick,
   }: {
     label: string;
     accentColor: string;
     icon: string;
     onClick: () => void;
-    colSpan?: number;
   }) => (
-    <td
-      colSpan={colSpan}
+    <button
       onClick={onClick}
       style={{
+        flex: 1,
         background: 'linear-gradient(180deg, rgba(254,239,145,.18) 0%, rgba(170,110,31,.08) 50%, rgba(8,28,22,.85) 100%)',
         color: '#feef91',
         border: `1px solid ${accentColor}aa`,
         borderTop: `2px solid ${accentColor}`,
         borderRadius: '8px',
-        padding: '0.6vmin 1vmin',
+        padding: '8px 6px',
         textAlign: 'center',
         cursor: 'pointer',
         fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
         fontWeight: 'bold',
-        fontSize: '2.6vmin',
-        lineHeight: '4vmin',
+        fontSize: '11px',
+        lineHeight: '1.3',
         boxShadow: `0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 ${accentColor}33`,
         transition: 'all .15s ease',
+        display: 'flex',
+        flexDirection: 'column' as const,
+        alignItems: 'center',
+        gap: '2px',
         WebkitUserSelect: 'none',
         userSelect: 'none',
       }}
@@ -436,9 +441,9 @@ export default function GameBoard() {
         e.currentTarget.style.boxShadow = `0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 ${accentColor}33`;
       }}
     >
-      <span style={{ marginLeft: '0.5vmin' }}>{icon}</span>
+      <span style={{ fontSize: '14px' }}>{icon}</span>
       {label}
-    </td>
+    </button>
   );
 
   return (
@@ -452,8 +457,8 @@ export default function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 12px 100px',
-        gap: '8px',
+        padding: '8px 12px 16px',
+        gap: '6px',
         overflowY: 'auto',
         fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
       }}
@@ -478,246 +483,204 @@ export default function GameBoard() {
           type="button"
           className="tobol-header-btn"
           onClick={() => setShowQuitDialog(true)}
-          aria-label="إنهاء اللعبة بدون حفظ"
-          title="إنهاء اللعبة بدون حفظ"
+          aria-label="إنهاء اللعبة"
+          title="إنهاء اللعبة"
         >
           <img src="/battle/btn_quit_game.webp" alt="quit" style={{ width: '26px', height: '26px' }} />
         </button>
       </div>
 
-      {/* ══════════ Title ══════════ */}
-      <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.92 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
-        style={{ textAlign: 'center', marginTop: '50px', marginBottom: '4px' }}
-      >
-        <div style={{ fontSize: '28px', marginBottom: '4px' }}>🔍</div>
-        <h1 style={{
-          ...STROKE_STYLE,
-          fontSize: '20px',
-          fontWeight: 900,
-          textShadow: '0 2px 4px rgba(0,0,0,.85), 0 0 16px rgba(254,239,145,.18)',
-          margin: '2px 0 0',
-          lineHeight: 1,
-        }}>اختلاف الصور</h1>
-      </motion.div>
-
-      {/* ══════════ Settings Panel (tobol-team-card) ══════════ */}
+      {/* ══════════ Game image + title (compact header) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '44px',
+          padding: '4px 12px',
+          borderRadius: '14px',
+          background: 'rgba(6,42,32,.45)',
+          border: '1px solid rgba(254,239,145,.12)',
+        }}
+      >
+        <img
+          src="/yalla-games/spotdiff.png"
+          alt="اختلاف الصور"
+          draggable={false}
+          style={{
+            width: '48px',
+            height: '40px',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))',
+          }}
+        />
+        <div>
+          <h1 style={{
+            ...STROKE_STYLE,
+            fontSize: '16px',
+            fontWeight: 900,
+            textShadow: '0 2px 4px rgba(0,0,0,.85)',
+            margin: 0,
+            lineHeight: 1.1,
+          }}>
+            اختلاف الصور
+          </h1>
+          <div style={{
+            color: '#9fc4b4',
+            fontSize: '10px',
+            fontWeight: 700,
+            marginTop: '1px',
+          }}>
+            جولة {currentRound + 1}/{totalRounds}
+            {flashiCatalog && <span style={{ color: '#fbbf24' }}> • {flashiCatalog.length.toLocaleString('en')} صورة</span>}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ══════════ Timer + Diff counter (single elegant row) ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         className="tobol-team-card"
         style={{
           width: '100%',
           maxWidth: '460px',
-          padding: '6px',
-          borderRadius: '14px',
+          padding: '8px 12px',
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
         }}
       >
-        <table
-          style={{
-            tableLayout: 'fixed',
-            width: '100%',
-            borderSpacing: '4px',
-            borderCollapse: 'separate',
-          }}
-        >
-          <tbody>
-            {/* Row 1: diff counter | timer | timer duration select */}
-            <tr>
-              <td style={{ width: '15%', verticalAlign: 'middle' }}>
-                <div style={{
-                  ...STROKE_STYLE,
-                  fontSize: '4vmin',
-                  fontWeight: 900,
-                  textAlign: 'center',
-                  padding: '4px',
-                  border: '1px solid rgba(254,239,145,.3)',
-                  borderRadius: '6px',
-                  background: 'rgba(0,0,0,.4)',
-                }}>{remainingDiffs}</div>
-              </td>
-              <td style={{ width: '15%', verticalAlign: 'middle', textAlign: 'center' }}>
-                <div style={{
-                  ...STROKE_STYLE,
-                  fontSize: '2.4vmin',
-                  fontWeight: 800,
-                }}>الوقت</div>
-              </td>
-              <td style={{ width: '35%', verticalAlign: 'middle' }}>
-                <select
-                  className="mySelect"
-                  aria-label="الوقت"
-                  defaultValue="دقيقة"
-                  style={{
-                    width: '100%',
-                    background: 'rgba(8,28,22,.8)',
-                    color: '#feef91',
-                    border: '1px solid rgba(254,239,145,.25)',
-                    borderRadius: '6px',
-                    padding: '0.6vmin 1vmin',
-                    fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-                    fontSize: '2.4vmin',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <option>15 ثانية</option>
-                  <option>30 ثانية</option>
-                  <option>45 ثانية</option>
-                  <option>دقيقة</option>
-                  <option>دقيقة ونصف</option>
-                  <option>دقيقتان</option>
-                  <option>دقيقتان ونصف</option>
-                  <option>3 دقائق</option>
-                  <option>4 دقائق</option>
-                  <option>5 دقائق</option>
-                </select>
-              </td>
-              <td style={{ width: '35%', verticalAlign: 'middle' }}>
-                <div style={{
-                  ...STROKE_STYLE,
-                  fontSize: '4vmin',
-                  fontWeight: 900,
-                  textAlign: 'center',
-                  padding: '4px',
-                  border: `1px solid ${timeColor}55`,
-                  borderRadius: '6px',
-                  background: 'rgba(0,0,0,.4)',
-                  color: timeColor,
-                }}>{timerDisplay}</div>
-              </td>
-            </tr>
-            {/* Row 2: type select | wrong count select */}
-            <tr>
-              <td colSpan={1} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
-                <span style={{
-                  ...STROKE_STYLE,
-                  fontSize: '2vmin',
-                  fontWeight: 800,
-                }}>نوع الصور</span>
-              </td>
-              <td colSpan={2} style={{ verticalAlign: 'middle' }}>
-                <select
-                  value={flashiCategory}
-                  onChange={(e) => setFlashiCategory(e.target.value as FlashiCategory | 'random')}
-                  aria-label="نوع الصور"
-                  style={{
-                    width: '100%',
-                    background: 'rgba(8,28,22,.8)',
-                    color: '#feef91',
-                    border: '1px solid rgba(254,239,145,.25)',
-                    borderRadius: '6px',
-                    padding: '0.6vmin 1vmin',
-                    fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-                    fontSize: '2.4vmin',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {Object.entries(FLASHI_CATEGORY_LABELS).map(([val, label]) => (
-                    <option key={val} value={val}>{label}</option>
-                  ))}
-                </select>
-              </td>
-              <td colSpan={1} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
-                <span style={{
-                  ...STROKE_STYLE,
-                  fontSize: '2vmin',
-                  fontWeight: 800,
-                }}>الأخطaئ</span>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={4} style={{ verticalAlign: 'middle' }}>
-                <div style={{
-                  ...STROKE_STYLE,
-                  fontSize: '2vmin',
-                  fontWeight: 700,
-                  color: '#9fc4b4',
-                  textAlign: 'center',
-                  padding: '2px',
-                }}>
-                  {currentRoundData.title} • جولة {currentRound + 1}/{totalRounds}
-                  {flashiCatalog && (
-                    <span style={{ color: '#fbbf24' }}> • {flashiCatalog.length.toLocaleString('en')} صورة</span>
-                  )}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {/* Diff counter */}
+        <div style={{
+          ...STROKE_STYLE,
+          fontSize: '14px',
+          fontWeight: 800,
+          color: '#feef91',
+          textAlign: 'center',
+          padding: '6px 10px',
+          border: '1px solid rgba(254,239,145,.3)',
+          borderRadius: '8px',
+          background: 'rgba(0,0,0,.4)',
+          minWidth: '70px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
+          justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: '16px' }}>🎯</span>
+          <span style={{ color: '#86efac', fontSize: '16px', fontWeight: 900 }}>
+            {remainingDiffs}
+          </span>
+          <span style={{ fontSize: '11px', color: '#9fc4b4' }}>/ {totalForRound}</span>
+        </div>
+
+        {/* Score */}
+        <div style={{
+          ...STROKE_STYLE,
+          fontSize: '14px',
+          fontWeight: 800,
+          textAlign: 'center',
+          padding: '6px 10px',
+          border: '1px solid rgba(254,239,145,.3)',
+          borderRadius: '8px',
+          background: 'rgba(0,0,0,.4)',
+          minWidth: '70px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
+          justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: '16px' }}>🏆</span>
+          <span style={{ color: '#fbbf24', fontSize: '16px', fontWeight: 900 }}>
+            {score}
+          </span>
+        </div>
+
+        {/* Timer (large, prominent) */}
+        <div style={{
+          flex: 1,
+          padding: '6px 12px',
+          border: `1px solid ${timeColor}55`,
+          borderRadius: '8px',
+          background: 'rgba(0,0,0,.55)',
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          justifyContent: 'center',
+          boxShadow: `0 0 16px ${timeColor}22, inset 0 0 8px ${timeColor}11`,
+        }}>
+          <span style={{ fontSize: '20px' }}>⏱️</span>
+          <span style={{
+            fontSize: '28px',
+            fontWeight: 900,
+            color: timeColor,
+            fontVariantNumeric: 'tabular-nums',
+            textShadow: `0 0 8px ${timeColor}44, 0 2px 4px rgba(0,0,0,.85)`,
+            fontFamily: 'ltBukraBold, Noto Sans Arabic, monospace',
+          }}>
+            {timerDisplay}
+          </span>
+        </div>
       </motion.div>
 
-      {/* ══════════ Action buttons row (Tobol-styled) ══════════ */}
+      {/* ══════════ 4 action buttons in single row ══════════ */}
       <motion.div
-        initial={{ opacity: 0, y: -8 }}
+        initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="tobol-team-card"
         style={{
           width: '100%',
           maxWidth: '460px',
-          padding: '6px',
-          borderRadius: '14px',
+          display: 'flex',
+          gap: '6px',
         }}
       >
-        <table
-          style={{
-            tableLayout: 'fixed',
-            width: '100%',
-            borderSpacing: '4px',
-            borderCollapse: 'separate',
+        <CompactBtn
+          label="صورة جديدة"
+          accentColor="#22c55e"
+          icon="🖼️"
+          onClick={() => {
+            if (soundOn) playClickSound();
+            loadNewImage();
           }}
-        >
-          <tbody>
-            <tr>
-              <TobolBtn
-                label="صورة جديدة"
-                accentColor="#22c55e"
-                icon="🖼️"
-                onClick={() => {
-                  if (soundOn) playClickSound();
-                  window.location.reload();
-                }}
-              />
-              <TobolBtn
-                label="بدء اللعبة"
-                accentColor="#fbbf24"
-                icon="▶️"
-                onClick={() => {
-                  if (soundOn) playClickSound();
-                  router.push('/spotdiff');
-                }}
-              />
-            </tr>
-            <tr>
-              <TobolBtn
-                label={showAnswers ? 'إخفاء الأجوبة' : 'إظهار الأجوبة'}
-                accentColor="#a855f7"
-                icon="💡"
-                onClick={() => {
-                  if (soundOn) playClickSound();
-                  setShowAnswers(s => !s);
-                }}
-              />
-              <TobolBtn
-                label={showScore ? 'إخفاء السكور' : 'إظهار السكور'}
-                accentColor="#3b82f6"
-                icon="📊"
-                onClick={() => {
-                  if (soundOn) playClickSound();
-                  setShowScore(s => !s);
-                }}
-              />
-            </tr>
-          </tbody>
-        </table>
+        />
+        <CompactBtn
+          label="بدء اللعبة"
+          accentColor="#fbbf24"
+          icon="▶️"
+          onClick={() => {
+            if (soundOn) playClickSound();
+            router.push('/spotdiff');
+          }}
+        />
+        <CompactBtn
+          label={showAnswers ? 'إخفاء الأجوبة' : 'إظهار الأجوبة'}
+          accentColor="#a855f7"
+          icon="💡"
+          onClick={() => {
+            if (soundOn) playClickSound();
+            setShowAnswers(s => !s);
+          }}
+        />
+        <CompactBtn
+          label={showScore ? 'إخفاء السكور' : 'إظهار السكور'}
+          accentColor="#3b82f6"
+          icon="📊"
+          onClick={() => {
+            if (soundOn) playClickSound();
+            setShowScore(s => !s);
+          }}
+        />
       </motion.div>
 
-      {/* ══════════ Game Image Area (single flashi image with circles) ══════════ */}
+      {/* ══════════ Game Image Area (flashi image with circles) ══════════ */}
       <motion.div
         key={currentRoundData.id + String(currentRound)}
         initial={{ opacity: 0, scale: 0.96 }}
@@ -728,7 +691,7 @@ export default function GameBoard() {
           width: '100%',
           maxWidth: '460px',
           padding: '6px',
-          borderRadius: '14px',
+          borderRadius: '12px',
           position: 'relative',
         }}
       >
@@ -761,7 +724,7 @@ export default function GameBoard() {
             }}
           />
 
-          {/* B-side circle markers (when found OR when answers shown) */}
+          {/* B-side circle markers */}
           {diffMarkers.map((m) => (
             (m.found || showAnswers) && (
               <motion.div
@@ -852,7 +815,7 @@ export default function GameBoard() {
             right: '5%',
             background: 'rgba(0,0,0,.7)',
             color: '#fbbf24',
-            fontSize: '2.4vmin',
+            fontSize: '2vmin',
             fontWeight: 800,
             padding: '2px 6px',
             borderRadius: '4px',
@@ -863,7 +826,7 @@ export default function GameBoard() {
         </div>
       </motion.div>
 
-      {/* ══════════ Score table (toggleable, Tobol style) ══════════ */}
+      {/* ══════════ Score table (toggleable) ══════════ */}
       <AnimatePresence>
         {showScore && (
           <motion.div
@@ -875,7 +838,7 @@ export default function GameBoard() {
               width: '100%',
               maxWidth: '460px',
               padding: '12px',
-              borderRadius: '14px',
+              borderRadius: '12px',
             }}
           >
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -926,7 +889,7 @@ export default function GameBoard() {
         )}
       </AnimatePresence>
 
-      {/* ══════════ Quit dialog (Tobol style) ══════════ */}
+      {/* ══════════ Quit dialog ══════════ */}
       <AnimatePresence>
         {showQuitDialog && (
           <motion.div

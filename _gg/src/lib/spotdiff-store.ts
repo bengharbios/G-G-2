@@ -41,6 +41,12 @@ export interface SpotDiffState {
   flashiCatalog: FlashiImage[] | null;
   flashiCategory: FlashiCategory | 'random';  // user-selected image type filter
 
+  // User-configurable game settings (set in GameSetup before startGame)
+  timerValueSec: number;       // 15, 30, 45, 60, 90, 120, 150, 180, 240, 300
+  fastestFinish: boolean;      // الأسرع (yes/no)
+  wrongCount: number;          // عدد الأخطaئ (1-10) — used to filter flashi catalog
+
+
   // Current round state
   currentRound: number;        // 0-based index
   currentRoundData: SpotDiffRound | null;
@@ -84,6 +90,7 @@ export interface SpotDiffState {
   // Flashi catalog management
   loadFlashiCatalog: () => Promise<void>;
   setFlashiCategory: (cat: FlashiCategory | 'random') => void;
+  loadNewImage: () => void;  // pick a new random image without reloading
 }
 
 // ============================================================
@@ -114,6 +121,9 @@ const initialState = {
   lastActionAt: null as number | null,
   flashiCatalog: null as FlashiImage[] | null,
   flashiCategory: 'random' as FlashiCategory | 'random',
+  timerValueSec: 60,
+  fastestFinish: false,
+  wrongCount: 5,
 };
 
 function generateRoomCode(): string {
@@ -186,7 +196,8 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         const state = get();
         const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
         const firstRound = rounds[0];
-        const timeForRound = DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
+        // Use user-selected timer value (default to difficulty-based if not set)
+        const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         const totalDiffs = rounds.reduce(
           (sum, r) => sum + r.differences.length, 0
         );
@@ -348,7 +359,52 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         }
       },
 
+      loadNewImage: () => {
+        // Pick a fresh random flashi image and replace currentRoundData
+        // (without reloading the page — fixes the 'صورة جديدة' button)
+        const state = get();
+        if (!state.flashiCatalog || state.flashiCatalog.length === 0) return;
+        const picks = pickRandomImages(state.flashiCatalog, state.flashiCategory, 1);
+        if (picks.length === 0) return;
+        const img = picks[0];
+        const diffs = decodeFlashiFilename(img.filename);
+        const shift = getImageShift(img.category);
+        const roundIdx = state.currentRound;
+        const newRound: SpotDiffRound = {
+          id: `flashi-${roundIdx}-${img.filename.slice(0, 20)}-${Date.now()}`,
+          title: `اختلاف الصور — ${img.category}`,
+          imageA: '',
+          imageB: '',
+          imageUrl: img.url,
+          imageShift: shift,
+          flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
+          flashiCategory: img.category,
+          differences: diffs.map((_, i) => ({
+            id: `flashi-diff-${roundIdx}-${i}`,
+            x: 0, y: 0, radius: 0,
+            found: false,
+          })),
+        };
+        set({
+          currentRoundData: newRound,
+          foundDifferences: [],
+          differences: newRound.differences.map(d => ({ ...d, found: false })),
+          score: 0,  // reset score on new image (matches flashi behavior)
+          timeLeft: state.timerValueSec,
+          totalForRound: diffs.length,
+          lastAction: `🖼️ صورة جديدة — ${img.category}`,
+          lastActionAt: Date.now(),
+        });
+        get().syncToRoom();
+      },
+
       setFlashiCategory: (cat) => set({ flashiCategory: cat }),
+
+      // Note: setters for timerValueSec, fastestFinish, wrongCount can be
+      // added inline in GameSetup using useSpotDiffStore.setState().
+      // For brevity we expose the loadNewImage action here and let
+      // GameSetup use setState() for the other settings.
+
 
       syncToRoom: () => {
         const state = get();
@@ -408,6 +464,9 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         lastActionAt: state.lastActionAt,
         flashiCatalog: state.flashiCatalog,
         flashiCategory: state.flashiCategory,
+        timerValueSec: state.timerValueSec,
+        fastestFinish: state.fastestFinish,
+        wrongCount: state.wrongCount,
       }),
     }
   )

@@ -14,7 +14,11 @@ import {
   Difficulty,
   DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
+  FLASHI_CATEGORY_LABELS,
 } from '@/lib/spotdiff-types';
+import type { FlashiCategory } from '@/lib/flashi_images';
+import { useAppShell } from '@/components/shared/AppShellContext';
+import SvgaOrImg from '@/components/SvgaOrImg';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
@@ -23,19 +27,52 @@ const STROKE_STYLE: React.CSSProperties = {
   WebkitTextStroke: '1px #aa6e1f',
 };
 
+// Timer duration options (matching flashi)
+const TIMER_OPTIONS: Array<{ value: number; label: string }> = [
+  { value: 15, label: '15 ثانية' },
+  { value: 30, label: '30 ثانية' },
+  { value: 45, label: '45 ثانية' },
+  { value: 60, label: 'دقيقة' },
+  { value: 90, label: 'دقيقة ونصف' },
+  { value: 120, label: 'دقيقتان' },
+  { value: 150, label: 'دقيقتان ونصف' },
+  { value: 180, label: '3 دقائق' },
+  { value: 240, label: '4 دقائق' },
+  { value: 300, label: '5 دقائق' },
+];
+
+// Frame asset path helper (matching SiteHeader logic)
+function frameSrcFallback(frameId?: string | null): string | null {
+  const id = (frameId || '').trim();
+  if (!id) return null;
+  return /^\d+$/.test(id) ? `/yalla-frames/${id}.png` : null;
+}
+
+function avatarSrc(avatar?: string, id?: string): string {
+  if (avatar) return avatar;
+  const seed = (parseInt(id || '', 10) || 0) % 12 + 1;
+  return `/yalla-avatars/defaultPhoto_${seed}.png`;
+}
+
 export default function GameSetup() {
   const router = useRouter();
+  const appShell = useAppShell();
+  const authUser = appShell?.authUser || null;
   const {
     setPlayerName, setDifficulty, setTotalRounds,
     startGame, resetGame, gameMode, setRoomCode,
     difficulty, totalRounds,
     loadFlashiCatalog,
+    flashiCategory, setFlashiCategory,
+    timerValueSec, fastestFinish, wrongCount,
   } = useSpotDiffStore();
 
   const [playerName, setPlayerNameState] = useState('');
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
+  const [frameImg, setFrameImg] = useState<string | null>(null);
+  const [catalogLoading, setCatalogLoading] = useState(false);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -50,10 +87,38 @@ export default function GameSetup() {
     setSoundOn(isSoundEnabled());
   }, []);
 
-  // Preload flashi catalog in the background so startGame has it ready
+  // Preload flashi catalog
   useEffect(() => {
     loadFlashiCatalog().catch(() => {});
   }, [loadFlashiCatalog]);
+
+  // Load frame for authed user
+  useEffect(() => {
+    if (!authUser?.frame) { setFrameImg(null); return; }
+    let cancelled = false;
+    fetch('/api/store/frames-catalog')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
+        const m = new Map<string, string>();
+        for (const f of d.frames) {
+          if (f.imageUrl) m.set(String(f.id), String(f.imageUrl));
+        }
+        if (!cancelled) setFrameImg(m.get(String(authUser.frame)) || frameSrcFallback(authUser.frame));
+      })
+      .catch(() => {
+        if (!cancelled) setFrameImg(frameSrcFallback(authUser.frame));
+      });
+    return () => { cancelled = true; };
+  }, [authUser?.frame]);
+
+  // Pre-fill player name from authUser if logged in
+  useEffect(() => {
+    if (authUser?.displayName) {
+      setPlayerNameState(authUser.displayName);
+      setPlayerName(authUser.displayName);
+    }
+  }, [authUser?.displayName, setPlayerName]);
 
   const toggleMusic = () => {
     const next = !musicOn;
@@ -75,19 +140,23 @@ export default function GameSetup() {
       fetch('/api/spotdiff-room', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, hostName: playerName || 'العراب' }),
+        body: JSON.stringify({ code, hostName: playerName || authUser?.displayName || 'العراب' }),
       }).catch(() => {});
       setRoomCode(code);
     }
-  }, [gameMode, setRoomCode, playerName]);
+  }, [gameMode, setRoomCode, playerName, authUser?.displayName]);
 
-  const [catalogLoading, setCatalogLoading] = useState(false);
   const handleStart = async () => {
-    const name = playerName.trim() || 'اللاعب';
+    const name = playerName.trim() || authUser?.displayName || 'اللاعب';
     setPlayerName(name);
     setDifficulty(difficulty);
     setTotalRounds(totalRounds);
-    // Ensure flashi catalog is loaded before generating rounds
+    // Persist settings via setState (state has them already from selectors)
+    useSpotDiffStore.setState({
+      timerValueSec,
+      fastestFinish,
+      wrongCount,
+    });
     setCatalogLoading(true);
     try { await loadFlashiCatalog(); } catch (e) { /* ignore — fallback to SVG */ }
     setCatalogLoading(false);
@@ -99,7 +168,52 @@ export default function GameSetup() {
     router.push('/');
   };
 
-  const isValid = (playerName.trim().length > 0);
+  const isValid = !!authUser || playerName.trim().length > 0;
+
+  // Helper: small section header
+  const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <div style={{
+      ...STROKE_STYLE,
+      fontSize: '11px',
+      fontWeight: 800,
+      letterSpacing: '0.3px',
+      marginBottom: '4px',
+      marginTop: '8px',
+    }}>{children}</div>
+  );
+
+  // Helper: Tobol-style select
+  const TobolSelect = ({
+    value, onChange, options, ariaLabel,
+  }: {
+    value: string | number;
+    onChange: (v: string) => void;
+    options: Array<{ value: string | number; label: string }>;
+    ariaLabel: string;
+  }) => (
+    <select
+      aria-label={ariaLabel}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      style={{
+        width: '100%',
+        background: 'rgba(8,28,22,.85)',
+        color: '#feef91',
+        border: '1px solid rgba(254,239,145,.3)',
+        borderRadius: '8px',
+        padding: '8px 10px',
+        fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
+        fontSize: '13px',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        outline: 'none',
+      }}
+    >
+      {options.map((o) => (
+        <option key={String(o.value)} value={o.value}>{o.label}</option>
+      ))}
+    </select>
+  );
 
   return (
     <div
@@ -107,14 +221,14 @@ export default function GameSetup() {
       className="tobol-setup-root"
       style={{
         position: 'relative',
-        height: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        minHeight: 'calc(100vh - 56px)',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '8px 14px 16px',
-        gap: '10px',
-        overflow: 'hidden',
+        padding: '8px 14px 30px',
+        gap: '8px',
+        overflowY: 'auto',
       }}
     >
       {/* ══════════ Header actions: sound + exit ══════════ */}
@@ -129,6 +243,7 @@ export default function GameSetup() {
           <img
             src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
             alt="sound"
+            style={{ width: '26px', height: '26px' }}
           />
         </button>
         <button
@@ -138,44 +253,42 @@ export default function GameSetup() {
           aria-label="خروج"
           title="خروج"
         >
-          <img src="/battle/btn_exit.webp" alt="exit" />
+          <img src="/battle/btn_exit.webp" alt="exit" style={{ width: '26px', height: '26px' }} />
         </button>
       </div>
 
-      {/* ══════════ Title ══════════ */}
+      {/* ══════════ Title + game image (Tobol style) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: -12, scale: 0.92 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
-        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
+        style={{ textAlign: 'center', marginTop: '50px', marginBottom: '4px' }}
       >
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-          <div style={{ fontSize: '40px' }}>🔍</div>
-          <div
-            style={{
-              position: 'absolute',
-              inset: '-12px',
-              background: 'radial-gradient(circle, rgba(254,239,145,.22), transparent 65%)',
-              filter: 'blur(6px)',
-              zIndex: -1,
-              borderRadius: '50%',
-            }}
-          />
-        </div>
-        <h1
+        {/* Game cover image (transparent PNG, no white bg) */}
+        <img
+          src="/yalla-games/spotdiff.png"
+          alt="اختلاف الصور"
+          draggable={false}
           style={{
-            ...STROKE_STYLE,
-            fontSize: '22px',
-            fontWeight: 900,
-            textShadow: '0 2px 4px rgba(0,0,0,.85)',
-            margin: '2px 0 0',
-            lineHeight: 1,
+            width: '140px',
+            height: '112px',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 6px 8px rgba(0,0,0,.5))',
+            marginBottom: '6px',
           }}
-        >
+        />
+        <h1 style={{
+          ...STROKE_STYLE,
+          fontSize: '22px',
+          fontWeight: 900,
+          textShadow: '0 2px 4px rgba(0,0,0,.85)',
+          margin: '2px 0 0',
+          lineHeight: 1,
+        }}>
           اختلاف الصور
         </h1>
         <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
-          Spot the Difference 🔍
+          Spot the Difference
         </p>
       </motion.div>
 
@@ -195,75 +308,172 @@ export default function GameSetup() {
         }}
       >
         <span style={{ fontSize: '13px' }}>🔍</span>
-        <span
-          style={{
-            ...STROKE_STYLE,
-            fontSize: '13px',
-            fontWeight: 800,
-            letterSpacing: '0.4px',
-          }}
-        >
+        <span style={{
+          ...STROKE_STYLE,
+          fontSize: '13px',
+          fontWeight: 800,
+          letterSpacing: '0.4px',
+        }}>
           تجهيز اللعبة
         </span>
       </motion.div>
 
-      {/* ══════════ Player name input ══════════ */}
+      {/* ══════════ Player info (avatar + name + frame if authed) ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25, duration: 0.3 }}
-        className="tobol-score-frame"
+        className="tobol-team-card"
         style={{
           width: '100%',
           maxWidth: '380px',
-          padding: '8px 14px',
+          padding: '10px 14px',
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
+          gap: '12px',
           marginTop: '4px',
+          borderRadius: '12px',
         }}
       >
-        <div
-          style={{
-            width: '30px', height: '30px', borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(254,239,145,.22), rgba(170,110,31,.08))',
-            border: '1px solid rgba(254,239,145,.35)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0,
-          }}
-        >
-          <span style={{ fontSize: '14px' }}>🧑</span>
+        {authUser ? (
+          // Logged-in: show avatar + frame (no input)
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+            <div style={{
+              position: 'relative',
+              width: '56px',
+              height: '56px',
+              flexShrink: 0,
+            }}>
+              <span className="avatar-frame-wrap" style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
+                <img
+                  src={avatarSrc(authUser.avatar, authUser.id)}
+                  alt={authUser.displayName || 'اللاعب'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                  onError={(e) => {
+                    const t = e.target as HTMLImageElement;
+                    if (!t.src.includes('defaultPhoto_')) {
+                      t.src = '/yalla-avatars/defaultPhoto_1.png';
+                    }
+                  }}
+                />
+                {frameImg && (
+                  <SvgaOrImg src={frameImg} alt="" />
+                )}
+              </span>
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                ...STROKE_STYLE,
+                fontSize: '13px',
+                fontWeight: 800,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}>
+                {authUser.displayName || authUser.username || 'العراب'}
+              </div>
+              <div style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
+                ✓ أنت العرّاب — تم تسجيل الدخول
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Not logged in: show input
+          <>
+            <div style={{
+              width: '40px', height: '40px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(254,239,145,.22), rgba(170,110,31,.08))',
+              border: '1px solid rgba(254,239,145,.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: '18px' }}>🧑</span>
+            </div>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#feef91', whiteSpace: 'nowrap' }}>
+              اسمك
+            </span>
+            <input
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerNameState(e.target.value)}
+              placeholder="اكتب اسمك هنا..."
+              maxLength={20}
+              dir="rtl"
+              autoFocus
+              style={{
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: 700,
+                textAlign: 'right',
+                width: '100%',
+              }}
+            />
+          </>
+        )}
+      </motion.div>
+
+      {/* ══════════ Settings grid (نوع الصور + عدد الأخطائ + الوقت + الأسرع) ══════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.32, duration: 0.3 }}
+        className="tobol-team-card"
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          padding: '10px 12px',
+          borderRadius: '12px',
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div>
+            <SectionLabel>نوع الصور</SectionLabel>
+            <TobolSelect
+              value={flashiCategory}
+              onChange={(v) => setFlashiCategory(v as FlashiCategory | 'random')}
+              options={Object.entries(FLASHI_CATEGORY_LABELS).map(([val, label]) => ({ value: val, label }))}
+              ariaLabel="نوع الصور"
+            />
+          </div>
+          <div>
+            <SectionLabel>عدد الأخطائ</SectionLabel>
+            <TobolSelect
+              value={wrongCount}
+              onChange={(v) => useSpotDiffStore.setState({ wrongCount: parseInt(v) })}
+              options={[1,2,3,4,5,6,7,8,9,10].map(n => ({ value: n, label: String(n) }))}
+              ariaLabel="عدد الأخطائ"
+            />
+          </div>
+          <div>
+            <SectionLabel>الوقت</SectionLabel>
+            <TobolSelect
+              value={timerValueSec}
+              onChange={(v) => useSpotDiffStore.setState({ timerValueSec: parseInt(v) })}
+              options={TIMER_OPTIONS}
+              ariaLabel="الوقت"
+            />
+          </div>
+          <div>
+            <SectionLabel>الأسرع</SectionLabel>
+            <TobolSelect
+              value={fastestFinish ? 'yes' : 'no'}
+              onChange={(v) => useSpotDiffStore.setState({ fastestFinish: v === 'yes' })}
+              options={[{ value: 'yes', label: 'نعم' }, { value: 'no', label: 'لا' }]}
+              ariaLabel="الأسرع"
+            />
+          </div>
         </div>
-        <span style={{ fontSize: '12px', fontWeight: 800, color: '#feef91', whiteSpace: 'nowrap' }}>
-          اسمك
-        </span>
-        <input
-          type="text"
-          value={playerName}
-          onChange={(e) => setPlayerNameState(e.target.value)}
-          placeholder="اكتب اسمك هنا..."
-          maxLength={20}
-          dir="rtl"
-          autoFocus
-          style={{
-            flex: 1,
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: '#fff',
-            fontSize: '14px',
-            fontWeight: 700,
-            textAlign: 'right',
-            width: '100%',
-          }}
-        />
       </motion.div>
 
       {/* ══════════ Round count selector ══════════ */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.32, duration: 0.3 }}
+        transition={{ delay: 0.38, duration: 0.3 }}
         style={{
           width: '100%',
           maxWidth: '380px',
@@ -278,18 +488,18 @@ export default function GameSetup() {
               key={opt.value}
               onClick={() => setTotalRounds(opt.value)}
               style={{
-                flex: 1, padding: '10px 4px', borderRadius: '10px',
+                flex: 1, padding: '8px 4px', borderRadius: '10px',
                 border: `1.5px solid ${selected ? 'rgba(254,239,145,.65)' : 'rgba(255,255,255,.12)'}`,
                 background: selected
                   ? 'linear-gradient(135deg, rgba(254,239,145,.18), rgba(170,110,31,.08))'
                   : 'rgba(6,42,32,.55)',
                 color: selected ? '#feef91' : '#9fc4b4',
-                fontSize: '12px', fontWeight: 800, cursor: 'pointer',
+                fontSize: '11px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
                 boxShadow: selected ? '0 0 10px rgba(254,239,145,.2)' : 'none',
               }}
             >
-              <span style={{ fontSize: '16px' }}>{opt.value === 3 ? '🎯' : opt.value === 5 ? '🔥' : '🏆'}</span>
+              <span style={{ fontSize: '15px' }}>{opt.value === 3 ? '🎯' : opt.value === 5 ? '🔥' : '🏆'}</span>
               {opt.label}
             </button>
           );
@@ -300,7 +510,7 @@ export default function GameSetup() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.38, duration: 0.3 }}
+        transition={{ delay: 0.42, duration: 0.3 }}
         style={{
           width: '100%',
           maxWidth: '380px',
@@ -317,18 +527,18 @@ export default function GameSetup() {
               key={d}
               onClick={() => setDifficulty(d)}
               style={{
-                flex: 1, padding: '10px 4px', borderRadius: '10px',
+                flex: 1, padding: '8px 4px', borderRadius: '10px',
                 border: `1.5px solid ${selected ? color + 'AA' : 'rgba(255,255,255,.12)'}`,
                 background: selected
                   ? `linear-gradient(135deg, ${color}26, ${color}0d)`
                   : 'rgba(6,42,32,.55)',
                 color: selected ? color : '#9fc4b4',
-                fontSize: '12px', fontWeight: 800, cursor: 'pointer',
+                fontSize: '11px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
                 boxShadow: selected ? `0 0 10px ${color}33` : 'none',
               }}
             >
-              <span style={{ fontSize: '14px' }}>{cfg.timePerRoundSec}s</span>
+              <span style={{ fontSize: '13px' }}>{cfg.timePerRoundSec}s</span>
               {cfg.label}
             </button>
           );
@@ -339,11 +549,11 @@ export default function GameSetup() {
       <motion.button
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.44, duration: 0.3 }}
+        transition={{ delay: 0.48, duration: 0.3 }}
         whileHover={isValid ? { scale: 1.02 } : {}}
         whileTap={isValid ? { scale: 0.97 } : {}}
         onClick={handleStart}
-        disabled={!isValid}
+        disabled={!isValid || catalogLoading}
         className="tobol-start-btn"
         style={{
           width: '100%',
@@ -353,7 +563,7 @@ export default function GameSetup() {
           color: '#feef91',
           fontSize: '17px',
           fontWeight: 900,
-          cursor: isValid ? 'pointer' : 'not-allowed',
+          cursor: isValid && !catalogLoading ? 'pointer' : 'not-allowed',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -365,9 +575,9 @@ export default function GameSetup() {
         }}
       >
         <span className="tobol-start-icon">
-          <span style={{ fontSize: '18px' }}>🔍</span>
+          <span style={{ fontSize: '18px' }}>{catalogLoading ? '⏳' : '🔍'}</span>
         </span>
-        <span>ابدأ اللعبة</span>
+        <span>{catalogLoading ? 'جاري تحميل الصور...' : 'ابدأ اللعبة'}</span>
       </motion.button>
 
       {/* ══════════ Exit dialog ══════════ */}
@@ -391,15 +601,19 @@ export default function GameSetup() {
               exit={{ scale: 0.9, y: 16 }}
               transition={{ type: 'spring', bounce: 0.32 }}
               onClick={(e) => e.stopPropagation()}
+              className="tobol-team-card"
               style={{
-                background: 'linear-gradient(180deg, #0e2a22, #061812)',
-                border: '1.5px solid rgba(254,239,145,.25)',
-                borderRadius: '18px', padding: '20px', width: '100%', maxWidth: '300px',
-                textAlign: 'center', boxShadow: '0 14px 36px rgba(0,0,0,.55)',
+                padding: '20px', width: '100%', maxWidth: '300px',
+                textAlign: 'center', borderRadius: '18px',
               }}
             >
               <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
-              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
+              <h3 style={{
+                ...STROKE_STYLE,
+                fontSize: '17px',
+                fontWeight: 900,
+                marginBottom: '6px',
+              }}>
                 الخروج من اللعبة؟
               </h3>
               <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
