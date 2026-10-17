@@ -16,12 +16,12 @@ import {
   ROUND_COUNT_OPTIONS,
 } from './battleship-types';
 import {
-  getBattleshipCatalog,
-  pickRandomBattleships,
-  buildBattleshipUrl,
+  getGuessImageCatalog as getBattleshipCatalog,
+  pickRandomGuessImages as pickRandomBattleships,
+  buildGuessImageUrl as buildBattleshipUrl,
   GUESS_GRID_OPTIONS,
   GUESS_IMAGE_COUNT,
-  type Battleship,
+  type GuessImage as Battleship,
 } from './flashi_guess_images';
 
 // ─── State ────────────────────────────────────────────────────────────
