@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useSpotDiffStore } from '@/lib/spotdiff-store';
@@ -63,7 +63,7 @@ function ClickFeedback({ item, onDone }: { item: ClickFeedbackItem; onDone: () =
       animate={{ opacity: 0, scale: 1.4, y: -30 }}
       transition={{ duration: 0.9, ease: 'easeOut' }}
       style={{
-        position: 'absolute',
+        position: 'fixed',  // viewport-relative (matches click handler's viewport coords)
         top: `${item.topVmin}vmin`,
         left: `${item.leftVmin}vmin`,
         transform: 'translate(-50%, -50%)',
@@ -250,6 +250,12 @@ export default function GameBoard() {
   const [showScore, setShowScore] = useState(false);
   const [feedbacks, setFeedbacks] = useState<ClickFeedbackItem[]>([]);
   const [misses, setMisses] = useState<MissMarker[]>([]);
+  // Track circleDiv's position on the viewport so we can convert flashi's
+  // viewport-relative vmin coords to circleDiv-relative px for absolute
+  // placement. Without this, the displayed circle and the click hit-area
+  // would diverge on large viewports where 100vmin < viewport_width (and
+  // circleDiv is centered with margin:auto, causing rect.left ≠ 0).
+  const [cdivRect, setCdivRect] = useState<DOMRect | null>(null);
   const nextFeedbackId = useRef(0);
   const nextMissId = useRef(0);
   const circleDivRef = useRef<HTMLDivElement>(null);
@@ -258,6 +264,28 @@ export default function GameBoard() {
   useEffect(() => {
     loadFlashiCatalog();
   }, [loadFlashiCatalog]);
+
+  // Measure circleDiv's position on the viewport (needed for accurate
+  // vmin → px conversion of circle placements).
+  useLayoutEffect(() => {
+    if (!circleDivRef.current) return;
+    setCdivRect(circleDivRef.current.getBoundingClientRect());
+  }, [currentRoundData]);
+
+  // Re-measure on resize (viewport changes affect vmin px value + rect pos)
+  useEffect(() => {
+    const handler = () => {
+      if (circleDivRef.current) {
+        setCdivRect(circleDivRef.current.getBoundingClientRect());
+      }
+    };
+    window.addEventListener('resize', handler);
+    window.addEventListener('scroll', handler, true);
+    return () => {
+      window.removeEventListener('resize', handler);
+      window.removeEventListener('scroll', handler, true);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -300,8 +328,13 @@ export default function GameBoard() {
     if (!cdiv) return;
     const rect = cdiv.getBoundingClientRect();
     const vmin = vminPx();
-    const clickTopVmin = (e.clientY - rect.top) / vmin;
-    const clickLeftVmin = (e.clientX - rect.left) / vmin;
+    // Use VIEWPORT coordinates (e.clientX/Y) instead of circleDiv-relative
+    // coords — flashi's bTop/bLeft are in vmin units relative to a
+    // 100vmin × 100vmin viewport frame. Mixing circleDiv-relative clicks
+    // with viewport-relative circle centers caused the displayed circle
+    // and the click hit-area to diverge on large viewports.
+    const clickTopVmin = e.clientY / vmin;
+    const clickLeftVmin = e.clientX / vmin;
     const imageShift = currentRoundData.imageShift ?? 53.5;
 
     let hitIdx = -1;
@@ -397,6 +430,19 @@ export default function GameBoard() {
       };
     });
   }, [currentRoundData, foundDifferences, currentRound, imageShift]);
+
+  // Convert flashi's viewport-relative vmin coordinate to circleDiv-relative px.
+  // flashi coords are vmin units relative to a 100vmin × 100vmin viewport frame.
+  // But position:absolute is relative to circleDiv (which has margin:auto
+  // and may be offset from viewport's top-left on large viewports).
+  // So: pixel_pos_in_viewport = vmin_val × vminPx
+  //     pixel_pos_in_circleDiv = pixel_pos_in_viewport − rect.top/left
+  const vminToCdivPx = (vminVal: number, axis: 'top' | 'left'): number => {
+    const vminP = vminPx();
+    if (!cdivRect) return vminVal * vminP; // fallback: treat as if rect at 0,0
+    const viewportPx = vminVal * vminP;
+    return axis === 'top' ? viewportPx - cdivRect.top : viewportPx - cdivRect.left;
+  };
 
   // Compact Tobol-styled action button (smaller for single-row layout)
   const CompactBtn = ({
@@ -724,7 +770,9 @@ export default function GameBoard() {
             }}
           />
 
-          {/* B-side circle markers */}
+          {/* B-side circle markers — positioned at viewport-vmin coords
+              converted to circleDiv-relative px so they sit exactly on the
+              diff hit-area regardless of viewport size. */}
           {diffMarkers.map((m) => (
             (m.found || showAnswers) && (
               <motion.div
@@ -734,8 +782,8 @@ export default function GameBoard() {
                 transition={{ type: 'spring', bounce: 0.4 }}
                 style={{
                   position: 'absolute',
-                  top: `${m.topVmin}vmin`,
-                  left: `${m.leftVmin}vmin`,
+                  top: `${vminToCdivPx(m.topVmin, 'top')}px`,
+                  left: `${vminToCdivPx(m.leftVmin, 'left')}px`,
                   width: '9.5vmin',
                   height: '9.5vmin',
                   transform: 'translate(-50%, -50%)',
@@ -761,13 +809,13 @@ export default function GameBoard() {
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 0.5 }}
               transition={{ type: 'spring', bounce: 0.4 }}
-              style={{
-                position: 'absolute',
-                top: `${d.topVmin}vmin`,
-                left: `${d.leftVmin}vmin`,
-                width: '9.5vmin',
-                height: '9.5vmin',
-                transform: 'translate(-50%, -50%)',
+                style={{
+                  position: 'absolute',
+                  top: `${vminToCdivPx(d.topVmin, 'top')}px`,
+                  left: `${vminToCdivPx(d.leftVmin, 'left')}px`,
+                  width: '9.5vmin',
+                  height: '9.5vmin',
+                  transform: 'translate(-50%, -50%)',
                 border: '2px dashed rgba(254,239,145,.5)',
                 borderRadius: '50%',
                 background: 'transparent',
@@ -777,7 +825,8 @@ export default function GameBoard() {
             />
           ))}
 
-          {/* Miss markers (red X) */}
+          {/* Miss markers (red X) — positioned at the click's viewport
+              coordinate, converted to circleDiv-relative px. */}
           {misses.map(m => (
             <motion.div
               key={m.id}
@@ -786,8 +835,8 @@ export default function GameBoard() {
               transition={{ duration: 0.3 }}
               style={{
                 position: 'absolute',
-                top: `${m.topVmin}vmin`,
-                left: `${m.leftVmin}vmin`,
+                top: `${vminToCdivPx(m.topVmin, 'top')}px`,
+                left: `${vminToCdivPx(m.leftVmin, 'left')}px`,
                 transform: 'translate(-50%, -50%)',
                 color: '#ef4444',
                 fontSize: '5vmin',
@@ -808,10 +857,11 @@ export default function GameBoard() {
             />
           ))}
 
-          {/* B-side label badge */}
+          {/* B-side label badge — positioned just below the A/B split line */}
           <div style={{
             position: 'absolute',
-            top: `${imageShift + 1}vmin`,
+            top: `${vminToCdivPx(imageShift + 1, 'top')}px`,
+            left: `${vminToCdivPx(5, 'left')}px`,
             right: '5%',
             background: 'rgba(0,0,0,.7)',
             color: '#fbbf24',
