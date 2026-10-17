@@ -381,7 +381,7 @@ export const useGuessImageStore = create<GuessImageState>()(
     }),
     {
       name: 'guessimage-game-storage',
-      version: 2,
+      version: 3,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,

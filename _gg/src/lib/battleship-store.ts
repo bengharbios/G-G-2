@@ -457,7 +457,7 @@ export const useBattleshipStore = create<BattleshipState>()(
     }),
     {
       name: 'battleship-game-storage',
-      version: 1,
+      version: 2,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,
