@@ -4,9 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { SPOTDIFF_ROUNDS } from '@/lib/spotdiff-rounds';
 
+// Minimal auth user shape (passed from join page when viewer is authed)
+interface AuthUser {
+  id: string;
+  username: string;
+  displayName?: string;
+  avatar?: string;
+  frame?: string;
+}
+
 // ============================================================
 // SpotDiffSpectatorView — shown to viewers joining via deep-link
-// Polls the host's room state and renders the current round read-only
+// Polls the host's room state and renders the current round read-only.
+// If the viewer is authed, their avatar/frame/name are passed in.
+// If guest, results still display but with a "register to earn gold/xp" CTA.
 // ============================================================
 
 interface SpotDiffRoomData {
@@ -67,7 +78,7 @@ function Confetti() {
   );
 }
 
-export default function SpotDiffSpectatorView({ roomCode }: { roomCode: string }) {
+export default function SpotDiffSpectatorView({ roomCode, spectatorAuthUser }: { roomCode: string; spectatorAuthUser?: AuthUser | null }) {
   const [room, setRoom] = useState<SpotDiffRoomData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -172,6 +183,59 @@ export default function SpotDiffSpectatorView({ roomCode }: { roomCode: string }
         <p style={{ color: '#9fc4b4', fontSize: '13px' }}>
           الفروقات: {room.totalFound}/{room.totalDifferences}
         </p>
+
+        {/* Auth-status message: authed → earns gold/xp; guest → CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          style={{
+            marginTop: '16px',
+            padding: '10px 16px',
+            borderRadius: '12px',
+            background: spectatorAuthUser
+              ? 'linear-gradient(135deg, rgba(251,191,36,.18), rgba(170,110,31,.08))'
+              : 'rgba(0,0,0,.45)',
+            border: spectatorAuthUser
+              ? '1px solid rgba(251,191,36,.4)'
+              : '1px solid rgba(254,239,145,.2)',
+            maxWidth: '380px',
+            textAlign: 'center',
+          }}
+        >
+          {spectatorAuthUser ? (
+            <>
+              <p style={{ color: '#fbbf24', fontSize: '13px', fontWeight: 800 }}>
+                🎁 أنت مسجّل دخول —
+              </p>
+              <p style={{ color: '#feef91', fontSize: '11px', fontWeight: 700, marginTop: '4px' }}>
+                ستُحتسب لك الذهب والخبرة تلقائياً عند الفوز بالمركز الأول
+              </p>
+            </>
+          ) : (
+            <>
+              <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 700 }}>
+                💡 سجّل دخولك لربح الذهب والخبرة عند الفوز
+              </p>
+              <a
+                href="/login"
+                style={{
+                  display: 'inline-block',
+                  marginTop: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  background: 'linear-gradient(135deg, #fbbf24, #aa6e1f)',
+                  color: '#000',
+                  fontSize: '12px',
+                  fontWeight: 800,
+                  textDecoration: 'none',
+                }}
+              >
+                🔑 سجّل دخولك الآن
+              </a>
+            </>
+          )}
+        </motion.div>
       </div>
     );
   }

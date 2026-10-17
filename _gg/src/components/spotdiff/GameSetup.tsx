@@ -88,6 +88,7 @@ export default function GameSetup() {
     loadFlashiCatalog,
     flashiCategory, setFlashiCategory,
     timerValueSec, fastestFinish, wrongCount,
+    roomCode,
   } = useSpotDiffStore();
 
   const [playerName, setPlayerNameState] = useState('');
@@ -96,6 +97,39 @@ export default function GameSetup() {
   const [soundOn, setSoundOn] = useState(true);
   const [frameImg, setFrameImg] = useState<string | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
+  const [copied, setCopied] = useState<'code' | 'link' | null>(null);
+
+  // Build the shareable watch link for the host to send to others.
+  // The deep-link route /r/spotdiff/[code] handles in-app vs external browser.
+  const watchLink = typeof window !== 'undefined' && roomCode
+    ? `${window.location.origin}/r/spotdiff/${roomCode}`
+    : '';
+  const handleCopyCode = async () => {
+    if (!roomCode) return;
+    try {
+      await navigator.clipboard.writeText(roomCode);
+      setCopied('code');
+      setTimeout(() => setCopied(null), 1800);
+    } catch { /* ignore */ }
+  };
+  const handleCopyLink = async () => {
+    if (!watchLink) return;
+    try {
+      await navigator.clipboard.writeText(watchLink);
+      setCopied('link');
+      setTimeout(() => setCopied(null), 1800);
+    } catch { /* ignore */ }
+  };
+  const handleShareLink = async () => {
+    if (!watchLink || !navigator.share) return;
+    try {
+      await navigator.share({
+        title: 'اختلاف الصور — انضم كمشاهد',
+        text: `انضم لمشاهدة لعبة اختلاف الصور في غرفتي (كود: ${roomCode})`,
+        url: watchLink,
+      });
+    } catch { /* user cancelled */ }
+  };
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -444,6 +478,133 @@ export default function GameSetup() {
           </>
         )}
       </motion.div>
+
+      {/* ══════════ Diwaniya share card (only in diwaniya mode) ══════════ */}
+      {gameMode === 'diwaniya' && roomCode && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28, duration: 0.3 }}
+          className="tobol-team-card"
+          style={{
+            width: '100%',
+            maxWidth: '380px',
+            padding: '10px 14px',
+            borderRadius: '12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+          }}
+        >
+          <div style={{
+            ...STROKE_STYLE,
+            fontSize: '12px',
+            fontWeight: 800,
+            textAlign: 'center',
+          }}>
+            📡 شارك الغرفة مع أصدقائك
+          </div>
+          {/* Code row */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'rgba(0,0,0,.4)',
+            border: '1px solid rgba(254,239,145,.3)',
+            borderRadius: '8px',
+            padding: '8px 12px',
+          }}>
+            <span style={{
+              ...STROKE_STYLE,
+              fontSize: '11px',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}>كود:</span>
+            <span style={{
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '20px',
+              fontWeight: 900,
+              color: '#feef91',
+              letterSpacing: '3px',
+              flex: 1,
+              textAlign: 'center',
+            }}>{roomCode}</span>
+            <button
+              onClick={handleCopyCode}
+              style={{
+                background: copied === 'code'
+                  ? 'linear-gradient(135deg, #22c55e, #15803d)'
+                  : 'linear-gradient(135deg, #fbbf24, #aa6e1f)',
+                color: copied === 'code' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '6px 10px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              {copied === 'code' ? '✓ تم' : 'نسخ'}
+            </button>
+          </div>
+          {/* Link row */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}>
+            <button
+              onClick={handleCopyLink}
+              style={{
+                flex: 1,
+                background: 'rgba(8,28,22,.85)',
+                border: '1px solid rgba(254,239,145,.25)',
+                borderRadius: '6px',
+                padding: '8px 10px',
+                color: copied === 'link' ? '#86efac' : '#feef91',
+                fontSize: '11px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                textAlign: 'center',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+              title={watchLink}
+            >
+              {copied === 'link' ? '✓ تم نسخ الرابط' : '🔗 نسخ رابط المشاهدة'}
+            </button>
+            {typeof navigator !== 'undefined' && navigator.share && (
+              <button
+                onClick={handleShareLink}
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6, #1e40af)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  color: '#fff',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                }}
+              >
+                مشاركة
+              </button>
+            )}
+          </div>
+          <p style={{
+            fontSize: '10px',
+            color: '#9fc4b4',
+            textAlign: 'center',
+            fontWeight: 600,
+            marginTop: '2px',
+          }}>
+            💡 من يفتح الرابط سيدخل تلقائياً إن كان مسجّلاً، أو سيُطلب منه إدخال اسمه
+          </p>
+        </motion.div>
+      )}
 
       {/* ══════════ Settings grid (نوع الصور + الوقت + عدد الأخطائ + الأسرع) ══════════ */}
       <motion.div

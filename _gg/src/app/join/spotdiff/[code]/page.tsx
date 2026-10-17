@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 import SpotDiffSpectatorView from '@/components/spotdiff/SpotDiffSpectatorView';
+import SvgaOrImg from '@/components/shared/SvgaOrImg';
 
 function useHydrated() {
   return useSyncExternalStore(
@@ -11,6 +12,28 @@ function useHydrated() {
     () => true,
     () => false
   );
+}
+
+// Minimal authUser shape (subset of AppShellUser)
+interface AuthUser {
+  id: string;
+  username: string;
+  displayName?: string;
+  avatar?: string;
+  frame?: string;
+}
+
+// Frame asset path helper (matching SiteHeader logic)
+function frameSrcFallback(frameId?: string | null): string | null {
+  const id = (frameId || '').trim();
+  if (!id) return null;
+  return /^\d+$/.test(id) ? `/yalla-frames/${id}.png` : null;
+}
+
+function avatarSrc(avatar?: string, id?: string): string {
+  if (avatar) return avatar;
+  const seed = (parseInt(id || '', 10) || 0) % 12 + 1;
+  return `/yalla-avatars/defaultPhoto_${seed}.png`;
 }
 
 function SpotDiffJoinContent() {
@@ -29,6 +52,46 @@ function SpotDiffJoinContent() {
   const [inputName, setInputName] = useState('');
   const [nameError, setNameError] = useState('');
   const connectAttempted = useRef(false);
+
+  // ── Auth user state (fetched directly because /join/spotdiff is NOT in
+  //    SHELL_ROUTES — AppShellContext.Provider doesn't wrap this route)
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [authChecking, setAuthChecking] = useState(true);
+  const [frameImg, setFrameImg] = useState<string | null>(null);
+
+  // Fetch authed user on mount
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/auth/me')
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.success && data.user) setAuthUser(data.user as AuthUser);
+      })
+      .catch(() => { /* silent */ })
+      .finally(() => { if (!cancelled) setAuthChecking(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Load frame for authed user (same pattern as GameSetup)
+  useEffect(() => {
+    if (!authUser?.frame) { setFrameImg(null); return; }
+    let cancelled = false;
+    fetch('/api/store/frames-catalog')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (cancelled || !d?.success || !Array.isArray(d.frames)) return;
+        const m = new Map<string, string>();
+        for (const f of d.frames) {
+          if (f.imageUrl) m.set(String(f.id), String(f.imageUrl));
+        }
+        if (!cancelled) setFrameImg(m.get(String(authUser.frame)) || frameSrcFallback(authUser.frame));
+      })
+      .catch(() => {
+        if (!cancelled) setFrameImg(frameSrcFallback(authUser.frame));
+      });
+    return () => { cancelled = true; };
+  }, [authUser?.frame]);
 
   // Send heartbeat to keep spectator alive
   useEffect(() => {
@@ -117,14 +180,29 @@ function SpotDiffJoinContent() {
     }
   }, [code]);
 
-  // Auto-connect when hydrated with name in URL
+  // Auto-connect logic:
+  //   1) URL has ?name=... → use it (covers deep-link with pre-filled name)
+  //   2) User is authed → use their displayName (no input needed)
+  //   3) Otherwise → show name input
   useEffect(() => {
     if (!mounted || connectAttempted.current) return;
-    if (!nameFromUrl) return;
-    connectAttempted.current = true;
-    setInputName(nameFromUrl);
-    connectAsSpectator(nameFromUrl);
-  }, [mounted, nameFromUrl, connectAsSpectator]);
+    if (authChecking) return; // wait for auth check
+    // Priority 1: URL name
+    if (nameFromUrl) {
+      connectAttempted.current = true;
+      setInputName(nameFromUrl);
+      connectAsSpectator(nameFromUrl);
+      return;
+    }
+    // Priority 2: authed user's displayName
+    if (authUser?.displayName) {
+      connectAttempted.current = true;
+      setInputName(authUser.displayName);
+      connectAsSpectator(authUser.displayName);
+      return;
+    }
+    // Priority 3: stay on name-input screen
+  }, [mounted, authChecking, nameFromUrl, authUser, connectAsSpectator]);
 
   const handleJoin = () => {
     if (!inputName.trim()) { setNameError('يجب إدخال اسمك'); return; }
@@ -134,32 +212,59 @@ function SpotDiffJoinContent() {
   };
 
   // Connected → spectator view (read-only)
+  // If authed: show avatar + frame + name in sticky header.
+  // If guest: show simple emoji + name.
   if (connected && spectatorName && !error) {
     return (
       <div className="flex flex-col min-h-screen tobol-bg">
         <div className="sticky top-0 z-50 border-b border-cyan-800/50 bg-slate-950/90 backdrop-blur-sm">
           <div className="max-w-md mx-auto flex items-center justify-between px-3 py-1.5">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs bg-cyan-600/50 text-cyan-300">
-                👁
-              </div>
+              {authUser ? (
+                // Authed: avatar with frame overlay (same pattern as SiteHeader)
+                <div style={{ position: 'relative', width: '32px', height: '32px', flexShrink: 0 }}>
+                  <span className="avatar-frame-wrap" style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
+                    <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
+                      <img
+                        src={avatarSrc(authUser.avatar, authUser.id)}
+                        alt={authUser.displayName || spectatorName}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        onError={(e) => {
+                          const t = e.target as HTMLImageElement;
+                          if (!t.src.includes('defaultPhoto_')) {
+                            t.src = '/yalla-avatars/defaultPhoto_1.png';
+                          }
+                        }}
+                      />
+                    </div>
+                    {frameImg && <SvgaOrImg src={frameImg} alt="" />}
+                  </span>
+                </div>
+              ) : (
+                // Guest: simple eye emoji
+                <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs bg-cyan-600/50 text-cyan-300">
+                  👁
+                </div>
+              )}
               <div>
                 <p className="text-xs font-bold text-cyan-300">{spectatorName}</p>
-                <p className="text-[9px] text-slate-500">مشاهد • غرفة {code}</p>
+                <p className="text-[9px] text-slate-500">
+                  {authUser ? `مشاهد • مسجّل الدخول • غرفة ${code}` : `مشاهد • غرفة ${code}`}
+                </p>
               </div>
             </div>
             <a href="/diwaniya" className="text-xs text-slate-400 hover:text-red-400 transition-colors">خروج ✕</a>
           </div>
         </div>
         <main className="flex-1">
-          <SpotDiffSpectatorView roomCode={code} />
+          <SpotDiffSpectatorView roomCode={code} spectatorAuthUser={authUser} />
         </main>
       </div>
     );
   }
 
   // Before hydration
-  if (!mounted) {
+  if (!mounted || authChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center tobol-bg" dir="rtl">
         <div className="text-center">
@@ -203,7 +308,7 @@ function SpotDiffJoinContent() {
     );
   }
 
-  // Name entry (if no name in URL)
+  // Name entry (only shown if user is NOT authed and URL has no ?name=)
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4 tobol-bg" dir="rtl">
       <div className="w-full max-w-sm sm:max-w-md mx-auto">
@@ -226,6 +331,9 @@ function SpotDiffJoinContent() {
             <div className="space-y-3">
               <div className="text-center mb-2">
                 <p className="text-xs text-cyan-300">وضع المشاهدة — شاهد اللعبة مباشرة</p>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  💡 سجّل دخولك لربح الذهب والخبرة عند الفوز
+                </p>
               </div>
               <div>
                 <label className="text-xs text-slate-400 mb-1 block">اسمك كمشاهد</label>
@@ -243,6 +351,11 @@ function SpotDiffJoinContent() {
                 className="w-full bg-gradient-to-l from-cyan-600 to-teal-800 hover:from-cyan-500 hover:to-teal-700 text-white font-bold text-base sm:text-lg py-4 rounded-xl transition-all cursor-pointer">
                 👁 شاهد اللعبة
               </button>
+              <div className="text-center pt-2">
+                <a href="/login" className="text-xs text-amber-400 hover:text-amber-300 underline">
+                  🔑 سجّل دخولك لربح الذهب
+                </a>
+              </div>
             </div>
           </div>
         ) : (
