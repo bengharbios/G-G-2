@@ -24,15 +24,15 @@
     />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23050505'/%3E%3Cpath d='M14 45 L24 16 L32 34 L40 16 L50 45 Z' fill='%23f4f4f5'/%3E%3C/svg%3E" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-Ry0ztquh.js"></script>
+    <script type="module" crossorigin src="./assets/index-DEWAbViS.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/icons-CKkCte_Y.js">
     <link rel="modulepreload" crossorigin href="./assets/react-vendor-UHztWm9I.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-D4_4BoWy.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-CkbXDw5h.css">
   </head>
   <body>
     <div id="root"></div>
     <script>
-      // ─── G-G Phase Watcher: detects current phase + shows moon/sun + pass-the-phone ───
+      // ─── G-G Phase Watcher + Pass-the-Phone overlay ───
       (function () {
         var PHASE_KEYWORDS = {
           NIGHT: ['nightfall', 'night start', 'werewolves hunt', 'seer checks', 'witch acts', 'seer check', 'witch act', 'الليلة', 'اللّيل', 'فحص العرّاف', 'الساحرة', 'الذئاب'],
@@ -52,30 +52,77 @@
         function currentPhaseText() {
           var gr = document.querySelector('.game-room');
           if (!gr) return '';
-          // Look for phase indicators
           var selectors = ['.game-room-header [class*="phase"]', '[class*="PHASE"]', '[class*="phase-text"]', '.game-room-header h2'];
           for (var i = 0; i < selectors.length; i++) {
             var el = gr.querySelector(selectors[i]);
             if (el && el.innerText) return el.innerText;
           }
-          // Fallback: scan header
           var header = gr.querySelector('.game-room-header');
           return header ? header.innerText : '';
         }
+        var lastPhase = null;
         function applyPhase() {
           var gr = document.querySelector('.game-room');
           if (!gr) return;
           var text = currentPhaseText();
           var phase = getPhase(text);
-          if (phase !== gr.getAttribute('data-gg-phase')) {
+          if (phase !== lastPhase) {
+            lastPhase = phase;
             gr.setAttribute('data-gg-phase', phase);
-            // Update the ::before content via CSS variable
             gr.style.setProperty('--gg-phase-emoji', phase === 'NIGHT' ? '"🌙"' : phase === 'DAY' ? '"☀️"' : '""');
+            // Show pass-the-phone overlay when phase changes
+            if (phase !== 'UNKNOWN' && phase !== null) {
+              showPassOverlay(phase);
+            }
           }
         }
-        // Poll every 500ms (cheap + reliable across React rerenders)
+        // ─── Pass-the-phone overlay ───
+        var overlayEl = null;
+        var overlayTimer = null;
+        function showPassOverlay(phase) {
+          // Remove existing overlay
+          if (overlayEl) { overlayEl.remove(); overlayEl = null; }
+          if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+          // Create overlay
+          overlayEl = document.createElement('div');
+          overlayEl.setAttribute('gg-pass-overlay', '1');
+          overlayEl.style.cssText = [
+            'position: fixed',
+            'inset: 0',
+            'z-index: 9999',
+            'background: ' + (phase === 'NIGHT' ? 'linear-gradient(180deg, #020F1A 0%, #021410 100%)' : 'linear-gradient(180deg, #0a2e1f 0%, #041F18 100%)'),
+            'display: flex',
+            'flex-direction: column',
+            'align-items: center',
+            'justify-content: center',
+            'gap: 14px',
+            'padding: 24px',
+            'font-family: "Cairo", "Lato", sans-serif',
+            'color: #feef91',
+            'animation: gg-fade-in .35s ease-out'
+          ].join(';');
+          var icon = phase === 'NIGHT' ? '🌙' : '☀️';
+          var title = phase === 'NIGHT' ? 'حلّ الليل' : 'أشرق النهار';
+          var subtitle = phase === 'NIGHT' ? 'مرّر الهاتف للاعب التالي\nليقوم بدوره الليلي' : 'مرّر الهاتف للاعب التالي\nللمناقشة والتصويت';
+          overlayEl.innerHTML =
+            '<div style="font-size: 72px; line-height: 1; filter: drop-shadow(0 6px 14px rgba(0,0,0,.55)); animation: gg-pulse 2s ease-in-out infinite">' + icon + '</div>' +
+            '<h2 style="color: #feef91; font-size: 26px; font-weight: 900; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,.85); -webkit-text-stroke: 1px #aa6e1f; paint-order: stroke fill">' + title + '</h2>' +
+            '<p style="color: #9fc4b4; font-size: 14px; font-weight: 600; text-align: center; margin: 0; line-height: 1.6; white-space: pre-line">' + subtitle + '</p>' +
+            '<button type="button" id="gg-pass-ok" style="margin-top: 18px; padding: 14px 28px; border: none; border-radius: 14px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-size: 16px; font-weight: 900; cursor: pointer; box-shadow: 0 6px 18px rgba(245,158,11,.35); display: flex; align-items: center; gap: 8px">✓ أنا جاهز</button>';
+          document.body.appendChild(overlayEl);
+          // Click handler
+          var ok = overlayEl.querySelector('#gg-pass-ok');
+          if (ok) ok.addEventListener('click', function () {
+            if (overlayEl) { overlayEl.style.opacity = '0'; setTimeout(function(){ if (overlayEl) { overlayEl.remove(); overlayEl = null; } }, 350); }
+            if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+          });
+          // Auto-hide after 6 seconds
+          overlayTimer = setTimeout(function () {
+            if (overlayEl) { overlayEl.style.opacity = '0'; setTimeout(function(){ if (overlayEl) { overlayEl.remove(); overlayEl = null; } }, 350); }
+          }, 6000);
+        }
+        // Poll every 500ms
         setInterval(applyPhase, 500);
-        // Also observe DOM mutations for snappier updates
         var mo = new MutationObserver(applyPhase);
         mo.observe(document.body, { childList: true, subtree: true, characterData: true });
         applyPhase();
