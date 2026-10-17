@@ -14,7 +14,7 @@ const STROKE_STYLE: React.CSSProperties = {
 export default function GameSetup() {
   const router = useRouter();
   const { themeId, setThemeId, startGame, resetGame, roomCode, gameMode, setRoomCode, playMode, setPlayMode } = useShipsStore();
-  const [copied, setCopied] = useState(false;
+  const [copied, setCopied] = useState(false);
   const [shareLink, setShareLink] = useState('');
 
   useEffect(() => {
