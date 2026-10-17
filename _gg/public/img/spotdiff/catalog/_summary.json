@@ -1,0 +1,32 @@
+{
+  "totalArrays": 6,
+  "totalImages": 7005,
+  "arrays": [
+    {
+      "name": "photoArray",
+      "count": 1499
+    },
+    {
+      "name": "vmiscArray",
+      "count": 4841
+    },
+    {
+      "name": "vsceneArray",
+      "count": 525
+    },
+    {
+      "name": "vphotoArray",
+      "count": 98
+    },
+    {
+      "name": "photo3Array",
+      "count": 23
+    },
+    {
+      "name": "vector3Array",
+      "count": 19
+    }
+  ],
+  "extractedAt": "2026-10-17T13:05:03.361Z",
+  "source": "https://www.flashi.me/f10/diff (via user-provided saved HTML)"
+}
