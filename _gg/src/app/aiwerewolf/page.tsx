@@ -22,6 +22,63 @@ export default function AIWerewolfPage() {
       style.id = 'gg-overlay-css';
       style.textContent = `
         /* === HIDE GAME HEADER === */
+        .wol-top-bar, .wol-currency-row, .wol-currency-item,
+        .wol-utility-trigger, .wol-marquee, .wol-marquee-track, .wol-marquee-item {
+          display: none !important;
+        }
+        
+        /* Hide step indicator "1 Choose Mode 2 Board..." */
+        .start-game-progress, .app-page-header, .app-page-back, .app-page-kicker {
+          display: none !important;
+        }
+        
+        /* Hide all h1/h2 headings */
+        h1, h2, h3 {
+          display: none !important;
+        }
+        
+        /* === HIDE BOTTOM NAV === */
+        .wol-bottom-nav, .wol-nav-tab {
+          display: none !important;
+        }
+        
+        /* === RECOLOR TO MATCH TOBOL (Yalla Ludo war theme) === */
+        body, #root, .wol-shell {
+          background: linear-gradient(180deg, #041F18 0%, #021410 100%) !important;
+          color: #feef91 !important;
+        }
+        
+        /* Panels — dark green with gold border */
+        .start-game-panel, .start-mode-option, [class*="panel"], [class*="card"],
+        [class*="container"], [class*="box"], [class*="surface"], [class*="dialog"] {
+          background: linear-gradient(180deg, rgba(6,42,32,.95), rgba(4,18,14,.95)) !important;
+          border: 1px solid rgba(254,239,145,.25) !important;
+          border-radius: 14px !important;
+        }
+        
+        /* Primary buttons — gold gradient */
+        .start-mode-option, button[class*="primary"], button[class*="submit"],
+        button[class*="confirm"], button[class*="start"] {
+          background: linear-gradient(135deg, rgba(245,158,11,.2), rgba(217,119,6,.08)) !important;
+          border: 1.5px solid rgba(254,239,145,.3) !important;
+          color: #feef91 !important;
+          border-radius: 12px !important;
+        }
+        
+        /* All text */
+        p, span, div, label, .app-section-heading, .start-mode-option {
+          color: #9fc4b4 !important;
+        }
+        
+        /* Strong text — gold */
+        strong, b, [class*="title"], [class*="Title"], [class*="heading"] {
+          color: #feef91 !important;
+        }
+        
+        /* Full height */
+        body, #root { min-height: 100vh !important; padding-top: 50px !important; }
+      `;
+        /* === HIDE GAME HEADER === */
         /* Step indicator "1 Choose Mode 2 Board, Difficulty..." */
         [class*="step"], [class*="Step"], [class*="progress"], [class*="Progress"],
         [class*="stepper"], [class*="Stepper"], [class*="breadcrumb"] {
