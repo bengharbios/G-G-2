@@ -91,41 +91,7 @@ export default function GameBoard() {
 
   // Render a single grid with coordinate headers
   const renderGrid = (grid: GridCell[][], isPlayer: boolean) => {
-    // Build a map of shipId → placed ship cells (for rendering real ship images)
-    const shipCellMap = new Map<string, { shipId: string; segment: number; orientation: 'horizontal' | 'vertical' }>();
-    if (isPlayer) {
-      // Scan grid for ship cells and build segment info
-      for (let r = 0; r < GRID_SIZE; r++) {
-        for (let c = 0; c < GRID_SIZE; c++) {
-          const cell = grid[r][c];
-          if (cell.state === 'ship' || cell.state === 'hit') {
-            // Find which ship this cell belongs to + segment number
-            // For now, use simple heuristic: find contiguous ship cells
-            if (cell.shipId) {
-              // Count segments by scanning left-to-right (horizontal) or top-to-bottom (vertical)
-              let segment = 1;
-              // Check if horizontal (cell to the left has same shipId)
-              if (c > 0 && grid[r][c-1].shipId === cell.shipId) {
-                segment = 2;
-                if (c > 1 && grid[r][c-2].shipId === cell.shipId) segment = 3;
-                if (c > 2 && grid[r][c-3].shipId === cell.shipId) segment = 4;
-                if (c > 3 && grid[r][c-4].shipId === cell.shipId) segment = 5;
-                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment, orientation: 'horizontal' });
-              } else if (r > 0 && grid[r-1][c].shipId === cell.shipId) {
-                segment = 2;
-                if (r > 1 && grid[r-2][c].shipId === cell.shipId) segment = 3;
-                if (r > 2 && grid[r-3][c].shipId === cell.shipId) segment = 4;
-                if (r > 3 && grid[r-4][c].shipId === cell.shipId) segment = 5;
-                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment, orientation: 'vertical' });
-              } else {
-                shipCellMap.set(`${r}-${c}`, { shipId: cell.shipId, segment: 1, orientation: 'horizontal' });
-              }
-            }
-          }
-        }
-      }
-    }
-
+    // No need to reconstruct ship info — it's stored directly on each GridCell
     return (
       <div style={{
         display: 'grid',
@@ -162,7 +128,7 @@ export default function GameBoard() {
             {row.map((cell, c) => {
               const key = `${r}-${c}`;
               const isPreview = isPlayer && previewCells.has(key);
-              const shipInfo = shipCellMap.get(key);
+              const shipInfo = null; // no longer needed
               let bg = 'rgba(0,0,0,.15)';
               let cursor = 'default';
               let onClick = () => {};
@@ -170,10 +136,10 @@ export default function GameBoard() {
               let imgStyle: React.CSSProperties = {};
 
               if (isPlayer) {
-                if (cell.state === 'ship' && shipInfo) {
-                  // Show real ship image segment
-                  const modelNum = shipTypeToModelNum(shipInfo.shipId);
-                  imgSrc = shipModelUrl(themeId, modelNum, shipInfo.orientation, shipInfo.segment);
+                if ((cell.state === 'ship' || cell.state === 'hit') && cell.shipModelNum && cell.shipSegment) {
+                  // Show real ship image segment (from cell metadata)
+                  const orientation = cell.shipOrientation || 'horizontal';
+                  imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, cell.shipSegment);
                   imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
                 } else if (cell.state === 'hit') {
                   imgSrc = hitUrl(themeId);
@@ -186,7 +152,7 @@ export default function GameBoard() {
                 if (phase === 'placing' && currentShip) {
                   cursor = canPlaceShip(r, c) ? 'pointer' : 'not-allowed';
                   onClick = () => { if (soundOn) playClickSound(); placeShip(r, c); };
-                  if (isPreview && canPlace) bg = 'rgba(34,197,94,.3)';
+                  if (false && canPlace) bg = 'rgba(34,197,94,.3)';
                   else if (isPreview && !canPlace) bg = 'rgba(239,68,68,.2)';
                 }
               } else {

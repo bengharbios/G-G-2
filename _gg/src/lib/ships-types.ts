@@ -70,7 +70,10 @@ export interface GridCell {
   row: number;
   col: number;
   state: CellState;
-  shipId?: string;  // which ship occupies this cell (if state === 'ship')
+  shipId?: string;       // which ship occupies this cell
+  shipModelNum?: number;  // 1-5 (for image URL)
+  shipOrientation?: 'horizontal' | 'vertical';
+  shipSegment?: number;   // 1-N (position within the ship for image segment)
 }
 
 // A placed ship on the grid

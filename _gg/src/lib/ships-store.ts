@@ -126,25 +126,9 @@ function isValidPlacement(
   return true;
 }
 
-// Place a ship on the grid
-function placeShipOnGrid(
-  grid: GridCell[][],
-  ship: PlacedShip
-): GridCell[][] {
-  const newGrid = grid.map(row => row.map(cell => ({ ...cell })));
-  for (const cell of ship.cells) {
-    newGrid[cell.row][cell.col] = {
-      row: cell.row,
-      col: cell.col,
-      state: 'ship' as CellState,
-      shipId: ship.shipTypeId,
-    };
-  }
-  return newGrid;
-}
-
-// AI randomly places all ships
-function aiPlaceShips(shipTypes: ShipType[]): { grid: GridCell[][]; ships: PlacedShip[] } {
+// placeShipOnGrid removed — ship placement now done inline in placeShip()
+// AI randomly places all ships (with model + segment info)
+function aiPlaceShips(shipTypes: ShipType[], modelNumMap: Record<string, number>): { grid: GridCell[][]; ships: PlacedShip[] } {
   const grid = createEmptyGrid();
   const ships: PlacedShip[] = [];
   for (const st of shipTypes) {
@@ -156,9 +140,20 @@ function aiPlaceShips(shipTypes: ShipType[]): { grid: GridCell[][]; ships: Place
       const col = Math.floor(Math.random() * GRID_SIZE);
       if (isValidPlacement(grid, row, col, st.length, orientation)) {
         const cells: Array<{ row: number; col: number }> = [];
+        const modelNum = modelNumMap[st.id] || 1;
         for (let i = 0; i < st.length; i++) {
-          if (orientation === 'horizontal') cells.push({ row, col: col + i });
-          else cells.push({ row: row + i, col });
+          const cellRow = orientation === 'horizontal' ? row : row + i;
+          const cellCol = orientation === 'horizontal' ? col + i : col;
+          cells.push({ row: cellRow, col: cellCol });
+          grid[cellRow][cellCol] = {
+            row: cellRow,
+            col: cellCol,
+            state: 'ship' as CellState,
+            shipId: st.id,
+            shipModelNum: modelNum,
+            shipOrientation: orientation,
+            shipSegment: i + 1,
+          };
         }
         const ship: PlacedShip = {
           shipTypeId: st.id,
@@ -168,15 +163,6 @@ function aiPlaceShips(shipTypes: ShipType[]): { grid: GridCell[][]; ships: Place
           sunk: false,
         };
         ships.push(ship);
-        // Place on grid
-        for (const cell of cells) {
-          grid[cell.row][cell.col] = {
-            row: cell.row,
-            col: cell.col,
-            state: 'ship' as CellState,
-            shipId: st.id,
-          };
-        }
         placed = true;
       }
       attempts++;
@@ -274,10 +260,30 @@ export const useShipsStore = create<ShipsState>()(
         const shipType = state.shipsToPlace[state.currentShipIndex];
         if (!isValidPlacement(state.playerGrid, row, col, shipType.length, state.currentOrientation)) return;
 
+        // Map shipType.id to model number (1-5)
+        const modelNumMap: Record<string, number> = {
+          carrier: 1, submarine: 2, destroyer: 3, battleship: 4, patrol: 5,
+          fighter: 1, helicopter: 2, tank: 3, camp: 4, armored: 5,
+        };
+        const modelNum = modelNumMap[shipType.id] || 1;
+
+        // Build cells with segment info
         const cells: Array<{ row: number; col: number }> = [];
+        const newGrid = state.playerGrid.map(r => r.map(c => ({ ...c })));
         for (let i = 0; i < shipType.length; i++) {
-          if (state.currentOrientation === 'horizontal') cells.push({ row, col: col + i });
-          else cells.push({ row: row + i, col });
+          const cellRow = state.currentOrientation === 'horizontal' ? row : row + i;
+          const cellCol = state.currentOrientation === 'horizontal' ? col + i : col;
+          cells.push({ row: cellRow, col: cellCol });
+          // Store segment info directly on the grid cell
+          newGrid[cellRow][cellCol] = {
+            row: cellRow,
+            col: cellCol,
+            state: 'ship' as CellState,
+            shipId: shipType.id,
+            shipModelNum: modelNum,
+            shipOrientation: state.currentOrientation,
+            shipSegment: i + 1,  // 1-based segment number
+          };
         }
         const placedShip: PlacedShip = {
           shipTypeId: shipType.id,
@@ -287,7 +293,6 @@ export const useShipsStore = create<ShipsState>()(
           hits: 0,
           sunk: false,
         };
-        const newGrid = placeShipOnGrid(state.playerGrid, placedShip);
         const newIndex = state.currentShipIndex + 1;
         const allPlaced = newIndex >= state.shipsToPlace.length;
 
@@ -307,13 +312,12 @@ export const useShipsStore = create<ShipsState>()(
       startAttacking: () => {
         const state = get();
         const shipTypes = state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
-        // AI places its ships
-        const { grid: aiGrid, ships: aiShips } = aiPlaceShips(shipTypes);
-
-        // Build player ships from playerGrid
-        const playerShips: PlacedShip[] = [];
-        // (playerShips were placed incrementally — we reconstruct from grid)
-        // For simplicity, we just track sunk state via grid cells
+        // AI places its ships (with model + segment info on grid cells)
+        const modelNumMap: Record<string, number> = {
+          carrier: 1, submarine: 2, destroyer: 3, battleship: 4, patrol: 5,
+          fighter: 1, helicopter: 2, tank: 3, camp: 4, armored: 5,
+        };
+        const { grid: aiGrid, ships: aiShips } = aiPlaceShips(shipTypes, modelNumMap);
 
         set({
           phase: 'attacking',
@@ -324,7 +328,7 @@ export const useShipsStore = create<ShipsState>()(
             themeId: state.themeId,
             playerGrid: state.playerGrid,
             aiGrid,
-            playerShips: [], // tracked via grid
+            playerShips: [],
             aiShips,
             currentTurn: 'player',
             playerScore: 0,
@@ -520,7 +524,7 @@ export const useShipsStore = create<ShipsState>()(
     }),
     {
       name: 'ships-game-storage',
-      version: 1,
+      version: 3,
       partialize: (state) => ({
         phase: state.phase,
         gameMode: state.gameMode,
