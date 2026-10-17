@@ -15,7 +15,7 @@ export default function AIWerewolfPage() {
     if (!iframe) return;
     try {
       const doc = iframe.contentDocument;
-      if (!doc) return;
+      if (!doc || !doc.head) return;
       if (doc.getElementById('gg-overlay-css')) return;
       
       const style = doc.createElement('style');
@@ -194,7 +194,16 @@ export default function AIWerewolfPage() {
         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
         title="AI Werewolf"
         allow="fullscreen"
-        onLoad={injectCSS}
+        onLoad={() => {
+          injectCSS();
+          // Retry every 500ms for 10 seconds — iframe content loads asynchronously
+          let attempts = 0;
+          const interval = setInterval(() => {
+            injectCSS();
+            attempts++;
+            if (attempts > 20) clearInterval(interval);
+          }, 500);
+        }}
       />
     </div>
   );
