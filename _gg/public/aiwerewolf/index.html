@@ -24,12 +24,62 @@
     />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23050505'/%3E%3Cpath d='M14 45 L24 16 L32 34 L40 16 L50 45 Z' fill='%23f4f4f5'/%3E%3C/svg%3E" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-DA1xwdVv.js"></script>
+    <script type="module" crossorigin src="./assets/index-Ry0ztquh.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/icons-CKkCte_Y.js">
     <link rel="modulepreload" crossorigin href="./assets/react-vendor-UHztWm9I.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-DsNb8zcI.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-D4_4BoWy.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // ─── G-G Phase Watcher: detects current phase + shows moon/sun + pass-the-phone ───
+      (function () {
+        var PHASE_KEYWORDS = {
+          NIGHT: ['nightfall', 'night start', 'werewolves hunt', 'seer checks', 'witch acts', 'seer check', 'witch act', 'الليلة', 'اللّيل', 'فحص العرّاف', 'الساحرة', 'الذئاب'],
+          DAY: ['dawn report', 'day start', 'day discussion', 'day voting', 'exile vote', 'hunter shot', 'الفجر', 'النهار', 'التصويت', 'المناقشة', 'إطلاق الصياد']
+        };
+        function getPhase(text) {
+          if (!text) return 'UNKNOWN';
+          var lower = text.toLowerCase();
+          for (var i = 0; i < PHASE_KEYWORDS.NIGHT.length; i++) {
+            if (lower.indexOf(PHASE_KEYWORDS.NIGHT[i].toLowerCase()) !== -1) return 'NIGHT';
+          }
+          for (var j = 0; j < PHASE_KEYWORDS.DAY.length; j++) {
+            if (lower.indexOf(PHASE_KEYWORDS.DAY[j].toLowerCase()) !== -1) return 'DAY';
+          }
+          return 'UNKNOWN';
+        }
+        function currentPhaseText() {
+          var gr = document.querySelector('.game-room');
+          if (!gr) return '';
+          // Look for phase indicators
+          var selectors = ['.game-room-header [class*="phase"]', '[class*="PHASE"]', '[class*="phase-text"]', '.game-room-header h2'];
+          for (var i = 0; i < selectors.length; i++) {
+            var el = gr.querySelector(selectors[i]);
+            if (el && el.innerText) return el.innerText;
+          }
+          // Fallback: scan header
+          var header = gr.querySelector('.game-room-header');
+          return header ? header.innerText : '';
+        }
+        function applyPhase() {
+          var gr = document.querySelector('.game-room');
+          if (!gr) return;
+          var text = currentPhaseText();
+          var phase = getPhase(text);
+          if (phase !== gr.getAttribute('data-gg-phase')) {
+            gr.setAttribute('data-gg-phase', phase);
+            // Update the ::before content via CSS variable
+            gr.style.setProperty('--gg-phase-emoji', phase === 'NIGHT' ? '"🌙"' : phase === 'DAY' ? '"☀️"' : '""');
+          }
+        }
+        // Poll every 500ms (cheap + reliable across React rerenders)
+        setInterval(applyPhase, 500);
+        // Also observe DOM mutations for snappier updates
+        var mo = new MutationObserver(applyPhase);
+        mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+        applyPhase();
+      })();
+    </script>
   </body>
 </html>
