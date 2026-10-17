@@ -1,6 +1,8 @@
 // ════════════════════════════════════════════════════════════════════════
-// Flashi.me Spot-the-Difference Image Catalog
-// 7,005 images across 6 categories, extracted from https://www.flashi.me/f10/diff
+// Spot-the-Difference Image Catalog (7,005 images)
+// Originally extracted from https://www.flashi.me/f10/diff — now bundled locally
+// under /public/img/spotdiff/images/{category}/<filename>.jpg
+// Zero runtime dependency on flashi.me.
 //
 // Each image contains TWO stacked versions of the same photo:
 //   - Image A on top
@@ -38,7 +40,11 @@ export interface FlashiDiff {
 
 export const FLASHI_IMAGE_SHIFT = 53.9; // vmin — vertical offset between image A and image B
 
-export const FLASHI_BASE_URL = 'https://www.flashi.me/img/diff/imagesD';
+// ─── Local image root (served from /public/img/spotdiff/images) ───────
+// All 7,005 flashi images are bundled with our app — zero dependency on flashi.me.
+// Originals were .png on flashi.me; we re-saved them as .jpg to cut size
+// from ~3 GB -> ~966 MB with no visible quality loss at typical game sizes.
+export const FLASHI_BASE_URL = '/img/spotdiff/images';
 
 // ─── Decode a flashi filename into difference coordinates ──────────────
 export function decodeFlashiFilename(filename: string): FlashiDiff[] {
@@ -56,20 +62,23 @@ export function decodeFlashiFilename(filename: string): FlashiDiff[] {
   return diffs;
 }
 
-// ─── Build the full URL for a flashi image ─────────────────────────────
+// ─── Build the local URL for a flashi image ────────────────────────────
+// Returns a path like: /img/spotdiff/images/photo3/<filename>.jpg
+// This path is resolved against our Next.js public/ folder at runtime.
 export function buildFlashiUrl(category: FlashiCategory, filename: string): string {
-  return `${FLASHI_BASE_URL}/${category}/${filename}.png`;
+  return `${FLASHI_BASE_URL}/${category}/${filename}.jpg`;
 }
 
-// ─── Load the catalog from the extracted JSON files ─────────────────────
-// The catalog is loaded at runtime from /data_arrays/*.json
-// For production, you may want to inline a subset (e.g., 200 images) into the bundle.
+// ─── Load the catalog from our local JSON manifests ────────────────────
+// Catalog files live at /public/img/spotdiff/catalog/{category}Array.json
+// and were extracted from the original flashi source. Each entry contains:
+//   { filename, dirname, basename, extension } — only `filename` is used at runtime.
 export async function loadFlashiCatalog(): Promise<FlashiImage[]> {
   const categories: FlashiCategory[] = ['photo', 'vmisc', 'vscenes', 'vphoto', 'photo3', 'vector3'];
   const all: FlashiImage[] = [];
   for (const category of categories) {
     try {
-      const response = await fetch(`/data/flashi_diff/${category}Array.json`);
+      const response = await fetch(`/img/spotdiff/catalog/${category}Array.json`);
       if (!response.ok) continue;
       const arr = await response.json() as Array<{ filename: string; dirname: string; basename: string; extension: string }>;
       for (const item of arr) {
@@ -116,6 +125,8 @@ export const FLASHI_CATALOG_STATS = {
     photo3: 23,
     vector3: 19,
   } as Record<FlashiCategory, number>,
-  source: 'https://www.flashi.me/f10/diff',
+  // Original source archived locally — no runtime dependency on flashi.me
+  originalSource: 'https://www.flashi.me/f10/diff (archived — now bundled locally)',
+  bundledLocallyAt: '/public/img/spotdiff/images/{category}/<filename>.jpg',
   extractedAt: '2026-10-17',
 };
