@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createShipsRoom } from '@/lib/ships-room-store';
 
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     const { code, hostName } = await request.json();

@@ -1,4 +1,5 @@
 interface PageProps { params: Promise<{ code: string }>; searchParams: Promise<{ from?: string; pkg?: string; direct?: string }>; }
+export const dynamic = 'force-dynamic';
 
 export default async function ShipsDeepLinkPage({ params, searchParams }: PageProps) {
   const { code: rawCode } = await params;

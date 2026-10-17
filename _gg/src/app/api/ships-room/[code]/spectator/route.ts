@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getShipsRoom, addShipsSpectator, removeShipsSpectator, heartbeatShipsSpectator } from '@/lib/ships-room-store';
 
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest, { params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
   const { name } = await request.json();
