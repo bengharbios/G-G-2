@@ -622,6 +622,24 @@ export const useShipsStore = create<ShipsState>()(
 
         // AI hunt mode: if hit, set hunt mode + remember position (flashi pattern)
         // If miss, clear hunt mode
+        // Also check if a player's ship was sunk (flashi prepareLegend pattern)
+        let playerShipSunkName = '';
+        const newPlayerShipsSunk = [...(state.playerShipsSunk || [false,false,false,false,false])];
+        if (isHit && state.currentRoundData?.playerShips) {
+          for (const ship of state.currentRoundData.playerShips) {
+            if (!ship.sunk) {
+              const allHit = ship.cells.every(c => newPlayerGrid[c.row][c.col].state === 'hit');
+              if (allHit) {
+                ship.sunk = true;
+                const shipType = (state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2).find(s => s.id === ship.shipTypeId);
+                playerShipSunkName = shipType?.name || '';
+                const shipIdx = state.currentRoundData.playerShips.indexOf(ship);
+                if (shipIdx >= 0) newPlayerShipsSunk[shipIdx] = true;
+              }
+            }
+          }
+        }
+
         set({
           playerGrid: newPlayerGrid,
           aiHits: newAiHits,
@@ -629,6 +647,7 @@ export const useShipsStore = create<ShipsState>()(
           aiScore: newAiScore,
           aiHuntMode: isHit,
           aiLastHit: isHit ? { row: target.row, col: target.col } : null,
+          playerShipsSunk: newPlayerShipsSunk,
           currentTurn: 'player',
           gameLog: [
             ...state.gameLog,
