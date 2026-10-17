@@ -18,7 +18,7 @@ import {
 } from '@/lib/spotdiff-types';
 import type { FlashiCategory } from '@/lib/flashi_images';
 import { useAppShell } from '@/components/shared/AppShellContext';
-import SvgaOrImg from '@/components/SvgaOrImg';
+import SvgaOrImg from '@/components/shared/SvgaOrImg';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
 const STROKE_STYLE: React.CSSProperties = {
