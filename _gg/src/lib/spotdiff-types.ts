@@ -8,8 +8,8 @@ export type GameMode = 'classic' | 'diwaniya';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
-// Normalized coords (0..1, 0..1) relative to image bounds
-// radius is also normalized (relative to image width)
+// ─── Normalized coords (0..1, 0..1) relative to image bounds ──────────
+// Used by legacy SVG rounds (SPOTDIFF_ROUNDS) — kept for fallback.
 export interface DifferenceSpot {
   id: string;
   x: number;
@@ -18,12 +18,29 @@ export interface DifferenceSpot {
   found: boolean;
 }
 
+// ─── Flashi diff coords (top/left in vmin units relative to a 100vmin × 100vmin viewport frame) ──
+// Per flashi source: a single flashi image bundles TWO stacked photos
+// (image A on top, image B on bottom, shifted by `imageShift` vmin).
+// Each difference appears once in image A (top/left) and once in image B
+// (top + imageShift / left). User clicks on image B.
+export interface FlashiDiffCoords {
+  topVmin: number;     // top position in vmin (image A coords)
+  leftVmin: number;    // left position in vmin
+}
+
+// ─── A single round (either SVG-style or flashi-style) ──────────────────
 export interface SpotDiffRound {
   id: string;
   title: string;        // Arabic title
-  imageA: string;      // SVG data URL or path
+  // Legacy: separate SVG imageA / imageB data URLs
+  imageA: string;
   imageB: string;
   differences: DifferenceSpot[];
+  // Flashi-style: single bundled image (A + B stacked) + vmin coords
+  imageUrl?: string;            // path to flashi image (contains A on top + B on bottom)
+  imageShift?: number;          // vertical vmin offset between A and B (53.5 / 67.5 / 68.5)
+  flashiDiffs?: FlashiDiffCoords[]; // decoded from filename — top/left in vmin
+  flashiCategory?: string;      // 'photo' | 'vmisc' | 'vscenes' | 'vphoto' | 'photo3' | 'vector3'
 }
 
 // ─── Per-difficulty config ───
@@ -74,3 +91,17 @@ export interface GameLogEntry {
   type: 'info' | 'success' | 'danger' | 'system';
   timestamp: number;
 }
+
+// ─── Flashi category metadata ───────────────────────────────────────────
+export const FLASHI_CATEGORY_LABELS: Record<string, string> = {
+  random: 'عشوائي',
+  photo: 'فوتوغرافي',
+  vmisc: 'رسوم (منوعات)',
+  vscenes: 'رسوم (مشاهد)',
+  vphoto: 'فوتوغرافي 2',
+  photo3: 'فوتوغرافي 3',
+  vector3: 'رسوم 3',
+};
+
+// Hit radius (in vmin) — half of the visible circle (9.5 vmin) plus tolerance
+export const FLASHI_HIT_RADIUS_VMIN = 5.5;

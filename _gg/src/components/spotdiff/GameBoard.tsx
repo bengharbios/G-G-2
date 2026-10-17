@@ -1,19 +1,23 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useSpotDiffStore } from '@/lib/spotdiff-store';
-import { DIFFICULTY_CONFIG } from '@/lib/spotdiff-types';
+import { DIFFICULTY_CONFIG, FLASHI_CATEGORY_LABELS, FLASHI_HIT_RADIUS_VMIN } from '@/lib/spotdiff-types';
+import type { FlashiCategory } from '@/lib/flashi_images';
 import {
   isMusicEnabled,
   setMusicEnabled,
   isSoundEnabled,
   setSoundEnabled,
+  playClickSound,
+  playCorrectSound,
+  playWrongSound,
 } from '@/lib/sounds';
 import '@/styles/flashi-spotdiff.css';
 
-// StrokeTextStyle_Yes (kept for Tobol diwaniya fallback)
+// G-G gold stroke text style (from yalla ludo styles.xml — kept for quit dialog title)
 const STROKE_STYLE: React.CSSProperties = {
   color: '#feef91',
   paintOrder: 'stroke fill',
@@ -22,7 +26,15 @@ const STROKE_STYLE: React.CSSProperties = {
 
 interface MissMarker {
   id: number;
-  x: number; y: number; // normalized 0..1
+  topVmin: number;
+  leftVmin: number;
+}
+
+interface ClickFeedbackItem {
+  id: number;
+  kind: 'hit' | 'miss';
+  topVmin: number;
+  leftVmin: number;
 }
 
 interface ChatMsg {
@@ -33,41 +45,43 @@ interface ChatMsg {
 
 const EMOJIS = ['😀', '😂', '😍', '😎', '🤔', '😢', '😡', '👍', '👏', '🙏', '🔥', '🎯', '🔍', '💡', '⭐', '✓', '✗', '🏆', '🎉', '💯', '❤️', '🖼️', '👀', '⏱️'];
 
+// Helper: get current vmin in pixels
+function vminPx(): number {
+  if (typeof window === 'undefined') return 1;
+  return Math.min(window.innerWidth, window.innerHeight) / 100;
+}
+
 // ============================================================
-// Click result feedback (✓ hit, ✗ miss) — small floating animation
+// Click feedback floating text (✓ hit, ✗ miss)
 // ============================================================
-function ClickFeedback({ id, kind, x, y, onDone }: {
-  id: number;
-  kind: 'hit' | 'miss';
-  x: number; y: number;
-  onDone: () => void;
-}) {
+function ClickFeedback({ item, onDone }: { item: ClickFeedbackItem; onDone: () => void }) {
   useEffect(() => {
     const t = setTimeout(onDone, 900);
     return () => clearTimeout(t);
   }, [onDone]);
   return (
     <motion.div
-      key={id}
+      key={item.id}
       initial={{ opacity: 1, scale: 0.6, y: 0 }}
       animate={{ opacity: 0, scale: 1.4, y: -30 }}
       transition={{ duration: 0.9, ease: 'easeOut' }}
-      className={`flashi-click-feedback ${kind}`}
+      className={`flashi-click-feedback ${item.kind}`}
       style={{
-        left: `${x * 100}%`,
-        top: `${y * 100}%`,
-        fontSize: '20px',
+        top: `${item.topVmin}vmin`,
+        left: `${item.leftVmin}vmin`,
+        fontSize: '5vmin',
+        position: 'absolute',
       }}
     >
-      {kind === 'hit' ? '✓ +100' : '✗'}
+      {item.kind === 'hit' ? '✓ +100' : '✗'}
     </motion.div>
   );
 }
 
 // ============================================================
-// Header Chat Button (table-side chat for diwaniya)
+// Header chat button — uses G-G tobol-* chat panel but flashi-styled trigger
 // ============================================================
-function HeaderChatButton({ variant = 'tobol' }: { variant?: 'tobol' | 'flashi' }) {
+function HeaderChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState('');
@@ -100,13 +114,16 @@ function HeaderChatButton({ variant = 'tobol' }: { variant?: 'tobol' | 'flashi' 
     setShowEmojis(false);
   };
 
-  const btnClass = variant === 'flashi' ? 'flashi-header-btn' : `tobol-header-btn ${isOpen ? 'active' : ''}`;
+  const handleEmojiClick = (emoji: string) => {
+    setInput(prev => prev + emoji);
+    inputRef.current?.focus();
+  };
 
   return (
     <>
       <button
         type="button"
-        className={btnClass}
+        className="flashi-header-btn"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="دردشة الطاولة"
         title="دردشة الطاولة"
@@ -200,30 +217,22 @@ function HeaderChatButton({ variant = 'tobol' }: { variant?: 'tobol' | 'flashi' 
       </AnimatePresence>
     </>
   );
-
-  function handleEmojiClick(emoji: string) {
-    setInput(prev => prev + emoji);
-    inputRef.current?.focus();
-  }
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// FLASHI-STYLE GAME BOARD — for 'classic' (العرّاب) mode
-// Replicates https://www.flashi.me/f10/diff internal UI:
-//   - Black-blue background with flashi-background.png overlay
-//   - Settings table (timer + diff counter + type + count selectors)
-//   - Color-coded action buttons (yellow / green / purple / blue)
-//   - Animated rainbow title (announcement)
-//   - Game image area with circle markers
-//   - Score table
+// MAIN GAME BOARD — Flashi.me + G-G style hybrid
+// Single component, no legacy Tobol fallback (per user instruction:
+// 'لا تدمج الكود في الكود القديم').
 // ════════════════════════════════════════════════════════════════════════
-function FlashiGameBoard() {
+export default function GameBoard() {
   const router = useRouter();
   const {
-    phase, roomCode, currentRound, currentRoundData,
+    phase, currentRound, currentRoundData,
     foundDifferences, differences, score, timeLeft, totalRounds,
     totalFound, totalDifferences, findDifference, registerMiss,
     tickTimer, resetGame, difficulty,
+    flashiCatalog, flashiCategory, setFlashiCategory,
+    loadFlashiCatalog,
   } = useSpotDiffStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -231,11 +240,17 @@ function FlashiGameBoard() {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [showAnswers, setShowAnswers] = useState(false);
   const [showScore, setShowScore] = useState(false);
-  const [feedbacks, setFeedbacks] = useState<Array<{ id: number; kind: 'hit' | 'miss'; x: number; y: number }>>([]);
+  const [feedbacks, setFeedbacks] = useState<ClickFeedbackItem[]>([]);
   const [misses, setMisses] = useState<MissMarker[]>([]);
-  const imgBRef = useRef<HTMLImageElement>(null);
   const nextFeedbackId = useRef(0);
   const nextMissId = useRef(0);
+  const circleDivRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Load flashi catalog on mount if not loaded
+  useEffect(() => {
+    loadFlashiCatalog();
+  }, [loadFlashiCatalog]);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -250,7 +265,7 @@ function FlashiGameBoard() {
     setSoundOn(isSoundEnabled());
   }, []);
 
-  // Timer tick — call store's tickTimer every 1 second
+  // Timer tick
   useEffect(() => {
     if (phase !== 'playing') return;
     const interval = setInterval(() => {
@@ -270,51 +285,78 @@ function FlashiGameBoard() {
     router.push('/spotdiff');
   };
 
-  const handleImageBClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    if (!currentRoundData) return;
-    const img = imgBRef.current;
+  // ─── Click handler: convert pixel coords → vmin, then check hit ──────────
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!currentRoundData || !currentRoundData.flashiDiffs) return;
+    const img = imgRef.current;
     if (!img) return;
-    const rect = img.getBoundingClientRect();
-    const px = e.clientX - rect.left;
-    const py = e.clientY - rect.top;
-    const nx = px / rect.width;
-    const ny = py / rect.height;
-    const aspectRatio = rect.height / rect.width;
+    // circleDiv is the positioning reference (like flashi)
+    const cdiv = circleDivRef.current;
+    if (!cdiv) return;
+    const rect = cdiv.getBoundingClientRect();
+    const vmin = vminPx();
+    const clickTopVmin = (e.clientY - rect.top) / vmin;
+    const clickLeftVmin = (e.clientX - rect.left) / vmin;
+    const imageShift = currentRoundData.imageShift ?? 53.5;
 
-    let hitSpot: { id: string } | null = null;
-    for (const d of differences) {
-      if (d.found) continue;
-      const dx = nx - d.x;
-      const dy = ny - d.y;
-      const distSqNorm = dx * dx + (dy * aspectRatio) * (dy * aspectRatio);
-      if (distSqNorm <= d.radius * d.radius) {
-        hitSpot = d;
-        break;
+    // Check against each unfound difference — click must be on the B-side marker
+    // (top + imageShift, same left)
+    let hitIdx = -1;
+    for (let i = 0; i < currentRoundData.flashiDiffs.length; i++) {
+      const d = currentRoundData.flashiDiffs[i];
+      const bTop = d.topVmin + imageShift;
+      const bLeft = d.leftVmin;
+      const distSq = (clickTopVmin - bTop) ** 2 + (clickLeftVmin - bLeft) ** 2;
+      if (Math.sqrt(distSq) <= FLASHI_HIT_RADIUS_VMIN) {
+        // Check not already found
+        const diffId = `flashi-diff-${currentRound}-${i}`;
+        if (!foundDifferences.includes(diffId)) {
+          hitIdx = i;
+          break;
+        }
       }
     }
 
     const fbId = nextFeedbackId.current++;
-    if (hitSpot) {
-      const ok = findDifference(hitSpot.id);
+    if (hitIdx >= 0) {
+      const diffId = `flashi-diff-${currentRound}-${hitIdx}`;
+      const d = currentRoundData.flashiDiffs[hitIdx];
+      const ok = findDifference(diffId);
       if (ok) {
-        setFeedbacks(prev => [...prev, { id: fbId, kind: 'hit', x: nx, y: ny }]);
+        if (soundOn) playCorrectSound();
+        setFeedbacks(prev => [...prev, {
+          id: fbId,
+          kind: 'hit',
+          topVmin: d.topVmin + imageShift,
+          leftVmin: d.leftVmin,
+        }]);
       }
     } else {
+      if (soundOn) playWrongSound();
       registerMiss();
       const missId = nextMissId.current++;
-      setMisses(prev => [...prev, { id: missId, x: nx, y: ny }]);
-      setFeedbacks(prev => [...prev, { id: fbId, kind: 'miss', x: nx, y: ny }]);
+      setMisses(prev => [...prev, { id: missId, topVmin: clickTopVmin, leftVmin: clickLeftVmin }]);
+      setFeedbacks(prev => [...prev, {
+        id: fbId,
+        kind: 'miss',
+        topVmin: clickTopVmin,
+        leftVmin: clickLeftVmin,
+      }]);
       setTimeout(() => {
         setMisses(prev => prev.filter(m => m.id !== missId));
       }, 1500);
     }
   };
 
+  // ─── Loading state while catalog is being fetched ─────────────────────
   if (!currentRoundData) {
     return (
-      <div className="flashi-loading" dir="rtl">
-        <div style={{ fontSize: '40px', marginBottom: '8px' }}>🔍</div>
-        <p>جاري تحميل الجولة...</p>
+      <div className="flashi-game-root" dir="rtl">
+        <div className="flashi-loading">
+          <div style={{ fontSize: '40px', marginBottom: '8px' }}>🔍</div>
+          <p>جاري تحميل الجولة...</p>
+          {!flashiCatalog && <p style={{ fontSize: '2vmin', marginTop: '8px' }}>تحميل مكتبة 7005 صورة...</p>}
+        </div>
       </div>
     );
   }
@@ -326,6 +368,22 @@ function FlashiGameBoard() {
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   const timerDisplay = `${mins}:${String(secs).padStart(2, '0')}`;
+  const imageShift = currentRoundData.imageShift ?? 53.5;
+
+  // Build list of (found, topVmin, leftVmin) for each diff, for B-side markers
+  const diffMarkers = useMemo(() => {
+    if (!currentRoundData.flashiDiffs) return [];
+    return currentRoundData.flashiDiffs.map((d, i) => {
+      const diffId = `flashi-diff-${currentRound}-${i}`;
+      return {
+        id: diffId,
+        idx: i,
+        found: foundDifferences.includes(diffId),
+        topVmin: d.topVmin + imageShift,
+        leftVmin: d.leftVmin,
+      };
+    });
+  }, [currentRoundData, foundDifferences, currentRound, imageShift]);
 
   return (
     <div className="flashi-game-root" dir="rtl">
@@ -333,7 +391,7 @@ function FlashiGameBoard() {
       <div className="flashi-header-actions">
         <button
           type="button"
-          className={`flashi-header-btn ${musicOn ? 'active' : ''}`}
+          className="flashi-header-btn"
           onClick={toggleMusic}
           aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
           title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
@@ -344,7 +402,7 @@ function FlashiGameBoard() {
             alt="sound"
           />
         </button>
-        <HeaderChatButton variant="flashi" />
+        <HeaderChatButton />
         <button
           type="button"
           className="flashi-header-btn"
@@ -402,14 +460,15 @@ function FlashiGameBoard() {
             <tr>
               <td className="flashi-title" colSpan={3}>نوع الصور</td>
               <td colSpan={3}>
-                <select className="flashi-select" defaultValue="عشوائي" aria-label="نوع الصور">
-                  <option>عشوائي</option>
-                  <option>فوتوغرافي</option>
-                  <option>رسوم (منوعات)</option>
-                  <option>رسوم (مشاهد)</option>
-                  <option>فوتوغرافي 2</option>
-                  <option>فوتوغرافي 3</option>
-                  <option>رسوم 3</option>
+                <select
+                  className="flashi-select"
+                  value={flashiCategory}
+                  onChange={(e) => setFlashiCategory(e.target.value as FlashiCategory | 'random')}
+                  aria-label="نوع الصور"
+                >
+                  {Object.entries(FLASHI_CATEGORY_LABELS).map(([val, label]) => (
+                    <option key={val} value={val}>{label}</option>
+                  ))}
                 </select>
               </td>
               <td className="flashi-title" colSpan={3}>عدد الأخطاء</td>
@@ -421,33 +480,46 @@ function FlashiGameBoard() {
                 </select>
               </td>
             </tr>
-            {/* Row 3: 4 action buttons */}
+            {/* Row 3: 4 action buttons (flashi color palette) */}
             <tr>
               <td
                 className="flashi-btn flashi-btn-new"
                 colSpan={5}
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  if (soundOn) playClickSound();
+                  // Reload page to get a new image (flashi-style "صورة جديدة")
+                  window.location.reload();
+                }}
               >
                 صورة جديدة
               </td>
               <td
                 className="flashi-btn flashi-btn-start"
                 colSpan={5}
-                onClick={() => router.push('/spotdiff')}
+                onClick={() => {
+                  if (soundOn) playClickSound();
+                  router.push('/spotdiff');
+                }}
               >
                 بدء اللعبة
               </td>
               <td
                 className="flashi-btn flashi-btn-answers"
                 colSpan={5}
-                onClick={() => setShowAnswers(s => !s)}
+                onClick={() => {
+                  if (soundOn) playClickSound();
+                  setShowAnswers(s => !s);
+                }}
               >
                 {showAnswers ? 'إخفاء الأجوبة' : 'إظهار الأجوبة'}
               </td>
               <td
                 className="flashi-btn flashi-btn-score"
                 colSpan={6}
-                onClick={() => setShowScore(s => !s)}
+                onClick={() => {
+                  if (soundOn) playClickSound();
+                  setShowScore(s => !s);
+                }}
               >
                 {showScore ? 'إخفاء السكور' : 'إظهار السكور'}
               </td>
@@ -455,7 +527,7 @@ function FlashiGameBoard() {
           </tbody>
         </table>
 
-        {/* ══════════ Round pill ══════════ */}
+        {/* ══════════ Round pill (G-G style) ══════════ */}
         <div style={{ textAlign: 'center' }}>
           <span className="flashi-round-pill">
             <span>🖼️</span>
@@ -466,6 +538,11 @@ function FlashiGameBoard() {
             <span style={{ color: '#9fc4b4', fontSize: '2.4vmin' }}>
               • جولة {currentRound + 1}/{totalRounds}
             </span>
+            {flashiCatalog && (
+              <span style={{ color: '#fbbf24', fontSize: '2vmin' }}>
+                • {flashiCatalog.length.toLocaleString('en')} صورة
+              </span>
+            )}
           </span>
         </div>
 
@@ -474,99 +551,103 @@ function FlashiGameBoard() {
           <tbody>
             <tr>
               <td>
-                {/* Container for A + B side by side, with circle overlay */}
-                <div style={{ position: 'relative', display: 'flex', gap: '1vmin', justifyContent: 'center', alignItems: 'flex-start' }}>
-                  {/* Image A (reference) */}
-                  <div style={{ position: 'relative' }}>
-                    <img
-                      src={currentRoundData.imageA}
-                      alt="صورة A"
-                      draggable={false}
-                      className="flashi-puzz-img"
-                      style={{ cursor: 'default' }}
-                    />
-                    <div style={{
-                      position: 'absolute', top: '4px', right: '4px',
-                      background: 'rgba(0,3,9,.7)',
-                      color: 'white', fontSize: '2.4vmin', fontWeight: 800,
-                      padding: '2px 6px', borderRadius: '4px',
-                      fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-                    }}>A</div>
-                  </div>
+                {/* circleDiv = relative container, image inside, circles overlaid */}
+                <div ref={circleDivRef} className="flashi-circle-div">
+                  {/* The single flashi image (A stacked above B) */}
+                  <img
+                    ref={imgRef}
+                    src={currentRoundData.imageUrl || currentRoundData.imageA}
+                    alt="اختلاف الصور — اضغط على الفروقات"
+                    draggable={false}
+                    onClick={handleImageClick}
+                    className="flashi-puzz-img"
+                  />
 
-                  {/* Image B (clickable) with circle overlay */}
-                  <div style={{ position: 'relative' }}>
-                    <img
-                      ref={imgBRef}
-                      src={currentRoundData.imageB}
-                      alt="صورة B — اضغط على الفروقات"
-                      draggable={false}
-                      onClick={handleImageBClick}
-                      className="flashi-puzz-img"
-                    />
-
-                    {/* Circle overlay — for found differences OR shown answers */}
-                    <div className="flashi-circle-div">
-                      {differences.filter(d => d.found || showAnswers).map((d, i) => (
-                        <motion.div
-                          key={d.id + (d.found ? '-found' : '-answer') + i}
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ type: 'spring', bounce: 0.4 }}
-                          className="flashi-circle-img shown"
-                          style={{
-                            left: `${d.x * 100}%`,
-                            top: `${d.y * 100}%`,
-                            width: '9.5vmin',
-                            height: '9.5vmin',
-                            border: d.found ? '3px solid #22c55e' : '3px solid #fbbf24',
-                            borderRadius: '50%',
-                            background: d.found
-                              ? 'rgba(34,197,94,.18)'
-                              : 'rgba(251,191,36,.15)',
-                            boxShadow: d.found
-                              ? '0 0 12px rgba(34,197,94,.6)'
-                              : '0 0 12px rgba(251,191,36,.5)',
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Miss markers */}
-                    {misses.map(m => (
+                  {/* B-side circle markers — visible when found OR when answers shown */}
+                  {diffMarkers.map((m) => (
+                    (m.found || showAnswers) && (
                       <motion.div
-                        key={m.id}
-                        initial={{ scale: 0.5, opacity: 1 }}
-                        animate={{ scale: 1, opacity: 0.4 }}
-                        transition={{ duration: 0.3 }}
-                        className="flashi-miss-marker"
+                        key={m.id + (m.found ? '-found' : '-answer')}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: 'spring', bounce: 0.4 }}
+                        className="flashi-circle-img shown"
                         style={{
-                          left: `${m.x * 100}%`,
-                          top: `${m.y * 100}%`,
+                          top: `${m.topVmin}vmin`,
+                          left: `${m.leftVmin}vmin`,
+                          width: '9.5vmin',
+                          height: '9.5vmin',
+                          border: m.found ? '3px solid #22c55e' : '3px solid #fbbf24',
+                          borderRadius: '50%',
+                          background: m.found
+                            ? 'rgba(34,197,94,.18)'
+                            : 'rgba(251,191,36,.15)',
+                          boxShadow: m.found
+                            ? '0 0 12px rgba(34,197,94,.6)'
+                            : '0 0 12px rgba(251,191,36,.5)',
                         }}
-                      >✗</motion.div>
-                    ))}
-
-                    {/* Click feedback animations */}
-                    {feedbacks.map(fb => (
-                      <ClickFeedback
-                        key={fb.id}
-                        id={fb.id}
-                        kind={fb.kind}
-                        x={fb.x}
-                        y={fb.y}
-                        onDone={() => setFeedbacks(prev => prev.filter(f => f.id !== fb.id))}
                       />
-                    ))}
+                    )
+                  ))}
 
-                    <div style={{
-                      position: 'absolute', top: '4px', right: '4px',
-                      background: 'rgba(0,3,9,.7)',
-                      color: '#ffdd00', fontSize: '2.4vmin', fontWeight: 800,
-                      padding: '2px 6px', borderRadius: '4px',
-                      fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
-                    }}>B — اضغط</div>
-                  </div>
+                  {/* A-side circle markers (faint outline for visual reference when answers shown) */}
+                  {showAnswers && currentRoundData.flashiDiffs?.map((d, i) => (
+                    <motion.div
+                      key={`a-marker-${i}`}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 0.5 }}
+                      transition={{ type: 'spring', bounce: 0.4 }}
+                      className="flashi-circle-img shown"
+                      style={{
+                        top: `${d.topVmin}vmin`,
+                        left: `${d.leftVmin}vmin`,
+                        width: '9.5vmin',
+                        height: '9.5vmin',
+                        border: '2px dashed rgba(251,191,36,0.5)',
+                        borderRadius: '50%',
+                        background: 'transparent',
+                      }}
+                    />
+                  ))}
+
+                  {/* Miss markers (red X) */}
+                  {misses.map(m => (
+                    <motion.div
+                      key={m.id}
+                      initial={{ scale: 0.5, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 0.4 }}
+                      transition={{ duration: 0.3 }}
+                      className="flashi-miss-marker"
+                      style={{
+                        top: `${m.topVmin}vmin`,
+                        left: `${m.leftVmin}vmin`,
+                      }}
+                    >✗</motion.div>
+                  ))}
+
+                  {/* Click feedback floating text */}
+                  {feedbacks.map(fb => (
+                    <ClickFeedback
+                      key={fb.id}
+                      item={fb}
+                      onDone={() => setFeedbacks(prev => prev.filter(f => f.id !== fb.id))}
+                    />
+                  ))}
+
+                  {/* B-side label badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: `${imageShift + 1}vmin`,
+                    right: '5%',
+                    background: 'rgba(0,3,9,.7)',
+                    color: '#ffdd00',
+                    fontSize: '2.4vmin',
+                    fontWeight: 800,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
+                    zIndex: 12,
+                  }}>B — اضغط هنا</div>
                 </div>
               </td>
             </tr>
@@ -611,7 +692,7 @@ function FlashiGameBoard() {
         </AnimatePresence>
       </div>
 
-      {/* ══════════ Quit dialog ══════════ */}
+      {/* ══════════ Quit dialog (G-G Tobol style) ══════════ */}
       <AnimatePresence>
         {showQuitDialog && (
           <motion.div
@@ -630,7 +711,9 @@ function FlashiGameBoard() {
               className="flashi-quit-dialog"
             >
               <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
-              <h3>إنهاء اللعبة؟</h3>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
+                إنهاء اللعبة؟
+              </h3>
               <p>
                 نقاطك: {score} — سيتم إعادة تعيين اللعبة.
               </p>
@@ -650,436 +733,4 @@ function FlashiGameBoard() {
       </AnimatePresence>
     </div>
   );
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// TOBOL-STYLE GAME BOARD — kept for 'diwaniya' mode until we generalize
-// the flashi style to it.
-// ════════════════════════════════════════════════════════════════════════
-function TobolGameBoard() {
-  const router = useRouter();
-  const {
-    phase, gameMode, roomCode, currentRound, currentRoundData,
-    foundDifferences, differences, score, timeLeft, totalRounds,
-    totalFound, totalDifferences, findDifference, registerMiss,
-    tickTimer, resetGame,
-  } = useSpotDiffStore();
-
-  const [musicOn, setMusicOn] = useState(true);
-  const [soundOn, setSoundOn] = useState(true);
-  const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [feedbacks, setFeedbacks] = useState<Array<{ id: number; kind: 'hit' | 'miss'; x: number; y: number }>>([]);
-  const [misses, setMisses] = useState<MissMarker[]>([]);
-  const imgBRef = useRef<HTMLImageElement>(null);
-  const imgBWrapperRef = useRef<HTMLDivElement>(null);
-  const nextFeedbackId = useRef(0);
-  const nextMissId = useRef(0);
-
-  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    document.body.classList.add('in-game-setup');
-    return () => {
-      document.body.classList.remove('in-game-setup');
-    };
-  }, []);
-
-  useEffect(() => {
-    setMusicOn(isMusicEnabled());
-    setSoundOn(isSoundEnabled());
-  }, []);
-
-  useEffect(() => {
-    if (phase !== 'playing') return;
-    const interval = setInterval(() => {
-      tickTimer();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [phase, tickTimer]);
-
-  const toggleMusic = () => {
-    const next = !musicOn;
-    setMusicOn(next);
-    setMusicEnabled(next);
-  };
-
-  const handleQuitGame = () => {
-    resetGame();
-    router.push('/spotdiff');
-  };
-
-  const handleImageBClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    if (!currentRoundData) return;
-    const img = imgBRef.current;
-    if (!img) return;
-    const rect = img.getBoundingClientRect();
-    const px = e.clientX - rect.left;
-    const py = e.clientY - rect.top;
-    const nx = px / rect.width;
-    const ny = py / rect.height;
-    const aspectRatio = rect.height / rect.width;
-
-    let hitSpot: { id: string } | null = null;
-    for (const d of differences) {
-      if (d.found) continue;
-      const dx = nx - d.x;
-      const dy = ny - d.y;
-      const distSqNorm = dx * dx + (dy * aspectRatio) * (dy * aspectRatio);
-      if (distSqNorm <= d.radius * d.radius) {
-        hitSpot = d;
-        break;
-      }
-    }
-
-    const fbId = nextFeedbackId.current++;
-    if (hitSpot) {
-      const ok = findDifference(hitSpot.id);
-      if (ok) {
-        setFeedbacks(prev => [...prev, { id: fbId, kind: 'hit', x: nx, y: ny }]);
-      }
-    } else {
-      registerMiss();
-      const missId = nextMissId.current++;
-      setMisses(prev => [...prev, { id: missId, x: nx, y: ny }]);
-      setFeedbacks(prev => [...prev, { id: fbId, kind: 'miss', x: nx, y: ny }]);
-      setTimeout(() => {
-        setMisses(prev => prev.filter(m => m.id !== missId));
-      }, 1500);
-    }
-  };
-
-  if (!currentRoundData) {
-    return (
-      <div style={{ textAlign: 'center', padding: '40px 16px', color: '#9fc4b4' }}>
-        <div style={{ fontSize: '40px', marginBottom: '8px' }}>🔍</div>
-        <p>جاري تحميل الجولة...</p>
-      </div>
-    );
-  }
-
-  const cfg = DIFFICULTY_CONFIG[useSpotDiffStore.getState().difficulty];
-  const foundCount = foundDifferences.length;
-  const totalForRound = currentRoundData.differences.length;
-  const timeColor = timeLeft <= 10 ? '#ef4444' : timeLeft <= 30 ? '#fbbf24' : '#feef91';
-
-  return (
-    <div
-      dir="rtl"
-      style={{
-        position: 'relative',
-        height: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '8px 14px 16px',
-        gap: '8px',
-        overflowY: 'auto',
-      }}
-    >
-      <div className="tobol-header-actions">
-        <button
-          type="button"
-          className={`tobol-header-btn ${musicOn ? 'active' : ''}`}
-          onClick={toggleMusic}
-          aria-label={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
-          title={musicOn ? 'كتم الصوت' : 'تشغيل الصوت'}
-        >
-          <img
-            src={musicOn ? '/battle/icon_sound_on.webp' : '/battle/icon_sound_off.webp'}
-            alt="sound"
-          />
-        </button>
-        <HeaderChatButton variant="tobol" />
-        <button
-          type="button"
-          className="tobol-header-btn"
-          onClick={() => setShowQuitDialog(true)}
-          aria-label="إنهاء اللعبة بدون حفظ"
-          title="إنهاء اللعبة بدون حفظ"
-        >
-          <img src="/battle/btn_quit_game.webp" alt="quit" />
-        </button>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.92 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: 'spring', bounce: 0.32 }}
-        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '2px' }}
-      >
-        <div style={{ fontSize: '28px' }}>🔍</div>
-        <h1 style={{
-          ...STROKE_STYLE, fontSize: '18px', fontWeight: 900,
-          textShadow: '0 2px 4px rgba(0,0,0,.85)',
-          margin: '2px 0 0', lineHeight: 1,
-        }}>اختلاف الصور</h1>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        style={{
-          width: '100%', maxWidth: '440px',
-          display: 'flex', gap: '6px', alignItems: 'stretch',
-        }}
-      >
-        <div className="tobol-team-panel-compact team-red" style={{ flex: 1 }}>
-          <div className="tobol-team-name-display">الجولة</div>
-          <div className="tobol-team-divider-compact" />
-          <div className="tobol-team-score-compact">{currentRound + 1}/{totalRounds}</div>
-        </div>
-        <div className="tobol-team-panel-compact team-blue" style={{ flex: 1 }}>
-          <div className="tobol-team-name-display">نقاطك</div>
-          <div className="tobol-team-divider-compact" />
-          <div className="tobol-team-score-compact">{score}</div>
-        </div>
-        <div
-          className="tobol-team-panel-compact team-red"
-          style={{ flex: 1, borderColor: timeColor + '55' }}
-        >
-          <div className="tobol-team-name-display">الوقت</div>
-          <div className="tobol-team-divider-compact" />
-          <div className="tobol-team-score-compact" style={{ color: timeColor }}>{timeLeft}s</div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        key={currentRoundData.id + String(currentRound)}
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        style={{
-          display: 'flex', gap: '10px', alignItems: 'center',
-          padding: '4px 14px', borderRadius: '999px',
-          background: 'rgba(6,42,32,.65)',
-          border: '1px solid rgba(254,239,145,.18)',
-        }}
-      >
-        <span style={{ fontSize: '13px' }}>🖼️</span>
-        <span style={{ ...STROKE_STYLE, fontSize: '13px', fontWeight: 800 }}>
-          {currentRoundData.title}
-        </span>
-        <span style={{ color: '#86efac', fontSize: '11px', fontWeight: 700 }}>
-          {foundCount}/{totalForRound}
-        </span>
-      </motion.div>
-
-      <motion.div
-        key={currentRoundData.id + '-images'}
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        style={{
-          width: '100%', maxWidth: '440px',
-          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px',
-          marginTop: '4px',
-        }}
-      >
-        <div
-          style={{
-            position: 'relative',
-            border: '2px solid rgba(254,239,145,.3)',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            background: '#000',
-          }}
-        >
-          <img
-            src={currentRoundData.imageA}
-            alt="صورة A"
-            draggable={false}
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-              userSelect: 'none',
-            }}
-          />
-          <div style={{
-            position: 'absolute', top: '4px', right: '4px',
-            background: 'rgba(0,0,0,.6)',
-            color: '#9fc4b4', fontSize: '10px', fontWeight: 800,
-            padding: '2px 6px', borderRadius: '4px',
-          }}>A</div>
-        </div>
-
-        <div
-          ref={imgBWrapperRef}
-          style={{
-            position: 'relative',
-            border: '2px solid rgba(254,239,145,.5)',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            background: '#000',
-            cursor: 'crosshair',
-          }}
-        >
-          <img
-            ref={imgBRef}
-            src={currentRoundData.imageB}
-            alt="صورة B — اضغط على الفروقات"
-            draggable={false}
-            onClick={handleImageBClick}
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              WebkitTouchCallout: 'none',
-            }}
-          />
-          {differences.filter(d => d.found).map(d => (
-            <motion.div
-              key={d.id}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', bounce: 0.4 }}
-              style={{
-                position: 'absolute',
-                left: `${d.x * 100}%`,
-                top: `${d.y * 100}%`,
-                width: `${d.radius * 200}%`,
-                aspectRatio: '1 / 1',
-                transform: 'translate(-50%, -50%)',
-                border: '3px solid #22c55e',
-                borderRadius: '50%',
-                background: 'rgba(34,197,94,.18)',
-                boxShadow: '0 0 12px rgba(34,197,94,.6)',
-                pointerEvents: 'none',
-              }}
-            />
-          ))}
-          {misses.map(m => (
-            <motion.div
-              key={m.id}
-              initial={{ scale: 0.5, opacity: 1 }}
-              animate={{ scale: 1, opacity: 0.4 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                position: 'absolute',
-                left: `${m.x * 100}%`,
-                top: `${m.y * 100}%`,
-                transform: 'translate(-50%, -50%)',
-                color: '#ef4444',
-                fontSize: '20px',
-                fontWeight: 900,
-                textShadow: '0 0 8px rgba(239,68,68,.8), 0 1px 4px rgba(0,0,0,.8)',
-                pointerEvents: 'none',
-                zIndex: 10,
-              }}
-            >✗</motion.div>
-          ))}
-          {feedbacks.map(fb => (
-            <ClickFeedback
-              key={fb.id}
-              id={fb.id}
-              kind={fb.kind}
-              x={fb.x}
-              y={fb.y}
-              onDone={() => setFeedbacks(prev => prev.filter(f => f.id !== fb.id))}
-            />
-          ))}
-          <div style={{
-            position: 'absolute', top: '4px', right: '4px',
-            background: 'rgba(0,0,0,.6)',
-            color: '#feef91', fontSize: '10px', fontWeight: 800,
-            padding: '2px 6px', borderRadius: '4px',
-          }}>B — اضغط</div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={{
-          width: '100%', maxWidth: '440px',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '6px 12px', borderRadius: '10px',
-          background: 'rgba(6,42,32,.55)',
-          border: '1px solid rgba(254,239,145,.15)',
-          fontSize: '11px', fontWeight: 700, color: '#9fc4b4',
-        }}
-      >
-        <span>🎯 إجمالي الفروق: {totalFound}/{totalDifferences}</span>
-        <span>💡 صعوبة: {cfg.label}</span>
-      </motion.div>
-
-      <AnimatePresence>
-        {showQuitDialog && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowQuitDialog(false)}
-            style={{
-              position: 'fixed', inset: 0,
-              background: 'rgba(0,0,0,.72)', backdropFilter: 'blur(4px)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              zIndex: 100, padding: '20px',
-            }}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 16 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 16 }}
-              transition={{ type: 'spring', bounce: 0.32 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                background: 'linear-gradient(180deg, #0e2a22, #061812)',
-                border: '1.5px solid rgba(254,239,145,.25)',
-                borderRadius: '18px', padding: '20px', width: '100%', maxWidth: '300px',
-                textAlign: 'center', boxShadow: '0 14px 36px rgba(0,0,0,.55)',
-              }}
-            >
-              <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
-              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>
-                إنهاء اللعبة؟
-              </h3>
-              <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
-                {isDiwaniyaHost
-                  ? 'سيتم إنهاء الجلسة وسيخرج جميع المشاهدين.'
-                  : `نقاطك: ${score} — سيتم إعادة تعيين اللعبة.`}
-              </p>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  onClick={() => setShowQuitDialog(false)}
-                  style={{
-                    flex: 1, padding: '10px', borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,.12)',
-                    background: 'rgba(80,80,80,.3)', color: '#cbd5e1',
-                    fontSize: '13px', fontWeight: 700, cursor: 'pointer',
-                  }}
-                >إلغاء</button>
-                <button
-                  onClick={handleQuitGame}
-                  style={{
-                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
-                    background: 'linear-gradient(135deg, #dc2626, #991b1b)',
-                    color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(220,38,38,.35)',
-                  }}
-                >نعم، اخرج</button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// MAIN EXPORT — dispatch by gameMode
-// classic (العرّاب) → FlashiGameBoard (new flashi-style UI)
-// diwaniya (الديوانية) → TobolGameBoard (kept until we generalize)
-// ════════════════════════════════════════════════════════════════════════
-export default function GameBoard() {
-  const { gameMode } = useSpotDiffStore();
-  if (gameMode === 'classic') {
-    return <FlashiGameBoard />;
-  }
-  return <TobolGameBoard />;
 }

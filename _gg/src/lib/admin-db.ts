@@ -1283,6 +1283,11 @@ export async function ensureAdminTables(): Promise<void> {
         { key: 'jackaroo_unselect_icon', value: '/battle/game_select_jackaroo_icon_unselect.webp', type: 'image', desc: 'زر Jackaroo (عادي)' },
         { key: 'other_select_icon', value: '/battle/game_select_other_icon_select.webp', type: 'image', desc: 'زر Other (نشط)' },
         { key: 'other_unselect_icon', value: '/battle/game_select_other_icon_unselect.webp', type: 'image', desc: 'زر Other (عادي)' },
+        { key: 'spotdiff_select_icon', value: '/battle/game_select_spotdiff_icon_select.webp', type: 'image', desc: 'زر اختلاف الصور (نشط)' },
+        { key: 'spotdiff_unselect_icon', value: '/battle/game_select_spotdiff_icon_unselect.webp', type: 'image', desc: 'زر اختلاف الصور (عادي)' },
+        { key: 'spotdiff_select_icon_129x108', value: '/battle/game_select_spotdiff_icon_select_129x108.webp', type: 'image', desc: 'زر اختلاف الصور 129x108 (نشط)' },
+        { key: 'spotdiff_unselect_icon_129x108', value: '/battle/game_select_spotdiff_icon_unselect_129x108.webp', type: 'image', desc: 'زر اختلاف الصور 129x108 (عادي)' },
+        { key: 'spotdiff_bg', value: '/img/games/spotdiff/bg.jpg', type: 'image', desc: 'صورة لعبة اختلاف الصور' },
       ];
       for (const cfg of yallaConfigs) {
         await c.execute({

@@ -29,6 +29,7 @@ export default function GameSetup() {
     setPlayerName, setDifficulty, setTotalRounds,
     startGame, resetGame, gameMode, setRoomCode,
     difficulty, totalRounds,
+    loadFlashiCatalog,
   } = useSpotDiffStore();
 
   const [playerName, setPlayerNameState] = useState('');
@@ -48,6 +49,11 @@ export default function GameSetup() {
     setMusicOn(isMusicEnabled());
     setSoundOn(isSoundEnabled());
   }, []);
+
+  // Preload flashi catalog in the background so startGame has it ready
+  useEffect(() => {
+    loadFlashiCatalog().catch(() => {});
+  }, [loadFlashiCatalog]);
 
   const toggleMusic = () => {
     const next = !musicOn;
@@ -75,11 +81,16 @@ export default function GameSetup() {
     }
   }, [gameMode, setRoomCode, playerName]);
 
-  const handleStart = () => {
+  const [catalogLoading, setCatalogLoading] = useState(false);
+  const handleStart = async () => {
     const name = playerName.trim() || 'اللاعب';
     setPlayerName(name);
     setDifficulty(difficulty);
     setTotalRounds(totalRounds);
+    // Ensure flashi catalog is loaded before generating rounds
+    setCatalogLoading(true);
+    try { await loadFlashiCatalog(); } catch (e) { /* ignore — fallback to SVG */ }
+    setCatalogLoading(false);
     startGame();
   };
 

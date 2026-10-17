@@ -46,6 +46,20 @@ export const FLASHI_IMAGE_SHIFT = 53.9; // vmin — vertical offset between imag
 // from ~3 GB -> ~966 MB with no visible quality loss at typical game sizes.
 export const FLASHI_BASE_URL = '/img/spotdiff/images';
 
+// ─── Image shift per category (vmin) — vertical offset between image A and B
+// Reverse-engineered from external_diff_deobfuscated.js:
+//   if (isPhoto)  imageShift = 67.5;
+//   else if (isPhoto2) imageShift = 68.5;
+//   else imageShift = 53.5;
+// where isPhoto = (category === 'photo') and isPhoto2 = (category === 'vphoto')
+export function getImageShift(category: FlashiCategory): number {
+  switch (category) {
+    case 'photo':  return 67.5;
+    case 'vphoto': return 68.5;
+    default:       return 53.5; // vmisc, vscenes, photo3, vector3
+  }
+}
+
 // ─── Decode a flashi filename into difference coordinates ──────────────
 export function decodeFlashiFilename(filename: string): FlashiDiff[] {
   const parts = filename.split('y');

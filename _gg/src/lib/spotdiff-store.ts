@@ -14,6 +14,15 @@ import {
   DIFFICULTY_CONFIG,
 } from './spotdiff-types';
 import { SPOTDIFF_ROUNDS } from './spotdiff-rounds';
+import {
+  loadFlashiCatalog as loadFlashiCatalogFn,
+  pickRandomImages,
+  decodeFlashiFilename,
+  buildFlashiUrl,
+  getImageShift,
+  type FlashiCategory,
+  type FlashiImage,
+} from './flashi_images';
 
 // ============================================================
 // State
@@ -27,6 +36,10 @@ export interface SpotDiffState {
   roomCode: string | null;
   hostName: string | null;
   playerName: string | null;
+
+  // Flashi catalog (loaded async before startGame)
+  flashiCatalog: FlashiImage[] | null;
+  flashiCategory: FlashiCategory | 'random';  // user-selected image type filter
 
   // Current round state
   currentRound: number;        // 0-based index
@@ -67,6 +80,10 @@ export interface SpotDiffState {
 
   // Helpers
   syncToRoom: () => void;
+
+  // Flashi catalog management
+  loadFlashiCatalog: () => Promise<void>;
+  setFlashiCategory: (cat: FlashiCategory | 'random') => void;
 }
 
 // ============================================================
@@ -95,6 +112,8 @@ const initialState = {
   gameLog: [] as GameLogEntry[],
   lastAction: null as string | null,
   lastActionAt: null as number | null,
+  flashiCatalog: null as FlashiImage[] | null,
+  flashiCategory: 'random' as FlashiCategory | 'random',
 };
 
 function generateRoomCode(): string {
@@ -110,8 +129,33 @@ function makeLog(round: number, message: string, type: GameLogEntry['type'] = 'i
   return { round, message, type, timestamp: Date.now() };
 }
 
-// Pick N rounds from SPOTDIFF_ROUNDS, cycling if needed (10-round mode)
-function pickRounds(total: number): SpotDiffRound[] {
+// Pick N rounds from the flashi catalog if loaded (preferred),
+// otherwise fall back to legacy SVG rounds (SPOTDIFF_ROUNDS).
+function pickRounds(total: number, catalog: FlashiImage[] | null, category: FlashiCategory | 'random'): SpotDiffRound[] {
+  // Flashi branch: pick N random images and convert each to a SpotDiffRound
+  if (catalog && catalog.length > 0) {
+    const picks = pickRandomImages(catalog, category, total);
+    return picks.map((img, idx) => {
+      const diffs = decodeFlashiFilename(img.filename);
+      const shift = getImageShift(img.category);
+      return {
+        id: `flashi-${idx}-${img.filename.slice(0, 20)}`,
+        title: `اختلاف الصور — ${img.category}`,
+        imageA: '',  // unused for flashi — imageUrl holds the bundled image
+        imageB: '',  // unused
+        imageUrl: img.url,
+        imageShift: shift,
+        flashiDiffs: diffs.map(d => ({ topVmin: d.top, leftVmin: d.left })),
+        flashiCategory: img.category,
+        differences: diffs.map((d, i) => ({
+          id: `flashi-diff-${idx}-${i}`,
+          x: 0, y: 0, radius: 0,  // unused for flashi — kept for type compat
+          found: false,
+        })),
+      } as SpotDiffRound;
+    });
+  }
+  // Legacy fallback: cycle through the SVG SPOTDIFF_ROUNDS
   const out: SpotDiffRound[] = [];
   for (let i = 0; i < total; i++) {
     out.push(SPOTDIFF_ROUNDS[i % SPOTDIFF_ROUNDS.length]);
@@ -140,9 +184,10 @@ export const useSpotDiffStore = create<SpotDiffState>()(
 
       startGame: () => {
         const state = get();
-        const firstRound = pickRounds(state.totalRounds)[0];
+        const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
+        const firstRound = rounds[0];
         const timeForRound = DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
-        const totalDiffs = pickRounds(state.totalRounds).reduce(
+        const totalDiffs = rounds.reduce(
           (sum, r) => sum + r.differences.length, 0
         );
         set({
@@ -166,7 +211,7 @@ export const useSpotDiffStore = create<SpotDiffState>()(
 
       loadRound: (index) => {
         const state = get();
-        const rounds = pickRounds(state.totalRounds);
+        const rounds = pickRounds(state.totalRounds, state.flashiCatalog, state.flashiCategory);
         const round = rounds[index];
         if (!round) return;
         const timeForRound = DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
@@ -293,6 +338,18 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         }
       },
 
+      loadFlashiCatalog: async () => {
+        if (get().flashiCatalog) return; // already loaded
+        try {
+          const catalog = await loadFlashiCatalogFn();
+          set({ flashiCatalog: catalog });
+        } catch (e) {
+          console.warn('Failed to load flashi catalog:', e);
+        }
+      },
+
+      setFlashiCategory: (cat) => set({ flashiCategory: cat }),
+
       syncToRoom: () => {
         const state = get();
         if (state.gameMode !== 'diwaniya' || !state.roomCode) return;
@@ -349,6 +406,8 @@ export const useSpotDiffStore = create<SpotDiffState>()(
         gameLog: state.gameLog,
         lastAction: state.lastAction,
         lastActionAt: state.lastActionAt,
+        flashiCatalog: state.flashiCatalog,
+        flashiCategory: state.flashiCategory,
       }),
     }
   )

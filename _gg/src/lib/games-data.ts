@@ -9,6 +9,8 @@ export interface GameData {
   description: string;
   href: string | null;
   bgImage: string | null;
+  iconSelect?: string;
+  iconUnselect?: string;
   themeColor: string;
   themeBorder: string;
   themeBg: string;
@@ -258,7 +260,9 @@ export const games: GameData[] = [
     description:
       'اختبر قوة ملاحظتك! اعثر على الفروقات بين الصورتين قبل انتهاء الوقت. 5 جولات، مستويات صعوبة متعددة، نقاط مضاعفة.',
     href: '/play/spotdiff',
-    bgImage: '/spotdiff-bg.png',
+    bgImage: '/img/games/spotdiff/bg.jpg',
+    iconSelect: '/img/games/spotdiff/icon_select.webp',
+    iconUnselect: '/img/games/spotdiff/icon_unselect.webp',
     themeColor: 'text-cyan-400',
     themeBorder: 'border-cyan-500/30 hover:border-cyan-500/60',
     themeBg: 'from-cyan-950/80 to-blue-900/40',
