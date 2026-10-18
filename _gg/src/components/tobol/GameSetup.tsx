@@ -85,8 +85,10 @@ export default function GameSetup() {
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/tobol-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
-    setShowExitDialog(false);
-    router.push('/');
+    try { if (typeof window !== 'undefined') { localStorage.removeItem('tobol-game-storage'); localStorage.removeItem('tobol-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useTobolStore.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+    router.push('/#games');
   };
 
   // نص الإشعار: من سيبدأ أولاً (يظهر دائماً، لا يختفي)

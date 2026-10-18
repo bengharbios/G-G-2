@@ -739,8 +739,10 @@ export default function GameBoard() {
                     if (st.gameMode === 'diwaniya' && st.roomCode) {
                       try { fetch(`/api/tabot-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
                     }
-                    setShowExitDialog(false);
-                    router.push('/');
+                    try { if (typeof window !== 'undefined') { localStorage.removeItem('tabot-game-storage'); localStorage.removeItem('tabot-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useTabotStore.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+                    router.push('/#games');
                   }}
                   style={{
                     flex: 1, padding: '10px', borderRadius: '10px', border: 'none',

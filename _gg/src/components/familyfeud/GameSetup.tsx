@@ -77,9 +77,24 @@ export default function GameSetup() {
     });
   };
 
-  const handleExit = () => {
-    storeReset();
-    router.push('/');
+    const handleExit = () => {
+    // Explicit exit = FORFEIT (no resume, no mode bleed)
+    try {
+      const st = useFamilyFeudStore.getState();
+      if (st.gameMode === 'diwaniya' && st.roomCode) {
+        fetch(`/api/familyfeud-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {});
+      }
+      useFamilyFeudStore.getState().resetGame();
+    } catch { /* ignore */ }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('familyfeud-game-storage');
+        localStorage.removeItem('familyfeud-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
+    setShowExitDialog(false);
+    setShowQuitDialog(false);
+    router.push('/#games');
   };
 
   return (

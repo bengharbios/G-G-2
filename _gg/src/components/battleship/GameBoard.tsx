@@ -225,11 +225,21 @@ export default function GameBoard() {
     setMusicEnabled(next);
   };
 
-  const handleQuitGame = () => {
-      // [UNIFIED EXIT] Preserve state for resume. Go to home page.
-      setShowQuitDialog(false);
-      router.push('/');
-    };
+    const handleQuitGame = () => {
+    // Explicit exit = FORFEIT
+    try {
+      useBattleshipStore.getState().resetGame();
+    } catch { /* ignore */ }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('battleship-game-storage');
+        localStorage.removeItem('battleship-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
+    setShowExitDialog(false);
+    setShowQuitDialog(false);
+    router.push('/#games');
+  };
 
   const handleCardClick = (cardId: number) => {
     if (soundOn) playClickSound();
@@ -534,7 +544,7 @@ export default function GameBoard() {
           icon="▶️"
           onClick={() => {
             if (soundOn) playClickSound();
-            router.push('/battleship');
+            router.push('/#games');
           }}
         />
         <CompactBtn

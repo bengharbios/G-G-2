@@ -592,8 +592,10 @@ export default function GameBoard() {
       if (st.gameMode === 'diwaniya' && st.roomCode) {
         try { fetch(`/api/tobol-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
       }
-      setShowQuitDialog(false);
-      router.push('/');
+      try { if (typeof window !== 'undefined') { localStorage.removeItem('tobol-game-storage'); localStorage.removeItem('tobol-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useTobolStore.getState().resetGame(); } catch { /* ignore */ }
+setShowQuitDialog
+      router.push('/#games');
     };
 
   const hasAnyCardBeenShown = clickedBtns.size > 0;

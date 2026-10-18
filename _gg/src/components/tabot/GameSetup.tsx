@@ -87,8 +87,24 @@ export default function GameSetup() {
     );
   };
 
-  const handleExit = () => {
-    router.push('/');
+    const handleExit = () => {
+    // Explicit exit = FORFEIT (no resume, no mode bleed)
+    try {
+      const st = useTabotStore.getState();
+      if (st.gameMode === 'diwaniya' && st.roomCode) {
+        fetch(`/api/tabot-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {});
+      }
+      useTabotStore.getState().resetGame();
+    } catch { /* ignore */ }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('tabot-game-storage');
+        localStorage.removeItem('tabot-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
+    setShowExitDialog(false);
+    setShowQuitDialog(false);
+    router.push('/#games');
   };
 
   const totalPlayers = alpha.players.length + beta.players.length;

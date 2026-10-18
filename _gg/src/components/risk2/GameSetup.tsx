@@ -136,8 +136,10 @@ export default function GameSetup() {
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/risk2-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
-    setShowExitDialog(false);
-    router.push('/');
+    try { if (typeof window !== 'undefined') { localStorage.removeItem('risk2-game-storage'); localStorage.removeItem('risk2-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useRisk2Store.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+    router.push('/#games');
   };
 
   return (

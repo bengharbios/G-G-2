@@ -39,8 +39,10 @@ export default function GameSetup() {
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/baharharb-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
-    setShowExitDialog(false);
-    router.push('/');
+    try { if (typeof window !== 'undefined') { localStorage.removeItem('baharharb-game-storage'); localStorage.removeItem('baharharb-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useBaharHarbStore.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+    router.push('/#games');
   };
 
   return (

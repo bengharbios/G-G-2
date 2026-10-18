@@ -157,10 +157,20 @@ export default function GameSetup() {
     }, 100);
   };
 
-  const handleExit = () => {
-    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const handleExit = () => {
+    // Explicit exit = FORFEIT
+    try {
+      useBattleshipStore.getState().resetGame();
+    } catch { /* ignore */ }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('battleship-game-storage');
+        localStorage.removeItem('battleship-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
     setShowExitDialog(false);
-    router.push('/');
+    setShowQuitDialog(false);
+    router.push('/#games');
   };
 
   const isValid = !!authUser || playerName.trim().length > 0;

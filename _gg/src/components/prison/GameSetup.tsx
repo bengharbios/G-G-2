@@ -100,8 +100,10 @@ export default function GameSetup() {
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/prison-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
-    setShowExitDialog(false);
-    router.push('/');
+    try { if (typeof window !== 'undefined') { localStorage.removeItem('prison-game-storage'); localStorage.removeItem('prison-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { usePrisonStore.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+    router.push('/#games');
   };
 
   return (

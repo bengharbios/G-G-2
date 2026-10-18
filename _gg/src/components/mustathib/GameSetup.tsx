@@ -94,8 +94,10 @@ export default function GameSetup() {
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/mustathib-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
-    setShowExitDialog(false);
-    router.push('/');
+    try { if (typeof window !== 'undefined') { localStorage.removeItem('mustathib-game-storage'); localStorage.removeItem('mustathib-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useMustathibStore.getState().resetGame(); } catch { /* ignore */ }
+setShowExitDialog
+    router.push('/#games');
   };
 
   // For diwaniya mode: create room on start

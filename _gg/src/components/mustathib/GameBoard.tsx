@@ -1261,8 +1261,10 @@ export default function GameBoard() {
       if (st.gameMode === 'diwaniya' && st.roomCode) {
         try { fetch(`/api/mustathib-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
       }
-      setShowQuitDialog(false);
-      router.push('/');
+      try { if (typeof window !== 'undefined') { localStorage.removeItem('mustathib-game-storage'); localStorage.removeItem('mustathib-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useMustathibStore.getState().resetGame(); } catch { /* ignore */ }
+setShowQuitDialog
+      router.push('/#games');
     };
 
   const aliveCount = players.filter(p => p.isAlive).length;

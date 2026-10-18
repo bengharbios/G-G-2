@@ -292,8 +292,10 @@ export default function GameBoard() {
       if (st.gameMode === 'diwaniya' && st.roomCode) {
         try { fetch(`/api/spotdiff-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
       }
-      setShowQuitDialog(false);
-      router.push('/');
+      try { if (typeof window !== 'undefined') { localStorage.removeItem('spotdiff-game-storage'); localStorage.removeItem('spotdiff-game-storage__disconnect_ts'); } } catch { /* ignore */ }
+try { useSpotDiffStore.getState().resetGame(); } catch { /* ignore */ }
+setShowQuitDialog
+      router.push('/#games');
     };
 
   // Click handler — convert pixel coords → vmin, compare to flashi diffs
@@ -662,7 +664,7 @@ export default function GameBoard() {
           icon="▶️"
           onClick={() => {
             if (soundOn) playClickSound();
-            router.push('/spotdiff');
+            router.push('/#games');
           }}
         />
         <CompactBtn
