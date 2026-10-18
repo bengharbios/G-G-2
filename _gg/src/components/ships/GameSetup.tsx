@@ -127,7 +127,7 @@ export default function GameSetup() {
               style={{
                 width: '130px', height: '80px', borderRadius: '10px',
                 border: themeId === t ? '3px solid #fbbf24' : '1px solid rgba(255,255,255,.2)',
-                background: `url(/img/ship/themes/theme${t}/board_background.png) center / cover`,
+                background: 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
                 cursor: 'pointer', overflow: 'hidden', padding: 0,
                 boxShadow: themeId === t ? '0 0 16px rgba(251,191,36,.35)' : 'none',
                 transition: 'all 0.2s ease',

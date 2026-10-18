@@ -103,7 +103,7 @@ export default function GameBoard() {
         gap: '0',
         width: '100%',
         aspectRatio: '1.1 / 1',
-        background: `url(/img/ship/themes/theme${themeId}/board_background.png) center / cover`,
+        background: 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
         borderRadius: '8px',
         padding: '2px',
         overflow: 'hidden',
@@ -149,7 +149,7 @@ export default function GameBoard() {
                   imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
                   // For horizontal ship images: flip vertically (flashi stores them upside down)
                   if (orientation === 'horizontal') {
-                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleY(-1)' };
+                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover',  };
                   } else {
                     imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
                   }
@@ -226,7 +226,7 @@ export default function GameBoard() {
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: `url(/img/ship/themes/theme${themeId}/background.png) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)`,
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
