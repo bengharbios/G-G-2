@@ -183,11 +183,16 @@ export default function GameBoard() {
                   const orientation = cell.shipOrientation || 'horizontal';
                   const segment = cell.shipSegment;
                   imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
-                  // Horizontal ships: source images are stored mirrored — flip
-                  // them on the X axis so the segments form a correct ship
-                  // (bow on left, stern on right in LTR; mirrored in RTL).
-                  // Vertical ships render as-is.
-                  if (orientation === 'horizontal') {
+                  // Horizontal ships: source images for segments 1..N-1 are
+                  // stored mirrored in the flashi asset pack, so we flip them
+                  // with scaleX(-1) to form a correct ship. The LAST segment
+                  // (the stern) is stored in the correct orientation and
+                  // must NOT be flipped — otherwise it appears reversed.
+                  // Look up the ship's total length from the theme shipTypes.
+                  const shipType = shipTypes.find(s => s.id === cell.shipId);
+                  const shipTotalLen = shipType?.length || 0;
+                  const isLastSegment = shipTotalLen > 0 && segment === shipTotalLen;
+                  if (orientation === 'horizontal' && !isLastSegment) {
                     imgStyle = {
                       width: '100%', height: '100%', objectFit: 'cover',
                       transform: 'scaleX(-1)',
