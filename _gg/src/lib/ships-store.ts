@@ -224,9 +224,6 @@ const initialState = {
   winner: null as 'team1' | 'team2' | null,
   aiLastHit: null as { row: number; col: number } | null,
   aiHuntMode: false,
-  // AI hunt mode (flashi pattern: after hit, attack adjacent)
-  aiLastHit: { row: number; col: number } | null,
-  aiHuntMode: boolean,
   playerScore: 0,
   aiScore: 0,
   playerHits: 0,
