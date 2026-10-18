@@ -517,6 +517,23 @@ export default function GameSetup() {
     }
   }, [authUser?.displayName, setPlayerName]);
 
+  // ── هيّج وضع "تجهيز المعركة": أخفِ أيقونة الإعدادات العائمة (SideUtilityPanel)
+  //    والقائمة السفلية وأي chrome آخر عبر `body.in-game-setup` CSS rule.
+  //    هذا يطابق نمط spotdiff canonical (GameSetup.tsx line 476-481).
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('in-game-setup');
+    return () => {
+      document.body.classList.remove('in-game-setup');
+    };
+  }, []);
+
+  // ─ـ مزامنة الحالة الأولية للصوت من localStorage (مطابقة لـ spotdiff)
+  useEffect(() => {
+    setMusicOn(isMusicEnabled());
+    setSoundOn(isSoundEnabled());
+  }, []);
+
   // For diwaniya mode: create room on mount
   useEffect(() => {
     if (gameMode !== 'diwaniya') return;
@@ -537,7 +554,7 @@ export default function GameSetup() {
     setMusicEnabled(next);
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     const name = playerName.trim() || authUser?.displayName || 'اللاعب';
     setPlayerName(name);
     setTotalRounds(totalRounds);
@@ -547,11 +564,9 @@ export default function GameSetup() {
       themeId,
     });
     setCatalogLoading(true);
-    // No async fetch needed — catalog is built statically in getGuessImageCatalog
-    setTimeout(() => {
-      setCatalogLoading(false);
-      startGame();
-    }, 100);
+    // startGame is now async — it loads labels.json + builds multi-choice round
+    await startGame();
+    setCatalogLoading(false);
   };
 
   const handleExit = () => {
@@ -674,7 +689,7 @@ export default function GameSetup() {
           خمن الصورة
         </h1>
         <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
-          Guess the Image — Memory Match-2
+          Guess the Image
         </p>
       </motion.div>
 
