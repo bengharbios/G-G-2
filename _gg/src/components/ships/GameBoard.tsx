@@ -277,15 +277,40 @@ export default function GameBoard() {
                   }}
                 >
                   {imgSrc && (
-                    <motion.img
-                      src={imgSrc}
-                      alt=""
-                      draggable={false}
-                      style={imgStyle}
+                    <motion.div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        // Apply the horizontal-flip on the WRAPPER div, not on
+                        // the motion.img. This prevents framer-motion from
+                        // overriding our scaleX(-1) when it animates scale
+                        // during the placement pop-in animation. (Without this
+                        // fix, the rightmost cell of a freshly-placed ship —
+                        // the one that runs the pop-in animation — would
+                        // appear un-flipped, breaking the ship's appearance
+                        // until the page is refreshed.)
+                        transform: imgStyle.transform,
+                      }}
                       initial={isPlayer && lastPlaced && lastPlaced.row === r && lastPlaced.col === c && (Date.now() - lastPlaced.ts < 1500) ? { scale: 0, opacity: 0 } : false}
                       animate={isPlayer && lastPlaced && lastPlaced.row === r && lastPlaced.col === c && (Date.now() - lastPlaced.ts < 1500) ? { scale: 1, opacity: 1 } : {}}
                       transition={{ type: 'spring', bounce: 0.45, duration: 0.5 }}
-                    />
+                    >
+                      <img
+                        src={imgSrc}
+                        alt=""
+                        draggable={false}
+                        style={{
+                          width: imgStyle.width,
+                          height: imgStyle.height,
+                          objectFit: imgStyle.objectFit as any,
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                        }}
+                      />
+                    </motion.div>
                   )}
                   {/* Explosion / water-splash overlay on freshly attacked AI cell */}
                   {!isPlayer && lastAttack && lastAttack.row === r && lastAttack.col === c && (Date.now() - lastAttack.ts < 1300) && (

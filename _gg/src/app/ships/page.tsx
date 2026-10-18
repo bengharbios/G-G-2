@@ -40,15 +40,24 @@ function ShipsContent() {
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
-    if (mode === 'godfather' && phase === 'landing') {
+    // Allow mode override whenever the user is NOT mid-game
+    // (phase === 'landing' or 'setup'). If they're mid-game
+    // (placing / attacking / pass_phone / game_over), keep the
+    // existing gameMode — we don't want to disrupt a running game.
+    const canOverrideMode = phase === 'landing' || phase === 'setup';
+    if (!canOverrideMode) return;
+
+    if (mode === 'godfather') {
       setGameMode('classic');
       setPlayMode('ai');
-      setPhase('setup');
-    } else if (mode === 'diwaniya' && phase === 'landing') {
+      if (phase === 'landing') setPhase('setup');
+    } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
       setPlayMode('teams');
-      setPhase('setup');
+      if (phase === 'landing') setPhase('setup');
     } else if (phase === 'landing') {
+      // No mode in URL but phase is 'landing' — user came directly via /play/ships
+      // Default to local classic (godfather) mode.
       setGameMode('classic');
       setPlayMode('ai');
       setPhase('setup');

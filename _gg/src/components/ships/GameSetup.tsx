@@ -6,7 +6,7 @@
 // All structure/buttons/responsiveness come from GameSetupKit.
 // ════════════════════════════════════════════════════════════════
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useShipsStore } from '@/lib/ships-store';
 import {
@@ -27,7 +27,17 @@ import {
   ChoiceButtonRow,
   StartButton,
   GenericCard,
+  STROKE_STYLE,
 } from '@/components/shared/gamesetup/GameSetupKit';
+
+// Generate a 6-char room code (mirrors generateShipsRoomCode in the store
+// but we don't import that to avoid circular deps)
+function generateShipsCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
 
 export default function GameSetup() {
   const router = useRouter();
@@ -40,24 +50,43 @@ export default function GameSetup() {
     playMode, setPlayMode,
     setPlayerName,
     playerName,
+    hostName, setHostName,
   } = useShipsStore();
 
-  // Diwaniya: create room on mount if not already
+  // Ref to prevent duplicate room creation in the same mount cycle.
+  // Without this, React Strict Mode + zustand persist hydration can
+  // cause the useEffect to fire twice and race on the POST /api/ships-room
+  // call, leaving the share-card condition `gameMode === 'diwaniya' && roomCode`
+  // briefly false on the first render — which is what the user reported
+  // as 'sometimes the share card doesn't show on first entry'.
+  const roomCreationInFlightRef = useRef(false);
+
+  // Diwaniya: create room on mount if not already. Mirrors the
+  // spotdiff/GameSetup pattern exactly.
   useEffect(() => {
     if (gameMode !== 'diwaniya') return;
-    if (!useShipsStore.getState().roomCode) {
-      const code = Array.from('ABCDEFGHJKLMNPQRSTUVWXYZ23456789')
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 6)
-        .join('');
-      fetch('/api/ships-room', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, hostName: 'العراب' }),
-      }).catch(() => {});
-      setRoomCode(code);
-    }
-  }, [gameMode, roomCode, setRoomCode]);
+    // If we already have a roomCode in the store, don't create a new one
+    if (useShipsStore.getState().roomCode) return;
+    // If a creation is already in flight (Strict Mode double-fire), skip
+    if (roomCreationInFlightRef.current) return;
+    roomCreationInFlightRef.current = true;
+
+    const code = generateShipsCode();
+    const effectiveHost = hostName || playerName || 'العراب';
+    fetch('/api/ships-room', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, hostName: effectiveHost }),
+    }).catch(() => {
+      // If the POST fails, release the lock so a future retry can fire
+      roomCreationInFlightRef.current = false;
+    });
+    setRoomCode(code);
+    // Note: we do NOT release the ref here — setRoomCode triggers a
+    // re-render and the useEffect re-runs, but the new check
+    // `useShipsStore.getState().roomCode` will now be truthy so the
+    // early-return at the top handles it.
+  }, [gameMode, setRoomCode, playerName, hostName]);
 
   // In diwaniya mode, switch to teams play mode automatically
   useEffect(() => {
