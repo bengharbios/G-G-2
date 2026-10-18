@@ -523,24 +523,13 @@ export const useShipsStore = create<ShipsState>()(
           lastActionAt: Date.now(),
         });
 
-        // Check if a ship was sunk → show explosion message
-        let sunkShipName = '';
-        if (isHit && state.currentRoundData?.aiShips) {
-          const ship = state.currentRoundData.aiShips.find(s =>
-            s.cells.some(c => c.row === row && c.col === col)
-          );
-          if (ship) {
-            ship.hits++;
-            const allHit = ship.cells.every(c => newAiGrid[c.row][c.col].state === 'hit');
-            if (allHit && !ship.sunk) {
-              ship.sunk = true;
-              const shipType = (state.themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2).find(s => s.id === ship.shipTypeId);
-              sunkShipName = shipType?.name || '';
-              // Show explosion message
-              set({ message: 'explosion', sunkShipName });
-              setTimeout(() => set({ message: null, sunkShipName: null }), 2000);
-            }
-          }
+        // Show explosion message + track sunk ship (merged with sunk detection above)
+        if (sunkShipName) {
+          const shipIdx = state.currentRoundData?.aiShips?.findIndex(s => s.cells.some(c => c.row === row && c.col === col)) ?? -1;
+          const newAiShipsSunk = [...(state.aiShipsSunk || [false,false,false,false,false])];
+          if (shipIdx >= 0) newAiShipsSunk[shipIdx] = true;
+          set({ message: 'explosion', sunkShipName, aiShipsSunk: newAiShipsSunk });
+          setTimeout(() => set({ message: null, sunkShipName: null }), 2000);
         }
 
         // Check win
