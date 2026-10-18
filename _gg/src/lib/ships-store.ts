@@ -224,6 +224,8 @@ const initialState = {
   winner: null as 'team1' | 'team2' | null,
   aiLastHit: null as { row: number; col: number } | null,
   aiHuntMode: false,
+  playerShipsSunk: [false, false, false, false, false] as boolean[],
+  aiShipsSunk: [false, false, false, false, false] as boolean[],
   playerScore: 0,
   aiScore: 0,
   playerHits: 0,
