@@ -80,7 +80,12 @@ export default function GameSetup() {
   };
 
   const handleExit = () => {
-    resetGame();
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const st = useTobolStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/tobol-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowExitDialog(false);
     router.push('/');
   };
 

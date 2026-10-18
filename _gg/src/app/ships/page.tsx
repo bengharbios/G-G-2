@@ -18,7 +18,7 @@ function useHydrated() {
 export default function ShipsPage() {
   return (
     <SubscriptionGuard gameSlug="ships">
-      <GameLayout gameSlug="ships" gameName="سفن" gameEmoji="🚢" accentColor="indigo">
+      <GameLayout gameSlug="ships" gameName="سفن" gameEmoji="🚢" accentColor="violet">
         <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9fc4b4' }}>جاري التحميل...</div>}>
           <ShipsContent />
         </Suspense>
@@ -28,7 +28,7 @@ export default function ShipsPage() {
 }
 
 function ShipsContent() {
-  const { phase, setPhase, setGameMode, gameMode, roomCode } = useShipsStore();
+  const { phase, setPhase, setGameMode, gameMode, roomCode, playMode, setPlayMode } = useShipsStore();
   const mounted = useHydrated();
   const searchParams = useSearchParams();
 
@@ -37,12 +37,23 @@ function ShipsContent() {
     const mode = searchParams.get('mode');
     if (mode === 'godfather' && phase === 'landing') {
       setGameMode('classic');
+      setPlayMode('ai');
       setPhase('setup');
     } else if (mode === 'diwaniya' && phase === 'landing') {
       setGameMode('diwaniya');
+      setPlayMode('teams');
+      setPhase('setup');
+    } else if (phase === 'landing') {
+      // No mode in URL but phase is 'landing' — user came directly via /play/ships
+      // (e.g., from the home page "Play" button). Default to local classic mode
+      // so the user sees the setup page instead of a blank screen.
+      // NOTE: If the persisted state had a non-landing phase (e.g., 'placing'
+      // or 'attacking'), this branch is skipped — user resumes mid-game.
+      setGameMode('classic');
+      setPlayMode('ai');
       setPhase('setup');
     }
-  }, [mounted, searchParams, phase, setPhase, setGameMode]);
+  }, [mounted, searchParams, phase, setPhase, setGameMode, setPlayMode]);
 
   const handleStartLocal = useCallback(() => {
     setGameMode('classic');
@@ -68,9 +79,18 @@ function ShipsContent() {
   }
 
   // No landing page — mode is set via URL (?mode=godfather or ?mode=diwaniya)
-  // If no mode specified, redirect to /play/ships
+  // or auto-defaulted to 'classic' in the useEffect above. Once the effect
+  // runs, phase will be 'setup' (or 'placing' / 'attacking' if a game was
+  // already in progress and is being restored from localStorage).
   if (phase === 'landing') {
-    return null; // will be handled by useEffect below
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center tobol-bg" dir="rtl">
+        <div className="text-center flex-1 flex items-center justify-center">
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} style={{ fontSize: '48px', marginBottom: '12px' }}>🚢</motion.div>
+          <p style={{ color: '#9fc4b4', fontSize: '14px' }}>جاري التحميل...</p>
+        </div>
+      </div>
+    );
   }
   if (phase === 'setup') return <main><GameSetup /></main>;
   // phase 'placing' (ship placement) + 'attacking' → GameBoard

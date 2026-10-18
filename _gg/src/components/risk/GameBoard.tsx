@@ -774,9 +774,13 @@ export default function GameBoard() {
   }, [currentPlayerIndex]);
 
   const handleQuitGame = () => {
-    playClickSound();
-    resetGame();
-    router.push('/risk');
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const st = useRiskStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/risk-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowQuitDialog(false);
+    router.push('/');
   };
 
   if (!currentPlayer) return null;

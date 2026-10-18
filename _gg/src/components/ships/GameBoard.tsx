@@ -55,6 +55,7 @@ export default function GameBoard() {
     message, sunkShipName, winner,
     toggleHideHands, hideMessage, switchTurn,
     playerShipsSunk, aiShipsSunk,
+    gameMode,
   } = useShipsStore();
 
   const [musicOn, setMusicOn] = useState(true);
@@ -71,7 +72,19 @@ export default function GameBoard() {
   }, []);
 
   const toggleMusic = () => { const n = !musicOn; setMusicOn(n); setMusicEnabled(n); };
-  const handleQuit = () => { resetGame(); router.push('/ships'); };
+  // Exit: end diwaniya room (fire-and-forget) + go to home page.
+  // We DO NOT call resetGame() — zustand persist keeps the game state in
+  // localStorage so the user can return later and resume from where they
+  // left off. This matches the user's request: "اذا لم أكمل اللعبة او فصل
+  // الانترنت يجب ان ترجعني لآخر شيء وصلت إليه في اللعبة (في جميع الألعاب)".
+  const handleQuit = () => {
+    const st = useShipsStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/ships-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowQuitDialog(false);
+    router.push('/');
+  };
 
   const shipTypes = themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;
   const currentShip = currentShipIndex < shipsToPlace.length ? shipsToPlace[currentShipIndex] : null;
@@ -640,9 +653,11 @@ export default function GameBoard() {
               style={{ padding: '20px', width: '100%', maxWidth: '300px', textAlign: 'center', borderRadius: '18px' }}
             >
               <div style={{ fontSize: '38px', marginBottom: '6px' }}>🚪</div>
-              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>إنهاء اللعبة؟</h3>
+              <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>الخروج من اللعبة؟</h3>
               <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
-                نقاطك: {playerScore} — سيتم إعادة التعيين.
+                {gameMode === 'diwaniya'
+                  ? 'سيتم إنهاء جلسة الديوانية وإخراج جميع المشاهدين، مع حفظ تقدمك للعودة لاحقاً.'
+                  : `نقاطك: ${playerScore} — سيتم حفظ تقدمك تلقائياً ويمكنك العودة لاحقاً من مكانك.`}
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={() => setShowQuitDialog(false)}

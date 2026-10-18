@@ -226,9 +226,10 @@ export default function GameBoard() {
   };
 
   const handleQuitGame = () => {
-    resetGame();
-    router.push('/battleship');
-  };
+      // [UNIFIED EXIT] Preserve state for resume. Go to home page.
+      setShowQuitDialog(false);
+      router.push('/');
+    };
 
   const handleCardClick = (cardId: number) => {
     if (soundOn) playClickSound();

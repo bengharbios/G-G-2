@@ -670,7 +670,14 @@ export default function GameBoard() {
                     color: '#cbd5e1', fontSize: '13px', fontWeight: 700, cursor: 'pointer',
                   }}
                 >إلغاء</button>
-                <button onClick={() => { resetGame(); router.push('/'); }}
+                <button onClick={() => {
+              // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+              const st = useBaharHarbStore.getState();
+              if (st.gameMode === 'diwaniya' && st.roomCode) {
+                try { fetch(`/api/baharharb-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+              }
+              router.push('/');
+            }}
                   style={{
                     flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
                     background: 'linear-gradient(135deg, #dc2626, #991b1b)',

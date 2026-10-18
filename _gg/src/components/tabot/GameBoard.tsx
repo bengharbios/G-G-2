@@ -1,5 +1,5 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTabotStore } from '@/lib/tabot-store';
@@ -294,6 +294,7 @@ function GameLog() {
 // MAIN GAME BOARD (Yalla Ludo style — no vertical scroll)
 // ============================================================
 export default function GameBoard() {
+  const router = useRouter();
   const {
     doors,
     currentTeam,
@@ -733,8 +734,13 @@ export default function GameBoard() {
                 >إلغاء</button>
                 <button
                   onClick={() => {
-                    useTabotStore.getState().resetGame();
+                    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+                    const st = useTabotStore.getState();
+                    if (st.gameMode === 'diwaniya' && st.roomCode) {
+                      try { fetch(`/api/tabot-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+                    }
                     setShowExitDialog(false);
+                    router.push('/');
                   }}
                   style={{
                     flex: 1, padding: '10px', borderRadius: '10px', border: 'none',

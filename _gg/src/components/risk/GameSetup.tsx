@@ -42,7 +42,12 @@ export default function GameSetup() {
   const playerNamesValid = playerNames.slice(0, playerCount).every(n => n.trim().length > 0);
 
   const handleExit = () => {
-    resetGame();
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const st = useRiskStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/risk-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowExitDialog(false);
     router.push('/');
   };
 

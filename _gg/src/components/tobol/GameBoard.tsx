@@ -587,9 +587,14 @@ export default function GameBoard() {
   };
 
   const handleQuitGame = () => {
-    resetGame();
-    router.push('/tobol');
-  };
+      // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+      const st = useTobolStore.getState();
+      if (st.gameMode === 'diwaniya' && st.roomCode) {
+        try { fetch(`/api/tobol-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+      }
+      setShowQuitDialog(false);
+      router.push('/');
+    };
 
   const hasAnyCardBeenShown = clickedBtns.size > 0;
 

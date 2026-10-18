@@ -839,9 +839,13 @@ export default function GameBoard() {
 
   // Define handleQuitGame BEFORE it's used (so we can also play a click on quit).
   const handleQuitGame = () => {
-    playClickSound();
-    resetGame();
-    router.push('/prison');
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const st = usePrisonStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/prison-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowQuitDialog(false);
+    router.push('/');
   };
 
   return (

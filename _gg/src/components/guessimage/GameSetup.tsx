@@ -158,7 +158,8 @@ export default function GameSetup() {
   };
 
   const handleExit = () => {
-    resetGame();
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    setShowExitDialog(false);
     router.push('/');
   };
 

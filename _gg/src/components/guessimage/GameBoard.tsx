@@ -182,9 +182,10 @@ export default function GameBoard() {
   };
 
   const handleQuitGame = () => {
-    resetGame();
-    router.push('/guessimage');
-  };
+      // [UNIFIED EXIT] Preserve state for resume. Go to home page.
+      setShowQuitDialog(false);
+      router.push('/');
+    };
 
   const handleSquareClick = (sqId: number) => {
     if (soundOn) playClickSound();

@@ -1256,9 +1256,14 @@ export default function GameBoard() {
   };
 
   const handleQuitGame = () => {
-    resetGame();
-    router.push('/mustathib');
-  };
+      // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+      const st = useMustathibStore.getState();
+      if (st.gameMode === 'diwaniya' && st.roomCode) {
+        try { fetch(`/api/mustathib-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+      }
+      setShowQuitDialog(false);
+      router.push('/');
+    };
 
   const aliveCount = players.filter(p => p.isAlive).length;
 

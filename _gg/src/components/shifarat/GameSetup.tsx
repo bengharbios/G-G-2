@@ -102,7 +102,12 @@ export default function GameSetup({ onStart, onBack }: GameSetupProps) {
   };
 
   const handleExit = () => {
-    resetGame();
+    // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+    const st = useShifaratStore.getState();
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/shifarat-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    setShowExitDialog(false);
     router.push('/');
   };
 

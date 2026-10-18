@@ -1148,7 +1148,14 @@ export default function GameBoard() {
                     border: '1px solid rgba(255,255,255,.12)', background: 'rgba(80,80,80,.3)',
                     color: '#cbd5e1', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
                 >إلغاء</button>
-                <button onClick={() => { handleReset(); router.push('/'); }}
+                <button onClick={() => {
+              // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
+              const st = useFamilyFeudStore.getState();
+              if (st.gameMode === 'diwaniya' && st.roomCode) {
+                try { fetch(`/api/familyfeud-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+              }
+              router.push('/');
+            }}
                   style={{ flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
                     background: 'linear-gradient(135deg, #dc2626, #991b1b)',
                     color: '#fff', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
