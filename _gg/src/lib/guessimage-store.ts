@@ -39,6 +39,7 @@ export interface GuessImageState {
 
   timerValueSec: number;
   themeId: number;
+  gridSquares: number;  // user-configurable grid size (16/25/36/49)
 
   currentRound: number;
   currentRoundData: GuessImageRound | null;
@@ -67,13 +68,14 @@ export interface GuessImageState {
   setPlayerName: (name: string | null) => void;
   setTimerValueSec: (n: number) => void;
   setThemeId: (n: number) => void;
+  setGridSquares: (n: number) => void;
 
   startGame: () => void;
   loadRound: (index: number) => void;
   revealSquare: (squareId: number) => void;
-  submitGuess: (guess: string) => boolean;  // returns true if correct
+  submitChoice: (choiceIndex: number) => boolean;  // multi-choice — returns true if correct
   nextRound: () => void;
-  newImage: () => void;  // skip to next image (forfeit current)
+  newImage: () => void;  // pick a different image (skip current)
   resetGame: () => void;
   tickTimer: () => void;
 
@@ -93,12 +95,61 @@ function makeLog(round: number, message: string, type: GameLogEntry['type'] = 'i
   return { round, message, type, timestamp: Date.now() };
 }
 
-// Build a round: pick random image + create grid of squares
-function buildRound(state: GuessImageState): GuessImageRound {
+// In-memory cache of labels.json (loaded on first buildRound call in classic mode)
+// In diwaniya mode, the host's GameSetup (DiwaniyaApprovalCard) loads labels
+// explicitly via /img/guess/labels.json fetch and passes them to startGuessImageBattle.
+let _labelsCache: Record<string, string> | null = null;
+async function loadLabels(): Promise<Record<string, string>> {
+  if (_labelsCache) return _labelsCache;
+  try {
+    const res = await fetch('/img/guess/labels.json');
+    if (!res.ok) return _labelsCache = {};
+    const data = await res.json();
+    if (data && typeof data === 'object') {
+      _labelsCache = data as Record<string, string>;
+      return _labelsCache;
+    }
+  } catch { /* silent */ }
+  _labelsCache = {};
+  return _labelsCache;
+}
+
+// Build a round: pick random LABELED image + generate 4 multi-choice options
+// + create grid of squares based on user's gridSquares setting (16/25/36/49).
+async function buildRoundAsync(state: GuessImageState): Promise<GuessImageRound> {
   const cfg = DIFFICULTY_CONFIG[state.difficulty];
-  const catalog = getGuessImageCatalog();
-  const pick = catalog[Math.floor(Math.random() * catalog.length)];
-  const gridRows = cfg.gridRows;
+  const labels = await loadLabels();
+  const labeledIds = Object.keys(labels)
+    .map(k => parseInt(k, 10))
+    .filter(n => !isNaN(n) && n >= 1 && n <= GUESS_IMAGE_COUNT);
+  // Fallback: if no labels yet, use any imageId and generic placeholder label
+  const imageId = labeledIds.length > 0
+    ? labeledIds[Math.floor(Math.random() * labeledIds.length)]
+    : Math.floor(Math.random() * GUESS_IMAGE_COUNT) + 1;
+  const correctLabel = labels[String(imageId)] || `صورة ${imageId}`;
+
+  // Build 4 multi-choice options (1 correct + 3 random distractors)
+  const allLabels = Array.from(new Set(Object.values(labels))).filter(l => l !== correctLabel);
+  const distractors: string[] = [];
+  while (distractors.length < 3 && allLabels.length > 0) {
+    const idx = Math.floor(Math.random() * allLabels.length);
+    distractors.push(allLabels[idx]);
+    allLabels.splice(idx, 1);
+  }
+  while (distractors.length < 3) {
+    distractors.push(`صورة ${Math.floor(Math.random() * GUESS_IMAGE_COUNT) + 1}`);
+  }
+  const choices = [correctLabel, ...distractors];
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
+  }
+  const correctChoiceIndex = choices.indexOf(correctLabel);
+
+  // Determine grid size: prefer user-configured gridSquares, fall back to difficulty's gridRows×gridRows
+  const gridRows = state.gridSquares
+    ? Math.round(Math.sqrt(state.gridSquares))
+    : cfg.gridRows;
   const totalSquares = gridRows * gridRows;
 
   const squares: RevealSquare[] = [];
@@ -113,6 +164,53 @@ function buildRound(state: GuessImageState): GuessImageRound {
   return {
     id: `round-${state.currentRound}-${Date.now()}`,
     title: `الجولة ${state.currentRound + 1}`,
+    imageId,
+    imageUrl: `/img/guess/pics/${imageId}.png`,
+    themeId: state.themeId,
+    gridRows,
+    maxReveals: cfg.maxReveals,
+    squares,
+    revealedCount: 0,
+    guessed: false,
+    wrongGuesses: 0,
+    choices,
+    correctChoiceIndex,
+    answer: correctLabel,
+  };
+}
+
+// Synchronous buildRound for backward compat (used by old loadRound signature)
+// — picks a random image without labels and uses generic placeholders
+function buildRound(state: GuessImageState): GuessImageRound {
+  const cfg = DIFFICULTY_CONFIG[state.difficulty];
+  const catalog = getGuessImageCatalog();
+  const pick = catalog[Math.floor(Math.random() * catalog.length)];
+  const gridRows = state.gridSquares
+    ? Math.round(Math.sqrt(state.gridSquares))
+    : cfg.gridRows;
+  const totalSquares = gridRows * gridRows;
+
+  const squares: RevealSquare[] = [];
+  let sqId = 1;
+  for (let r = 0; r < gridRows; r++) {
+    for (let c = 0; c < gridRows; c++) {
+      squares.push({ id: sqId, row: r, col: c, revealed: false });
+      sqId++;
+    }
+  }
+
+  // Multi-choice placeholder — will be replaced by buildRoundAsync when loadRoundAsync is called
+  const correctLabel = `صورة ${pick.id}`;
+  const choices = [
+    correctLabel,
+    `صورة ${Math.floor(Math.random() * GUESS_IMAGE_COUNT) + 1}`,
+    `صورة ${Math.floor(Math.random() * GUESS_IMAGE_COUNT) + 1}`,
+    `صورة ${Math.floor(Math.random() * GUESS_IMAGE_COUNT) + 1}`,
+  ];
+
+  return {
+    id: `round-${state.currentRound}-${Date.now()}`,
+    title: `الجولة ${state.currentRound + 1}`,
     imageId: pick.id,
     imageUrl: pick.url,
     themeId: state.themeId,
@@ -122,6 +220,9 @@ function buildRound(state: GuessImageState): GuessImageRound {
     revealedCount: 0,
     guessed: false,
     wrongGuesses: 0,
+    choices,
+    correctChoiceIndex: 0,
+    answer: correctLabel,
   };
 }
 
@@ -135,6 +236,7 @@ const initialState = {
   playerName: null as string | null,
   timerValueSec: 60,
   themeId: 1,
+  gridSquares: 25 as number,  // default 5×5
   currentRound: 0,
   currentRoundData: null as GuessImageRound | null,
   squares: [] as RevealSquare[],
@@ -166,10 +268,11 @@ export const useGuessImageStore = create<GuessImageState>()(
       setPlayerName: (playerName) => set({ playerName }),
       setTimerValueSec: (timerValueSec) => set({ timerValueSec }),
       setThemeId: (themeId) => set({ themeId }),
+      setGridSquares: (gridSquares) => set({ gridSquares }),
 
-      startGame: () => {
+      startGame: async () => {
         const state = get();
-        const round = buildRound(state);
+        const round = await buildRoundAsync(state);
         const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         set({
           phase: 'playing',
@@ -192,10 +295,10 @@ export const useGuessImageStore = create<GuessImageState>()(
         get().syncToRoom();
       },
 
-      loadRound: (index) => {
+      loadRound: async (index) => {
         const state = get();
         const next = { ...state, currentRound: index };
-        const round = buildRound(next);
+        const round = await buildRoundAsync(next);
         const timeForRound = state.timerValueSec || DIFFICULTY_CONFIG[state.difficulty].timePerRoundSec;
         set({
           currentRound: index,
@@ -244,28 +347,14 @@ export const useGuessImageStore = create<GuessImageState>()(
         get().syncToRoom();
       },
 
-      submitGuess: (guess) => {
+      submitChoice: (choiceIndex) => {
         const state = get();
         if (!state.currentRoundData || state.guessed) return false;
         const cfg = DIFFICULTY_CONFIG[state.difficulty];
-        const trimmed = guess.trim().toLowerCase();
-
-        // The imageId is the "answer" — player must guess the number
-        // (since images are just numbered 1..890, the player can't really
-        // guess what the image IS without more context).
-        //
-        // For a real "guess the image" game, we'd need labeled images
-        // (e.g., image 1 = "قطة", image 2 = "شجرة", etc.). Since flashi's
-        // images are unlabeled (just numbered), we'll accept:
-        //   - The image's number as the "answer" (player types the number)
-        //   - OR a fuzzy match on any label we assign
-        //
-        // For now: the answer is the image ID (number). Player types the number.
-        const correctAnswer = String(state.currentRoundData.imageId);
-        const isCorrect = trimmed === correctAnswer.toLowerCase();
+        const round = state.currentRoundData;
+        const isCorrect = choiceIndex === round.correctChoiceIndex;
 
         if (isCorrect) {
-          const remainingReveals = cfg.maxReveals - state.revealedCount;
           const earnedScore = Math.max(50, cfg.scorePerCorrect - (state.revealedCount * 50) - (state.wrongGuesses * cfg.penaltyPerWrong));
           const newScore = state.score + earnedScore;
           const newTotalFound = state.totalFound + 1;
@@ -276,7 +365,7 @@ export const useGuessImageStore = create<GuessImageState>()(
             totalFound: newTotalFound,
             gameLog: [
               ...state.gameLog,
-              makeLog(state.currentRound + 1, `✓ إجابة صحيحة! +${earnedScore} نقطة`, 'success'),
+              makeLog(state.currentRound + 1, `✓ إجابة صحيحة! +${earnedScore} نقطة (${round.answer})`, 'success'),
             ],
             lastAction: `✓ صحيحة! +${earnedScore}`,
             lastActionAt: Date.now(),
@@ -329,7 +418,8 @@ export const useGuessImageStore = create<GuessImageState>()(
 
       newImage: () => {
         const state = get();
-        // Skip current round (forfeit) → load next
+        // Skip current round (forfeit) → load a NEW image at the same index
+        // (buildRoundAsync picks a random labeled image each time)
         get().loadRound(state.currentRound);
       },
 

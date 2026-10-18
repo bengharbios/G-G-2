@@ -65,6 +65,10 @@ export interface GuessImageRound {
   revealedCount: number;  // how many squares revealed so far
   guessed: boolean;       // did player guess correctly?
   wrongGuesses: number;  // count of wrong guesses
+  // Multi-choice fields (NEW — replaces text-input submitGuess):
+  choices: string[];              // 4 multi-choice labels
+  correctChoiceIndex: number;     // 0..3 — index into choices[] of the correct answer
+  answer: string;                  // the actual correct label (for verification/logging)
 }
 
 // Flashi category labels (compat — only 'random' for guessimage)

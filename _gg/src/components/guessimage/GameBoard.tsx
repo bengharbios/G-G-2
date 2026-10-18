@@ -146,14 +146,13 @@ export default function GameBoard() {
     squares, revealedCount, guessed, wrongGuesses,
     score, timeLeft, totalRounds,
     totalFound, totalDifferences, totalMisses,
-    revealSquare, submitGuess, nextRound, resetGame, difficulty,
+    revealSquare, submitChoice, nextRound, resetGame, difficulty,
     themeId, timerValueSec, newImage,
   } = useGuessImageStore();
 
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [guessInput, setGuessInput] = useState('');
   const [guessFeedback, setGuessFeedback] = useState<'correct' | 'wrong' | null>(null);
 
   useEffect(() => {
@@ -192,20 +191,7 @@ export default function GameBoard() {
     revealSquare(sqId);
   };
 
-  const handleGuessSubmit = () => {
-    if (!guessInput.trim() || guessed) return;
-    if (soundOn) playClickSound();
-    const correct = submitGuess(guessInput);
-    if (correct) {
-      if (soundOn) playCorrectSound();
-      setGuessFeedback('correct');
-    } else {
-      if (soundOn) playWrongSound();
-      setGuessFeedback('wrong');
-      setGuessInput('');
-      setTimeout(() => setGuessFeedback(null), 1000);
-    }
-  };
+  // (handleGuessSubmit removed — multi-choice buttons now call submitChoice directly)
 
   if (!currentRoundData) {
     return (
@@ -494,78 +480,74 @@ export default function GameBoard() {
         </div>
       </motion.div>
 
-      {/* Guess input */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="tobol-team-card"
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          padding: '10px 14px',
-          borderRadius: '12px',
-        }}
-      >
-        <div style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
-          {guessed ? '✓ تم التخمين! انتظر الجولة القادمة...' : '💡 اكتب رقم الصورة التي تظنها صحيحة'}
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="text"
-            value={guessInput}
-            onChange={(e) => setGuessInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleGuessSubmit(); }}
-            placeholder="اكتب رقم الصورة..."
-            disabled={guessed}
-            dir="rtl"
-            style={{
-              flex: 1,
-              background: guessFeedback === 'correct' ? 'rgba(34,197,94,.15)' :
-                         guessFeedback === 'wrong' ? 'rgba(239,68,68,.15)' :
-                         'rgba(0,0,0,.4)',
-              border: guessFeedback === 'correct' ? '1px solid #22c55e' :
-                      guessFeedback === 'wrong' ? '1px solid #ef4444' :
-                      '1px solid rgba(254,239,145,.3)',
-              borderRadius: '8px',
-              padding: '10px 14px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: 700,
-              textAlign: 'center',
-              outline: 'none',
-              fontFamily: 'ui-monospace, monospace',
-            }}
-          />
-          <button
-            onClick={handleGuessSubmit}
-            disabled={!guessInput.trim() || guessed}
-            style={{
-              background: guessed ? 'rgba(80,80,80,.4)' : 'linear-gradient(135deg, #fbbf24, #aa6e1f)',
-              color: guessed ? '#9fc4b4' : '#000',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              fontSize: '14px',
-              fontWeight: 800,
-              cursor: guessed ? 'default' : 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            {guessed ? '✓' : 'خمّن'}
-          </button>
-        </div>
-        {guessFeedback === 'wrong' && (
-          <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
-            ✗ إجابة خاطئة — حاول مرة أخرى
-          </p>
-        )}
-        {guessFeedback === 'correct' && (
-          <p style={{ color: '#86efac', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
-            ✓ إجابة صحيحة! أحسنت
-          </p>
-        )}
-      </motion.div>
+      {/* Multi-choice buttons (replaces text input) */}
+      {currentRoundData && !guessed && currentRoundData.choices && currentRoundData.choices.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="tobol-team-card"
+          style={{
+            width: '100%',
+            maxWidth: '460px',
+            padding: '10px 14px',
+            borderRadius: '12px',
+          }}
+        >
+          <div style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
+            {guessed ? '✓ تم التخمين! انتظر الجولة القادمة...' : '🎯 اختر الإجابة الصحيحة'}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            {currentRoundData.choices.map((choice, idx) => (
+              <motion.button
+                key={idx}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (soundOn) playClickSound();
+                  const correct = submitChoice(idx);
+                  if (correct) {
+                    if (soundOn) playCorrectSound();
+                    setGuessFeedback('correct');
+                  } else {
+                    if (soundOn) playWrongSound();
+                    setGuessFeedback('wrong');
+                    setTimeout(() => setGuessFeedback(null), 1000);
+                  }
+                }}
+                disabled={guessed}
+                style={{
+                  padding: '14px 12px',
+                  border: '1.5px solid rgba(254,239,145,.35)',
+                  background: 'linear-gradient(180deg, rgba(254,239,145,.18) 0%, rgba(170,110,31,.08) 50%, rgba(8,28,22,.85) 100%)',
+                  color: '#feef91',
+                  fontSize: '14px',
+                  fontWeight: 800,
+                  cursor: guessed ? 'default' : 'pointer',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  fontFamily: 'ltBukraBold, Noto Sans Arabic, sans-serif',
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>{['💡','🎯','✨','⭐'][idx] || '🔹'}</span>
+                <span>{choice}</span>
+              </motion.button>
+            ))}
+          </div>
+          {guessFeedback === 'wrong' && (
+            <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
+              ✗ إجابة خاطئة — حاول مرة أخرى
+            </p>
+          )}
+          {guessFeedback === 'correct' && (
+            <p style={{ color: '#86efac', fontSize: '11px', textAlign: 'center', marginTop: '6px', fontWeight: 700 }}>
+              ✓ إجابة صحيحة! أحسنت
+            </p>
+          )}
+        </motion.div>
+      )}
 
       {/* Footer stats */}
       <motion.div

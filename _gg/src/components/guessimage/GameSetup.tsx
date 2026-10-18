@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGuessImageStore, generateGuessImageRoomCode } from '@/lib/guessimage-store';
@@ -20,6 +20,8 @@ import {
   GUESS_THEME_COUNT,
   getGuessThemeCatalog,
   buildGuessThemeUrl,
+  buildGuessImageUrl,
+  GUESS_IMAGE_COUNT,
 } from '@/lib/flashi_guess_images';
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
 
@@ -55,6 +57,401 @@ function avatarSrc(avatar?: string, id?: string): string {
   if (avatar) return avatar;
   const seed = (parseInt(id || '', 10) || 0) % 12 + 1;
   return `/yalla-avatars/defaultPhoto_${seed}.png`;
+}
+
+// STROKE_STYLE used by DiwaniyaApprovalCard (also defined inline elsewhere
+// — kept here to avoid breaking other inline styles)
+const STROKE_STYLE: React.CSSProperties = {
+  color: '#feef91',
+  paintOrder: 'stroke fill',
+  WebkitTextStroke: '1px #aa6e1f',
+};
+
+// Spectator shape returned by /api/guessimage-room/[code]/spectator GET
+interface DiwaniyaSpectator {
+  id: string;
+  name: string;
+  status: 'pending' | 'approved' | 'rejected' | 'playing' | 'finished';
+  joinedAt: number;
+  lastSeen: number;
+  score: number;
+  revealedSquares: string[];
+  totalCorrect: number;
+  totalWrong: number;
+  hasFinished: boolean;
+  avatar?: string | null;
+  frame?: string | null;
+  displayName?: string | null;
+}
+
+// Cache labels.json (loaded once on first diwaniya battle start)
+let _labelsCache: Record<string, string> | null = null;
+async function loadLabelsFile(): Promise<Record<string, string>> {
+  if (_labelsCache) return _labelsCache;
+  try {
+    const res = await fetch('/img/guess/labels.json');
+    if (!res.ok) return {};
+    const data = await res.json();
+    if (data && typeof data === 'object') {
+      _labelsCache = data as Record<string, string>;
+      return _labelsCache;
+    }
+  } catch { /* silent */ }
+  _labelsCache = {};
+  return _labelsCache;
+}
+
+// ============================================================
+// DiwaniyaApprovalCard — host-only component shown in GameSetup
+// when gameMode === 'diwaniya'. Polls spectator list every 2s,
+// shows approve/reject buttons, then a "start battle" button
+// once ≥1 spectator is approved.
+//
+// On "Start battle":
+//   1. Loads labels.json (cached)
+//   2. Picks a random labeled imageId
+//   3. Builds 4 multi-choice options (1 correct + 3 random distractors)
+//   4. POST /api/guessimage-room/[code]/start
+//   5. Updates store: phase='playing', currentRoundData={...}
+// ============================================================
+function DiwaniyaApprovalCard({ roomCode }: { roomCode: string }) {
+  const router = useRouter();
+  const {
+    timerValueSec, themeId, gridSquares, difficulty, totalRounds,
+  } = useGuessImageStore();
+  const [spectators, setSpectators] = useState<DiwaniyaSpectator[]>([]);
+  const [roomPhase, setRoomPhase] = useState<string>('setup');
+  const [starting, setStarting] = useState(false);
+  const [error, setError] = useState('');
+
+  // Poll spectator list every 2s
+  useEffect(() => {
+    let cancelled = false;
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/guessimage-room/${roomCode}/spectator`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        if (data.success) {
+          setSpectators(data.spectators || []);
+          setRoomPhase(data.roomPhase || 'setup');
+        }
+      } catch { /* silent */ }
+    };
+    poll();
+    const iv = setInterval(poll, 2000);
+    return () => { cancelled = true; clearInterval(iv); };
+  }, [roomCode]);
+
+  // If battle has started → navigate to GameBoard (host view)
+  useEffect(() => {
+    if (roomPhase === 'playing' || roomPhase === 'game_over') {
+      useGuessImageStore.setState({ phase: 'playing' });
+    }
+  }, [roomPhase]);
+
+  const handleApprove = async (spectatorId: string) => {
+    try {
+      await fetch(`/api/guessimage-room/${roomCode}/spectator`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'approve', spectatorId }),
+      });
+    } catch { /* ignore */ }
+  };
+
+  const handleReject = async (spectatorId: string) => {
+    try {
+      await fetch(`/api/guessimage-room/${roomCode}/spectator`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reject', spectatorId }),
+      });
+    } catch { /* ignore */ }
+  };
+
+  const handleStartBattle = async () => {
+    setStarting(true);
+    setError('');
+    try {
+      // 1) Load labels.json (cached)
+      const labels = await loadLabelsFile();
+      const labeledIds = Object.keys(labels).map(k => parseInt(k, 10)).filter(n => !isNaN(n) && n >= 1 && n <= GUESS_IMAGE_COUNT);
+      if (labeledIds.length === 0) {
+        setError('لا توجد صور مُسمّاة بعد — انتظر اكتمال VLM auto-labeler');
+        setStarting(false);
+        return;
+      }
+
+      // 2) Pick a random labeled imageId
+      const imageId = labeledIds[Math.floor(Math.random() * labeledIds.length)];
+      const imageUrl = buildGuessImageUrl(imageId);
+      const correctLabel = labels[String(imageId)] || `صورة ${imageId}`;
+
+      // 3) Build 4 multi-choice options (1 correct + 3 random distractors)
+      const allLabels = Array.from(new Set(Object.values(labels))).filter(l => l !== correctLabel);
+      const distractors: string[] = [];
+      while (distractors.length < 3 && allLabels.length > 0) {
+        const idx = Math.floor(Math.random() * allLabels.length);
+        distractors.push(allLabels[idx]);
+        allLabels.splice(idx, 1);
+      }
+      // If fewer than 3 distractors available, pad with generic placeholders
+      while (distractors.length < 3) {
+        distractors.push(`صورة ${Math.floor(Math.random() * 890) + 1}`);
+      }
+      const choices = [correctLabel, ...distractors];
+      // Fisher-Yates shuffle
+      for (let i = choices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+      }
+      const correctChoiceIndex = choices.indexOf(correctLabel);
+      const currentRoundId = `guessimg-0-${imageId}-${Date.now()}`;
+
+      // 4) POST to start endpoint
+      const cfg = DIFFICULTY_CONFIG[difficulty];
+      const res = await fetch(`/api/guessimage-room/${roomCode}/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentRoundId,
+          currentRoundImageId: imageId,
+          currentRoundImageUrl: imageUrl,
+          currentRoundChoices: choices,
+          currentRoundCorrectChoiceIndex: correctChoiceIndex,
+          currentRoundAnswer: correctLabel,
+          totalRounds,
+          timerValueSec,
+          gridSize: gridSquares,
+          maxReveals: cfg.maxReveals,
+          scorePerCorrect: cfg.scorePerCorrect,
+          penaltyPerWrong: cfg.penaltyPerWrong,
+          difficulty,
+          themeId,
+        }),
+      });
+      if (!res.ok) {
+        setError('فشل بدء المعركة');
+        setStarting(false);
+        return;
+      }
+
+      // 5) Update store so host's GameBoard renders
+      useGuessImageStore.setState({
+        phase: 'playing',
+        currentRoundData: {
+          id: currentRoundId,
+          title: `خمن الصورة — صورة ${imageId}`,
+          imageId,
+          imageUrl,
+          themeId,
+          gridRows: cfg.gridRows,
+          maxReveals: cfg.maxReveals,
+          squares: [],
+          revealedCount: 0,
+          guessed: false,
+          wrongGuesses: 0,
+        } as any,  // cast to satisfy GuessImageRound type until we add choices/correctChoiceIndex
+      });
+    } catch (e) {
+      setError('خطأ في بدء المعركة');
+      setStarting(false);
+    }
+  };
+
+  const pending = spectators.filter(s => s.status === 'pending');
+  const approved = spectators.filter(s => s.status === 'approved' || s.status === 'playing' || s.status === 'finished');
+  const canStart = approved.length > 0 && roomPhase === 'setup' && !starting;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 0.3 }}
+      className="tobol-team-card"
+      style={{
+        width: '100%',
+        maxWidth: '380px',
+        padding: '10px 14px',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <span style={{
+          ...STROKE_STYLE,
+          fontSize: '12px',
+          fontWeight: 800,
+        }}>
+          👥 المشاركون ({spectators.length})
+        </span>
+        <span style={{
+          fontSize: '10px',
+          color: '#9fc4b4',
+          fontWeight: 700,
+        }}>
+          معتمدون: {approved.length} • بانتظار: {pending.length}
+        </span>
+      </div>
+
+      {spectators.length === 0 ? (
+        <p style={{
+          fontSize: '11px',
+          color: '#9fc4b4',
+          textAlign: 'center',
+          padding: '8px 0',
+        }}>
+          ⏳ لا يوجد مشاركون بعد — شارك الرابط مع أصدقائك
+        </p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {spectators.map(spec => (
+            <div
+              key={spec.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: spec.status === 'rejected' ? 'rgba(239,68,68,.05)' : 'rgba(0,0,0,.4)',
+                border: `1px solid ${
+                  spec.status === 'approved' ? 'rgba(34,197,94,.3)' :
+                  spec.status === 'rejected' ? 'rgba(239,68,68,.3)' :
+                  spec.status === 'playing' ? 'rgba(251,191,36,.4)' :
+                  spec.status === 'finished' ? 'rgba(34,197,94,.4)' :
+                  'rgba(254,239,145,.18)'
+                }`,
+                borderRadius: '8px',
+                padding: '6px 8px',
+              }}
+            >
+              {/* Avatar */}
+              <div style={{
+                width: '28px', height: '28px', borderRadius: '50%',
+                overflow: 'hidden', flexShrink: 0,
+                border: '1px solid rgba(254,239,145,.3)',
+              }}>
+                <img
+                  src={spec.avatar || avatarSrc(undefined, spec.id)}
+                  alt={spec.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => {
+                    const t = e.target as HTMLImageElement;
+                    t.src = '/yalla-avatars/defaultPhoto_1.png';
+                  }}
+                />
+              </div>
+              {/* Name + status */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  color: '#feef91',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {spec.name}
+                </div>
+                <div style={{
+                  fontSize: '9px',
+                  color: spec.status === 'approved' ? '#86efac' :
+                         spec.status === 'rejected' ? '#f87171' :
+                         spec.status === 'playing' ? '#fbbf24' :
+                         spec.status === 'finished' ? '#86efac' :
+                         '#9fc4b4',
+                  fontWeight: 700,
+                }}>
+                  {spec.status === 'pending' && '⏳ بانتظار الموافقة'}
+                  {spec.status === 'approved' && '✓ معتمد'}
+                  {spec.status === 'rejected' && '✗ مرفوض'}
+                  {spec.status === 'playing' && `🎮 يلعب — ${spec.score} نقطة`}
+                  {spec.status === 'finished' && `🏆 انتهى — ${spec.score} نقطة`}
+                </div>
+              </div>
+              {/* Approve/Reject buttons (only for pending) */}
+              {spec.status === 'pending' && (
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button
+                    onClick={() => handleApprove(spec.id)}
+                    style={{
+                      background: 'linear-gradient(135deg, #22c55e, #15803d)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '4px 8px',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✓
+                  </button>
+                  <button
+                    onClick={() => handleReject(spec.id)}
+                    style={{
+                      background: 'linear-gradient(135deg, #ef4444, #991b1b)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '4px 8px',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✗
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <p style={{ color: '#f87171', fontSize: '11px', textAlign: 'center' }}>
+          ⚠️ {error}
+        </p>
+      )}
+
+      {/* Start battle button (diwaniya only — replaces the classic Start button) */}
+      <button
+        onClick={handleStartBattle}
+        disabled={!canStart}
+        style={{
+          width: '100%',
+          padding: '12px 16px',
+          border: 'none',
+          borderRadius: '10px',
+          background: canStart
+            ? 'linear-gradient(135deg, #fbbf24, #aa6e1f)'
+            : 'rgba(80,80,80,.4)',
+          color: canStart ? '#000' : '#9fc4b4',
+          fontSize: '14px',
+          fontWeight: 900,
+          cursor: canStart ? 'pointer' : 'not-allowed',
+          marginTop: '4px',
+          boxShadow: canStart ? '0 4px 12px rgba(251,191,36,.35)' : 'none',
+        }}
+      >
+        {starting ? '⏳ جاري البدء...' :
+         roomPhase === 'playing' ? '🎮 المعركة قائمة' :
+         roomPhase === 'game_over' ? '🏆 انتهت المعركة' :
+         approved.length === 0 ? '⏳ بانتظار اعتماد مشارك واحد على الأقل' :
+         `⚔️ ابدأ المعركة (${approved.length} مشارك)`}
+      </button>
+    </motion.div>
+  );
 }
 
 export default function GameSetup() {
@@ -490,6 +887,11 @@ export default function GameSetup() {
             💡 من يفتح الرابط سيدخل تلقائياً إن كان مسجّلاً، أو سيُطلب منه إدخال اسمه
           </p>
         </motion.div>
+      )}
+
+      {/* ══════════ Diwaniya spectator approval + battle start ══════════ */}
+      {gameMode === 'diwaniya' && roomCode && (
+        <DiwaniyaApprovalCard roomCode={roomCode} />
       )}
 
       {/* ══════════ Grid size + theme selectors ══════════ */}
