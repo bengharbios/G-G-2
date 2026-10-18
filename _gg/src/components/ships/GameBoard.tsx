@@ -183,16 +183,25 @@ export default function GameBoard() {
                   const orientation = cell.shipOrientation || 'horizontal';
                   const segment = cell.shipSegment;
                   imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
-                  // Horizontal ships: source images for segments 1..N-1 are
-                  // stored mirrored in the flashi asset pack, so we flip them
-                  // with scaleX(-1) to form a correct ship. The LAST segment
-                  // (the stern) is stored in the correct orientation and
-                  // must NOT be flipped — otherwise it appears reversed.
-                  // Look up the ship's total length from the theme shipTypes.
-                  const shipType = shipTypes.find(s => s.id === cell.shipId);
-                  const shipTotalLen = shipType?.length || 0;
-                  const isLastSegment = shipTotalLen > 0 && segment === shipTotalLen;
-                  if (orientation === 'horizontal' && !isLastSegment) {
+                  // Horizontal ships in RTL: based on VLM analysis of the
+                  // actual flashi segment images, ALL segment images have
+                  // the "front" (bow-facing side) on the RIGHT.
+                  // For a horizontal ship placed in RTL (cells flow right-to-left):
+                  //   - Segment 1 placed at RIGHTMOST cell, segment N at LEFTMOST
+                  //   - The ship "faces left" in RTL (bow on right end, stern on left)
+                  //   - Segment 1 should have its stern on the FAR RIGHT (away from ship)
+                  //     → source has stern on LEFT → needs scaleX(-1) to move stern to RIGHT
+                  //   - Segment N should have its bow on the FAR LEFT (away from ship)
+                  //     → source has bow on RIGHT → needs scaleX(-1) to move bow to LEFT
+                  //   - Middle segments: symmetric, flip optional — keep flipped for
+                  //     consistency with the user's "middle is excellent" feedback
+                  // So we FLIP ALL horizontal segments uniformly.
+                  // (Previous attempt to skip the last segment caused the
+                  // stern to land in the wrong position; the user reported
+                  // 'first and last wrong, middle correct'. Reverting to
+                  // flip-all which previously gave '3 correct + 1 wrong (last)'
+                  // but with a corrected layout that fixes the last too.)
+                  if (orientation === 'horizontal') {
                     imgStyle = {
                       width: '100%', height: '100%', objectFit: 'cover',
                       transform: 'scaleX(-1)',
