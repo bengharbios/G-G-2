@@ -90,8 +90,8 @@ function ShipsContent() {
   }
   if (phase === 'setup') return <main><GameSetup /></main>;
   return (
-    <div className="flex flex-col" style={{ height: '100vh', overflow: 'hidden' }}>
-      <main className="flex-1" style={{ overflow: 'hidden' }}>
+    <>
+      <main>
         <AnimatePresence mode="wait">
           {phase === 'game_over' ? (
             <motion.div key="gameover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -112,7 +112,7 @@ function ShipsContent() {
         onResume={resume.confirmResume}
         onForfeit={resume.confirmForfeit}
       />
-    </div>
+    </>
   );
 }
 

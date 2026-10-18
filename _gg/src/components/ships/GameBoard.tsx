@@ -10,6 +10,7 @@ import {
 import {
   isMusicEnabled, setMusicEnabled,
   playClickSound, playCorrectSound, playWrongSound,
+  playBombSound, playSparkleSound, playWinSound, playLoseSound,
 } from '@/lib/sounds';
 
 const STROKE_STYLE: React.CSSProperties = {
@@ -62,6 +63,14 @@ export default function GameBoard() {
   const [soundOn, setSoundOn] = useState(true);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [hoverCell, setHoverCell] = useState<{ row: number; col: number } | null>(null);
+  // Track last attack for per-cell explosion/splash overlay animation
+  const [lastAttack, setLastAttack] = useState<{
+    row: number; col: number; type: 'hit' | 'miss'; ts: number;
+  } | null>(null);
+  // Track last ship placement for "ship pop-in" animation
+  const [lastPlaced, setLastPlaced] = useState<{
+    row: number; col: number; ts: number;
+  } | null>(null);
 
   useEffect(() => { setMusicOn(isMusicEnabled()); }, []);
   useEffect(() => {
@@ -174,8 +183,15 @@ export default function GameBoard() {
                   const orientation = cell.shipOrientation || 'horizontal';
                   const segment = cell.shipSegment;
                   imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
+                  // Horizontal ships: source images are stored mirrored — flip
+                  // them on the X axis so the segments form a correct ship
+                  // (bow on left, stern on right in LTR; mirrored in RTL).
+                  // Vertical ships render as-is.
                   if (orientation === 'horizontal') {
-                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
+                    imgStyle = {
+                      width: '100%', height: '100%', objectFit: 'cover',
+                      transform: 'scaleX(-1)',
+                    };
                   } else {
                     imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
                   }
@@ -189,7 +205,12 @@ export default function GameBoard() {
 
                 if (phase === 'placing' && currentShip) {
                   cursor = canPlaceShip(r, c) ? 'pointer' : 'not-allowed';
-                  onClick = () => { if (soundOn) playClickSound(); placeShip(r, c); };
+                  onClick = () => {
+                    if (soundOn) playClickSound();
+                    if (soundOn) playSparkleSound();
+                    placeShip(r, c);
+                    setLastPlaced({ row: r, col: c, ts: Date.now() });
+                  };
                   if (isPreview && !canPlace) bg = 'rgba(239,68,68,.2)';
                 }
               } else {
@@ -209,9 +230,14 @@ export default function GameBoard() {
                     attackCell(r, c);
                     setTimeout(() => {
                       const lastLog = useShipsStore.getState().gameLog[useShipsStore.getState().gameLog.length - 1];
-                      if (lastLog?.message.includes('إصابة')) { if (soundOn) playCorrectSound(); }
-                      else if (lastLog?.message.includes('خطأ')) { if (soundOn) playWrongSound(); }
-                    }, 1100);
+                      if (lastLog?.message.includes('إصابة')) {
+                        if (soundOn) playBombSound();
+                        setLastAttack({ row: r, col: c, type: 'hit', ts: Date.now() });
+                      } else if (lastLog?.message.includes('خطأ')) {
+                        if (soundOn) playWrongSound();
+                        setLastAttack({ row: r, col: c, type: 'miss', ts: Date.now() });
+                      }
+                    }, 100);
                   };
                 }
               }
@@ -233,9 +259,55 @@ export default function GameBoard() {
                     border: '0.5px solid rgba(255,255,255,.05)',
                     userSelect: 'none',
                     minHeight: '22px',
+                    position: 'relative',
                   }}
                 >
-                  {imgSrc && <img src={imgSrc} alt="" draggable={false} style={imgStyle} />}
+                  {imgSrc && (
+                    <motion.img
+                      src={imgSrc}
+                      alt=""
+                      draggable={false}
+                      style={imgStyle}
+                      initial={isPlayer && lastPlaced && lastPlaced.row === r && lastPlaced.col === c && (Date.now() - lastPlaced.ts < 1500) ? { scale: 0, opacity: 0 } : false}
+                      animate={isPlayer && lastPlaced && lastPlaced.row === r && lastPlaced.col === c && (Date.now() - lastPlaced.ts < 1500) ? { scale: 1, opacity: 1 } : {}}
+                      transition={{ type: 'spring', bounce: 0.45, duration: 0.5 }}
+                    />
+                  )}
+                  {/* Explosion / water-splash overlay on freshly attacked AI cell */}
+                  {!isPlayer && lastAttack && lastAttack.row === r && lastAttack.col === c && (Date.now() - lastAttack.ts < 1300) && (
+                    <motion.div
+                      key={`attack-${r}-${c}-${lastAttack.ts}`}
+                      initial={{ scale: 0.1, opacity: 0, rotate: -30 }}
+                      animate={{ scale: [0.1, 1.4, 1], opacity: [0, 1, 0], rotate: [-30, 30, 0] }}
+                      transition={{ duration: 1.2, ease: 'easeOut' }}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        pointerEvents: 'none',
+                        zIndex: 5,
+                      }}
+                    >
+                      {lastAttack.type === 'hit' ? (
+                        <img
+                          src={`/img/ship/themes/theme${themeId}/explosion_message.png`}
+                          alt=""
+                          style={{ width: '180%', height: '180%', objectFit: 'contain' }}
+                        />
+                      ) : (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: [0, 1.5, 1], opacity: [0, 0.8, 0] }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                          style={{
+                            width: '90%', height: '90%', borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(125,211,252,.85), rgba(56,189,248,.4) 60%, transparent 80%)',
+                            filter: 'blur(2px)',
+                          }}
+                        />
+                      )}
+                    </motion.div>
+                  )}
                 </div>
               );
             })}
