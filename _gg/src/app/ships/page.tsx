@@ -4,7 +4,6 @@ import { useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useShipsStore } from '@/lib/ships-store';
-import LandingPage from '@/components/ships/LandingPage';
 import GameSetup from '@/components/ships/GameSetup';
 import GameBoard from '@/components/ships/GameBoard';
 import ShipsGameOver from '@/components/ships/ShipsGameOver';
@@ -68,7 +67,11 @@ function ShipsContent() {
     );
   }
 
-  if (phase === 'landing') return <main><LandingPage onStartLocal={handleStartLocal} onStartDiwaniya={handleStartDiwaniya} /></main>;
+  // No landing page — mode is set via URL (?mode=godfather or ?mode=diwaniya)
+  // If no mode specified, redirect to /play/ships
+  if (phase === 'landing') {
+    return null; // will be handled by useEffect below
+  }
   if (phase === 'setup') return <main><GameSetup /></main>;
   // phase 'placing' (ship placement) + 'attacking' → GameBoard
   return (

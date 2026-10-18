@@ -143,8 +143,16 @@ export default function GameBoard() {
                 if ((cell.state === 'ship' || cell.state === 'hit') && cell.shipModelNum && cell.shipSegment) {
                   // Show real ship image segment (from cell metadata)
                   const orientation = cell.shipOrientation || 'horizontal';
-                  imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, cell.shipSegment);
-                  imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
+                  // For horizontal: flip the image vertically (flashi stores them upside down)
+                  // For vertical: use as-is
+                  let segment = cell.shipSegment;
+                  imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
+                  // For horizontal ship images: flip vertically (flashi stores them upside down)
+                  if (orientation === 'horizontal') {
+                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleY(-1)' };
+                  } else {
+                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
+                  }
                 } else if (cell.state === 'hit') {
                   imgSrc = hitUrl(themeId);
                   imgStyle = { width: '80%', height: '80%', objectFit: 'contain' };
