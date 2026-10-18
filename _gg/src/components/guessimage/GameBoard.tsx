@@ -181,10 +181,25 @@ export default function GameBoard() {
   };
 
   const handleQuitGame = () => {
-      // [UNIFIED EXIT] Preserve state for resume. Go to home page.
-      setShowQuitDialog(false);
-      router.push('/');
-    };
+    const st = useGuessImageStore.getState();
+    // Explicit exit = FORFEIT the game (no resume, no XP/gold):
+    // 1. End diwaniya room (kick spectators)
+    // 2. Wipe localStorage state (no resume possible)
+    // 3. Reset in-memory state
+    // 4. Go to home page
+    if (st.gameMode === 'diwaniya' && st.roomCode) {
+      try { fetch(`/api/guessimage-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
+    }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('guessimage-game-storage');
+        localStorage.removeItem('guessimage-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
+    useGuessImageStore.getState().resetGame();
+    setShowQuitDialog(false);
+    router.push('/');
+  };
 
   const handleSquareClick = (sqId: number) => {
     if (soundOn) playClickSound();
