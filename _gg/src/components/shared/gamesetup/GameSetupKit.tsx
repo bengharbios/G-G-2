@@ -19,7 +19,7 @@
 // pass their game-specific settings as children.
 // ════════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback, type CSSProperties, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useRef, type CSSProperties, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
@@ -455,13 +455,23 @@ export function PlayerInfoCard({
 
   const [playerName, setPlayerName] = useState(initialName);
 
-  // Pre-fill from authed user
+  // Hold the latest onNameChange callback in a ref so the effect below
+  // doesn't depend on it (it would otherwise re-run on every parent render
+  // if the parent passes an inline arrow function — causing a setState
+  // loop and "Maximum update depth exceeded" React error #185).
+  const onNameChangeRef = useRef(onNameChange);
+  useEffect(() => {
+    onNameChangeRef.current = onNameChange;
+  });
+
+  // Pre-fill from authed user (only when the displayName actually changes)
   useEffect(() => {
     if (authUser?.displayName) {
       setPlayerName(authUser.displayName);
-      onNameChange?.(authUser.displayName);
+      onNameChangeRef.current?.(authUser.displayName);
     }
-  }, [authUser?.displayName, onNameChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authUser?.displayName]);
 
   return (
     <motion.div
