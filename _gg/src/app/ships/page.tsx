@@ -4,6 +4,8 @@ import { useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useShipsStore } from '@/lib/ships-store';
+import { useGameResume } from '@/lib/useGameResume';
+import { GameResumeDialog } from '@/components/shared/gamesetup/GameResumeDialog';
 import GameSetup from '@/components/ships/GameSetup';
 import GameBoard from '@/components/ships/GameBoard';
 import ShipsGameOver from '@/components/ships/ShipsGameOver';
@@ -32,6 +34,9 @@ function ShipsContent() {
   const mounted = useHydrated();
   const searchParams = useSearchParams();
 
+  // Resume prompt — only active when phase is non-'landing' (mid-game)
+  const resume = useGameResume('ships-game-storage', '/ships', phase !== 'landing' && phase !== 'setup');
+
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
@@ -44,11 +49,6 @@ function ShipsContent() {
       setPlayMode('teams');
       setPhase('setup');
     } else if (phase === 'landing') {
-      // No mode in URL but phase is 'landing' — user came directly via /play/ships
-      // (e.g., from the home page "Play" button). Default to local classic mode
-      // so the user sees the setup page instead of a blank screen.
-      // NOTE: If the persisted state had a non-landing phase (e.g., 'placing'
-      // or 'attacking'), this branch is skipped — user resumes mid-game.
       setGameMode('classic');
       setPlayMode('ai');
       setPhase('setup');
@@ -78,10 +78,6 @@ function ShipsContent() {
     );
   }
 
-  // No landing page — mode is set via URL (?mode=godfather or ?mode=diwaniya)
-  // or auto-defaulted to 'classic' in the useEffect above. Once the effect
-  // runs, phase will be 'setup' (or 'placing' / 'attacking' if a game was
-  // already in progress and is being restored from localStorage).
   if (phase === 'landing') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center tobol-bg" dir="rtl">
@@ -93,7 +89,6 @@ function ShipsContent() {
     );
   }
   if (phase === 'setup') return <main><GameSetup /></main>;
-  // phase 'placing' (ship placement) + 'attacking' → GameBoard
   return (
     <div className="flex flex-col" style={{ height: '100vh', overflow: 'hidden' }}>
       <main className="flex-1" style={{ overflow: 'hidden' }}>
@@ -109,6 +104,15 @@ function ShipsContent() {
           )}
         </AnimatePresence>
       </main>
+      {/* Resume-after-disconnect prompt (2-minute grace window) */}
+      <GameResumeDialog
+        open={resume.showPrompt}
+        ageMs={resume.ageMs}
+        gameName="سفن"
+        onResume={resume.confirmResume}
+        onForfeit={resume.confirmForfeit}
+      />
     </div>
   );
 }
+

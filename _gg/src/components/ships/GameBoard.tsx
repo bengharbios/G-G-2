@@ -75,13 +75,32 @@ export default function GameBoard() {
   // Exit: end diwaniya room (fire-and-forget) + go to home page.
   // We DO NOT call resetGame() — zustand persist keeps the game state in
   // localStorage so the user can return later and resume from where they
-  // left off. This matches the user's request: "اذا لم أكمل اللعبة او فصل
-  // الانترنت يجب ان ترجعني لآخر شيء وصلت إليه في اللعبة (في جميع الألعاب)".
+  // Explicit exit: user clicked the exit button → forfeit the game.
+  // - End diwaniya room (kick spectators + opponent benefits since host
+  //   didn't exit voluntarily on their side).
+  // - Wipe local game state (no XP/gold awarded, no resume possible).
+  // - Also wipe the disconnect timestamp so the resume prompt doesn't
+  //   fire on next visit (we use a separate timestamp for the disconnect
+  //   detection in useGameResume; if we don't clear it, the prompt could
+  //   trigger erroneously after a fresh explicit exit).
+  // - Go to home page.
+  // This is distinct from a DISCONNECT (pagehide/unload), where state
+  // IS preserved and user can resume within a 2-minute grace window.
   const handleQuit = () => {
     const st = useShipsStore.getState();
+    // End diwaniya room session so spectators are kicked immediately
     if (st.gameMode === 'diwaniya' && st.roomCode) {
       try { fetch(`/api/ships-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
     }
+    // Wipe local state — explicit exit = forfeit (no resume, no XP/gold)
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('ships-game-storage');
+        localStorage.removeItem('ships-game-storage__disconnect_ts');
+      }
+    } catch { /* ignore */ }
+    // Reset in-memory state too
+    useShipsStore.getState().resetGame();
     setShowQuitDialog(false);
     router.push('/');
   };
@@ -108,14 +127,13 @@ export default function GameBoard() {
 
   // Render a single grid with coordinate headers
   const renderGrid = (grid: GridCell[][], isPlayer: boolean) => {
-    // No need to reconstruct ship info — it's stored directly on each GridCell
     return (
       <div style={{
         display: 'grid',
         gridTemplateColumns: `auto repeat(${GRID_SIZE}, 1fr)`,
         gap: '0',
         width: '100%',
-        aspectRatio: '1.1 / 1',
+        aspectRatio: '1.05 / 1',
         background: 'linear-gradient(180deg, rgba(8,28,22,.92), rgba(4,18,14,.96))',
         borderRadius: '8px',
         padding: '2px',
@@ -123,13 +141,13 @@ export default function GameBoard() {
         border: '2px solid rgba(254,239,145,.2)',
       }}>
         {/* Top-left corner (empty) */}
-        <div style={{ width: '18px', background: 'rgba(0,0,0,.3)' }} />
+        <div style={{ width: '22px', background: 'rgba(0,0,0,.3)' }} />
         {/* Top row: numbers 1-10 */}
         {Array.from({ length: GRID_SIZE }, (_, i) => (
           <div key={`col-${i}`} style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '8px', fontWeight: 900, color: '#feef91',
-            background: 'rgba(0,0,0,.3)', minHeight: '18px',
+            fontSize: '10px', fontWeight: 900, color: '#feef91',
+            background: 'rgba(0,0,0,.3)', minHeight: '22px',
           }}>{i + 1}</div>
         ))}
         {/* Grid rows */}
@@ -138,14 +156,13 @@ export default function GameBoard() {
             {/* Row header: letter A-J */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '8px', fontWeight: 900, color: '#feef91',
-              background: 'rgba(0,0,0,.3)', width: '18px',
+              fontSize: '10px', fontWeight: 900, color: '#feef91',
+              background: 'rgba(0,0,0,.3)', width: '22px',
             }}>{ROW_LETTERS[r]}</div>
             {/* Cells */}
             {row.map((cell, c) => {
               const key = `${r}-${c}`;
               const isPreview = isPlayer && previewCells.has(key);
-              const shipInfo = null; // no longer needed
               let bg = 'rgba(0,0,0,.15)';
               let cursor = 'default';
               let onClick = () => {};
@@ -154,40 +171,35 @@ export default function GameBoard() {
 
               if (isPlayer) {
                 if ((cell.state === 'ship' || cell.state === 'hit') && cell.shipModelNum && cell.shipSegment) {
-                  // Show real ship image segment (from cell metadata)
                   const orientation = cell.shipOrientation || 'horizontal';
-                  // For horizontal: flip the image vertically (flashi stores them upside down)
-                  // For vertical: use as-is
-                  let segment = cell.shipSegment;
+                  const segment = cell.shipSegment;
                   imgSrc = shipModelUrl(themeId, cell.shipModelNum, orientation, segment);
-                  // For horizontal ship images: flip vertically (flashi stores them upside down)
                   if (orientation === 'horizontal') {
-                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover',  };
+                    imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
                   } else {
                     imgStyle = { width: '100%', height: '100%', objectFit: 'cover' };
                   }
                 } else if (cell.state === 'hit') {
                   imgSrc = hitUrl(themeId);
-                  imgStyle = { width: '80%', height: '80%', objectFit: 'contain' };
+                  imgStyle = { width: '85%', height: '85%', objectFit: 'contain' };
                 } else if (cell.state === 'miss') {
                   imgSrc = missUrl(themeId);
-                  imgStyle = { width: '60%', height: '60%', objectFit: 'contain' };
+                  imgStyle = { width: '70%', height: '70%', objectFit: 'contain' };
                 }
 
                 if (phase === 'placing' && currentShip) {
                   cursor = canPlaceShip(r, c) ? 'pointer' : 'not-allowed';
                   onClick = () => { if (soundOn) playClickSound(); placeShip(r, c); };
-                  if (false && canPlace) bg = 'rgba(34,197,94,.3)';
-                  else if (isPreview && !canPlace) bg = 'rgba(239,68,68,.2)';
+                  if (isPreview && !canPlace) bg = 'rgba(239,68,68,.2)';
                 }
               } else {
-                // AI grid
+                // AI / opponent grid — hide ships (state==='ship' treated as empty)
                 if (cell.state === 'hit') {
                   imgSrc = hitBlackUrl(themeId);
-                  imgStyle = { width: '80%', height: '80%', objectFit: 'contain' };
+                  imgStyle = { width: '85%', height: '85%', objectFit: 'contain' };
                 } else if (cell.state === 'miss') {
                   imgSrc = missUrl(themeId);
-                  imgStyle = { width: '60%', height: '60%', objectFit: 'contain' };
+                  imgStyle = { width: '70%', height: '70%', objectFit: 'contain' };
                 } else { bg = 'rgba(0,30,60,.2)'; }
 
                 if (phase === 'attacking' && currentTurn === 'player' && cell.state !== 'hit' && cell.state !== 'miss') {
@@ -218,8 +230,9 @@ export default function GameBoard() {
                     justifyContent: 'center',
                     overflow: 'hidden',
                     transition: 'background 0.15s ease',
-                    border: '0.5px solid rgba(255,255,255,.03)',
+                    border: '0.5px solid rgba(255,255,255,.05)',
                     userSelect: 'none',
+                    minHeight: '22px',
                   }}
                 >
                   {imgSrc && <img src={imgSrc} alt="" draggable={false} style={imgStyle} />}
@@ -430,36 +443,67 @@ export default function GameBoard() {
           ✓ {placingTeam === 'team1' ? 'الفريق الأول جاهز — مرر الهاتف' : 'كلا الفريقين جاهزان — ابدأ المعركة!'}
         </motion.button>
       )}
-      {/* Grids */}
+      {/* AI opponent indicator — only in 'ai' (godfather/classic) mode */}
+      {playMode === 'ai' && phase !== 'game_over' && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '8px',
+            padding: '6px 14px', borderRadius: '999px',
+            background: 'rgba(99,102,241,.18)',
+            border: '1px solid rgba(99,102,241,.45)',
+            color: '#a5b4fc', fontSize: '11px', fontWeight: 800,
+            marginTop: '2px',
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>🤖</span>
+          <span>أنت تلعب ضد الهاتف (AI)</span>
+        </motion.div>
+      )}
+
+      {/* Grids — VERTICAL stack on mobile, full width each */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="tobol-team-card"
-        style={{ width: '100%', maxWidth: '460px', padding: '10px', borderRadius: '12px' }}
+        style={{ width: '100%', maxWidth: '520px', display: 'flex', flexDirection: 'column', gap: '10px' }}
       >
         {phase === 'placing' ? (
-          <div>
-            <p style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
+          <div className="tobol-team-card" style={{ padding: '10px', borderRadius: '12px' }}>
+            <p style={{ ...STROKE_STYLE, fontSize: '13px', fontWeight: 800, textAlign: 'center', marginBottom: '8px' }}>
               شبكتك — اضغط لوضع السفينة
             </p>
             {renderGrid(playerGrid, true)}
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <div style={{ flex: '1 1 200px', maxWidth: '220px' }}>
+          <>
+            {/* Player fleet (smaller, on top) */}
+            <div className="tobol-team-card" style={{ padding: '8px', borderRadius: '12px' }}>
               <p style={{ fontSize: '11px', color: '#86efac', textAlign: 'center', marginBottom: '4px', fontWeight: 700 }}>
-                {playMode === 'teams' ? (currentTeam === 'team1' ? 'أسطول الفريق الأول' : 'أسطول الفريق الثاني') : 'أسطولك'}
+                {playMode === 'teams' ? (currentTeam === 'team1' ? 'أسطول الفريق الأول' : 'أسطول الفريق الثاني') : '🚢 أسطولك'}
               </p>
               {renderGrid(playerGrid, true)}
             </div>
-            <div style={{ flex: '1 1 200px', maxWidth: '220px' }}>
-              <p style={{ fontSize: '11px', color: '#fbbf24', textAlign: 'center', marginBottom: '4px', fontWeight: 700 }}>
-                {playMode === 'teams' ? (currentTeam === 'team1' ? 'أسطول الفريق الثاني — اضغط للهجوم' : 'أسطول الفريق الأول — اضغط للهجوم') : 'خصمك — اضغط للهجوم'}
+
+            {/* Opponent grid (LARGER, on bottom — this is what you attack) */}
+            <div className="tobol-team-card" style={{
+              padding: '10px', borderRadius: '12px',
+              boxShadow: '0 0 18px rgba(251,191,36,.18)',
+              border: '1.5px solid rgba(251,191,36,.35)',
+            }}>
+              <p style={{
+                ...STROKE_STYLE,
+                fontSize: '13px', fontWeight: 800,
+                textAlign: 'center', marginBottom: '6px',
+              }}>
+                🎯 {playMode === 'teams'
+                  ? (currentTeam === 'team1' ? 'أسطول الفريق الثاني — اضغط للهجوم' : 'أسطول الفريق الأول — اضغط للهجوم')
+                  : 'خصمك — اضغط للهجوم'}
               </p>
               {renderGrid(aiGrid, false)}
             </div>
-          </div>
+          </>
         )}
       </motion.div>
 
@@ -656,8 +700,8 @@ export default function GameBoard() {
               <h3 style={{ ...STROKE_STYLE, fontSize: '17px', fontWeight: 900, marginBottom: '6px' }}>الخروج من اللعبة؟</h3>
               <p style={{ color: '#9fc4b4', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
                 {gameMode === 'diwaniya'
-                  ? 'سيتم إنهاء جلسة الديوانية وإخراج جميع المشاهدين، مع حفظ تقدمك للعودة لاحقاً.'
-                  : `نقاطك: ${playerScore} — سيتم حفظ تقدمك تلقائياً ويمكنك العودة لاحقاً من مكانك.`}
+                  ? 'سيتم إنهاء جلسة الديوانية وإخراج المشاهدين. سيُحسب عليك الانسحاب — لن تحصل على نقاط خبرة أو ذهب.'
+                  : `سيتم إنهاء اللعبة نهائياً — لن تحصل على نقاط خبرة أو ذهب. (نقاطك الحالية: ${playerScore})`}
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={() => setShowQuitDialog(false)}
