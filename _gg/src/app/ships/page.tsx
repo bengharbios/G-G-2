@@ -15,7 +15,6 @@ function useHydrated() {
   return useSyncExternalStore(() => () => {}, () => true, () => false);
 }
 
-import { Suspense } from 'react';
 
 export default function ShipsPage() {
   return (
