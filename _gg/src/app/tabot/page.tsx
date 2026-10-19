@@ -51,10 +51,13 @@ function TabotContent() {
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
-    if (mode === 'godfather' && phase === 'landing') {
+    const canOverrideMode = phase === 'landing' || phase === 'setup';
+    if (!canOverrideMode) return;
+
+    if (mode === 'godfather') {
       setGameMode('local');
       setRoomCode(null);
-      setPhase('setup');
+      if (phase === 'landing') setPhase('setup');
     } else if (mode === 'diwaniya' && phase === 'landing') {
       // Trigger diwaniya setup directly via handler
       handleStartDiwaniya();

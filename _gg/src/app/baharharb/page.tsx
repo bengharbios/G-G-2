@@ -44,12 +44,16 @@ function BaharHarbContent() {
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
-    if (mode === 'godfather' && phase === 'landing') {
+    const canOverrideMode = phase === 'landing' || phase === 'setup';
+    if (!canOverrideMode) return;
+
+    if (mode === 'godfather') {
       setGameMode('classic');
-      setPhase('setup');
-    } else if (mode === 'diwaniya' && phase === 'landing') {
+      useSyncExternalStore.getState().setRoomCode(null);
+      if (phase === 'landing') setPhase('setup');
+    } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
-      setPhase('setup');
+      if (phase === 'landing') setPhase('setup');
     }
   }, [mounted, searchParams, phase, setGameMode, setPhase]);
 

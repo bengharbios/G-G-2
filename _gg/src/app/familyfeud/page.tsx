@@ -45,12 +45,16 @@ function FamilyFeudContent() {
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
-    if (mode === 'godfather' && uiPhase === 'landing') {
+    const canOverrideMode = uiPhase === 'landing' || uiPhase === 'godfather_setup' || uiPhase === 'diwaniya_setup';
+    if (!canOverrideMode) return;
+
+    if (mode === 'godfather') {
       setGameMode('classic');
-      setUiPhase('godfather_setup');
-    } else if (mode === 'diwaniya' && uiPhase === 'landing') {
+      useFamilyFeudStore.getState().setRoomCode(null);
+      if (uiPhase === 'landing') setUiPhase('godfather_setup');
+    } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
-      setUiPhase('diwaniya_setup');
+      if (uiPhase === 'landing') setUiPhase('diwaniya_setup');
     }
   }, [mounted, searchParams, uiPhase, setGameMode, setUiPhase]);
 

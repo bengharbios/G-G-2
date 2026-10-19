@@ -49,14 +49,21 @@ function SpotDiffContent() {
   useEffect(() => {
     if (!mounted) return;
     const mode = searchParams.get('mode');
-    if (mode === 'godfather' && phase === 'landing') {
+    // Allow mode override whenever the user is NOT mid-game
+    const canOverrideMode = phase === 'landing' || phase === 'setup';
+    if (!canOverrideMode) return;
+
+    if (mode === 'godfather') {
       setGameMode('classic');
-      setPhase('setup');
-    } else if (mode === 'diwaniya' && phase === 'landing') {
+      // Clear any stale diwaniya roomCode when switching to godfather
+      useSpotDiffStore.getState().setRoomCode(null);
+      if (phase === 'landing') setPhase('setup');
+    } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
-      setPhase('setup');
+      if (phase === 'landing') setPhase('setup');
+      // roomCode will be created by GameSetup's useEffect
     }
-  }, [mounted, searchParams, phase, setGameMode, setPhase]);
+  }, [mounted, searchParams, phase, setPhase, setGameMode]);
 
   const handleStartLocal = useCallback(() => {
     setGameMode('classic');

@@ -116,6 +116,7 @@ function HomeContent() {
     queueMicrotask(() => {
       if (queryMode === 'godfather') {
         setGameMode('godfather');
+        useShifaratStore.getState().setRoomCode(null);
         setShowGodfatherSetup(true);
       } else if (queryMode === 'diwaniya') {
         setGameMode('diwaniya');

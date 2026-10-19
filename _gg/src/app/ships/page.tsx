@@ -50,6 +50,7 @@ function ShipsContent() {
     if (mode === 'godfather') {
       setGameMode('classic');
       setPlayMode('ai');
+      useShipsStore.getState().setRoomCode(null);
       if (phase === 'landing') setPhase('setup');
     } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
