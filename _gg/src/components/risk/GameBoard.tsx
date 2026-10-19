@@ -817,7 +817,7 @@ setShowQuitDialog
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: 'url(/yalla-games/cards/risk/hero-bg.png) center / cover no-repeat, #041F18',
+        background: 'url(/battle/game_bg.webp) center / cover no-repeat, linear-gradient(180deg, #0a0b10 0%, #12141d 30%, #0d0e16 60%, #0a0b10 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -947,7 +947,7 @@ setShowQuitDialog
       </div>
 
       {/* ══════════ Card Grid ══════════ */}
-      <div style={{ width: '100%', maxWidth: '380px' }}>
+      <div style={{ width: '100%', maxWidth: '380px', maxHeight: '50vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: '8px' }}>
         <div
           style={{
             display: 'grid',
