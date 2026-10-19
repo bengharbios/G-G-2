@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useRiskStore } from '@/lib/risk-store';
 import { DEFAULT_PLAYER_NAMES, TARGET_SCORE_OPTIONS, PLAYER_COLORS } from '@/lib/risk-types';
 import type { RiskGameConfig } from '@/lib/risk-types';
-import { useInGameSetupMode, useYallaSoundState, STROKE_STYLE } from '@/lib/yalla-game-helpers';
+import { useInGameSetupMode, useYallaSoundState, STROKE_STYLE, useShareLinks } from '@/lib/yalla-game-helpers';
 
 const PLAYER_COUNT_OPTIONS = [2, 3, 4, 5, 6, 7, 8];
 
@@ -15,7 +15,7 @@ const PLAYER_HEX = ['#a78bfa', '#34d399', '#fbbf24', '#fb7185', '#22d3ee', '#fb9
 
 export default function GameSetup() {
   const router = useRouter();
-  const { startGame, resetGame } = useRiskStore();
+  const { startGame, resetGame, gameMode, roomCode } = useRiskStore();
 
   const [playerCount, setPlayerCount] = useState(2);
   const [playerNames, setPlayerNames] = useState<string[]>(DEFAULT_PLAYER_NAMES);
@@ -40,6 +40,15 @@ export default function GameSetup() {
   };
 
   const playerNamesValid = playerNames.slice(0, playerCount).every(n => n.trim().length > 0);
+
+  const isDiwaniyaHost = gameMode === 'diwaniya' && !!roomCode;
+  const { shareLink, shareCopied, copyShareLink, shareExternally } = useShareLinks('risk', isDiwaniyaHost, roomCode);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const handleCopyCode = async () => {
+    if (!roomCode) return;
+    try { await navigator.clipboard.writeText(roomCode); setCopiedCode(true); setTimeout(() => setCopiedCode(false), 1800); } catch {}
+  };
+
 
   const handleExit = () => {
     // [UNIFIED EXIT] Preserve state for resume. End diwaniya room + go home.
@@ -405,6 +414,31 @@ setShowExitDialog
         <p style={{ color: '#ef4444', fontSize: '11px', marginTop: '2px' }}>
           ⚠ تأكد من إدخال أسماء جميع اللاعبين
         </p>
+      )}
+
+      {/* Diwaniya share card */}
+      {gameMode === 'diwaniya' && !roomCode && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="tobol-team-card" style={{ width: '100%', maxWidth: '380px', padding: '14px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} style={{ fontSize: '20px' }}>📡</motion.div>
+          <span style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 700 }}>جاري إنشاء غرفة الديوانية...</span>
+        </motion.div>
+      )}
+      {gameMode === 'diwaniya' && roomCode && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.3 }} className="tobol-team-card" style={{ width: '100%', maxWidth: '380px', padding: '10px 14px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ ...STROKE_STYLE, fontSize: '12px', fontWeight: 800, textAlign: 'center' }}>📡 شارك الغرفة مع أصدقائك</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,.4)', border: '1px solid rgba(254,239,145,.3)', borderRadius: '8px', padding: '8px 12px' }}>
+            <span style={{ ...STROKE_STYLE, fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>كود:</span>
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '20px', fontWeight: 900, color: '#feef91', letterSpacing: '3px', flex: 1, textAlign: 'center' }}>{roomCode}</span>
+            <button onClick={handleCopyCode} style={{ background: copiedCode ? 'linear-gradient(135deg, #22c55e, #15803d)' : 'linear-gradient(135deg, #fbbf24, #aa6e1f)', color: copiedCode ? '#fff' : '#000', border: 'none', borderRadius: '6px', padding: '6px 10px', fontSize: '11px', fontWeight: 800, cursor: 'pointer', flexShrink: 0 }}>{copiedCode ? '✓ تم' : 'نسخ'}</button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button onClick={copyShareLink} style={{ flex: 1, background: 'rgba(8,28,22,.85)', border: '1px solid rgba(254,239,145,.25)', borderRadius: '6px', padding: '8px 10px', color: shareCopied ? '#86efac' : '#feef91', fontSize: '11px', fontWeight: 700, cursor: 'pointer', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={shareLink}>{shareCopied ? '✓ تم نسخ الرابط' : '🔗 نسخ رابط المشاهدة'}</button>
+            {typeof navigator !== 'undefined' && navigator.share && (
+              <button onClick={shareExternally} style={{ background: 'linear-gradient(135deg, #3b82f6, #1e40af)', border: 'none', borderRadius: '6px', padding: '8px 12px', color: '#fff', fontSize: '11px', fontWeight: 800, cursor: 'pointer', flexShrink: 0 }}>مشاركة</button>
+            )}
+          </div>
+          <p style={{ fontSize: '10px', color: '#9fc4b4', textAlign: 'center', fontWeight: 600 }}>💡 من يفتح الرابط يشاهد المعركة مباشرة</p>
+        </motion.div>
       )}
 
       {/* ══════════ حوار الخروج ══════════ */}
