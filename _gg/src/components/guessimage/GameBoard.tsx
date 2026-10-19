@@ -487,7 +487,14 @@ export default function GameBoard() {
                 }}
               >
                 {!sq.revealed && remainingReveals > 0 && !guessed && (
-                  <span style={{ fontSize: '12px', color: 'rgba(255,255,255,.3)' }}>?</span>
+                  <span style={{
+                    fontSize: '14px',
+                    fontWeight: 900,
+                    color: 'rgba(254,239,145,.7)',
+                    paintOrder: 'stroke fill',
+                    WebkitTextStroke: '0.5px rgba(170,110,31,.5)',
+                    textShadow: '0 1px 2px rgba(0,0,0,.6)',
+                  }}>{sq.id}</span>
                 )}
               </div>
             ))}

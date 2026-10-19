@@ -312,8 +312,22 @@ export default function GuessImageSpectatorView({ roomCode, spectatorAuthUser }:
                       cursor: !hasFinished && !isRevealed && remaining > 0 ? 'pointer' : 'default',
                       border: '1px solid rgba(254,239,145,.1)',
                       transition: 'background 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
-                  />
+                  >
+                    {!isRevealed && remaining > 0 && !hasFinished && (
+                      <span style={{
+                        fontSize: '14px',
+                        fontWeight: 900,
+                        color: 'rgba(254,239,145,.7)',
+                        paintOrder: 'stroke fill',
+                        WebkitTextStroke: '0.5px rgba(170,110,31,.5)',
+                        textShadow: '0 1px 2px rgba(0,0,0,.6)',
+                      }}>{i + 1}</span>
+                    )}
+                  </div>
                 );
               })}
             </div>
