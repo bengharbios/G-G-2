@@ -676,7 +676,7 @@ export default function GameBoard() {
               if (st.gameMode === 'diwaniya' && st.roomCode) {
                 try { fetch(`/api/baharharb-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
               }
-              router.push('/#games');
+              window.location.href = '/#game-baharharb';
             }}
                   style={{
                     flex: 1, padding: '10px', borderRadius: '10px', border: 'none',

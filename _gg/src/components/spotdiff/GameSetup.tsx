@@ -570,7 +570,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('spotdiff-game-storage'); localStorage.removeItem('spotdiff-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useSpotDiffStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-spotdiff';
   };
 
   const isValid = !!authUser || playerName.trim().length > 0;

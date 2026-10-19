@@ -104,7 +104,7 @@ export default function GameSetup() {
     } catch { /* ignore */ }
     setShowExitDialog(false);
     setShowQuitDialog(false);
-    router.push('/#games');
+    window.location.href = '/#game-tabot';
   };
 
   const totalPlayers = alpha.players.length + beta.players.length;

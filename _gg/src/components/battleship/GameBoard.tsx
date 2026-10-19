@@ -238,7 +238,7 @@ export default function GameBoard() {
     } catch { /* ignore */ }
     setShowExitDialog(false);
     setShowQuitDialog(false);
-    router.push('/#games');
+    window.location.href = '/#game-battleship';
   };
 
   const handleCardClick = (cardId: number) => {
@@ -544,7 +544,7 @@ export default function GameBoard() {
           icon="▶️"
           onClick={() => {
             if (soundOn) playClickSound();
-            router.push('/#games');
+            window.location.href = '/#game-battleship';
           }}
         />
         <CompactBtn

@@ -97,7 +97,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('mustathib-game-storage'); localStorage.removeItem('mustathib-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useMustathibStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-mustathib';
   };
 
   // For diwaniya mode: create room on start

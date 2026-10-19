@@ -103,7 +103,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('prison-game-storage'); localStorage.removeItem('prison-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { usePrisonStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-prison';
   };
 
   return (

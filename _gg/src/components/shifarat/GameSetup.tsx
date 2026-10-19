@@ -110,7 +110,7 @@ export default function GameSetup({ onStart, onBack }: GameSetupProps) {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('shifarat-game-storage'); localStorage.removeItem('shifarat-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useShifaratStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-shifarat';
   };
 
   const isValid = redName.trim() && blueName.trim() && selectedCategories.length > 0;

@@ -111,7 +111,7 @@ export default function GameBoard() {
     // Reset in-memory state too
     useShipsStore.getState().resetGame();
     setShowQuitDialog(false);
-    router.push('/');
+    window.location.href = '/#game-ships';
   };
 
   const shipTypes = themeId === 1 ? SHIP_TYPES_THEME_1 : SHIP_TYPES_THEME_2;

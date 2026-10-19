@@ -1154,7 +1154,7 @@ export default function GameBoard() {
               if (st.gameMode === 'diwaniya' && st.roomCode) {
                 try { fetch(`/api/familyfeud-room/${st.roomCode}`, { method: 'DELETE' }).catch(() => {}); } catch { /* ignore */ }
               }
-              router.push('/#games');
+              window.location.href = '/#game-familyfeud';
             }}
                   style={{ flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
                     background: 'linear-gradient(135deg, #dc2626, #991b1b)',

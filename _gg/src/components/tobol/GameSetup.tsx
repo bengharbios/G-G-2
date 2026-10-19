@@ -88,7 +88,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('tobol-game-storage'); localStorage.removeItem('tobol-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useTobolStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-tobol';
   };
 
   // نص الإشعار: من سيبدأ أولاً (يظهر دائماً، لا يختفي)

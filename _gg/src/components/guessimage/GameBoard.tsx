@@ -196,9 +196,9 @@ export default function GameBoard() {
         localStorage.removeItem('guessimage-game-storage__disconnect_ts');
       }
     } catch { /* ignore */ }
-    useGuessImageStore.getState().resetGame();
     setShowQuitDialog(false);
-    router.push('/');
+    // Full page reload → no flash, scrolls to game card, fresh state on reload
+    window.location.href = '/#game-guessimage';
   };
 
   const handleSquareClick = (sqId: number) => {

@@ -42,7 +42,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('baharharb-game-storage'); localStorage.removeItem('baharharb-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useBaharHarbStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-baharharb';
   };
 
   return (

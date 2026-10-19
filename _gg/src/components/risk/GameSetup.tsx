@@ -50,7 +50,7 @@ export default function GameSetup() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('risk-game-storage-v2'); localStorage.removeItem('risk-game-storage-v2__disconnect_ts'); } } catch { /* ignore */ }
 try { useRiskStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-    router.push('/#games');
+    window.location.href = '/#game-risk';
   };
 
   return (

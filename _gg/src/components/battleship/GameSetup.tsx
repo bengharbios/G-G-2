@@ -170,7 +170,7 @@ export default function GameSetup() {
     } catch { /* ignore */ }
     setShowExitDialog(false);
     setShowQuitDialog(false);
-    router.push('/#games');
+    window.location.href = '/#game-battleship';
   };
 
   const isValid = !!authUser || playerName.trim().length > 0;

@@ -964,6 +964,7 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
   return (
     <Link
       href={isAvailable && game.href ? game.href : '#games'}
+      id={`game-${game.id}`}
       data-game={game.id}
       data-players={game.players}
       data-cat={game.category}

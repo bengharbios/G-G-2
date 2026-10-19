@@ -595,7 +595,7 @@ export default function GameBoard() {
       try { if (typeof window !== 'undefined') { localStorage.removeItem('tobol-game-storage'); localStorage.removeItem('tobol-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useTobolStore.getState().resetGame(); } catch { /* ignore */ }
 setShowQuitDialog
-      router.push('/#games');
+      window.location.href = '/#game-tobol';
     };
 
   const hasAnyCardBeenShown = clickedBtns.size > 0;

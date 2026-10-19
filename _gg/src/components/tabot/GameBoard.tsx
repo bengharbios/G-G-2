@@ -742,7 +742,7 @@ export default function GameBoard() {
                     try { if (typeof window !== 'undefined') { localStorage.removeItem('tabot-game-storage'); localStorage.removeItem('tabot-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useTabotStore.getState().resetGame(); } catch { /* ignore */ }
 setShowExitDialog
-                    router.push('/#games');
+                    window.location.href = '/#game-tabot';
                   }}
                   style={{
                     flex: 1, padding: '10px', borderRadius: '10px', border: 'none',

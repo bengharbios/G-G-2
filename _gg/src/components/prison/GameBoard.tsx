@@ -847,7 +847,7 @@ export default function GameBoard() {
     try { if (typeof window !== 'undefined') { localStorage.removeItem('prison-game-storage'); localStorage.removeItem('prison-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { usePrisonStore.getState().resetGame(); } catch { /* ignore */ }
 setShowQuitDialog
-    router.push('/#games');
+    window.location.href = '/#game-prison';
   };
 
   return (

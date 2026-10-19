@@ -1264,7 +1264,7 @@ export default function GameBoard() {
       try { if (typeof window !== 'undefined') { localStorage.removeItem('mustathib-game-storage'); localStorage.removeItem('mustathib-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useMustathibStore.getState().resetGame(); } catch { /* ignore */ }
 setShowQuitDialog
-      router.push('/#games');
+      window.location.href = '/#game-mustathib';
     };
 
   const aliveCount = players.filter(p => p.isAlive).length;

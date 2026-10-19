@@ -295,7 +295,7 @@ export default function GameBoard() {
       try { if (typeof window !== 'undefined') { localStorage.removeItem('spotdiff-game-storage'); localStorage.removeItem('spotdiff-game-storage__disconnect_ts'); } } catch { /* ignore */ }
 try { useSpotDiffStore.getState().resetGame(); } catch { /* ignore */ }
 setShowQuitDialog
-      router.push('/#games');
+      window.location.href = '/#game-spotdiff';
     };
 
   // Click handler — convert pixel coords → vmin, compare to flashi diffs
@@ -664,7 +664,7 @@ setShowQuitDialog
           icon="▶️"
           onClick={() => {
             if (soundOn) playClickSound();
-            router.push('/#games');
+            window.location.href = '/#game-spotdiff';
           }}
         />
         <CompactBtn
