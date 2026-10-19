@@ -441,13 +441,30 @@ function GridCard({ card, onClick }: { card: RiskCard; onClick?: () => void }) {
                       : 'linear-gradient(135deg, #0a1a10, #0a2a18)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
+            position: 'relative', overflow: 'hidden',
           }}
         >
-          <div style={{ fontSize: '18px', marginBottom: '2px' }}>
-            {card.type === 'bomb' ? '💣' : card.type === 'skip' ? '⏭️' : card.type === 'double' ? '✨' : card.type === 'triple' ? '🔥' : `${colorConfig?.emoji ?? ''}`}
-          </div>
-          {card.type === 'number' && (
-            <div style={{ fontSize: '11px', fontWeight: 900, color: '#fff' }}>+{card.value}</div>
+          {/* Use actual card image from flashi assets */}
+          {card.type === 'bomb' && (
+            <img src="/yalla-games/cards/risk/card-bomb.png" alt="قنبلة" draggable={false}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '6px' }} />
+          )}
+          {card.type === 'skip' && (
+            <img src="/yalla-games/cards/risk/card-skip.png" alt="تخطي" draggable={false}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '6px' }} />
+          )}
+          {(card.type === 'number' || card.type === 'double' || card.type === 'triple') && (
+            <>
+              <img src="/yalla-games/cards/risk/card-number.png" alt={card.type === 'number' ? `رقم ${card.value}` : card.type === 'double' ? 'مضاعف' : 'ثلاثي'} draggable={false}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '6px', position: 'absolute', inset: 0 }} />
+              {/* Overlay: emoji + value on top of card image */}
+              <div style={{ fontSize: '18px', marginBottom: '2px', zIndex: 1, position: 'relative' }}>
+                {card.type === 'double' ? '✨' : card.type === 'triple' ? '🔥' : `${colorConfig?.emoji ?? ''}`}
+              </div>
+              {card.type === 'number' && (
+                <div style={{ fontSize: '11px', fontWeight: 900, color: '#fff', zIndex: 1, position: 'relative' }}>+{card.value}</div>
+              )}
+            </>
           )}
         </motion.div>
       ) : (
@@ -800,7 +817,7 @@ setShowQuitDialog
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        background: 'url(/yalla-games/cards/risk/hero-bg.png) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

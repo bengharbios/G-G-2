@@ -60,7 +60,7 @@ setShowExitDialog
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 56px)',
-        background: 'url(/battle/game_bg.webp) center / cover no-repeat, #041F18',
+        background: 'url(/yalla-games/cards/risk/hero-bg.png) center / cover no-repeat, #041F18',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
