@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useBattleshipStore, generateBattleshipRoomCode } from '@/lib/battleship-store';
+import { useMatchCardsStore, generateMatchCardsRoomCode } from '@/lib/matchcards-store';
 import {
   isMusicEnabled,
   setMusicEnabled,
@@ -14,7 +14,7 @@ import {
   Difficulty,
   DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
-} from '@/lib/battleship-types';
+} from '@/lib/matchcards-types';
 import {
   GUESS_GRID_OPTIONS,
   GUESS_THEME_COUNT,
@@ -24,7 +24,7 @@ import {
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
 
 // Minimal authUser shape (subset of AppShellUser) — fetched directly from
-// /api/auth/me because /battleship is NOT in SHELL_ROUTES.
+// /api/auth/me because /matchcards is NOT in SHELL_ROUTES.
 interface AuthUser {
   id: string;
   username: string;
@@ -82,7 +82,7 @@ export default function GameSetup() {
     themeId, setThemeId,
     timerValueSec,
     roomCode,
-  } = useBattleshipStore();
+  } = useMatchCardsStore();
 
   const [playerName, setPlayerNameState] = useState('');
   const [showExitDialog, setShowExitDialog] = useState(false);
@@ -123,9 +123,9 @@ export default function GameSetup() {
   // For diwaniya mode: create room on mount
   useEffect(() => {
     if (gameMode !== 'diwaniya') return;
-    if (!useBattleshipStore.getState().roomCode) {
-      const code = generateBattleshipRoomCode();
-      fetch('/api/battleship-room', {
+    if (!useMatchCardsStore.getState().roomCode) {
+      const code = generateMatchCardsRoomCode();
+      fetch('/api/matchcards-room', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, hostName: playerName || authUser?.displayName || 'العراب' }),
@@ -144,13 +144,13 @@ export default function GameSetup() {
     const name = playerName.trim() || authUser?.displayName || 'اللاعب';
     setPlayerName(name);
     setTotalRounds(totalRounds);
-    useBattleshipStore.setState({
+    useMatchCardsStore.setState({
       timerValueSec,
       gridSquares,
       themeId,
     });
     setCatalogLoading(true);
-    // No async fetch needed — catalog is built statically in getBattleshipCatalog
+    // No async fetch needed — catalog is built statically in getMatchCardsCatalog
     setTimeout(() => {
       setCatalogLoading(false);
       startGame();
@@ -160,24 +160,23 @@ export default function GameSetup() {
     const handleExit = () => {
     // Explicit exit = FORFEIT
     try {
-      useBattleshipStore.getState().resetGame();
+      useMatchCardsStore.getState().resetGame();
     } catch { /* ignore */ }
     try {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('battleship-game-storage');
-        localStorage.removeItem('battleship-game-storage__disconnect_ts');
+        localStorage.removeItem('matchcards-game-storage');
+        localStorage.removeItem('matchcards-game-storage__disconnect_ts');
       }
     } catch { /* ignore */ }
     setShowExitDialog(false);
-    setShowQuitDialog(false);
-    window.location.href = '/#game-battleship';
+    window.location.href = '/#game-matchcards';
   };
 
   const isValid = !!authUser || playerName.trim().length > 0;
 
   // Build the shareable watch link (diwaniya mode)
   const watchLink = typeof window !== 'undefined' && roomCode
-    ? `${window.location.origin}/r/battleship/${roomCode}`
+    ? `${window.location.origin}/r/matchcards/${roomCode}`
     : '';
   const handleCopyCode = async () => {
     if (!roomCode) return;
@@ -263,7 +262,7 @@ export default function GameSetup() {
         style={{ textAlign: 'center', marginTop: '50px', marginBottom: '4px' }}
       >
         <img
-          src="/yalla-games/battleship.png"
+          src="/yalla-games/matchcards.png"
           alt="سفن"
           draggable={false}
           style={{
@@ -287,7 +286,7 @@ export default function GameSetup() {
           سفن
         </h1>
         <p style={{ color: '#9fc4b4', fontSize: '10px', fontWeight: 600, marginTop: '2px' }}>
-          Battleship — Memory Match-2
+          MatchCards — Memory Match-2
         </p>
       </motion.div>
 
@@ -656,7 +655,7 @@ export default function GameSetup() {
           return (
             <button
               key={opt.value}
-              onClick={() => useBattleshipStore.setState({ totalRounds: opt.value })}
+              onClick={() => useMatchCardsStore.setState({ totalRounds: opt.value })}
               style={{
                 flex: 1, padding: '8px 4px', borderRadius: '10px',
                 border: `1.5px solid ${selected ? 'rgba(254,239,145,.65)' : 'rgba(255,255,255,.12)'}`,
@@ -690,12 +689,12 @@ export default function GameSetup() {
       >
         {(Object.keys(DIFFICULTY_CONFIG) as Difficulty[]).map((d) => {
           const cfg = DIFFICULTY_CONFIG[d];
-          const selected = useBattleshipStore.getState().difficulty === d;
+          const selected = useMatchCardsStore.getState().difficulty === d;
           const color = d === 'easy' ? '#34d399' : d === 'medium' ? '#fbbf24' : '#ef4444';
           return (
             <button
               key={d}
-              onClick={() => useBattleshipStore.setState({ difficulty: d })}
+              onClick={() => useMatchCardsStore.setState({ difficulty: d })}
               style={{
                 flex: 1, padding: '8px 4px', borderRadius: '10px',
                 border: `1.5px solid ${selected ? color + 'AA' : 'rgba(255,255,255,.12)'}`,

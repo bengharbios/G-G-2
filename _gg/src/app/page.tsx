@@ -289,13 +289,13 @@ const games: GameData[] = [
     isFree: true,
   },
   {
-    id: 'battleship',
+    id: 'matchcards',
     title: 'مطابقة البطاقات',
     titleEn: 'Memory Match',
     emoji: '🃏',
     description:
       'لعبة مطابقة البطاقات الكلاسيكية! اقلب البطاقات واعثر على الأزواج المتطابقة قبل انتهاء الوقت. 4 أحجام شبكة (4×4، 5×5، 6×6، 7×7)، 6 ثيمات، 890 صورة متنوعة.',
-    href: '/play/battleship',
+    href: '/play/matchcards',
     bgImage: '/yalla-games/battleship.png',
     themeColor: 'text-purple-400',
     themeBorder: 'border-purple-500/30 hover:border-purple-500/60',

@@ -1,5 +1,5 @@
 // ════════════════════════════════════════════════════════════════════════
-// سفن (Battleship / Memory Match-2) — Zustand Store
+// تطابق الصور (MatchCards / Memory Match-2) — Zustand Store
 // ════════════════════════════════════════════════════════════════════════
 
 import { create } from 'zustand';
@@ -8,24 +8,24 @@ import {
   GamePhase,
   GameMode,
   Difficulty,
-  BattleshipRound,
+  MatchCardsRound,
   GuessCard,
   MatchedPair,
   GameLogEntry,
   DIFFICULTY_CONFIG,
   ROUND_COUNT_OPTIONS,
-} from './battleship-types';
+} from './matchcards-types';
 import {
-  getGuessImageCatalog as getBattleshipCatalog,
-  pickRandomGuessImages as pickRandomBattleships,
-  buildGuessImageUrl as buildBattleshipUrl,
+  getGuessImageCatalog as getMatchCardsCatalog,
+  pickRandomGuessImages as pickRandomMatchCards,
+  buildGuessImageUrl as buildMatchCardsUrl,
   GUESS_GRID_OPTIONS,
   GUESS_IMAGE_COUNT,
-  type GuessImage as Battleship,
+  type GuessImage as MatchCards,
 } from './flashi_guess_images';
 
 // ─── State ────────────────────────────────────────────────────────────
-export interface BattleshipState {
+export interface MatchCardsState {
   // Phase + meta
   phase: GamePhase;
   gameMode: GameMode;
@@ -45,7 +45,7 @@ export interface BattleshipState {
 
   // Current round state
   currentRound: number;
-  currentRoundData: BattleshipRound | null;
+  currentRoundData: MatchCardsRound | null;
   // Per-round cards (mapped from currentRoundData.cards for the UI)
   cards: GuessCard[];
   // Currently-flipped cards (max 2 — when both are non-matching, flip back)
@@ -110,8 +110,8 @@ function defaultGridOption() {
 }
 
 // Build a shuffled grid of cards for a round
-function buildShuffledCards(pairsCount: number, catalog: Battleship[]): GuessCard[] {
-  const picks = pickRandomBattleships(catalog, pairsCount);
+function buildShuffledCards(pairsCount: number, catalog: MatchCards[]): GuessCard[] {
+  const picks = pickRandomMatchCards(catalog, pairsCount);
   // Each image appears twice
   const cards: GuessCard[] = [];
   let cardId = 1;
@@ -161,7 +161,7 @@ const initialState = {
   flashiCategory: 'random' as const,
 
   currentRound: 0,
-  currentRoundData: null as BattleshipRound | null,
+  currentRoundData: null as MatchCardsRound | null,
   cards: [] as GuessCard[],
   flippedCardIds: [] as number[],
   matchedPairs: [] as MatchedPair[],
@@ -177,8 +177,8 @@ const initialState = {
 };
 
 // ─── Build a new round (called by startGame + loadRound + newImage) ──────
-function buildRound(state: BattleshipState): BattleshipRound {
-  const catalog = getBattleshipCatalog();
+function buildRound(state: MatchCardsState): MatchCardsRound {
+  const catalog = getMatchCardsCatalog();
   const cards = buildShuffledCards(state.pairsCount, catalog);
   return {
     id: `round-${state.currentRound}-${Date.now()}`,
@@ -195,7 +195,7 @@ function buildRound(state: BattleshipState): BattleshipRound {
 // ════════════════════════════════════════════════════════════════════════
 // Store
 // ════════════════════════════════════════════════════════════════════════
-export const useBattleshipStore = create<BattleshipState>()(
+export const useMatchCardsStore = create<MatchCardsState>()(
   persist(
     (set, get) => ({
       ...initialState,
@@ -373,7 +373,7 @@ export const useBattleshipStore = create<BattleshipState>()(
       resetGame: () => {
         const state = get();
         if (state.gameMode === 'diwaniya' && state.roomCode) {
-          fetch(`/api/battleship-room/${state.roomCode}`, { method: 'DELETE' }).catch(() => {});
+          fetch(`/api/matchcards-room/${state.roomCode}`, { method: 'DELETE' }).catch(() => {});
         }
         set({ ...initialState });
       },
@@ -400,9 +400,9 @@ export const useBattleshipStore = create<BattleshipState>()(
       newImage: () => {
         const state = get();
         if (!state.currentRoundData) return;
-        const catalog = getBattleshipCatalog();
+        const catalog = getMatchCardsCatalog();
         const cards = buildShuffledCards(state.pairsCount, catalog);
-        const newRound: BattleshipRound = {
+        const newRound: MatchCardsRound = {
           ...state.currentRoundData,
           cards,
           matchedPairs: [],
@@ -448,7 +448,7 @@ export const useBattleshipStore = create<BattleshipState>()(
             themeId: state.themeId,
           }),
         };
-        fetch(`/api/battleship-room/${state.roomCode}`, {
+        fetch(`/api/matchcards-room/${state.roomCode}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(syncData),
@@ -456,7 +456,7 @@ export const useBattleshipStore = create<BattleshipState>()(
       },
     }),
     {
-      name: 'battleship-game-storage',
+      name: 'matchcards-game-storage',
       version: 2,
       partialize: (state) => ({
         phase: state.phase,
@@ -491,6 +491,6 @@ export const useBattleshipStore = create<BattleshipState>()(
 );
 
 // Helper for room code generation (used by GameSetup)
-export function generateBattleshipRoomCode(): string {
+export function generateMatchCardsRoomCode(): string {
   return generateRoomCode();
 }

@@ -1,5 +1,5 @@
 // ════════════════════════════════════════════════════════════════════════
-// سفن (Battleship / Memory Match-2) — Game Types
+// سفن (MatchCards / Memory Match-2) — Game Types
 // Mirrors spotdiff-types.ts structure but adapted for Memory game.
 //
 // Game flow:
@@ -63,7 +63,7 @@ export interface GameLogEntry {
 }
 
 // ─── A single round ──────────────────────────────────────────────────────
-export interface BattleshipRound {
+export interface MatchCardsRound {
   id: string;
   title: string;
   // Grid config (set by host in GameSetup)

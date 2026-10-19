@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useBattleshipStore } from '@/lib/battleship-store';
-import { DIFFICULTY_CONFIG } from '@/lib/battleship-types';
+import { useMatchCardsStore } from '@/lib/matchcards-store';
+import { DIFFICULTY_CONFIG } from '@/lib/matchcards-types';
 import {
   buildGuessCardBackUrl,
   buildGuessThemeUrl,
@@ -190,7 +190,7 @@ export default function GameBoard() {
     flipCard, checkMatch, nextRound, resetGame, difficulty,
     themeId, gridRows, pairsCount,
     timerValueSec, newImage,
-  } = useBattleshipStore();
+  } = useMatchCardsStore();
 
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
@@ -213,8 +213,8 @@ export default function GameBoard() {
   useEffect(() => {
     if (phase !== 'playing') return;
     const interval = setInterval(() => {
-      // tickTimer via store directly (we have it via useBattleshipStore.getState)
-      useBattleshipStore.getState().tickTimer();
+      // tickTimer via store directly (we have it via useMatchCardsStore.getState)
+      useMatchCardsStore.getState().tickTimer();
     }, 1000);
     return () => clearInterval(interval);
   }, [phase]);
@@ -228,17 +228,16 @@ export default function GameBoard() {
     const handleQuitGame = () => {
     // Explicit exit = FORFEIT
     try {
-      useBattleshipStore.getState().resetGame();
+      useMatchCardsStore.getState().resetGame();
     } catch { /* ignore */ }
     try {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('battleship-game-storage');
-        localStorage.removeItem('battleship-game-storage__disconnect_ts');
+        localStorage.removeItem('matchcards-game-storage');
+        localStorage.removeItem('matchcards-game-storage__disconnect_ts');
       }
     } catch { /* ignore */ }
-    setShowExitDialog(false);
     setShowQuitDialog(false);
-    window.location.href = '/#game-battleship';
+    window.location.href = '/#game-matchcards';
   };
 
   const handleCardClick = (cardId: number) => {
@@ -247,7 +246,7 @@ export default function GameBoard() {
     // If 2 cards flipped, checkMatch fires after 800ms (via store setTimeout)
     // But also play sound after match check
     setTimeout(() => {
-      const state = useBattleshipStore.getState();
+      const state = useMatchCardsStore.getState();
       const lastLog = state.gameLog[state.gameLog.length - 1];
       if (lastLog?.message.includes('تطابق')) {
         if (soundOn) playCorrectSound();
@@ -396,7 +395,7 @@ export default function GameBoard() {
         }}
       >
         <img
-          src="/yalla-games/battleship.png"
+          src="/yalla-games/matchcards.png"
           alt="سفن"
           draggable={false}
           style={{
@@ -544,7 +543,7 @@ export default function GameBoard() {
           icon="▶️"
           onClick={() => {
             if (soundOn) playClickSound();
-            window.location.href = '/#game-battleship';
+            window.location.href = '/#game-matchcards';
           }}
         />
         <CompactBtn
@@ -605,7 +604,7 @@ export default function GameBoard() {
                   background: card.matched ? 'rgba(34,197,94,.15)' : 'rgba(0,0,0,.4)',
                 }}
               >
-                {/* Card back (face-down) */}
+                {/* Card back (face-down) — with number like flashi original */}
                 <div
                   style={{
                     position: 'absolute',
@@ -616,8 +615,20 @@ export default function GameBoard() {
                     backgroundPosition: 'center',
                     transform: 'rotateY(0deg)',
                     opacity: showFace ? 0 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
-                />
+                >
+                  <span style={{
+                    fontSize: '14px',
+                    fontWeight: 900,
+                    color: 'rgba(254,239,145,.7)',
+                    paintOrder: 'stroke fill',
+                    WebkitTextStroke: '0.5px rgba(170,110,31,.5)',
+                    textShadow: '0 1px 2px rgba(0,0,0,.6)',
+                  }}>{card.id}</span>
+                </div>
                 {/* Card face (image) */}
                 <div
                   style={{

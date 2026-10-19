@@ -3,8 +3,8 @@
 import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useBattleshipStore } from '@/lib/battleship-store';
-import { DIFFICULTY_CONFIG } from '@/lib/battleship-types';
+import { useMatchCardsStore } from '@/lib/matchcards-store';
+import { DIFFICULTY_CONFIG } from '@/lib/matchcards-types';
 import { useGameRewards } from '@/lib/yalla-game-helpers';
 
 // StrokeTextStyle_Yes (from yalla ludo styles.xml)
@@ -57,12 +57,12 @@ function Confetti() {
   );
 }
 
-export default function BattleshipGameOver() {
+export default function MatchCardsGameOver() {
   const router = useRouter();
   const {
     score, totalRounds, totalFound, totalDifferences, totalMisses,
     roundsPlayed, difficulty, resetGame,
-  } = useBattleshipStore();
+  } = useMatchCardsStore();
 
   // Apply body class to hide header chrome + bottom nav
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function BattleshipGameOver() {
   }, []);
 
   // Fetch godfather info + rewards
-  const { godfather, rewards } = useGameRewards(true, 'battleship', 'win', 1);
+  const { godfather, rewards } = useGameRewards(true, 'matchcards', 'win', 1);
 
   const accuracy = totalDifferences > 0
     ? Math.round((totalFound / (totalFound + totalMisses)) * 100) || 0

@@ -27,7 +27,7 @@ export default function LandingPage({ onStartLocal, onStartDiwaniya }: LandingPa
     if (!joinCode.trim()) { setJoinError('يجب إدخال كود الغرفة'); return; }
     if (!joinName.trim()) { setJoinError('يجب إدخال اسمك'); return; }
     setJoinError('');
-    window.location.href = `/join/battleship/${joinCode.trim().toUpperCase()}?name=${encodeURIComponent(joinName.trim())}`;
+    window.location.href = `/join/matchcards/${joinCode.trim().toUpperCase()}?name=${encodeURIComponent(joinName.trim())}`;
   };
 
   const handleConfirmMode = () => {
@@ -75,7 +75,7 @@ export default function LandingPage({ onStartLocal, onStartDiwaniya }: LandingPa
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 50,
       }}>
         <button
-          onClick={() => router.push('/battleship')}
+          onClick={() => router.push('/matchcards')}
           style={{
             background: 'rgba(6,42,32,.8)', border: '1px solid rgba(255,214,94,.2)',
             borderRadius: '10px', padding: '6px 10px', cursor: 'pointer',
@@ -127,7 +127,7 @@ export default function LandingPage({ onStartLocal, onStartDiwaniya }: LandingPa
             transition={{ duration: 0.6, delay: 0.2, type: 'spring' }}
           >
             <img
-              src="/yalla-games/battleship.png"
+              src="/yalla-games/matchcards.png"
               alt="سفن"
               style={{
                 width: '120px', height: '96px', objectFit: 'contain', margin: '0 auto 8px',
@@ -150,7 +150,7 @@ export default function LandingPage({ onStartLocal, onStartDiwaniya }: LandingPa
             سفن
           </h1>
           <p style={{ color: '#9fc4b4', fontSize: '12px', fontWeight: 'bold' }}>
-            Battleship 🚢
+            MatchCards 🚢
           </p>
         </div>
 

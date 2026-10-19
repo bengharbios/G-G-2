@@ -295,13 +295,13 @@ export const games: GameData[] = [
     joinPath: '/join/guessimage/{code}?name={name}',
   },
   {
-    id: 'battleship',
+    id: 'matchcards',
     title: 'مطابقة البطاقات',
     titleEn: 'Memory Match',
     emoji: '🃏',
     description:
       'لعبة مطابقة البطاقات الكلاسيكية! اقلب البطاقات واعثر على الأزواج المتطابقة قبل انتهاء الوقت. 4 أحجام شبكة (4×4، 5×5، 6×6، 7×7)، 6 ثيمات، 890 صورة متنوعة.',
-    href: '/play/battleship',
+    href: '/play/matchcards',
     bgImage: '/yalla-games/battleship.png',
     iconSelect: '/img/games/battleship/icon_select.webp',
     iconUnselect: '/img/games/battleship/icon_unselect.webp',
@@ -313,7 +313,7 @@ export const games: GameData[] = [
     status: 'available',
     players: '1-4 لاعبين',
     category: 'ذكاء',
-    joinPath: '/join/battleship/{code}?name={name}',
+    joinPath: '/join/matchcards/{code}?name={name}',
   },
   {
     id: 'ships',

@@ -1694,7 +1694,7 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     isComingSoon: false,
   },
   {
-    gameSlug: 'battleship',
+    gameSlug: 'matchcards',
     gameName: 'مطابقة البطاقات',
     isEnabled: true,
     order: 12,
