@@ -37,6 +37,7 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   guessimage:  { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'خمن الصورة' },
   matchcards:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'مطابقة البطاقات' },
   battleship:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'مطابقة البطاقات' },
+  foodwar:     { select: '/battle/game_select_risk_icon_select.webp',  unselect: '/battle/game_select_risk_icon_unselect.webp',  label: 'حرب الاكلات' },
   ships:        { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'سفن' },
 };
 

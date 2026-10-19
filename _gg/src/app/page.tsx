@@ -90,7 +90,25 @@ interface GameData {
   themeBorder: string;
   themeBg: string;
   themeBadge: string;
-  features: string[];
+  features: string[  {
+    id: 'foodwar',
+    title: 'حرب الاكلات',
+    titleEn: 'Food War',
+    emoji: '🍕',
+    description:
+      'العجلة تدور! اختر طعاماً واكشف من يختبئ خلفه. آخر ناجي يفوز!',
+    href: '/play/foodwar',
+    bgImage: '/yalla-games/foodwar.png',
+    themeColor: 'text-orange-400',
+    themeBorder: 'border-orange-500/30 hover:border-orange-500/60',
+    themeBg: 'from-orange-950/80 to-red-900/40',
+    features: ['العراب', 'حظ ومتعة', '2-8 لاعب', 'اسبين واختر'],
+    status: 'available',
+    players: '2-8 لاعب',
+    category: 'حظ',
+    isFree: true,
+  },
+];
   status: 'available' | 'coming_soon';
   players: string;
   category: string;
