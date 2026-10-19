@@ -828,6 +828,36 @@ export default function GameSetup() {
       </motion.div>
 
       {/* ══════════ Diwaniya share card ══════════ */}
+      {/* Show "creating room..." loading state while roomCode is being created */}
+      {gameMode === 'diwaniya' && !roomCode && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
+          className="tobol-team-card"
+          style={{
+            width: '100%',
+            maxWidth: '380px',
+            padding: '14px',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+          }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+            style={{ fontSize: '20px' }}
+          >📡</motion.div>
+          <span style={{
+            color: '#9fc4b4',
+            fontSize: '12px',
+            fontWeight: 700,
+          }}>جاري إنشاء غرفة الديوانية...</span>
+        </motion.div>
+      )}
       {gameMode === 'diwaniya' && roomCode && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
