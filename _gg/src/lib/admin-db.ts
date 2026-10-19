@@ -1473,7 +1473,19 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore */ }
 
-  // ─── Migration: أضف guessimage + battleship لكل القوالب الموجودة ───
+  
+    // ─── Migration: rename battleship → matchcards in BattleButton ───
+    {
+      sql: "UPDATE BattleButton SET tabHref = '/matchcards' WHERE tabHref = '/battleship'",
+    },
+    {
+      sql: "UPDATE BattleButton SET buttonKey = 'matchcards' WHERE buttonKey = 'battleship'",
+    },
+    {
+      sql: "UPDATE GameConfig SET gameSlug = 'matchcards' WHERE gameSlug = 'battleship'",
+    },
+
+    // ─── Migration: أضف guessimage + battleship لكل القوالب الموجودة ───
   // (للترقية من النسخ القديمة التي لم تكن تحوي هاتين اللعبتين في
   // BattleButton table)
   try {
