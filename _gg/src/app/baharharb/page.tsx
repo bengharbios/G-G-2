@@ -49,7 +49,7 @@ function BaharHarbContent() {
 
     if (mode === 'godfather') {
       setGameMode('classic');
-      useSyncExternalStore.getState().setRoomCode(null);
+      useBaharHarbStore.getState().setRoomCode(null);
       if (phase === 'landing') setPhase('setup');
     } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');

@@ -53,7 +53,7 @@ function PrisonContent() {
 
     if (mode === 'godfather') {
       setGameMode('classic');
-      useSyncExternalStore.getState().setRoomCode(null);
+      usePrisonStore.getState().setRoomCode(null);
       if (phase === 'landing') setPhase('setup');
     } else if (mode === 'diwaniya') {
       setGameMode('diwaniya');
