@@ -160,8 +160,19 @@ export default function BattlePage() {
     return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', color: '#9fc4b4', fontSize: '14px' }}>جارٍ التحميل...</div>;
   }
 
-  const buttons = config.buttons.sort((a, b) => a.tabOrder - b.tabOrder);
-  const activeBtn = buttons[activeIndex];
+  // رتّب الأزرار — واستثني الألعاب المعطّلة (disabled) من القائمة
+  const allButtons = (config?.buttons || []).sort((a, b) => a.tabOrder - b.tabOrder);
+  // صفِّ الأزرار: أزل الألعاب التي حالتها 'disabled' من الـGameConfig
+  const buttons = allButtons.filter(btn => {
+    const gameStatus = gameStatuses[btn.buttonKey];
+    // لو لم نحصل على الحالة بعد (لم يُحمّل games-config)، أظهر الزر
+    if (!gameStatus) return true;
+    // لو الحالة 'disabled' → لا تُظهر الزر إطلاقاً
+    return gameStatus !== 'disabled';
+  });
+  // ضبط الفهرس النشط لو تجاوز القائمة بعد التصفية
+  const safeActiveIndex = Math.min(activeIndex, buttons.length - 1);
+  const activeBtn = buttons[safeActiveIndex] || buttons[0];
   if (!activeBtn) return null;
 
   const stroke = activeBtn.strokeColor;

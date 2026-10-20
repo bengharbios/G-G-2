@@ -55,6 +55,8 @@ interface AdminGameConfig {
   description: string;
   order: number;
   isEnabled: boolean;
+  status: string;
+  category: string;
 }
 
 function useAdminGameConfigs() {
@@ -1142,8 +1144,8 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
         </div>
       )}
 
-      {/* شارة الفئة (Category) */}
-      {isAvailable && game.category && game.category !== 'other' && (
+      {/* شارة الفئة (Category) — تظهر فوق الصورة كـ tag */}
+      {game.category && game.category !== 'other' && (
         <span className="gg-cat-badge">{game.category}</span>
       )}
 
@@ -1179,12 +1181,21 @@ function GamesSection() {
         const updated = games.map((g) => {
           const adminCfg = configs.find((c) => c.slug === g.id);
           if (adminCfg) {
-            // استخدم status من الأدمن مباشرةً — يتضمن available/maintenance/coming_soon/soon/disabled
-            let status: GameData['status'] = g.status;
-            if (adminCfg.status && ['available', 'maintenance', 'coming_soon', 'soon', 'coming_soon', 'disabled'].includes(adminCfg.status)) {
-              status = adminCfg.status as GameData['status'];
-            } else if (adminCfg.isComingSoon || !adminCfg.isEnabled) {
+            // القاعدة: isEnabled=false → مخفية تماماً (disabled)
+            //          status='disabled' → مخفية تماماً
+            //          status='maintenance' → تظهر مع شارة + أزرار معطّلة
+            //          status='coming_soon' → تظهر مع شارة + أزرار معطّلة
+            //          status='soon' → تظهر مع شارة + أزرار معطّلة
+            //          status='available' + isEnabled=true → متاحة بالكامل
+            let status: GameData['status'];
+            if (!adminCfg.isEnabled || adminCfg.status === 'disabled') {
+              status = 'disabled'; // مخفية تماماً
+            } else if (adminCfg.status === 'maintenance') {
+              status = 'maintenance';
+            } else if (adminCfg.status === 'coming_soon') {
               status = 'coming_soon';
+            } else if (adminCfg.status === 'soon') {
+              status = 'soon';
             } else {
               status = 'available';
             }
@@ -1197,7 +1208,7 @@ function GamesSection() {
               description: adminCfg.description || g.description,
               icon: adminCfg.icon || g.emoji,
               players: adminCfg.playerRange ? `${adminCfg.playerRange} لاعب` : g.players,
-              category: (adminCfg as { category?: string }).category || g.category,
+              category: adminCfg.category || g.category,
             };
           }
           return g;
