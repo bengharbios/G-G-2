@@ -1643,6 +1643,61 @@ export default function AdminPage() {
     showToast('تم تحديث ترتيب الألعاب');
   };
 
+  // ─── تحديث مباشر لأي حقل في اللعبة (بدون فتح نافذة التعديل) ──────────
+  const updateGameInline = async (slug: string, field: string, value: unknown) => {
+    try {
+      const res = await fetch('/api/admin/games', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, [field]: value }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setGames((prev) => prev.map((g) => (g.gameSlug === slug ? data.game : g)));
+      }
+    } catch {
+      showToast('حدث خطأ', 'error');
+    }
+  };
+
+  // ─── تحديث الحالة (status) مباشرة من الجدول ──────────────────────────
+  const updateGameStatus = async (slug: string, status: string) => {
+    const updates: Record<string, unknown> = { status };
+    // لو الحالة 'disabled' → عطّل isEnabled كذلك
+    if (status === 'disabled') {
+      updates.isEnabled = false;
+    } else if (status === 'available') {
+      updates.isEnabled = true;
+      updates.isComingSoon = false;
+    } else if (status === 'coming_soon' || status === 'soon') {
+      updates.isEnabled = true;
+      updates.isComingSoon = true;
+    } else if (status === 'maintenance') {
+      updates.isEnabled = true;
+    }
+    try {
+      const res = await fetch('/api/admin/games', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, ...updates }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setGames((prev) => prev.map((g) => (g.gameSlug === slug ? data.game : g)));
+        const labels: Record<string, string> = {
+          available: '🟢 متاحة',
+          maintenance: '🔴 قيد الصيانة',
+          coming_soon: '🔵 قادمة',
+          soon: '🟡 قريباً',
+          disabled: '⚫ معطّلة',
+        };
+        showToast(`تم تغيير الحالة: ${labels[status] || status}`);
+      }
+    } catch {
+      showToast('حدث خطأ', 'error');
+    }
+  };
+
   const saveGameEdit = async () => {
     if (!editingGame) return;
     try {
@@ -2846,8 +2901,8 @@ export default function AdminPage() {
                             </div>
                           </div>
 
-                          {/* Actions */}
-                          <div className="flex items-center gap-2 flex-shrink-0">
+                          {/* Actions — تحكم مباشر بدون فتح نافذة التعديل */}
+                          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
                             {/* Order buttons */}
                             <div className="flex flex-col gap-0.5">
                               <button
@@ -2868,25 +2923,46 @@ export default function AdminPage() {
 
                             <Separator orientation="vertical" className="h-8 mx-1" />
 
-                            {/* Toggle enabled */}
+                            {/* Status dropdown — مباشر */}
                             <div className="flex items-center gap-1.5">
-                              <Switch
-                                checked={game.isEnabled}
-                                onCheckedChange={() => toggleGameEnabled(game.gameSlug, game.isEnabled)}
-                              />
-                              <span className="text-[10px] text-slate-500">تفعيل</span>
+                              <Select
+                                value={game.status || 'available'}
+                                onValueChange={(v) => updateGameStatus(game.gameSlug, v)}
+                              >
+                                <SelectTrigger className="h-7 w-auto min-w-[90px] text-[10px] bg-slate-800/50 border-slate-700/50 text-white">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-slate-800 border-slate-700">
+                                  <SelectItem value="available" className="text-[10px]">🟢 متاحة</SelectItem>
+                                  <SelectItem value="maintenance" className="text-[10px]">🔴 صيانة</SelectItem>
+                                  <SelectItem value="coming_soon" className="text-[10px]">🔵 قادمة</SelectItem>
+                                  <SelectItem value="soon" className="text-[10px]">🟡 قريباً</SelectItem>
+                                  <SelectItem value="disabled" className="text-[10px]">⚫ معطّلة</SelectItem>
+                                </SelectContent>
+                              </Select>
                             </div>
 
                             <Separator orientation="vertical" className="h-8 mx-1" />
 
-                            {/* Toggle coming soon */}
+                            {/* VIP / مجاني toggle — مباشر */}
                             <div className="flex items-center gap-1.5">
                               <Switch
-                                checked={game.isComingSoon}
-                                onCheckedChange={() => toggleComingSoon(game.gameSlug, game.isComingSoon)}
+                                checked={!!game.isFree}
+                                onCheckedChange={(checked) => updateGameInline(game.gameSlug, 'isFree', checked)}
                               />
-                              <span className="text-[10px] text-slate-500">قريباً</span>
+                              <span className="text-[10px] text-slate-500">
+                                {game.isFree ? '🟢 مجاني' : '💎 VIP'}
+                              </span>
                             </div>
+
+                            <Separator orientation="vertical" className="h-8 mx-1" />
+
+                            {/* Category badge — عرض */}
+                            {game.category && game.category !== 'other' && (
+                              <Badge variant="outline" className="text-[9px] border-slate-600 text-slate-400">
+                                {game.category}
+                              </Badge>
+                            )}
 
                             <Separator orientation="vertical" className="h-8 mx-1" />
 
