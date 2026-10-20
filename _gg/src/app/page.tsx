@@ -1102,9 +1102,14 @@ const GAME_STROKE_COLORS: Record<string, string> = {
 function GameCard({ game, index }: { game: GameData; index: number }) {
   const isAvailable = game.status === 'available';
   const isComingSoon = game.status === 'coming_soon';
+  const isMaintenance = game.status === 'maintenance';
+  const isSoon = game.status === 'soon';
+  const isDisabled = game.status === 'disabled' || !game.status;
+  const isVisible = !isDisabled; // maintenance/coming_soon/soon تظهر، disabled لا تظهر
   const strokeColor = GAME_STROKE_COLORS[game.id] || '#000000';
-  // مسار الصورة — مطابق لـ /assets/games/X.png لكن في public/yalla-games/X.png لـ Next.js
   const gameImage = game.bgImage || `/yalla-games/${game.id}.png`;
+
+  if (!isVisible) return null; // معطّلة — لا تظهر إطلاقاً
 
   return (
     <Link
@@ -1113,21 +1118,31 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
       data-game={game.id}
       data-players={game.players}
       data-cat={game.category}
-      aria-label={isAvailable ? `العب ${game.title}` : `${game.title} قريباً`}
+      aria-label={isAvailable ? `العب ${game.title}` : `${game.title} — ${isMaintenance ? 'قيد الصيانة' : isComingSoon ? 'قادمة' : 'قريباً'}`}
       className="gg-card"
-      style={!isAvailable ? { opacity: 0.6, pointerEvents: 'none' } : undefined}
+      style={!isAvailable ? { opacity: 0.75, pointerEvents: 'none' } : undefined}
     >
-      {/* صورة اللعبة 167×134 — object-fit:fill + drop-shadow + ggFloat animation */}
+      {/* صورة اللعبة */}
       <img src={gameImage} alt={game.title} />
 
-      {/* Coming Soon Overlay */}
+      {/* شارة الحالة في زاوية الصورة — كل حالة بلونها */}
+      {isMaintenance && (
+        <div className="gg-status-badge gg-status-maintenance">
+          🔧 قيد الصيانة
+        </div>
+      )}
       {isComingSoon && (
-        <div className="gg-coming-overlay">
-          <span className="gg-coming-tag">✨ قريباً</span>
+        <div className="gg-status-badge gg-status-coming">
+          ✨ قادمة
+        </div>
+      )}
+      {isSoon && (
+        <div className="gg-status-badge gg-status-soon">
+          🕐 قريباً
         </div>
       )}
 
-      {/* شارة الفئة (Category) — من الأدمن */}
+      {/* شارة الفئة (Category) */}
       {isAvailable && game.category && game.category !== 'other' && (
         <span className="gg-cat-badge">{game.category}</span>
       )}
@@ -1139,7 +1154,7 @@ function GameCard({ game, index }: { game: GameData; index: number }) {
         </span>
       )}
 
-      {/* اسم اللعبة أسفل البطاقة — gg-name */}
+      {/* اسم اللعبة أسفل البطاقة */}
       <span
         className="gg-name"
         style={{ WebkitTextStroke: `1px ${strokeColor}` }}
@@ -1164,10 +1179,11 @@ function GamesSection() {
         const updated = games.map((g) => {
           const adminCfg = configs.find((c) => c.slug === g.id);
           if (adminCfg) {
+            // استخدم status من الأدمن مباشرةً — يتضمن available/maintenance/coming_soon/soon/disabled
             let status: GameData['status'] = g.status;
-            if (adminCfg.isComingSoon) {
-              status = 'coming_soon';
-            } else if (!adminCfg.isEnabled) {
+            if (adminCfg.status && ['available', 'maintenance', 'coming_soon', 'soon', 'coming_soon', 'disabled'].includes(adminCfg.status)) {
+              status = adminCfg.status as GameData['status'];
+            } else if (adminCfg.isComingSoon || !adminCfg.isEnabled) {
               status = 'coming_soon';
             } else {
               status = 'available';
@@ -1181,7 +1197,6 @@ function GamesSection() {
               description: adminCfg.description || g.description,
               icon: adminCfg.icon || g.emoji,
               players: adminCfg.playerRange ? `${adminCfg.playerRange} لاعب` : g.players,
-              // الأولوية لـ category من الأدمن، وإلا نأخذ من static data
               category: (adminCfg as { category?: string }).category || g.category,
             };
           }

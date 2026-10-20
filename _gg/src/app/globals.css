@@ -2857,6 +2857,40 @@ html, body {
 }
 
 /* Coming soon + category + free badges on gg-card */
+
+/* ── شارات حالة اللعبة (maintenance/coming_soon/soon) ── */
+.gg-status-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(2px);
+  animation: pulse 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+.gg-status-maintenance {
+  background: rgba(220, 38, 38, 0.85);
+  color: #fff;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+.gg-status-coming {
+  background: rgba(37, 99, 235, 0.85);
+  color: #fff;
+  border: 1px solid rgba(96, 165, 250, 0.6);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+.gg-status-soon {
+  background: rgba(245, 158, 11, 0.85);
+  color: #1a1a1a;
+  border: 1px solid rgba(253, 224, 71, 0.6);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
 .gg-coming-overlay {
   position: absolute;
   inset: 0;

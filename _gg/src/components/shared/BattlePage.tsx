@@ -61,6 +61,8 @@ interface Particle {
 
 export default function BattlePage() {
   const [config, setConfig] = useState<BattleConfig | null>(null);
+  const [gameStatuses, setGameStatuses] = useState<Record<string, string>>({});
+  const [isAdmin, setIsAdmin] = useState(false);
   const [activeIndex, setActiveIndex] = useState(() => {
     // استرجاع اللعبة النشطة من localStorage
     if (typeof window !== 'undefined') {
@@ -101,11 +103,32 @@ export default function BattlePage() {
         const res = await fetch('/api/auth/me', { cache: 'no-store' });
         if (!res.ok) return;
         const data = await res.json();
-        if (data.success && data.user) setUserRole(data.user.role || 'user');
+        if (data.success && data.user) {
+          setUserRole(data.user.role || 'user');
+          if (data.user.role === 'admin' || data.user.role === 'super_admin') {
+            setIsAdmin(true);
+          }
+        }
+      } catch {}
+    }
+    async function fetchGameStatuses() {
+      try {
+        const res = await fetch('/api/games-config', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled || !data.games) return;
+        const map: Record<string, string> = {};
+        data.games.forEach((g: { slug: string; status?: string; isEnabled?: boolean; isComingSoon?: boolean }) => {
+          let status = g.status || 'available';
+          if (!g.isEnabled && status === 'available') status = 'disabled';
+          map[g.slug] = status;
+        });
+        setGameStatuses(map);
       } catch {}
     }
     fetchConfig();
     fetchUser();
+    fetchGameStatuses();
     return () => { cancelled = true; };
   }, []);
 
@@ -307,37 +330,73 @@ export default function BattlePage() {
         </div>
 
         {/* ===== صف الأوضاع: العراب + الديوانية ===== */}
-        <div
-          key={`btns-${animKey}`}
-          style={{
-            display: 'flex', gap: '12px',
-          }}
-        >
-          {/* العراب */}
-          <ModeButton
-            label="العراب"
-            icon="/battle/icon_godfather.svg"
-            gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
-            highlight="linear-gradient(180deg, rgba(255,255,255,.25) 0%, transparent 40%)"
-            shadow="0 4px 16px rgba(245,158,11,.35)"
-            delay="0.08s"
-            reduceMotion={reduceMotion}
-            isPrimary={true}
-            onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=godfather')}
-          />
-          {/* الديوانية */}
-          <ModeButton
-            label="الديوانية"
-            icon="/battle/icon_diwaniya.svg"
-            gradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
-            highlight="linear-gradient(180deg, rgba(255,255,255,.2) 0%, transparent 40%)"
-            shadow="0 4px 16px rgba(16,185,129,.35)"
-            delay="0.16s"
-            reduceMotion={reduceMotion}
-            isPrimary={false}
-            onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=diwaniya')}
-          />
-        </div>
+        {(() => {
+          const gameStatus = gameStatuses[activeBtn?.buttonKey] || 'available';
+          const isPlayable = gameStatus === 'available' || isAdmin;
+          const statusLabel = gameStatus === 'maintenance' ? '🔧 قيد الصيانة'
+            : gameStatus === 'coming_soon' ? '✨ قادمة'
+            : gameStatus === 'soon' ? '🕐 قريباً'
+            : gameStatus === 'disabled' ? '⚫ معطّلة'
+            : null;
+
+          if (!isPlayable && statusLabel) {
+            return (
+              <div style={{
+                display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center',
+                padding: '8px 16px', borderRadius: '12px',
+                background: gameStatus === 'maintenance' ? 'rgba(220,38,38,.2)' :
+                           gameStatus === 'coming_soon' ? 'rgba(37,99,235,.2)' :
+                           gameStatus === 'soon' ? 'rgba(245,158,11,.2)' : 'rgba(0,0,0,.3)',
+                border: `1px solid ${gameStatus === 'maintenance' ? 'rgba(248,113,113,.4)' :
+                           gameStatus === 'coming_soon' ? 'rgba(96,165,250,.4)' :
+                           gameStatus === 'soon' ? 'rgba(253,224,71,.4)' : 'rgba(255,255,255,.1)'}`,
+              }}>
+                <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#fff' }}>
+                  {statusLabel}
+                </span>
+                {!isAdmin && (
+                  <span style={{ fontSize: '10px', color: 'rgba(255,255,255,.5)' }}>
+                    الأزرار معطّلة{isAdmin ? ' (لكنك أدمن — يمكنك اللعب)' : ''}
+                  </span>
+                )}
+                {isAdmin && (
+                  <span style={{ fontSize: '10px', color: 'rgba(34,197,94,.8)' }}>
+                    ⚡ أنت أدمن — يمكنك اللعب
+                  </span>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <div key={`btns-${animKey}`} style={{ display: 'flex', gap: '12px' }}>
+              {/* العراب */}
+              <ModeButton
+                label="العراب"
+                icon="/battle/icon_godfather.svg"
+                gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+                highlight="linear-gradient(180deg, rgba(255,255,255,.25) 0%, transparent 40%)"
+                shadow="0 4px 16px rgba(245,158,11,.35)"
+                delay="0.08s"
+                reduceMotion={reduceMotion}
+                isPrimary={true}
+                onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=godfather')}
+              />
+              {/* الديوانية */}
+              <ModeButton
+                label="الديوانية"
+                icon="/battle/icon_diwaniya.svg"
+                gradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                highlight="linear-gradient(180deg, rgba(255,255,255,.2) 0%, transparent 40%)"
+                shadow="0 4px 16px rgba(16,185,129,.35)"
+                delay="0.16s"
+                reduceMotion={reduceMotion}
+                isPrimary={false}
+                onClick={() => activeBtn.tabHref && router.push(activeBtn.tabHref + '?mode=diwaniya')}
+              />
+            </div>
+          );
+        })()}
 
         {/* ===== صف المشاهدة (كبسولة أنيقة خفيفة بصرياً) ===== */}
         <div
