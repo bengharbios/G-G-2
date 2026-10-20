@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
 import { ClearCacheCard } from '@/components/admin/ClearCacheCard';
@@ -502,7 +502,15 @@ export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
-  const [activeSection, setActiveSection] = useState<ActiveSection>('dashboard');
+  // قراءة القسم من URL عند التحميل (يحافظ على القسم عند التحديث)
+  const [activeSection, setActiveSection] = useState<ActiveSection>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const section = params.get('section') as ActiveSection;
+      return section || 'dashboard';
+    }
+    return 'dashboard';
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -1983,6 +1991,10 @@ export default function AdminPage() {
   const handleNavClick = (section: ActiveSection) => {
     setActiveSection(section);
     setSidebarOpen(false);
+    // تحديث URL بدون scroll — يحافظ على القسم عند التحديث
+    const url = new URL(window.location.href);
+    url.searchParams.set('section', section);
+    window.history.replaceState(null, '', url.toString());
   };
 
   const closeTable = async (code: string) => {
@@ -2605,7 +2617,7 @@ export default function AdminPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setActiveSection('messages')}
+                onClick={() => handleNavClick('messages')}
                 className="text-slate-400 hover:text-white relative"
               >
                 <Bell className="w-4 h-4" />
@@ -2681,7 +2693,7 @@ export default function AdminPage() {
                     <Button
                       variant="outline"
                       className="w-full justify-start border-slate-700/50 text-slate-300 hover:bg-slate-800/50 hover:text-white"
-                      onClick={() => setActiveSection('games')}
+                      onClick={() => handleNavClick('games')}
                     >
                       <Gamepad2 className="w-4 h-4 ml-2" />
                       إدارة الألعاب
@@ -2689,7 +2701,7 @@ export default function AdminPage() {
                     <Button
                       variant="outline"
                       className="w-full justify-start border-slate-700/50 text-slate-300 hover:bg-slate-800/50 hover:text-white"
-                      onClick={() => setActiveSection('messages')}
+                      onClick={() => handleNavClick('messages')}
                     >
                       <MessageSquare className="w-4 h-4 ml-2" />
                       الرسائل {unreadCount > 0 && `(${unreadCount})`}
@@ -2697,7 +2709,7 @@ export default function AdminPage() {
                     <Button
                       variant="outline"
                       className="w-full justify-start border-slate-700/50 text-slate-300 hover:bg-slate-800/50 hover:text-white"
-                      onClick={() => setActiveSection('settings')}
+                      onClick={() => handleNavClick('settings')}
                     >
                       <Settings className="w-4 h-4 ml-2" />
                       الإعدادات
@@ -6830,28 +6842,53 @@ export default function AdminPage() {
                   </Select>
                 </div>
               </div>
+              {/* الحالة (status) — تحكم كامل في ظهور اللعبة للعملاء */}
+              <div className="space-y-2">
+                <Label className="text-slate-300 font-bold">📌 حالة اللعبة</Label>
+                <Select
+                  value={editingGame.status || 'available'}
+                  onValueChange={(v) => setEditingGame({ ...editingGame, status: v as GameConfig['status'] })}
+                >
+                  <SelectTrigger className="bg-slate-800/50 border-slate-700/50 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectItem value="available">🟢 متاحة (تظهر للناس ويمكن لعبها)</SelectItem>
+                    <SelectItem value="maintenance">🔴 قيد الصيانة (تظهر مع شارة + تعطيل الأزرار)</SelectItem>
+                    <SelectItem value="coming_soon">🔵 قادمة (تظهر مع شارة + تعطيل الأزرار)</SelectItem>
+                    <SelectItem value="soon">🟡 قريباً (تظهر مع شارة + تعطيل الأزرار)</SelectItem>
+                    <SelectItem value="disabled">⚫ معطّلة (مخفية تماماً)</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-[10px] text-slate-500">
+                  • متاحة: اللعبة تظهر ويمكن اللعب<br/>
+                  • قيد الصيانة/قادمة/قريباً: تظهر مع شارة ملوّنة + العرّاب والديوانية معطّلان (الأدمن فقط يتصفح)<br/>
+                  • معطّلة: مخفية تماماً عن العملاء
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
+                {/* VIP / مجاني */}
                 <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
-                  <Label className="text-slate-300 cursor-pointer">مجاني (isFree)</Label>
+                  <div>
+                    <Label className="text-slate-300 cursor-pointer">💎 نوع اللعبة</Label>
+                    <p className="text-[10px] text-slate-500">
+                      {editingGame.isFree ? '🟢 مجانية (للجميع)' : '🟡 VIP (مدفوعة)'}
+                    </p>
+                  </div>
                   <Switch
                     checked={!!editingGame.isFree}
                     onCheckedChange={(checked) => setEditingGame({ ...editingGame, isFree: checked })}
                   />
                 </div>
+                {/* مفعّلة */}
                 <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
-                  <Label className="text-slate-300 cursor-pointer">قريباً (isComingSoon)</Label>
+                  <Label className="text-slate-300 cursor-pointer">👁️ ظاهرة (isEnabled)</Label>
                   <Switch
-                    checked={!!editingGame.isComingSoon}
-                    onCheckedChange={(checked) => setEditingGame({ ...editingGame, isComingSoon: checked })}
+                    checked={!!editingGame.isEnabled}
+                    onCheckedChange={(checked) => setEditingGame({ ...editingGame, isEnabled: checked })}
                   />
                 </div>
-              </div>
-              <div className="flex items-center justify-between p-3 rounded-md bg-slate-800/50 border border-slate-700/50">
-                <Label className="text-slate-300 cursor-pointer">مفعّلة (isEnabled)</Label>
-                <Switch
-                  checked={!!editingGame.isEnabled}
-                  onCheckedChange={(checked) => setEditingGame({ ...editingGame, isEnabled: checked })}
-                />
               </div>
             </div>
           )}

@@ -15,7 +15,7 @@ export interface GameConfig {
   isComingSoon: boolean;
   isFree: boolean;
   category: string;        // اجتماعية/حربية/ذكاء/مجازفة/رعب/استراتيجية/إبداعية/other
-  status: 'available' | 'coming_soon' | 'disabled';  // الحالة المعروضة للجمهور
+  status: 'available' | 'maintenance' | 'coming_soon' | 'soon' | 'disabled';  // الحالة المعروضة للجمهور
   createdAt: string;
   updatedAt: string;
 }
