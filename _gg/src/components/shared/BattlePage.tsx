@@ -37,6 +37,13 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   guessimage:  { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'خمن الصورة' },
   matchcards:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'مطابقة البطاقات' },
   foodwar:     { select: '/battle/game_select_risk_icon_select.webp',  unselect: '/battle/game_select_risk_icon_unselect.webp',  label: 'حرب الاكلات' },
+  '2048':      { select: '/battle/game_select_risk_icon_select.webp',  unselect: '/battle/game_select_risk_icon_unselect.webp',  label: '2048' },
+  wordle:      { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'وردل' },
+  'trap-the-cat': { select: '/battle/game_select_coffin_icon_select.webp',  unselect: '/battle/game_select_coffin_icon_unselect.webp',  label: 'افخخ القطة' },
+  coreball:    { select: '/battle/game_select_war_drums_icon_select.webp',  unselect: '/battle/game_select_war_drums_icon_unselect.webp',  label: 'كور بول' },
+  'sand-game':  { select: '/battle/game_select_prison_icon_select.webp',  unselect: '/battle/game_select_prison_icon_unselect.webp',  label: 'لعبة الرمل' },
+  'spacebar-clicker': { select: '/battle/game_select_spotdiff_icon_select.webp',  unselect: '/battle/game_select_spotdiff_icon_unselect.webp',  label: 'نقر المسافة' },
+  'google-dino': { select: '/battle/game_select_bahr_icon_select.webp',  unselect: '/battle/game_select_bahr_icon_unselect.webp',  label: 'الديناصور' },
   ships:        { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'سفن' },
 };
 
