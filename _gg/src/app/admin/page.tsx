@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import SvgaOrImg from '@/components/shared/SvgaOrImg';
+import { ClearCacheCard } from '@/components/admin/ClearCacheCard';
 import { formatCompact } from '@/lib/format';
 import {
   LayoutDashboard,
@@ -6401,6 +6402,9 @@ export default function AdminPage() {
                   </Button>
                 </CardContent>
               </Card>
+
+              {/* Clear All Users' Cache (APK WebView cache invalidation) */}
+              <ClearCacheCard />
 
               {/* How Admin Panel Works */}
               <Card className="bg-slate-900/60 border-slate-800/40">

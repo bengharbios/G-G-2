@@ -1563,6 +1563,28 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore migration errors */ }
 
+  // ─── Migration: CacheVersion table for forced APK cache invalidation ───
+  try {
+    await c.execute(`
+      CREATE TABLE IF NOT EXISTS CacheVersion (
+        id TEXT PRIMARY KEY DEFAULT 'main',
+        version INTEGER NOT NULL DEFAULT 1,
+        reason TEXT DEFAULT '',
+        triggeredBy TEXT DEFAULT '',
+        updatedAt TEXT DEFAULT (datetime('now'))
+      )
+    `);
+    // Seed initial row if empty
+    const cvCheck = await c.execute({ sql: "SELECT COUNT(*) as cnt FROM CacheVersion", args: [] });
+    const cvCnt = (cvCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+    if (!cvCnt || cvCnt === 0) {
+      await c.execute({
+        sql: `INSERT INTO CacheVersion (id, version, reason, triggeredBy) VALUES ('main', 1, 'initial', 'system')`,
+        args: [],
+      });
+    }
+  } catch { /* ignore */ }
+
   _tablesReady = true;
 }
 
@@ -2495,6 +2517,47 @@ export async function assignReservedId(numericId: number, userId: string, price:
 }
 
 // ─── GameConfig operations ────────────────────────────────────────────
+
+// ─── CacheVersion operations (for APK WebView cache invalidation) ──────
+
+export async function getCacheVersion(): Promise<{ version: number; reason: string; updatedAt: string }> {
+  await ensureAdminTables();
+  const c = getClient();
+  try {
+    const result = await c.execute({ sql: "SELECT version, reason, updatedAt FROM CacheVersion WHERE id = 'main'", args: [] });
+    const row = result.rows[0] as Record<string, unknown> | undefined;
+    if (!row) return { version: 1, reason: '', updatedAt: '' };
+    return {
+      version: Number(row.version) || 1,
+      reason: String(row.reason || ''),
+      updatedAt: String(row.updatedAt || ''),
+    };
+  } catch {
+    return { version: 1, reason: '', updatedAt: '' };
+  }
+}
+
+export async function bumpCacheVersion(reason: string, triggeredBy: string): Promise<{ version: number; updatedAt: string }> {
+  await ensureAdminTables();
+  const c = getClient();
+  // Increment version atomically
+  await c.execute({
+    sql: `INSERT INTO CacheVersion (id, version, reason, triggeredBy, updatedAt)
+          VALUES ('main', 2, ?, ?, datetime('now'))
+          ON CONFLICT(id) DO UPDATE SET
+            version = version + 1,
+            reason = excluded.reason,
+            triggeredBy = excluded.triggeredBy,
+            updatedAt = datetime('now')`,
+    args: [reason, triggeredBy],
+  });
+  const result = await c.execute({ sql: "SELECT version, updatedAt FROM CacheVersion WHERE id = 'main'", args: [] });
+  const row = result.rows[0] as Record<string, unknown> | undefined;
+  return {
+    version: Number(row?.version) || 1,
+    updatedAt: String(row?.updatedAt || ''),
+  };
+}
 
 export async function getAllGames(): Promise<GameConfig[]> {
   await ensureAdminTables();

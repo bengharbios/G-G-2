@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import AppShell from "@/components/shared/AppShell";
 import NetworkStatusProvider from "@/components/shared/NetworkStatusProvider";
+import { CacheVersionChecker } from "@/lib/CacheVersionCheckerComponent";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -59,6 +60,9 @@ export default function RootLayout({
               (/، /friends، /voice-rooms) — تُحمّل مرة واحدة عند التنقل بينها */}
           <AppShell>{children}</AppShell>
         </NetworkStatusProvider>
+        {/* CacheVersionChecker — يفحص إصدار الـcache تلقائياً ويمسحه
+            لو الـadmin ضغط زر "مسح cache" — يعمل في كل صفحة وكل 60 ثانية */}
+        <CacheVersionChecker />
         <Toaster />
         <ServiceWorkerRegistrar />
       </body>
