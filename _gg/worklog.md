@@ -1126,3 +1126,85 @@ Stage Summary:
 - All references now match the decoded APK layouts (fragment_shop.xml, item_diamonds.xml, item_vip_buy.xml, fragment_royal_level2.xml)
 - Pre-existing ESLint warning in RoyalDialog fixed (removed unused setLoading state)
 - Build passes — Vercel will auto-deploy on push
+
+---
+Task ID: shop-rebuild-2
+Agent: main
+Task: إزالة Royal/VIP من الهيدر + إعادة بناء النوافذ كنسخة طبق الأصل 100% من السورس
+
+Work Log:
+- ملاحظات المستخدم: (1) أيقونات Royal/VIP يجب ألا تكون في الهيدر، بل داخل نافذة الشحن. (2) تصميم النوافذ لا يزال غير مطابق للسورس — يجب نسخ سطر سطر، أيقونة أيقونة، لون لون.
+
+SiteHeader.tsx (إزالة الأزرار الخاطئة):
+- حذف زر Royal (royal-btn) من الهيدر
+- حذف زر VIP (vip-btn) من الهيدر
+- حذف استيراد RoyalDialog و BuyVipDialog
+- حذف state royalOpen و vipOpen و royalLevel
+- حذف useEffect لجلب /api/royal/state
+- إصلاح تحذير ESLint المسبق على setFrameImg (react-hooks/set-state-in-effect) عبر microtask
+- الهيدر الآن يحمّل ChargeDialog فقط — وهو يحوي بداخله rle_entranceView لفتح RoyalDialog
+
+BuyVipDialog.tsx (حذف):
+- حُذف بالكامل — لم يكن موجوداً في السورس الأصلي Yalla Ludo
+- وظيفته مدمجة الآن في لسان "اشتراكات" داخل ChargeDialog (fragment_shop.xml الأصلي له 3 ألسنة فقط)
+
+ChargeDialog.tsx (نسخة طبق الأصل من fragment_shop.xml):
+- الحاوية: RelativeLayout 360dip، كامل الارتفاع، bg=skin_bg.9.png (وليس bg_rank — fragment_shop.xml ليس فيه شريط عنوان)
+- الصف العلوي حسب fragment_shop.xml سطر سطر:
+  • rle_entranceView (top-left marginStart=5 marginTop=3): يفتح RoyalDialog — يستخدم royal_level_value_ic.webp
+  • iv_coupon (top-left marginStart=50 marginTop=3): placeholder
+  • rl_money_title (centered): rl_gold + rl_diamonds (كل واحد bg_add_coin #0c3c30 radius 10، 75x20dip + coin/diamonds ImageView 29x29dip)
+  • iv_close (skin_close.webp top-right padding 15/10/10/10)
+- radio_group_switch (344x45dip marginTop=10): 3 ألسنة فقط (NOT 4):
+  • gold: bg=shop_switch_left_check.webp + icon=shop_switch_gold_check.webp (16x17dip) + 'ذهب' (12sp bold white)
+  • diamond: bg=shop_switch_middle_uncheck.webp + icon=shop_switch_diamond_uncheck.webp (16x19dip) + 'ألماس' (12sp bold #17654c)
+  • privilege: bg=shop_switch_right_uncheck.webp + icon=shop_switch_privilege_uncheck.webp (18.5x16dip) + 'اشتراكات' (12sp bold #17654c)
+- view_shop_diamonds.xml للمحتوى:
+  • shop_top_green_line.9.png (9dip divider)
+  • RecyclerView grid (3 أعمدة جواهر/ذهب، 2 أعمدة VIP)
+  • shop_item_tail_bg.9.png (191x25dip زر تفاصيل، لون #2bc895)
+
+DiamondPackageCard (نسخة طبق الأصل من item_diamonds.xml 107x150dip):
+- shop_item_bg.webp (107x150dip fitXY كخلفية كاملة)
+- ll1 (79x20dip marginTop=8 centerHorizontal): أيقونة صغيرة (14x16dip) + عدد (12sp #fff782 shadow #000 dy=3 radius=5)
+- iv_coin (88x88dip diamonds1.webp أو coin1.webp)
+- svg_best (label_best.webp 60x21dip marginTop=2 marginEnd=-3)
+- ll_buy (btn_shop.9.png 90x32dip alignParentBottom centerHorizontal):
+  • tv_money StrokeTextView 14sp bold #47790c stroke_color=#94f534 stroke_width=2
+
+VipPackageCard (نسخة طبق الأصل من item_vip_buy.xml 157.5x195.45dip):
+- cart_vip_buy_item_bg.webp كخلفية كاملة
+- FrameLayout 59x72dip marginTop=39 centerHorizontal:
+  • iv_days: رمز الفئة (privilege_detail_knight/baron_ic.webp أو royal_5_throne_ic.webp)
+  • ctv_days: 'Nيوم' (16sp bold #17654c)
+- btn_vip_buy (btn_yes.9.png 110x40dip marginTop=23):
+  • diamonds ImageView 15x19dip
+  • tv_num StrokeTextView 15sp StrokeTextStyle_Yes
+
+RoyalDialog.tsx (نسخة طبق الأصل من fragment_royal_level2.xml):
+- rl_main: RelativeLayout 360dip wide full_height
+- View bg=skin_bg.9.png (marginTop=53dip): خلفية تحت شريط العنوان
+- RoyalPrivilegeDetailView (marginTop=236 margins 4/4/4/4 bottom): قائمة الامتيازات
+- View bg=royal_level_top_bg.webp (360x212.5dip marginTop=44 centerHorizontal)
+- rl_title (bg_rank.9.png 53dip):
+  • iv_rules (description_rule.webp padding 10/8/10/10 alignParentStart)
+  • tv_title (21sp #87ebaa center marginBottom=10 text='مستوى رويال' shadow black_50 dy=5 radius=1)
+  • iv_close (skin_close.webp padding 10/10/10/10 alignParentEnd)
+- RoyalProgressView (progressRadius=92dip below=rl_title centerHorizontal): SVG دائري مع 5 نقاط مستويات حول المحيط
+- svga_royal_level (85x85dip marginTop=99 centerHorizontal): royal_level_N.webp
+- ctv_middle_royal_level (19sp bold marginTop=166 gradient #ffffff75→#ffc000 text='ROYAL N')
+- FrameLayout (marginTop=193 37dip): ll_upgrade_need_value + ll_keep_info
+  • ctv_upgrade_text (12sp bold white) + ctv_upgrade_need (15sp bold #ffed5d marginStart=4) + royal_level_value_ic.webp (16x16dip marginStart=5)
+  • ctv_keep_text (12sp bold white) + ctv_keep_need (15sp bold #ffed5d marginStart=4)
+- fl_time_validity (royal_effective_time_bg.9.png marginTop=238 minWidth=180 22dip paddingStart=10 paddingEnd=10):
+  • 'validity_date' (10sp bold #87eaa9) + ctv_time_validity (10sp bold white marginStart=5)
+- rl_growth_record (100dip below=rl_title alignParentEnd): 'نقاطي الملكية >>' (8sp bold #87eaa9) + points (12sp bold white) + 1dip #87eaa9 underline (marginBottom=15)
+- RoyalPrivilegeList: royal_super_privileges_dialog_bg.webp حاوية + royal_super_privileges_item_bg.webp لكل عنصر
+
+Stage Summary:
+- 4 ملفات معدّلة: SiteHeader (إزالة الأزرار الخاطئة + إصلاح ESLint) + ChargeDialog (نسخة طبق الأصل) + RoyalDialog (نسخة طبق الأصل) + BuyVipDialog (محذوف)
+- 1006 إضافة، 1603 حذف — إعادة بناء شاملة
+- جميع الأبعاد والصور والألوان الآن مطابقة لـ fragment_shop.xml + view_shop_diamonds.xml + item_diamonds.xml + item_vip_buy.xml + fragment_royal_level2.xml
+- Build verified: npx next build --webpack ✓ (41s, 132/132 pages)
+- ESLint verified: ✓ clean on ChargeDialog, RoyalDialog, SiteHeader
+- Commit: 1294667a — Pushed to GitHub main (b8c53a81..1294667a)
