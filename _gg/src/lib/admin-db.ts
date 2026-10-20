@@ -245,8 +245,87 @@ export interface AppUser {
   xp: number;
   renameCount: number;
   renameDate: string;
+  royalLevel: number;       // 0..5  — مطابق لـ Yalla Ludo: ROYAL 1..5
+  royalPoints: number;      // النقاط المتراكمة داخل المستوى الحالي
+  royalValidity: string;    // ISO date — تاريخ انتهاء صلاحية مستوى رويال
+  totalCharged: number;     // إجمالي ما شحنه المستخدم (USD) — لعرض السجل
   createdAt: string;
   updatedAt: string;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// Royal Level — عتبات المستوى (نقاط رويال المطلوبة للترقية)
+// Yalla Ludo يستخدم 6 مستويات (0 = لا يوجد، 1..5 = ROYAL 1..5)
+// كل مستوى يستهلك نقاطه ويبدأ من جديد ضمن المستوى التالي
+// ════════════════════════════════════════════════════════════════════════════
+
+export const ROYAL_LEVELS = [
+  { level: 0, name: 'لا رويال',    minPoints: 0,      keepPoints: 0,     color: '#9ca3af', icon: '/yalla-ui/royal/royal_level_0.webp' },
+  { level: 1, name: 'ROYAL 1',    minPoints: 10,     keepPoints: 5,     color: '#a3e635', icon: '/yalla-ui/royal/royal_level_1.webp' },
+  { level: 2, name: 'ROYAL 2',    minPoints: 100,    keepPoints: 50,    color: '#22d3ee', icon: '/yalla-ui/royal/royal_level_2.webp' },
+  { level: 3, name: 'ROYAL 3',    minPoints: 500,    keepPoints: 250,   color: '#a78bfa', icon: '/yalla-ui/royal/royal_level_3.webp' },
+  { level: 4, name: 'ROYAL 4',    minPoints: 2000,   keepPoints: 1000,  color: '#f472b6', icon: '/yalla-ui/royal/royal_level_4.webp' },
+  { level: 5, name: 'ROYAL 5',    minPoints: 8000,   keepPoints: 4000,  color: '#fbbf24', icon: '/yalla-ui/royal/royal_level_5.webp' },
+] as const;
+
+export interface RoyalState {
+  level: number;             // 0..5
+  points: number;            // النقاط الحالية ضمن المستوى
+  needForUpgrade: number;    // ما يحتاجه للترقية للمستوى التالي
+  needForKeep: number;        // الحد الأدنى للبقاء في المستوى
+  validityDate: string;      // تاريخ انتهاء الصلاحية (ISO) أو ''
+  totalCharged: number;      // إجمالي المدفوع
+  nextLevel: typeof ROYAL_LEVELS[number] | null;
+  currentLevel: typeof ROYAL_LEVELS[number];
+}
+
+export async function getUserRoyalState(userId: string): Promise<RoyalState> {
+  const c = getClient();
+  await ensureAdminTables();
+  const r = await c.execute({
+    sql: `SELECT royalLevel, royalPoints, royalValidity, totalCharged
+          FROM AppUser WHERE id = ?`,
+    args: [userId],
+  });
+  const row = r.rows[0] || {};
+  const lvl = Math.min(5, Math.max(0, Number(row.royalLevel ?? 0)));
+  const pts = Math.max(0, Number(row.royalPoints ?? 0));
+  const validity = String(row.royalValidity ?? '');
+  const totalCharged = Number(row.totalCharged ?? 0);
+  const currentLevel = ROYAL_LEVELS[lvl];
+  const nextLevel = lvl < 5 ? ROYAL_LEVELS[lvl + 1] : null;
+  const needForUpgrade = nextLevel ? Math.max(0, nextLevel.minPoints - pts) : 0;
+  const needForKeep = currentLevel.keepPoints;
+  return { level: lvl, points: pts, needForUpgrade, needForKeep, validityDate: validity, totalCharged, nextLevel, currentLevel };
+}
+
+// إضافة نقاط رويال — عند الشحن. تحدّث المستوى تلقائياً إذا تجاوزت العتبة.
+export async function addRoyalPoints(userId: string, points: number, chargedUsd: number): Promise<RoyalState> {
+  const c = getClient();
+  await ensureAdminTables();
+  const r = await c.execute({
+    sql: `SELECT royalLevel, royalPoints, royalValidity, totalCharged FROM AppUser WHERE id = ?`,
+    args: [userId],
+  });
+  const row = r.rows[0];
+  if (!row) throw new Error('user not found');
+  let lvl = Math.min(5, Math.max(0, Number(row.royalLevel ?? 0)));
+  let pts = Math.max(0, Number(row.royalPoints ?? 0)) + Math.max(0, points);
+  let validity = String(row.royalValidity ?? '');
+  let totalCharged = Number(row.totalCharged ?? 0) + Math.max(0, chargedUsd);
+
+  // ترقية تلقائية
+  while (lvl < 5 && pts >= ROYAL_LEVELS[lvl + 1].minPoints) {
+    pts -= ROYAL_LEVELS[lvl + 1].minPoints;
+    lvl += 1;
+    validity = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  }
+  // في المستوى 5 لا ترقية — يُتراكم فوق العتبة
+  await c.execute({
+    sql: `UPDATE AppUser SET royalLevel = ?, royalPoints = ?, royalValidity = ?, totalCharged = ?, updatedAt = datetime('now') WHERE id = ?`,
+    args: [lvl, pts, validity, totalCharged, userId],
+  });
+  return getUserRoyalState(userId);
 }
 
 // ─── Client singleton ─────────────────────────────────────────────────
@@ -805,7 +884,7 @@ export async function ensureAdminTables(): Promise<void> {
     }
   } catch { /* ignore */ }
 
-  // Migration: add level column to AppUser if missing
+  // Migration: add level + xp + royal columns to AppUser if missing
   try {
     const userCols = await c.execute('PRAGMA table_info(AppUser)');
     if (!userCols.rows.some(r => r.name === 'level')) {
@@ -813,6 +892,18 @@ export async function ensureAdminTables(): Promise<void> {
     }
     if (!userCols.rows.some(r => r.name === 'xp')) {
       await c.execute('ALTER TABLE AppUser ADD COLUMN xp INTEGER DEFAULT 0');
+    }
+    if (!userCols.rows.some(r => r.name === 'royalLevel')) {
+      await c.execute('ALTER TABLE AppUser ADD COLUMN royalLevel INTEGER DEFAULT 0');
+    }
+    if (!userCols.rows.some(r => r.name === 'royalPoints')) {
+      await c.execute('ALTER TABLE AppUser ADD COLUMN royalPoints INTEGER DEFAULT 0');
+    }
+    if (!userCols.rows.some(r => r.name === 'royalValidity')) {
+      await c.execute('ALTER TABLE AppUser ADD COLUMN royalValidity TEXT DEFAULT ""');
+    }
+    if (!userCols.rows.some(r => r.name === 'totalCharged')) {
+      await c.execute('ALTER TABLE AppUser ADD COLUMN totalCharged REAL DEFAULT 0');
     }
   } catch { /* ignore */ }
 

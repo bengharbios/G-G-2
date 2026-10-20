@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createChargeRequest, validateSubscriptionCode } from '@/lib/admin-db';
+import { createChargeRequest, validateSubscriptionCode, addRoyalPoints } from '@/lib/admin-db';
+import { jwtVerify } from 'jose';
+
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'gg-platform-secret-key-2024'
+);
 
 // ════════════════════════════════════════════════════════════════════════════
 // حزم الشحن — مطابقة لـ /api/gems/packages
@@ -10,35 +15,39 @@ interface PackageInfo {
   amount: number;
   bonus: number;
   price: number;
-  type: 'diamond' | 'gold' | 'vip';
+  type: 'diamond' | 'gold' | 'vip' | 'royal';
   royalPoints: number;
   xpReward: number;
 }
 
 const allPackages: Record<string, PackageInfo> = {
   // Diamonds
-  dia_1: { amount: 400, bonus: 0, price: 0.99, type: 'diamond', royalPoints: 10, xpReward: 40 },
-  dia_2: { amount: 1800, bonus: 0, price: 3.99, type: 'diamond', royalPoints: 40, xpReward: 180 },
-  dia_3: { amount: 5000, bonus: 0, price: 9.99, type: 'diamond', royalPoints: 100, xpReward: 500 },
-  dia_4: { amount: 16000, bonus: 0, price: 29.99, type: 'diamond', royalPoints: 300, xpReward: 1600 },
-  dia_5: { amount: 53700, bonus: 0, price: 99.99, type: 'diamond', royalPoints: 1000, xpReward: 5370 },
-  dia_6: { amount: 161700, bonus: 0, price: 299.99, type: 'diamond', royalPoints: 3000, xpReward: 16170 },
+  dia_1: { amount: 400,    bonus: 0,    price: 0.99,   type: 'diamond', royalPoints: 10,   xpReward: 40 },
+  dia_2: { amount: 1800,   bonus: 100,  price: 3.99,   type: 'diamond', royalPoints: 40,   xpReward: 180 },
+  dia_3: { amount: 5000,   bonus: 400,  price: 9.99,   type: 'diamond', royalPoints: 100,  xpReward: 500 },
+  dia_4: { amount: 16000,  bonus: 1500, price: 29.99,  type: 'diamond', royalPoints: 300,  xpReward: 1600 },
+  dia_5: { amount: 53700,  bonus: 6700, price: 99.99,  type: 'diamond', royalPoints: 1000, xpReward: 5370 },
+  dia_6: { amount: 161700, bonus: 22000,price: 299.99, type: 'diamond', royalPoints: 3000, xpReward: 16170 },
   // Gold
-  gold_1: { amount: 35000, bonus: 0, price: 0.99, type: 'gold', royalPoints: 10, xpReward: 35 },
-  gold_2: { amount: 130000, bonus: 0, price: 2.99, type: 'gold', royalPoints: 30, xpReward: 130 },
-  gold_3: { amount: 620000, bonus: 0, price: 9.99, type: 'gold', royalPoints: 100, xpReward: 620 },
-  gold_4: { amount: 2700000, bonus: 0, price: 19.99, type: 'gold', royalPoints: 200, xpReward: 2700 },
-  gold_5: { amount: 7700000, bonus: 0, price: 39.99, type: 'gold', royalPoints: 400, xpReward: 7700 },
-  gold_6: { amount: 17000000, bonus: 0, price: 69.99, type: 'gold', royalPoints: 700, xpReward: 17000 },
+  gold_1: { amount: 35000,    bonus: 0,      price: 0.99,  type: 'gold', royalPoints: 10,  xpReward: 35 },
+  gold_2: { amount: 130000,   bonus: 7000,   price: 2.99,  type: 'gold', royalPoints: 30,  xpReward: 130 },
+  gold_3: { amount: 620000,   bonus: 40000,  price: 9.99,  type: 'gold', royalPoints: 100, xpReward: 620 },
+  gold_4: { amount: 2700000,  bonus: 200000, price: 19.99, type: 'gold', royalPoints: 200, xpReward: 2700 },
+  gold_5: { amount: 7700000,  bonus: 700000, price: 39.99, type: 'gold', royalPoints: 400, xpReward: 7700 },
+  gold_6: { amount: 17000000, bonus: 2000000,price: 69.99, type: 'gold', royalPoints: 700, xpReward: 17000 },
   // VIP
-  vip_faris: { amount: 1, bonus: 0, price: 9.99, type: 'vip', royalPoints: 100, xpReward: 500 },
-  vip_liwa: { amount: 1, bonus: 0, price: 29.99, type: 'vip', royalPoints: 300, xpReward: 1500 },
+  vip_faris: { amount: 1, bonus: 0, price: 9.99,  type: 'vip', royalPoints: 100,  xpReward: 500 },
+  vip_liwa:  { amount: 1, bonus: 0, price: 29.99, type: 'vip', royalPoints: 300,  xpReward: 1500 },
   vip_royal: { amount: 1, bonus: 0, price: 99.99, type: 'vip', royalPoints: 1000, xpReward: 5000 },
+  // Royal Points packages (شراء نقاط رويال مباشرة)
+  royal_pack_1: { amount: 100,  bonus: 0,   price: 0.99,  type: 'royal', royalPoints: 100,  xpReward: 50 },
+  royal_pack_2: { amount: 500,  bonus: 50,  price: 4.99,  type: 'royal', royalPoints: 550,  xpReward: 250 },
+  royal_pack_3: { amount: 2000, bonus: 300, price: 19.99, type: 'royal', royalPoints: 2300, xpReward: 1000 },
   // Legacy packages (backward compat)
-  small: { amount: 100, bonus: 0, price: 0.99, type: 'diamond', royalPoints: 10, xpReward: 40 },
-  medium: { amount: 500, bonus: 50, price: 3.99, type: 'diamond', royalPoints: 40, xpReward: 180 },
-  large: { amount: 2000, bonus: 300, price: 9.99, type: 'diamond', royalPoints: 100, xpReward: 500 },
-  mega: { amount: 5000, bonus: 1000, price: 19.99, type: 'diamond', royalPoints: 300, xpReward: 1600 },
+  small:  { amount: 100,  bonus: 0,    price: 0.99,  type: 'diamond', royalPoints: 10,  xpReward: 40 },
+  medium: { amount: 500,  bonus: 50,   price: 3.99,  type: 'diamond', royalPoints: 40,  xpReward: 180 },
+  large:  { amount: 2000, bonus: 300,  price: 9.99,  type: 'diamond', royalPoints: 100, xpReward: 500 },
+  mega:   { amount: 5000, bonus: 1000, price: 19.99, type: 'diamond', royalPoints: 300, xpReward: 1600 },
 };
 
 export async function POST(request: NextRequest) {
@@ -91,6 +100,19 @@ export async function POST(request: NextRequest) {
       paymentMethod,
     });
 
+    // إذا كان المستخدم مسجلاً دخوله، امنح نقاط رويال فوراً (Yalla Ludo: الشحن يكافئ رويال)
+    let royalState: Awaited<ReturnType<typeof addRoyalPoints>> | null = null;
+    try {
+      const token = request.cookies.get('auth_token')?.value;
+      if (token) {
+        const { payload } = await jwtVerify(token, JWT_SECRET);
+        const userId = payload.userId as string;
+        if (userId) {
+          royalState = await addRoyalPoints(userId, pkg.royalPoints, pkg.price);
+        }
+      }
+    } catch { /* silently ignore — الطلب يُسجّل على أية حال */ }
+
     return NextResponse.json({
       success: true,
       message: 'تم إنشاء طلب الشحن بنجاح! تواصل مع الإدارة لإرسال إيصال الدفع لتأكيد الشحن.',
@@ -98,7 +120,7 @@ export async function POST(request: NextRequest) {
         id: chargeRequest.id,
         amount: totalAmount,
         type: pkg.type,
-        packageType: chargeRequest.packageType,
+        packageType: chargeRequest.packageType as string,
         status: chargeRequest.status,
         price: pkg.price,
       },
@@ -107,6 +129,11 @@ export async function POST(request: NextRequest) {
         xp: pkg.xpReward,
         note: `عند تأكيد الدفع: +${pkg.royalPoints} نقاط رويال +${pkg.xpReward} XP`,
       },
+      royal: royalState ? {
+        level: royalState.level,
+        points: royalState.points,
+        needForUpgrade: royalState.needForUpgrade,
+      } : null,
       contactInfo: {
         telegram: 'تواصل عبر تيليجرام لإرسال إيصال الدفع',
         whatsapp: 'تواصل عبر واتساب لإرسال إيصال الدفع',
