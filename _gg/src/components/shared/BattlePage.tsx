@@ -36,7 +36,7 @@ const GAME_ICONS: Record<string, { select: string; unselect: string; label: stri
   spotdiff:    { select: '/battle/game_select_spotdiff_icon_select.webp',    unselect: '/battle/game_select_spotdiff_icon_unselect.webp',    label: 'اختلاف الصور' },
   guessimage:  { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'خمن الصورة' },
   matchcards:  { select: '/battle/game_select_battleship_icon_select.webp',  unselect: '/battle/game_select_battleship_icon_unselect.webp',  label: 'مطابقة البطاقات' },
-  foodwar:     { select: '/battle/game_select_risk_icon_select.webp',  unselect: '/battle/game_select_risk_icon_unselect.webp',  label: 'حرب الاكلات' },
+  foodwar:     { select: '/battle/game_select_foodwar_icon_select.webp',  unselect: '/battle/game_select_foodwar_icon_unselect.webp',  label: 'حرب الاكلات' },
   '2048':      { select: '/battle/game_select_risk_icon_select.webp',  unselect: '/battle/game_select_risk_icon_unselect.webp',  label: '2048' },
   wordle:      { select: '/battle/game_select_guessimage_icon_select.webp',  unselect: '/battle/game_select_guessimage_icon_unselect.webp',  label: 'وردل' },
   'trap-the-cat': { select: '/battle/game_select_coffin_icon_select.webp',  unselect: '/battle/game_select_coffin_icon_unselect.webp',  label: 'افخخ القطة' },

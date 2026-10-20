@@ -106,7 +106,7 @@ const games: GameData[] = [
     description:
       'العجلة تدور! اختر طعاماً واكشف من يختبئ خلفه. آخر ناجي يفوز!',
     href: '/play/foodwar',
-    bgImage: '/yalla-games/foodwar.png',
+    bgImage: '/yalla-games/foodwar-photo.jpeg',
     themeColor: 'text-orange-400',
     themeBorder: 'border-orange-500/30 hover:border-orange-500/60',
     themeBg: 'from-orange-950/80 to-red-900/40',
