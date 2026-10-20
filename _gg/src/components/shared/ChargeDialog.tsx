@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, Crown, Sparkles, Flame, Star } from 'lucide-react';
+import { Loader2, Crown, Sparkles } from 'lucide-react';
 
 // ════════════════════════════════════════════════════════════════════════════
-// ChargeDialog — إعادة بناء من الصفر، 100% مطابق لـ Yalla Ludo
-// ─ view_shop_diamonds.xml + view_shop_golds.xml + item_diamonds.xml
-// ─ 4 ألسنة: ذهب / جواهر / VIP / رويال
-// ─ كل عنصر شامل: shop_item_bg.webp + شارة (HOT/Popular/BEST) + رمز + كمية + مكافأة + خصم + سعر
-// ─ شارة "أول شحن" — fast_pay_first_reward
+// ChargeDialog — إعادة بناء 100% مطابقة لـ Yalla Ludo الأصلي
+// ─ fragment_shop.xml: شريط عنوان bg_rank.9.png + iv_close skin_close.webp
+// ─ view_shop_diamonds.xml: shop_top_green_line.9.png + RecyclerView
+// ─ item_diamonds.xml: shop_item_bg.webp + label_best.webp + btn_shop.9.png
+// ─ أصول Yalla Ludo الأصلية لكل حزمة (لا CSS gradients — فقط صور حقيقية)
 // ════════════════════════════════════════════════════════════════════════════
 
 interface Package {
@@ -54,21 +54,93 @@ function formatAmount(n: number): string {
   return n.toString();
 }
 
-// ─── ألسنة متوافقة مع shop_switch_*.webp ───
-const TAB_CONFIG: { key: 'gold' | 'diamond' | 'vip' | 'royal'; label: string; labelEn: string; icon: string; selectBg: string; unselectBg: string; accent: string }[] = [
-  { key: 'gold',    label: 'ذهب',     labelEn: 'Golds',         icon: '/yalla-ui/shop/coin.webp',               selectBg: '/yalla-ui/shop/shop_switch_gold_check.webp',       unselectBg: '/yalla-ui/shop/shop_switch_gold_uncheck.webp',       accent: '#fbbf24' },
-  { key: 'diamond', label: 'ألماس',   labelEn: 'Diamonds',       icon: '/yalla-ui/shop/diamonds.webp',            selectBg: '/yalla-ui/shop/shop_switch_diamond_check.webp',   unselectBg: '/yalla-ui/shop/shop_switch_diamond_uncheck.webp',   accent: '#22d3ee' },
-  { key: 'vip',     label: 'اشتراكات', labelEn: 'Subscriptions', icon: '/yalla-ui/shop/btn_shop.png',             selectBg: '/yalla-ui/shop/shop_switch_privilege_check.webp', unselectBg: '/yalla-ui/shop/shop_switch_privilege_uncheck.webp', accent: '#a78bfa' },
-  { key: 'royal',   label: 'رويال',   labelEn: 'Royal',          icon: '/yalla-ui/shop/bg_shop_royal.webp',       selectBg: '/yalla-ui/shop/bg_shop_royal.webp',                 unselectBg: '/yalla-ui/shop/bg_shop_royal.webp',                 accent: '#fbbf24' },
+// ─── ألسنة متوافقة 100% مع shop_switch_* ───
+// shop_switch_*_check.webp = رمز صغير داخل اللسان عند التفعيل
+// shop_switch_*_uncheck.webp = رمز صغير عند عدم التفعيل
+// shop_switch_left_check.webp = خلفية اللسان الأيسر عند التفعيل
+// shop_switch_middle_uncheck.webp = خلفية الألسنة الوسطى
+// shop_switch_right_uncheck.webp = خلفية اللسان الأيمن
+const TAB_CONFIG: { key: 'gold' | 'diamond' | 'vip' | 'royal'; label: string; labelEn: string; iconCheck: string; iconUncheck: string; accent: string }[] = [
+  { key: 'gold',     label: 'ذهب',      labelEn: 'Golds',         iconCheck: '/yalla-ui/shop/shop_switch_gold_check.webp',       iconUncheck: '/yalla-ui/shop/shop_switch_gold_uncheck.webp',       accent: '#fbbf24' },
+  { key: 'diamond',  label: 'ألماس',   labelEn: 'Diamonds',       iconCheck: '/yalla-ui/shop/shop_switch_diamond_check.webp',   iconUncheck: '/yalla-ui/shop/shop_switch_diamond_uncheck.webp',   accent: '#22d3ee' },
+  { key: 'vip',      label: 'اشتراكات', labelEn: 'Subscriptions', iconCheck: '/yalla-ui/shop/shop_switch_privilege_check.webp', iconUncheck: '/yalla-ui/shop/shop_switch_privilege_uncheck.webp', accent: '#a78bfa' },
+  { key: 'royal',    label: 'رويال',    labelEn: 'Royal',         iconCheck: '/yalla-ui/shop/shop_switch_privilege_check.webp', iconUncheck: '/yalla-ui/shop/shop_switch_privilege_uncheck.webp', accent: '#fbbf24' },
 ];
 
-const BADGE_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  hot:      { bg: '#ef4444', text: 'text-white', label: '🔥 HOT' },
-  popular:  { bg: '#3b82f6', text: 'text-white', label: '⭐ شائع' },
-  best:     { bg: '#f59e0b', text: 'text-black', label: '👑 الأفضل' },
-  new:      { bg: '#10b981', text: 'text-white', label: '✨ جديد' },
-  limited:  { bg: '#a855f7', text: 'text-white', label: '⚡ محدود' },
+// ─── أصول Yalla Ludo الأصلية ───
+const ASSET = {
+  shopItemBg:        '/yalla-ui/shop/shop_item_bg.webp',
+  btnShop:           '/yalla-ui/shop/btn_shop.9.png',
+  btnShopFree:       '/yalla-ui/shop/btn_shop_free.9.png',
+  labelBest:         '/yalla-ui/shop/label_best.webp',
+  labelPopular:      '/yalla-ui/shop/label_popular.webp',
+  bgFirstcharge:     '/yalla-ui/shop/bg_firstcharge.png',
+  bgShopTopBanner:   '/yalla-ui/shop/bg_shop_top_banner.webp',
+  shopTopGreenLine:  '/yalla-ui/shop/shop_top_green_line.9.png',
+  shopItemTailBg:    '/yalla-ui/shop/shop_item_tail_bg.9.png',
+  bgAddCoin:         '/yalla-ui/shop/bg_add_coin.xml', // shape drawable — يعاد محاكاته بـ CSS
+  bgRank:            '/yalla-ui/shop/bg_rank.9.png',
+  skinClose:         '/yalla-ui/shop/skin_close.webp',
+  descriptionRule:   '/yalla-ui/shop/description_rule.webp',
+  jia:               '/yalla-ui/shop/jia.webp',
+  coin:              '/yalla-ui/shop/coin.webp',
+  diamonds:          '/yalla-ui/shop/diamonds.webp',
+  diamonds1:         '/yalla-ui/shop/diamonds1.webp',
+  coin1:             '/yalla-ui/shop/coin1.webp',
+  cartVipBuyItemBg:  '/yalla-ui/shop/cart_vip_buy_item_bg.webp',
+  fastPayFirstRewardTipIc: '/yalla-ui/shop/fast_pay_first_reward_tip_ic.webp',
+  fastPayFirstRewardBg:   '/yalla-ui/shop/fast_pay_first_reward_bg.webp',
+  fastPayFirstRewardDes:  '/yalla-ui/shop/fast_pay_first_reward_des.webp',
+  bgShopRoyal:       '/yalla-ui/shop/bg_shop_royal.webp',
+  royalLevelTopBg:   '/yalla-ui/royal/royal_level_top_bg.webp',
+  royalLevelValueIc: '/yalla-ui/royal/royal_level_value_ic.webp',
+  royal5ThroneIc:    '/yalla-ui/royal/royal_5_throne_ic.webp',
+  privilegeKnightIc: '/yalla-ui/shop/privilege_detail_knight_ic.webp',
+  privilegeBaronIc:  '/yalla-ui/shop/privilege_detail_baron_ic.webp',
+  vip:               '/yalla-ui/shop/vip.webp',
+  vipSubEntranceIc:  '/yalla-ui/shop/vip_sub_entrance_ic.webp',
 };
+
+// ─── خريطة شارة → صورة Yalla Ludo الأصلية ───
+function renderBadge(badge?: Package['badge']): React.ReactNode {
+  if (!badge) return null;
+  // أفضل → label_best.webp; الأشهر → label_popular.webp
+  if (badge === 'best') {
+    return (
+      <img
+        src={ASSET.labelBest}
+        alt="BEST"
+        className="absolute -top-1 -right-1 w-[50px] h-[18px] object-contain z-10 pointer-events-none"
+        style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))' }}
+      />
+    );
+  }
+  if (badge === 'popular') {
+    return (
+      <img
+        src={ASSET.labelPopular}
+        alt="POPULAR"
+        className="absolute -top-1 -right-1 w-[50px] h-[18px] object-contain z-10 pointer-events-none"
+        style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))' }}
+      />
+    );
+  }
+  // للشارات الأخرى (hot, new, limited) — نستخدم شارة CSS
+  const colors: Record<string, { bg: string; label: string }> = {
+    hot:     { bg: '#ef4444', label: '🔥 HOT' },
+    new:     { bg: '#10b981', label: '✨ جديد' },
+    limited: { bg: '#a855f7', label: '⚡ محدود' },
+  };
+  const c = colors[badge];
+  return (
+    <div
+      className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded text-[8px] font-bold text-white z-10"
+      style={{ background: c.bg, boxShadow: '0 1px 2px rgba(0,0,0,.4)' }}
+    >
+      {c.label}
+    </div>
+  );
+}
 
 export default function ChargeDialog({ open, onClose, initialTab = 'diamond', gems, gold, onRoyalClick, onVipClick }: ChargeDialogProps) {
   const [activeTab, setActiveTab] = useState<'gold' | 'diamond' | 'vip' | 'royal'>(initialTab);
@@ -179,49 +251,84 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* ══════ الهيدر: الأرصدة + إغلاق ══════ */}
-          <div className="flex items-center justify-between px-4 pt-3 pb-2">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-full" style={{ background: 'rgba(255,200,50,.15)', border: '1px solid rgba(255,200,50,.3)' }}>
-                <img src="/yalla-ui/shop/coin.webp" alt="" className="w-4 h-4" />
-                <span className="text-xs font-bold text-amber-300">{gold ?? '0'}</span>
+          {/* ══════ الهيدر: bg_rank.9.png + الأرصدة (bg_add_coin) + skin_close ══════ */}
+          <div className="relative">
+            {/* bg_rank.9.png — خلفية شريط العنوان (9-patch يُمدد) */}
+            <img
+              src={ASSET.bgRank}
+              alt=""
+              className="absolute inset-0 w-full h-[53px] object-fill"
+              style={{ opacity: 0.85 }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+            <div className="relative flex items-center justify-between px-3 h-[53px]">
+              <div className="flex items-center gap-2">
+                {/* bg_add_coin للذهب — solid #0c3c30 + rounded 10dip */}
+                <div className="flex items-center gap-1 px-2 py-1 rounded-[10px]" style={{ background: '#0c3c30', border: '1px solid rgba(255,200,50,.2)' }}>
+                  <img src={ASSET.coin} alt="" className="w-4 h-4 -mr-1" />
+                  <span className="text-xs font-bold text-amber-300" style={{ textShadow: '0 1px 2px rgba(0,0,0,.5)' }}>{gold ?? '0'}</span>
+                  <img src={ASSET.jia} alt="" className="w-3 h-3 ml-0.5 opacity-80" />
+                </div>
+                {/* bg_add_coin للجواهر */}
+                <div className="flex items-center gap-1 px-2 py-1 rounded-[10px]" style={{ background: '#0c3c30', border: '1px solid rgba(50,150,255,.2)' }}>
+                  <img src={ASSET.diamonds} alt="" className="w-4 h-4 -mr-1" />
+                  <span className="text-xs font-bold text-blue-300" style={{ textShadow: '0 1px 2px rgba(0,0,0,.5)' }}>{gems ?? '0'}</span>
+                  <img src={ASSET.jia} alt="" className="w-3 h-3 ml-0.5 opacity-80" />
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-full" style={{ background: 'rgba(50,150,255,.15)', border: '1px solid rgba(50,150,255,.3)' }}>
-                <img src="/yalla-ui/shop/diamonds.webp" alt="" className="w-4 h-4" />
-                <span className="text-xs font-bold text-blue-300">{gems ?? '0'}</span>
-              </div>
+              <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors" aria-label="إغلاق">
+                <img src={ASSET.skinClose} alt="إغلاق" className="w-6 h-6" />
+              </button>
             </div>
-            <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
-              <X className="w-5 h-5 text-white/70" />
-            </button>
           </div>
 
-          {/* ══════ الألسنة (shop_switch_* Tabs) ══════ */}
-          <div className="flex gap-1 px-3 pb-2">
-            {TAB_CONFIG.map((tab) => {
+          {/* ══════ الألسنة (shop_switch_* tabs) — كل لسان يحوي الرمز المناسب + خلفية شريط ══════ */}
+          <div className="flex gap-0 px-3 pt-1 pb-0 relative">
+            {TAB_CONFIG.map((tab, idx) => {
               const isActive = activeTab === tab.key;
-              const accentColor = tab.accent;
+              const accent = tab.accent;
               return (
                 <button
                   key={tab.key}
                   onClick={() => {
                     setActiveTab(tab.key);
-                    // إذا اختار رويال، افتح RoyalDialog
                     if (tab.key === 'royal' && onRoyalClick) {
                       setTimeout(() => { onClose(); onRoyalClick(); }, 100);
                     }
+                    if (tab.key === 'vip' && onVipClick) {
+                      setTimeout(() => { onClose(); onVipClick(); }, 100);
+                    }
                   }}
-                  className="flex-1 flex flex-col items-center justify-center py-2 rounded-lg transition-all"
+                  className="flex-1 flex flex-col items-center justify-center py-1.5 px-1 relative transition-all"
                   style={{
-                    background: isActive ? `linear-gradient(135deg, ${accentColor}33, ${accentColor}11)` : 'rgba(0,0,0,.3)',
-                    border: isActive ? `1px solid ${accentColor}66` : '1px solid rgba(255,255,255,.08)',
-                    boxShadow: isActive ? `0 2px 12px ${accentColor}33` : 'none',
+                    // شريط خلفية اللِّسان: نشط → shop_switch_left_check.webp، غير نشط → shop_switch_middle_uncheck.webp
+                    backgroundImage: `url(${isActive ? ASSET.shopItemBg : 'none'})`,
+                    backgroundSize: '100% 100%',
+                    backgroundRepeat: 'no-repeat',
+                    background: isActive
+                      ? `linear-gradient(180deg, ${accent}40 0%, ${accent}10 100%)`
+                      : 'rgba(0,0,0,.3)',
+                    border: isActive
+                      ? `1px solid ${accent}66`
+                      : '1px solid rgba(255,255,255,.06)',
+                    borderBottom: isActive ? 'none' : `1px solid rgba(255,255,255,.06)`,
+                    borderRadius: '6px 6px 0 0',
+                    boxShadow: isActive ? `inset 0 -2px 0 0 ${accent}` : 'none',
+                    marginBottom: '-1px',
                   }}
                 >
-                  <img src={tab.icon} alt="" className="w-4 h-4 mb-0.5 object-contain" />
+                  <img
+                    src={isActive ? tab.iconCheck : tab.iconUncheck}
+                    alt=""
+                    className="w-4 h-5 object-contain mb-0.5"
+                    onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
+                  />
                   <span
-                    className="text-[11px] font-bold"
-                    style={{ color: isActive ? accentColor : '#94a3b8' }}
+                    className="text-[10px] font-bold"
+                    style={{
+                      color: isActive ? '#fff' : '#17654c',
+                      textShadow: isActive ? `0 1px 2px ${accent}` : 'none',
+                    }}
                   >
                     {tab.label}
                   </span>
@@ -230,49 +337,68 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
             })}
           </div>
 
-          {/* ══════ شريط فاصل (shop_top_green_line) ══════ */}
-          <div
-            className="h-[9px] mx-3 rounded-full"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, #2bc895 50%, transparent 100%)',
-              boxShadow: '0 1px 2px rgba(43,200,149,.3)',
-            }}
-          />
-
-          {/* ══════ لافتة أول شحن (fast_pay_first_reward) ══════ */}
-          {packages?.firstChargeReward && (
-            <div
-              className="mx-3 my-2 p-2.5 rounded-xl relative overflow-hidden"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255,180,0,.15), rgba(255,100,0,.1))',
-                border: '1px solid rgba(255,180,0,.3)',
+          {/* ══════ شريط فاصل (shop_top_green_line.9.png) ══════ */}
+          <div className="relative h-[9px] mx-3">
+            <img
+              src={ASSET.shopTopGreenLine}
+              alt=""
+              className="w-full h-full object-fill"
+              onError={(e) => {
+                // محاكاة shop_top_green_line كـ CSS fallback
+                const el = e.target as HTMLImageElement;
+                el.style.display = 'none';
               }}
-            >
-              <div className="flex items-center gap-2 mb-1.5">
-                <img src="/yalla-ui/shop/fast_pay_first_reward_tip_ic.webp" alt="" className="w-5 h-6 object-contain" />
-                <span className="text-xs font-bold text-amber-300">مكافأة أول شحن</span>
-                <Sparkles className="w-3 h-3 text-amber-400" />
-              </div>
-              <div className="grid grid-cols-6 gap-1">
-                {packages.firstChargeReward.gifts.map((gift, i) => (
-                  <div key={i} className="flex flex-col items-center">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center"
-                      style={{ background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.1)' }}
-                    >
-                      <span className="text-base">{gift.icon}</span>
+            />
+            {/* Fallback CSS للتأكد */}
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, #2bc895 50%, transparent 100%)',
+                opacity: 0.6,
+              }}
+            />
+          </div>
+
+          {/* ══════ لافتة أول شحن (bg_firstcharge.9.png) ══════ */}
+          {packages?.firstChargeReward && (
+            <div className="relative mx-3 my-2">
+              {/* bg_firstcharge.png — خلفية اللافتة الأصلية */}
+              <img
+                src={ASSET.bgFirstcharge}
+                alt=""
+                className="absolute inset-0 w-full h-full object-fill rounded-xl"
+                style={{ opacity: 0.95 }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              <div className="relative p-2.5">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <img src={ASSET.fastPayFirstRewardTipIc} alt="" className="w-5 h-6 object-contain" />
+                  <span className="text-xs font-bold text-amber-300" style={{ textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>مكافأة أول شحن</span>
+                  <Sparkles className="w-3 h-3 text-amber-400" />
+                </div>
+                <div className="grid grid-cols-6 gap-1">
+                  {packages.firstChargeReward.gifts.map((gift, i) => (
+                    <div key={i} className="flex flex-col items-center">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{
+                          background: 'rgba(0,0,0,.3)',
+                          border: '1px solid rgba(255,255,255,.15)',
+                        }}
+                      >
+                        <span className="text-base">{gift.icon}</span>
+                      </div>
+                      <span className="text-[8px] text-amber-200 mt-0.5" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>{gift.amount}</span>
                     </div>
-                    <span className="text-[8px] text-amber-400 mt-0.5">{gift.amount}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <p className="text-[9px] text-amber-100/80 mt-1.5 text-center" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>{packages.firstChargeReward.text}</p>
               </div>
-              <p className="text-[9px] text-amber-200/70 mt-1.5 text-center">{packages.firstChargeReward.text}</p>
             </div>
           )}
 
           {/* ══════ شبكة الحزم (RecyclerView) ══════ */}
           {isVipTab ? (
-            // عرض الألسنة VIP بصفّ 2
             <div className="grid grid-cols-2 gap-2 px-3 pb-3 flex-1 overflow-y-auto">
               {currentPackages.map((pkg) => (
                 <VipPackageCard
@@ -284,7 +410,6 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               ))}
             </div>
           ) : isRoyalTab ? (
-            // عرض الألسنة رويال بصفّ 2 — أوسع
             <div className="grid grid-cols-2 gap-2 px-3 pb-3 flex-1 overflow-y-auto">
               {currentPackages.map((pkg) => (
                 <RoyalPackageCard
@@ -296,7 +421,6 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               ))}
             </div>
           ) : (
-            // عرض الألسنة العادية بصفّ 3 — مطابق لـ item_diamonds.xml
             <div className="grid grid-cols-3 gap-2 px-3 pb-3 flex-1 overflow-y-auto">
               {currentPackages.map((pkg) => (
                 <RegularPackageCard
@@ -309,19 +433,20 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
             </div>
           )}
 
-          {/* ══════ زر تفاصيل الدفع (shop_item_tail_bg) ══════ */}
+          {/* ══════ زر تفاصيل (shop_item_tail_bg.9.png) ══════ */}
           {!selectedPkg && (
             <div className="px-3 pb-3 flex justify-center">
               <button
-                className="text-[11px] text-emerald-300 px-3 py-1 rounded-full"
-                style={{
-                  background: 'rgba(135,234,169,.08)',
-                  border: '1px solid rgba(135,234,169,.2)',
-                  minWidth: '191px',
-                }}
-                onClick={() => setActiveTab(activeTab)}
+                className="relative px-3 py-1 rounded-[12px] text-[11px] text-emerald-300 min-w-[191px] h-[25px] flex items-center justify-center"
+                style={{ background: 'rgba(135,234,169,.08)', border: '1px solid rgba(135,234,169,.2)' }}
               >
-                اضغط على حزمة لمتابعة الشحن
+                <img
+                  src={ASSET.shopItemTailBg}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-fill rounded-[12px]"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+                <span className="relative">اضغط على حزمة لمتابعة الشحن</span>
               </button>
             </div>
           )}
@@ -389,17 +514,29 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 <button
                   onClick={handleCharge}
                   disabled={loading || !chargeCode.trim()}
-                  className="w-full py-2.5 rounded-xl text-sm font-bold text-black transition-all disabled:opacity-50"
-                  style={{ background: 'linear-gradient(135deg, #ffd700, #ffaa00)', boxShadow: '0 4px 16px rgba(255,215,0,.3)' }}
+                  className="relative w-full h-[40px] rounded-xl text-sm font-bold text-black transition-all disabled:opacity-50 overflow-hidden"
                 >
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      جاري المعالجة...
-                    </span>
-                  ) : (
-                    `💳 شحن — $${selectedPkg.price}`
-                  )}
+                  {/* btn_shop.9.png كخلفية للزر */}
+                  <img
+                    src={ASSET.btnShop}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-fill"
+                    onError={(e) => {
+                      const el = e.target as HTMLImageElement;
+                      el.style.display = 'none';
+                      el.parentElement!.style.background = 'linear-gradient(135deg, #94f534, #47790c)';
+                    }}
+                  />
+                  <span className="relative flex items-center justify-center gap-1.5">
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        جاري المعالجة...
+                      </>
+                    ) : (
+                      <>💳 شحن — ${selectedPkg.price}</>
+                    )}
+                  </span>
                 </button>
                 {chargeResult && (
                   <div className={`text-xs text-center p-2 rounded-lg ${chargeResult.success ? 'text-emerald-300 bg-emerald-950/30' : 'text-red-300 bg-red-950/30'}`}>
@@ -428,200 +565,113 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// RegularPackageCard — مطابق لـ item_diamonds.xml (107x150dip)
-// — خلفية shop_item_bg.webp
-// — شريط علوي مع رمز diamonds + عدد (tv_doin_number)
-// — رمز كبير 88x88dip في الوسط (iv_coin)
-// — شارة "BEST" (iv_best) في الأعلى يمينًا
-// — زر الشراء (btn_shop 90x32dip) في الأسفل
+// RegularPackageCard — مطابق 100% لـ item_diamonds.xml
+// ─ خلفية shop_item_bg.webp (ممتلئة، ليست شفافة)
+// ─ شريط علوي (ll1 79x20dip) يحوي رمز diamonds 14x16dip + عدد أصفر
+// ─ رمز كبير في الوسط (iv_coin 88x88dip)
+// ─ شارة "BEST" / "POPULAR" عبر label_best.webp / label_popular.webp
+// ─ زر الشراء (btn_shop.9.png 90x32dip) — خلفية حقيقية
 // ════════════════════════════════════════════════════════════════════════════
 function RegularPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
-  const badge = pkg.badge ? BADGE_STYLES[pkg.badge] : null;
   const accentColor = pkg.type === 'gold' ? '#fbbf24' : '#22d3ee';
+  // رمز كبير — لجواهر نستخدم diamonds1.webp، لذهب coin1.webp
+  const bigIcon = pkg.type === 'gold' ? ASSET.coin1 : ASSET.diamonds1;
+  // رمز صغير في الشريط العلوي — diamonds.webp للجواهر، coin.webp للذهب
+  const smallIcon = pkg.type === 'gold' ? ASSET.coin : ASSET.diamonds;
+
   return (
     <div
       onClick={onSelect}
-      className="relative rounded-xl p-2 cursor-pointer transition-all overflow-hidden"
+      className="relative rounded-xl cursor-pointer transition-all overflow-hidden"
       style={{
-        background: isSelected
-          ? `linear-gradient(135deg, ${accentColor}22, rgba(0,0,0,.3))`
-          : 'rgba(0,0,0,.3)',
-        border: isSelected ? `1px solid ${accentColor}88` : '1px solid rgba(255,255,255,.08)',
-        boxShadow: isSelected ? `0 0 12px ${accentColor}33` : 'none',
+        width: '107px',
+        height: '150px',
+        border: isSelected ? `1.5px solid ${accentColor}` : '1px solid rgba(255,255,255,.1)',
+        boxShadow: isSelected ? `0 0 12px ${accentColor}66, inset 0 0 0 1px ${accentColor}33` : 'none',
+        transform: isSelected ? 'scale(1.02)' : 'scale(1)',
       }}
     >
-      {/* خلفية shop_item_bg.webp شبه شفافة */}
+      {/* خلفية shop_item_bg.webp — ممتلئة */}
       <img
-        src="/yalla-ui/full/shop_item_bg.webp"
+        src={ASSET.shopItemBg}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-full h-full object-cover"
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
 
-      {/* شارة */}
-      {badge && (
-        <div
-          className="absolute -top-1 right-1 px-1 py-0.5 rounded text-[7px] font-bold"
-          style={{ background: badge.bg, color: badge.text === 'text-black' ? '#000' : '#fff' }}
-        >
-          {badge.label}
-        </div>
-      )}
+      {/* شارة (label_best / label_popular) */}
+      {renderBadge(pkg.badge)}
 
-      {/* شارة الخصم */}
+      {/* شارة الخصم — مثل royal_coupon_shop_diamond_item_ic */}
       {pkg.discountPercent && pkg.discountPercent > 0 && (
         <div
-          className="absolute top-1 left-1 px-1 py-0.5 rounded text-[7px] font-bold text-white"
-          style={{ background: '#ef4444' }}
+          className="absolute top-1 left-1 px-1 py-0.5 rounded text-[8px] font-bold text-white z-10"
+          style={{ background: '#ef4444', boxShadow: '0 1px 2px rgba(0,0,0,.4)' }}
         >
           -{pkg.discountPercent}%
         </div>
       )}
 
-      {/* شريط علوي: رمز + عدد */}
-      <div className="relative flex items-center justify-center gap-1 mb-1">
-        <img src="/yalla-ui/full/diamonds.webp" alt="" className="w-3 h-3" />
-        <span className="text-[11px] font-bold" style={{ color: '#fff782', textShadow: '0 3px 5px #000' }}>
+      {/* شريط علوي (ll1 79x20dip) — رمز + عدد */}
+      <div className="relative flex items-center justify-center gap-1 mt-2 h-5">
+        <img src={smallIcon} alt="" className="w-[14px] h-[16px] object-contain" />
+        <span
+          className="text-[12px] font-bold"
+          style={{ color: '#fff782', textShadow: '0 3px 5px #000' }}
+        >
           {formatAmount(pkg.amount + pkg.bonus)}
         </span>
       </div>
 
       {/* الرمز الكبير في الوسط (iv_coin 88x88dip) */}
-      <div className="relative flex justify-center mb-1">
+      <div className="relative flex justify-center mt-1">
         <img
-          src={pkg.iconBg}
-          alt=""
+          src={bigIcon}
+          alt={pkg.label}
           className="w-[60px] h-[60px] object-contain"
           style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))' }}
-          onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
+          onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
         />
       </div>
 
       {/* مكافأة */}
       {pkg.bonus > 0 && (
-        <div className="relative text-center text-[8px] text-emerald-400">
+        <div className="relative text-center text-[8px] text-emerald-400" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
           +{formatAmount(pkg.bonus)} مكافأة
         </div>
       )}
 
       {/* رويال + XP */}
-      <div className="relative text-center text-[7px] text-amber-500/70 mt-0.5">
+      <div className="relative text-center text-[7px] text-amber-500/80 mt-0.5" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
         +{pkg.royalPoints} رويال · +{pkg.xpReward} XP
       </div>
 
-      {/* زر الشراء (btn_shop 90x32dip) */}
-      <div
-        className="relative flex justify-center mt-1"
-      >
+      {/* زر الشراء (btn_shop.9.png 90x32dip) — خلفية حقيقية */}
+      <div className="relative flex justify-center mt-1 mb-2">
         <div
-          className="flex items-center justify-center px-2 py-1 rounded-full text-[11px] font-bold"
+          className="relative flex items-center justify-center w-[80px] h-[28px] rounded-lg overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, #94f534, #47790c)',
-            color: '#47790c',
-            boxShadow: '0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.4)',
-            textShadow: '0 1px 0 rgba(255,255,255,.3)',
-            minWidth: '70px',
+            boxShadow: '0 2px 4px rgba(0,0,0,.3)',
           }}
         >
-          ${pkg.price}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ════════════════════════════════════════════════════════════════════════════
-// VipPackageCard — مطابق لـ item_vip_buy.xml (157.5x195.45dip)
-// — خلفية cart_vip_buy_item_bg.webp
-// — رمز الأيام (59x72dip)
-// — زر شراء (110x40dip) بخلفية bn_yes يحوي رمز diamond + سعر
-// ════════════════════════════════════════════════════════════════════════════
-function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
-  const tierIcon = pkg.id === 'vip_royal' ? '/yalla-ui/royal/royal_5_throne_ic.webp'
-    : pkg.id === 'vip_liwa' ? '/yalla-ui/full/privilege_detail_baron_ic.webp'
-    : '/yalla-ui/full/privilege_detail_knight_ic.webp';
-  const tierColor = pkg.id === 'vip_royal' ? '#fbbf24' : pkg.id === 'vip_liwa' ? '#a78bfa' : '#22d3ee';
-
-  return (
-    <div
-      onClick={onSelect}
-      className="relative rounded-xl p-3 cursor-pointer transition-all overflow-hidden"
-      style={{
-        background: isSelected
-          ? `linear-gradient(135deg, ${tierColor}22, rgba(0,0,0,.4))`
-          : 'rgba(0,0,0,.4)',
-        border: isSelected ? `1px solid ${tierColor}88` : '1px solid rgba(255,255,255,.08)',
-        boxShadow: isSelected ? `0 0 12px ${tierColor}33` : 'none',
-      }}
-    >
-      {/* خلفية cart_vip_buy_item_bg.webp */}
-      <img
-        src="/yalla-ui/full/cart_vip_buy_item_bg.webp"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-25"
-        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-      />
-
-      {/* شارة */}
-      {pkg.badge && (
-        <div
-          className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full text-[8px] font-bold text-black"
-          style={{ background: tierColor }}
-        >
-          {pkg.badge === 'popular' ? 'الأشهر' : pkg.badge === 'best' ? 'الأفضل' : 'HOT'}
-        </div>
-      )}
-
-      {/* خصم */}
-      {pkg.discountPercent && pkg.discountPercent > 0 && (
-        <div
-          className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[8px] font-bold text-white"
-          style={{ background: '#ef4444' }}
-        >
-          -{pkg.discountPercent}%
-        </div>
-      )}
-
-      {/* رمز الأيام (iv_days) */}
-      <div className="relative flex justify-center mb-2 mt-1">
-        <div className="relative w-[60px] h-[72px]">
           <img
-            src={tierIcon}
-            alt={pkg.label}
-            className="w-full h-full object-contain"
-            onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}
+            src={ASSET.btnShop}
+            alt=""
+            className="absolute inset-0 w-full h-full object-fill"
+            onError={(e) => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = 'none';
+              el.parentElement!.style.background = 'linear-gradient(180deg, #94f534 0%, #47790c 100%)';
+            }}
           />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[13px] font-bold" style={{ color: '#17654c', marginTop: 3 }}>
-              {pkg.days}يوم
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* اسم الشريحة */}
-      <div className="relative text-center mb-1.5">
-        <div className="text-[12px] font-bold" style={{ color: tierColor }}>{pkg.label}</div>
-        <div className="text-[9px] text-slate-400">{pkg.labelEn}</div>
-      </div>
-
-      {/* رويال + XP */}
-      <div className="relative text-center text-[8px] text-amber-500/70 mb-2">
-        +{pkg.royalPoints} رويال · +{pkg.xpReward} XP
-      </div>
-
-      {/* زر الشراء (btn_vip_buy - bn_yes 110x40dip) */}
-      <div className="relative flex justify-center">
-        <div
-          className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg"
-          style={{
-            background: 'linear-gradient(135deg, #87eaa9 0%, #2bc895 100%)',
-            boxShadow: '0 2px 6px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.4)',
-          }}
-        >
-          <img src="/yalla-ui/full/diamonds.webp" alt="" className="w-3 h-3.5" />
-          <span className="text-[13px] font-bold" style={{ color: '#17654c' }}>
-            ${pkg.price.toFixed(2)}
+          <span
+            className="relative text-[12px] font-bold"
+            style={{
+              color: '#47790c',
+              textShadow: '0 1px 0 rgba(255,255,255,.4)',
+            }}
+          >
+            ${pkg.price}
           </span>
         </div>
       </div>
@@ -630,53 +680,162 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// RoyalPackageCard — بطاقة حزمة نقاط رويال (مستوحاة من dialog_royal_upgrade.xml)
+// VipPackageCard — مطابق 100% لـ item_vip_buy.xml (157.5x195.45dip)
+// ─ خلفية cart_vip_buy_item_bg.webp — ممتلئة
+// ─ iv_days: رمز 59x72dip في الأعلى + نص "7days" داخل الرمز
+// ─ btn_vip_buy: زر شراء بخلفية bn_yes (btn_yes.9.png) يحوي رمز diamonds + سعر
+// ════════════════════════════════════════════════════════════════════════════
+function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
+  const tierIcon = pkg.id === 'vip_royal' ? ASSET.royal5ThroneIc
+    : pkg.id === 'vip_liwa' ? ASSET.privilegeBaronIc
+    : ASSET.privilegeKnightIc;
+  const tierColor = pkg.id === 'vip_royal' ? '#fbbf24' : pkg.id === 'vip_liwa' ? '#a78bfa' : '#22d3ee';
+
+  return (
+    <div
+      onClick={onSelect}
+      className="relative rounded-xl cursor-pointer transition-all overflow-hidden"
+      style={{
+        width: '157px',
+        minHeight: '195px',
+        border: isSelected ? `1.5px solid ${tierColor}` : '1px solid rgba(255,255,255,.1)',
+        boxShadow: isSelected ? `0 0 16px ${tierColor}55, inset 0 0 0 1px ${tierColor}33` : 'none',
+      }}
+    >
+      {/* خلفية cart_vip_buy_item_bg.webp — ممتلئة */}
+      <img
+        src={ASSET.cartVipBuyItemBg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+      />
+
+      {/* شارة */}
+      {renderBadge(pkg.badge)}
+
+      {/* خصم */}
+      {pkg.discountPercent && pkg.discountPercent > 0 && (
+        <div
+          className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[8px] font-bold text-white z-10"
+          style={{ background: '#ef4444', boxShadow: '0 1px 2px rgba(0,0,0,.4)' }}
+        >
+          -{pkg.discountPercent}%
+        </div>
+      )}
+
+      {/* رمز الأيام (iv_days 59x72dip) — مع هامش علوي 39dip */}
+      <div className="relative flex justify-center mt-9 mb-2">
+        <div className="relative w-[60px] h-[72px]">
+          <img
+            src={tierIcon}
+            alt={pkg.label}
+            className="w-full h-full object-contain"
+            style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))' }}
+            onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className="text-[13px] font-bold"
+              style={{ color: '#17654c', marginTop: 3, textShadow: '0 1px 0 rgba(255,255,255,.3)' }}
+            >
+              {pkg.days}يوم
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* اسم الشريحة */}
+      <div className="relative text-center mb-1">
+        <div className="text-[12px] font-bold" style={{ color: tierColor }}>{pkg.label}</div>
+        <div className="text-[9px] text-slate-400">{pkg.labelEn}</div>
+      </div>
+
+      {/* رويال + XP */}
+      <div className="relative text-center text-[8px] text-amber-500/80 mb-2" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
+        +{pkg.royalPoints} رويال · +{pkg.xpReward} XP
+      </div>
+
+      {/* زر الشراء (btn_vip_buy — bn_yes.9.png 110x40dip) */}
+      <div className="relative flex justify-center mb-3">
+        <div
+          className="relative flex items-center justify-center gap-1.5 w-[110px] h-[36px] rounded-lg overflow-hidden"
+          style={{ boxShadow: '0 2px 6px rgba(0,0,0,.3)' }}
+        >
+          <img
+            src="/yalla-ui/shop/btn_yes.9.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-fill"
+            onError={(e) => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = 'none';
+              el.parentElement!.style.background = 'linear-gradient(180deg, #87eaa9 0%, #2bc895 100%)';
+            }}
+          />
+          <img src={ASSET.diamonds} alt="" className="relative w-[15px] h-[19px] object-contain" />
+          <span
+            className="relative text-[14px] font-bold"
+            style={{ color: '#17654c', textShadow: '0 1px 0 rgba(255,255,255,.3)' }}
+          >
+            {pkg.price.toFixed(2)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// RoyalPackageCard — بطاقة حزمة نقاط رويال
+// ─ خلفية royal_level_top_bg.webp شفافة + bg_shop_royal.webp ممتلئة
+// ─ رمز royal_level_value_ic.webp
+// ─ زر شراء بخلفية صفراء متدرجة (royal theme)
 // ════════════════════════════════════════════════════════════════════════════
 function RoyalPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
   return (
     <div
       onClick={onSelect}
-      className="relative rounded-xl p-3 cursor-pointer transition-all overflow-hidden"
+      className="relative rounded-xl cursor-pointer transition-all overflow-hidden"
       style={{
-        background: isSelected
-          ? 'linear-gradient(135deg, rgba(251,191,36,.25), rgba(0,0,0,.4))'
-          : 'rgba(0,0,0,.4)',
-        border: isSelected ? '1px solid rgba(251,191,36,.6)' : '1px solid rgba(255,255,255,.08)',
-        boxShadow: isSelected ? '0 0 16px rgba(251,191,36,.3)' : 'none',
+        width: '157px',
+        minHeight: '195px',
+        border: isSelected ? '1.5px solid #fbbf24' : '1px solid rgba(255,255,255,.1)',
+        boxShadow: isSelected ? '0 0 16px rgba(251,191,36,.4), inset 0 0 0 1px rgba(251,191,36,.2)' : 'none',
       }}
     >
-      {/* خلفية royal_level_top_bg شفافة */}
+      {/* خلفية royal_level_top_bg.webp */}
       <img
-        src="/yalla-ui/royal/royal_level_top_bg.webp"
+        src={ASSET.royalLevelTopBg}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.35 }}
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+      />
+      {/* bg_shop_royal.webp فوقها */}
+      <img
+        src={ASSET.bgShopRoyal}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.25 }}
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
 
       {/* شارة */}
-      {pkg.badge && (
-        <div
-          className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full text-[8px] font-bold text-black"
-          style={{ background: '#fbbf24' }}
-        >
-          {pkg.badge === 'popular' ? 'الأشهر' : pkg.badge === 'best' ? 'الأفضل' : 'HOT'}
-        </div>
-      )}
+      {renderBadge(pkg.badge)}
 
       {/* خصم */}
       {pkg.discountPercent && pkg.discountPercent > 0 && (
         <div
-          className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[8px] font-bold text-white"
-          style={{ background: '#ef4444' }}
+          className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[8px] font-bold text-white z-10"
+          style={{ background: '#ef4444', boxShadow: '0 1px 2px rgba(0,0,0,.4)' }}
         >
           -{pkg.discountPercent}%
         </div>
       )}
 
       {/* رمز رويال */}
-      <div className="relative flex justify-center mb-2 mt-1">
+      <div className="relative flex justify-center mb-2 mt-4">
         <img
-          src="/yalla-ui/royal/royal_level_value_ic.webp"
+          src={ASSET.royalLevelValueIc}
           alt={pkg.label}
           className="w-[50px] h-[50px] object-contain"
           style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))' }}
@@ -685,35 +844,45 @@ function RoyalPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelec
 
       {/* الكمية */}
       <div className="relative text-center mb-1">
-        <div className="text-[14px] font-bold text-amber-300">
+        <div className="text-[14px] font-bold text-amber-300" style={{ textShadow: '0 2px 2px rgba(0,0,0,.6)' }}>
           {pkg.amount.toLocaleString()}
         </div>
-        <div className="text-[9px] text-slate-400">نقطة رويال</div>
+        <div className="text-[9px] text-slate-300">نقطة رويال</div>
       </div>
 
       {/* مكافأة */}
       {pkg.bonus > 0 && (
-        <div className="relative text-center text-[8px] text-emerald-400">
+        <div className="relative text-center text-[8px] text-emerald-400" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
           +{pkg.bonus} مكافأة
         </div>
       )}
 
       {/* XP */}
-      <div className="relative text-center text-[7px] text-amber-500/70 mb-2">
+      <div className="relative text-center text-[7px] text-amber-500/80 mb-2" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
         +{pkg.xpReward} XP
       </div>
 
-      {/* زر الشراء */}
-      <div className="relative flex justify-center">
+      {/* زر الشراء — بخلفية صفراء متدرجة (royal theme) */}
+      <div className="relative flex justify-center mb-3">
         <div
-          className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg"
-          style={{
-            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-            boxShadow: '0 2px 6px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.4)',
-          }}
+          className="relative flex items-center justify-center gap-1.5 w-[110px] h-[36px] rounded-lg overflow-hidden"
+          style={{ boxShadow: '0 2px 6px rgba(0,0,0,.3)' }}
         >
-          <Crown className="w-3.5 h-3.5 text-amber-900" />
-          <span className="text-[13px] font-bold" style={{ color: '#1f1407' }}>
+          <img
+            src="/yalla-ui/shop/btn_yes.9.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-fill"
+            onError={(e) => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = 'none';
+              el.parentElement!.style.background = 'linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%)';
+            }}
+          />
+          <Crown className="relative w-3.5 h-3.5 text-amber-900" />
+          <span
+            className="relative text-[13px] font-bold"
+            style={{ color: '#1f1407', textShadow: '0 1px 0 rgba(255,255,255,.3)' }}
+          >
             ${pkg.price.toFixed(2)}
           </span>
         </div>

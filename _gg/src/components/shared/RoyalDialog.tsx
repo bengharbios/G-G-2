@@ -42,18 +42,58 @@ interface RoyalDialogProps {
   onChargeClick?: () => void;
 }
 
+// ─── أصول Yalla Ludo الأصلية ───
+const ROYAL_ASSET = {
+  bgRank:                    '/yalla-ui/full/bg_rank.9.png',
+  skinClose:                 '/yalla-ui/full/skin_close.webp',
+  skinBg:                    '/yalla-ui/full/skin_bg.9.png',
+  descriptionRule:           '/yalla-ui/full/description_rule.webp',
+  royalLevelTopBg:           '/yalla-ui/royal/royal_level_top_bg.webp',
+  royalLevelValueIc:         '/yalla-ui/royal/royal_level_value_ic.webp',
+  royalProgressPointIc:      '/yalla-ui/royal/royal_progress_point_ic.webp',
+  royalEffectiveTimeBg:      '/yalla-ui/royal/royal_effective_time_bg.9.png',
+  royalSuperPrivilegesDialogBg:    '/yalla-ui/royal/royal_super_privileges_dialog_bg.webp',
+  royalSuperPrivilegesItemBg:      '/yalla-ui/royal/royal_super_privileges_item_bg.webp',
+  royalSuperPrivilegeDialogTitleBg: '/yalla-ui/royal/royal_super_privilege_dialog_title_bg.webp',
+  royalSuperPrivilegesDialogProgressEndIc: '/yalla-ui/royal/royal_super_privileges_dialog_progress_end_ic.webp',
+  royal5ThroneIc:            '/yalla-ui/royal/royal_5_throne_ic.webp',
+  royalLevel0:               '/yalla-ui/royal/royal_level_0.webp',
+  royalLevel1:               '/yalla-ui/royal/royal_level_1.webp',
+  royalLevel2:               '/yalla-ui/royal/royal_level_2.webp',
+  royalLevel3:               '/yalla-ui/royal/royal_level_3.webp',
+  royalLevel4:               '/yalla-ui/royal/royal_level_4.webp',
+  royalLevel5:               '/yalla-ui/royal/royal_level_5.webp',
+  bgBarRoyalLevel:           '/yalla-ui/royal/bg_bar_royal_level.png',
+  royalChangeLevelLeftIc:    '/yalla-ui/royal/royal_change_level_left_ic.webp',
+  royalChangeLevelRightIc:   '/yalla-ui/royal/royal_change_level_right_ic.webp',
+  royalCouponShopDiamondItemIc: '/yalla-ui/royal/royal_coupon_shop_diamond_item_ic.webp',
+  royalVisualIc:             '/yalla-ui/royal/royal_visual_ic.9.png',
+  royalVisualSelectedIc:     '/yalla-ui/royal/royal_visual_selected_ic.webp',
+  circleContentOpenIc:       '/yalla-ui/royal/circle_content_open_ic.webp',
+  reddot:                    '/yalla-ui/royal/reddot.webp',
+};
+
+// خريطة مستوى → صورة الرمز
+const ROYAL_LEVEL_ICONS = [
+  ROYAL_ASSET.royalLevel0,
+  ROYAL_ASSET.royalLevel1,
+  ROYAL_ASSET.royalLevel2,
+  ROYAL_ASSET.royalLevel3,
+  ROYAL_ASSET.royalLevel4,
+  ROYAL_ASSET.royalLevel5,
+];
+
 export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialogProps) {
   const [state, setState] = useState<RoyalStateApiResponse | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!open) return;
-    setLoading(true);
+    let cancelled = false;
     fetch('/api/royal/state')
       .then(r => r.json())
-      .then(d => { if (d.success) setState(d as RoyalStateApiResponse); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .then(d => { if (!cancelled && d.success) setState(d as RoyalStateApiResponse); })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, [open]);
 
   if (!open) return null;
@@ -85,8 +125,8 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
     } catch { return ''; }
   })();
 
-  const levelIcon = state?.currentLevel.icon || '/yalla-ui/royal/royal_level_0.webp';
-  const nextLevelIcon = state?.nextLevel?.icon || levelIcon;
+  const levelIcon = state?.currentLevel.icon || ROYAL_LEVEL_ICONS[0];
+  const nextLevelIcon = state?.nextLevel?.icon || ROYAL_LEVEL_ICONS[1];
 
   return (
     <AnimatePresence>
@@ -115,38 +155,43 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
         >
           {/* ─── القسم العلوي: شريط bg_rank + خلفية royal_level_top_bg ─── */}
           <div className="relative">
-            {/* خلفية علوية ملونة (royal_level_top_bg) */}
-            <div
-              className="absolute inset-0 h-[212px]"
-              style={{
-                background: 'linear-gradient(180deg, rgba(255,179,0,.12) 0%, rgba(135,234,169,.06) 60%, transparent 100%)',
-              }}
-            />
-            {/* صورة خلفية royal_level_top_bg.webp */}
+            {/* خلفية علوية ملونة (royal_level_top_bg) — صورة حقيقية */}
             <img
-              src="/yalla-ui/royal/royal_level_top_bg.webp"
+              src={ROYAL_ASSET.royalLevelTopBg}
               alt=""
-              className="absolute inset-0 w-full h-[212px] object-cover opacity-30"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              className="absolute inset-0 w-full h-[212px] object-cover"
+              style={{ opacity: 0.85 }}
+              onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
+            />
+            {/* تدرّج إضافي للتعميق */}
+            <div
+              className="absolute inset-0 h-[212px] pointer-events-none"
+              style={{
+                background: 'linear-gradient(180deg, rgba(255,179,0,.15) 0%, rgba(135,234,169,.06) 60%, transparent 100%)',
+              }}
             />
 
-            {/* شريط العنوان — bg_rank + iv_rules + tv_title + iv_close */}
+            {/* شريط العنوان — bg_rank.9.png كخلفية حقيقية + iv_rules + tv_title + iv_close */}
             <div
               className="relative flex items-center justify-between h-[53px] px-3"
-              style={{
-                background: 'linear-gradient(180deg, rgba(135,234,169,.25) 0%, rgba(0,0,0,.4) 100%)',
-                borderBottom: '1px solid rgba(135,234,169,.2)',
-              }}
             >
+              {/* bg_rank.9.png — خلفية حقيقية لشريط العنوان */}
+              <img
+                src={ROYAL_ASSET.bgRank}
+                alt=""
+                className="absolute inset-0 w-full h-full object-fill"
+                style={{ opacity: 0.95 }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
               <button
-                className="w-[38px] h-[38px] flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+                className="relative w-[38px] h-[38px] flex items-center justify-center rounded-lg hover:bg-white/10 transition"
                 aria-label="القواعد"
                 title="قواعد مستوى رويال"
               >
-                <img src="/yalla-ui/full/description_rule.webp" alt="" className="w-6 h-6 opacity-90" />
+                <img src={ROYAL_ASSET.descriptionRule} alt="" className="w-6 h-6 opacity-90" />
               </button>
               <h2
-                className="text-[21px] font-bold"
+                className="relative text-[21px] font-bold"
                 style={{
                   color: '#87ebaa',
                   textShadow: '0 5px 1px rgba(0,0,0,.5)',
@@ -157,10 +202,10 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
               </h2>
               <button
                 onClick={onClose}
-                className="w-[38px] h-[38px] flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+                className="relative w-[38px] h-[38px] flex items-center justify-center rounded-lg hover:bg-white/10 transition"
                 aria-label="إغلاق"
               >
-                <img src="/yalla-ui/full/skin_close.webp" alt="" className="w-6 h-6" />
+                <img src={ROYAL_ASSET.skinClose} alt="" className="w-6 h-6" />
               </button>
             </div>
 
@@ -266,13 +311,14 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
                       <span className="text-[15px] font-bold" style={{ color: '#ffed5d' }}>
                         {state.needForUpgrade.toLocaleString()}
                       </span>
-                      <img src="/yalla-ui/royal/royal_level_value_ic.webp" alt="" className="w-4 h-4" />
+                      <img src={ROYAL_ASSET.royalLevelValueIc} alt="" className="w-4 h-4" />
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[12px] font-bold text-white">للحفاظ تحتاج:</span>
                       <span className="text-[15px] font-bold" style={{ color: '#ffed5d' }}>
                         {state.needForKeep.toLocaleString()}
                       </span>
+                      <img src={ROYAL_ASSET.royalLevelValueIc} alt="" className="w-4 h-4 opacity-60" />
                     </div>
                   </>
                 ) : state && state.level >= 5 ? (
@@ -291,19 +337,25 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
               </div>
             </div>
 
-            {/* ─── تاريخ الصلاحية (royal_effective_time_bg) ─── */}
+            {/* ─── تاريخ الصلاحية (royal_effective_time_bg.9.png) ─── */}
             {validityText && (
               <div className="flex justify-center pb-2">
                 <div
-                  className="px-3 py-1 rounded-full flex items-center gap-1.5"
+                  className="relative px-3 py-1 rounded-full flex items-center gap-1.5 overflow-hidden"
                   style={{
-                    background: 'rgba(135,234,169,.12)',
-                    border: '1px solid rgba(135,234,169,.3)',
                     minWidth: '180px',
+                    height: '22px',
                   }}
                 >
-                  <span className="text-[10px] font-bold" style={{ color: '#87eaa9' }}>تاريخ الصلاحية:</span>
-                  <span className="text-[10px] font-bold text-white" dir="ltr">{validityText}</span>
+                  {/* royal_effective_time_bg.9.png — خلفية حقيقية */}
+                  <img
+                    src={ROYAL_ASSET.royalEffectiveTimeBg}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-fill"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  <span className="relative text-[10px] font-bold" style={{ color: '#87eaa9' }}>تاريخ الصلاحية:</span>
+                  <span className="relative text-[10px] font-bold text-white" dir="ltr">{validityText}</span>
                 </div>
               </div>
             )}
@@ -325,13 +377,25 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
 
           {/* ─── قائمة الامتيازات (RoyalPrivilegeDetailView) ─── */}
           <div className="flex-1 overflow-y-auto px-3 pb-3">
-            <div className="rounded-xl p-3 space-y-2"
-              style={{
-                background: 'rgba(0,0,0,.35)',
-                border: '1px solid rgba(135,234,169,.15)',
-              }}
-            >
-              <div className="flex items-center justify-between mb-2">
+            <div className="relative rounded-xl p-3 space-y-2 overflow-hidden">
+              {/* royal_super_privileges_dialog_bg.webp — خلفية حقيقية للوحة */}
+              <img
+                src={ROYAL_ASSET.royalSuperPrivilegesDialogBg}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ opacity: 0.85 }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              {/* Fallback CSS */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'rgba(0,0,0,.35)',
+                  border: '1px solid rgba(135,234,169,.15)',
+                  borderRadius: '12px',
+                }}
+              />
+              <div className="relative flex items-center justify-between mb-2">
                 <span className="text-[12px] font-bold" style={{ color: '#87eaa9' }}>امتيازات المستوى الحالي</span>
                 <span className="text-[10px] text-slate-400">
                   إجمالي الشحن: ${state?.totalCharged.toFixed(2) ?? '0.00'}
@@ -342,15 +406,32 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
                 return (
                   <div
                     key={p.level}
-                    className="flex items-center gap-3 p-2 rounded-lg transition"
+                    className="relative flex items-center gap-3 p-2 rounded-lg overflow-hidden transition"
                     style={{
-                      background: unlocked ? 'linear-gradient(90deg, rgba(251,191,36,.12), rgba(0,0,0,0))' : 'rgba(255,255,255,.03)',
-                      opacity: unlocked ? 1 : 0.45,
-                      border: unlocked ? '1px solid rgba(251,191,36,.25)' : '1px solid transparent',
+                      opacity: unlocked ? 1 : 0.5,
                     }}
                   >
+                    {/* royal_super_privileges_item_bg.webp — خلفية كل عنصر */}
+                    <img
+                      src={ROYAL_ASSET.royalSuperPrivilegesItemBg}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{ opacity: unlocked ? 0.95 : 0.4 }}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                    {/* Fallback */}
+                    {!unlocked && (
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'rgba(255,255,255,.03)',
+                          border: '1px solid transparent',
+                          borderRadius: '8px',
+                        }}
+                      />
+                    )}
                     <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center text-lg"
+                      className="relative w-9 h-9 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
                       style={{
                         background: unlocked ? 'linear-gradient(135deg, #fbbf24, #f59e0b)' : 'rgba(0,0,0,.4)',
                         border: '1px solid ' + (unlocked ? 'rgba(255,255,255,.2)' : 'rgba(255,255,255,.05)'),
@@ -358,7 +439,7 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
                     >
                       {p.icon}
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="relative flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className={`text-[12px] font-bold ${unlocked ? 'text-amber-300' : 'text-slate-400'}`}>
                           {p.title}
@@ -367,7 +448,7 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
                       </div>
                       <p className="text-[10px] text-slate-400 truncate">{p.desc}</p>
                     </div>
-                    <div className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${unlocked ? 'bg-emerald-600/30 text-emerald-300' : 'bg-slate-700/40 text-slate-400'}`}>
+                    <div className={`relative text-[10px] font-bold px-1.5 py-0.5 rounded ${unlocked ? 'bg-emerald-600/30 text-emerald-300' : 'bg-slate-700/40 text-slate-400'}`}>
                       {unlocked ? 'مفعّل' : `LV ${p.level}`}
                     </div>
                   </div>
@@ -378,14 +459,23 @@ export default function RoyalDialog({ open, onClose, onChargeClick }: RoyalDialo
             {/* ─── زر ترقية (يفتح ChargeDialog على لسان رويال) ─── */}
             <button
               onClick={() => onChargeClick?.()}
-              className="w-full mt-3 py-2.5 rounded-xl text-[13px] font-bold transition-all hover:brightness-110"
+              className="relative w-full mt-3 py-2.5 rounded-xl text-[13px] font-bold transition-all hover:brightness-110 overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
                 color: '#1f1407',
                 boxShadow: '0 4px 16px rgba(251,191,36,.3)',
               }}
             >
-              <span className="inline-flex items-center gap-2 justify-center">
+              <img
+                src={ROYAL_ASSET.royalSuperPrivilegesItemBg}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  el.style.display = 'none';
+                  el.parentElement!.style.background = 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
+                }}
+              />
+              <span className="relative inline-flex items-center gap-2 justify-center">
                 <Crown className="w-4 h-4" />
                 اشحن نقاط رويال الآن
               </span>
