@@ -1481,20 +1481,29 @@ export async function ensureAdminTables(): Promise<void> {
       await c.execute({ sql: "UPDATE GameConfig SET gameSlug = 'matchcards' WHERE gameSlug = 'battleship'", args: [] });
     } catch { /* ignore if already migrated */ }
 
-    // ─── Migration: أضف guessimage + battleship لكل القوالب الموجودة ───
+    // ─── Migration: أضف guessimage + matchcards لكل القوالب الموجودة ───
   // (للترقية من النسخ القديمة التي لم تكن تحوي هاتين اللعبتين في
   // BattleButton table)
   try {
-    // أولاً: حدّث label لـbattleship الموجود من 'سفن' → 'مطابقة البطاقات'
+    // أولاً: حدّث label لـmatchcards الموجود من 'سفن' أو أي اسم قديم → 'مطابقة البطاقات'
     await c.execute({
-      sql: "UPDATE BattleButton SET label = 'مطابقة البطاقات' WHERE buttonKey = 'battleship' AND label != 'مطابقة البطاقات'",
+      sql: "UPDATE BattleButton SET label = 'مطابقة البطاقات', tabHref = '/matchcards' WHERE buttonKey = 'matchcards' AND label != 'مطابقة البطاقات'",
       args: [],
     });
     // حدّث gameName في GameConfig أيضاً
     await c.execute({
-      sql: "UPDATE GameConfig SET gameName = 'مطابقة البطاقات' WHERE gameSlug = 'battleship' AND gameName != 'مطابقة البطاقات'",
+      sql: "UPDATE GameConfig SET gameName = 'مطابقة البطاقات' WHERE gameSlug = 'matchcards' AND gameName != 'مطابقة البطاقات'",
       args: [],
     });
+
+    // تنظيف: احذف أي صفوف battleship متبقية في BattleButton (مكررات)
+    try {
+      await c.execute({ sql: "DELETE FROM BattleButton WHERE buttonKey = 'battleship'", args: [] });
+    } catch { /* ignore */ }
+    // تنظيف GameConfig
+    try {
+      await c.execute({ sql: "DELETE FROM GameConfig WHERE gameSlug = 'battleship'", args: [] });
+    } catch { /* ignore */ }
 
     const themes = await c.execute("SELECT id, themeKey FROM BattleTheme");
     for (const themeRow of themes.rows) {
@@ -1512,16 +1521,16 @@ export async function ensureAdminTables(): Promise<void> {
           args: [crypto.randomUUID(), themeId],
         });
       }
-      // تحقق إذا battleship موجود لهذا القالب (note: battleship slug now means "مطابقة البطاقات")
-      const shipCheck = await c.execute({
-        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'battleship'",
+      // تحقق إذا matchcards موجود لهذا القالب (slug المطابق للعبة مطابقة البطاقات)
+      const matchCheck = await c.execute({
+        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'matchcards'",
         args: [themeId],
       });
-      const shipCnt = (shipCheck.rows[0] as Record<string, unknown>)?.cnt as number;
-      if (!shipCnt || shipCnt === 0) {
+      const matchCnt = (matchCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!matchCnt || matchCnt === 0) {
         await c.execute({
           sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
-                VALUES (?, ?, 'ggames', 'battleship', 'مطابقة البطاقات', '/yalla-games/battleship.png', '#581C87', 167, 134, '/battleship', 13, 'visible', 1, datetime('now'), datetime('now'))`,
+                VALUES (?, ?, 'ggames', 'matchcards', 'مطابقة البطاقات', '/yalla-games/battleship.png', '#581C87', 167, 134, '/matchcards', 13, 'visible', 1, datetime('now'), datetime('now'))`,
           args: [crypto.randomUUID(), themeId],
         });
       }
@@ -1535,6 +1544,19 @@ export async function ensureAdminTables(): Promise<void> {
         await c.execute({
           sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
                 VALUES (?, ?, 'ggames', 'ships', 'سفن', '/yalla-games/ships.png', '#1E3A8A', 167, 134, '/ships', 14, 'visible', 1, datetime('now'), datetime('now'))`,
+          args: [crypto.randomUUID(), themeId],
+        });
+      }
+      // تحقق إذا foodwar موجود لهذا القالب
+      const foodwarCheck = await c.execute({
+        sql: "SELECT COUNT(*) as cnt FROM BattleButton WHERE themeId = ? AND buttonKey = 'foodwar'",
+        args: [themeId],
+      });
+      const foodwarCnt = (foodwarCheck.rows[0] as Record<string, unknown>)?.cnt as number;
+      if (!foodwarCnt || foodwarCnt === 0) {
+        await c.execute({
+          sql: `INSERT INTO BattleButton (id, themeId, gameType, buttonKey, label, imageSrc, strokeColor, width, height, tabHref, tabOrder, visibility, isActive, createdAt, updatedAt)
+                VALUES (?, ?, 'ggames', 'foodwar', 'حرب الاكلات', '/yalla-games/foodwar.png', '#C2410C', 167, 134, '/foodwar', 15, 'visible', 1, datetime('now'), datetime('now'))`,
           args: [crypto.randomUUID(), themeId],
         });
       }
