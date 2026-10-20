@@ -1,63 +1,81 @@
 'use client';
-import { useCallback, useEffect } from 'react';
-import { useSyncExternalStore } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useFoodWarStore } from '@/lib/foodwar-store';
-import GameSetup from '@/components/foodwar/GameSetup';
-import GameBoard from '@/components/foodwar/GameBoard';
-import FoodWarGameOver from '@/components/foodwar/FoodWarGameOver';
-import { useHostHeartbeat } from '@/lib/yalla-game-helpers';
+import { motion } from 'framer-motion';
+import { LogOut, Home } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import SubscriptionGuard from '@/components/SubscriptionGuard';
 import GameLayout from '@/components/shared/GameLayout';
 
-function useHydrated() { return useSyncExternalStore(() => () => {}, () => true, () => false); }
-
+/**
+ * صفحة "حرب الاكلات" — تعرض النسخة الأصلية من loveligo.com عبر iframe.
+ * الملفات الأصلية موجودة في public/foodwar-game/index.html
+ * تعمل بvanilla JS + canvas wheel + 105 أطعمة عربية حقيقية.
+ */
 export default function FoodWarPage() {
   return (
     <SubscriptionGuard gameSlug="foodwar">
       <GameLayout gameSlug="foodwar" gameName="حرب الاكلات" gameEmoji="🍕" accentColor="emerald">
-        <FoodWarContent />
+        <FoodWarFrame />
       </GameLayout>
     </SubscriptionGuard>
   );
 }
 
-function FoodWarContent() {
-  const { phase, setPhase, setGameMode, gameMode, roomCode } = useFoodWarStore();
-  const mounted = useHydrated();
+function FoodWarFrame() {
   const searchParams = useSearchParams();
-  useHostHeartbeat('foodwar', gameMode, roomCode);
+  const mode = searchParams.get('mode');
+  const [loaded, setLoaded] = useState(false);
 
+  // قم بتنظيف أي حالة قديمة من foodwar-game-storage عند الدخول
   useEffect(() => {
-    if (!mounted) return;
-    const mode = searchParams.get('mode');
-    const canOverride = phase === 'landing' || phase === 'setup';
-    if (!canOverride) return;
-    if (mode === 'godfather') { setGameMode('classic'); useFoodWarStore.getState().setRoomCode(null); if (phase === 'landing') setPhase('setup'); }
-    else if (mode === 'diwaniya') { setGameMode('diwaniya'); if (phase === 'landing') setPhase('setup'); }
-  }, [mounted, searchParams, phase, setPhase, setGameMode]);
+    try {
+      localStorage.removeItem('foodwar-game-storage');
+      localStorage.removeItem('foodwar-game-storage__disconnect_ts');
+    } catch {}
+  }, []);
 
-  if (!mounted || phase === 'landing') return (
-    <div className="min-h-screen flex flex-col items-center justify-center tobol-bg" dir="rtl">
-      <div className="text-center flex-1 flex items-center justify-center">
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} style={{ fontSize: '48px', marginBottom: '12px' }}>🍕</motion.div>
-        <p style={{ color: '#9fc4b4', fontSize: '14px' }}>جاري التحميل...</p>
-      </div>
-    </div>
-  );
-  if (phase === 'setup') return <main><GameSetup /></main>;
+  // مرر وضع العرّاب/الديوانية عبر hash للـiframe (إن أردت لاحقاً)
+  const iframeSrc = `/foodwar-game/index.html${mode ? `#mode=${mode}` : ''}`;
+
   return (
-    <div className="flex flex-col">
-      <main className="flex-1">
-        <AnimatePresence mode="wait">
-          {phase === 'game_over' ? (
-            <motion.div key="gameover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><FoodWarGameOver /></motion.div>
-          ) : (
-            <motion.div key="board" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><GameBoard /></motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+    <div className="relative w-full" style={{ minHeight: 'calc(100vh - 56px)' }}>
+      {!loaded && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center" dir="rtl" style={{ background: 'linear-gradient(180deg, #07111d 0%, #1a0e08 50%, #07111d 100%)' }}>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            style={{ fontSize: '64px', marginBottom: '16px' }}
+          >
+            🍕
+          </motion.div>
+          <p style={{ color: '#9fc4b4', fontSize: '15px' }}>جاري تحميل لعبة حرب الاكلات...</p>
+        </div>
+      )}
+      <iframe
+        src={iframeSrc}
+        title="حرب الاكلات"
+        onLoad={() => setLoaded(true)}
+        className="w-full"
+        style={{
+          minHeight: 'calc(100vh - 56px)',
+          border: '0',
+          display: loaded ? 'block' : 'none',
+        }}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      />
+      {loaded && (
+        <div className="fixed top-2 right-2 z-50">
+          <a href="/#game-foodwar" className="inline-block">
+            <Button variant="outline" size="sm" className="bg-slate-900/80 border-orange-500/40 text-orange-200 hover:bg-slate-800/80 backdrop-blur">
+              <Home className="w-4 h-4 ml-2" />
+              خروج
+            </Button>
+          </a>
+        </div>
+      )}
     </div>
   );
 }

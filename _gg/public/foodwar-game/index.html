@@ -1,0 +1,1795 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+        <meta name="theme-color" content="#ff7043">
+        <title>معركة الأكلات | لعبة تفاعلية</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&display=swap'); :root {
+                --ink: #3d251e;
+                --cream: #fff8e8;
+                --orange: #ff7043;
+                --yellow: #ffd54f;
+                --green: #4ecb71;
+                --red: #ef476f;
+                --blue: #42a5f5;
+                --shadow: #7d3f2b;
+                --panel: #fffaf0ee
+            }
+
+            * {
+                box-sizing: border-box
+            }
+
+            html,body {
+                margin: 0;
+                min-height: 100%;
+                font-family: Changa,Tahoma,sans-serif;
+                color: var(--ink)
+            }
+
+            body {
+                min-height: 100vh;
+                min-height: 100dvh;
+                overflow-x: hidden;
+                background: radial-gradient(circle at 10% 10%,#fff4a8 0 7%,transparent 8%),radial-gradient(circle at 90% 20%,#ffc6b8 0 8%,transparent 9%),linear-gradient(145deg,#fff0b8,#ffd2ad 46%,#ffab91)
+            }
+
+            body:before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                opacity: .22;
+                background-image: radial-gradient(#9d4d36 1.4px,transparent 1.4px);
+                background-size: 22px 22px
+            }
+
+            button,input,textarea,select {
+                font: inherit
+            }
+
+            .app {
+                width: min(1500px,100%);
+                min-height: 100dvh;
+                margin: auto;
+                padding: clamp(10px,2vw,24px);
+                display: flex;
+                flex-direction: column;
+                gap: 12px
+            }
+
+            .topbar {
+                position: relative;
+                min-height: 92px;
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                gap: 12px;
+                padding: 4px 8px
+            }
+
+            .site-name {
+                justify-self: start;
+                padding: 8px 15px;
+                border: 3px solid var(--ink);
+                border-radius: 999px;
+                background: #fff;
+                box-shadow: 0 4px 0 var(--shadow);
+                font-size: clamp(12px,1.8vw,18px);
+                font-weight: 900;
+                color: #a83d32
+            }
+
+            .brand {
+                grid-column: 2;
+                display: grid;
+                place-items: center
+            }
+
+            .brand-logo {
+                display: block;
+                width: min(230px,42vw);
+                max-height: 86px;
+                object-fit: contain;
+                filter: drop-shadow(0 6px 0 #943f2c55)
+            }
+
+            h1 {
+                margin: 0;
+                font-size: clamp(25px,4vw,48px);
+                line-height: 1;
+                color: #b63235;
+                text-shadow: 2px 2px 0 #fff,4px 4px 0 #ffc107
+            }
+
+            .subtitle {
+                margin: 7px 0 0;
+                color: #765348;
+                font-size: clamp(11px,1.5vw,15px)
+            }
+
+            .status {
+                position: absolute;
+                left: 8px;
+                opacity: 0;
+                pointer-events: none
+            }
+
+            .dot {
+                display: none
+            }
+
+            .layout {
+                flex: 1;
+                min-height: 0;
+                display: grid;
+                grid-template-columns: minmax(260px,360px) minmax(420px,1fr) minmax(230px,310px);
+                gap: 14px;
+                align-items: stretch
+            }
+
+            .card {
+                border: 4px solid var(--ink);
+                border-radius: 26px;
+                background: var(--panel);
+                box-shadow: 0 8px 0 var(--shadow),0 18px 40px #7b332a2b;
+                overflow: hidden
+            }
+
+            .card-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                padding: 10px 15px;
+                border-bottom: 3px solid var(--ink);
+                background: #ffd85f
+            }
+
+            .card-head h2 {
+                margin: 0;
+                font-size: 17px
+            }
+
+            .side {
+                display: flex;
+                flex-direction: column;
+                min-height: 0
+            }
+
+            .side-body {
+                padding: 13px;
+                display: flex;
+                flex-direction: column;
+                gap: 11px;
+                min-height: 0
+            }
+
+            .field label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 11px;
+                font-weight: 800;
+                color: #765348
+            }
+
+            .field textarea,.field input,.field select {
+                width: 100%;
+                border: 3px solid var(--ink);
+                border-radius: 14px;
+                background: #fff;
+                padding: 9px 11px;
+                outline: 0;
+                color: var(--ink)
+            }
+
+            .field textarea {
+                height: 112px;
+                resize: vertical
+            }
+
+            .field textarea:focus,.field input:focus {
+                box-shadow: 0 0 0 4px #ffd54f77
+            }
+
+            .btn {
+                border: 3px solid var(--ink);
+                border-radius: 14px;
+                padding: 9px 13px;
+                background: #fff;
+                color: var(--ink);
+                font-weight: 900;
+                cursor: pointer;
+                box-shadow: 0 4px 0 var(--shadow);
+                transition: .15s
+            }
+
+            .btn:hover {
+                transform: translateY(-2px)
+            }
+
+            .btn:active {
+                transform: translateY(3px);
+                box-shadow: 0 1px 0 var(--shadow)
+            }
+
+            .btn.primary {
+                background: linear-gradient(#ff8a50,#ff633b);
+                color: #fff
+            }
+
+            .btn.green {
+                background: linear-gradient(#65dc83,#33b95b);
+                color: #14391f
+            }
+
+            .btn.small {
+                padding: 5px 10px;
+                font-size: 11px
+            }
+
+            .btnrow {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px
+            }
+
+            .hint {
+                margin: 0;
+                padding: 9px;
+                border: 2px dashed #c88766;
+                border-radius: 13px;
+                background: #fff3df;
+                font-size: 11px;
+                line-height: 1.7
+            }
+
+            .mini-stats {
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                gap: 7px
+            }
+
+            .mini {
+                padding: 7px;
+                text-align: center;
+                border: 2px solid var(--ink);
+                border-radius: 13px;
+                background: #fff
+            }
+
+            .mini b {
+                display: block;
+                color: #e34d38;
+                font-size: 20px
+            }
+
+            .mini span {
+                font-size: 9px;
+                color: #876156
+            }
+
+            .wheel-card {
+                position: relative;
+                display: grid;
+                place-items: center;
+                min-height: 0;
+                padding: 18px;
+                background: radial-gradient(circle,#fffdf3 0 52%,#ffe1a8 53% 100%)
+            }
+
+            .wheel-wrap {
+                position: relative;
+                width: min(69vh,100%);
+                max-width: 720px;
+                aspect-ratio: 1
+            }
+
+            .wheel-wrap:before {
+                content: "";
+                position: absolute;
+                inset: 3%;
+                border-radius: 50%;
+                background: #8d452f;
+                box-shadow: 0 12px 0 #5a2c21,0 22px 35px #6e281f48
+            }
+
+            .pointer {
+                position: absolute;
+                z-index: 5;
+                top: -2px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 22px solid transparent;
+                border-right: 22px solid transparent;
+                border-top: 48px solid var(--red);
+                filter: drop-shadow(0 4px 0 #742337)
+            }
+
+            canvas {
+                position: absolute;
+                inset: 5%;
+                width: 90%;
+                height: 90%;
+                border-radius: 50%;
+                transition: transform 5s cubic-bezier(.12,.63,.16,1);
+                filter: drop-shadow(0 5px 0 #683629)
+            }
+
+            .spin {
+                position: absolute;
+                z-index: 4;
+                inset: 50% auto auto 50%;
+                transform: translate(-50%,-50%);
+                width: clamp(82px,14vw,120px);
+                aspect-ratio: 1;
+                border: 5px solid var(--ink);
+                border-radius: 50%;
+                background: linear-gradient(#ffe568,#ffae36);
+                box-shadow: 0 7px 0 #9b4f27;
+                color: #71341f;
+                font-weight: 900;
+                font-size: clamp(18px,3vw,25px);
+                cursor: pointer
+            }
+
+            .spin:disabled {
+                filter: grayscale(.55);
+                cursor: wait
+            }
+
+            .spin:active {
+                margin-top: 4px;
+                box-shadow: 0 3px 0 #9b4f27
+            }
+
+            .round-label {
+                position: absolute;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 6;
+                max-width: 86%;
+                padding: 6px 14px;
+                border: 3px solid var(--ink);
+                border-radius: 999px;
+                background: #fff;
+                color: #8c3a2b;
+                font-size: 12px;
+                font-weight: 900;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
+
+            .players {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                overflow: auto;
+                min-height: 100px
+            }
+
+            .empty {
+                padding: 28px 8px;
+                text-align: center;
+                color: #9b796d;
+                font-size: 12px
+            }
+
+            .player {
+                display: grid;
+                grid-template-columns: 40px 1fr auto;
+                align-items: center;
+                gap: 8px;
+                padding: 7px;
+                border: 2px solid var(--ink);
+                border-radius: 15px;
+                background: #fff;
+                animation: pop .25s
+            }
+
+            .player.current {
+                background: #fff0a9;
+                box-shadow: 0 0 0 4px #ffb30055
+            }
+
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border: 2px solid var(--ink);
+                border-radius: 50%;
+                object-fit: cover;
+                background: #ffd77a
+            }
+
+            .pname {
+                min-width: 0;
+                font-size: 12px;
+                font-weight: 900;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
+
+            .lives {
+                font-size: 14px;
+                white-space: nowrap
+            }
+
+            .remove {
+                width: 27px;
+                height: 27px;
+                padding: 0;
+                border: 2px solid var(--ink);
+                border-radius: 9px;
+                background: #ff7082;
+                color: #fff;
+                font-weight: 900;
+                cursor: pointer
+            }
+
+            .meter {
+                padding: 10px 13px;
+                border-top: 3px solid var(--ink);
+                background: #fff3d3
+            }
+
+            .meter-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 10px;
+                font-weight: 900
+            }
+
+            .track {
+                height: 13px;
+                margin-top: 5px;
+                border: 2px solid var(--ink);
+                border-radius: 99px;
+                background: #fff;
+                overflow: hidden
+            }
+
+            .fill {
+                width: 0;
+                height: 100%;
+                background: linear-gradient(90deg,#ffca3a,#ff595e);
+                transition: .25s
+            }
+
+            .overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 100;
+                display: grid;
+                place-items: center;
+                padding: 14px;
+                background: #3d1d18aa;
+                backdrop-filter: blur(7px);
+                opacity: 0;
+                visibility: hidden;
+                transition: .22s
+            }
+
+            .overlay.show {
+                opacity: 1;
+                visibility: visible
+            }
+
+            .battle {
+                width: min(780px,96vw);
+                max-height: 92dvh;
+                overflow: auto;
+                border: 5px solid var(--ink);
+                border-radius: 30px;
+                background: #fff7db;
+                box-shadow: 0 12px 0 #6d3426;
+                transform: scale(.88);
+                transition: .25s
+            }
+
+            .overlay.show .battle {
+                transform: scale(1)
+            }
+
+            .battle-head {
+                text-align: center;
+                padding: 16px;
+                background: linear-gradient(90deg,#ff784d,#ffcb45)
+            }
+
+            .battle-head h2 {
+                margin: 0;
+                font-size: clamp(23px,5vw,38px);
+                color: #8e2c2e;
+                text-shadow: 2px 2px #fff
+            }
+
+            .target {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin-top: 8px
+            }
+
+            .target img {
+                width: 58px;
+                height: 58px;
+                border: 3px solid var(--ink);
+                border-radius: 50%;
+                object-fit: cover;
+                background: #fff
+            }
+
+            .target strong {
+                font-size: 20px
+            }
+
+            .food-grid {
+                display: grid;
+                grid-template-columns: repeat(4,1fr);
+                gap: 10px;
+                padding: 16px
+            }
+
+            .food {
+                min-height: 125px;
+                padding: 7px;
+                border: 3px solid var(--ink);
+                border-radius: 19px;
+                background: #fff;
+                box-shadow: 0 5px 0 #aa6044;
+                cursor: pointer;
+                overflow: hidden
+            }
+
+            .food:hover {
+                transform: translateY(-3px) rotate(-1deg)
+            }
+
+            .food img {
+                display: block;
+                width: 100%;
+                height: 82px;
+                margin-bottom: 5px;
+                border: 2px solid #6e392b;
+                border-radius: 12px;
+                object-fit: cover
+            }
+
+            .food b {
+                display: block;
+                font-size: 13px
+            }
+
+            .battle-note {
+                margin: 0 16px 16px;
+                padding: 10px;
+                text-align: center;
+                border: 2px dashed #c36a4e;
+                border-radius: 13px;
+                background: #fff;
+                font-size: 12px
+            }
+
+            .winner {
+                text-align: center;
+                padding: 28px
+            }
+
+            .winner .trophy {
+                font-size: 80px
+            }
+
+            .winner h2 {
+                font-size: 36px;
+                margin: 4px
+            }
+
+            .elimination {
+                width: min(530px,94vw);
+                text-align: center;
+                overflow: hidden
+            }
+
+            .elimination-stage {
+                position: relative;
+                min-height: 390px;
+                padding: 22px;
+                display: grid;
+                place-items: center;
+                background: radial-gradient(circle,#fff6bd,#ffc979 70%,#ff9a67);
+                overflow: hidden
+            }
+
+            .food-impact {
+                position: relative;
+                z-index: 4;
+                width: min(330px,76vw);
+                height: 240px;
+                border: 6px solid var(--ink);
+                border-radius: 28px;
+                object-fit: cover;
+                box-shadow: 0 12px 0 #7b3527;
+                animation: foodLand .65s cubic-bezier(.2,1.5,.4,1)
+            }
+
+            .food-impact.destroyed {
+                animation: foodBreak .75s forwards
+            }
+
+            .fragments {
+                position: absolute;
+                inset: 0;
+                z-index: 5;
+                pointer-events: none
+            }
+
+            .fragment {
+                position: absolute;
+                top: 45%;
+                left: 45%;
+                font-size: 38px;
+                opacity: 0
+            }
+
+            .destroying .fragment {
+                animation: fragmentFly 1s var(--delay) forwards
+            }
+
+            .revealed-player {
+                position: absolute;
+                z-index: 3;
+                display: grid;
+                place-items: center;
+                opacity: 0;
+                transform: scale(.4)
+            }
+
+            .revealed-player.show {
+                animation: revealPlayer .65s forwards
+            }
+
+            .revealed-player img {
+                width: 120px;
+                height: 120px;
+                border: 6px solid #fff;
+                border-radius: 50%;
+                object-fit: cover;
+                background: #ffd75a;
+                box-shadow: 0 0 0 5px var(--ink),0 12px 0 #7b3527
+            }
+
+            .revealed-player strong {
+                margin-top: 12px;
+                padding: 5px 18px;
+                border: 3px solid var(--ink);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 22px
+            }
+
+            .elimination-copy {
+                padding: 14px 20px 20px;
+                background: #fff8e8
+            }
+
+            .elimination-copy h2 {
+                margin: 0;
+                color: #c9343e;
+                font-size: 28px
+            }
+
+            .elimination-copy p {
+                margin: 4px 0 12px;
+                color: #765348
+            }
+
+            .elimination-copy.pending {
+                visibility: hidden
+            }
+
+            .toast {
+                position: fixed;
+                z-index: 200;
+                top: 16px;
+                left: 50%;
+                transform: translate(-50%,-130%);
+                max-width: 90vw;
+                padding: 10px 17px;
+                border: 3px solid var(--ink);
+                border-radius: 15px;
+                background: #fff;
+                color: var(--ink);
+                box-shadow: 0 5px 0 var(--shadow);
+                font-size: 12px;
+                font-weight: 900;
+                transition: .3s
+            }
+
+            .toast.show {
+                transform: translate(-50%,0)
+            }
+
+            .battle:has(.food-grid) {
+                width: min(1100px,96vw)
+            }
+
+            .food-grid {
+                --food-min: 120px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit,minmax(min(100%,var(--food-min)),1fr));
+                justify-content: center;
+                align-items: stretch
+            }
+
+            .food-grid[data-size="tiny"] {
+                --food-min: 230px
+            }
+
+            .food-grid[data-size="small"] {
+                --food-min: 180px
+            }
+
+            .food-grid[data-size="medium"] {
+                --food-min: 145px
+            }
+
+            .food {
+                position: relative;
+                width: 100%;
+                max-width: 300px;
+                justify-self: center
+            }
+
+            .food-grid[data-size="tiny"] .food {
+                max-width: 330px
+            }
+
+            .food-grid[data-size="tiny"] .food img {
+                height: 180px
+            }
+
+            .food-grid[data-size="small"] .food img {
+                height: 135px
+            }
+
+            .food-grid[data-size="medium"] .food img {
+                height: 105px
+            }
+
+            .food-number {
+                position: absolute;
+                top: 3px;
+                right: 3px;
+                z-index: 2;
+                min-width: 31px;
+                height: 31px;
+                display: grid;
+                place-items: center;
+                padding: 0 5px;
+                border: 2px solid var(--ink);
+                border-radius: 10px;
+                background: #ffd54f;
+                font-weight: 900
+            }
+
+            .champion-card {
+                position: relative;
+                overflow: hidden;
+                background: radial-gradient(circle at 50% 20%,#fff7a8,#ffc34f 46%,#ff7a4d);
+                min-height: 520px;
+                display: grid;
+                place-items: center
+            }
+
+            .champion-card:before,.champion-card:after {
+                content: "✨";
+                position: absolute;
+                font-size: 70px;
+                animation: championSpark 1.2s infinite alternate
+            }
+
+            .champion-card:before {
+                top: 12%;
+                right: 10%
+            }
+
+            .champion-card:after {
+                bottom: 14%;
+                left: 10%;
+                animation-delay: .4s
+            }
+
+            .champion-avatar {
+                width: clamp(150px,32vw,230px);
+                height: clamp(150px,32vw,230px);
+                border: 8px solid #fff;
+                border-radius: 50%;
+                object-fit: cover;
+                background: #ffd95a;
+                box-shadow: 0 0 0 7px var(--ink),0 16px 0 #8d402c,0 0 70px #fff85e;
+                animation: championBounce 1s infinite alternate
+            }
+
+            .champion-name {
+                margin: 18px 0 4px;
+                font-size: clamp(28px,6vw,48px);
+                color: #a62e32;
+                text-shadow: 2px 2px #fff
+            }
+
+            .confetti {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                overflow: hidden
+            }
+
+            .confetti-piece {
+                position: absolute;
+                top: -30px;
+                width: 14px;
+                height: 24px;
+                border: 2px solid #3d251e;
+                border-radius: 4px;
+                animation: confettiFall var(--duration) linear infinite;
+                animation-delay: var(--delay);
+                background: var(--color)
+            }
+
+            @keyframes pop {
+                from {
+                    transform: scale(.8);
+                    opacity: 0
+                }
+
+                to {
+                    transform: none;
+                    opacity: 1
+                }
+            }
+
+            @keyframes foodLand {
+                0% {
+                    transform: translateY(-120vh) rotate(-12deg) scale(.7)
+                }
+
+                70% {
+                    transform: translateY(12px) rotate(3deg) scale(1.05)
+                }
+
+                100% {
+                    transform: none
+                }
+            }
+
+            @keyframes foodBreak {
+                0% {
+                    transform: scale(1)
+                }
+
+                25% {
+                    transform: translate(-9px,5px) rotate(-4deg)
+                }
+
+                45% {
+                    transform: translate(9px,-4px) rotate(5deg)
+                }
+
+                100% {
+                    transform: scale(.05) rotate(25deg);
+                    opacity: 0;
+                    filter: contrast(2) saturate(2)
+                }
+            }
+
+            @keyframes fragmentFly {
+                0% {
+                    opacity: 1;
+                    transform: translate(0,0) rotate(0)
+                }
+
+                100% {
+                    opacity: 0;
+                    transform: translate(var(--x),var(--y)) rotate(520deg)
+                }
+            }
+
+            @keyframes revealPlayer {
+                to {
+                    opacity: 1;
+                    transform: scale(1)
+                }
+            }
+
+            @keyframes championBounce {
+                to {
+                    transform: translateY(-12px) scale(1.04)
+                }
+            }
+
+            @keyframes championSpark {
+                to {
+                    transform: scale(1.35) rotate(18deg)
+                }
+            }
+
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(620px) rotate(720deg)
+                }
+            }
+
+            @media(max-width: 1050px) {
+                .layout {
+                    grid-template-columns:minmax(240px,320px) 1fr
+                }
+
+                .roster-card {
+                    grid-column: 1/-1;
+                    max-height: 230px
+                }
+
+                .players {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill,minmax(180px,1fr))
+                }
+
+                .wheel-wrap {
+                    width: min(62vh,100%)
+                }
+            }
+
+            @media(max-width: 700px) {
+                .app {
+                    padding:8px
+                }
+
+                .topbar {
+                    align-items: flex-start
+                }
+
+                .logo {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 28px;
+                    border-radius: 17px
+                }
+
+                .status {
+                    padding: 7px 10px;
+                    font-size: 9px
+                }
+
+                .layout {
+                    display: flex;
+                    flex-direction: column
+                }
+
+                .wheel-card {
+                    order: 1;
+                    min-height: auto;
+                    padding: 8px
+                }
+
+                .wheel-wrap {
+                    width: min(92vw,470px)
+                }
+
+                .side.config {
+                    order: 2
+                }
+
+                .roster-card {
+                    order: 3;
+                    max-height: none
+                }
+
+                .food-grid {
+                    grid-template-columns: repeat(2,1fr)
+                }
+
+                .food {
+                    min-height: 96px
+                }
+
+                .field textarea {
+                    height: 86px
+                }
+
+                .round-label {
+                    bottom: 4px
+                }
+
+                .brand .subtitle {
+                    display: none
+                }
+            }
+
+            @media(max-width: 390px) {
+                h1 {
+                    font-size:22px
+                }
+
+                .logo {
+                    display: none
+                }
+
+                .food-grid {
+                    gap: 7px;
+                    padding: 10px
+                }
+
+                .food .emoji {
+                    font-size: 34px
+                }
+
+                .food {
+                    min-height: 82px
+                }
+
+                .btn {
+                    padding: 8px
+                }
+
+                .mini b {
+                    font-size: 17px
+                }
+            }
+
+            .tiktok-slot {
+                justify-self: end
+            }
+
+            .tiktok-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                padding: 9px 16px;
+                border: 3px solid var(--ink);
+                border-radius: 999px;
+                background: #1b1320;
+                color: #fff;
+                font-weight: 900;
+                font-size: clamp(11px,1.7vw,15px);
+                cursor: pointer;
+                box-shadow: 0 4px 0 var(--shadow),inset 0 0 0 0 #25f4ee;
+                transition: .15s
+            }
+
+            .tiktok-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 0 var(--shadow),0 0 0 3px #25f4ee55
+            }
+
+            .tiktok-btn:active {
+                transform: translateY(3px);
+                box-shadow: 0 1px 0 var(--shadow)
+            }
+
+            .tiktok-btn .note {
+                padding: 2px 7px;
+                border-radius: 999px;
+                background: linear-gradient(90deg,#25f4ee,#fe2c55);
+                color: #1b1320;
+                font-size: 9px
+            }
+
+            .pro {
+                width: min(470px,94vw);
+                text-align: center;
+                overflow: hidden
+            }
+
+            .pro-head {
+                padding: 26px 20px 18px;
+                background: linear-gradient(135deg,#1b1320,#3a1f36);
+                color: #fff;
+                border-bottom: 5px solid var(--ink)
+            }
+
+            .pro-lock {
+                font-size: 56px;
+                line-height: 1;
+                filter: drop-shadow(0 5px 0 #00000055)
+            }
+
+            .pro-head h2 {
+                margin: 10px 0 0;
+                font-size: 26px;
+                color: #fff;
+                text-shadow: 0 3px 0 #fe2c5588
+            }
+
+            .pro-head small {
+                display: block;
+                margin-top: 6px;
+                color: #25f4ee;
+                font-size: 12px;
+                font-weight: 800
+            }
+
+            .pro-body {
+                padding: 20px
+            }
+
+            .pro-body p {
+                margin: 0 0 14px;
+                font-size: 14px;
+                line-height: 1.9;
+                color: #5e3f35
+            }
+
+            .pro-list {
+                margin: 0 0 16px;
+                padding: 12px;
+                list-style: none;
+                border: 2px dashed #c88766;
+                border-radius: 14px;
+                background: #fff3df;
+                text-align: right;
+                font-size: 12px;
+                line-height: 2
+            }
+
+            .pro-cta {
+                display: block;
+                padding: 13px;
+                border: 3px solid var(--ink);
+                border-radius: 16px;
+                background: linear-gradient(90deg,#fe2c55,#ff7043);
+                color: #fff;
+                font-size: 16px;
+                font-weight: 900;
+                text-decoration: none;
+                box-shadow: 0 5px 0 var(--shadow);
+                transition: .15s
+            }
+
+            .pro-cta:hover {
+                transform: translateY(-2px)
+            }
+
+            .pro-cta:active {
+                transform: translateY(3px);
+                box-shadow: 0 1px 0 var(--shadow)
+            }
+
+            .pro-close {
+                margin-top: 10px;
+                width: 100%
+            }
+
+            .player {
+                grid-template-columns: 40px 1fr auto auto auto
+            }
+
+            .shield-btn {
+                width: 27px;
+                height: 27px;
+                padding: 0;
+                border: 2px solid var(--ink);
+                border-radius: 9px;
+                background: #fff;
+                font-size: 13px;
+                cursor: pointer;
+                filter: grayscale(1);
+                opacity: .55
+            }
+
+            .shield-btn.on {
+                background: #ffe07a;
+                filter: none;
+                opacity: 1
+            }
+
+            .meter-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 7px;
+                margin-top: 8px
+            }
+
+            .battle-manual {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: 8px;
+                margin: 0 16px 12px
+            }
+
+            .battle-manual input {
+                border: 3px solid var(--ink);
+                border-radius: 14px;
+                background: #fff;
+                padding: 10px 12px;
+                outline: 0;
+                color: var(--ink)
+            }
+
+            .battle-manual input:focus {
+                box-shadow: 0 0 0 4px #ffd54f77
+            }
+
+            @media(prefers-reduced-motion:reduce) {
+                * {
+                    animation-duration: .01ms!important;
+                    transition-duration: .01ms!important
+                }
+            }
+
+            @media(max-width: 700px) {
+                .topbar {
+                    grid-template-columns:1fr auto;
+                    row-gap: 8px
+                }
+
+                .brand {
+                    grid-column: 2
+                }
+
+                .tiktok-slot {
+                    grid-column: 1/-1;
+                    justify-self: center
+                }
+
+                .battle-manual {
+                    grid-template-columns: 1fr
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="app">
+            <header class="topbar">
+                <div class="site-name">Loveligo.com</div>
+                <div class="brand">
+                    <img class="brand-logo" src="logo.png" alt="معركة الأكلات">
+                </div>
+                <div class="tiktok-slot">
+                    <button id="tiktokLink" class="tiktok-btn">
+                        🎵 ربط بتيك توك <span class="note">PRO</span>
+                    </button>
+                </div>
+            </header>
+            <section class="layout">
+                <aside class="card side config">
+                    <div class="card-head">
+                        <h2>🎮 إعداد الجولة</h2>
+                        <button id="help" class="btn small">طريقة اللعب</button>
+                    </div>
+                    <div class="side-body">
+                        <div class="field">
+                            <label>أسماء يدوية — اسم في كل سطر أو افصل بفاصلة</label>
+                            <textarea id="names" placeholder="سارة، محمد، نور..."></textarea>
+                        </div>
+                        <div class="btnrow">
+                            <button id="addNames" class="btn green">إضافة اللاعبين</button>
+                            <button id="demo" class="btn">تجربة سريعة</button>
+                        </div>
+                        <div class="field">
+                            <label>عدد فرص كل لاعب</label>
+                            <select id="lives">
+                                <option value="1" selected>فرصة واحدة</option>
+                                <option value="2">فرصتان</option>
+                                <option value="3">3 فرص</option>
+                            </select>
+                        </div>
+                        <p class="hint">✍️ أضف أسماء اللاعبين يدويًا. لكل لاعب أكلة تخفيه، والعجلة تختار صاحب الدور. اضغط على الأكلة أو اكتب رقمها لتنفيذ الاختيار. من يختبئ خلف الأكلة يُقصى. 🛡️ اضغط زر الدرع بجانب أي لاعب لتمنحه حماية من ضربة واحدة.</p>
+                        <div class="mini-stats">
+                            <div class="mini">
+                                <b id="rounds">0</b>
+                                <span>الجولات</span>
+                            </div>
+                            <div class="mini">
+                                <b id="hits">0</b>
+                                <span>الضربات</span>
+                            </div>
+                            <div class="mini">
+                                <b id="totalLikes">0</b>
+                                <span>نقاط الشحن</span>
+                            </div>
+                        </div>
+                        <button id="reset" class="btn">↻ إعادة اللعبة</button>
+                    </div>
+                </aside>
+                <section class="card wheel-card">
+                    <div class="wheel-wrap">
+                        <div class="pointer"></div>
+                        <canvas id="wheel" width="700" height="700"></canvas>
+                        <button id="spin" class="spin">لُف!</button>
+                        <div id="roundLabel" class="round-label">أضف لاعبين ثم ابدأ المعركة</div>
+                    </div>
+                </section>
+                <aside class="card side roster-card">
+                    <div class="card-head">
+                        <h2>👥 اللاعبون</h2>
+                        <span id="count">0</span>
+                    </div>
+                    <div id="players" class="players">
+                        <div class="empty">أضف أسماء اللاعبين لتبدأ المعركة</div>
+                    </div>
+                    <div class="meter">
+                        <div class="meter-row">
+                            <span>⚡ شحن العجلة</span>
+                            <span id="likeText">0 / 100</span>
+                        </div>
+                        <div class="track">
+                            <div id="likeFill" class="fill"></div>
+                        </div>
+                        <div class="meter-actions">
+                            <button id="addPower" class="btn small">+10 ⚡</button>
+                            <button id="fullPower" class="btn small">شحن كامل</button>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+        </main>
+        <div id="battleOverlay" class="overlay">
+            <section class="battle">
+                <div class="battle-head">
+                    <h2>🍕 اختر الأكلة التي تخفي لاعبًا!</h2>
+                    <div class="target">
+                        <img id="targetAvatar" alt="">
+                        <div>
+                            <small>صاحب الاختيار</small>
+                            <strong id="targetName"></strong>
+                        </div>
+                    </div>
+                </div>
+                <div id="foodGrid" class="food-grid"></div>
+                <div class="battle-manual">
+                    <input id="manualChoice" placeholder="اكتب رقم الأكلة أو اسمها" autocomplete="off">
+                    <button id="manualAttack" class="btn primary">تنفيذ الاختيار</button>
+                </div>
+                <p class="battle-note">
+                    اضغط على أي أكلة مباشرة، أو اكتب <b>رقمها أو اسمها</b>
+                    في الحقل أعلاه.
+                </p>
+            </section>
+        </div>
+        <div id="eliminationOverlay" class="overlay">
+            <section class="battle elimination">
+                <div id="eliminationStage" class="elimination-stage">
+                    <img id="impactFood" class="food-impact" alt="">
+                    <div id="fragments" class="fragments"></div>
+                    <div id="revealedPlayer" class="revealed-player">
+                        <img id="eliminatedAvatar" alt="">
+                        <strong id="eliminatedName"></strong>
+                    </div>
+                </div>
+                <div id="eliminationCopy" class="elimination-copy pending">
+                    <h2 id="eliminationTitle">تم إقصاء اللاعب!</h2>
+                    <p id="eliminationText"></p>
+                    <button id="continueElimination" class="btn primary">متابعة المعركة</button>
+                </div>
+            </section>
+        </div>
+        <div id="helpOverlay" class="overlay">
+            <section class="battle">
+                <div class="winner">
+                    <div class="trophy">🍿</div>
+                    <h2>كيف نلعب؟</h2>
+                    <p>
+                        1. أضف أسماء اللاعبين يدويًا في لوحة الإعداد.<br>
+                        2. يظهر عدد أكلات مساوٍ تمامًا لعدد اللاعبين، ويختبئ لاعب عشوائي خلف كل أكلة.<br>
+                        3. اضغط «لُف!» لتدور العجلة وتختار صاحب الدور.<br>
+                        4. اضغط على الأكلة التي يختارها، أو اكتب رقمها أو اسمها في حقل الاختيار.<br>
+                        5. تتحطم الأكلة وتكشف اللاعب المختبئ خلفها، ثم يُقصى بعد الضغط على «متابعة».<br>6. يُحذف اللاعب المقصى من العجلة، وآخر لاعب متبقٍ يفوز.
+                    </p>
+                    <button class="btn primary" data-close="helpOverlay">فهمت، لنبدأ!</button>
+                </div>
+            </section>
+        </div>
+        <div id="winnerOverlay" class="overlay">
+            <section class="battle champion-card">
+                <div id="confetti" class="confetti"></div>
+                <div class="winner">
+                    <div class="trophy">🏆</div>
+                    <h2>بطل معركة الأكلات</h2>
+                    <img id="winnerAvatar" class="champion-avatar" alt="صورة البطل">
+                    <h3 id="winnerName" class="champion-name"></h3>
+                    <p>🎉 صمد حتى النهاية وفاز بالمعركة! 🎉</p>
+                    <button id="playAgain" class="btn primary">معركة جديدة</button>
+                </div>
+            </section>
+        </div>
+        <div id="proOverlay" class="overlay">
+            <section class="battle pro">
+                <div class="pro-head">
+                    <div class="pro-lock">🔒</div>
+                    <h2>الربط مع تيك توك</h2>
+                    <small>متاح في النسخة الاحترافية</small>
+                </div>
+                <div class="pro-body">
+                    <p>لتشغيل اللعبة مباشرة على بث تيك توك، يجب عليك الحصول على النسخة الاحترافية.</p>
+                    <ul class="pro-list">
+                        <li>💬 انضمام المشاهدين تلقائيًا بالتعليقات</li>
+                        <li>🔢 اختيار الأكلة من التعليق مباشرة</li>
+                        <li>❤️ التكبيسات تشحن العجلة وتُديرها</li>
+                        <li>🎁 الهدايا تمنح اللاعبين دروعًا</li>
+                    </ul>
+                    <a class="pro-cta" href="https://loveligo.com/interactive-games" target="_blank" rel="noopener">اضغط هنا للحصول على النسخة الاحترافية</a>
+                    <button class="btn pro-close" data-close="proOverlay">لاحقًا</button>
+                </div>
+            </section>
+        </div>
+        <div id="toast" class="toast"></div>
+        <script src="food-catalog.js"></script>
+        <script>
+            ( () => {
+                'use strict';
+                const $ = s => document.querySelector(s);
+                const FALLBACK = [['بيتزا', '🍕', '#ffca3a'], ['برجر', '🍔', '#ff924c'], ['شاورما', '🌯', '#f2c17b'], ['كسكس', '🍲', '#8ac926'], ['طاجين', '🥘', '#ff595e'], ['سوشي', '🍣', '#ff8fab'], ['معكرونة', '🍝', '#ffd166'], ['دجاج مشوي', '🍗', '#e8a87c'], ['فلافل', '🧆', '#a3c65c'], ['هريسة', '🍮', '#f7b267'], ['سلطة', '🥗', '#6cc5d3'], ['تاكو', '🌮', '#ffb703'], ['دونات', '🍩', '#ff8fab'], ['آيس كريم', '🍦', '#9b5de5'], ['كعك', '🍰', '#ffc2d1'], ['فشار', '🍿', '#fff1a8'], ['بطاطس', '🍟', '#ffd54f'], ['خبز', '🥖', '#e6b17e'], ['جبن', '🧀', '#ffdd57'], ['بيض', '🍳', '#fff3c4'], ['سمك', '🐟', '#42a5f5'], ['كباب', '🍢', '#ef476f'], ['حساء', '🥣', '#f4a261'], ['فواكه', '🍉', '#7ed957']];
+                function emojiCard(emoji, bg) {
+                    return 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="300" height="220"><rect width="300" height="220" fill="${bg}"/><text x="150" y="158" font-size="120" text-anchor="middle">${emoji}</text></svg>`)
+                }
+                const foods = Array.isArray(window.FOOD_WAR_CATALOG) && window.FOOD_WAR_CATALOG.length ? window.FOOD_WAR_CATALOG : FALLBACK.map( ([name,emoji,bg]) => ({
+                    name,
+                    emoji,
+                    image: emojiCard(emoji, bg)
+                }));
+                const colors = ['#ff595e', '#ffca3a', '#8ac926', '#42a5f5', '#9b5de5', '#ff8fab', '#ff924c', '#6cc5d3'];
+                const state = {
+                    players: new Map(),
+                    rotation: 0,
+                    spinning: false,
+                    current: null,
+                    foods: [],
+                    hiding: [],
+                    pending: null,
+                    rounds: 0,
+                    hits: 0,
+                    likes: 0,
+                    likePower: 0,
+                    toastTimer: null
+                };
+                const key = v => String(v || '').trim().toLowerCase()
+                  , esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[c]));
+                function avatar(p) {
+                    return p.avatar || `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(p.name)}`
+                }
+                function toast(text) {
+                    const el = $('#toast');
+                    el.textContent = text;
+                    el.classList.add('show');
+                    clearTimeout(state.toastTimer);
+                    state.toastTimer = setTimeout( () => el.classList.remove('show'), 2600)
+                }
+                function addPlayer(p) {
+                    if (!p.id || state.players.has(key(p.id)))
+                        return;
+                    const lives = Math.max(1, +$('#lives').value || 2);
+                    state.players.set(key(p.id), {
+                        ...p,
+                        lives,
+                        maxLives: lives,
+                        shield: 0
+                    });
+                    render();
+                    toast(`🎉 انضم ${p.name} إلى المعركة`)
+                }
+                function active() {
+                    return [...state.players.values()].filter(p => p.lives > 0 || (state.pending && state.pending.player.id === p.id))
+                }
+                function render() {
+                    const list = $('#players')
+                      , all = [...state.players.values()];
+                    $('#count').textContent = active().length + ' / ' + all.length;
+                    list.innerHTML = all.length ? all.map(p => `<article class="player ${state.current && p.id === state.current.id ? 'current' : ''}" data-id="${esc(p.id)}"><img class="avatar" src="${esc(avatar(p))}" alt=""><div class="pname">${p.shield ? '🛡️ ' : ''}${esc(p.name)}</div><div class="lives">${'❤️'.repeat(p.lives)}${'🖤'.repeat(Math.max(0, p.maxLives - p.lives))}</div><button class="shield-btn ${p.shield ? 'on' : ''}" title="درع" aria-label="درع">🛡️</button><button class="remove" aria-label="حذف">×</button></article>`).join('') : '<div class="empty">أضف أسماء اللاعبين لتبدأ المعركة</div>';
+                    $('#rounds').textContent = state.rounds;
+                    $('#hits').textContent = state.hits;
+                    $('#totalLikes').textContent = state.likes;
+                    drawWheel()
+                }
+                function drawWheel() {
+                    const canvas = $('#wheel')
+                      , ctx = canvas.getContext('2d')
+                      , items = active()
+                      , n = Math.max(1, items.length)
+                      , cx = 350
+                      , cy = 350
+                      , r = 330;
+                    ctx.clearRect(0, 0, 700, 700);
+                    for (let i = 0; i < n; i++) {
+                        const a = -Math.PI / 2 + i * Math.PI * 2 / n
+                          , b = -Math.PI / 2 + (i + 1) * Math.PI * 2 / n;
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy);
+                        ctx.arc(cx, cy, r, a, b);
+                        ctx.closePath();
+                        ctx.fillStyle = colors[i % colors.length];
+                        ctx.fill();
+                        ctx.lineWidth = 6;
+                        ctx.strokeStyle = '#3d251e';
+                        ctx.stroke();
+                        if (items[i]) {
+                            ctx.save();
+                            ctx.translate(cx, cy);
+                            ctx.rotate((a + b) / 2);
+                            ctx.textAlign = 'right';
+                            ctx.fillStyle = '#3d251e';
+                            ctx.font = `800 ${Math.max(19, Math.min(36, 180 / n + 12))}px Changa`;
+                            let name = items[i].name.length > 12 ? items[i].name.slice(0, 11) + '…' : items[i].name;
+                            ctx.fillText(name, r - 32, 10);
+                            ctx.restore()
+                        }
+                    }
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 78, 0, Math.PI * 2);
+                    ctx.fillStyle = '#fff4c2';
+                    ctx.fill();
+                    ctx.lineWidth = 8;
+                    ctx.strokeStyle = '#3d251e';
+                    ctx.stroke()
+                }
+                function spin() {
+                    const items = active();
+                    if (state.spinning || state.current || items.length < 1)
+                        return toast('أضف لاعبًا واحدًا على الأقل');
+                    state.spinning = true;
+                    $('#spin').disabled = true;
+                    const chosen = Math.floor(Math.random() * items.length)
+                      , slice = 360 / items.length
+                      , targetAngle = 360 - (chosen + .5) * slice
+                      , turns = 5 + Math.floor(Math.random() * 3);
+                    state.rotation += turns * 360 + ((targetAngle - state.rotation % 360 + 360) % 360);
+                    $('#wheel').style.transform = `rotate(${state.rotation}deg)`;
+                    $('#roundLabel').textContent = 'العجلة تدور… من سيكون الهدف؟';
+                    setTimeout( () => {
+                        state.spinning = false;
+                        $('#spin').disabled = false;
+                        state.current = items[chosen];
+                        state.rounds++;
+                        openBattle();
+                        render()
+                    }
+                    , 5100)
+                }
+                function openBattle() {
+                    const players = active()
+                      , shuffledPlayers = [...players].sort( () => Math.random() - .5)
+                      , foodPool = [...foods].sort( () => Math.random() - .5);
+                    state.foods = Array.from({
+                        length: players.length
+                    }, (_, index) => ({
+                        ...foodPool[index % foodPool.length],
+                        number: index + 1
+                    }));
+                    state.hiding = state.foods.map( (food, index) => ({
+                        food,
+                        player: shuffledPlayers[index]
+                    }));
+                    const grid = $('#foodGrid')
+                      , size = players.length <= 3 ? 'tiny' : players.length <= 8 ? 'small' : players.length <= 20 ? 'medium' : 'large';
+                    grid.dataset.size = size;
+                    $('#targetName').textContent = state.current.name;
+                    $('#targetAvatar').src = avatar(state.current);
+                    grid.innerHTML = state.foods.map(food => `<button class="food" data-food-number="${food.number}" data-food="${esc(food.name)}"><span class="food-number">${food.number}</span><img src="${esc(food.image)}" alt="${esc(food.name)}"><b>${esc(food.name)}</b></button>`).join('');
+                    $('#manualChoice').value = '';
+                    $('#battleOverlay').classList.add('show');
+                    $('#roundLabel').textContent = `🎯 دور ${state.current.name}: اختر اسم الأكلة أو رقمها`
+                }
+                function attack(foodChoice, attacker) {
+                    if (!state.current || state.pending)
+                        return;
+                    const choice = String(foodChoice || '').trim()
+                      , slot = state.hiding.find(item => String(item.food.number) === choice || key(item.food.name) === key(choice));
+                    if (!slot || !slot.player)
+                        return;
+                    const p = state.players.get(key(slot.player.id))
+                      , food = slot.food;
+                    if (!p)
+                        return;
+                    if (p.shield > 0) {
+                        p.shield--;
+                        $('#battleOverlay').classList.remove('show');
+                        state.current = null;
+                        state.hiding = [];
+                        toast(`🛡️ درع ${p.name} صدّ ${food.name}!`);
+                        render();
+                        return
+                    }
+                    p.lives = Math.max(0, p.lives - 1);
+                    state.hits++;
+                    state.pending = {
+                        player: p,
+                        chooser: state.current,
+                        food,
+                        attacker: attacker || state.current.name,
+                        eliminated: p.lives <= 0
+                    };
+                    $('#battleOverlay').classList.remove('show');
+                    showElimination()
+                }
+                function showElimination() {
+                    const pending = state.pending
+                      , stage = $('#eliminationStage')
+                      , food = $('#impactFood')
+                      , revealed = $('#revealedPlayer')
+                      , copy = $('#eliminationCopy');
+                    stage.classList.remove('destroying');
+                    food.className = 'food-impact';
+                    revealed.classList.remove('show');
+                    copy.classList.add('pending');
+                    food.src = pending.food.image;
+                    food.alt = pending.food.name;
+                    $('#eliminatedAvatar').src = avatar(pending.player);
+                    $('#eliminatedName').textContent = pending.player.name;
+                    $('#fragments').innerHTML = Array.from({
+                        length: 12
+                    }, (_, i) => `<span class="fragment" style="--x:${Math.cos(i) * 220}px;--y:${Math.sin(i) * 190}px;--delay:${(i % 4) * .04}s">${pending.food.emoji}</span>`).join('');
+                    $('#eliminationOverlay').classList.add('show');
+                    setTimeout( () => {
+                        stage.classList.add('destroying');
+                        food.classList.add('destroyed')
+                    }
+                    , 850);
+                    setTimeout( () => {
+                        revealed.classList.add('show');
+                        copy.classList.remove('pending');
+                        $('#eliminationTitle').textContent = pending.eliminated ? 'لقد تم إقصاء هذا اللاعب!' : 'خسر اللاعب فرصة!';
+                        $('#eliminationText').textContent = `${pending.attacker} اختار ${pending.food.name} ضد ${pending.player.name}`
+                    }
+                    , 1500)
+                }
+                function celebrateWinner(winner) {
+                    $('#winnerName').textContent = winner.name;
+                    $('#winnerAvatar').src = avatar(winner);
+                    const confettiColors = ['#ff595e', '#ffca3a', '#8ac926', '#42a5f5', '#9b5de5', '#fff'];
+                    $('#confetti').innerHTML = Array.from({
+                        length: 46
+                    }, (_, i) => `<i class="confetti-piece" style="left:${(i * 37) % 100}%;--delay:-${(i % 12) * .27}s;--duration:${2.4 + (i % 7) * .22}s;--color:${confettiColors[i % confettiColors.length]};transform:rotate(${i * 29}deg)"></i>`).join('');
+                    $('#winnerOverlay').classList.add('show');
+                    $('#roundLabel').textContent = '🏆 ' + winner.name + ' فاز بالمعركة!'
+                }
+                function continueElimination() {
+                    const pending = state.pending;
+                    if (!pending)
+                        return;
+                    $('#eliminationOverlay').classList.remove('show');
+                    if (pending.eliminated)
+                        state.players.delete(key(pending.player.id));
+                    state.pending = null;
+                    state.current = null;
+                    state.hiding = [];
+                    render();
+                    const survivors = active();
+                    if (survivors.length === 1)
+                        celebrateWinner(survivors[0]);
+                    else
+                        $('#roundLabel').textContent = 'الجولة التالية جاهزة — اضغط لُف!'
+                }
+                function reset() {
+                    state.players.forEach(p => {
+                        p.lives = p.maxLives;
+                        p.shield = 0
+                    }
+                    );
+                    state.current = null;
+                    state.pending = null;
+                    state.rounds = 0;
+                    state.hits = 0;
+                    state.likePower = 0;
+                    $('#winnerOverlay').classList.remove('show');
+                    $('#battleOverlay').classList.remove('show');
+                    $('#eliminationOverlay').classList.remove('show');
+                    $('#roundLabel').textContent = 'المعركة جاهزة — اضغط لُف!';
+                    meter();
+                    render()
+                }
+                function meter() {
+                    $('#likeText').textContent = state.likePower + ' / 100';
+                    $('#likeFill').style.width = Math.min(100, state.likePower) + '%'
+                }
+                $('#addNames').onclick = () => {
+                    String($('#names').value).split(/[،,\n]+/).map(s => s.trim()).filter(Boolean).forEach( (name, i) => addPlayer({
+                        id: 'manual-' + key(name) + '-' + i,
+                        name,
+                        avatar: '',
+                        manual: true
+                    }));
+                    $('#names').value = ''
+                }
+                ;
+                $('#demo').onclick = () => ['سارة', 'محمد', 'نور', 'ليان', 'عمر', 'جنى'].forEach( (name, i) => addPlayer({
+                    id: 'demo-' + i,
+                    name,
+                    avatar: '',
+                    manual: true
+                }));
+                $('#spin').onclick = spin;
+                $('#reset').onclick = reset;
+                $('#playAgain').onclick = reset;
+                $('#continueElimination').onclick = continueElimination;
+                $('#help').onclick = () => $('#helpOverlay').classList.add('show');
+                document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => $('#' + b.dataset.close).classList.remove('show'));
+                $('#players').onclick = e => {
+                    const s = e.target.closest('.shield-btn');
+                    if (s) {
+                        const row = s.closest('.player')
+                          , p = state.players.get(key(row.dataset.id));
+                        if (p) {
+                            p.shield = p.shield > 0 ? 0 : 1;
+                            toast(p.shield ? `🛡️ ${p.name} حصل على درع` : `تم سحب درع ${p.name}`);
+                            render()
+                        }
+                        return
+                    }
+                    const b = e.target.closest('.remove');
+                    if (!b)
+                        return;
+                    const row = b.closest('.player');
+                    state.players.delete(key(row.dataset.id));
+                    if (state.current && key(state.current.id) === key(row.dataset.id)) {
+                        state.current = null;
+                        $('#battleOverlay').classList.remove('show')
+                    }
+                    render()
+                }
+                ;
+                $('#foodGrid').onclick = e => {
+                    const b = e.target.closest('[data-food-number]');
+                    if (b)
+                        attack(b.dataset.foodNumber, 'المشرف')
+                }
+                ;
+                function power(added) {
+                    state.likes += added;
+                    state.likePower += added;
+                    while (state.likePower >= 100) {
+                        state.likePower -= 100;
+                        if (!state.current && !state.spinning)
+                            setTimeout(spin, 250)
+                    }
+                    meter();
+                    render()
+                }
+                $('#addPower').onclick = () => power(10);
+                $('#fullPower').onclick = () => power(Math.max(1, 100 - state.likePower));
+                $('#manualAttack').onclick = () => {
+                    const input = $('#manualChoice')
+                      , value = input.value.trim();
+                    if (!value)
+                        return toast('اكتب رقم الأكلة أو اسمها');
+                    const before = state.current;
+                    attack(value, 'المشرف');
+                    if (state.current === before && !state.pending)
+                        return toast('لا توجد أكلة بهذا الاسم أو الرقم');
+                    input.value = ''
+                }
+                ;
+                $('#manualChoice').onkeydown = e => {
+                    if (e.key === 'Enter')
+                        $('#manualAttack').click()
+                }
+                ;
+                $('#tiktokLink').onclick = () => $('#proOverlay').classList.add('show');
+                window.addEventListener('resize', drawWheel);
+                drawWheel();
+                meter();
+                window.FoodWar = {
+                    state,
+                    addPlayer,
+                    spin,
+                    attack,
+                    reset
+                };
+            }
+            )();
+        </script>
+    </body>
+</html>
