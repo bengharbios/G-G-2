@@ -241,3 +241,121 @@ paint-order="stroke fill"
 ---
 
 هذا الملف مرجع شامل للتصميم — يمكن العودة إليه في أي وقت.
+
+---
+
+## 🚨 تنبيه حرج: صورة اللعبة vs أيقونة اللعبة
+
+> **هذا القسم تمت إضافته بعد خطأ تكرر عدة مرات — اقرأه قبل أي تعديل على صور الألعاب!**
+
+### المشكلة التي وقعنا فيها
+
+عند تحديث صور لعبة "حرب الاكلات" (foodwar)، خلطنا بين **صورة اللعبة الكبيرة** و **الأيقونة الصغيرة**. النتيجة:
+- الصورة الكبيرة لم تظهر في زر اللعبة (يظهر بدلاً منها الأيقونة الصغيرة)
+- اضطررنا لعمل 3 commits لإصلاح المشكلة
+
+### ⚠️ الفرق الجوهري: 3 أنواع من الأصول البصرية
+
+| النوع | الحجم النموذجي | المسار في الكود | مكان الاستخدام | المثال (foodwar) |
+|---|---|---|---|---|
+| 🖼️ **صورة اللعبة الكبيرة** (game image) | 1200×896 (1+ MB) | `games-data.ts`: `bgImage`<br/>`BattleButton.imageSrc` (DB) | بطاقة اللعبة في GamesSection<br/>زر اللعبة في BattlePage | `/yalla-games/foodwar-photo.png` |
+| 🎯 **أيقونة select/unselect** (battle icon) | 516×432 (10-30 KB) | `BattlePage.tsx`: `GAME_ICONS[slug].select/unselect` | زر اللعبة في BattlePage (overlay) | `/battle/game_select_foodwar_icon_select.webp` |
+| 🏷️ **أيقونة صغيرة 129×108** | 129×108 (3-12 KB) | نفس المسار مع suffix `_129x108` | نسخة مضغوطة لأماكن عرض أصغر | `/battle/game_select_foodwar_icon_select_129x108.webp` |
+
+### 🎯 أين تظهر كل أصول؟ حسب الـtheme
+
+| Theme | كيف يحدد؟ | ما الذي يظهر؟ |
+|---|---|---|
+| **`current`** (القديم) | `games-data.ts` static array | GamesSection → بطاقة كبيرة بـ`bgImage` كخلفية |
+| **`yalla`** (السائد) | DB BattleButton table | BattlePage → زر يعرض `imageSrc` (صورة كبيرة) + `GAME_ICONS` (أيقونة overlay) |
+
+### 📋 لكل لعبة، يجب توفير:
+
+```
+public/yalla-games/<slug>-photo.png          ← صورة كبيرة (1200×896) بدون خلفية
+public/battle/game_select_<slug>_icon_select.webp       ← أيقونة نشطة (516×432)
+public/battle/game_select_<slug>_icon_unselect.webp     ← أيقونة عادية (516×432)
+public/battle/game_select_<slug>_icon_select_129x108.webp       ← نسخة صغيرة
+public/battle/game_select_<slug>_icon_unselect_129x108.webp     ← نسخة صغيرة
+```
+
+**ملاحظة مهمة**: الـDB يحوي `imageSrc: '/yalla-games/<slug>.png'` (مثل `/yalla-games/foodwar.png`). عند تغيير اسم ملف الصورة الكبيرة (مثل إضافة `-photo` suffix)، **يجب إضافة migration في `admin-db.ts`** لتحديث `imageSrc`.
+
+### 🔄 عند تحديث صور لعبة موجودة:
+
+1. **استبدل ملف الصورة الكبيرة** في `public/yalla-games/` بنفس الاسم (لا تغيّر الاسم)
+2. **استبدل ملفات الأيقونات** في `public/battle/` بنفس الأسماء
+3. **احفظ النسخة الأصلية** في `classified/Games Photos/` و `classified/Icon Games/`
+4. لو اضطررت لتغيير اسم ملف الصورة الكبيرة، أضف migration:
+   ```typescript
+   // في ensureAdminTables() في admin-db.ts:
+   try {
+     await c.execute({ 
+       sql: "UPDATE BattleButton SET imageSrc = '/yalla-games/<new-name>' WHERE buttonKey = '<slug>' AND imageSrc = '/yalla-games/<old-name>'", 
+       args: [] 
+     });
+   } catch { /* ignore */ }
+   ```
+5. **commit + push** لتفعيل الـdeployment
+6. **اضغط زر "🧹 مسح cache لكل المستخدمين"** في لوحة الـadmin لتفعيل التحديث عند كل المستخدمين
+
+### ❌ أخطاء شائعة يجب تجنبها:
+
+| الخطأ | العاقبة | الصواب |
+|---|---|---|
+| تحديث `bgImage` في `games-data.ts` بينما الـtheme = `yalla` | المستخدم لا يرى التغيير (يستخدم `imageSrc` من DB) | حدّث `imageSrc` في DB عبر migration |
+| حذف `foodwar.png` القديم دون تحديث DB | زر اللعبة يظهر broken image (404) | أضف migration يحدّث `imageSrc` قبل/مع الحذف |
+| خلط بين صورة كبيرة وأيقونة | صورة الأيقونة تظهر في مكان الصورة الكبيرة | تأكد أن `imageSrc` يشير للصورة الكبيرة و `GAME_ICONS` للأيقونة |
+| اعتماد cache المتصفح/APK | المستخدم يرى نسخة قديمة | استخدم زر "مسح cache لكل المستخدمين" في لوحة الـadmin |
+
+### 🔍 التحقق من الـtheme الحالي:
+
+افتح في المتصفح: `/api/battle/config`
+
+```json
+{"theme": {"themeKey": "yalla"}}  // ← يعرض BattlePage (الأزرار + imageSrc)
+{"theme": {"themeKey": "current"}} // ← يعرض GamesSection (بطاقات + bgImage)
+```
+
+### 🧹 نظام مسح cache (تفعيله بعد كل تحديث صور)
+
+أضفنا نظام كامل في commits `b66d6bbc` و `833ebb7f`:
+
+1. **DB**: جدول `CacheVersion` (version integer, reason, triggeredBy, updatedAt)
+2. **API**: 
+   - `GET /api/cache-version` — يُرجع رقم الإصدار الحالي (no-store)
+   - `POST /api/admin/clear-cache` — يزيد رقم الإصدار (admin-only)
+3. **Hook**: `useCacheVersionChecker` في `layout.tsx` يفحص الإصدار كل 60 ثانية
+4. **عند تغيّر الإصدار**: يمسح Cache API + Service Workers + غير الـauth localStorage + Hard Reload
+5. **زر الـadmin**: `ClearCacheCard` في قسم الإعدادات → "🧹 مسح cache لكل المستخدمين"
+
+### 📊 بيانات food war (مرجع):
+
+| الأصل | المسار | الحجم | المصدر |
+|---|---|---|---|
+| صورة كبيرة | `/yalla-games/foodwar-photo.png` | 1.16MB (1200×896, RGBA) | صورة المستخدم بعد إزالة الخلفية البيضاء |
+| أيقونة select | `/battle/game_select_foodwar_icon_select.webp` | 27KB (516×432) | أيقونة المستخدم |
+| أيقونة unselect | `/battle/game_select_foodwar_icon_unselect.webp` | 10KB (516×432) | أيقونة المستخدم |
+| أيقونة select 129×108 | `/battle/game_select_foodwar_icon_select_129x108.webp` | 12KB | أيقونة المستخدم |
+| أيقونة unselect 129×108 | `/battle/game_select_foodwar_icon_unselect_129x108.webp` | 10KB | أيقونة المستخدم |
+| brand-logo (داخل اللعبة) | `/foodwar-game/logo.png` | 126KB (800×240) | مُولّد بـPIL (حرب الاكلات + FOOD WAR) |
+
+### 🎮 بنية لعبة food war:
+
+اللعبة الأصلية من `loveligo.com/apps/food-war/index.html` مُدمجة بالكامل في:
+```
+public/foodwar-game/
+├── index.html          (65KB — كود loveligo الأصلي)
+├── food-catalog.js     (105 أطعمة عربية)
+├── logo.png             (126KB — شعار اللعبة)
+└── assets/
+    └── foods/           (105 صور أطعمة، غير مرفوعة بعد)
+```
+
+صفحة `/foodwar` تُحمّل `index.html` داخل iframe:
+```typescript
+// src/app/foodwar/page.tsx
+<iframe src={`/foodwar-game/index.html`} ... />
+```
+
+**لا تظهر صورة `foodwar-photo.png` داخل اللعبة نفسها** — هي فقط خلفية زر اللعبة في BattlePage.
