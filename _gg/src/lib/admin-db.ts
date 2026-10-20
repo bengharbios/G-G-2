@@ -1481,6 +1481,13 @@ export async function ensureAdminTables(): Promise<void> {
       await c.execute({ sql: "UPDATE GameConfig SET gameSlug = 'matchcards' WHERE gameSlug = 'battleship'", args: [] });
     } catch { /* ignore if already migrated */ }
 
+    // ─── Migration: update foodwar imageSrc to new transparent PNG path ───
+    // السابق: /yalla-games/foodwar.png (محذوف)
+    // الجديد: /yalla-games/foodwar-photo.png (شفاف، بدون خلفية بيضاء)
+    try {
+      await c.execute({ sql: "UPDATE BattleButton SET imageSrc = '/yalla-games/foodwar-photo.png' WHERE buttonKey = 'foodwar' AND imageSrc = '/yalla-games/foodwar.png'", args: [] });
+    } catch { /* ignore */ }
+
     // ─── Migration: أضف guessimage + matchcards لكل القوالب الموجودة ───
   // (للترقية من النسخ القديمة التي لم تكن تحوي هاتين اللعبتين في
   // BattleButton table)
