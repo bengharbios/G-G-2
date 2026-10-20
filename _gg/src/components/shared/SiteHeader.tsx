@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import FrameStoreModal from './FrameStoreModal';
 import SettingsModal from './SettingsModal';
 import ChargeDialog from './ChargeDialog';
-import RoyalDialog from './RoyalDialog';
-import BuyVipDialog from './BuyVipDialog';
 import SvgaOrImg from './SvgaOrImg';
 import { formatCompact } from '@/lib/format';
 import { enableBgMusicAutoStart, initVolumeFromStorage } from '@/lib/sounds';
@@ -75,12 +73,9 @@ export default function SiteHeader({
   const [storeOpen, setStoreOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [chargeOpen, setChargeOpen] = useState(false);
-  const [royalOpen, setRoyalOpen] = useState(false);
-  const [vipOpen, setVipOpen] = useState(false);
-  const [chargeTab, setChargeTab] = useState<'diamond' | 'gold' | 'vip' | 'royal'>('diamond');
+  const [chargeTab, setChargeTab] = useState<'diamond' | 'gold' | 'vip'>('diamond');
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
-  const [royalLevel, setRoyalLevel] = useState<number>(0);
 
   // تهيئة الصوت + تشغيل الموسيقى عند أول تفاعل (يعمل من أول فتح للموقع، ليس فقط في الألعاب)
   useEffect(() => {
@@ -120,24 +115,12 @@ export default function SiteHeader({
     return () => { cancelled = true; };
   }, [authUser]);
 
-  // جلب مستوى رويال الحالي للهيدر (لعرض الشارة الملوّنة)
-  useEffect(() => {
-    if (!authUser) return;
-    let cancelled = false;
-    fetch('/api/royal/state')
-      .then(r => r.json())
-      .then(d => { if (!cancelled && d.success) setRoyalLevel(d.level); })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, [authUser]);
-
   // إعادة جلب الرصيد والإطار عند عودة التركيز/الرؤية (بعد شراء أو تجهيز إطار)
   useEffect(() => {
     if (!authUser) return;
     const refresh = () => {
       fetch('/api/gems/balance').then(r => r.json()).then(d => { if (d.success) setGems(d.balance); }).catch(() => {});
       fetch('/api/gold/balance').then(r => r.json()).then(d => { if (d.success) setGold(d.balance); }).catch(() => {});
-      fetch('/api/royal/state').then(r => r.json()).then(d => { if (d.success) setRoyalLevel(d.level); }).catch(() => {});
       fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.success && d.user) setFetchedUser(d.user); }).catch(() => {});
     };
     window.addEventListener('focus', refresh);
@@ -152,7 +135,11 @@ export default function SiteHeader({
   // ابحث عن imageUrl الحقيقي للإطار المُجهَّز من الكتالوج (يدعم SVGA وغيرها)
   const [frameImg, setFrameImg] = useState<string | null>(null);
   useEffect(() => {
-    if (!authUser?.frame) { setFrameImg(null); return; }
+    if (!authUser?.frame) {
+      // تجنّب setState داخل الـ effect — استخدم microtask
+      Promise.resolve().then(() => setFrameImg(null));
+      return;
+    }
     let cancelled = false;
     getFramesCatalogMap().then((m) => {
       if (cancelled) return;
@@ -223,61 +210,6 @@ export default function SiteHeader({
             <img className="add-btn" src="/yalla-ui/jia.webp" alt="+" />
           </button>
 
-          {/* رويال — زر شارة ملوّنة على حسب المستوى (royal_level_value_ic) */}
-          <button
-            className="hd-icon royal-btn"
-            aria-label="مستوى رويال"
-            title={`مستوى رويال ${royalLevel}`}
-            onClick={() => (authUser ? setRoyalOpen(true) : onLoginClick?.())}
-            style={{ position: 'relative' }}
-          >
-            <img
-              src={royalLevel > 0 ? `/yalla-ui/royal/royal_level_${royalLevel}.webp` : '/yalla-ui/royal/royal_level_value_ic.webp'}
-              alt="royal"
-              style={{
-                width: '28px',
-                height: '28px',
-                objectFit: 'contain',
-                filter: royalLevel > 0 ? 'drop-shadow(0 0 6px rgba(251,191,36,.6))' : 'none',
-              }}
-              onError={(e) => { (e.target as HTMLImageElement).src = '/yalla-ui/royal/royal_level_value_ic.webp'; }}
-            />
-            {royalLevel > 0 && (
-              <span
-                style={{
-                  position: 'absolute',
-                  bottom: '-2px',
-                  right: '-4px',
-                  background: '#fbbf24',
-                  color: '#1f1407',
-                  fontSize: '9px',
-                  fontWeight: 700,
-                  padding: '1px 4px',
-                  borderRadius: '8px',
-                  minWidth: '14px',
-                  textAlign: 'center',
-                  lineHeight: '12px',
-                }}
-              >
-                {royalLevel}
-              </span>
-            )}
-          </button>
-
-          {/* VIP — زر اشتراك */}
-          <button
-            className="hd-icon vip-btn"
-            aria-label="اشتراكات VIP"
-            title="اشتراكات VIP"
-            onClick={() => (authUser ? setVipOpen(true) : onLoginClick?.())}
-          >
-            <img
-              src="/yalla-ui/full/vip.webp"
-              alt="VIP"
-              style={{ width: '28px', height: '28px', objectFit: 'contain' }}
-            />
-          </button>
-
           {/* المتجر — سلة cart من APK: يفتح متجر الإطارات */}
           <button
             className="hd-icon cart-btn"
@@ -315,30 +247,16 @@ export default function SiteHeader({
         onLogout={onLogout}
       />
 
-      {/* نافذة الشحن — تفتح عند الضغط على 💎 أو 🪙 */}
+      {/* نافذة الشحن — تفتح عند الضغط على 💎 أو 🪙 — تحتوي بداخلها على:
+          - 3 ألسنة (ذهب / ألماس / اشتراكات VIP) — مطابقة لـ fragment_shop.xml
+          - RoyalEntranceView في أعلى يسار الشاشة — يفتح RoyalDialog من داخل الشحن
+      */}
       <ChargeDialog
         open={chargeOpen}
         onClose={() => setChargeOpen(false)}
         initialTab={chargeTab}
         gems={gems}
         gold={gold}
-        onRoyalClick={() => setRoyalOpen(true)}
-        onVipClick={() => setVipOpen(true)}
-      />
-
-      {/* نافذة مستوى رويال — عدّاد دائري + امتيازات */}
-      <RoyalDialog
-        open={royalOpen}
-        onClose={() => setRoyalOpen(false)}
-        onChargeClick={() => { setChargeTab('royal'); setChargeOpen(true); }}
-      />
-
-      {/* نافذة اشتراكات VIP */}
-      <BuyVipDialog
-        open={vipOpen}
-        onClose={() => setVipOpen(false)}
-        gems={gems}
-        onChargeClick={() => { setChargeTab('diamond'); setChargeOpen(true); }}
       />
     </>
   );
