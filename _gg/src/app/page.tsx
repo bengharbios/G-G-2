@@ -90,7 +90,15 @@ interface GameData {
   themeBorder: string;
   themeBg: string;
   themeBadge: string;
-  features: string[  {
+  features: string[];
+  status: 'available' | 'coming_soon';
+  players: string;
+  category: string;
+  isFree: boolean;
+}
+
+const games: GameData[] = [
+  {
     id: 'foodwar',
     title: 'حرب الاكلات',
     titleEn: 'Food War',
@@ -102,20 +110,13 @@ interface GameData {
     themeColor: 'text-orange-400',
     themeBorder: 'border-orange-500/30 hover:border-orange-500/60',
     themeBg: 'from-orange-950/80 to-red-900/40',
+    themeBadge: 'bg-orange-500/20 border-orange-500/40 text-orange-300',
     features: ['العراب', 'حظ ومتعة', '2-8 لاعب', 'اسبين واختر'],
     status: 'available',
     players: '2-8 لاعب',
     category: 'حظ',
     isFree: true,
   },
-];
-  status: 'available' | 'coming_soon';
-  players: string;
-  category: string;
-  isFree: boolean;
-}
-
-const games: GameData[] = [
   {
     id: 'mafia',
     title: 'المافيا',

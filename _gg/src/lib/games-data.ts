@@ -15,7 +15,16 @@ export interface GameData {
   themeBorder: string;
   themeBg: string;
   themeBadge: string;
-  features: string[  {
+  features: string[];
+  status: 'available' | 'coming_soon';
+  players: string;
+  category: string;
+  /** Join path pattern for room code entry. Use {code} and {name} placeholders. */
+  joinPath: string;
+}
+
+export const games: GameData[] = [
+  {
     id: 'foodwar',
     title: 'حرب الاكلات',
     titleEn: 'Food War',
@@ -32,16 +41,8 @@ export interface GameData {
     players: '2-8 لاعب',
     category: 'حظ',
     isFree: true,
+    joinPath: '/join/foodwar/{code}?name={name}',
   },
-];
-  status: 'available' | 'coming_soon';
-  players: string;
-  category: string;
-  /** Join path pattern for room code entry. Use {code} and {name} placeholders. */
-  joinPath: string;
-}
-
-export const games: GameData[] = [
   {
     id: 'mafia',
     title: 'المافيا',

@@ -1723,6 +1723,17 @@ const defaultGames: Omit<GameConfig, 'id' | 'createdAt' | 'updatedAt'>[] = [
     color: 'indigo',
     isComingSoon: false,
   },
+  {
+    gameSlug: 'foodwar',
+    gameName: 'حرب الاكلات',
+    isEnabled: true,
+    order: 14,
+    playerRange: '2-8',
+    description: 'العجلة تدور! اختر طعاماً واكشف من يختبئ خلفه. آخر ناجي يفوز!',
+    icon: '🍕',
+    color: 'orange',
+    isComingSoon: false,
+  },
 ];
 
 // ── RoomBookmark functions ──
