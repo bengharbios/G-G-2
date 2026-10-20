@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:layout_width="369.0dip" android:layout_height="140.0dip" app:bindPage="event" app:controlBySVGAManager="true" app:play_on_attach="true" app:source="dynamic_receive.svga" app:speed_scale="0.5"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

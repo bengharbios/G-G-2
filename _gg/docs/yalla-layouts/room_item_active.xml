@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.AutoPageGifImageView android:id="@id/ivActivities" android:layout_width="43.0dip" android:layout_height="43.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:gravity="center" android:id="@id/tvRoomActivity" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines="1" android:autoSizeStepGranularity="1.0sp" android:autoSizeMinTextSize="8.0sp" android:autoSizeMaxTextSize="10.0sp" />
+</LinearLayout>

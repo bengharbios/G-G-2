@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:gravity="center" android:orientation="horizontal" android:id="@id/cl_yl_tabLayout_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="@color/color_black_5f" android:id="@id/tv_room_title" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <com.yalla.games.common.view.CustomTextView android:id="@id/tv_red_point" android:background="@drawable/circle_red_point" android:visibility="gone" android:layout_width="7.0dip" android:layout_height="7.0dip" android:layout_marginTop="2.0dip" android:layout_marginStart="1.0dip" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0" app:layout_constraintStart_toEndOf="@id/tv_room_title" app:layout_constraintTop_toTopOf="@id/tv_room_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>

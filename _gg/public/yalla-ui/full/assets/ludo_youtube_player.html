@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{width:100%;height:100%;background:transparent;overflow:hidden}
+        #wrapper{position:relative;width:100%;height:100%}
+        #player{width:100%;height:100%}
+        #guard{position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;touch-action:none}
+        #status{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+                color:#aaa;font-family:sans-serif;font-size:14px;text-align:center;
+                z-index:10000;pointer-events:none}
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div id="player"></div>
+    <div id="guard"></div>
+</div>
+<script>
+var player;
+var apiReady=false;
+var apiLoading=false;
+var apiLoadRetryCount=0;
+var apiLoadTimer=null;
+var progressTimer=null;
+var playerCreated=false;
+var isMuted=false;
+var shouldPauseOnFirstFrame=false;
+
+var API_READY_TIMEOUT_MS = 10 * 1000;
+var MAX_API_LOAD_RETRY_COUNT=2;
+
+function loadYouTubeIframeApi(){
+    if(apiReady||apiLoading){return}
+    apiLoading=true;
+
+    var tag=document.createElement('script');
+    tag.id='youtube-iframe-api';
+    tag.async=true;
+    tag.src='https://www.youtube.com/iframe_api';
+    tag.onerror=function(){retryYouTubeIframeApi('script_error')};
+    document.head.appendChild(tag);
+
+    apiLoadTimer=setTimeout(function(){
+        if(!apiReady){retryYouTubeIframeApi('ready_timeout')}
+    },API_READY_TIMEOUT_MS);
+}
+
+function retryYouTubeIframeApi(reason){
+    if(apiReady){return}
+
+    apiLoading=false;
+    if(apiLoadTimer){clearTimeout(apiLoadTimer);apiLoadTimer=null}
+
+    var tag=document.getElementById('youtube-iframe-api');
+    if(tag&&tag.parentNode){tag.parentNode.removeChild(tag)}
+
+    if(apiLoadRetryCount>=MAX_API_LOAD_RETRY_COUNT){
+        console.error('尝试最大次数：' + MAX_API_LOAD_RETRY_COUNT +' 次，YouTube IFrame API initialization failed: '+reason);
+        apiLoadRetryCount = 0
+        try{Android.onPlayerInitFailed(reason)}catch(e){console.error('retryYouTubeIframeApi -> onPlayerInitFailed：' + e.message)}
+        return;
+    }
+
+    apiLoadRetryCount++;
+    console.error('YouTube IFrame API initialization failed: '+reason+', retryCount:'+apiLoadRetryCount);
+    setTimeout(loadYouTubeIframeApi, apiLoadRetryCount*1000);
+}
+
+// Block all touch events on the guard overlay
+document.getElementById('guard').addEventListener('touchstart',function(e){e.preventDefault();e.stopPropagation()},{passive:false});
+document.getElementById('guard').addEventListener('touchmove',function(e){e.preventDefault();e.stopPropagation()},{passive:false});
+document.getElementById('guard').addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation()},{passive:false});
+document.getElementById('guard').addEventListener('click',function(e){e.preventDefault();e.stopPropagation()});
+
+function onYouTubeIframeAPIReady(){
+    if(apiReady){return}
+    apiReady=true;
+    apiLoading=false;
+    if(apiLoadTimer){clearTimeout(apiLoadTimer);apiLoadTimer=null}
+    try{Android.onPlayerReady()}catch(e){console.error('onYouTubeIframeAPIReady -> onPlayerReady：' + e.message)}
+}
+
+loadYouTubeIframeApi();
+
+function createPlayer(videoId,startSeconds,autoplay){
+    shouldPauseOnFirstFrame = !autoplay;
+    player=new YT.Player('player',{
+        height:'100%',width:'100%',
+        videoId:videoId,
+        playerVars:{
+            playsinline:1,
+            controls:0,
+            disablekb:1,
+            rel:0,
+            modestbranding:1,
+            fs:0,
+            autoplay:1,
+            iv_load_policy:3,
+            start:Math.floor(startSeconds||0),
+            origin:window.location.origin,
+        },
+        events:{
+            onReady:function(e){
+                playerCreated=true;
+                lockIframe();
+                if(isMuted || shouldPauseOnFirstFrame){e.target.mute()}else{e.target.unMute()}
+                e.target.playVideo();
+                sendVideoInfo();
+                sendVolumeInfo();
+            },
+            onStateChange:function(e){
+                var state=e.data;
+                var ct=(player&&player.getCurrentTime)?player.getCurrentTime():0;
+                var dur=(player&&player.getDuration)?player.getDuration():0;
+
+                if(state===1){
+                    if(shouldPauseOnFirstFrame){
+                        shouldPauseOnFirstFrame=false;
+                        if(player&&player.pauseVideo) player.pauseVideo();
+                    }
+                    if(player){
+                        if(isMuted){if(player.mute)player.mute()}else{if(player.unMute)player.unMute()}
+                    }
+                    startProgressReporting();
+                    sendVideoInfo();
+                }
+                else{stopProgressReporting()}
+
+                try{Android.onStateChange(state,ct,dur)}catch(ex){console.error('onStateChange ->' + ex.message)}
+
+                sendVolumeInfo();
+            },
+            onError:function(e){
+                try{Android.onLoadingStateChanged(false)}catch(ex){console.error('onError -> onLoadingStateChanged ->' + ex.message)}
+                try{Android.onPlayerError(e.data)}catch(ex){console.error('onError -> onPlayerError ->' + ex.message)}
+            }
+        }
+    });
+}
+
+function lockIframe(){
+    var iframe=document.querySelector('#wrapper iframe');
+    if(iframe){iframe.style.pointerEvents='none'}
+}
+
+function sendVideoInfo(){
+    var attempts=0;
+    function tryGet(){
+        if(!player||attempts>5)return;
+        try{
+            var dur=(player.getDuration)?player.getDuration():0;
+            var videoData=(player.getVideoData)?player.getVideoData():null;
+            var title=(videoData&&videoData.title)?videoData.title:'';
+            if(title){Android.onVideoInfo(title,dur)}
+            else{attempts++;setTimeout(tryGet,500)}
+        }catch(ex){console.error('sendVideoInfo ->' + ex.message)}
+    }
+    setTimeout(tryGet,500);
+}
+
+function startProgressReporting(){
+    if(progressTimer)clearInterval(progressTimer);
+    progressTimer=setInterval(function(){
+        if(player&&player.getCurrentTime){
+            try{Android.onPlaybackProgress(player.getCurrentTime(),player.getDuration())}catch(e){console.error('startProgressReporting -> onPlaybackProgress：' + e.message)}
+        }
+    },500);
+}
+
+function stopProgressReporting(){
+    if(progressTimer){clearInterval(progressTimer);progressTimer=null}
+}
+
+function loadVideo(id,t,autoplay){
+    if(!apiReady){return}
+    shouldPauseOnFirstFrame = !autoplay;
+    if(playerCreated&&player){
+        if(shouldPauseOnFirstFrame && player.mute){
+            player.mute();
+        }
+        if(player.loadVideoById){
+            player.loadVideoById({videoId:id,startSeconds:Math.floor(t||0)});
+        }
+    }else{
+        createPlayer(id,t||0,autoplay);
+    }
+}
+
+function playVideo(){
+    shouldPauseOnFirstFrame = false;
+    if(player&&player.playVideo)player.playVideo();
+}
+function pauseVideo(){
+    shouldPauseOnFirstFrame = true;
+    //防止暂停后，没有状态回调导致的 UI 层菊花不消失
+    try{Android.onLoadingStateChanged(false)}catch(ex){console.error('pauseVideo -> onLoadingStateChanged：' + ex.message)}
+    if(player && player.getPlayerState){
+        var currentState = player.getPlayerState();
+        if(currentState === 1 || currentState === 3){
+            shouldPauseOnFirstFrame = false;
+            if(player.pauseVideo) player.pauseVideo();
+        }
+    } else {
+        if(player&&player.pauseVideo) player.pauseVideo();
+    }
+}
+function seekTo(s){if(player&&player.seekTo)player.seekTo(s,true)}
+
+function setVolume(v){
+    if(player&&player.setVolume){
+        player.setVolume(v);
+        sendVolumeInfo();
+    }
+}
+function mute(){
+    isMuted=true;
+    if(player&&player.mute){
+        player.mute();
+        sendVolumeInfo();
+    }
+}
+function unMute(){
+    isMuted=false;
+    if(player&&player.unMute){
+        player.unMute();
+        sendVolumeInfo();
+    }
+}
+//发送声音变更
+function sendVolumeInfo(){
+    if(player&&player.getVolume){
+        try{
+            var vol=player.getVolume()||0;
+            var muted=(player.isMuted&&player.isMuted())?1:0;
+            Android.onVolumeChanged(vol,muted);
+        }catch(ex){}
+    }
+}
+function clearVideo(){
+    stopProgressReporting();
+    if(player){
+        try {
+            if(player.stopVideo) player.stopVideo();
+            if(player.destroy) player.destroy();
+        } catch(e) {}
+    }
+    var iframe = document.querySelector('#wrapper iframe') || document.getElementById('player');
+    if(iframe && iframe.parentNode){
+        var newDiv = document.createElement('div');
+        newDiv.id = 'player';
+        iframe.parentNode.replaceChild(newDiv, iframe);
+    }
+    playerCreated = false;
+    player = null;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llNewMessage" android:layout_width="wrap_content" android:layout_height="23.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/newMessagePopup" android:background="@drawable/room_new_msg_tips" android:layout_width="wrap_content" android:layout_height="23.0dip">
+        <ImageView android:id="@id/ivNewMsg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_ic_dialog_new_message" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/white" android:id="@id/tvTipScroll" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_new" android:layout_marginStart="6.0dip" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_ic_dialog_new_message_down" android:layout_marginStart="8.0dip" />
+    </LinearLayout>
+    <ImageView android:id="@id/ivMyGiftRecord" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_icon_gift_record_1" android:scaleType="center" android:layout_marginStart="8.0dip" />
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" app:tag="match_title_svga_bg" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
+    <com.booking.rtlviewpager.RtlViewPager android:id="@id/vp_online" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="20.0dip" />
+    <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentEnd="true" />
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="62.0dip" android:layout_centerHorizontal="true">
+        <RelativeLayout android:gravity="center" android:id="@id/rl_btn_2p" android:layout_width="109.0dip" android:layout_height="wrap_content" android:text="Private" android:layout_alignParentLeft="true">
+            <ImageView android:id="@id/iv_bg_2p_ic" android:layout_width="109.0dip" android:layout_height="wrap_content" android:src="@drawable/game_online_2p_check" android:scaleType="fitStart" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.0dip" android:text="@string/v_1_1" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+        </RelativeLayout>
+        <View android:layout_width="21.0dip" android:layout_height="1.0px" />
+        <RelativeLayout android:gravity="center" android:id="@id/rl_btn_4p" android:layout_width="114.0dip" android:layout_height="wrap_content" android:text="Private" android:layout_centerVertical="true">
+            <ImageView android:id="@id/iv_bg_4p_ic" android:layout_width="113.0dip" android:layout_height="wrap_content" android:src="@drawable/game_online_4p_uncheck" android:scaleType="fitStart" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="#ffffffff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.0dip" android:text="@string/players_4" android:layout_centerHorizontal="true" app:stroke_color="#ff0d73ba" app:stroke_width="1.0dip" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

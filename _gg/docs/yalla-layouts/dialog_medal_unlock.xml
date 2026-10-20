@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:id="@id/svg_bg_light" android:layout_width="fill_parent" android:layout_height="460.0dip" />
+    <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0dip" android:id="@id/tv_unlock_suc" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="35.0dip" android:id="@id/tv_medal_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" />
+        <ImageView android:id="@id/iv_medal" android:layout_width="180.0dip" android:layout_height="180.0dip" android:layout_marginTop="60.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="17.0dip" android:id="@id/tv_introduce" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="88.0dip" />
+    </LinearLayout>
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_open_unlock_2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svga_open_unlock_1" android:layout_width="fill_parent" android:layout_height="fill_parent" app:view_scale="1.2" />
+    <FrameLayout android:layout_gravity="end" android:id="@id/fl_close" android:layout_width="wrap_content" android:layout_height="41.0dip" android:layout_marginTop="23.0dip">
+        <ImageView android:id="@id/iv_close" android:layout_width="45.0dip" android:layout_height="41.0dip" android:src="@drawable/close" />
+        <com.yalla.games.common.view.CustomTextView android:textColor="#ff797979" android:layout_gravity="center" android:id="@id/tv_skip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/skip_animation" />
+    </FrameLayout>
+</FrameLayout>

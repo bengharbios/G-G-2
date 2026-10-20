@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="65.0dip" android:layout_height="65.0dip" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ViewStub android:layout_gravity="center" android:id="@id/view_stub_entrance_bg" android:visibility="visible" android:layout="@layout/pass_entrance_bg" android:layout_width="63.0dip" android:layout_height="65.0dip" />
+    <com.yalla.games.common.view.RecycleSVGAView android:layout_gravity="center_horizontal" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_marginTop="6.0dip" app:default_static_source="@drawable/regresson_entnce_svga" app:play_on_attach="true" app:source="regression_entrance.svga" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="7.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:gravity="center" android:layout_gravity="center|right|top" android:id="@id/stv_time" android:layout_width="20.0dip" android:layout_height="18.0dip" android:layout_marginTop="8.5dip" android:layout_marginRight="6.0dip" android:textDirection="ltr" android:layoutDirection="ltr" app:stroke_color="#ffbd540f" app:stroke_width="1.5dip" />
+    <LinearLayout android:gravity="center" android:layout_gravity="bottom|center" android:orientation="vertical" android:layout_width="45.0dip" android:layout_height="20.0dip" android:layout_marginBottom="5.5dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="7.0sp" android:textStyle="bold" android:textColor="#ffa04408" android:gravity="center" android:layout_width="45.0dip" android:layout_height="wrap_content" android:text="@string/G_1390_99" android:lineSpacingExtra="-1.0dip" android:textDirection="ltr" android:layoutDirection="ltr" app:stroke_color="#fffff660" app:stroke_width="1.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="7.0sp" android:textStyle="bold" android:textColor="#ffa04408" android:gravity="center" android:layout_width="45.0dip" android:layout_height="wrap_content" android:layout_marginTop="-1.5dip" android:text="@string/G_1390_223" android:textDirection="ltr" android:layoutDirection="ltr" app:stroke_color="#fffff660" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</FrameLayout>

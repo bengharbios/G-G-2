@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_rewards" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginEnd="6.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:layout_gravity="center" android:id="@id/rl_rewards" android:layout_width="45.0dip" android:layout_height="45.0dip">
+        <ImageView android:id="@id/iv_rewards" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/mail_exp" />
+        <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/iv_net_url" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_centerInParent="true" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tv_rewards" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" android:lines="1" android:layout_alignParentBottom="true" android:layout_marginEnd="4.0dip" android:layout_alignParentEnd="true" app:strokeAutoSizeMaxTextSize="10.0sp" app:strokeAutoSizeMinTextSize="2.0sp" app:strokeAutoSizeStepGranularity="1.0sp" />
+    </RelativeLayout>
+    <ImageView android:id="@id/iv_complete" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</FrameLayout>

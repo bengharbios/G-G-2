@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/rl_type" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginStart="6.0dip" android:layout_marginEnd="6.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/iv_reward_bg" android:layout_width="48.0dip" android:layout_height="48.0dip" android:src="@drawable/coin_bottom" />
+    <ImageView android:layout_gravity="center" android:id="@id/iv_net_icon" android:visibility="gone" android:layout_width="43.0dip" android:layout_height="34.0dip" />
+    <ImageView android:layout_gravity="center" android:id="@id/iv_local_icon" android:visibility="gone" android:layout_width="45.0dip" android:layout_height="34.0dip" />
+    <com.yalla.games.common.view.HeadFrameView android:layout_gravity="center" android:id="@id/chest_iv_frame" android:visibility="visible" android:layout_width="38.0dip" android:layout_height="38.0dip" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:layout_gravity="end|bottom|center" android:id="@id/tv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:lines="1" android:shadowColor="#ff000000" android:shadowDy="2.0" android:shadowRadius="3.0" android:paddingStart="2.0dip" android:paddingEnd="5.0dip" />
+    <View android:layout_gravity="center" android:id="@id/iv_checked" android:background="@drawable/event_signed_ic" android:visibility="gone" android:layout_width="34.0dip" android:layout_height="34.0dip" />
+</FrameLayout>

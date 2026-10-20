@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:height="90.0dip" android:width="58.0dip">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/room_color_e7c8a5" />
+        </shape>
+    </item>
+    <item android:gravity="center" android:height="90.0dip" android:width="58.0dip">
+        <bitmap android:gravity="center" android:src="@drawable/room_create_award_background_placeholder" android:height="29.0dip" android:width="29.0dip" />
+    </item>
+</layer-list>

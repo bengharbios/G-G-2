@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_main" android:background="@drawable/bg_associate_option" android:layout_width="135.0dip" android:layout_height="52.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_rules" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <ImageView android:layout_width="20.0dip" android:layout_height="19.0dip" android:src="@drawable/btn_associate_rule" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#fffecf7c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1340_39" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_exit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="40.0dip">
+        <ImageView android:layout_width="20.0dip" android:layout_height="19.0dip" android:src="@drawable/btn_associate_exit" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textColor="#fffecf7c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1340_14" />
+    </LinearLayout>
+</LinearLayout>

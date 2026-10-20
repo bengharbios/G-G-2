@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center" android:layout_width="360.0dip" android:layout_height="345.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/bg_royal_lottery_result" android:layout_width="fill_parent" android:layout_height="317.0dip" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="18.0sp" android:textColor="#ffb36900" android:gravity="center" android:id="@id/stv_title" android:layout_width="168.0dip" android:layout_height="wrap_content" android:layout_marginTop="87.0dip" android:text="@string/G_1460_0043" android:layout_centerHorizontal="true" app:end_color="#ffffffff" app:gradient="true" app:start_color="#ffffdd55" app:stroke_color="#ff6d1d15" app:stroke_width="1.0dip" />
+    <com.yalla.game.base.view.StrokeButton android:textSize="20.0dip" android:gravity="center" android:id="@id/tv_option" android:background="@drawable/bn_yes" android:layout_width="121.0dip" android:layout_height="46.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
+    <FrameLayout android:id="@id/fl_recycle" android:layout_width="fill_parent" android:layout_height="165.0dip" android:layout_marginTop="125.0dip">
+        <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center" android:id="@id/rcv_rewards" android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" android:overScrollMode="never" />
+    </FrameLayout>
+</RelativeLayout>

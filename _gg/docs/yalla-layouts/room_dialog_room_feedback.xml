@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/llRoomFeedbackDialog" android:background="@drawable/room_fun_center_dialog_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="15.0sp" android:textColor="@color/White" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="18.0dip" android:text="@string/C_1340_35" />
+    <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rvRoomFeedBack" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" />
+    <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="14.0sp" android:textColor="@color/room_89a" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/submitRoomFeedback" android:background="@drawable/room_btn_gray_bg" android:layout_width="wrap_content" android:layout_height="43.0dip" android:layout_marginBottom="15.0dip" android:minWidth="150.0dip" android:text="@string/room_submit" android:includeFontPadding="false" app:stroke_color="@color/room_EED" app:stroke_width="1.0dip" />
+</LinearLayout>

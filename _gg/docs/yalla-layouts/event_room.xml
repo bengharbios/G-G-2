@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.games.common.view.ScreenRateRelativeLayout android:layout_gravity="center_horizontal" android:background="@drawable/banner_room_hall_event" android:layout_width="340.0dip" android:layout_height="99.5dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:paddingEnd="16.0dip" app:aspectHeight="0.276" app:aspectWidth="0.944"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@android:color/white" android:gravity="center" android:id="@id/stv_title" android:layout_width="170.0dip" android:layout_height="30.0dip" android:text="@string/event_chat_room" android:lines="1" android:includeFontPadding="false" app:strokeAutoSizeMaxTextSize="22.0sp" app:strokeAutoSizeMinTextSize="9.0sp" app:strokeAutoSizeStepGranularity="1.0dip" app:strokeAutoSizeTextType="uniform" app:stroke_color="#ff397f86" app:stroke_width="2.0dip" />
+        <RelativeLayout android:layout_gravity="right" android:id="@id/rl_sign_receive" android:visibility="visible" android:layout_width="170.0dip" android:layout_height="37.0dip" android:layout_marginTop="5.0dip">
+            <com.yalla.games.common.view.svga.FragmentStateBindSVGAImageView android:background="#00000000" android:layout_width="90.0dip" android:layout_height="37.0dip" android:scaleType="fitXY" android:layout_centerInParent="true" app:bindPage="event" app:controlBySVGAManager="true" app:play_on_attach="true" app:source="anniu.svga" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ffaa6e1f" android:gravity="center" android:background="@color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/event_chat_room_go" android:includeFontPadding="false" android:layout_centerInParent="true" style="@style/StrokeTextStyle_Yes" />
+        </RelativeLayout>
+    </LinearLayout>
+</com.yalla.games.common.view.ScreenRateRelativeLayout>

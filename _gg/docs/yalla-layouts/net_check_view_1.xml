@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="400.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="#ff88a89f" android:gravity="start" android:id="@id/tv_check" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/tab_to_check_net_tips" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+        <ImageView android:layout_width="100.0dip" android:layout_height="100.0dip" android:layout_marginTop="62.0dip" android:src="@drawable/net_check_ing" android:layout_below="@id/tv_check" android:layout_centerHorizontal="true" />
+        <com.yalla.game.base.view.StrokeButton android:textSize="19.0sp" android:gravity="center" android:id="@id/btn_check" android:background="@drawable/bn_yes" android:layout_width="176.0dip" android:layout_height="48.0dip" android:layout_marginBottom="24.0dip" android:text="@string/run_test" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
+    </RelativeLayout>
+</merge>

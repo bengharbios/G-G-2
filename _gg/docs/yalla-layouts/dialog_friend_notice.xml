@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_friend_notice" android:background="@drawable/bg_friendwindow" android:visibility="visible" android:layout_width="330.0dip" android:layout_height="65.0dip" android:layout_marginTop="20.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.HeadView android:id="@id/civ_friend_head" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginStart="14.0dip" />
+    <RelativeLayout android:gravity="center_vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="4.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.0dip" android:textColor="@color/white" android:id="@id/tv_friend_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.0dip" android:textColor="@color/color_32675f" android:id="@id/tv_friend_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tv_friend_name" />
+    </RelativeLayout>
+    <Button android:textSize="12.0dip" android:textColor="@color/color_5dbd96" android:id="@id/btn_closed" android:background="@drawable/btn_friend_yes" android:layout_width="58.0dip" android:layout_height="28.0dip" android:text="@string/close" android:layout_marginEnd="16.0dip" />
+</LinearLayout>

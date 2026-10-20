@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="140.0dip" android:layout_marginTop="20.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/img" android:layout_width="fill_parent" android:layout_height="71.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="#ff4c6785" android:gravity="center" android:id="@id/tvName" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/img" />
+</RelativeLayout>

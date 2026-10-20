@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="360.0dip" android:layout_height="wrap_content" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="end" android:id="@id/iv_close" android:layout_width="49.0dip" android:layout_height="45.0dip" android:src="@drawable/close" android:layoutDirection="locale" />
+    <ImageView android:layout_width="fill_parent" android:layout_height="109.0dip" android:src="@drawable/ad_reward_title" />
+    <RelativeLayout android:background="@drawable/bg_ad_reward_tips" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginTop="-33.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ff3dab5f" android:gravity="center" android:layout_width="130.0dip" android:layout_height="wrap_content" android:layout_marginLeft="43.0dip" android:layout_marginTop="28.0dip" android:text="@string/G_1340_158" android:rotation="-10.0" />
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:background="@drawable/bg_ad_reward_dialog" android:layout_width="fill_parent" android:layout_height="350.0dip">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:layout_width="fill_parent" android:layout_height="300.0dip" android:layout_marginBottom="-50.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:layout_gravity="center_horizontal" android:id="@id/tv_times" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
+        <com.yalla.games.common.view.AdWatchBtn android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/ll_watch" android:layout_width="188.0dip" android:layout_height="61.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="10.0dip" />
+    </LinearLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="@string/G_1380_199" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+</LinearLayout>

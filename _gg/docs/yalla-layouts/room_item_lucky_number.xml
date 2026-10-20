@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/img" android:layout_width="62.0dip" android:layout_height="62.0dip" android:scaleType="centerInside" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:gravity="center" android:id="@id/tv_name" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_price" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/ivPrice" android:layout_width="8.0dip" android:layout_height="10.0dip" android:src="@drawable/diamonds" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textStyle="bold" android:textColor="#ffd2e9f2" android:id="@id/tv_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="2.0dip" />
+    </LinearLayout>
+</LinearLayout>

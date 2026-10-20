@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="60.0dip" android:layout_height="wrap_content" android:layout_marginStart="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/iv_bg" android:layout_width="fill_parent" android:layout_height="63.0dip" />
+    <ImageView android:id="@id/iv_img" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_margin="6.5dip" android:layout_alignTop="@id/iv_bg" android:layout_alignStart="@id/iv_bg" />
+    <com.yalla.game.base.view.StrokeTextView android:textColor="#ff087dbb" android:gravity="center" android:id="@id/tv_status" android:layout_width="71.0dip" android:layout_height="33.0dip" android:maxLines="1" android:layout_below="@id/iv_bg" android:layout_centerHorizontal="true" app:strokeAutoSizeMaxTextSize="11.0sp" app:strokeAutoSizeMinTextSize="5.0sp" app:strokeAutoSizeStepGranularity="1.0sp" app:stroke_color="#80ffffff" app:stroke_width="1.0dip" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_buy" android:background="@drawable/bn_yes_short" android:paddingBottom="5.0dip" android:layout_width="71.0dip" android:layout_height="33.0dip" android:layout_marginTop="2.0dip" android:layout_below="@id/iv_bg">
+        <View android:background="@drawable/diamonds" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginStart="5.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:id="@id/tv_diamonds" android:layout_width="fill_parent" android:layout_height="wrap_content" android:maxLines="1" android:layout_marginStart="2.0dip" android:layout_marginEnd="5.0dip" app:strokeAutoSizeMaxTextSize="11.0sp" app:strokeAutoSizeMinTextSize="1.0sp" app:strokeAutoSizeStepGranularity="1.0sp" app:stroke_color="#ffab6e0f" app:stroke_width="1.0dip" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/btn_unlock" android:background="@drawable/bn_yes_short" android:paddingBottom="5.0dip" android:layout_width="71.0dip" android:layout_height="33.0dip" android:layout_marginTop="2.0dip" android:layout_below="@id/iv_bg">
+        <View android:background="@drawable/diamonds" android:layout_width="15.0dip" android:layout_height="20.0dip" android:layout_marginStart="5.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="@color/white" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="0" android:maxLines="1" android:layout_marginEnd="5.0dip" app:stroke_color="#ffab6e0f" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</RelativeLayout>

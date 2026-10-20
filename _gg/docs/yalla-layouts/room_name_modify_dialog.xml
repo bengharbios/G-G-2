@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/shape_bg_anno_modify" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.ludochat.view.FixEditText android:textSize="12.0dip" android:textStyle="bold" android:textColor="@color/service_subtitle" android:textColorHint="@color/color_acb" android:gravity="start|center|top" android:id="@id/etRoomName" android:background="@drawable/bg_edit_member_ship_fee" android:layout_width="0.0dip" android:layout_height="175.0dip" android:hint="@string/room_name" android:maxLines="5" android:inputType="textMultiLine" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/room_color_A1C3B7" android:id="@id/tvRoomNameNum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

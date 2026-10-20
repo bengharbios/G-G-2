@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center_vertical" android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/transparent" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/room_bg_seekbar_thumb" android:left="0.0dip" android:top="5.0dip" android:right="0.0dip" android:bottom="5.0dip" />
+</layer-list>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/rl_reply" android:background="#fff5f5f5" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_above="@id/et_input">
+        <TextView android:textSize="12.0dip" android:textColor="#ffb7b7b7" android:id="@id/tv_reply_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" />
+        <FrameLayout android:id="@id/fl_reply_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/tv_reply_name" android:layoutDirection="locale" android:layout_marginStart="10.0dip" />
+        <ImageView android:id="@id/iv_reply_close" android:layout_width="17.0dip" android:layout_height="17.0dip" android:src="@drawable/reply_close" android:layout_centerVertical="true" android:layout_marginEnd="20.0dip" android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <com.yalla.games.friends.view.chat.ChatInputView android:id="@id/chat_input" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <com.yalla.games.friends.view.chat.EmojiSelectView android:id="@id/chat_select_emoji" android:background="#ffffffff" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+</LinearLayout>

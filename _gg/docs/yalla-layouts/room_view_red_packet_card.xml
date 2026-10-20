@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_gravity="center_vertical" android:id="@id/front_container" android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/room_view_red_packet_card_front" />
+    <include android:layout_gravity="center_vertical" android:id="@id/back_container" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:alpha="0.0" android:rotationY="180.0" layout="@layout/room_view_red_packet_card_back" />
+</merge>

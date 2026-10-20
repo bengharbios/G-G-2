@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_gift" android:layout_width="32.0dip" android:layout_height="32.0dip" android:src="@drawable/icon_gift_place_holder" />
+    <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff458371" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_gift_num" android:background="@drawable/gift_num_bg" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxLines="1" android:layout_alignBottom="@id/iv_gift" android:layout_alignEnd="@id/iv_gift" app:strokeAutoSizeMaxTextSize="9.0sp" app:strokeAutoSizeMinTextSize="4.0sp" app:strokeAutoSizeStepGranularity="1.0dip" app:strokeAutoSizeTextType="uniform" />
+</merge>

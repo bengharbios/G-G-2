@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@drawable/room_return_room_bg" android:layout_width="wrap_content" android:layout_height="32.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.AutoMirrorImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_return_room_arrow" android:layout_marginStart="5.0dip" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ffffffff" android:ellipsize="none" android:layout_gravity="center_vertical" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_back_the_last_room" android:singleLine="true" android:layout_marginStart="6.0dip" />
+    <FrameLayout android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginStart="5.0dip">
+        <com.yalla.ludochat.view.RoundImageView android:layout_gravity="center" android:id="@id/ivHead" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/room_default" app:isCircle="true" />
+        <com.yalla.ludochat.view.CircleProgressBar android:id="@id/circleProgressView" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </FrameLayout>
+</LinearLayout>

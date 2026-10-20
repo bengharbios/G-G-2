@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="130.0dip" android:layout_height="wrap_content" android:filterTouchesWhenObscured="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_content" android:layout_width="120.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <ImageView android:background="@drawable/game_audio_recoding_view_bg" android:layout_width="120.0dip" android:layout_height="120.0dip" />
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/fl_recording" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:id="@id/ivStart" android:layout_width="60.0dip" android:layout_height="50.0dip" android:layout_marginTop="15.0dip" android:src="@drawable/game_audio_recoding_view_animation" android:scaleType="fitXY" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/G_1500_0125" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:id="@id/stv_time" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="0/15s" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/fl_recorded" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <ImageView android:layout_width="56.0dip" android:layout_height="56.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/game_audio_record_complete_ic" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/G_1500_0126" android:lines="1" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+            <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:textColor="#ff94fedf" android:gravity="center" android:id="@id/stv_re_record" android:background="@drawable/game_audio_re_record_bg" android:layout_width="61.0dip" android:layout_height="20.0dip" android:layout_marginTop="8.0dip" android:text="@string/G_1500_0127" app:stroke_color="#ff47aa82" app:stroke_width="1.0dip" />
+        </LinearLayout>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff94fedf" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_submit" android:background="@drawable/game_audio_record_submit_bg" android:paddingBottom="1.0dip" android:visibility="visible" android:layout_width="85.0dip" android:layout_height="31.0dip" android:layout_marginTop="122.0dip" android:text="@string/G_1500_0128" app:stroke_color="#ff47aa82" app:stroke_width="1.5dip" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="end" android:id="@id/iv_close_recording" android:padding="2.0dip" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/game_audio_recoding_close_ic" />
+</FrameLayout>

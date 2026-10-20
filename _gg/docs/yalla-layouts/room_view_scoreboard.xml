@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat android:gravity="start|center" android:orientation="horizontal" android:background="@drawable/room_scoreboard_bg" android:layout_width="wrap_content" android:layout_height="40.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_scoreboard_icon" android:adjustViewBounds="true" android:layout_marginStart="10.0dip" />
+    <Chronometer android:textSize="12.0sp" android:textColor="@color/white" android:gravity="start|center" android:layout_gravity="center_vertical" android:id="@id/chronometer" android:layout_width="40.0dip" android:layout_height="fill_parent" android:maxLines="1" />
+    <ImageView android:layout_gravity="end|center" android:id="@id/iv_close" android:visibility="visible" android:layout_width="24.0dip" android:layout_height="fill_parent" android:src="@drawable/room_timer_view_close" android:paddingEnd="12.0dip" />
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_item" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="9.0dip">
+        <com.yalla.games.common.view.HeadFrameView android:layout_gravity="center_horizontal" android:id="@id/head_frame_view" android:layout_width="50.0dip" android:layout_height="50.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="9.0sp" android:layout_gravity="center_horizontal" android:id="@id/stv_month" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:lines="1" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="center" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginStart="7.0dip" android:layout_marginEnd="7.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.ludochat.view.RoundImageView android:id="@id/ivUndercoverCenterPKHead" android:layout_width="42.0dip" android:layout_height="42.0dip" android:layout_margin="6.0dip" app:isCircle="true" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textColor="@color/white" android:id="@id/tvUndercoverCenterPKNum" android:background="@drawable/room_undercover_mic_num" android:layout_width="14.0dip" android:layout_height="14.0dip" android:text="8" android:textAlignment="center" app:layout_constraintCircle="@id/ivUndercoverCenterPKHead" app:layout_constraintCircleAngle="50.0" app:layout_constraintCircleRadius="24.0dip" />
+</androidx.constraintlayout.widget.ConstraintLayout>

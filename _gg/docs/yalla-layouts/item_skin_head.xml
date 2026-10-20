@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_domino_tag" android:layout_width="188.0dip" android:layout_height="49.0dip" android:layout_marginTop="20.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/skin_domino_top_tag_ic" />
+</FrameLayout>

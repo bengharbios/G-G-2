@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:id="@id/ll_ludo_local_item" android:background="@drawable/rounded_edittext" android:layout_width="fill_parent" android:layout_height="54.0dip" android:layout_marginBottom="6.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/iv_email_read" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/email_opened" android:paddingStart="8.0dip" />
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginStart="3.0dip" android:layout_marginEnd="36.0dip" android:layout_toStartOf="@id/iv_box">
+            <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="@color/service_subtitle" android:ellipsize="end" android:id="@id/tv_email_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:includeFontPadding="false" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/color_a69583" android:id="@id/tv_email_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" />
+                <ImageView android:id="@id/tv_email_clock" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/clock_green" android:layout_marginStart="8.0dip" />
+                <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/color_22c759" android:id="@id/tv_email_clock_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:layout_marginStart="2.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView android:id="@id/iv_box" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/box_mail" android:layout_centerVertical="true" android:layout_marginEnd="14.0dip" android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</LinearLayout>

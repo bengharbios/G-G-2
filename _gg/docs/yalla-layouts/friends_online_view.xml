@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_invited" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/rl_content" android:background="@drawable/bg_friendwindow" android:layout_width="308.0dip" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:layout_marginBottom="3.0dip" android:minHeight="101.0dip" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip">
+        <ImageView android:id="@id/iv_logo" android:layout_width="67.0dip" android:layout_height="67.0dip" android:layout_marginTop="5.0dip" android:src="@drawable/icon_friends_online" android:layout_marginStart="4.0dip" />
+        <RelativeLayout android:gravity="center_vertical" android:id="@id/rl_invited_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_alignTop="@id/iv_logo" android:layout_marginStart="3.0dip" android:layout_toEndOf="@id/iv_logo">
+            <com.yalla.games.common.view.CustomTextView android:textSize="10.0sp" android:textColor="#ff32675f" android:id="@id/tv_description" android:layout_width="190.0dip" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:includeFontPadding="false" />
+        </RelativeLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="23.0dip" android:layout_marginBottom="12.0dip" android:layout_below="@id/rl_invited_content" android:layout_alignStart="@id/rl_invited_content">
+            <Button android:textSize="13.0sp" android:textColor="#ff51aa85" android:id="@id/btn_no_invited" android:background="@drawable/btn_friend_invite_no" android:layout_width="82.0dip" android:layout_height="25.0dip" android:text="@string/no" />
+            <Button android:textSize="13.0sp" android:textColor="#ff5dbd96" android:id="@id/btn_yes_invited" android:background="@drawable/btn_friend_invite_yes" android:layout_width="82.0dip" android:layout_height="25.0dip" android:text="@string/G_1370_083" android:textAllCaps="false" android:layout_marginStart="32.0dip" />
+        </LinearLayout>
+    </RelativeLayout>
+    <ImageView android:id="@id/iv_invite_tag" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_marginEnd="-3.0dip" android:layout_alignEnd="@id/rl_content" />
+</RelativeLayout>

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yalla.games.common.view.svga.LudoSVGAView android:gravity="center" android:id="@id/svg_img" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

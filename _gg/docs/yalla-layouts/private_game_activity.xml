@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@drawable/game_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga_bg" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_width="fill_parent" android:layout_height="200.0dip" android:scaleType="fitCenter" app:lowMemoryConfig="level_two" app:play_on_attach="true" app:source="?match_title_svga" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svgaImage" android:layout_width="fill_parent" android:layout_height="121.0dip" android:layout_marginBottom="-12.0dip" android:scaleType="fitCenter" android:layout_alignParentBottom="true" app:play_on_attach="true" app:source="grain.svga" />
+    <ImageView android:id="@id/iv_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" />
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="82.0dip" android:layout_above="@id/rl2">
+        <ImageView android:id="@id/iv_game_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/logo_private" />
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:includeFontPadding="false">
+            <com.yalla.games.common.view.CustomTextView android:textSize="19.0dip" android:textColor="@color/color_ffe56a" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1420_188" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="19.0dip" android:textColor="@color/white" android:id="@id/tv_room_id" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+            <ImageView android:id="@id/iv_share" android:visibility="gone" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/iv_team_share" android:layout_marginStart="10.0dip" />
+        </LinearLayout>
+        <com.yalla.games.common.view.CustomTextView android:textSize="15.0dip" android:textColor="@color/white" android:gravity="center" android:layout_width="289.0dip" android:layout_height="wrap_content" android:layout_marginTop="38.0dip" android:layout_marginBottom="34.0dip" android:text="@string/G_1420_190" android:includeFontPadding="false" />
+        <include android:layout_gravity="center_horizontal" android:id="@id/rl_invite" android:layout_width="fill_parent" android:layout_height="210.0dip" layout="@layout/invite_layout" />
+        <FrameLayout android:layout_gravity="center_horizontal" android:id="@id/fl_start" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <FrameLayout android:layout_gravity="center" android:id="@id/ff_start" android:layout_width="250.0dip" android:layout_height="125.0dip">
+                <com.yalla.games.common.view.svga.LudoSVGAView android:id="@id/svg_flash" android:layout_width="fill_parent" android:layout_height="fill_parent" app:play_on_attach="true" app:source="ok_flash" />
+                <com.yalla.game.base.view.StrokeTextView android:enabled="false" android:textSize="23.0dip" android:textStyle="bold" android:gravity="center" android:layout_gravity="center" android:id="@id/start_btn" android:visibility="visible" android:layout_width="199.0dip" android:layout_height="54.0dip" android:layout_marginBottom="5.0dip" android:text="@string/start_ludo_rec" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+            </FrameLayout>
+            <com.yalla.games.common.view.CustomTextView android:textSize="18.0sp" android:textColor="#ffffe56a" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_waiting_start" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="125.0dip" android:text="@string/G_1400_191" />
+        </FrameLayout>
+        <RelativeLayout android:layout_gravity="center_horizontal" android:id="@id/rl_private_policy" android:background="@drawable/bg_private_policy" android:layout_width="324.0dip" android:layout_height="147.0dip" android:layout_marginTop="-20.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="17.0sp" android:textColor="#ffffffff" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="@string/G_1420_186" android:layout_centerHorizontal="true" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff20cbd6" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/G_1420_187" android:layout_below="@id/tv_title" android:layout_centerHorizontal="true" />
+            <LinearLayout android:orientation="vertical" android:id="@id/ll_bind" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true">
+                <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff20cbd6" android:autoLink="web" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bind_account_title" android:includeFontPadding="false" />
+                <View android:background="#ff20cbd6" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="0.20000005dip" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

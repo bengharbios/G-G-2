@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/et_room_buttom" android:layout_width="fill_parent" android:layout_height="400.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:id="@id/ll_no_email" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="105.0dip" android:layout_marginBottom="122.0dip">
+        <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon_record" />
+        <com.yalla.games.common.view.CustomTextView android:textColor="#ffabd8cb" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_mails" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/ll_email" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rv_email" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="330.0dip" android:layout_margin="10.0dip" />
+        <com.yalla.games.common.view.webview.BaseBusinessWebView android:id="@id/web_email_container" android:background="@android:color/transparent" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="330.0dip" android:layout_margin="10.0dip" />
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_email_container" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="330.0dip" android:layout_margin="10.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="@color/service_subtitle" android:ellipsize="end" android:gravity="center" android:id="@id/tv_content_title" android:background="@drawable/bg_feed_back_detail" android:layout_width="fill_parent" android:layout_height="30.0dip" android:singleLine="true" android:includeFontPadding="false" />
+            <ScrollView android:background="@drawable/bg_feed_back_detail" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="300.0dip" android:layout_marginTop="6.0dip">
+                <LinearLayout android:orientation="vertical" android:padding="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <com.yalla.games.common.view.CustomTextView android:textSize="11.0dip" android:textColor="@color/color_a69583" android:textColorLink="@android:color/holo_blue_dark" android:autoLink="all" android:id="@id/tv_email_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
+                    <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textColor="@color/service_subtitle" android:id="@id/tv_rewards" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/rewards" />
+                    <HorizontalScrollView android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:overScrollMode="never" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip">
+                        <LinearLayout android:orientation="horizontal" android:id="@id/ll_rewards" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center" android:id="@id/btn_receive" android:layout_width="198.0dip" android:layout_height="54.0dip" android:layout_marginBottom="10.0dip" android:text="@string/btn_receive" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+    </LinearLayout>
+</FrameLayout>

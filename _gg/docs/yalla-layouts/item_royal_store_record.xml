@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_item" android:layout_width="328.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/ll_content_bg" android:layout_width="328.0dip" android:layout_height="55.0dip" android:layout_marginTop="2.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff4ca18a" android:ellipsize="end" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/ctv_time" android:layout_width="85.0dip" android:layout_height="55.0dip" android:paddingStart="3.0dip" android:paddingEnd="3.0dip" app:autoSizeMaxTextSize="12.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff4ca18a" android:ellipsize="end" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/ctv_way" android:layout_width="80.0dip" android:layout_height="55.0dip" android:paddingStart="3.0dip" android:paddingEnd="3.0dip" app:autoSizeMaxTextSize="12.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+        <FrameLayout android:id="@id/fl_detail" android:layout_width="80.0dip" android:layout_height="fill_parent">
+            <ImageView android:layout_gravity="center" android:id="@id/iv_detail" android:layout_width="40.0dip" android:layout_height="40.0dip" />
+            <LinearLayout android:layout_gravity="start|center" android:orientation="vertical" android:id="@id/ll_order_num" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="10.0dip">
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textColor="#ffff9000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1400_79" />
+                </LinearLayout>
+                <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textColor="#ffcfc2ab" android:gravity="start|center" android:id="@id/ctv_order_num" android:layout_width="fill_parent" android:layout_height="30.0dip" app:autoSizeMaxTextSize="9.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" />
+            </LinearLayout>
+        </FrameLayout>
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:layout_gravity="start|center" android:id="@id/ctv_pay_num" android:layout_width="53.0dip" android:layout_height="55.0dip" android:paddingStart="3.0dip" android:paddingEnd="3.0dip" app:autoSizeMaxTextSize="12.0sp" app:autoSizeMinTextSize="5.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff0e6349" app:stroke_width="1.0dip" />
+        <ImageView android:layout_gravity="start|center" android:id="@id/iv_arrow" android:padding="5.0dip" android:visibility="gone" android:layout_width="26.0dip" android:layout_height="26.0dip" android:src="@drawable/royal_store_record_10_draw_ic" />
+        <ImageView android:layout_gravity="start|center" android:id="@id/iv_copy" android:layout_width="26.0dip" android:layout_height="26.0dip" android:src="@drawable/royal_store_copy_ic" />
+    </LinearLayout>
+</FrameLayout>

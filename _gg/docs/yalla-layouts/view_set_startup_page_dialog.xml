@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="360.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff666666" android:gravity="center" android:id="@id/tv_content_tip" android:layout_width="300.0dip" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:text="@string/G_1440_61" android:layout_centerHorizontal="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/ll_icon" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/tv_content_tip" android:paddingStart="10.0dip" android:paddingEnd="10.0dip">
+        <FrameLayout android:id="@id/fl_royal_icon_default" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <View android:layout_gravity="center" android:id="@id/view_royal_bg_default" android:background="@drawable/royal_startup_page_bg" android:visibility="visible" android:layout_width="120.0dip" android:layout_height="169.0dip" />
+                <View android:layout_gravity="center" android:id="@id/iv_royal_bg_blue_default" android:background="@drawable/bg_set_startup_item" android:visibility="visible" android:layout_width="98.0dip" android:layout_height="149.0dip" />
+                <com.yalla.games.common.view.CircleImageView android:layout_gravity="center" android:id="@id/iv_royal_bg_default" android:visibility="visible" android:layout_width="94.0dip" android:layout_height="146.0dip" android:scaleType="centerCrop" app:isRoundRect="true" app:roundRectRadius="5.0dip" />
+                <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_logo_default" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="25.0dip" android:layout_alignParentTop="true" />
+            </FrameLayout>
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_royal_icon_check2_default" android:visibility="visible" android:layout_width="33.0dip" android:layout_height="34.0dip" android:layout_marginTop="170.0dip" android:src="@drawable/sex_uncheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_royal_icon1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <View android:layout_gravity="center" android:id="@id/view_royal_bg1" android:background="@drawable/royal_startup_page_bg" android:visibility="invisible" android:layout_width="120.0dip" android:layout_height="169.0dip" />
+                <View android:layout_gravity="center" android:id="@id/iv_royal_bg_blue" android:background="@drawable/bg_set_startup_item" android:visibility="visible" android:layout_width="98.0dip" android:layout_height="149.0dip" />
+                <com.yalla.games.common.view.CircleImageView android:layout_gravity="center" android:id="@id/iv_royal_bg_1" android:visibility="visible" android:layout_width="94.0dip" android:layout_height="146.0dip" android:scaleType="centerCrop" app:isRoundRect="true" app:roundRectRadius="5.0dip" />
+                <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_logo_royal1" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="25.0dip" android:layout_alignParentTop="true" />
+            </FrameLayout>
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_royal_icon_check1" android:visibility="visible" android:layout_width="33.0dip" android:layout_height="34.0dip" android:layout_marginTop="170.0dip" android:src="@drawable/sex_uncheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/fl_royal_icon2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <View android:layout_gravity="center" android:id="@id/view_royal_bg2" android:background="@drawable/royal_startup_page_bg" android:visibility="invisible" android:layout_width="120.0dip" android:layout_height="169.0dip" />
+                <View android:layout_gravity="center" android:id="@id/iv_royal_bg_blue2" android:background="@drawable/bg_set_startup_item" android:visibility="visible" android:layout_width="98.0dip" android:layout_height="149.0dip" />
+                <com.yalla.games.common.view.CircleImageView android:layout_gravity="center" android:id="@id/iv_royal_bg_2" android:visibility="visible" android:layout_width="94.0dip" android:layout_height="146.0dip" android:scaleType="centerCrop" app:isRoundRect="true" app:roundRectRadius="5.0dip" />
+                <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_logo_royal2" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="25.0dip" android:layout_alignParentTop="true" />
+            </FrameLayout>
+            <ImageView android:layout_gravity="center_horizontal" android:id="@id/iv_royal_icon_check2" android:visibility="visible" android:layout_width="33.0dip" android:layout_height="34.0dip" android:layout_marginTop="170.0dip" android:src="@drawable/sex_uncheck" />
+        </FrameLayout>
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeTextView android:textSize="20.0sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stv_confirm" android:background="@drawable/bn_yes" android:paddingBottom="8.0dip" android:visibility="visible" android:layout_width="192.0dip" android:layout_height="56.0dip" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip" android:text="@string/confirm" android:layout_below="@id/ll_icon" android:layout_centerHorizontal="true" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:background="@drawable/bg_mode_select" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="19.0dip" android:layout_marginEnd="19.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff8dd4ff" android:gravity="center" android:id="@id/tv_des" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="12.0dip" android:layout_marginRight="16.0dip" android:text="@string/black_mode_des" android:layout_centerHorizontal="true" />
+            <ImageView android:id="@id/iv_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/black_night_logo" android:layout_below="@id/tv_des" android:layout_centerHorizontal="true" />
+            <View android:id="@id/iv_divider" android:background="@drawable/divider_in_black_mode" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="-10.0dip" android:layout_below="@id/iv_logo" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+            <com.yalla.games.battle.view.GameOptionView android:id="@id/game_option_view" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="-10.0dip" android:layout_below="@id/iv_divider" app:Option_Type="BlackNight" />
+        </RelativeLayout>
+        <ViewStub android:layout_gravity="center_horizontal" android:id="@id/vs_super_exp" android:layout="@layout/view_super_exp_multi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" />
+    </LinearLayout>
+    <com.yalla.game.base.view.StrokeButton android:textSize="24.0sp" android:gravity="center" android:id="@id/bt_ludo" android:background="@drawable/bn_yes_big" android:layout_width="202.0dip" android:layout_height="54.0dip" android:layout_marginTop="22.0dip" android:text="@string/start_ludo_rec" android:includeFontPadding="false" android:layout_below="@id/rl_main" android:layout_centerHorizontal="true" android:textAllCaps="false" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+</merge>

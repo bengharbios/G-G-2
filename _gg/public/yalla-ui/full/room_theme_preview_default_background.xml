@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size android:height="434.0dip" android:width="246.0dip" />
+            <solid android:color="@color/transparent" />
+            <corners android:radius="10.0dip" />
+        </shape>
+    </item>
+    <item>
+        <bitmap android:gravity="center" android:src="@drawable/room_theme_default_bg" />
+    </item>
+</layer-list>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/fl_container" android:background="@drawable/bg_dialog_celebrity_theme_corner" android:layout_width="260.0dip" android:layout_height="442.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center" android:id="@id/static_image" android:clickable="true" android:layout_width="256.0dip" android:layout_height="438.0dip" />
+    <FrameLayout android:layout_gravity="center" android:layout_width="256.0dip" android:layout_height="438.0dip">
+        <ImageView android:layout_gravity="center" android:id="@id/svga_image" android:visibility="visible" android:layout_width="256.0dip" android:layout_height="438.0dip" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="center" android:id="@id/iv_loading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loading" android:stateListAnimator="@anim/rotate_animation" />
+</FrameLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="horizontal" android:id="@id/ll_invited" android:background="@drawable/friend_invite_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="9.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_head" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginTop="7.0dip" android:layout_marginStart="7.0dip">
+        <com.yalla.games.common.view.HeadView android:id="@id/civ_head_inviter" android:layout_width="50.0dip" android:layout_height="50.0dip" />
+        <com.yalla.games.common.view.LevelFlagView android:textSize="7.0sp" android:layout_gravity="end|bottom|center" android:id="@id/tv_level" android:layout_width="wrap_content" android:layout_height="wrap_content" app:isSameWidth="true" />
+    </FrameLayout>
+    <RelativeLayout android:gravity="center_vertical" android:id="@id/rl_invited_content" android:layout_width="110.0dip" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginStart="9.0dip" android:layout_toEndOf="@id/fl_head">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_name_vip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <com.yalla.games.common.view.LoopGradientTextView android:textSize="11.0dip" android:textColor="#ff626262" android:ellipsize="end" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:layout_weight="1.0" />
+            <com.yalla.games.common.view.PrivilegeFlagView android:id="@id/vip_flag_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignTop="@id/tv_name" android:layout_marginStart="2.0dip" android:layout_toEndOf="@id/tv_name" />
+        </LinearLayout>
+        <com.yalla.games.common.view.CustomTextView android:textSize="11.0dip" android:textColor="#ff548172" android:id="@id/tv_message" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/add_friend" android:layout_below="@id/ll_name_vip" />
+    </RelativeLayout>
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_marginBottom="8.0dip" android:layout_alignTop="@id/rl_invited_content" android:layout_marginStart="19.0dip" android:layout_toEndOf="@id/rl_invited_content" android:layout_alignParentEnd="true">
+        <com.yalla.game.base.view.StrokeButton android:textSize="13.0sp" android:textStyle="bold" android:gravity="center" android:id="@id/iv_message_no" android:background="@drawable/friend_invite_no" android:paddingBottom="5.0dip" android:layout_width="51.0dip" android:layout_height="39.0dip" android:includeFontPadding="false" android:textAllCaps="false" app:need_press_status="true" app:stroke_color="#ff61f2ca" app:stroke_width="2.0dip" style="@style/StrokeTextStyle_No" />
+        <com.yalla.game.base.view.StrokeButton android:textSize="13.0sp" android:textStyle="bold" android:gravity="center" android:id="@id/iv_message_yes" android:background="@drawable/friend_invite_yes" android:paddingBottom="5.0dip" android:layout_width="51.0dip" android:layout_height="39.0dip" android:includeFontPadding="false" android:textAllCaps="false" android:layout_marginStart="20.0dip" app:need_press_status="true" app:stroke_color="#fffff08b" app:stroke_width="2.0dip" style="@style/StrokeTextStyle_Yes" />
+    </LinearLayout>
+</RelativeLayout>

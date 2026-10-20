@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip">
+        <ImageView android:id="@id/iv_select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/square" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="18.0sp" android:textColor="@color/login_font" android:id="@id/tv_service" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/do_not_ask_me_again" android:layout_marginStart="8.0dip" android:layout_marginEnd="10.0dip" />
+    </LinearLayout>
+</LinearLayout>

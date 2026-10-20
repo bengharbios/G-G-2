@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/bg_chat" android:layout_width="75.0dip" android:layout_height="wrap_content">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="#ff683614" android:gravity="center" android:id="@id/btn_hello" android:background="@drawable/byn_chat" android:layout_width="67.0dip" android:layout_height="32.0dip" android:layout_marginTop="2.0dip" android:text="@string/expression_hello" app:stroke_color="#fff8ca59" app:stroke_width="1.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="#ff683614" android:gravity="center" android:id="@id/btn_go" android:background="@drawable/byn_chat" android:layout_width="67.0dip" android:layout_height="32.0dip" android:layout_marginTop="5.0dip" android:text="@string/expression_go" app:stroke_color="#fff8ca59" app:stroke_width="1.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="11.0sp" android:textColor="#ff683614" android:gravity="center" android:id="@id/btn_bye" android:background="@drawable/byn_chat" android:layout_width="67.0dip" android:layout_height="32.0dip" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:text="@string/expression_bye" app:stroke_color="#fff8ca59" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="285.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff158260" android:gravity="center" android:id="@id/tv_tips" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" android:text="@string/G_1370_017" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" />
+    <com.yalla.game.base.view.StrokeButton android:gravity="center" android:id="@id/btn_confirm" android:background="@drawable/bn_yes_big" android:layout_width="133.0dip" android:layout_height="44.0dip" android:text="@string/G_1370_020" android:layout_above="@id/tv_tips" android:layout_centerHorizontal="true" style="@style/StrokeTextStyle_Yes" />
+    <RelativeLayout android:id="@id/rl_date_select" android:layout_width="fill_parent" android:layout_height="160.0dip" android:layout_marginTop="30.0dip">
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_day" android:background="@drawable/bg_birth_date_select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="30.0dip">
+            <RelativeLayout android:id="@id/rl_day" android:layout_width="101.0dip" android:layout_height="wrap_content">
+                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff158260" android:id="@id/tv_day" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="day" android:layout_marginStart="30.0dip" android:layout_marginEnd="10.0dip" />
+                <ImageView android:id="@id/iv_day_select_arrow" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_marginTop="13.0dip" android:src="@drawable/arrow_birth_select_up" android:layout_marginEnd="13.0dip" android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/list_day_of_birth" android:scrollbars="none" android:layout_width="101.0dip" android:layout_height="114.0dip" android:divider="@null" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_mon" android:background="@drawable/bg_birth_date_select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="30.0dip" android:layout_alignParentEnd="true">
+            <RelativeLayout android:id="@id/rl_mon" android:layout_width="101.0dip" android:layout_height="wrap_content">
+                <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ff158260" android:gravity="center" android:id="@id/tv_mon" android:layout_width="70.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:text="mon" android:maxLines="1" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" android:layout_marginEnd="10.0dip" app:autoSizeMaxTextSize="14.0dip" app:autoSizeMinTextSize="10.0dip" app:autoSizeTextType="uniform" />
+                <ImageView android:id="@id/iv_mon_select_arrow" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_marginTop="13.0dip" android:src="@drawable/arrow_birth_select_up" android:layout_marginEnd="13.0dip" android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/list_mon_of_birth" android:scrollbars="none" android:layout_width="101.0dip" android:layout_height="114.0dip" android:divider="@null" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

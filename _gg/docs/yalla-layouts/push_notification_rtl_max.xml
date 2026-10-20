@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="60.0dip" android:layout_centerVertical="true" android:layoutDirection="rtl"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:id="@id/fl_head" android:layout_width="44.0dip" android:layout_height="44.0dip" android:layout_centerVertical="true" android:layout_marginStart="8.0dip">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_head" android:layout_width="40.0dip" android:layout_height="40.0dip" />
+        <ImageView android:layout_gravity="bottom|center|left" android:id="@id/iv_app_logo" android:layout_width="15.0dip" android:layout_height="15.0dip" />
+    </FrameLayout>
+    <LinearLayout android:gravity="right" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="5.0dip" android:layout_toEndOf="@id/fl_head">
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff000000" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="170.0dip" android:includeFontPadding="false" android:fontFamily="sans-serif-medium" />
+        <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:ellipsize="end" android:id="@id/tv_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxWidth="170.0dip" android:maxLines="2" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/iv_top_bg" android:background="@drawable/royal_gift_top_bg" android:layout_width="fill_parent" android:layout_height="256.0dip" android:scaleType="fitXY" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcv_gift" android:background="@drawable/royal_gift_content_bg" android:paddingTop="6.0dip" android:scrollbars="none" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/iv_top_bg" android:overScrollMode="never" android:paddingStart="8.0dip" android:paddingEnd="8.0dip" />
+    <ImageView android:id="@id/iv_top_dec_ic" android:layout_width="280.0dip" android:layout_height="295.0dip" android:layout_alignParentRight="true" />
+    <RelativeLayout android:id="@id/rl_main" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/iv_rule" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:src="@drawable/royal_gift_rule_ic" android:layout_marginStart="8.0dip" android:layout_alignParentStart="true" />
+        <ImageView android:id="@id/iv_gift_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:src="@drawable/close" android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</RelativeLayout>

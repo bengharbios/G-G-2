@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/room_selector_red_packet_config" android:layout_width="fill_parent" android:layout_height="95.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/llGiftRow" android:clipChildren="false" android:clipToPadding="false" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="6.0dip" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" app:layout_constraintBottom_toTopOf="@id/llAmountRow" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llAmountRow" android:layout_width="wrap_content" android:layout_height="28.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+        <ImageView android:id="@id/ivDiamond" android:layout_width="13.0dip" android:layout_height="15.0dip" android:src="@drawable/room_icon_red_packet_crystal" android:layout_marginEnd="2.0dip" />
+        <com.yalla.ludochat.view.CustomStrokeTextView android:textSize="13.0dip" android:textStyle="bold" android:textColor="@color/white" android:id="@id/tvAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" app:stroke_color="@color/room_color_701328" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

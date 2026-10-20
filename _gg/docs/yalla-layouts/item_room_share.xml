@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/bg_room_share_item" android:layout_width="fill_parent" android:layout_height="65.0dip" android:layout_marginTop="2.5dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/iv_check" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/share_people_check_uncheck" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" />
+    <com.yalla.games.common.view.HeadView android:id="@id/iv_head" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_toEndOf="@id/iv_check" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" android:layout_toEndOf="@id/iv_head">
+        <com.yalla.games.common.view.LoopGradientTextView android:textSize="16.0sp" android:textColor="#ff458371" android:ellipsize="end" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:includeFontPadding="false" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="12.0sp" android:textColor="#ff458371" android:id="@id/tv_msg" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.5dip" android:includeFontPadding="false" />
+    </LinearLayout>
+</RelativeLayout>

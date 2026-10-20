@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/et_buttom" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="10.0dip" android:paddingEnd="10.0dip">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/friends_listview" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="361.0dip" android:layout_marginTop="12.0dip" android:layout_marginBottom="15.0dip" android:transcriptMode="alwaysScroll" android:divider="@null" />
+        <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_no_friends" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="361.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="15.0dip">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/no_friends" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="17.0sp" android:textColor="#ffabd8cb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_friends_online" />
+        </LinearLayout>
+    </LinearLayout>
+    <com.yalla.games.common.view.CustomTextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="#ff429b82" android:gravity="center" android:layout_gravity="bottom" android:id="@id/ctv_bottom_tips" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+</FrameLayout>

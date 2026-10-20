@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="@drawable/celebrity_history_list_bg" android:paddingTop="12.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:layout_gravity="center_horizontal" android:id="@id/rcv_history" android:scrollbars="none" android:clipToPadding="false" android:layout_width="360.0dip" android:layout_height="fill_parent" android:layout_marginTop="28.0dip" />
+    <FrameLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="333.0dip" android:layout_height="15.0dip" android:layout_marginTop="12.0dip" android:layout_marginStart="27.0dip">
+        <ImageView android:layout_gravity="start|center" android:id="@id/iv_scroll_tip" android:layout_width="20.0dip" android:layout_height="15.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textStyle="bold" android:textColor="#fffff993" android:layout_gravity="start|center" android:id="@id/stv_scroll_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:shadowColor="#ffc5702a" android:shadowDx="0.0" android:shadowDy="0.0" android:shadowRadius="3.0" android:layout_marginStart="16.0dip" />
+    </FrameLayout>
+</FrameLayout>

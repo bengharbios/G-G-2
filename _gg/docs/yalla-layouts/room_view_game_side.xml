@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/ivIcon" android:layout_width="43.0dip" android:layout_height="43.0dip" android:src="@drawable/room_fruit_small_icon" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <Chronometer android:textSize="10.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/tvDesc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/room_fruit_fight" android:lines="1" android:autoSizeStepGranularity="1.0sp" android:autoSizeMinTextSize="8.0sp" android:autoSizeMaxTextSize="10.0sp" app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+    <ProgressBar android:layout_gravity="center" android:id="@id/pbLoad" android:layout_width="40.0dip" android:layout_height="40.0dip" android:indeterminateTint="@color/white" app:layout_constraintBottom_toBottomOf="@id/ivIcon" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+</merge>

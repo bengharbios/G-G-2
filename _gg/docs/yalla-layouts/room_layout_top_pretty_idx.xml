@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="start|center" android:orientation="horizontal" android:id="@id/llPretty" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.UniqueIDView android:id="@id/ivPrettyID" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-2.0dip" app:idHigh="11.0dip" />
+    <TextView android:textSize="12.0dip" android:textColor="@color/white" android:ellipsize="end" android:gravity="start" android:id="@id/tvRoomTopId" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:maxWidth="100.0dip" android:singleLine="true" android:layout_marginStart="4.0dip" />
+</LinearLayout>

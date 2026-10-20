@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_gravity="center_vertical" android:id="@id/ff_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_content" android:background="@drawable/sign_year_head_frame_bg" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="23.0sp" android:textColor="#ffffee61" android:gravity="center" android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/G_1380_056" app:end_color="#ffffffff" app:gradient="true" app:start_color="#ffffee61" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="12.0sp" android:textColor="#ff0b4438" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/tv_title" android:background="@drawable/sign_year_head_frame_title" android:layout_width="wrap_content" android:layout_height="22.0dip" android:layout_marginTop="39.0dip" app:stroke_color="#ffffffff" app:stroke_width="1.0dip" />
+        <com.yalla.games.common.view.HeadFrameView android:layout_gravity="center" android:id="@id/head_frame" android:visibility="gone" android:layout_width="77.0dip" android:layout_height="77.0dip" />
+    </FrameLayout>
+    <LinearLayout android:layout_gravity="bottom|center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="230.0dip" android:layout_alignTop="@id/fl_content" android:layout_centerHorizontal="true">
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.0sp" android:gravity="center" android:id="@id/btn_ok" android:background="@drawable/bn_no" android:layout_width="129.0dip" android:layout_height="44.0dip" android:text="@string/ok" app:need_press_status="true" style="@style/StrokeTextStyle_No" />
+        <com.yalla.game.base.view.StrokeButton android:textSize="20.0sp" android:gravity="center" android:id="@id/btn_use" android:background="@drawable/bn_yes" android:layout_width="129.0dip" android:layout_height="44.0dip" android:text="@string/use" android:layout_marginStart="43.0dip" app:need_press_status="true" style="@style/StrokeTextStyle_Yes" />
+    </LinearLayout>
+</RelativeLayout>

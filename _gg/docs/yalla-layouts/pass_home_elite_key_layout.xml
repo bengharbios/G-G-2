@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="174.0dip" android:layout_height="172.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center" android:layout_width="150.0dip" android:layout_height="150.0dip" app:play_on_attach="true" app:source="pass/pass_task_key_bg.svga" />
+    <com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" app:default_static_source="@drawable/pass_top_elite_key_ic" app:play_on_attach="true" app:source="pass/pass_task_elite_big_key.svga" />
+</FrameLayout>

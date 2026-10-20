@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="50.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ProgressBar android:layout_gravity="center" android:id="@id/pBarLoading" android:layout_width="40.0dip" android:layout_height="40.0dip" style="@style/Widget.AppCompat.ProgressBar" />
+    <com.yalla.games.common.view.CustomTextView android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center" android:id="@id/tvLoadComplete" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_no_more_data" />
+    <com.yalla.games.common.view.CustomTextView android:textStyle="bold" android:textColor="@color/white" android:layout_gravity="center" android:id="@id/tvLoadFailed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/room_network_request_failed" />
+</FrameLayout>

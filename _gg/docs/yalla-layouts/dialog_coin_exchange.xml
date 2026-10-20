@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_add_min" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="40.0dip" android:layout_centerHorizontal="true">
+        <ImageView android:id="@id/iv_min" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/regression_coin_min_uncheck" />
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/regression_recharge_bg_" android:layout_width="158.0dip" android:layout_height="31.0dip" android:layout_marginStart="25.0dip" android:layout_marginEnd="25.0dip">
+            <ImageView android:layout_width="21.0dip" android:layout_height="30.0dip" android:src="@drawable/coin" android:layout_marginEnd="9.0dip" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="22.0sp" android:textStyle="bold" android:textColor="#ff777777" android:id="@id/ctv_money" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView android:id="@id/iv_add" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/regression_coin_add_check" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:id="@id/fl_buy" android:background="@drawable/bn_yes" android:paddingBottom="5.0dip" android:visibility="visible" android:layout_width="122.0dip" android:layout_height="45.0dip" android:layout_marginTop="32.0dip" android:layout_marginBottom="25.0dip" android:layout_below="@id/ll_add_min" android:layout_centerHorizontal="true" android:layout_marginEnd="9.0dip">
+        <ImageView android:layout_width="21.0dip" android:layout_height="30.0dip" android:src="@drawable/regression_coin_ic" android:layout_marginEnd="9.0dip" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ffa55d10" android:gravity="center" android:layout_gravity="center" android:id="@id/stv_regression_coin" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8880" android:includeFontPadding="false" app:stroke_color="#fffff08b" app:stroke_width="1.0dip" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:id="@id/fl_root" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yalla.game.base.view.StrokeTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#fffbea5c" android:gravity="center" android:id="@id/tv_title" android:paddingBottom="3.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" app:end_color="#ffffc000" app:gradient="true" app:start_color="#ffffff75" app:stroke_color="#ff8e0809" app:stroke_width="1.5dip" />
+</FrameLayout>

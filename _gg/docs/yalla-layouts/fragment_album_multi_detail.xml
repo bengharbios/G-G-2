@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/ll_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/include_album_select_title" />
+    <com.yalla.games.common.album.view.ViewSelect android:id="@id/view_select" android:background="#ff184c35" android:layout_width="fill_parent" android:layout_height="120.0dip" android:layout_alignParentBottom="true" />
+    <androidx.viewpager.widget.ViewPager android:id="@id/vp_switch" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/view_select" android:layout_below="@id/include_title_layout_title" />
+</RelativeLayout>

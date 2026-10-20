@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_list" android:paddingBottom="10.0dip" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_no_exchange" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerHorizontal="true">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="93.0dip" android:layout_height="93.0dip" android:src="@drawable/icon_search_error" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ffabd8cb" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/G_1400_31" />
+    </LinearLayout>
+</merge>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout android:id="@id/smartRefreshLayout" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.yalla.ludochat.view.recyclerview.BlockScrollRecycleView android:layout_gravity="center_horizontal" android:id="@id/recyclerView" android:clipChildren="false" android:layout_width="320.0dip" android:layout_height="fill_parent" android:overScrollMode="never" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
+    </FrameLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

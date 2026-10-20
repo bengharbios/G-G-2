@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/rl_main" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/rl_title" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip">
+        <ImageView android:id="@id/iv_back" android:paddingTop="11.0dip" android:paddingBottom="11.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/skin_close" android:paddingStart="15.0dip" android:paddingEnd="10.0dip" android:layout_alignParentEnd="true" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="19.0sp" android:textColor="#ff87ebaa" android:gravity="center" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:text="FaceBook Friends" android:includeFontPadding="false" android:shadowColor="@color/black_50" android:shadowDy="5.0" android:shadowRadius="1.0" android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <FrameLayout android:orientation="vertical" android:background="@drawable/bg_room_share_contacts" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="10.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:layout_below="@id/rl_title">
+        <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:id="@id/ll_no_friends" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_gravity="center" android:id="@id/iv_social" android:layout_width="120.0dip" android:layout_height="120.0dip" android:src="@drawable/tips_no_data" />
+            <com.yalla.games.common.view.CustomTextView android:textSize="14.0sp" android:textColor="#ffa7e5d3" android:layout_gravity="center" android:id="@id/tv_social" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:text="@string/no_friend" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/rcy_friend" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="7.5dip" android:layout_marginBottom="70.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" />
+    </FrameLayout>
+    <RelativeLayout android:id="@id/rl_bottom" android:background="@drawable/bg_room_share_select" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="70.0dip" android:layout_alignParentBottom="true">
+        <com.yalla.games.common.view.CustomTextView android:textSize="16.0sp" android:textColor="#ff8aeaac" android:id="@id/tv_select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="34.0dip" />
+        <com.yalla.game.base.view.StrokeButton android:gravity="center" android:id="@id/btn_send" android:background="@drawable/bn_yes" android:layout_width="100.0dip" android:layout_height="46.0dip" android:text="@string/send" android:layout_centerVertical="true" android:layout_marginEnd="23.0dip" android:layout_alignParentEnd="true" style="@style/StrokeTextStyle_Yes" />
+    </RelativeLayout>
+</RelativeLayout>

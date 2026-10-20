@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout android:id="@id/fl_classic" android:background="@drawable/jackaroo_game_invite_classic_enter" android:layout_width="107.0dip" android:layout_height="95.0dip" android:layout_marginStart="9.0dip" android:layout_marginEnd="9.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5.0dip" android:text="@string/G_1430_97" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="10.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff504694" />
+    </FrameLayout>
+    <FrameLayout android:id="@id/fl_complex" android:background="@drawable/jackaroo_game_invite_complex" android:layout_width="107.0dip" android:layout_height="95.0dip" android:layout_marginEnd="9.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5.0dip" android:text="@string/G_1430_98" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="10.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff504694" />
+    </FrameLayout>
+    <FrameLayout android:id="@id/fl_jackroo_vip" android:background="@drawable/jackaroo_vip_room_chat_enter" android:layout_width="107.0dip" android:layout_height="95.0dip" android:layout_marginEnd="9.0dip">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="16.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="bottom|center" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5.0dip" android:text="@string/vip_room" app:autoSizeMaxTextSize="16.0sp" app:autoSizeMinTextSize="10.0sp" app:autoSizeStepGranularity="1.0sp" app:autoSizeTextType="uniform" app:stroke_color="#ff504694" />
+    </FrameLayout>
+</LinearLayout>

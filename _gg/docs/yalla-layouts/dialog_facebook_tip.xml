@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="336.0dip" android:layout_height="fill_parent" android:layoutDirection="ltr"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/top" android:background="@drawable/share_picture" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip">
+        <RelativeLayout android:id="@id/rl_content" android:layout_width="180.0dip" android:layout_height="100.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="12.0dip" android:layout_alignParentEnd="true">
+            <com.yalla.game.base.view.StrokeTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff53c7f8" android:id="@id/tv_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="13.0dip" android:text="@string/login_with_facebook_you_can" android:layout_marginStart="15.0dip" android:layout_alignParentEnd="true" />
+            <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_below="@id/tv_title" android:layout_marginStart="15.0dip">
+                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ff8d8d8d" android:gravity="center" android:id="@id/tv_content1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/login_facebook_good_1" android:drawablePadding="2.0dip" android:drawableStart="@drawable/facebook_tip_shap" />
+                <com.yalla.games.common.view.CustomTextView android:textSize="11.0sp" android:textStyle="bold" android:textColor="#ff8d8d8d" android:gravity="center" android:id="@id/tv_content2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/login_facebook_good_2" android:drawablePadding="2.0dip" android:drawableStart="@drawable/facebook_tip_shap" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ll_guest" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_below="@id/top" android:layout_centerHorizontal="true">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon_guest" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff626262" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/continue_as_guest" android:layout_marginStart="1.0dip" />
+    </LinearLayout>
+    <View android:id="@id/view_guest" android:background="@color/gray" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="1.0dip" android:layout_marginTop="1.0dip" android:layout_below="@id/ll_guest" android:layout_alignStart="@id/ll_guest" android:layout_alignEnd="@id/ll_guest" />
+    <RelativeLayout android:layout_gravity="center_horizontal" android:id="@id/rl_fb" android:background="@drawable/login_fb" android:layout_width="231.0dip" android:layout_height="58.0dip" android:layout_marginTop="12.0dip" android:layout_marginBottom="8.0dip" android:layout_below="@id/ll_guest" android:layout_centerHorizontal="true">
+        <ImageView android:layout_width="52.0dip" android:layout_height="wrap_content" android:layout_marginTop="8.5dip" android:src="@drawable/login_fb_f" android:layout_alignParentLeft="true" />
+        <com.yalla.game.base.view.StrokeTextView android:textSize="13.0sp" android:textColor="@color/white" android:gravity="left" android:id="@id/tv_fb_login" android:layout_width="180.0dip" android:layout_height="wrap_content" android:text="@string/log_with_facebook" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:textDirection="ltr" android:paddingStart="13.0dip" app:stroke_color="#ff2e457d" app:stroke_width="1.0dip" />
+    </RelativeLayout>
+</RelativeLayout>

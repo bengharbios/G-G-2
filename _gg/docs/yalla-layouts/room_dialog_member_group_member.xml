@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:background="@color/room_color_0E2035" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/iv_image_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" />
+    <com.google.android.material.appbar.AppBarLayout android:orientation="vertical" android:id="@id/aplMemberGroup" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" app:elevation="0.0dip" app:layout_behavior="com.yuruiyin.appbarlayoutbehavior.AppBarLayoutBehavior">
+        <com.google.android.material.appbar.CollapsingToolbarLayout android:id="@id/ctlMemberGroupHead" android:layout_width="fill_parent" android:layout_height="wrap_content" app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed" app:scrimAnimationDuration="150">
+            <include android:id="@id/include_member_group_head" layout="@layout/room_member_group_member_view_head" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <android.widget.Space android:id="@id/spaceMiddle" android:layout_width="fill_parent" android:layout_height="5.0dip" />
+        <View android:id="@id/bottomLine" android:background="#ff22354a" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="18.0dip" android:layout_marginEnd="18.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.tabs.TabLayout android:id="@id/tabLayout" android:background="@drawable/room_member_group_tab" android:layout_width="fill_parent" android:layout_height="38.0dip" android:layout_marginStart="30.0dip" android:layout_marginEnd="30.0dip" app:tabGravity="fill" app:tabIndicator="@null" app:tabIndicatorColor="@android:color/transparent" app:tabIndicatorHeight="0.0dip" app:tabMaxWidth="0.0dip" app:tabMode="fixed" app:tabRippleColor="@null" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/viewPager2" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <androidx.constraintlayout.widget.Group android:id="@id/contentGroup" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" app:constraint_referenced_ids="aplMemberGroup,viewPager2" />
+    <com.yalla.ludochat.view.adapter.PageStatusView android:id="@id/pageStateView" android:background="@color/room_color_0E2035" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

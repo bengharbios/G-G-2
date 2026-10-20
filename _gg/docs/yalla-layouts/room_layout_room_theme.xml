@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/rl_room_theme" android:background="@drawable/bg_hall" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@drawable/skin_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="42.0dip" />
+    <com.yalla.ludochat.view.TitleView android:id="@id/title_view" android:background="@drawable/bg_rank" android:layout_width="fill_parent" android:layout_height="53.0dip" />
+    <net.lucode.hackware.magicindicator.MagicIndicator android:id="@id/tab_theme" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="10.0dip" android:layout_below="@id/title_view" android:layout_marginStart="22.0dip" android:layout_marginEnd="22.0dip" />
+    <View android:id="@id/divider" android:background="@drawable/skin_divider" android:layout_width="fill_parent" android:layout_height="10.0dip" android:layout_marginTop="14.0dip" android:layout_below="@id/tab_theme" />
+    <com.yalla.ludochat.view.viewpager.YlViewPager android:id="@id/vp_theme" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/divider" />
+</RelativeLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.Guideline android:orientation="vertical" android:id="@id/guide" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.44" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout android:id="@id/flStrokeTv" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/guide" app:layout_constraintTop_toTopOf="parent">
+        <com.yalla.game.base.view.StrokeTextView android:textSize="10.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/tvUserRanking" android:layout_width="wrap_content" android:layout_height="fill_parent" android:includeFontPadding="false" app:stroke_width="1.0dip" />
+    </FrameLayout>
+</merge>

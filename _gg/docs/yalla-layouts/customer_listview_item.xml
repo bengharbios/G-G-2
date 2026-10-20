@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="7.0dip" android:paddingEnd="7.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="#ffb6dcd2" android:gravity="center" android:layout_gravity="center" android:id="@id/chat_time" android:layout_width="wrap_content" android:layout_height="22.0dip" android:includeFontPadding="false" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/left_item" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/robot_head" android:layout_width="34.0dip" android:layout_height="34.0dip" android:src="@drawable/service2" />
+        <LinearLayout android:orientation="vertical" android:layout_width="208.0dip" android:layout_height="wrap_content" android:layout_marginStart="4.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/service_subtitle" android:autoLink="web" android:id="@id/robot_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/customer_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginBottom="10.0dip">
+                <com.yalla.games.common.view.CustomTextView android:textSize="12.0dip" android:textColor="@color/color_8e8e8e" android:gravity="start|center" android:autoLink="web" android:id="@id/robot_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:textIsSelectable="true" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" />
+                <ImageView android:layout_gravity="start" android:id="@id/iv_pic" android:visibility="gone" android:layout_width="100.0dip" android:layout_height="100.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="end" android:orientation="horizontal" android:id="@id/right_item" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="end" android:orientation="vertical" android:layout_width="208.0dip" android:layout_height="wrap_content" android:layout_marginStart="56.0dip" android:layout_marginEnd="4.0dip">
+            <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/service_subtitle" android:id="@id/suggester_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/customer_right_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginBottom="10.0dip">
+                <com.yalla.games.common.view.CustomTextView android:textSize="10.0dip" android:textColor="@color/color_8e8e8e" android:gravity="start|center" android:id="@id/suggester_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:textIsSelectable="true" android:paddingStart="5.0dip" android:paddingEnd="10.0dip" />
+                <ImageView android:layout_gravity="start" android:id="@id/iv_pic_right" android:visibility="gone" android:layout_width="100.0dip" android:layout_height="100.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.yalla.games.common.view.CircleImageView android:id="@id/suggester_iv" android:layout_width="34.0dip" android:layout_height="34.0dip" />
+    </LinearLayout>
+</LinearLayout>

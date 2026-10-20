@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/fl_content" android:background="@drawable/chat_bubble_right" android:layout_width="258.0dip" android:layout_height="wrap_content" android:layoutDirection="locale"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip">
+        <com.yalla.games.common.view.CircleImageView android:id="@id/iv_img" android:layout_width="fill_parent" android:layout_height="63.0dip" android:layout_marginBottom="7.0dip" android:scaleType="centerCrop" app:isRoundRect="true" app:roundRectRadius="4.0dip" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="9.0sp" android:textColor="#ff454545" android:layout_gravity="center_horizontal" android:id="@id/tv_description" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
+    </LinearLayout>
+</FrameLayout>

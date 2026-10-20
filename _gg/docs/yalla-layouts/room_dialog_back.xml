@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_marginStart="30.0dip" android:layout_marginEnd="30.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_blue_welcome_back_bg" />
+    <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/room_back_dialog_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="92.0dip">
+        <com.yalla.games.common.view.CustomTextView android:textSize="24.0dip" android:textStyle="bold" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="132.0dip" android:text="@string/room_welcome_back" />
+        <com.yalla.games.common.view.CustomTextView android:textSize="13.0dip" android:textStyle="bold" android:textColor="@color/white" android:gravity="center" android:id="@id/tvBackContent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginStart="6.0dip" android:layout_marginEnd="6.0dip" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/room_welcome_back_gift_bg" />
+                <ImageView android:layout_gravity="center" android:id="@id/ivBackGift" android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" android:maxWidth="88.0dip" android:maxHeight="88.0dip" />
+            </FrameLayout>
+            <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon_number_plus" />
+            <com.yalla.games.common.view.NumberFrameLayout android:layout_gravity="center_vertical" android:id="@id/tvBackGiftNum" android:layout_width="wrap_content" android:layout_height="25.0dip" android:layout_marginStart="2.0dip" />
+        </LinearLayout>
+        <com.yalla.games.common.view.CustomTextView android:textSize="20.0dip" android:textStyle="bold" android:textColor="@color/color_a60" android:gravity="center" android:id="@id/tv_welcome_back" android:background="@drawable/room_btn_yellow_bg" android:layout_width="190.0dip" android:layout_height="48.0dip" android:layout_marginTop="5.0dip" android:text="@string/room_collect_and_go" android:includeFontPadding="false" />
+    </LinearLayout>
+    <ImageView android:layout_gravity="center_horizontal" android:layout_width="240.0dip" android:layout_height="wrap_content" android:src="@drawable/room_back_dialog_head" />
+    <ImageView android:layout_gravity="end" android:id="@id/iv_close_back" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="102.0dip" android:src="@drawable/room_back_dialog_close" android:layout_marginEnd="10.0dip" />
+</FrameLayout>

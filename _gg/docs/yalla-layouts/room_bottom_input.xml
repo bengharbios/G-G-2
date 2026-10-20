@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/input_container" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.yalla.ludochat.view.ReferenceReplyView android:id="@id/referenceReplyView" android:background="@color/white" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llRoomBottom" android:background="@color/room_f5f5f6" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="56.0dip" xmlns:app="http://schemas.android.com/apk/res-auto">
+        <com.yalla.ludochat.view.FixedEmojiEditText android:textSize="13.0dip" android:textColor="@color/room_color_442" android:textColorHint="@color/room_b6b4b4" android:gravity="start|center" android:id="@id/etInputMessage" android:background="@drawable/room_edittext_message_input" android:padding="8.0dip" android:focusable="true" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:maxHeight="96.0dip" android:minHeight="36.0dip" android:hint="@string/room_say_something" android:includeFontPadding="false" android:layout_weight="1.0" android:inputType="textMultiLine" android:textDirection="anyRtl" android:textAlignment="viewStart" android:layout_marginStart="12.0dip" />
+        <com.yalla.ludochat.view.CheckedImageView android:id="@id/ivEmoji" android:layout_width="wrap_content" android:layout_height="56.0dip" android:src="@drawable/room_selector_input_panel_emoji_key" android:paddingStart="6.0dip" android:paddingEnd="6.0dip" android:layout_marginStart="6.0dip" android:layout_marginEnd="1.0dip" app:checked="false" />
+        <ImageView android:id="@id/ivSendPicture" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="56.0dip" android:src="@drawable/room_icon_picture" android:paddingStart="6.0dip" android:paddingEnd="6.0dip" android:layout_marginEnd="6.0dip" />
+        <ImageView android:id="@id/ivSend" android:paddingTop="17.0dip" android:paddingBottom="17.0dip" android:visibility="gone" android:layout_width="38.0dip" android:layout_height="56.0dip" android:src="@drawable/room_selector_room_message_send" android:scaleType="centerInside" android:layout_marginEnd="6.0dip" />
+    </LinearLayout>
+    <FrameLayout android:background="@color/room_f5f5f6" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.yalla.ludochat.view.FacePanelView android:id="@id/facePanelView" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="0.0dip" />
+    </FrameLayout>
+</LinearLayout>

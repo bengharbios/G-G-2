@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:paddingTop="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/room_chat_base" />
+    <ProgressBar android:id="@id/pb_load" android:layout_width="24.0dip" android:layout_height="24.0dip" android:indeterminateDrawable="@drawable/room_gif_load_animal" android:indeterminateDuration="500" android:indeterminateBehavior="repeat" app:layout_constraintBottom_toBottomOf="@id/ivGif" app:layout_constraintEnd_toEndOf="@id/ivGif" app:layout_constraintStart_toStartOf="@id/ivGif" app:layout_constraintTop_toTopOf="@id/ivGif" />
+    <ImageView android:id="@id/ivGif" android:layout_width="62.0dip" android:layout_height="62.0dip" android:scaleType="fitXY" android:layout_marginStart="54.0dip" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/headBaseBottomBarrier" />
+</androidx.constraintlayout.widget.ConstraintLayout>
