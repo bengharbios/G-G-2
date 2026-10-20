@@ -1054,3 +1054,75 @@ Stage Summary:
 - 1267 new files (public/room-icons/), 20MB total.
 - ALL voice room interior icons from Yalla Ludo v1.5.1.0 are now available locally.
 - Next step: update MicSeat, RoomInteriorView, BottomBar to use these real icons instead of lucide-react or settings-page icons.
+
+---
+Task ID: shop-rebuild-1
+Agent: main
+Task: إعادة بناء جميع النوافذ من الصفر — ChargeDialog + RoyalDialog + BuyVipDialog — بأصول Yalla Ludo الأصلية 100%
+
+Work Log:
+- نسخ 23 أصل ملكي من /yalla-ui/full/ إلى /yalla-ui/royal/:
+  - royal_level_top_bg.webp, royal_level_value_ic.webp, royal_progress_point_ic.webp
+  - royal_effective_time_bg.9.png
+  - royal_super_privileges_dialog_bg.webp, royal_super_privileges_item_bg.webp
+  - royal_super_privilege_dialog_title_bg.webp, royal_super_privileges_dialog_progress_end_ic.webp
+  - royal_visual_ic.9.png, royal_visual_selected_ic.webp
+  - royal_circle_coupon_ic.webp, royal_coupon_item_bg.webp, royal_coupon_item_mark_ic.webp
+  - royal_coupon_shop_diamond_item_ic.webp, royal_coupon_shop_item_ic.webp
+  - circle_content_open_ic.webp, reddot.webp
+  - royal_store_add_sub_num_bg.webp, royal_store_gift_pay_value_bg.webp, royal_store_hot_item_bar.webp
+  - btn_royal_gray.9.png, btn_royall_yes.9.png, dialog_buy_towar_royal_btn_bg.webp
+- نسخ 19 أصل متجر من /yalla-ui/full/ إلى /yalla-ui/shop/:
+  - bg_rank.9.png (شريط العنوان)
+  - btn_shop.9.png, btn_shop_free.9.png (زر الشراء في item_diamonds.xml)
+  - btn_yes.9.png, btn_yes_press.9.png (bn_yes — زر شراء VIP)
+  - cart_vip_buy_item_bg.webp (خلفية عنصر VIP)
+  - shop_item_bg.webp (خلفية عنصر الجواهر/الذهب)
+  - shop_item_tail_bg.9.png, shop_top_green_line.9.png (الفواصل)
+  - skin_bg.9.png, skin_close.webp, description_rule.webp
+  - jia.webp (زر +)
+  - diamonds1.webp, coin1.webp (الرموز الكبيرة 88x88dip)
+  - vip.webp, vip_sub_entrance_ic.webp
+  - privilege_detail_knight_ic.webp, privilege_detail_baron_ic.webp (رموز الفئات)
+
+- ChargeDialog.tsx — إعادة بناء شاملة:
+  - الهيدر: bg_rank.9.png حقيقية + skin_close.webp + bg_add_coin chips مع jia.webp
+  - الألسنة: shop_switch_*_check.webp و shop_switch_*_uncheck.webp كأيقونات داخل كل لسان
+  - الفاصل: shop_top_green_line.9.png مع fallback CSS
+  - بانر أول شحن: bg_firstcharge.png كخلفية حقيقية + fast_pay_first_reward_tip_ic.webp
+  - RegularPackageCard: shop_item_bg.webp بعتامة كاملة + label_best.webp/label_popular.webp كصور شارات حقيقية + btn_shop.9.png كخلفية زر الشراء
+  - VipPackageCard: cart_vip_buy_item_bg.webp ممتلئة + privilege_detail_knight/baron_ic.webp + royal_5_throne_ic.webp (60x72dip) + btn_yes.9.png كخلفية زر الشراء (bn_yes drawable)
+  - RoyalPackageCard: طبقات royal_level_top_bg.webp + bg_shop_royal.webp + royal_level_value_ic.webp + btn_yes.9.png للزر
+
+- RoyalDialog.tsx — إعادة بناء شاملة:
+  - شريط العنوان: bg_rank.9.png + description_rule.webp + skin_close.webp
+  - الخلفية العلوية: royal_level_top_bg.webp بعتامة 85% (كانت CSS gradient قبل ذلك)
+  - تاريخ الصلاحية: royal_effective_time_bg.9.png كخلفية حقيقية للـ pill
+  - لوحة الامتيازات: royal_super_privileges_dialog_bg.webp كخلفية حاوية + royal_super_privileges_item_bg.webp كخلفية كل عنصر + royal_super_privileges_item_bg.webp للزر
+  - إزالة state غير المستخدم setLoading لإصلاح تحذير ESLint (react-hooks/set-state-in-effect)
+
+- BuyVipDialog.tsx — إعادة بناءة شاملة:
+  - الهيدر: bg_rank.9.png + vip.webp + skin_close.webp + bg_add_coin للجواهر
+  - البانر: bg_shop_top_banner.webp كخلفية + vip_sub_entrance_ic.webp
+  - الفاصل: shop_top_green_line.9.png
+  - كل عنصر: cart_vip_buy_item_bg.webp كخلفية ممتلئة + privilege_detail_knight/baron_ic.webp + royal_5_throne_ic.webp (60x72dip) + btn_yes.9.png كخلفية زر الشراء
+  - زر الشراء في النموذج: btn_yes.9.png حقيقية
+
+- التحقق من المطابقة مع layouts الأصلية Yalla Ludo:
+  - fragment_shop.xml: 3 ألسنة بـ shop_switch_*_check/uncheck + iv_close skin_close + bg_rank للعنوان
+  - view_shop_diamonds.xml: shop_top_green_line.9.png كفاصل
+  - item_diamonds.xml: 107x150dip shop_item_bg.webp + label_best.webp + btn_shop.9.png (90x32dip)
+  - item_vip_buy.xml: 157.5x195.44998dip cart_vip_buy_item_bg.webp + iv_days 59x72dip + btn_vip_buy bn_yes 110x40dip
+  - fragment_royal_level2.xml: royal_level_top_bg 212.5dip + RoyalProgressView (radius 92dip) + royal_effective_time_bg + RoyalPrivilegeDetailView
+
+- Build verification: npx next build --webpack ✓ (44s compile, 132/132 pages generated)
+- ESLint verification: ✓ on all 3 dialog files (ChargeDialog, RoyalDialog, BuyVipDialog) — clean
+- Commit: 29818650
+- Pushed to GitHub main (ff2fe678..29818650)
+
+Stage Summary:
+- 45 new files added under /yalla-ui/royal/ (23) and /yalla-ui/shop/ (22)
+- 3 dialog components rebuilt to use authentic Yalla Ludo image assets instead of CSS gradients
+- All references now match the decoded APK layouts (fragment_shop.xml, item_diamonds.xml, item_vip_buy.xml, fragment_royal_level2.xml)
+- Pre-existing ESLint warning in RoyalDialog fixed (removed unused setLoading state)
+- Build passes — Vercel will auto-deploy on push
