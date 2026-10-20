@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import FrameStoreModal from './FrameStoreModal';
 import SettingsModal from './SettingsModal';
+import ChargeDialog from './ChargeDialog';
 import SvgaOrImg from './SvgaOrImg';
 import { formatCompact } from '@/lib/format';
 import { enableBgMusicAutoStart, initVolumeFromStorage } from '@/lib/sounds';
@@ -71,6 +72,8 @@ export default function SiteHeader({
   const authUser = authUserProp !== undefined ? authUserProp : fetchedUser;
   const [storeOpen, setStoreOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [chargeOpen, setChargeOpen] = useState(false);
+  const [chargeTab, setChargeTab] = useState<'diamond' | 'gold' | 'vip'>('diamond');
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
 
@@ -180,14 +183,24 @@ export default function SiteHeader({
           <div className="spacer" />
 
           {/* الذهب — الرصيد الحقيقي من AppUser.gold */}
-          <button className="coin-pill" aria-label="الذهب" title="الذهب">
+          <button
+            className="coin-pill"
+            aria-label="الذهب"
+            title="اضغط للشحن"
+            onClick={() => { setChargeTab('gold'); setChargeOpen(true); }}
+          >
             <img src="/yalla-ui/coin.webp" alt="" />
             <span>{gold === null ? '0' : formatCompact(gold)}</span>
             <img className="add-btn" src="/yalla-ui/jia.webp" alt="+" />
           </button>
 
           {/* الجواهر — الرصيد الحقيقي من قاعدة البيانات */}
-          <button className="gem-pill" aria-label="الجواهر" title="الجواهر">
+          <button
+            className="gem-pill"
+            aria-label="الجواهر"
+            title="اضغط للشحن"
+            onClick={() => { setChargeTab('diamond'); setChargeOpen(true); }}
+          >
             <img src="/yalla-ui/diamonds.webp" alt="" />
             <span>{gems === null ? '0' : formatCompact(gems)}</span>
             <img className="add-btn" src="/yalla-ui/jia.webp" alt="+" />
@@ -228,6 +241,15 @@ export default function SiteHeader({
         onOpenChange={setSettingsOpen}
         authUser={authUser}
         onLogout={onLogout}
+      />
+
+      {/* نافذة الشحن — تفتح عند الضغط على 💎 أو 🪙 */}
+      <ChargeDialog
+        open={chargeOpen}
+        onClose={() => setChargeOpen(false)}
+        initialTab={chargeTab}
+        gems={gems}
+        gold={gold}
       />
     </>
   );
