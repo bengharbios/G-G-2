@@ -49,6 +49,7 @@ import {
   ImageIcon,
   Upload,
   KeyRound,
+  ShoppingBag,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -323,7 +324,7 @@ interface LeaderboardEntry {
   isSpecialId: boolean;
 }
 
-type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'bottom-nav' | 'battle-themes' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards';
+type ActiveSection = 'dashboard' | 'games' | 'game-rewards' | 'role-multipliers' | 'reward-log' | 'bottom-nav' | 'battle-themes' | 'subscriptions' | 'sessions' | 'messages' | 'settings' | 'tables' | 'gem-charges' | 'leaderboard' | 'events' | 'frames' | 'users' | 'backgrounds' | 'ornaments' | 'themes' | 'cards' | 'store';
 
 // ─── Navigation items ─────────────────────────────────────────────────
 
@@ -342,6 +343,7 @@ const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = 
   { id: 'events', label: 'الأحداث', icon: <CalendarDays className="w-5 h-5" /> },
   { id: 'gem-charges', label: 'صفحة الشحن', icon: <Gem className="w-5 h-5" /> },
   { id: 'leaderboard', label: 'المتصدرين', icon: <Trophy className="w-5 h-5" /> },
+  { id: 'store', label: 'إدارة المتجر', icon: <ShoppingBag className="w-5 h-5" /> },
   { id: 'frames', label: 'إدارة الإطارات', icon: <Frame className="w-5 h-5" /> },
   { id: 'ornaments', label: 'المعلقات الجدارية', icon: <ImageIcon className="w-5 h-5" /> },
   { id: 'themes', label: 'المواضيع', icon: <ImageIcon className="w-5 h-5" /> },
@@ -2044,6 +2046,12 @@ export default function AdminPage() {
   };
 
   const handleNavClick = (section: ActiveSection) => {
+    // 'store' هو رابط خارجي لصفحة /admin/store — ننتقل بدل تبديل القسم
+    if (section === 'store') {
+      setSidebarOpen(false);
+      router.push('/admin/store');
+      return;
+    }
     setActiveSection(section);
     setSidebarOpen(false);
     // تحديث URL بدون scroll — يحافظ على القسم عند التحديث
