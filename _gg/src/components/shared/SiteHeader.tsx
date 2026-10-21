@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import StoreMainPage from './StoreMainPage';
+import StoreSubPage from './StoreSubPage';
 import SettingsModal from './SettingsModal';
 import ChargeDialog from './ChargeDialog';
 import SvgaOrImg from './SvgaOrImg';
@@ -77,6 +78,7 @@ export default function SiteHeader({
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
   const [royalLevel, setRoyalLevel] = useState<number>(0);
+  const [storeSubCategory, setStoreSubCategory] = useState<{ id: string; nameAr: string; icon: string; layoutType: string; sortOrder: number; redDotCondition: string } | null>(null);
 
   // تهيئة الصوت + تشغيل الموسيقى عند أول تفاعل (يعمل من أول فتح للموقع، ليس فقط في الألعاب)
   useEffect(() => {
@@ -256,7 +258,18 @@ export default function SiteHeader({
         onClose={() => setStoreOpen(false)}
         gems={gems}
         gold={gold}
+        onCategoryClick={(cat) => setStoreSubCategory(cat)}
         onChargeClick={() => { setStoreOpen(false); setChargeTab('diamond'); setChargeOpen(true); }}
+      />
+
+      {/* صفحة فرعية للمتجر — StoreSubPage */}
+      <StoreSubPage
+        open={!!storeSubCategory}
+        onClose={() => setStoreSubCategory(null)}
+        category={storeSubCategory}
+        gems={gems}
+        gold={gold}
+        onChargeClick={() => { setStoreSubCategory(null); setChargeTab('diamond'); setChargeOpen(true); }}
       />
 
       {/* نافذة الإعدادات */}
