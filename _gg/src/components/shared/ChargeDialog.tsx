@@ -525,6 +525,17 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 الترتيب البصري من اليسار لليمين (مطابق لصورة A):
                   [Subscriptions (vip) | Diamond | Gold]
                 الـ API يرجع الترتيب [gold, diamond, vip] — نعكسه ليصبح [vip, diamond, gold] بصرياً
+
+                شكل خلفيات التبويبات (مهم):
+                - shop_switch_left_check.webp:    حافة يسرى مستديرة + حافة يمنى مربعة ← لليسار
+                - shop_switch_middle_uncheck.webp: حافتان مربعتان ← للوسط
+                - shop_switch_right_uncheck.webp:  حافة يسرى مربعة + حافة يمنى مستديرة ← لليمين
+
+                نستخدم الخلفية حسب الموقع فقط (لا تعتمد على الحالة النشطة/غير النشطة) —
+                الحالة النشطة تُظهرها:
+                  - الأيقونة (iconCheck للنشط / iconUncheck لغير النشط)
+                  - النص (أبيض للنشط / #17654c لغير النشط)
+                  - filter: brightness(1.15) للنشط / brightness(0.9) لغير النشط
             */}
             <div className="relative z-10 flex px-2" style={{ height: 45 }}>
               {[...tabs].reverse().map((tab, idx) => {
@@ -532,17 +543,11 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 // idx 0 = left = Subscriptions (vip), idx 1 = middle = Diamond, idx 2 = right = Gold
                 const isLeft = idx === 0;
                 const isMiddle = idx === 1;
-                const isRight = idx === tabs.length - 1;
-                // الخلفية:
-                //  - نشط + يسار = shop_switch_left_check.webp
-                //  - نشط + وسط = shop_switch_middle_uncheck.webp (لا يوجد middle_check في السورس — نستعمل middle_uncheck للنشط أيضاً)
-                //  - نشط + يمين = shop_switch_right_uncheck.webp (نفس المشكلة)
-                //  - غير نشط = نفس الصور
-                const bg = isActive
-                  ? (isLeft ? A.switchLeftCheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck)
-                  : (isLeft ? A.switchMiddleUncheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck);
+                // الخلفية دائماً حسب الموقع (لا تعتمد على الحالة)
+                const bg = isLeft ? A.switchLeftCheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck;
                 const icon = isActive ? tab.iconCheck : tab.iconUncheck;
                 const textColor = isActive ? '#ffffff' : '#17654c';
+                const brightnessFilter = isActive ? 'brightness(1.15)' : 'brightness(0.9)';
                 return (
                   <button
                     key={tab.key}
@@ -550,20 +555,25 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     className="relative flex-1 flex flex-col items-center justify-center"
                     style={{ paddingBottom: 3, overflow: 'visible' }}
                   >
+                    {/* خلفية التبويب (absolute — خلف المحتوى) */}
                     <img
                       src={bg}
                       alt=""
                       className="absolute inset-0 w-full h-full"
-                      style={{ objectFit: 'fill' }}
+                      style={{ objectFit: 'fill', filter: brightnessFilter }}
                       onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
                     />
+                    {/* أيقونة التبويب (relative + z-10 لتظهر فوق الخلفية) */}
                     <img
                       src={icon}
-                      alt=""
+                      alt={tab.label}
+                      className="relative z-10"
                       style={{ width: tab.iconW, height: tab.iconH, objectFit: 'contain' }}
                       onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
                     />
+                    {/* نص التبويب (relative + z-10 لتظهر فوق الخلفية) */}
                     <span
+                      className="relative z-10"
                       style={{
                         marginTop: tab.marginTop,
                         color: textColor,
@@ -571,6 +581,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                         fontWeight: 700,
                         lineHeight: 1,
                         whiteSpace: 'nowrap',
+                        textShadow: isActive ? '0 1px 2px rgba(0,0,0,.4)' : 'none',
                       }}
                     >
                       {tab.label}
