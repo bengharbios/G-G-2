@@ -864,6 +864,11 @@ export async function ensureAdminTables(): Promise<void> {
   // Seed default store categories (from سورس يللا RLShopFragment.smali)
   await seedStoreCategories(c);
 
+  // [إصلاح عاجل] اربط العناصر الموجودة بأقسامها الصحيحة
+  // العناصر القديمة في DecorItem و PlayerFrame لها categoryId فارغ
+  // نربطها بناءً على نوعها (kind) حتى تظهر في صفحات المتجر الصحيحة
+  await linkExistingItemsToCategories(c);
+
   // Seed imported skin items (30 items from سورس يللا — all hidden, price 0)
   await seedImportedSkinItems(c);
 
@@ -5564,6 +5569,64 @@ async function seedStoreCategories(c: import('@libsql/client').Client): Promise<
       args: [cat.id, cat.nameAr, cat.icon, cat.layoutType, cat.sortOrder, cat.visible ? 1 : 0, cat.redDotCondition],
     });
   }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// [إصلاح عاجل] اربط العناصر الموجودة بأقسامها الصحيحة
+// العناصر القديمة في DecorItem (ornament/theme/card) لها categoryId فارغ
+// العناصر القديمة في PlayerFrame لها categoryId='frames' (من DEFAULT migration)
+// نحدّث categoryId + visible + source على العناصر الموجودة
+// ════════════════════════════════════════════════════════════════════════════
+
+async function linkExistingItemsToCategories(c: import('@libsql/client').Client): Promise<void> {
+  // DecorItem: ربط حسب kind
+  // kind='ornament' → categoryId='wall_hangings'
+  // kind='theme' → categoryId='themes'
+  // kind='card' → categoryId='profile_card'
+  await c.execute({
+    sql: `UPDATE DecorItem SET categoryId = 'wall_hangings' WHERE kind = 'ornament' AND (categoryId IS NULL OR categoryId = '')`,
+    args: [],
+  });
+  await c.execute({
+    sql: `UPDATE DecorItem SET categoryId = 'themes' WHERE kind = 'theme' AND (categoryId IS NULL OR categoryId = '')`,
+    args: [],
+  });
+  await c.execute({
+    sql: `UPDATE DecorItem SET categoryId = 'profile_card' WHERE kind = 'card' AND (categoryId IS NULL OR categoryId = '')`,
+    args: [],
+  });
+
+  // اضمن أن كل العناصر الموجودة لها visible='shown' و source='ours'
+  // (القيم الافتراضية من migration يجب أن تكون صحيحة، لكن نضمن)
+  await c.execute({
+    sql: `UPDATE DecorItem SET visible = 'shown' WHERE visible IS NULL OR visible = ''`,
+    args: [],
+  });
+  await c.execute({
+    sql: `UPDATE DecorItem SET source = 'ours' WHERE source IS NULL OR source = ''`,
+    args: [],
+  });
+  await c.execute({
+    sql: `UPDATE PlayerFrame SET visible = 'shown' WHERE visible IS NULL OR visible = ''`,
+    args: [],
+  });
+  await c.execute({
+    sql: `UPDATE PlayerFrame SET source = 'ours' WHERE source IS NULL OR source = ''`,
+    args: [],
+  });
+
+  // PlayerFrame: categoryId='frames' (موجود بالفعل من migration DEFAULT)
+  await c.execute({
+    sql: `UPDATE PlayerFrame SET categoryId = 'frames' WHERE categoryId IS NULL OR categoryId = ''`,
+    args: [],
+  });
+
+  // أضف قسم 'frames' لو لم يكن موجوداً في StoreCategory (العناصر موجودة لكن القسم غير مدرج)
+  await c.execute({
+    sql: `INSERT OR IGNORE INTO StoreCategory (id, nameAr, icon, layoutType, sortOrder, visible, redDotCondition)
+          VALUES ('frames', 'الإطارات', '/yalla-ui/cart.png', 'frame_shop', 0, 1, '')`,
+    args: [],
+  });
 }
 
 // ════════════════════════════════════════════════════════════════════════════
