@@ -202,6 +202,15 @@ export interface PlayerFrame {
   isActive: boolean;
   sortOrder: number;
   totalOwned: number;
+  // [Batch 2] Store model fields
+  categoryId?: string;
+  visible?: 'shown' | 'hidden' | 'scheduled';
+  source?: 'ours' | 'imported';
+  animatedUrl?: string;
+  isNew?: boolean;
+  discountPercent?: number;
+  scheduleStart?: string;
+  scheduleEnd?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -770,6 +779,93 @@ export async function ensureAdminTables(): Promise<void> {
       UNIQUE(userId, itemId)
     )
   `);
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // [Batch 2] نموذج بيانات المتجر الموحد (Store Model)
+  // StoreCategory: أقسام المتجر الـ 11 من سورس يللا
+  // StoreItem: عناصر قابلة للبيع بـ Visibility + source + animatedUrl
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // StoreCategory table
+  await c.execute(`
+    CREATE TABLE IF NOT EXISTS StoreCategory (
+      id TEXT PRIMARY KEY,
+      nameAr TEXT NOT NULL,
+      icon TEXT DEFAULT '',
+      layoutType TEXT DEFAULT 'grid',
+      sortOrder INTEGER DEFAULT 0,
+      visible INTEGER DEFAULT 1,
+      redDotCondition TEXT DEFAULT '',
+      createdAt TEXT DEFAULT (datetime('now')),
+      updatedAt TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // Migration: add store columns to PlayerFrame (if missing)
+  try {
+    const pfCols = await c.execute("PRAGMA table_info(PlayerFrame)");
+    const pfNames = pfCols.rows.map(r => r.name);
+    if (!pfNames.includes('categoryId')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN categoryId TEXT DEFAULT 'frames'");
+    }
+    if (!pfNames.includes('visible')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN visible TEXT DEFAULT 'shown'");
+    }
+    if (!pfNames.includes('source')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN source TEXT DEFAULT 'ours'");
+    }
+    if (!pfNames.includes('animatedUrl')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN animatedUrl TEXT DEFAULT ''");
+    }
+    if (!pfNames.includes('isNew')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN isNew INTEGER DEFAULT 0");
+    }
+    if (!pfNames.includes('discountPercent')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN discountPercent INTEGER DEFAULT 0");
+    }
+    if (!pfNames.includes('scheduleStart')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN scheduleStart TEXT DEFAULT ''");
+    }
+    if (!pfNames.includes('scheduleEnd')) {
+      await c.execute("ALTER TABLE PlayerFrame ADD COLUMN scheduleEnd TEXT DEFAULT ''");
+    }
+  } catch { /* ignore */ }
+
+  // Migration: add store columns to DecorItem (if missing)
+  try {
+    const diCols = await c.execute("PRAGMA table_info(DecorItem)");
+    const diNames = diCols.rows.map(r => r.name);
+    if (!diNames.includes('categoryId')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN categoryId TEXT DEFAULT ''");
+    }
+    if (!diNames.includes('visible')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN visible TEXT DEFAULT 'shown'");
+    }
+    if (!diNames.includes('source')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN source TEXT DEFAULT 'ours'");
+    }
+    if (!diNames.includes('animatedUrl')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN animatedUrl TEXT DEFAULT ''");
+    }
+    if (!diNames.includes('isNew')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN isNew INTEGER DEFAULT 0");
+    }
+    if (!diNames.includes('discountPercent')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN discountPercent INTEGER DEFAULT 0");
+    }
+    if (!diNames.includes('scheduleStart')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN scheduleStart TEXT DEFAULT ''");
+    }
+    if (!diNames.includes('scheduleEnd')) {
+      await c.execute("ALTER TABLE DecorItem ADD COLUMN scheduleEnd TEXT DEFAULT ''");
+    }
+  } catch { /* ignore */ }
+
+  // Seed default store categories (from سورس يللا RLShopFragment.smali)
+  await seedStoreCategories(c);
+
+  // Seed imported skin items (30 items from سورس يللا — all hidden, price 0)
+  await seedImportedSkinItems(c);
 
   // MediaAsset: الصور المرفوعة من لوحة الأدمن (بايتاتها في القاعدة — توافق Vercel)
   await c.execute(`
@@ -5439,10 +5535,98 @@ export async function seedDefaultFrames(): Promise<void> {
   await seedDefaultDecor();
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// [Batch 2] أقسام المتجر (Store Categories) — من سورس يللا RLShopFragment.smali
+// 11 قسماً (10 من smali + 1 "ملصقات" مخفي بلا عناصر)
+// ════════════════════════════════════════════════════════════════════════════
+
+const STORE_CATEGORIES_SEED: Array<{
+  id: string; nameAr: string; icon: string; layoutType: string; sortOrder: number; visible: boolean; redDotCondition: string;
+}> = [
+  { id: 'ludo_skin',       nameAr: 'غلاف لودو',         icon: '/yalla-ui/full/rl_shop_skin.webp',         layoutType: 'fragment_skin',      sortOrder: 1,  visible: true,  redDotCondition: 'isShowSkinRedDot' },
+  { id: 'domino_skin',     nameAr: 'غلاف دومينو',       icon: '/yalla-ui/full/rl_shop_domino.webp',       layoutType: 'fragment_domino',    sortOrder: 2,  visible: true,  redDotCondition: 'isShowDominoSkinRedDot' },
+  { id: 'jackaroo_skin',   nameAr: 'غلاف جاكارو',       icon: '/yalla-ui/full/rl_shop_jackaroo.webp',     layoutType: 'fragment_jackaroo',  sortOrder: 3,  visible: true,  redDotCondition: 'isShowJackarooSkinRedDot' },
+  { id: 'stickers',        nameAr: 'ملصقات',            icon: '',                                          layoutType: 'grid',               sortOrder: 4,  visible: false, redDotCondition: '' },
+  { id: 'profile_card',    nameAr: 'بطاقة الملف',        icon: '/yalla-ui/full/rl_shop_card.webp',        layoutType: 'fragment_face_shop', sortOrder: 5,  visible: true,  redDotCondition: '' },
+  { id: 'wall_hangings',   nameAr: 'المعلقات الجدارية',  icon: '/yalla-ui/full/icon_decor_shop.webp',     layoutType: 'fragment_floating_decor', sortOrder: 6, visible: true, redDotCondition: 'isShowDecorRedDot' },
+  { id: 'unique_id',       nameAr: 'المعرّف الفريد',     icon: '/yalla-ui/full/rl_shop_id.webp',          layoutType: 'fragment_uniqueid',  sortOrder: 7,  visible: true,  redDotCondition: 'isShowUniqueIdRedDot' },
+  { id: 'themes',          nameAr: 'موضوع',              icon: '/yalla-ui/full/rl_shop_theme.webp',        layoutType: 'fragment_skin_theme', sortOrder: 8,  visible: true,  redDotCondition: '' },
+  { id: 'pin_on_top',      nameAr: 'تثبيت في الأعلى',    icon: '/yalla-ui/full/rl_shop_pin_on_top.webp',  layoutType: 'privilege',          sortOrder: 9,  visible: true,  redDotCondition: '' },
+  { id: 'royal_vehicle',   nameAr: 'مركبة رويال',        icon: '/yalla-ui/full/rl_shop_car.webp',         layoutType: 'royal_store',        sortOrder: 10, visible: true,  redDotCondition: '' },
+  { id: 'entry_effects',   nameAr: 'مؤثرات الدخول',      icon: '/yalla-ui/full/rl_shop_enter_effect.webp', layoutType: 'fragment_skin_bubble', sortOrder: 11, visible: true, redDotCondition: '' },
+];
+
+async function seedStoreCategories(c: import('@libsql/client').Client): Promise<void> {
+  for (const cat of STORE_CATEGORIES_SEED) {
+    await c.execute({
+      sql: `INSERT OR IGNORE INTO StoreCategory (id, nameAr, icon, layoutType, sortOrder, visible, redDotCondition)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      args: [cat.id, cat.nameAr, cat.icon, cat.layoutType, cat.sortOrder, cat.visible ? 1 : 0, cat.redDotCondition],
+    });
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// [Batch 2] العناصر المسحوبة من سورس يللا (30 عنصر — كلها مخفية، سعر 0)
+// - لا تغيير أي سعر موجود
+// - العناصر المسحوبة بـ visible='hidden' و price=0 و isFree=0 (ليست مجانية)
+// - SVGA: يُضاف كـ animatedUrl على العنصر PNG الموجود (نفس المعرّف)، لا كعنصر جديد
+// ════════════════════════════════════════════════════════════════════════════
+
+const IMPORTED_SKIN_ITEMS: Array<{
+  id: string; nameAr: string; imageUrl: string; categoryId: string; rarity: string;
+}> = [
+  // غلاف لودو (Dice) — 13 عنصر من skin_10000-10012
+  { id: 'skin_10000', nameAr: 'نرد لودو 1',  imageUrl: '/yalla-ui/full/skin_10000.webp', categoryId: 'ludo_skin', rarity: 'common' },
+  { id: 'skin_10001', nameAr: 'نرد لودو 2',  imageUrl: '/yalla-ui/full/skin_10001.webp', categoryId: 'ludo_skin', rarity: 'common' },
+  { id: 'skin_10002', nameAr: 'نرد لودو 3',  imageUrl: '/yalla-ui/full/skin_10002.webp', categoryId: 'ludo_skin', rarity: 'rare' },
+  { id: 'skin_10003', nameAr: 'نرد لودو 4',  imageUrl: '/yalla-ui/full/skin_10003.webp', categoryId: 'ludo_skin', rarity: 'rare' },
+  { id: 'skin_10004', nameAr: 'نرد لودو 5',  imageUrl: '/yalla-ui/full/skin_10004.webp', categoryId: 'ludo_skin', rarity: 'epic' },
+  { id: 'skin_10005', nameAr: 'نرد لودو 6',  imageUrl: '/yalla-ui/full/skin_10005.webp', categoryId: 'ludo_skin', rarity: 'epic' },
+  { id: 'skin_10006', nameAr: 'نرد لودو 7',  imageUrl: '/yalla-ui/full/skin_10006.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
+  { id: 'skin_10007', nameAr: 'نرد لودو 8',  imageUrl: '/yalla-ui/full/skin_10007.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
+  { id: 'skin_10008', nameAr: 'نرد لودو 9',  imageUrl: '/yalla-ui/full/skin_10008.webp', categoryId: 'ludo_skin', rarity: 'common' },
+  { id: 'skin_10009', nameAr: 'نرد لودو 10', imageUrl: '/yalla-ui/full/skin_10009.webp', categoryId: 'ludo_skin', rarity: 'rare' },
+  { id: 'skin_10010', nameAr: 'نرد لودو 11', imageUrl: '/yalla-ui/full/skin_10010.webp', categoryId: 'ludo_skin', rarity: 'epic' },
+  { id: 'skin_10011', nameAr: 'نرد لودو 12', imageUrl: '/yalla-ui/full/skin_10011.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
+  { id: 'skin_10012', nameAr: 'نرد لودو 13', imageUrl: '/yalla-ui/full/skin_10012.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
+  // غلاف جاكارو — 6 عناصر من skin_11000-11005
+  { id: 'skin_11000', nameAr: 'غلاف جاكارو 1', imageUrl: '/yalla-ui/full/skin_11000.webp', categoryId: 'jackaroo_skin', rarity: 'common' },
+  { id: 'skin_11001', nameAr: 'غلاف جاكارو 2', imageUrl: '/yalla-ui/full/skin_11001.webp', categoryId: 'jackaroo_skin', rarity: 'rare' },
+  { id: 'skin_11002', nameAr: 'غلاف جاكارو 3', imageUrl: '/yalla-ui/full/skin_11002.webp', categoryId: 'jackaroo_skin', rarity: 'epic' },
+  { id: 'skin_11003', nameAr: 'غلاف جاكارو 4', imageUrl: '/yalla-ui/full/skin_11003.webp', categoryId: 'jackaroo_skin', rarity: 'legendary' },
+  { id: 'skin_11004', nameAr: 'غلاف جاكارو 5', imageUrl: '/yalla-ui/full/skin_11004.webp', categoryId: 'jackaroo_skin', rarity: 'epic' },
+  { id: 'skin_11005', nameAr: 'غلاف جاكارو 6', imageUrl: '/yalla-ui/full/skin_11005.webp', categoryId: 'jackaroo_skin', rarity: 'rare' },
+  // مؤثرات الدخول (Bubble) — 7 عناصر من skin_12000-12006
+  { id: 'skin_12000', nameAr: 'مؤثر دخول 1', imageUrl: '/yalla-ui/full/skin_12000.webp', categoryId: 'entry_effects', rarity: 'common' },
+  { id: 'skin_12001', nameAr: 'مؤثر دخول 2', imageUrl: '/yalla-ui/full/skin_12001.webp', categoryId: 'entry_effects', rarity: 'rare' },
+  { id: 'skin_12002', nameAr: 'مؤثر دخول 3', imageUrl: '/yalla-ui/full/skin_12002.webp', categoryId: 'entry_effects', rarity: 'epic' },
+  { id: 'skin_12003', nameAr: 'مؤثر دخول 4', imageUrl: '/yalla-ui/full/skin_12003.webp', categoryId: 'entry_effects', rarity: 'legendary' },
+  { id: 'skin_12004', nameAr: 'مؤثر دخول 5', imageUrl: '/yalla-ui/full/skin_12004.webp', categoryId: 'entry_effects', rarity: 'rare' },
+  { id: 'skin_12005', nameAr: 'مؤثر دخول 6', imageUrl: '/yalla-ui/full/skin_12005.webp', categoryId: 'entry_effects', rarity: 'epic' },
+  { id: 'skin_12006', nameAr: 'مؤثر دخول 7', imageUrl: '/yalla-ui/full/skin_12006.webp', categoryId: 'entry_effects', rarity: 'legendary' },
+  // مواضيع (Theme) — 4 عناصر من skin_13000-13003
+  { id: 'skin_13000', nameAr: 'موضوع 1', imageUrl: '/yalla-ui/full/skin_13000.webp', categoryId: 'themes', rarity: 'common' },
+  { id: 'skin_13001', nameAr: 'موضوع 2', imageUrl: '/yalla-ui/full/skin_13001.webp', categoryId: 'themes', rarity: 'rare' },
+  { id: 'skin_13002', nameAr: 'موضوع 3', imageUrl: '/yalla-ui/full/skin_13002.webp', categoryId: 'themes', rarity: 'epic' },
+  { id: 'skin_13003', nameAr: 'موضوع 4', imageUrl: '/yalla-ui/full/skin_13003.webp', categoryId: 'themes', rarity: 'legendary' },
+];
+
+async function seedImportedSkinItems(c: import('@libsql/client').Client): Promise<void> {
+  for (const item of IMPORTED_SKIN_ITEMS) {
+    // INSERT OR IGNORE — لا يستبدل عنصراً موجوداً
+    await c.execute({
+      sql: `INSERT OR IGNORE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned, isSeed, categoryId, visible, source, isNew, discountPercent)
+            VALUES (?, 'skin', ?, ?, ?, 0, 0, 0, 0, 0, 1, ?, 'hidden', 'imported', 0, 0)`,
+      args: [item.id, item.nameAr, item.imageUrl, item.rarity, item.categoryId],
+    });
+  }
+}
+
 
 // ═══════════════════════ الزينة (معلقات/مواضيع/بطاقات) ═══════════════════════
 
-export type DecorKind = 'ornament' | 'theme' | 'card';
+export type DecorKind = 'ornament' | 'theme' | 'card' | 'skin';
 
 export interface DecorItem {
   id: string;
@@ -5455,6 +5639,46 @@ export interface DecorItem {
   isActive: boolean;
   sortOrder: number;
   totalOwned: number;
+  // [Batch 2] Store model fields
+  categoryId?: string;
+  visible?: 'shown' | 'hidden' | 'scheduled';
+  source?: 'ours' | 'imported';
+  animatedUrl?: string;
+  isNew?: boolean;
+  discountPercent?: number;
+  scheduleStart?: string;
+  scheduleEnd?: string;
+}
+
+// [Batch 2] Unified Store Category
+export interface StoreCategory {
+  id: string;
+  nameAr: string;
+  icon: string;
+  layoutType: string;
+  sortOrder: number;
+  visible: boolean;
+  redDotCondition: string;
+}
+
+// [Batch 2] Unified Store Item — يشمل PlayerFrame + DecorItem
+export interface StoreItem {
+  id: string;
+  categoryId: string;
+  nameAr: string;
+  imageUrl: string;
+  rarity: PlayerFrame['rarity'];
+  price: number;
+  currency: 'diamonds' | 'gold';
+  isFree: boolean;
+  visible: 'shown' | 'hidden' | 'scheduled';
+  source: 'ours' | 'imported';
+  animatedUrl?: string;
+  isNew: boolean;
+  discountPercent: number;
+  scheduleStart?: string;
+  scheduleEnd?: string;
+  obtainedFrom?: UserFrame['obtainedFrom'];
 }
 
 export interface UserDecorRec {
