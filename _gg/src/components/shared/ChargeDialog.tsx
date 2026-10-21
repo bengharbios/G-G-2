@@ -395,50 +395,49 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               </button>
 
               {/* كبسولة الماس + كبسولة الذهب — مركز
-                  [2] أعرض وأعلى، الأرقام كاملة بمحاذاة وسط الكبسولة
-                  داخل كل كبسولة: النص على اليسار + الأيقونة على اليمين (تتجاوز حافة الكبسولة قليلاً)
-                  الترتيب البصري من اليسار لليمين: كبسولة الماس | كبسولة الذهب
+                  [3] النص في المنتصف بين حافة الكبسولة والأيقونة، بلا تداخل
+                  داخل كل كبسولة: النص في المنتصف الأيسر + الأيقونة على اليمين (بارزة فوق الإطار)
                   الكبسولات محفورة: bg #0c3c30 + inset box-shadow علوي داكن + حافة سفلية فاتحة
               */}
               <div className="flex-1 flex items-center justify-center gap-3">
                 {/* كبسولة الماس (rl_diamonds) — يسار */}
                 <div className="relative flex items-center" style={{ marginRight: 4 }}>
-                  {/* النص على اليسار (paddingEnd=4 = left padding) */}
+                  {/* الكبسولة: النص في المنتصف الأيسر، والأيقونة على اليمين */}
                   <div
-                    className="flex items-center justify-center"
+                    className="relative flex items-center justify-center"
                     style={{
-                      width: 95,        // أعرض من 75 (was 75)
-                      height: 26,       // أعلى من 20 (was 20)
+                      width: 100,        // أعرض لأطول رقم
+                      height: 26,
                       background: A.bgAddCoin,
                       borderRadius: 13,
-                      paddingRight: 4,    // paddingEnd=4 (left padding)
-                      paddingLeft: 24,    // paddingStart=24 — مساحة أكبر للأيقونة على اليمين
+                      paddingRight: 36,   // مساحة للأيقونة (32px icon + 4px gap)
+                      paddingLeft: 8,     // هامش أيسر
                       color: '#fff',
-                      fontSize: 13,       // أكبر من 11 (was 11sp)
+                      fontSize: 13,
                       fontWeight: 800,
                       lineHeight: '26px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textShadow: '0 1px 2px rgba(0,0,0,.6)',
-                      // محفور: ظل داخلي علوي داكن + حافة سفلية فاتحة
                       boxShadow: 'inset 0 1.5px 0 rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.1)',
                     }}
                   >
                     {gems ?? '0'}
                   </div>
-                  {/* أيقونة الماس على اليمين (تتجاوز حافة الكبسولة) — 32×32dip، أكبر من ارتفاع الكبسولة 26dip */}
+                  {/* أيقونة الماس على اليمين — بارزة فوق حافة الكبسولة، لا تغطي النص */}
                   <img
                     src={A.diamonds}
                     alt=""
                     className="absolute"
                     style={{
-                      right: -3,
+                      right: -4,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       width: 32,
                       height: 32,
                       objectFit: 'contain',
                       filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
+                      zIndex: 10,
                     }}
                   />
                 </div>
@@ -446,14 +445,14 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 {/* كبسولة الذهب (rl_gold) — يمين */}
                 <div className="relative flex items-center">
                   <div
-                    className="flex items-center justify-center"
+                    className="relative flex items-center justify-center"
                     style={{
-                      width: 95,
+                      width: 100,
                       height: 26,
                       background: A.bgAddCoin,
                       borderRadius: 13,
-                      paddingRight: 4,
-                      paddingLeft: 24,
+                      paddingRight: 36,
+                      paddingLeft: 8,
                       color: '#fff',
                       fontSize: 13,
                       fontWeight: 800,
@@ -471,13 +470,14 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     alt=""
                     className="absolute"
                     style={{
-                      right: -3,
+                      right: -4,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       width: 32,
                       height: 32,
                       objectFit: 'contain',
                       filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
+                      zIndex: 10,
                     }}
                   />
                 </div>
@@ -757,18 +757,16 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </div>
               )}
 
-              {/* ═════ـ الرف 1 (تحت منطقة المكافأة) — رف بسيط بدون أبناء ══════ */}
+              {/* ══════ الرف 1 (تحت منطقة المكافأة) — الجزء المرئي فقط ══════ */}
               {activeTab !== 'vip' && (
-                <PlainShelf height={45} />
+                <ShelfVisible height={18} />
               )}
 
-              {/* ═════ـ شبكة البطاقات — صفّان، كل صف يقف على رفه ══════
-                  المرجع: TOP_BAR_SPEC.md القسم 5 + البند [5] من الجولة الرابعة
-                  ترتيب بصري من اليمين لليسار تصاعدياً (مطابق لصورة A):
+              {/* ══════ شبكة البطاقات — flex flow طبيعي (لا absolute) ══════
+                  كل صف بطاقات + رف خلفه = block مستقل في flex flow
+                  ترتيب بصري من اليمين لليسار تصاعدياً:
                   Row 1: 400 (يمين) + HOT | 1800 (وسط) | 5000 (يسار)
-                  [رف 2 — البطاقات تقف عليه]
                   Row 2: 16.0K (يمين) + Popular | 53.7K (وسط) | 161.7K (يسار) + BEST
-                  [رف 3 — البطاقات تقف عليه]
               */}
               {isVipTab ? (
                 <div className="grid grid-cols-2 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
@@ -783,71 +781,70 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </div>
               ) : (
                 <>
-                  {/* الرف 2 — بطاقات الصف 1 تقف عليه */}
-                  <ShelfRow height={55}>
-                    {/* الصف 1: 400 / 1800 / 5000 — grid RTL داخل الرف */}
-                    <div className="flex gap-2 justify-center" style={{ direction: 'rtl', width: '100%', maxWidth: 350 }}>
-                      {currentPackages.filter(p => p.enabled).slice(0, 3).map((pkg) => (
-                        <DiamondPackageCard
-                          key={pkg.id}
-                          pkg={pkg}
-                          isSelected={selectedPkg?.id === pkg.id}
-                          onSelect={() => setSelectedPkg(pkg)}
-                        />
-                      ))}
-                    </div>
-                  </ShelfRow>
-                  {/* الرف 3 — بطاقات الصف 2 تقف عليه */}
-                  <ShelfRow height={55}>
-                    {/* الصف 2: 16.0K / 53.7K / 161.7K — grid RTL داخل الرف */}
-                    <div className="flex gap-2 justify-center" style={{ direction: 'rtl', width: '100%', maxWidth: 350 }}>
-                      {currentPackages.filter(p => p.enabled).slice(3, 6).map((pkg) => (
-                        <DiamondPackageCard
-                          key={pkg.id}
-                          pkg={pkg}
-                          isSelected={selectedPkg?.id === pkg.id}
-                          onSelect={() => setSelectedPkg(pkg)}
-                        />
-                      ))}
-                    </div>
-                  </ShelfRow>
+                  {/* الصف 1: 400 / 1800 / 5000 — flex flow طبيعي */}
+                  <div className="flex gap-2 justify-center px-2 py-1" style={{ direction: 'rtl', flexShrink: 0 }}>
+                    {currentPackages.filter(p => p.enabled).slice(0, 3).map((pkg) => (
+                      <DiamondPackageCard
+                        key={pkg.id}
+                        pkg={pkg}
+                        isSelected={selectedPkg?.id === pkg.id}
+                        onSelect={() => setSelectedPkg(pkg)}
+                      />
+                    ))}
+                  </div>
+                  {/* الرف 2 — الجزء المرئي تحت الصف 1 */}
+                  <ShelfVisible height={18} />
+                  {/* الصف 2: 16.0K / 53.7K / 161.7K — flex flow طبيعي */}
+                  <div className="flex gap-2 justify-center px-2 py-1" style={{ direction: 'rtl', flexShrink: 0 }}>
+                    {currentPackages.filter(p => p.enabled).slice(3, 6).map((pkg) => (
+                      <DiamondPackageCard
+                        key={pkg.id}
+                        pkg={pkg}
+                        isSelected={selectedPkg?.id === pkg.id}
+                        onSelect={() => setSelectedPkg(pkg)}
+                      />
+                    ))}
+                  </div>
+                  {/* الرف 3 — الجزء المرئي تحت الصف 2 (آخر رف) */}
+                  <ShelfVisible height={18} />
+                  {/* مساحة مرنة لتعبئة الفراغ بين الرف 3 والزر السفلي */}
+                  <div style={{ flex: 1, minHeight: 20 }} />
                 </>
               )}
 
-              {/* ══════ زر "تفاصيل الماس >>" (shop_item_tail_bg.9.png) — كبسولة داكنة محفورة ══════
-                  المرجع: TOP_BAR_SPEC.md القسم 6
-                  - خلفية: shop_item_tail_bg.9.png (9-patch, متوسط #16644c)
-                  - ظل داخلي علوي + حافة سفلية فاتحة (محفور): inset box-shadow
-                  - نص: "تفاصيل الماس >>" 13sp bold #2bc895
-                  - لا شريطين جانبيين ولا توهج بيضاوي (غير موجود في السورس)
-                  - الزر في السورس ينقل لصفحة go_diamonds_detail — لم تُبنَ بعد
-              */}
-              <div className="flex justify-center" style={{ marginTop: 8, marginBottom: 12 }}>
-                <button
-                  className="relative flex items-center justify-center"
-                  style={{
-                    width: 191,
-                    height: 25,
-                    color: '#2bc895',
-                    fontSize: 13,
-                    fontWeight: 700,
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                    boxShadow: 'inset 0 1px 0 rgba(0,0,0,.4), inset 0 -1px 0 rgba(255,255,255,.08)',
-                  }}
-                >
-                  <img
-                    src={A.shopItemTailBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full"
-                    style={{ objectFit: 'fill' }}
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                  <span className="relative">
-                    {activeTab === 'gold' ? 'تفاصيل الذهب >>' : 'تفاصيل الماس >>'}
-                  </span>
-                </button>
-              </div>
+            </div>
+
+            {/* ══════ زر "تفاصيل الماس >>" — مثبت بالأسفل خارج التمرير ══════
+                المرجع: TOP_BAR_SPEC.md القسم 6
+                - كبسولة داكنة محفورة (inset shadow)
+                - نص "تفاصيل الماس >>" 13sp bold #2bc895
+                - لا شريطين جانبيين ولا توهج (غير موجود في السورس)
+            */}
+            <div className="relative z-20 flex justify-center flex-shrink-0" style={{ paddingBottom: 12, paddingTop: 4 }}>
+              <button
+                className="relative flex items-center justify-center"
+                style={{
+                  width: 191,
+                  height: 25,
+                  color: '#2bc895',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  boxShadow: 'inset 0 1px 0 rgba(0,0,0,.4), inset 0 -1px 0 rgba(255,255,255,.08)',
+                }}
+              >
+                <img
+                  src={A.shopItemTailBg}
+                  alt=""
+                  className="absolute inset-0 w-full h-full"
+                  style={{ objectFit: 'fill' }}
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+                <span className="relative">
+                  {activeTab === 'gold' ? 'تفاصيل الذهب >>' : 'تفاصيل الماس >>'}
+                </span>
+              </button>
             </div>
 
             {/* ══════ نموذج الشحن (عند اختيار حزمة) ══════ */}
@@ -963,92 +960,33 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// ShelfRow — صف الرف بطبقات صحيحة للوقوف
-// مطابق لـ item_shop_guild.xml L26 (iv_shelves 316×84dip)
+// ShelfVisible — الجزء المرئي فقط من الرف (الجسم + الحافة الأمامية)
 //
-// بنية shelves.webp (1091×290، تم تحليلها بـ PIL):
-//   y=0-89    (0-31%):   شفاف (فوق الرف — مساحة فارغة)
-//   y=90-98   (31-34%): حافة علوية شبه شفافة (سطح الوقوف الخلفي — standLine)
-//   y=99-197  (34-68%): السطح العلوي المرئي (مكان وقوف العناصر — لون فاتح)
-//   y=198-242 (68-83%): جسم الرف (لون أغمق)
-//   y=243-278 (84-96%): الحافة الأمامية Barزة (Bevel/Lip — لون فاتح)
-//   y=279-290 (96-100%): شفاف (أسفل الرف)
+// بنية shelves.webp (1091×290):
+//   y=0-89   (0-31%):   شفاف
+//   y=99-197 (34-68%): السطح العلوي (مكان وقوف العناصر — يُغطى بالبطاقات)
+//   y=198-242 (68-83%): الجسم (مرئي)
+//   y=243-279 (84-96%): الحافة الأمامية Barزة (Bevel/Lip — مرئي)
+//   y=279-290 (96-100%): شفاف
 //
-// البنية المطلوبة (Z-order للأبناء داخل ShelfRow):
-//   1. صورة shelves.webp كاملة (z=1) — خلفية
-//   2. الأبناء (العناصر الواقفة) (z=2) — أسفلهم عند standLine
-//   3. طبقة الحافة الأمامية فقط (z=3) — أمام قاعدة العناصر لإحساس الوقوف
+// نعرض فقط الجزء السفلي المرئي (الجسم + الحافة) عبر:
+//   object-fit: cover; object-position: bottom;
+// هذا يُظهر آخر ~32% من الصورة (الجسم + الحافة + شفاف سفلي)
 //
-// standLine = 34% من ارتفاع الرف (من أعلى) = 66% من أسفل
-// عند عرض الرف بـ 60px ارتفاع: standLine عند 60 × 0.66 = 40px من أسفل = 20px من أعلى
+// البطاقات توضع في صف مستقل BEFORE هذا الرف — بـ flex flow طبيعي (لا absolute)
 // ════════════════════════════════════════════════════════════════════════════
-function ShelfRow({ children, height = 60 }: { children?: React.ReactNode; height?: number }) {
-  const standLineFromBottom = height * 0.66;  // السطح العلوي عند 66% من أسفل
-  const bevelHeight = height * 0.16;          // الحافة الأمامية = آخر 16% من ارتفاع الرف
+function ShelfVisible({ height = 18 }: { height?: number }) {
   return (
-    <div className="relative" style={{ height, marginTop: 0, marginBottom: 0 }}>
-      {/* الطبقة 1: خلفية الرف الكاملة (shelves.webp) — z=1 */}
+    <div className="relative w-full" style={{ height, flexShrink: 0 }}>
       <img
         src={A.shelves}
         alt=""
         className="absolute inset-0 w-full h-full"
-        style={{ objectFit: 'fill', opacity: 0.95, zIndex: 1 }}
-        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-      />
-
-      {/* الطبقة 2: الأبناء (العناصر الواقفة) — z=2، أسفلهم عند standLine */}
-      {children && (
-        <div
-          className="absolute left-0 right-0 flex items-end justify-center gap-2"
-          style={{
-            bottom: standLineFromBottom,
-            zIndex: 2,
-            // العناصر تنزل قليلاً تحت السطح لمحاكاة الوقوف الفعلي
-            transform: 'translateY(2px)',
-          }}
-        >
-          {children}
-        </div>
-      )}
-
-      {/* الطبقة 3: الحافة الأمامية فقط (Bevel/Lip) — z=3، أمام العناصر */}
-      {/* نعرض آخر 16% فقط من صورة shelves.webp فوق العناصر */}
-      <div
-        className="absolute left-0 right-0 overflow-hidden"
-        style={{ bottom: 0, height: bevelHeight, zIndex: 3, pointerEvents: 'none' }}
-      >
-        <img
-          src={A.shelves}
-          alt=""
-          className="absolute w-full"
-          style={{
-            bottom: 0,
-            left: 0,
-            right: 0,
-            // نعرض آخر 16% فقط من الصورة الأصلية — الصورة تظهر بنسبة height/bevelHeight%
-            height: height,  // الارتفاع الكامل للصورة الأصلية
-            objectFit: 'fill',
-            opacity: 0.95,
-            // نقلب الصورة رأسياً ونعرض الجزء العلوي (الحافة الأمامية في الأصل تكون في الأسفل)
-            transform: 'scaleY(-1)',
-            transformOrigin: 'bottom',
-          }}
-          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-        />
-      </div>
-    </div>
-  );
-}
-
-// نسخة مبسطة بدون أبناء (للرف الأول تحت المكافأة)
-function PlainShelf({ height = 60 }: { height?: number }) {
-  return (
-    <div className="relative" style={{ height, marginTop: 0, marginBottom: 0 }}>
-      <img
-        src={A.shelves}
-        alt=""
-        className="absolute inset-0 w-full h-full"
-        style={{ objectFit: 'fill', opacity: 0.95, zIndex: 1 }}
+        style={{
+          objectFit: 'cover',
+          objectPosition: 'bottom',
+          opacity: 0.95,
+        }}
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
     </div>
