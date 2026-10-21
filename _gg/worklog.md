@@ -1424,3 +1424,26 @@ Stage Summary:
 2. عرض تعارضات أسعار SVGA الـ30 في نافذة مستقلة مع زر "اعتمد سعر السورس" أو "اعتمد سعرنا"
 3. إضافة معاينة فورية في نافذة التعديل عند تغيير imageUrl/animatedUrl
 4. تصدير/استيراد JSON للكتالوج (backup/restore)
+
+---
+Task ID: batch-5-sidebar-link
+Agent: main
+Task: إضافة رابط "إدارة المتجر" إلى الشريط الجانبي في /admin → /admin/store
+
+Work Log:
+- المشكلة: المستخدم دخل لوحة /admin ولم يجد رابطاً لصفحة /admin/store (التي بنيتها في الدفعة 5)
+- استنسخت أحدث نسخة من GitHub إلى /home/z/my-project/g-g-2/ للعمل على الملف الأصلي
+- التعديل على _gg/src/app/admin/page.tsx (3 تغييرات):
+  1. import { ..., ShoppingBag } from 'lucide-react' — إضافة أيقونة
+  2. type ActiveSection: أضفت 'store' إلى نهاية union type
+  3. navItems: أضفت { id: 'store', label: 'إدارة المتجر', icon: <ShoppingBag /> } فوق 'frames'
+  4. handleNavClick: عند section==='store' → router.push('/admin/store') بدل تبديل القسم
+- التزام: commit 64037da4 "feat(admin): add 'إدارة المتجر' link to sidebar → /admin/store"
+- Push إلى GitHub: 452aa48d..64037da4 main -> main (✓ نجح بعد PAT من المستخدم)
+- إعادة ضبط remote URL لإزالة الـ PAT من config (لا يُخزّن الـ token في أي مكان محلي)
+- typecheck: ✓ نظيف على التعديلات (الـ pre-existing gameSlug error غير متعلق)
+
+Stage Summary:
+- صفحة /admin/store الآن قابلة للوصول من الشريط الجانبي عبر زر "إدارة المتجر"
+- بعد إعادة نشر Vercel (~60 ثانية)، سيظهر الزر بين "المتصدرين" و"إدارة الإطارات"
+- تنبيه أمني: PAT الذي شاركه المستخدم في المحادثة يُعتبر مكشوفاً (يُحفظ سجل المحادثة) — يجب إبطاله من https://github.com/settings/tokens بعد الانتهاء
