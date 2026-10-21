@@ -93,7 +93,7 @@ export async function GET() {
     },
     // الألسنة (Data-driven) — 3 ألسنة فقط (NOT 4)
     tabs: [
-      { key: 'gold',     label: 'ذهب',      iconCheck: '/yalla-ui/shop/shop_switch_gold_check.webp',      iconUncheck: '/yalla-ui/shop/shop_switch_gold_uncheck.webp',      bgCheck: '/yalla-ui/shop/shop_switch_left_check.webp',    bgUncheck: '/yalla-ui/shop/shop_switch_middle_uncheck.webp', iconW: 16,   iconH: 17, marginTop: 2, order: 1, visible: true },
+      { key: 'gold',     label: 'القطع الذهبية', iconCheck: '/yalla-ui/shop/shop_switch_gold_check.webp',      iconUncheck: '/yalla-ui/shop/shop_switch_gold_uncheck.webp',      bgCheck: '/yalla-ui/shop/shop_switch_left_check.webp',    bgUncheck: '/yalla-ui/shop/shop_switch_middle_uncheck.webp', iconW: 16,   iconH: 17, marginTop: 2, order: 1, visible: true },
       { key: 'diamond',  label: 'ألماس',    iconCheck: '/yalla-ui/shop/shop_switch_diamond_check.webp',  iconUncheck: '/yalla-ui/shop/shop_switch_diamond_uncheck.webp',  bgCheck: '/yalla-ui/shop/shop_switch_middle_uncheck.webp', bgUncheck: '/yalla-ui/shop/shop_switch_middle_uncheck.webp', iconW: 16,   iconH: 19, marginTop: 1, order: 2, visible: true },
       { key: 'vip',      label: 'اشتراكات', iconCheck: '/yalla-ui/shop/shop_switch_privilege_check.webp', iconUncheck: '/yalla-ui/shop/shop_switch_privilege_uncheck.webp', bgCheck: '/yalla-ui/shop/shop_switch_right_uncheck.webp',  bgUncheck: '/yalla-ui/shop/shop_switch_right_uncheck.webp',  iconW: 18.5, iconH: 16, marginTop: 3, order: 3, visible: true },
     ],
