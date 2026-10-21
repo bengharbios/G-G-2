@@ -125,7 +125,7 @@ const A = {
   coin6: '/yalla-ui/full/coin6.webp',
   // مكافأة أول شحن
   chestFirstcharge:        '/yalla-ui/full/chest_firstcharge.webp',
-  bgFirstcharge:           '/yalla-ui/full/bg_firstcharge.png',
+  bgFirstcharge:           '/yalla-ui/shop/bg_firstcharge.png',
   rechargeRoomGift:        '/yalla-ui/full/recharge_room_gift.webp',
   chargeRewardProfileCard: '/yalla-ui/full/charge_reward_profile_card.webp',
   chargeRewardHeadDecor:   '/yalla-ui/full/charge_reward_head_decor.webp',
@@ -705,8 +705,10 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                         }}
                       />
 
-                      {/* الفقاعة البيضاء (bg_firstcharge 150×85dip) — يمين
-                          ذيل الفقاعة يشير إلى الصندوق (comic speech bubble — الصندوق يحكي)
+                      {/* الفقاعة البيضاء — يمين
+                          comic speech bubble: الصندوق على اليسار "يحكي" عبر الفقاعة
+                          ذيل الفقاعة مدمج في bg_firstcharge.png (يشير لليسار نحو الصندوق)
+                          CSS fallback: أبيض مدور إذا لم تحمل الصورة
                           بداخلها شبكة 3×2 من أيقونات المكافآت
                       */}
                       <div
@@ -719,6 +721,10 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                           backgroundRepeat: 'no-repeat',
                           flexShrink: 0,
                           filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.15))',
+                          // CSS fallback: فقاعة بيضاء مدورة (تظهر إذا لم تحمل الصورة)
+                          backgroundColor: '#eafff0',
+                          borderRadius: 12,
+                          border: '1.5px solid #b8e6d0',
                         }}
                       >
                         {/* 3×2 grid داخل الفقاعة — أيقونات المكافآت */}
