@@ -522,29 +522,42 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
             </div>
 
             {/* ══════ الألسنة (radio_group_switch) — 3 ألسنة فقط ══════
-                الترتيب البصري من اليسار لليمين (مطابق لصورة A):
+                الترتيب البصري من اليسار لليمين (مطابق لطلب المستخدم):
                   [Subscriptions (vip) | Diamond | Gold]
-                الـ API يرجع الترتيب [gold, diamond, vip] — نعكسه ليصبح [vip, diamond, gold] بصرياً
+
+                ملاحظة مهمة: الصفحة كلها dir="rtl" (layout.tsx L30)
+                لذا flex container يرتّب الأبناء من اليمين لليسار:
+                  - idx=0 (first in DOM) → يظهر في اليمين بصرياً
+                  - idx=2 (last in DOM)  → يظهر في اليسار بصرياً
+
+                الـ API يرجع الترتيب [gold, diamond, vip]
+                بدون .reverse()، DOM order = [gold, diamond, vip]
+                في RTL flex: gold → يمين، diamond → وسط، vip → يسار
+                بصرياً: [Subscriptions (vip) يسار] [Diamond وسط] [Gold يمين] ✓
 
                 شكل خلفيات التبويبات (مهم):
-                - shop_switch_left_check.webp:    حافة يسرى مستديرة + حافة يمنى مربعة ← لليسار
+                - shop_switch_left_check.webp:    حافة يسرى مستديرة ← للموقع الأيسر بصرياً
                 - shop_switch_middle_uncheck.webp: حافتان مربعتان ← للوسط
-                - shop_switch_right_uncheck.webp:  حافة يسرى مربعة + حافة يمنى مستديرة ← لليمين
+                - shop_switch_right_uncheck.webp:  حافة يمنى مستديرة ← للموقع الأيمن بصرياً
 
-                نستخدم الخلفية حسب الموقع فقط (لا تعتمد على الحالة النشطة/غير النشطة) —
+                بما أن RTL يقلب الترتيب البصري، نقلب إسناد الخلفيات أيضاً:
+                  - idx=0 (DOM first = visually RIGHT) → switchRightUncheck (rounded right)
+                  - idx=1 (DOM middle = visually MIDDLE) → switchMiddleUncheck (square)
+                  - idx=2 (DOM last  = visually LEFT)  → switchLeftCheck (rounded left)
+
                 الحالة النشطة تُظهرها:
                   - الأيقونة (iconCheck للنشط / iconUncheck لغير النشط)
                   - النص (أبيض للنشط / #17654c لغير النشط)
                   - filter: brightness(1.15) للنشط / brightness(0.9) لغير النشط
             */}
             <div className="relative z-10 flex px-2" style={{ height: 45 }}>
-              {[...tabs].reverse().map((tab, idx) => {
+              {tabs.map((tab, idx) => {
                 const isActive = activeTab === tab.key;
-                // idx 0 = left = Subscriptions (vip), idx 1 = middle = Diamond, idx 2 = right = Gold
-                const isLeft = idx === 0;
-                const isMiddle = idx === 1;
-                // الخلفية دائماً حسب الموقع (لا تعتمد على الحالة)
-                const bg = isLeft ? A.switchLeftCheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck;
+                // idx 0 = gold = visually RIGHT, idx 1 = diamond = visually MIDDLE, idx 2 = vip = visually LEFT
+                const isVisuallyLeft = idx === tabs.length - 1;   // vip (last in DOM) → visually LEFT in RTL
+                const isVisuallyMiddle = idx === 1;
+                // flip bg assignment for RTL
+                const bg = isVisuallyLeft ? A.switchLeftCheck : isVisuallyMiddle ? A.switchMiddleUncheck : A.switchRightUncheck;
                 const icon = isActive ? tab.iconCheck : tab.iconUncheck;
                 const textColor = isActive ? '#ffffff' : '#17654c';
                 const brightnessFilter = isActive ? 'brightness(1.15)' : 'brightness(0.9)';
