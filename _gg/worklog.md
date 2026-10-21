@@ -1447,3 +1447,43 @@ Stage Summary:
 - صفحة /admin/store الآن قابلة للوصول من الشريط الجانبي عبر زر "إدارة المتجر"
 - بعد إعادة نشر Vercel (~60 ثانية)، سيظهر الزر بين "المتصدرين" و"إدارة الإطارات"
 - تنبيه أمني: PAT الذي شاركه المستخدم في المحادثة يُعتبر مكشوفاً (يُحفظ سجل المحادثة) — يجب إبطاله من https://github.com/settings/tokens بعد الانتهاء
+
+---
+Task ID: batch-5-pull-cards-ornaments
+Agent: main
+Task: سحب بطاقات ومعلقات جدارية إضافية من سورس يللا لودو
+
+Work Log:
+- اكتشاف: APK لا يحتوي على صور البطاقات/المعلقات الفعلية — تُحمّل ديناميكياً من CDN يللا
+- لكن يحوي drawable صغيرة (chrome/UI) يمكن إعادة توظيفها كبطاقات/معلقات
+- 24 أصل جديد مسحوب من APK ومسجّل في DB:
+
+15 معلقة جدارية جديدة (kind='ornament') من 4 → 19:
+  - 12 علم ملوّن من room_ic_flag_member_*.webp (135x135):
+    orn_flag_default (common 150💎), blue (common 150), coffee (rare 250), diamond (legendary 800),
+    fame (epic 500), gold (epic 500), grand (epic 500), king (legendary 800),
+    legend (legendary 800), leopard (rare 250), love (rare 250), purple (rare 250)
+  - orn_clouds: floating-chess-clouds.png 3200x1067 (epic 500)
+  - orn_lunar_astronaut: lunar-astronaut.png 3200x1067 (legendary 800)
+  - orn_decor_icon: icon_decor_shop.webp 402x345 (rare 300)
+
+9 بطاقات ملف جديدة (kind='card') من 7 → 16:
+  - 4 بطاقات celebrity_preview_bg من سورس يللا (dialog_celebrity_preview_file_card.xml):
+    card_top1_celebrity (legendary 800), card_top23_celebrity (epic 600),
+    card_top410_celebrity (epic 600), card_common_celebrity (rare 400)
+  - 1 بطاقة زينة الرأس: card_head_decor (epic 500) من charge_reward_head_decor.webp 120x120
+  - 1 بطاقة علم: card_head_flag (rare 400) من head_flag.webp 181x182
+  - 3 بطاقات وجوه: card_face_no1 (legendary 800), card_face_no2 (epic 600), card_face_no3 (rare 400)
+    من face_no{1,2,3}.webp 98x98 (مرتبة اللاعبين #1/#2/#3 عالمياً)
+
+admin-db.ts:
+- DECOR_SEED_VERSION 8→9 (يجبر إعادة البذر عند الطلب التالي)
+- DECOR_SEED array: 21→45 عنصراً (+15 ornament +9 card)
+- linkExistingItemsToCategories(c) يربط categoryId تلقائياً: ornament→'wall_hangings' | card→'profile_card'
+
+Stage Summary:
+- Commit a7b46f53 — مرفوع إلى GitHub main بنجاح
+- بعد إعادة نشر Vercel (~60s)، اذهب إلى /admin/store ثم تبويب "المعلقات الجدارية" → سترى 19 عنصراً
+  وتبويب "بطاقة الملف" → سترى 16 عنصراً
+- كل العناصر الـ24 الجديدة: source='ours', visible='shown', isActive=1 افتراضياً (تظهر فوراً في المتجر)
+- ملاحظة: PAT المستخدم لا يزال في الـ config محلياً — يجب على المستخدم إبطاله من GitHub Settings بعد الانتهاء
