@@ -162,9 +162,10 @@ const DIAMOND_ICONS: Record<string, string> = {
 };
 
 // ════════════════════════════════════════════════════════════════════════════
-// الشارات (HOT/BEST/Popular) — أعلى يسار البطاقة
-// (item_diamonds.xml: layout_gravity="end" في RTL = LEFT، مطابق لصورة A)
-// الشارات لا تغطي كبسولة الرقم (الكبسولة في الوسط، الشارات في الزاوية العلوية اليسرى)
+// الشارات — مواضع مطابقة لـ item_diamonds.xml
+// HOT (svg_hot): خارج RelativeLayout، marginTop=-2 → top: -2 (فوق الكبسولة)
+// BEST/Popular (svg_best/tv_type): داخل FrameLayout below=ll1، marginTop=2 → top: 30 (تحت الكبسولة)
+// الكبسولة (ll1) عند top:8 height:20 → تمتد y=8-28. الشارات لا تتداخل معها أبداً.
 // ════════════════════════════════════════════════════════════════════════════
 function renderBadge(badge: Package['badge']): React.ReactNode {
   if (badge === 'none') return null;
@@ -175,9 +176,9 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
         alt="BEST"
         className="absolute"
         style={{
-          top: 2,
-          left: -3,            // أعلى يسار + يبرز خارج الحافة اليسرى (marginEnd=-3 في RTL)
-          width: 60,             // 60×21dip
+          top: 30,              // داخل icon area (below ll1) — لا تغطي كبسولة الرقم
+          left: -3,             // أعلى يسار + يبرز خارج الحافة اليسرى
+          width: 60,            // 60×21dip
           height: 21,
           objectFit: 'contain',
           zIndex: 10,
@@ -193,7 +194,7 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
         alt="POPULAR"
         className="absolute"
         style={{
-          top: 2,
+          top: 30,              // داخل icon area (below ll1) — لا تغطي كبسولة الرقم
           left: -3,
           width: 60,
           height: 21,
@@ -212,15 +213,14 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
       <div
         className="absolute flex items-center justify-center"
         style={{
-          top: 2,
-          left: -3,            // أعلى يسار + يبرز خارج الحافة اليسرى (مثل BEST/Popular)
-          width: 60,             // 60×21dip — مطابق لـ label_best.webp
+          top: -2,              // فوق الكبسولة (marginTop=-2 في السورس svg_hot)
+          left: -8,             // يبرز خارج الحافة اليسرى (marginEnd=-8)
+          width: 60,             // 60×21dip
           height: 21,
           zIndex: 10,
           background: 'linear-gradient(135deg, #ff6b35 0%, #de374d 60%, #b02030 100%)',
-          borderRadius: '6px 0 6px 6px',  // شكل شريط راية (مقطوع من أعلى يسار)
+          borderRadius: '6px 0 6px 6px',
           boxShadow: '0 1px 3px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.3)',
-          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))',
         }}
       >
         {/* نص "HOT" أبيض عريض في المنتصف — مطابق لـ "BEST" و "Popular" */}
@@ -343,7 +343,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex flex-col"
           style={{
-            background: 'linear-gradient(180deg, #3DB57A 0%, #2A8A5C 100%)',
+            background: 'linear-gradient(180deg, #4DC87F 0%, #359E69 100%)',  // [6] أفتح من السابق — #4DC87A (أعلى) → #359E69 (أسفل)
             // Safe area padding للمحتوى (الخلفية تمتد للحافات)
             paddingTop: 'env(safe-area-inset-top)',
             paddingBottom: 'env(safe-area-inset-bottom)',
