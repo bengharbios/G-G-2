@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Crown, Sparkles, X } from 'lucide-react';
+import { Loader2, Crown, Sparkles } from 'lucide-react';
 import RoyalDialog from './RoyalDialog';
+import VipTabContent from './VipTabContent';
 
 // ════════════════════════════════════════════════════════════════════════════
 // ChargeDialog — نسخة طبق الأصل 100% من Yalla Ludo
@@ -788,16 +789,10 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                   Row 2: 16.0K (يمين) + Popular | 53.7K (وسط) | 161.7K (يسار) + BEST
               */}
               {isVipTab ? (
-                <div className="grid grid-cols-2 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
-                  {currentPackages.filter(p => p.enabled).map((pkg) => (
-                    <VipPackageCard
-                      key={pkg.id}
-                      pkg={pkg}
-                      isSelected={selectedPkg?.id === pkg.id}
-                      onSelect={() => setSelectedPkg(pkg)}
-                    />
-                  ))}
-                </div>
+                // ══════ تبويب الاشتراكات (VIP) — VipTabContent مستقل ══════
+                // يحل محل بطاقات الشراء القديمة
+                // مطابق لـ item_shop_privileges.xml + dialog_vip_sub.xml
+                <VipTabContent />
               ) : (
                 <>
                   {/* الصف 1: 400 / 1800 / 5000 — flex flow طبيعي */}
