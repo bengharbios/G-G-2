@@ -32,6 +32,7 @@ interface StoreItem {
   id: string;
   nameAr: string;
   imageUrl: string;
+  animatedUrl?: string;
   rarity: string;
   price: number;
   isFree: boolean;
@@ -273,7 +274,7 @@ export default function StoreSubPage({ open, onClose, category, gems, gold, onCh
             <div className="flex items-center gap-3">
               <div style={{ width: 40, height: 40, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))' }}>
                 <SvgaOrImg
-                  src={selectedItem.imageUrl}
+                  src={selectedItem.animatedUrl || selectedItem.imageUrl}
                   alt={selectedItem.nameAr}
                 />
               </div>
@@ -409,7 +410,7 @@ function StoreItemCard({ item, isSelected, onSelect }: { item: StoreItem; isSele
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <SvgaOrImg
-            src={item.imageUrl}
+            src={item.animatedUrl || item.imageUrl}
             alt={item.nameAr}
           />
         </div>

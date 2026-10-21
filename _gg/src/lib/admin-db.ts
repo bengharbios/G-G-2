@@ -5642,60 +5642,100 @@ async function linkExistingItemsToCategories(c: import('@libsql/client').Client)
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// [Batch 2] العناصر المسحوبة من سورس يللا (30 عنصر — كلها مخفية، سعر 0)
-// - لا تغيير أي سعر موجود
-// - العناصر المسحوبة بـ visible='hidden' و price=0 و isFree=0 (ليست مجانية)
-// - SVGA: يُضاف كـ animatedUrl على العنصر PNG الموجود (نفس المعرّف)، لا كعنصر جديد
+// [Batch 5 fix] العناصر المسحوبة من سورس يللا لودو (30 عنصر)
+// - الأسماء العربية مترجمة من skin_list.json في APK (30 إدخال)
+// - الندرة مطابقة لـ skinQuality (1=common 2=rare 3=epic 4=legendary)
+// - الأسعار: 0 للمجاني (الافتراضي) | 300 rare | 600 epic | 1000 legendary
+// - الـ 13 نرد لودو (skin_10000-10012) لها animatedUrl = .svga (محرك Yalla)
+// - كل العناصر مرئية في المتجر الآن (visible='shown', isActive=1)
 // ════════════════════════════════════════════════════════════════════════════
 
 const IMPORTED_SKIN_ITEMS: Array<{
-  id: string; nameAr: string; imageUrl: string; categoryId: string; rarity: string;
+  id: string; nameAr: string; imageUrl: string; categoryId: string;
+  rarity: string; price: number; isFree: boolean; animatedUrl: string;
 }> = [
-  // غلاف لودو (Dice) — 13 عنصر من skin_10000-10012
-  { id: 'skin_10000', nameAr: 'نرد لودو 1',  imageUrl: '/yalla-ui/full/skin_10000.webp', categoryId: 'ludo_skin', rarity: 'common' },
-  { id: 'skin_10001', nameAr: 'نرد لودو 2',  imageUrl: '/yalla-ui/full/skin_10001.webp', categoryId: 'ludo_skin', rarity: 'common' },
-  { id: 'skin_10002', nameAr: 'نرد لودو 3',  imageUrl: '/yalla-ui/full/skin_10002.webp', categoryId: 'ludo_skin', rarity: 'rare' },
-  { id: 'skin_10003', nameAr: 'نرد لودو 4',  imageUrl: '/yalla-ui/full/skin_10003.webp', categoryId: 'ludo_skin', rarity: 'rare' },
-  { id: 'skin_10004', nameAr: 'نرد لودو 5',  imageUrl: '/yalla-ui/full/skin_10004.webp', categoryId: 'ludo_skin', rarity: 'epic' },
-  { id: 'skin_10005', nameAr: 'نرد لودو 6',  imageUrl: '/yalla-ui/full/skin_10005.webp', categoryId: 'ludo_skin', rarity: 'epic' },
-  { id: 'skin_10006', nameAr: 'نرد لودو 7',  imageUrl: '/yalla-ui/full/skin_10006.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
-  { id: 'skin_10007', nameAr: 'نرد لودو 8',  imageUrl: '/yalla-ui/full/skin_10007.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
-  { id: 'skin_10008', nameAr: 'نرد لودو 9',  imageUrl: '/yalla-ui/full/skin_10008.webp', categoryId: 'ludo_skin', rarity: 'common' },
-  { id: 'skin_10009', nameAr: 'نرد لودو 10', imageUrl: '/yalla-ui/full/skin_10009.webp', categoryId: 'ludo_skin', rarity: 'rare' },
-  { id: 'skin_10010', nameAr: 'نرد لودو 11', imageUrl: '/yalla-ui/full/skin_10010.webp', categoryId: 'ludo_skin', rarity: 'epic' },
-  { id: 'skin_10011', nameAr: 'نرد لودو 12', imageUrl: '/yalla-ui/full/skin_10011.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
-  { id: 'skin_10012', nameAr: 'نرد لودو 13', imageUrl: '/yalla-ui/full/skin_10012.webp', categoryId: 'ludo_skin', rarity: 'legendary' },
-  // غلاف جاكارو — 6 عناصر من skin_11000-11005
-  { id: 'skin_11000', nameAr: 'غلاف جاكارو 1', imageUrl: '/yalla-ui/full/skin_11000.webp', categoryId: 'jackaroo_skin', rarity: 'common' },
-  { id: 'skin_11001', nameAr: 'غلاف جاكارو 2', imageUrl: '/yalla-ui/full/skin_11001.webp', categoryId: 'jackaroo_skin', rarity: 'rare' },
-  { id: 'skin_11002', nameAr: 'غلاف جاكارو 3', imageUrl: '/yalla-ui/full/skin_11002.webp', categoryId: 'jackaroo_skin', rarity: 'epic' },
-  { id: 'skin_11003', nameAr: 'غلاف جاكارو 4', imageUrl: '/yalla-ui/full/skin_11003.webp', categoryId: 'jackaroo_skin', rarity: 'legendary' },
-  { id: 'skin_11004', nameAr: 'غلاف جاكارو 5', imageUrl: '/yalla-ui/full/skin_11004.webp', categoryId: 'jackaroo_skin', rarity: 'epic' },
-  { id: 'skin_11005', nameAr: 'غلاف جاكارو 6', imageUrl: '/yalla-ui/full/skin_11005.webp', categoryId: 'jackaroo_skin', rarity: 'rare' },
-  // مؤثرات الدخول (Bubble) — 7 عناصر من skin_12000-12006
-  { id: 'skin_12000', nameAr: 'مؤثر دخول 1', imageUrl: '/yalla-ui/full/skin_12000.webp', categoryId: 'entry_effects', rarity: 'common' },
-  { id: 'skin_12001', nameAr: 'مؤثر دخول 2', imageUrl: '/yalla-ui/full/skin_12001.webp', categoryId: 'entry_effects', rarity: 'rare' },
-  { id: 'skin_12002', nameAr: 'مؤثر دخول 3', imageUrl: '/yalla-ui/full/skin_12002.webp', categoryId: 'entry_effects', rarity: 'epic' },
-  { id: 'skin_12003', nameAr: 'مؤثر دخول 4', imageUrl: '/yalla-ui/full/skin_12003.webp', categoryId: 'entry_effects', rarity: 'legendary' },
-  { id: 'skin_12004', nameAr: 'مؤثر دخول 5', imageUrl: '/yalla-ui/full/skin_12004.webp', categoryId: 'entry_effects', rarity: 'rare' },
-  { id: 'skin_12005', nameAr: 'مؤثر دخول 6', imageUrl: '/yalla-ui/full/skin_12005.webp', categoryId: 'entry_effects', rarity: 'epic' },
-  { id: 'skin_12006', nameAr: 'مؤثر دخول 7', imageUrl: '/yalla-ui/full/skin_12006.webp', categoryId: 'entry_effects', rarity: 'legendary' },
-  // مواضيع (Theme) — 4 عناصر من skin_13000-13003
-  { id: 'skin_13000', nameAr: 'موضوع 1', imageUrl: '/yalla-ui/full/skin_13000.webp', categoryId: 'themes', rarity: 'common' },
-  { id: 'skin_13001', nameAr: 'موضوع 2', imageUrl: '/yalla-ui/full/skin_13001.webp', categoryId: 'themes', rarity: 'rare' },
-  { id: 'skin_13002', nameAr: 'موضوع 3', imageUrl: '/yalla-ui/full/skin_13002.webp', categoryId: 'themes', rarity: 'epic' },
-  { id: 'skin_13003', nameAr: 'موضوع 4', imageUrl: '/yalla-ui/full/skin_13003.webp', categoryId: 'themes', rarity: 'legendary' },
+  // غلاف لودو (Dice) — 13 عنصر من skin_10000-10012 — كلها لها SVGA متحرك
+  { id: 'skin_10000', nameAr: 'نرد افتراضي',        imageUrl: '/yalla-ui/full/skin_10000.webp', categoryId: 'ludo_skin', rarity: 'common',    price: 0,    isFree: true,  animatedUrl: '/yalla-frames/svga/skin_10000.svga' },
+  { id: 'skin_10001', nameAr: 'نرد الهرم',           imageUrl: '/yalla-ui/full/skin_10001.webp', categoryId: 'ludo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10001.svga' },
+  { id: 'skin_10002', nameAr: 'نرد كرة القدم',       imageUrl: '/yalla-ui/full/skin_10002.webp', categoryId: 'ludo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10002.svga' },
+  { id: 'skin_10003', nameAr: 'نرد الحلوى',          imageUrl: '/yalla-ui/full/skin_10003.webp', categoryId: 'ludo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10003.svga' },
+  { id: 'skin_10004', nameAr: 'نرد الصندوق الخشبي',  imageUrl: '/yalla-ui/full/skin_10004.webp', categoryId: 'ludo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10004.svga' },
+  { id: 'skin_10005', nameAr: 'نرد صندوق الإنزال',   imageUrl: '/yalla-ui/full/skin_10005.webp', categoryId: 'ludo_skin', rarity: 'rare',      price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10005.svga' },
+  { id: 'skin_10006', nameAr: 'نرد ملك الأسد',       imageUrl: '/yalla-ui/full/skin_10006.webp', categoryId: 'ludo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10006.svga' },
+  { id: 'skin_10007', nameAr: 'نرد إلكتروني',        imageUrl: '/yalla-ui/full/skin_10007.webp', categoryId: 'ludo_skin', rarity: 'rare',      price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10007.svga' },
+  { id: 'skin_10008', nameAr: 'نرد بلوري',           imageUrl: '/yalla-ui/full/skin_10008.webp', categoryId: 'ludo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10008.svga' },
+  { id: 'skin_10009', nameAr: 'نرد كرة التنين',      imageUrl: '/yalla-ui/full/skin_10009.webp', categoryId: 'ludo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10009.svga' },
+  { id: 'skin_10010', nameAr: 'نرد الماس',           imageUrl: '/yalla-ui/full/skin_10010.webp', categoryId: 'ludo_skin', rarity: 'rare',      price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10010.svga' },
+  { id: 'skin_10011', nameAr: 'نرد الفضة',           imageUrl: '/yalla-ui/full/skin_10011.webp', categoryId: 'ludo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10011.svga' },
+  { id: 'skin_10012', nameAr: 'نرد الثلج',           imageUrl: '/yalla-ui/full/skin_10012.webp', categoryId: 'ludo_skin', rarity: 'rare',      price: 300,  isFree: false, animatedUrl: '/yalla-frames/svga/skin_10012.svga' },
+  // غلاف جاكارو (Chess) — 6 عناصر من skin_11000-11005 — لا SVGA في السورس لهذا النوع
+  { id: 'skin_11000', nameAr: 'غلاف افتراضي',        imageUrl: '/yalla-ui/full/skin_11000.webp', categoryId: 'jackaroo_skin', rarity: 'common',    price: 0,    isFree: true,  animatedUrl: '' },
+  { id: 'skin_11001', nameAr: 'غلاف الهرم',          imageUrl: '/yalla-ui/full/skin_11001.webp', categoryId: 'jackaroo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_11002', nameAr: 'غلاف كرة القدم',      imageUrl: '/yalla-ui/full/skin_11002.webp', categoryId: 'jackaroo_skin', rarity: 'epic',      price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_11003', nameAr: 'غلاف الحلوى',         imageUrl: '/yalla-ui/full/skin_11003.webp', categoryId: 'jackaroo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '' },
+  { id: 'skin_11004', nameAr: 'غلاف التاج',          imageUrl: '/yalla-ui/full/skin_11004.webp', categoryId: 'jackaroo_skin', rarity: 'rare',      price: 300,  isFree: false, animatedUrl: '' },
+  { id: 'skin_11005', nameAr: 'غلاف البيضة',         imageUrl: '/yalla-ui/full/skin_11005.webp', categoryId: 'jackaroo_skin', rarity: 'common',    price: 300,  isFree: false, animatedUrl: '' },
+  // مؤثرات الدخول (Bubble) — 7 عناصر من skin_12000-12006 — لا SVGA في السورس لهذا النوع
+  { id: 'skin_12000', nameAr: 'فقاعة افتراضية',      imageUrl: '/yalla-ui/full/skin_12000.webp', categoryId: 'entry_effects', rarity: 'common',   price: 0,    isFree: true,  animatedUrl: '' },
+  { id: 'skin_12001', nameAr: 'فقاعة الهرم',          imageUrl: '/yalla-ui/full/skin_12001.webp', categoryId: 'entry_effects', rarity: 'epic',     price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_12002', nameAr: 'فقاعة كرة القدم',      imageUrl: '/yalla-ui/full/skin_12002.webp', categoryId: 'entry_effects', rarity: 'epic',     price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_12003', nameAr: 'فقاعة الحلوى',         imageUrl: '/yalla-ui/full/skin_12003.webp', categoryId: 'entry_effects', rarity: 'common',   price: 300,  isFree: false, animatedUrl: '' },
+  { id: 'skin_12004', nameAr: 'فقاعة البالون',        imageUrl: '/yalla-ui/full/skin_12004.webp', categoryId: 'entry_effects', rarity: 'rare',     price: 300,  isFree: false, animatedUrl: '' },
+  { id: 'skin_12005', nameAr: 'فقاعة الشاطئ',         imageUrl: '/yalla-ui/full/skin_12005.webp', categoryId: 'entry_effects', rarity: 'common',   price: 300,  isFree: false, animatedUrl: '' },
+  { id: 'skin_12006', nameAr: 'فقاعة التاج',          imageUrl: '/yalla-ui/full/skin_12006.webp', categoryId: 'entry_effects', rarity: 'common',   price: 300,  isFree: false, animatedUrl: '' },
+  // مواضيع (Board Theme) — 4 عناصر من skin_13000-13003 — لا SVGA في السورس لهذا النوع
+  { id: 'skin_13000', nameAr: 'لوحة افتراضية',        imageUrl: '/yalla-ui/full/skin_13000.webp', categoryId: 'themes', rarity: 'common',         price: 0,    isFree: true,  animatedUrl: '' },
+  { id: 'skin_13001', nameAr: 'لوحة الهرم',           imageUrl: '/yalla-ui/full/skin_13001.webp', categoryId: 'themes', rarity: 'epic',           price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_13002', nameAr: 'لوحة كرة القدم',       imageUrl: '/yalla-ui/full/skin_13002.webp', categoryId: 'themes', rarity: 'epic',           price: 600,  isFree: false, animatedUrl: '' },
+  { id: 'skin_13003', nameAr: 'لوحة الحلوى',          imageUrl: '/yalla-ui/full/skin_13003.webp', categoryId: 'themes', rarity: 'common',         price: 300,  isFree: false, animatedUrl: '' },
 ];
 
+// IMPORTED_SKIN_ITEMS_SEED_VERSION: ارفعه لإعادة تطبيق التحديثات (UPSERT) على كل العناصر الموجودة
+const IMPORTED_SKIN_ITEMS_SEED_VERSION = 2;
+
 async function seedImportedSkinItems(c: import('@libsql/client').Client): Promise<void> {
+  // 1) Insert if not exists (INSERT OR IGNORE) — للعناصر الجديدة
   for (const item of IMPORTED_SKIN_ITEMS) {
-    // INSERT OR IGNORE — لا يستبدل عنصراً موجوداً
     await c.execute({
-      sql: `INSERT OR IGNORE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned, isSeed, categoryId, visible, source, isNew, discountPercent)
-            VALUES (?, 'skin', ?, ?, ?, 0, 0, 0, 0, 0, 1, ?, 'hidden', 'imported', 0, 0)`,
-      args: [item.id, item.nameAr, item.imageUrl, item.rarity, item.categoryId],
+      sql: `INSERT OR IGNORE INTO DecorItem (id, kind, nameAr, imageUrl, rarity, price, isFree, isActive, sortOrder, totalOwned, isSeed, categoryId, visible, source, isNew, discountPercent, animatedUrl)
+            VALUES (?, 'skin', ?, ?, ?, ?, ?, 1, 0, 0, 1, ?, 'shown', 'imported', 0, 0, ?)`,
+      args: [item.id, item.nameAr, item.imageUrl, item.rarity, item.price, item.isFree ? 1 : 0,
+             item.categoryId, item.animatedUrl],
     });
   }
+
+  // 2) Update existing rows with new fields (nameAr, rarity, price, isFree, visible, source, animatedUrl)
+  //    gated by version flag so we don't run every request
+  try {
+    const cols = await c.execute("PRAGMA table_info(SiteConfig)");
+    const hasVer = cols.rows.some(r => r.name === 'importedSkinsSeeded');
+    if (!hasVer) {
+      await c.execute('ALTER TABLE SiteConfig ADD COLUMN importedSkinsSeeded INTEGER DEFAULT 0');
+    }
+  } catch { /* ignore */ }
+  await c.execute(`INSERT OR IGNORE INTO SiteConfig (id) VALUES ('main')`);
+  const marker = await c.execute({
+    sql: "SELECT importedSkinsSeeded FROM SiteConfig WHERE id = 'main' LIMIT 1",
+    args: [],
+  });
+  const mrow = marker.rows[0] as Record<string, unknown> | undefined;
+  if (Number(mrow?.importedSkinsSeeded ?? 0) >= IMPORTED_SKIN_ITEMS_SEED_VERSION) return;
+
+  for (const item of IMPORTED_SKIN_ITEMS) {
+    await c.execute({
+      sql: `UPDATE DecorItem
+            SET nameAr = ?, rarity = ?, price = ?, isFree = ?, visible = 'shown',
+                source = 'imported', isActive = 1, animatedUrl = ?, isSeed = 1,
+                updatedAt = datetime('now')
+            WHERE id = ?`,
+      args: [item.nameAr, item.rarity, item.price, item.isFree ? 1 : 0, item.animatedUrl, item.id],
+    });
+  }
+
+  await c.execute({
+    sql: `UPDATE SiteConfig SET importedSkinsSeeded = ?, updatedAt = datetime('now') WHERE id = 'main'`,
+    args: [IMPORTED_SKIN_ITEMS_SEED_VERSION],
+  });
 }
 
 

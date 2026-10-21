@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
                    COALESCE(categoryId, '') as categoryId,
                    COALESCE(visible, 'shown') as visible,
                    COALESCE(source, 'ours') as source,
+                   COALESCE(animatedUrl, '') as animatedUrl,
                    COALESCE(isNew, 0) as isNew,
                    COALESCE(discountPercent, 0) as discountPercent
             FROM DecorItem
@@ -45,6 +46,7 @@ export async function GET(request: NextRequest) {
                 COALESCE(categoryId, 'frames') as categoryId,
                 COALESCE(visible, 'shown') as visible,
                 COALESCE(source, 'ours') as source,
+                COALESCE(animatedUrl, '') as animatedUrl,
                 COALESCE(isNew, 0) as isNew,
                 COALESCE(discountPercent, 0) as discountPercent
          FROM PlayerFrame
@@ -83,6 +85,7 @@ export async function GET(request: NextRequest) {
       id: String(r.id ?? ''),
       nameAr: String(r.nameAr ?? ''),
       imageUrl: String(r.imageUrl ?? ''),
+      animatedUrl: String(r.animatedUrl ?? ''),
       rarity: String(r.rarity ?? 'common'),
       price: Number(r.price ?? 0),
       isFree: Number(r.isFree ?? 0) === 1,
