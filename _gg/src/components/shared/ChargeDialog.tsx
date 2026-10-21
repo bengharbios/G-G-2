@@ -829,11 +829,9 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
             </div>
 
             {/* ══════ زر "تفاصيل الماس >>" — مثبت بالأسفل خارج التمرير ══════
-                المرجع: TOP_BAR_SPEC.md القسم 6
-                - كبسولة داكنة محفورة (inset shadow)
-                - نص "تفاصيل الماس >>" 13sp bold #2bc895
-                - لا شريطين جانبيين ولا توهج (غير موجود في السورس)
+                [1] يُخفى في تبويب الاشتراكات (VIP) — لا وجود له في الأصل
             */}
+            {!isVipTab && (
             <div className="relative z-20 flex justify-center flex-shrink-0" style={{ paddingBottom: 12, paddingTop: 4 }}>
               <button
                 className="relative flex items-center justify-center"
@@ -860,6 +858,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </span>
               </button>
             </div>
+            )}
 
             {/* ══════ نموذج الشحن (عند اختيار حزمة) ══════ */}
             {selectedPkg && (
