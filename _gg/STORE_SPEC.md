@@ -477,3 +477,155 @@ interface StoreItem {
 | تثبيت في الأعلى | ❌ لا | امتياز في `item_privileges.xml` — ليس عنصر شراء |
 | غلاف جاكارو | ✅ مشابه لـ A2 | `dialog_skin_jackaroo.xml` |
 | غلاف دومينو | ✅ مشابه لـ A2 | `dialog_skin_dice.xml` |
+
+---
+
+## 9) تقرير سورس يللا (الدفعة 1 الموسعة — التصحيح الكامل)
+
+### 9-1) تحديد السورس
+
+| البيان | القيمة |
+|---|---|
+| الرابط | https://github.com/bengharbios/G-G-2/releases/download/source-v3/YallaLudo.zip |
+| حجم الأرشيف | 256 MB |
+| بعد فك الضغط | 322 MB |
+| عدد الملفات | 50 (base.apk + split APKs + data_files) |
+| نوع السورس | **APK مفكوك** (base.apk + split APKs) — يحتاج apktool للتفكيك |
+| بعد تفكيك base.apk | 1009 MB، 76151 ملف، 1711 layout، 68145 smali |
+| المجلد | `/home/z/work/yalla_decompiled/` |
+
+### 9-2) التصحيح: تقريري السابق كان خاطئاً
+
+في تقريري السابق قلت: "لا يوجد layout في السورس المستخرج يُطابق صورة A1". **هذا كان خطأً** لأنني بحثت في مشروعنا (Capacitor wrapper) وليس في سورس يللا. بعد تفكيك base.apk بـ apktool، وجدت كل ما يلي:
+
+### 9-3) نافذة المتجر الرئيسي (A1) — موجودة بالكامل
+
+**fragment_rl_shop.xml** = صفحة المتجر الرئيسي:
+
+| العنصر | المسار في سورس يللا | الوصف |
+|---|---|---|
+| الحاوية | `res/layout/fragment_rl_shop.xml` | RelativeLayout 360dip، bg=bg_hall |
+| العنوان | TitleWithDiamondView (53dip) | شريط علوي بالماس والذهب |
+| **أضواء الزينة** | `LudoSVGAView source="star_light.svga"` (full width × 50dip, marginTop=37) | ✅ **وُجدت!** أضواء معلقة بأعلى الشاشة |
+| الخلفية | `rl_shop_bg_new.9.png` على RecyclerView | خلفية المتجر |
+| البانر | `ShopBannerPager` (gone افتراضياً) | بانر دائري (gone) |
+| شبكة الأقسام | `RecyclerView rcy_shop_list` (GridLayoutManager) | شبكة على رفوف |
+| الأسهم | fl_arrow_left / fl_arrow_right (gone) | أسهم تنقل البانر |
+
+### 9-4) عنصر القسم (rl_shop_item.xml) — موجود بالكامل
+
+| العنصر | المسار | الأبعاد | الوصف |
+|---|---|---|---|
+| المنصة | `rl_shop_item_bg.webp` (view_bg) | 103×102dip | منصة دائرية يقف عليها الأيقونة |
+| الأيقونة | iv_icon (120×90dip) | صورة القسم | يتمركز فوق المنصة |
+| الاسم | tv_name (80×21dip, auto-size 8-11sp white) | لافتة باسم القسم | أسفل المنصة |
+| النقطة الحمراء | iv_red_dot (10×10dip, reddot.webp) | تنبيه | تنبيه عند وجود تحديث |
+| **نجمة SVGA** | svga_star (120×80dip, source="star_rl_shop.svga") | ✅ **وُجدت!** | حركة نجوم لامعة فوق القسم |
+
+### 9-5) الرف (rl_shop_item_divider.xml) — موجود بالكامل
+
+| العنصر | المسار | الأبعاد | الوصف |
+|---|---|---|---|
+| الرف | `rl_shop_item_divider.9.png` | full width × 89dip | رف بين صفوف الأقسام — 9-patch قابل للتمدد |
+
+### 9-6) عنوان القسم (rl_shop_item_title.xml) — موجود
+
+| العنصر | المسار | الوصف |
+|---|---|---|
+| العنوان | tv_title (249×27dip, 17sp #5ae7bc, bg=bg_skin_title) | عنوان اختياري فوق مجموعة أقسام |
+| زر "؟" | iv_rules (17×18dip, question_icon.webp, gone) | زر مساعدة اختياري |
+
+### 9-7) الأقسام الـ 10 المؤكدة من سورس يللا (smali)
+
+من `RLShopFragment.smali` — مراجع الأيقونات المُحمّلة:
+
+| # | القسم | أيقونة سورس يللا | مسار smali (سطر) | صفحته |
+|---|---|---|---|---|
+| 1 | غلاف لودو | rl_shop_skin.webp | L1834 | fragment_skin.xml (tab Dice) |
+| 2 | غلاف دومينو | rl_shop_domino.webp | L1923 | fragment_skin.xml (tab Domino?) |
+| 3 | غلاف جاكارو | rl_shop_jackaroo.webp | L2010 | dialog_skin_jackaroo.xml |
+| 4 | بطاقة الملف | rl_shop_card.webp | L2193 | fragment_face_shop.xml |
+| 5 | المعلقات الجدارية | **icon_decor_shop**.webp | L2280 | dialog_decor_skin.xml |
+| 6 | المعرّف الفريد | rl_shop_id.webp | L2366 | fragment_uniqueid_shop.xml |
+| 7 | موضوع | rl_shop_theme.webp | L2489 | dialog_skin_theme.xml |
+| 8 | تثبيت في الأعلى | rl_shop_pin_on_top.webp | L2546 | (امتياز) |
+| 9 | مركبة رويال | rl_shop_car.webp | L2620 | dialog_royall_store_car_gift.xml |
+| 10 | مؤثرات الدخول | rl_shop_enter_effect.webp | L2740 | (fragment_skin tab Bubble?) |
+
+**النقطة الحمراء**: `isShowDecorRedDot()` في السطر 2267 — تظهر على قسم المعلقات الجدارية عند وجود زينة جديدة.
+
+**ملاحظة**: "ملصقات" (Stickers) غير موجودة في smali كقسم مستقل. لكن `title_face_shop_sticker.webp` موجود كعنوان لصفحة fragment_face_shop. قد يكون "ملصقات" هو اسم آخر لـ "بطاقة الملف" أو قسم يُضاف من server config. **أنتظر قرار المستخدم**.
+
+### 9-8) زر "%" (الخصومات)
+
+لم أجد مرجعاً مباشراً لزر "%" في fragment_rl_shop.xml. قد يكون:
+- في `ShopFragment.smali` (الذي يحتوي على GridLayoutManager أيضاً)
+- أو يُضاف ديناميكياً من server config
+
+### 9-9) التصحيحات مقارنة بتقريري السابق
+
+| البيان | تقرير سابق | تصحيح سورس يللا |
+|---|---|---|
+| "لا يوجد layout للمتجر الرئيسي" | ❌ خطأ | ✅ `fragment_rl_shop.xml` موجود بالكامل |
+| "أضواء الزينة غير موجودة" | ❌ خطأ | ✅ `star_light.svga` موجود في fragment_rl_shop.xml |
+| "زر % غير موجود" | ⚠️ لم يُبحث جيداً | يحتاج بحث أعمق في ShopFragment.smali |
+| عدد الأقسام: 10-11 | 10 في smali | 10 مؤكدة (ملصقات غير موجودة في smali) |
+| 30 تعارض SVGA/PNG | ✅ صحيح | لا تغيير |
+| 79 إطار فريد | ✅ صحيح | لا تغيير |
+
+### 9-10) أصول سورس يللا الجديدة المكتشفة
+
+| الأصل | المسار | الاستخدام |
+|---|---|---|
+| fragment_rl_shop.xml | res/layout/ | صفحة المتجر الرئيسي |
+| rl_shop_item.xml | res/layout/ | عنصر قسم على شبكة |
+| rl_shop_item_large.xml | res/layout/ | عنصر قسم كبير |
+| rl_shop_item_title.xml | res/layout/ | عنوان مجموعة أقسام |
+| rl_shop_item_divider.xml | res/layout/ | الرف بين الصفوف |
+| rl_shop_bg_new.9.png | res/drawable-xxhdpi/ | خلفية المتجر |
+| rl_shop_item_bg.webp | res/drawable-xxhdpi/ | منصة القسم |
+| rl_shop_item_divider.9.png | res/drawable-xxhdpi/ | صورة الرف |
+| rl_shop_item_name_bg.webp | res/drawable-xxhdpi/ | خلفية اسم القسم |
+| rl_shop_skin.webp | res/drawable-xxhdpi/ | أيقونة غلاف لودو |
+| rl_shop_domino.webp | res/drawable-xxhdpi/ | أيقونة غلاف دومينو |
+| rl_shop_jackaroo.webp | res/drawable-xxhdpi/ | أيقونة غلاف جاكارو |
+| rl_shop_card.webp | res/drawable-xxhdpi/ | أيقونة بطاقة الملف |
+| rl_shop_id.webp | res/drawable-xxhdpi/ | أيقونة معرّف فريد |
+| rl_shop_theme.webp | res/drawable-xxhdpi/ | أيقونة موضوع |
+| rl_shop_pin_on_top.webp | res/drawable-xxhdpi/ | أيقونة تثبيت في الأعلى |
+| rl_shop_car.webp | res/drawable-xxhdpi/ | أيقونة مركبة رويال |
+| rl_shop_enter_effect.webp | res/drawable-xxhdpi/ | أيقونة مؤثرات دخول |
+| icon_decor_shop.webp | res/drawable-xxhdpi/ | أيقونة معلقات جدارية |
+| star_light.svga | assets/ | أضواء الزينة المعلقة |
+| star_rl_shop.svga | assets/ | نجوم لامعة على كل قسم |
+| bg_skin_title.webp | res/drawable-xxhdpi/ | خلفية عنوان مجموعة |
+| skin_arrow_left.webp | res/drawable-xxhdpi/ | سهم تنقل يسار |
+| skin_arrow_right.webp | res/drawable-xxhdpi/ | سهم تنقل يمين |
+| bg_shop_top_banner.webp | res/drawable-xxhdpi/ | خلفية البانر العلوي |
+
+### 9-11) العدد الفعلي لعناصر كل قسم من سورس يللا
+
+| القسم | عدد العناصر لدينا | عدد العناصر في سورس يللا | المصدر |
+|---|---|---|---|
+| غلاف لودو (skin) | 0 | ~13 (skin_10000-10012) | res/drawable-xxhdpi/skin_10xxx.webp |
+| غلاف دومينو | 0 | مدمج مع لودو؟ أو مستقل | يحتاج تحقق من smali |
+| غلاف جاكارو | 0 | ~6 (skin_11000-11005) | res/drawable-xxhdpi/skin_11xxx.webp |
+| بطاقة الملف | 7 | متغير | fragment_face_shop.xml |
+| المعلقات الجدارية | 4 | متغير | dialog_decor_skin.xml |
+| المعرّف الفريد | 0 | متغير (server-driven) | fragment_uniqueid_shop.xml |
+| موضوع | 10 | ~4 (skin_13000-13003) | res/drawable-xxhdpi/skin_13xxx.webp |
+| تثبيت في الأعلى | N/A (امتياز) | N/A | امتياز وليس عنصر شراء |
+| مركبة رويال | 0 | متغير | dialog_royall_store_car_gift.xml |
+| مؤثرات الدخول | 0 | ~7 (skin_12000-12006) | res/drawable-xxhdpi/skin_12xxx.webp |
+
+**إجمالي السحب المتوقع**: ~30 عنصر جديد (مخفي افتراضياً)
+
+### 9-12) الملكية — كيف تُخزَّن وتُقرأ
+
+| الجدول | الحقول | الوصف |
+|---|---|---|
+| AppUser | frame, ornament, card, cover | المعرّف المطبّق حالياً (قراءة سريعة في البروفيل) |
+| UserFrame | userId, frameId, isEquipped, obtainedFrom, obtainedNote, obtainedAt | ملكية الإطارات |
+| UserDecor | userId, itemId, isEquipped, obtainedFrom, obtainedNote, obtainedAt | ملكية الزينة (معلقات/مواضيع/بطاقات) |
+
+البروفيل يقرأ: `AppUser.frame` (إطار) + `AppUser.ornament` (معلق) + `AppUser.card` (بطاقة) + `AppUser.cover` (موضوع).
