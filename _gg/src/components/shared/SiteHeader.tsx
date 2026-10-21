@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import FrameStoreModal from './FrameStoreModal';
+import StoreMainPage from './StoreMainPage';
 import SettingsModal from './SettingsModal';
 import ChargeDialog from './ChargeDialog';
 import SvgaOrImg from './SvgaOrImg';
@@ -250,8 +250,14 @@ export default function SiteHeader({
         </div>
       </header>
 
-      {/* متجر الإطارات */}
-      <FrameStoreModal open={storeOpen} onOpenChange={setStoreOpen} />
+      {/* نافذة المتجر — StoreMainPage (fragment_rl_shop) */}
+      <StoreMainPage
+        open={storeOpen}
+        onClose={() => setStoreOpen(false)}
+        gems={gems}
+        gold={gold}
+        onChargeClick={() => { setStoreOpen(false); setChargeTab('diamond'); setChargeOpen(true); }}
+      />
 
       {/* نافذة الإعدادات */}
       <SettingsModal
