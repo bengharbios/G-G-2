@@ -656,35 +656,43 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     </span>
                   </div>
 
-                  {/* الـ shelves + chest + bubble */}
-                  <div className="relative" style={{ height: 95 }}>
-                    {/* shelves.webp كخلفية (316×84dip) */}
+                  {/* الـ shelves + chest + bubble
+                      بنية السورس (item_shop_guild.xml):
+                      - iv_shelves: 316×84dip, marginTop=20, below=tv_title
+                      - chest+bubble layout: layout_alignBottom=iv_shelves, marginBottom=15
+                        → القاعدة تلامس سطح الرف العلوي، وتمتدان للأعلى فوق الرف
+                      - bg_firstcharge.png = فقاعة كلام بيضاء بذيل يشير للصندوق
+                        (الصندوق "يحكي" عبر الفقاعة — comic speech bubble)
+                  */}
+                  <div className="relative" style={{ height: 110 }}>
+                    {/* shelves.webp في الأسفل */}
                     <img
                       src={A.shelves}
                       alt=""
                       className="absolute"
                       style={{
-                        top: 11,
+                        bottom: 0,
                         left: '50%',
                         transform: 'translateX(-50%)',
                         width: '100%',
                         maxWidth: 316,
-                        height: 84,
-                        objectFit: 'fill',
+                        height: 60,
+                        objectFit: 'cover',
+                        objectPosition: 'bottom',
                         opacity: 0.95,
                       }}
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                     />
 
-                    {/* محتوى الـ shelves: chest يسار + bubble يمين
+                    {/* محتوى فوق الرف: chest يسار + bubble يمين
                         direction: 'ltr' يطابق android:layoutDirection="ltr" في item_shop_guild.xml L29
-                        (بدون هذا، RTL flex يعكس الترتيب: bubble يسار، chest يمين)
+                        bottom: 15 — قاعدة الصندوق والفقاعة تلامس سطح الرف العلوي
                     */}
                     <div
                       className="absolute flex items-end justify-center"
-                      style={{ top: 11, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: 316, height: 84, gap: 0, direction: 'ltr' }}
+                      style={{ bottom: 15, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: 316, gap: 2, direction: 'ltr', zIndex: 5 }}
                     >
-                      {/* صندوق الكنز (chest_firstcharge 72×54dip) — يسار (alignBottom) */}
+                      {/* صندوق الكنز (chest_firstcharge 72×54dip) — يسار، قاعدته على الرف */}
                       <img
                         src={A.chestFirstcharge}
                         alt="chest"
@@ -697,7 +705,10 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                         }}
                       />
 
-                      {/* الفقاعة البيضاء (bg_firstcharge 150×85dip) — يمين مع 3×2 grid داخلها */}
+                      {/* الفقاعة البيضاء (bg_firstcharge 150×85dip) — يمين
+                          ذيل الفقاعة يشير إلى الصندوق (comic speech bubble — الصندوق يحكي)
+                          بداخلها شبكة 3×2 من أيقونات المكافآت
+                      */}
                       <div
                         className="relative"
                         style={{
@@ -707,18 +718,19 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                           backgroundSize: '100% 100%',
                           backgroundRepeat: 'no-repeat',
                           flexShrink: 0,
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.15))',
                         }}
                       >
-                        {/* 3×2 grid داخل الفقاعة */}
-                        <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-0" style={{ padding: '6px 4px' }}>
+                        {/* 3×2 grid داخل الفقاعة — أيقونات المكافآت */}
+                        <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-0" style={{ padding: '8px 6px 4px' }}>
                           {fcr.items.map((item) => (
                             <div key={item.id} className="relative flex flex-col items-center justify-center">
                               <img
                                 src={item.icon}
                                 alt={item.id}
                                 style={{
-                                  width: item.id === 'fc_gift' ? 36 : item.id === 'fc_card' || item.id === 'fc_decor' ? 26 : item.id === 'fc_frame' ? 23 : 20,
-                                  height: item.id === 'fc_gift' ? 36 : item.id === 'fc_card' || item.id === 'fc_decor' ? 26 : item.id === 'fc_frame' ? 24 : 20,
+                                  width: item.id === 'fc_gift' ? 32 : item.id === 'fc_card' || item.id === 'fc_decor' ? 24 : item.id === 'fc_frame' ? 22 : 18,
+                                  height: item.id === 'fc_gift' ? 32 : item.id === 'fc_card' || item.id === 'fc_decor' ? 24 : item.id === 'fc_frame' ? 22 : 18,
                                   objectFit: 'contain',
                                 }}
                                 onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
@@ -729,7 +741,8 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                                   fontSize: 9,
                                   fontWeight: 700,
                                   textShadow: '0 1px 1px rgba(255,255,255,.5)',
-                                  marginTop: -2,
+                                  marginTop: 1,
+                                  whiteSpace: 'nowrap',
                                 }}
                               >
                                 {item.amount}
