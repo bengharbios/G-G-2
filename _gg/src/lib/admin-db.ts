@@ -5786,7 +5786,7 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 7;
+const DECOR_SEED_VERSION = 8;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
@@ -5817,6 +5817,9 @@ export async function seedDefaultDecor(): Promise<void> {
   await c.execute(`UPDATE AppUser SET ornament = '' WHERE TRIM(COALESCE(ornament, '')) <> '' AND ornament NOT IN (SELECT id FROM DecorItem WHERE kind = 'ornament')`);
   await c.execute(`UPDATE AppUser SET cover = '' WHERE TRIM(COALESCE(cover, '')) <> '' AND cover NOT IN (SELECT id FROM DecorItem WHERE kind = 'theme')`);
   await c.execute(`UPDATE AppUser SET card = '' WHERE TRIM(COALESCE(card, '')) <> '' AND card NOT IN (SELECT id FROM DecorItem WHERE kind = 'card')`);
+  // [Batch 4 fix] INSERT OR REPLACE يُعيد ضبط categoryId إلى القيمة الافتراضية الفارغة،
+  // لذا نعيد ربط العناصر بأقسامها الصحيحة بعد البذر مباشرة
+  await linkExistingItemsToCategories(c);
   await c.execute({
     sql: `UPDATE SiteConfig SET decorSeeded = ?, updatedAt = datetime('now') WHERE id = 'main'`,
     args: [DECOR_SEED_VERSION],

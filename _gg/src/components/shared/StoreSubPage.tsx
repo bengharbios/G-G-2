@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
+import SvgaOrImg from './SvgaOrImg';
 
 // ════════════════════════════════════════════════════════════════════════════
 // StoreSubPage — صفحة فرعية للمتجر (عناصر قسم معين)
@@ -270,8 +271,12 @@ export default function StoreSubPage({ open, onClose, category, gems, gold, onCh
           >
             {/* Selected item info */}
             <div className="flex items-center gap-3">
-              <img src={selectedItem.imageUrl} alt="" style={{ width: 40, height: 40, objectFit: 'contain', filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
+              <div style={{ width: 40, height: 40, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))' }}>
+                <SvgaOrImg
+                  src={selectedItem.imageUrl}
+                  alt={selectedItem.nameAr}
+                />
+              </div>
               <div>
                 <div style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>{selectedItem.nameAr}</div>
                 <div style={{ color: '#94a3b8', fontSize: 10 }}>
@@ -397,16 +402,17 @@ function StoreItemCard({ item, isSelected, onSelect }: { item: StoreItem; isSele
 
       {/* Item image (center) */}
       <div className="absolute flex items-center justify-center" style={{ top: 15, left: 0, right: 0, bottom: 30 }}>
-        <img
-          src={item.imageUrl}
-          alt={item.nameAr}
-          style={{
-            maxWidth: '80%', maxHeight: '80%',
-            objectFit: 'contain',
-            filter: 'drop-shadow(0 3px 4px rgba(0,0,0,.4))',
-          }}
-          onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}
-        />
+        <div style={{
+          maxWidth: '80%', maxHeight: '80%',
+          width: '80%', height: '80%',
+          filter: 'drop-shadow(0 3px 4px rgba(0,0,0,.4))',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <SvgaOrImg
+            src={item.imageUrl}
+            alt={item.nameAr}
+          />
+        </div>
       </div>
 
       {/* Item name (bottom strip) */}

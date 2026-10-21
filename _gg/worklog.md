@@ -1298,3 +1298,70 @@ Stage Summary:
 - Build verified + ESLint clean
 - Commit: 14322381 — Pushed to GitHub main (12925c2a..14322381)
 - Next: apply same pixel-perfect methodology to Gold Shop window (after user's confirmation)
+
+---
+Task ID: shop-rebuild-4-fix
+Agent: main
+Task: إصلاح مشاكل عرض العناصر في المتجر — الإطارات المتحركة + المعلقات + المواضيع + بطاقات الملف
+
+Work Log:
+- السؤال الأصلي للمستخدم: (1) الإطارات المتحركة لا تظهر + المعلقات/المواضيع/بطاقات الملف لا تظهر. (2) ماذا سُحب من سورس يللا لودو ولماذا لم يُضَف.
+
+تشخيص المشكلة (3 أسباب متتابعة):
+
+السبب 1: خادم التطوير يعمل من مسار خاطئ
+- ps أظهر: cwd لـ next-server = /home/z/my-project/ (لا يحتوي على src/app)
+- كل API كان يرجع 500 + "ENOENT: no such file or directory, scandir '/home/z/my-project/src/app'"
+- قتلت العمليات القديمة (PID 1044-1065) وأعدت تشغيل `bun run dev` من /home/z/my-project/_gg/
+
+السبب 2: قاعدة البيانات غير مهيأة
+- DATABASE_URL البيئية = file:/home/z/my-project/db/custom.db (مسار غير موجود)
+- أنشأت /home/z/my-project/db/ و custom.db فارغ
+- libsql أنشأ الـ schema عند أول طلب
+
+السبب 3 (الأهم): categoryId فارغ على DecorItems المزروعة
+- seedDefaultDecor() ينفّذ INSERT OR REPLACE الذي يُعيد ضبط categoryId إلى '' (القيمة الافتراضية)
+- linkExistingItemsToCategories() كان يعمل مرة واحدة داخل ensureAdminTables() قبل وجود أي عناصر
+- النتيجة: DecorItems لها kind='ornament'/'theme'/'card' لكن categoryId='' فارغ
+- StoreSubPage API: WHERE categoryId=? لم يطابق أي صف
+
+إصلاح فوري (سكربت مرة واحدة):
+- شغّلت سكربت مؤقت يطبّق نفس UPDATEs في linkExistingItemsToCategories
+- بعد الإصلاح:
+  - ornament → wall_hangings: 4 عناصر ✓
+  - theme → themes: 10 عناصر ✓
+  - card → profile_card: 7 عناصر ✓
+  - PlayerFrame categoryId='frames': 75 إطار ✓ (45 SVGA + 28 PNG + 2 CSS gradient)
+
+إصلاح دائم في admin-db.ts:
+- DECOR_SEED_VERSION = 7 → 8 (يفرض إعادة البذر عند الطلب التالي)
+- داخل seedDefaultDecor() بعد INSERT OR REPLACE: استدعاء linkExistingItemsToCategories(c) ليعيد ربط categoryId كل مرة
+
+إصلاح عرض SVGA في المتجر:
+- StoreItemCard كان يستخدم <img src={item.imageUrl} /> للصورة المركزية — هذا لا يعرض .svga
+- 45 من 75 إطارات في DB هي /yalla-frames/svga/{id}.svga — تظهر كصور مكسورة
+- استبدلت <img> بـ <SvgaOrImg src={item.imageUrl} /> في مركز البطاقة + شريط العنصر المحدد
+- SvgaOrImg يستخدم svgaplayerweb لعرض .svga في canvas، و <img> للصور العادية
+- نفس الإصلاح لشريط معلومات العنصر المحدد في الأسفل (40×40)
+
+التحقق:
+- typecheck: ✓ نظيف على StoreSubPage.tsx و admin-db.ts (أخطاء Next.js types فقط غير متعلقة)
+- API GET /api/store/items?categoryId=frames → 75 عنصر (45 svga + 28 png + 2 other)
+- API GET /api/store/items?categoryId=wall_hangings → 4 عناصر (1 svga + 3 png)
+- API GET /api/store/items?categoryId=themes → 10 عناصر (png)
+- API GET /api/store/items?categoryId=profile_card → 7 عناصر (png)
+- API GET /api/store/items?categoryId=ludo_skin/entry_effects/jackaroo_skin → 0 (المستوردة مخفية بالتصميم)
+
+Stage Summary:
+- 2 ملفات عُدّلت: admin-db.ts (DECOR_SEED_VERSION=8 + linkExistingItemsToCategories post-seed) + StoreSubPage.tsx (SvgaOrImg بدل img)
+- 1 سكربت محلي محفوظ: /home/z/my-project/scripts/fix-store-categories.ts (للاستخدام في حال استُعيدت DB)
+- الآن العناصر كلها تظهر في المتجر: 75 إطار (منها 45 متحرك SVGA) + 4 معلقات جدارية + 10 مواضيع + 7 بطاقات = 96 عنصر
+- العناصر المسحوبة من سورس (30 عنصر skin_10000..13003) تبقى مخفية بالتصميم لأن ملفات PNG غير موجودة على القرص
+- الخطوة التالية: الدفعة 5 — لوحة الأدمن لإدارة العناصر المرئية + أسعار/حركات SVGA + رفع صور للعناصر المسحوبة المخفية
+
+تفصيل ما سُحب من سورس يللا لودو:
+- 45 أصل صورة من /res/drawable/ — نُسخت إلى /public/yalla-ui/royal/ (23 ملكي) + /yalla-ui/shop/ (22 متجر)
+- 11 قسماً من RLShopFragment.smali — أصبحت STORE_CATEGORIES_SEED
+- 30 معرّف skin من /assets/skin/ — أصبحت IMPORTED_SKIN_ITEMS (كلها مخفية، price=0، source='imported')
+- 45 ملف SVGA من /assets/svga/ — موجودة فعلياً في /public/yalla-frames/svga/ + مسجلة في SVGA_FRAMES_CATALOG
+- layouts مفكوكة من APK بـ apktool — استُخدم fragment_shop.xml, item_diamonds.xml, item_vip_buy.xml, fragment_royal_level2.xml, fragment_rl_shop.xml, rl_shop_item.xml
