@@ -331,45 +331,52 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
   return (
     <>
       <AnimatePresence>
+        {/* ══════ [1] ملء الشاشة الكامل — لا خلفية سوداء، لا إطار، لا هوامش ══════
+            المرجع: TOP_BAR_SPEC.md + البند [1] من الجولة الرابعة
+            - 100vw × 100vh (يملأ الحواف الأربعة بما فيها Safe Area)
+            - المحتوى داخل Safe Area عبر padding داخلي
+            - الخلفية متدرجة #3DB57A → #2A8A5C مع vignette
+        */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,.88)', backdropFilter: 'blur(5px)' }}
+          className="fixed inset-0 z-[100] flex flex-col"
+          style={{
+            background: 'linear-gradient(180deg, #3DB57A 0%, #2A8A5C 100%)',
+            // Safe area padding للمحتوى (الخلفية تمتد للحافات)
+            paddingTop: 'env(safe-area-inset-top)',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+            paddingLeft: 'env(safe-area-inset-left)',
+            paddingRight: 'env(safe-area-inset-right)',
+          }}
           onClick={onClose}
         >
-          {/* ══════ الحاوية الكاملة (rl_container) — 360dip wide, full_height, bg=skin_bg ══════ */}
-          <motion.div
-            initial={{ scale: 0.92, y: 24 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.92, y: 24 }}
-            transition={{ type: 'spring', damping: 22 }}
-            className="relative overflow-hidden flex flex-col"
+          {/* skin_bg.9.png — طبقة خلفية حقيقية */}
+          <img
+            src={A.skinBg}
+            alt=""
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{ objectFit: 'fill', opacity: 0.65, mixBlendMode: 'multiply' }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+          {/* Vignette — تعتيم خفيف على الأطراف */}
+          <div
+            className="absolute inset-0 pointer-events-none"
             style={{
-              width: 'min(100vw, 360px)',
-              height: 'min(100vh, 800px)',
-              background: 'linear-gradient(180deg, #3DB57A 0%, #2A8A5C 100%)',  // خلفية متدرجة حسب المواصفات
-              boxShadow: '0 0 40px rgba(0,0,0,.4)',
-              borderRadius: '0',
+              background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.18) 100%)',
             }}
+          />
+
+          {/* ══════ الحاوية الداخلية للمحتوى (rl_container) ══════ */}
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ type: 'spring', damping: 26 }}
+            className="relative flex-1 flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* skin_bg.9.png — طبقة خلفية حقيقية */}
-            <img
-              src={A.skinBg}
-              alt=""
-              className="absolute inset-0 w-full h-full"
-              style={{ objectFit: 'fill', opacity: 0.85, mixBlendMode: 'multiply' }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-            {/* Vignette — تعتيم الأطراف */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,.25) 100%)',
-              }}
-            />
 
             {/* ══════ الشريط العلوي (top bar) — direction: 'ltr' لتحقيق الترتيب البصري ══════
                 المرجع: TOP_BAR_SPEC.md القسم 2
@@ -388,48 +395,48 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               </button>
 
               {/* كبسولة الماس + كبسولة الذهب — مركز
+                  [2] أعرض وأعلى، الأرقام كاملة بمحاذاة وسط الكبسولة
                   داخل كل كبسولة: النص على اليسار + الأيقونة على اليمين (تتجاوز حافة الكبسولة قليلاً)
                   الترتيب البصري من اليسار لليمين: كبسولة الماس | كبسولة الذهب
-                  (هذا الجزء داخل container بـ direction: 'ltr'، فترتيب DOM = ترتيب بصري)
                   الكبسولات محفورة: bg #0c3c30 + inset box-shadow علوي داكن + حافة سفلية فاتحة
               */}
-              <div className="flex-1 flex items-center justify-center gap-2">
+              <div className="flex-1 flex items-center justify-center gap-3">
                 {/* كبسولة الماس (rl_diamonds) — يسار */}
-                <div className="relative flex items-center" style={{ marginRight: 8 }}>
+                <div className="relative flex items-center" style={{ marginRight: 4 }}>
                   {/* النص على اليسار (paddingEnd=4 = left padding) */}
                   <div
-                    className="flex items-center justify-end"
+                    className="flex items-center justify-center"
                     style={{
-                      width: 75,
-                      height: 20,
+                      width: 95,        // أعرض من 75 (was 75)
+                      height: 26,       // أعلى من 20 (was 20)
                       background: A.bgAddCoin,
-                      borderRadius: 10,
+                      borderRadius: 13,
                       paddingRight: 4,    // paddingEnd=4 (left padding)
-                      paddingLeft: 17,    // paddingStart=17 (right padding — يترك مساحة للأيقونة على اليمين)
+                      paddingLeft: 24,    // paddingStart=24 — مساحة أكبر للأيقونة على اليمين
                       color: '#fff',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      lineHeight: '20px',
+                      fontSize: 13,       // أكبر من 11 (was 11sp)
+                      fontWeight: 800,
+                      lineHeight: '26px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textShadow: '0 1px 2px rgba(0,0,0,.6)',
                       // محفور: ظل داخلي علوي داكن + حافة سفلية فاتحة
-                      boxShadow: 'inset 0 1px 0 rgba(0,0,0,.4), inset 0 -1px 0 rgba(255,255,255,.08)',
+                      boxShadow: 'inset 0 1.5px 0 rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.1)',
                     }}
                   >
                     {gems ?? '0'}
                   </div>
-                  {/* أيقونة الماس على اليمين (تتجاوز حافة الكبسولة) — 29×29dip، أكبر من ارتفاع الكبسولة 20dip */}
+                  {/* أيقونة الماس على اليمين (تتجاوز حافة الكبسولة) — 32×32dip، أكبر من ارتفاع الكبسولة 26dip */}
                   <img
                     src={A.diamonds}
                     alt=""
                     className="absolute"
                     style={{
-                      right: -2,
+                      right: -3,
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      width: 29,
-                      height: 29,
+                      width: 32,
+                      height: 32,
                       objectFit: 'contain',
                       filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
                     }}
@@ -439,22 +446,22 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 {/* كبسولة الذهب (rl_gold) — يمين */}
                 <div className="relative flex items-center">
                   <div
-                    className="flex items-center justify-end"
+                    className="flex items-center justify-center"
                     style={{
-                      width: 75,
-                      height: 20,
+                      width: 95,
+                      height: 26,
                       background: A.bgAddCoin,
-                      borderRadius: 10,
+                      borderRadius: 13,
                       paddingRight: 4,
-                      paddingLeft: 17,
+                      paddingLeft: 24,
                       color: '#fff',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      lineHeight: '20px',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      lineHeight: '26px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textShadow: '0 1px 2px rgba(0,0,0,.6)',
-                      boxShadow: 'inset 0 1px 0 rgba(0,0,0,.4), inset 0 -1px 0 rgba(255,255,255,.08)',
+                      boxShadow: 'inset 0 1.5px 0 rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.1)',
                     }}
                   >
                     {gold ?? '0'}
@@ -464,11 +471,11 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     alt=""
                     className="absolute"
                     style={{
-                      right: -2,
+                      right: -3,
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      width: 29,
-                      height: 29,
+                      width: 32,
+                      height: 32,
                       objectFit: 'contain',
                       filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
                     }}
@@ -750,17 +757,18 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </div>
               )}
 
-              {/* ══════ الرف 1 (تحت منطقة المكافأة) ══════ */}
+              {/* ═════ـ الرف 1 (تحت منطقة المكافأة) — رف بسيط بدون أبناء ══════ */}
               {activeTab !== 'vip' && (
-                <ShelfRow />
+                <PlainShelf height={45} />
               )}
 
-              {/* ══════ شبكة البطاقات — صفّان مفصولان برف ══════
-                  المرجع: TOP_BAR_SPEC.md القسم 5
+              {/* ═════ـ شبكة البطاقات — صفّان، كل صف يقف على رفه ══════
+                  المرجع: TOP_BAR_SPEC.md القسم 5 + البند [5] من الجولة الرابعة
                   ترتيب بصري من اليمين لليسار تصاعدياً (مطابق لصورة A):
                   Row 1: 400 (يمين) + HOT | 1800 (وسط) | 5000 (يسار)
-                  [رف 2]
+                  [رف 2 — البطاقات تقف عليه]
                   Row 2: 16.0K (يمين) + Popular | 53.7K (وسط) | 161.7K (يسار) + BEST
+                  [رف 3 — البطاقات تقف عليه]
               */}
               {isVipTab ? (
                 <div className="grid grid-cols-2 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
@@ -775,32 +783,34 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </div>
               ) : (
                 <>
-                  {/* الصف 1: 400 / 1800 / 5000 — يقف على الرف 2 */}
-                  <div className="grid grid-cols-3 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
-                    {currentPackages.filter(p => p.enabled).slice(0, 3).map((pkg) => (
-                      <DiamondPackageCard
-                        key={pkg.id}
-                        pkg={pkg}
-                        isSelected={selectedPkg?.id === pkg.id}
-                        onSelect={() => setSelectedPkg(pkg)}
-                      />
-                    ))}
-                  </div>
-                  {/* الرف 2 — تحت الصف 1 */}
-                  <ShelfRow />
-                  {/* الصف 2: 16.0K / 53.7K / 161.7K — يقف على الرف 3 */}
-                  <div className="grid grid-cols-3 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
-                    {currentPackages.filter(p => p.enabled).slice(3, 6).map((pkg) => (
-                      <DiamondPackageCard
-                        key={pkg.id}
-                        pkg={pkg}
-                        isSelected={selectedPkg?.id === pkg.id}
-                        onSelect={() => setSelectedPkg(pkg)}
-                      />
-                    ))}
-                  </div>
-                  {/* الرف 3 — تحت الصف 2 (آخر رف) */}
-                  <ShelfRow />
+                  {/* الرف 2 — بطاقات الصف 1 تقف عليه */}
+                  <ShelfRow height={55}>
+                    {/* الصف 1: 400 / 1800 / 5000 — grid RTL داخل الرف */}
+                    <div className="flex gap-2 justify-center" style={{ direction: 'rtl', width: '100%', maxWidth: 350 }}>
+                      {currentPackages.filter(p => p.enabled).slice(0, 3).map((pkg) => (
+                        <DiamondPackageCard
+                          key={pkg.id}
+                          pkg={pkg}
+                          isSelected={selectedPkg?.id === pkg.id}
+                          onSelect={() => setSelectedPkg(pkg)}
+                        />
+                      ))}
+                    </div>
+                  </ShelfRow>
+                  {/* الرف 3 — بطاقات الصف 2 تقف عليه */}
+                  <ShelfRow height={55}>
+                    {/* الصف 2: 16.0K / 53.7K / 161.7K — grid RTL داخل الرف */}
+                    <div className="flex gap-2 justify-center" style={{ direction: 'rtl', width: '100%', maxWidth: 350 }}>
+                      {currentPackages.filter(p => p.enabled).slice(3, 6).map((pkg) => (
+                        <DiamondPackageCard
+                          key={pkg.id}
+                          pkg={pkg}
+                          isSelected={selectedPkg?.id === pkg.id}
+                          onSelect={() => setSelectedPkg(pkg)}
+                        />
+                      ))}
+                    </div>
+                  </ShelfRow>
                 </>
               )}
 
@@ -953,30 +963,93 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// ShelfRow — صف الرف باستخدام shelves.webp الأصلي
+// ShelfRow — صف الرف بطبقات صحيحة للوقوف
 // مطابق لـ item_shop_guild.xml L26 (iv_shelves 316×84dip)
-// شكل الرف في الأصل: منصة بسطح علوي فاتح شبه شفاف على شكل شبه منحرف،
-//                    جانبان مائلان، حافة أمامية بارزة (Bevel) بمسمارين صغيرين
-// shelves.webp (1091×290 avg #3eceaa) يحتوي على كل هذه التفاصيل
+//
+// بنية shelves.webp (1091×290، تم تحليلها بـ PIL):
+//   y=0-89    (0-31%):   شفاف (فوق الرف — مساحة فارغة)
+//   y=90-98   (31-34%): حافة علوية شبه شفافة (سطح الوقوف الخلفي — standLine)
+//   y=99-197  (34-68%): السطح العلوي المرئي (مكان وقوف العناصر — لون فاتح)
+//   y=198-242 (68-83%): جسم الرف (لون أغمق)
+//   y=243-278 (84-96%): الحافة الأمامية Barزة (Bevel/Lip — لون فاتح)
+//   y=279-290 (96-100%): شفاف (أسفل الرف)
+//
+// البنية المطلوبة (Z-order للأبناء داخل ShelfRow):
+//   1. صورة shelves.webp كاملة (z=1) — خلفية
+//   2. الأبناء (العناصر الواقفة) (z=2) — أسفلهم عند standLine
+//   3. طبقة الحافة الأمامية فقط (z=3) — أمام قاعدة العناصر لإحساس الوقوف
+//
+// standLine = 34% من ارتفاع الرف (من أعلى) = 66% من أسفل
+// عند عرض الرف بـ 60px ارتفاع: standLine عند 60 × 0.66 = 40px من أسفل = 20px من أعلى
 // ════════════════════════════════════════════════════════════════════════════
-function ShelfRow() {
+function ShelfRow({ children, height = 60 }: { children?: React.ReactNode; height?: number }) {
+  const standLineFromBottom = height * 0.66;  // السطح العلوي عند 66% من أسفل
+  const bevelHeight = height * 0.16;          // الحافة الأمامية = آخر 16% من ارتفاع الرف
   return (
-    <div className="relative" style={{ height: 28, marginTop: 2, marginBottom: 4 }}>
-      {/* shelves.webp — صورة كاملة بعرض الشاشة */}
+    <div className="relative" style={{ height, marginTop: 0, marginBottom: 0 }}>
+      {/* الطبقة 1: خلفية الرف الكاملة (shelves.webp) — z=1 */}
       <img
         src={A.shelves}
         alt=""
         className="absolute inset-0 w-full h-full"
-        style={{ objectFit: 'fill', opacity: 0.95 }}
+        style={{ objectFit: 'fill', opacity: 0.95, zIndex: 1 }}
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
-      {/* Fallback CSS: حافة فاتحة علوية + جسم + ظل سفلي (3D bevel) */}
+
+      {/* الطبقة 2: الأبناء (العناصر الواقفة) — z=2، أسفلهم عند standLine */}
+      {children && (
+        <div
+          className="absolute left-0 right-0 flex items-end justify-center gap-2"
+          style={{
+            bottom: standLineFromBottom,
+            zIndex: 2,
+            // العناصر تنزل قليلاً تحت السطح لمحاكاة الوقوف الفعلي
+            transform: 'translateY(2px)',
+          }}
+        >
+          {children}
+        </div>
+      )}
+
+      {/* الطبقة 3: الحافة الأمامية فقط (Bevel/Lip) — z=3، أمام العناصر */}
+      {/* نعرض آخر 16% فقط من صورة shelves.webp فوق العناصر */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(180deg, rgba(93,215,166,.0) 0%, rgba(62,206,170,.4) 30%, rgba(45,168,135,.6) 60%, rgba(31,122,95,.8) 100%)',
-          boxShadow: '0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.4)',
-        }}
+        className="absolute left-0 right-0 overflow-hidden"
+        style={{ bottom: 0, height: bevelHeight, zIndex: 3, pointerEvents: 'none' }}
+      >
+        <img
+          src={A.shelves}
+          alt=""
+          className="absolute w-full"
+          style={{
+            bottom: 0,
+            left: 0,
+            right: 0,
+            // نعرض آخر 16% فقط من الصورة الأصلية — الصورة تظهر بنسبة height/bevelHeight%
+            height: height,  // الارتفاع الكامل للصورة الأصلية
+            objectFit: 'fill',
+            opacity: 0.95,
+            // نقلب الصورة رأسياً ونعرض الجزء العلوي (الحافة الأمامية في الأصل تكون في الأسفل)
+            transform: 'scaleY(-1)',
+            transformOrigin: 'bottom',
+          }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// نسخة مبسطة بدون أبناء (للرف الأول تحت المكافأة)
+function PlainShelf({ height = 60 }: { height?: number }) {
+  return (
+    <div className="relative" style={{ height, marginTop: 0, marginBottom: 0 }}>
+      <img
+        src={A.shelves}
+        alt=""
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: 'fill', opacity: 0.95, zIndex: 1 }}
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
     </div>
   );
@@ -1008,7 +1081,8 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
       style={{
         width: 107,
         height: 150,
-        border: isSelected ? `1.5px solid ${accentColor}` : 'none',
+        // [6] إطار أبيض-سماوي رفيع (2-3px) — مدمج في shop_item_bg.webp (لا تضف border CSS إضافي)
+        // فقط توهج عند الاختيار
         boxShadow: isSelected ? `0 0 12px ${accentColor}66` : 'none',
         transform: isSelected ? 'scale(1.03)' : 'scale(1)',
       }}
@@ -1049,7 +1123,7 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
         <img
           src={bigIcon}
           alt={pkg.label}
-          style={{ width: 88, height: 88, objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))' }}
+          style={{ width: 96, height: 96, objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))' }}
           onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
         />
       </div>
