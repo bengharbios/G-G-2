@@ -2512,6 +2512,15 @@ function toPlayerFrame(row: Record<string, unknown>): PlayerFrame {
     isActive: !!(row.isActive && row.isActive !== 0),
     sortOrder: Number(row.sortOrder ?? 0),
     totalOwned: Number(row.totalOwned ?? 0),
+    // [Batch 2] Store model fields
+    categoryId: (row.categoryId as string) ?? 'frames',
+    visible: ((row.visible as string) ?? 'shown') as 'shown' | 'hidden' | 'scheduled',
+    source: ((row.source as string) ?? 'ours') as 'ours' | 'imported',
+    animatedUrl: (row.animatedUrl as string) ?? '',
+    isNew: !!(row.isNew && row.isNew !== 0),
+    discountPercent: Number(row.discountPercent ?? 0),
+    scheduleStart: (row.scheduleStart as string) ?? '',
+    scheduleEnd: (row.scheduleEnd as string) ?? '',
     createdAt: (row.createdAt as string) ?? new Date().toISOString(),
     updatedAt: (row.updatedAt as string) ?? new Date().toISOString(),
   };
@@ -5129,9 +5138,12 @@ export async function updateFrame(id: string, data: Partial<PlayerFrame>): Promi
 
   for (const [key, val] of entries) {
     if (key === 'id' || key === 'createdAt' || key === 'totalOwned') continue;
-    if (key === 'isActive' || key === 'isFree' || key === 'isEquipped') {
+    if (key === 'isActive' || key === 'isFree' || key === 'isEquipped' || key === 'isNew') {
       setClauses.push(`${key} = ?`);
       values.push(val ? 1 : 0);
+    } else if (key === 'discountPercent' || key === 'sortOrder' || key === 'price') {
+      setClauses.push(`${key} = ?`);
+      values.push(Number(val) || 0);
     } else {
       setClauses.push(`${key} = ?`);
       values.push(sqlVal(val));
@@ -5141,7 +5153,7 @@ export async function updateFrame(id: string, data: Partial<PlayerFrame>): Promi
   values.push(id);
   await c.execute({
     sql: `UPDATE PlayerFrame SET ${setClauses.join(', ')} WHERE id = ?`,
-    args: values,
+    args: values as InValue[],
   });
   return getFrameById(id);
 }
@@ -5838,6 +5850,15 @@ function toDecorItem(row: Record<string, unknown>): DecorItem {
     isActive: Number(row.isActive ?? 1) === 1,
     sortOrder: Number(row.sortOrder ?? 0),
     totalOwned: Number(row.totalOwned ?? 0),
+    // [Batch 2] Store model fields
+    categoryId: (row.categoryId as string) ?? '',
+    visible: ((row.visible as string) ?? 'shown') as 'shown' | 'hidden' | 'scheduled',
+    source: ((row.source as string) ?? 'ours') as 'ours' | 'imported',
+    animatedUrl: (row.animatedUrl as string) ?? '',
+    isNew: !!(row.isNew && row.isNew !== 0),
+    discountPercent: Number(row.discountPercent ?? 0),
+    scheduleStart: (row.scheduleStart as string) ?? '',
+    scheduleEnd: (row.scheduleEnd as string) ?? '',
   };
 }
 
@@ -5886,8 +5907,14 @@ export async function updateDecorItem(id: string, data: Partial<DecorItem>): Pro
   const setClauses: string[] = []; const values: InValue[] = [];
   for (const [k, v] of entries) {
     if (k === 'rarity' && !['common', 'rare', 'epic', 'legendary'].includes(String(v))) continue;
-    if (k === 'kind' && !['ornament', 'theme', 'card'].includes(String(v))) continue;
-    setClauses.push(`${k} = ?`); values.push(sqlVal(v) as InValue);
+    if (k === 'kind' && !['ornament', 'theme', 'card', 'skin'].includes(String(v))) continue;
+    if (k === 'isFree' || k === 'isActive' || k === 'isNew') {
+      setClauses.push(`${k} = ?`); values.push(v ? 1 : 0);
+    } else if (k === 'discountPercent' || k === 'sortOrder' || k === 'price' || k === 'totalOwned') {
+      setClauses.push(`${k} = ?`); values.push(Number(v) || 0);
+    } else {
+      setClauses.push(`${k} = ?`); values.push(sqlVal(v) as InValue);
+    }
   }
   if (setClauses.length > 0) {
     values.push(id);

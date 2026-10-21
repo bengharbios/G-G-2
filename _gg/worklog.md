@@ -1365,3 +1365,62 @@ Stage Summary:
 - 30 معرّف skin من /assets/skin/ — أصبحت IMPORTED_SKIN_ITEMS (كلها مخفية، price=0، source='imported')
 - 45 ملف SVGA من /assets/svga/ — موجودة فعلياً في /public/yalla-frames/svga/ + مسجلة في SVGA_FRAMES_CATALOG
 - layouts مفكوكة من APK بـ apktool — استُخدم fragment_shop.xml, item_diamonds.xml, item_vip_buy.xml, fragment_royal_level2.xml, fragment_rl_shop.xml, rl_shop_item.xml
+
+---
+Task ID: batch-5-admin-store
+Agent: main
+Task: الدفعة 5 — لوحة أدمن لإدارة المتجر الموحّد (PlayerFrame + DecorItem)
+
+Work Log:
+- القائمة المطلوبة من المستخدم: (1) إدارة العناصر المرئية، (2) رفع صور للعناصر المسحوبة المخفية الـ30، (3) ضبط أسعار الـ45 SVGA
+
+المرحلة 1: فتح الحقول الجديدة في row mappers
+- toPlayerFrame(): أضفت 8 حقول Batch 2 (categoryId, visible, source, animatedUrl, isNew, discountPercent, scheduleStart, scheduleEnd) إلى النتيجة — كانت تُهمل سابقاً
+- toDecorItem(): أضفت نفس 8 حقول
+- updateFrame(): أضفت معالجة لـ isNew و discountPercent و sortOrder كأرقام (كانت تُمرّر كنص)
+- updateDecorItem(): أضفت 'skin' لقائمة kinds المسموحة + معالجة isNew/discountPercent/sortOrder/price/totalOwned كأرقام
+
+المرحلة 2: API endpoints جديدة
+- GET /api/admin/store/items?categoryId=X&includeHidden=1 — يرجع كل العناصر في القسم (مخفية + ظاهرة، نشطة + معطلة) مع كل الحقول الجديدة + kindLabel عربي
+- PATCH /api/admin/store/items/[id]?table=PlayerFrame|DecorItem — تحديث حقول مُحيطة (whitelist): nameAr, imageUrl, animatedUrl, rarity, price, isFree, isActive, sortOrder, categoryId, visible, source, isNew, discountPercent, scheduleStart, scheduleEnd
+- DELETE /api/admin/store/items/[id]?table=X — حذف نهائي + تنظيف UserFrame/UserDecor المرتبطة
+- POST /api/admin/store/items/[id]/upload?table=X — رفع PNG/WebP/SVGA (≤2MB) إلى MediaAsset + إرجاع URL عمومي + تحديث imageUrl (للصور) أو animatedUrl (لـ SVGA)
+- GET /api/media/[id] — يخدم البايتات المخزنة من MediaAsset (مع cache-control immutable 24h)
+
+المرحلة 3: صفحة الأدمن /admin/store
+- auth check عبر /api/admin/stats (نفس آلية /admin)
+- login form مستقل عند عدم التوثق
+- تبويبات الأقسام الـ11 من /api/store/categories + frames مضافة افتراضياً
+- بطاقة لكل عنصر: معاينة (SvgaOrImg يدعم PNG/SVGA) + شارات (مستورد/SVGA/جديد/خصم) + حالة ظاهر/مخفي + نادرة + سعر + مملوك + قسم
+- أزرار 4: تعديل/تبديل ظاهر/رفع صورة/حذف
+- نافذة تعديل كاملة: nameAr, price, rarity, visible, source, categoryId, sortOrder, discountPercent, isFree, isActive, isNew, imageUrl, animatedUrl
+- فلاتر: بحث نصي + حالة (all/shown/hidden) + مصدر (all/ours/imported)
+- شارات إحصائية: total / shown / hidden / imported / svga
+- رابط breadcrumb إلى /admin
+- تحذير أصفر للعناصر المستوردة المخفية: "ارفع صورة ثم بدّل الحالة إلى ظاهر"
+
+المرحلة 4: اختبار شامل
+- GET /api/admin/store/items?categoryId=ludo_skin&includeHidden=1 بدون كوكي → 401 ✓
+- login admin/Ghaleb@2024 → cookie admin_token ✓
+- GET مع كوكي → 13 عنصر skin_10000..10012 كلها visible='hidden', source='imported', isActive=0 ✓
+- PATCH skin_10000 {visible:'shown', isActive:true, price:300} → نجح ✓
+- GET /api/store/items?categoryId=ludo_skin (عمومي) → رجع 1 عنصر بالسعر الجديد ✓
+- PATCH إعادة ضبط visible='hidden' isActive=false price=0 → نجح ✓
+- POST /upload رفع test_item.png (68 bytes) → url=/api/media/skin_10000_1792616485559 column=imageUrl ✓
+- GET /api/media/... → 200 + 68 bytes = حجم الأصل ✓
+- PATCH لإعادة imageUrl الأصلي ✓
+- GET /admin/store → 200 (compile + render 347ms) ✓
+- typecheck: 0 أخطاء على كل الملفات الجديدة ✓
+
+Stage Summary:
+- 5 ملفات جديدة: src/app/admin/store/page.tsx (~600 سطر) + 4 routes تحت /api/admin/store/ و /api/media/
+- 2 ملفات معدّلة: admin-db.ts (toPlayerFrame/toDecorItem/updateFrame/updateDecorItem) + /api/media/[id]/route.ts (تصدير MediaAsset)
+- 0 ملفات محذوفة — كل البيانات القديمة محفوظة
+- الآن الأدمن قادر على: رؤية كل العناصر المخفية + تفعيلها + رفع صور لها + ضبط أسعارها + تعديل كل خصائصها — بدون كتابة كود
+- العناصر المسحوبة الـ30: تظهر الآن في الأدمن تحت تبويبات ludo_skin/jackaroo_skin/entry_effects/themes بشارة "مستورد" — يمكن للأدمن رفع الصورة وتبديل الحالة لجعلها ظاهرة في المتجر
+
+الخطوات التالية المقترحة:
+1. إضافة زر "تطبيق على كل العناصر المختارة" (bulk actions): toggle visible / set price / set rarity
+2. عرض تعارضات أسعار SVGA الـ30 في نافذة مستقلة مع زر "اعتمد سعر السورس" أو "اعتمد سعرنا"
+3. إضافة معاينة فورية في نافذة التعديل عند تغيير imageUrl/animatedUrl
+4. تصدير/استيراد JSON للكتالوج (backup/restore)

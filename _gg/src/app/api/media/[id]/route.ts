@@ -1,38 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ensureAdminTables, getClient } from '@/lib/admin-db';
+import { getClient, ensureAdminTables } from '@/lib/admin-db';
 
-export const runtime = 'nodejs';
-
-// عرض صورة مرفوعة من قاعدة البيانات — مسارها المستقر /api/media/<id>
-// الكاش دائم لأن المعرف فريد لكل نسخة صورة
+// GET /api/media/[id] — serve a stored MediaAsset by id
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
     await ensureAdminTables();
+    const { id } = await params;
     const c = getClient();
-    const res = await c.execute({
-      sql: 'SELECT mime, data FROM MediaAsset WHERE id = ? LIMIT 1',
+    const r = await c.execute({
+      sql: 'SELECT mime, data FROM MediaAsset WHERE id = ?',
       args: [id],
     });
-    const row = res.rows[0] as Record<string, unknown> | undefined;
-    if (!row || !row.data) {
-      return NextResponse.json({ error: 'الصورة غير موجودة' }, { status: 404 });
-    }
-    const mime = String(row.mime ?? 'image/png');
-    const bytes = row.data instanceof Uint8Array ? row.data : new Uint8Array(row.data as ArrayBuffer);
-    return new Response(bytes as unknown as BodyInit, {
+    if (!r.rows.length) return new NextResponse('Not Found', { status: 404 });
+    const row = r.rows[0] as Record<string, unknown>;
+    const mime = String(row.mime ?? 'application/octet-stream');
+    const data = row.data as Uint8Array | Buffer | null;
+    if (!data) return new NextResponse('Empty', { status: 500 });
+    const buf = data instanceof Uint8Array ? Buffer.from(data) : (data as Buffer);
+    return new NextResponse(new Uint8Array(buf), {
       status: 200,
       headers: {
         'Content-Type': mime,
-        'Content-Length': String(bytes.byteLength),
-        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': 'public, max-age=86400, immutable',
       },
     });
   } catch (error) {
-    console.error('Media serve error:', error);
-    return NextResponse.json({ error: 'فشل عرض الصورة' }, { status: 500 });
+    console.error('Media GET error:', error);
+    return new NextResponse('Internal Error', { status: 500 });
   }
 }
