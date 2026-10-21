@@ -77,7 +77,6 @@ interface ChargeDialogProps {
   initialTab?: 'diamond' | 'gold' | 'vip';
   gems: number | null;
   gold: number | null;
-  avatarUrl?: string;
   royalLevel?: number;
 }
 
@@ -163,7 +162,9 @@ const DIAMOND_ICONS: Record<string, string> = {
 };
 
 // ════════════════════════════════════════════════════════════════════════════
-// الشارات (HOT/BEST/Popular) — أعلى يمين (طبقاً لـ item_diamonds.xml layout_gravity=end)
+// الشارات (HOT/BEST/Popular) — أعلى يسار البطاقة
+// (item_diamonds.xml: layout_gravity="end" في RTL = LEFT، مطابق لصورة A)
+// الشارات لا تغطي كبسولة الرقم (الكبسولة في الوسط، الشارات في الزاوية العلوية اليسرى)
 // ════════════════════════════════════════════════════════════════════════════
 function renderBadge(badge: Package['badge']): React.ReactNode {
   if (badge === 'none') return null;
@@ -175,7 +176,7 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
         className="absolute"
         style={{
           top: 2,
-          right: -3,            // marginEnd=-3
+          left: -3,            // أعلى يسار + يبرز خارج الحافة اليسرى (marginEnd=-3 في RTL)
           width: 60,             // 60×21dip
           height: 21,
           objectFit: 'contain',
@@ -193,7 +194,7 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
         className="absolute"
         style={{
           top: 2,
-          right: -3,
+          left: -3,
           width: 60,
           height: 21,
           objectFit: 'contain',
@@ -204,14 +205,14 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
     );
   }
   if (badge === 'hot') {
-    // HOT: شارة دائرية برتقالية-حمراء بشعلة
-    // بديل موثّق (SVG_hot غير متوفر) — استخدم label_best كـ red badge + flame icon فوقها
+    // HOT: شارة دائرية برتقالية-حمراء بشعلة — أعلى يسار البطاقة
+    // بديل موثّق (svg_hot SVGA غير متوفر) — استخدم دائرة برتقالية-حمراء + flame icon
     return (
       <div
         className="absolute flex items-center justify-center"
         style={{
           top: -2,
-          right: -8,            // marginTop=-2, marginEnd=-8 من item_diamonds.xml L28
+          left: -8,            // أعلى يسار + يبرز خارج الحافة اليسرى (marginEnd=-8 في RTL)
           width: 35,             // 35×35dip
           height: 35,
           zIndex: 10,
@@ -238,7 +239,7 @@ function renderBadge(badge: Package['badge']): React.ReactNode {
   return null;
 }
 
-export default function ChargeDialog({ open, onClose, initialTab = 'diamond', gems, gold, avatarUrl, royalLevel = 0 }: ChargeDialogProps) {
+export default function ChargeDialog({ open, onClose, initialTab = 'diamond', gems, gold, royalLevel = 0 }: ChargeDialogProps) {
   const [activeTab, setActiveTab] = useState<'gold' | 'diamond' | 'vip'>(initialTab);
   const [packages, setPackages] = useState<{
     diamonds: Package[];
@@ -380,105 +381,163 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 <img src={A.skinClose} alt="إغلاق" style={{ width: 24, height: 24, objectFit: 'contain' }} />
               </button>
 
-              {/* كبسولة الماس + كبسولة الذهب — مركز */}
+              {/* كبسولة الماس + كبسولة الذهب — مركز
+                  داخل كل كبسولة: النص على اليسار + الأيقونة على اليمين (تتجاوز حافة الكبسولة قليلاً)
+                  الترتيب البصري من اليسار لليمين: كبسولة الماس | كبسولة الذهب
+              */}
               <div className="flex-1 flex items-center justify-center gap-2">
-                {/* كبسولة الماس (rl_diamonds) — bg_add_coin #0c3c30 + diamonds.webp 29×29dip على اليسار */}
+                {/* كبسولة الماس (rl_diamonds) — يسار */}
                 <div className="relative flex items-center" style={{ marginRight: 8 }}>
-                  <img src={A.diamonds} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
+                  {/* النص على اليسار (paddingEnd=4 = left padding) */}
                   <div
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-end"
                     style={{
                       width: 75,
                       height: 20,
                       background: A.bgAddCoin,
                       borderRadius: 10,
-                      marginLeft: -10,
-                      paddingLeft: 17,
-                      paddingRight: 4,
+                      paddingRight: 4,    // paddingEnd=4 (left padding)
+                      paddingLeft: 17,    // paddingStart=17 (right padding — يترك مساحة للأيقونة على اليمين)
                       color: '#fff',
                       fontSize: 11,
                       fontWeight: 700,
                       lineHeight: '20px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
-                      textOverflow: 'ellipsis',
                       textShadow: '0 1px 2px rgba(0,0,0,.6)',
                     }}
                   >
                     {gems ?? '0'}
                   </div>
+                  {/* أيقونة الماس على اليمين (تتجاوز حافة الكبسولة) — 29×29dip، أكبر من ارتفاع الكبسولة 20dip */}
+                  <img
+                    src={A.diamonds}
+                    alt=""
+                    className="absolute"
+                    style={{
+                      right: -2,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: 29,
+                      height: 29,
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
+                    }}
+                  />
                 </div>
 
-                {/* كبسولة الذهب (rl_gold) — نفس البنية */}
+                {/* كبسولة الذهب (rl_gold) — يمين */}
                 <div className="relative flex items-center">
-                  <img src={A.coin} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
                   <div
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-end"
                     style={{
                       width: 75,
                       height: 20,
                       background: A.bgAddCoin,
                       borderRadius: 10,
-                      marginLeft: -10,
-                      paddingLeft: 17,
                       paddingRight: 4,
+                      paddingLeft: 17,
                       color: '#fff',
                       fontSize: 11,
                       fontWeight: 700,
                       lineHeight: '20px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
-                      textOverflow: 'ellipsis',
                       textShadow: '0 1px 2px rgba(0,0,0,.6)',
                     }}
                   >
                     {gold ?? '0'}
                   </div>
+                  <img
+                    src={A.coin}
+                    alt=""
+                    className="absolute"
+                    style={{
+                      right: -2,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: 29,
+                      height: 29,
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 1px 1px rgba(0,0,0,.4))',
+                    }}
+                  />
                 </div>
               </div>
 
-              {/* صورة اللاعب الدائرية — أقصى اليمين + شارة R0 أسفلها */}
-              <div className="relative">
-                <img
-                  src={avatarUrl || A.defaultAvatar}
-                  alt="avatar"
+              {/* ══════ أيقونة الرويال — أقصى اليمين (مطابق لصورة A والسورس rle_entranceView) ══════ */}
+              <button
+                onClick={() => setRoyalOpen(true)}
+                className="relative flex flex-col items-center justify-center"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                aria-label="مستوى رويال"
+                title={`مستوى رويال ${royalLevel}`}
+              >
+                {/* دائرة بإطار أخضر — بداخلها أيقونة الرويال */}
+                <div
+                  className="relative flex items-center justify-center"
                   style={{
-                    width: 48,
-                    height: 48,
+                    width: 40,
+                    height: 40,
                     borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: '2px solid #3DB57A',
-                    boxShadow: '0 0 0 1px rgba(255,255,255,.2)',
+                    background: 'linear-gradient(180deg, #2DA887 0%, #1F7A5F 100%)',
+                    border: '2px solid #5DD7A6',
+                    boxShadow: '0 2px 6px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.2)',
                   }}
-                />
-                {/* شارة مستوى رويال R0 تحت الصورة */}
-                {royalLevel >= 0 && royalLevel <= 5 && (
+                >
+                  {/* أيقونة الرويال من السورس */}
                   <img
-                    src={ROYAL_LEVEL_ICONS[royalLevel]}
+                    src={royalLevel >= 0 && royalLevel <= 5 ? ROYAL_LEVEL_ICONS[royalLevel] : A.royalLevelValueIc}
                     alt={`R${royalLevel}`}
-                    className="absolute"
                     style={{
-                      bottom: -8,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: 24,
-                      height: 24,
+                      width: 28,
+                      height: 28,
                       objectFit: 'contain',
-                      filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.5))',
+                      filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))',
                     }}
                   />
-                )}
-              </div>
+                </div>
+                {/* لافتة صغيرة تحتها بنص "R" + مستوى الرويال */}
+                <div
+                  className="absolute"
+                  style={{
+                    bottom: -8,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: '#fbbf24',
+                    color: '#1f1407',
+                    fontSize: 9,
+                    fontWeight: 700,
+                    padding: '1px 6px',
+                    borderRadius: 8,
+                    minWidth: 22,
+                    textAlign: 'center',
+                    lineHeight: '12px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,.4)',
+                  }}
+                >
+                  R{royalLevel}
+                </div>
+              </button>
             </div>
 
-            {/* ══════ الألسنة (radio_group_switch) — 3 ألسنة فقط (NOT 4) ══════ */}
+            {/* ══════ الألسنة (radio_group_switch) — 3 ألسنة فقط ══════
+                الترتيب البصري من اليسار لليمين (مطابق لصورة A):
+                  [Subscriptions (vip) | Diamond | Gold]
+                الـ API يرجع الترتيب [gold, diamond, vip] — نعكسه ليصبح [vip, diamond, gold] بصرياً
+            */}
             <div className="relative z-10 flex px-2" style={{ height: 45 }}>
-              {tabs.map((tab, idx) => {
+              {[...tabs].reverse().map((tab, idx) => {
                 const isActive = activeTab === tab.key;
-                // من اليسار لليمين: gold (left), diamond (middle), privilege (right)
+                // idx 0 = left = Subscriptions (vip), idx 1 = middle = Diamond, idx 2 = right = Gold
                 const isLeft = idx === 0;
                 const isMiddle = idx === 1;
                 const isRight = idx === tabs.length - 1;
+                // الخلفية:
+                //  - نشط + يسار = shop_switch_left_check.webp
+                //  - نشط + وسط = shop_switch_middle_uncheck.webp (لا يوجد middle_check في السورس — نستعمل middle_uncheck للنشط أيضاً)
+                //  - نشط + يمين = shop_switch_right_uncheck.webp (نفس المشكلة)
+                //  - غير نشط = نفس الصور
                 const bg = isActive
                   ? (isLeft ? A.switchLeftCheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck)
                   : (isLeft ? A.switchMiddleUncheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck);
@@ -658,9 +717,13 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 <ShelfRow />
               )}
 
-              {/* ══════ شبكة البطاقات (RecyclerView) — 3 أعمدة ══════ */}
+              {/* ══════ شبكة البطاقات (RecyclerView) — 3 أعمدة، RTL ══════
+                  ترتيب بصري من اليمين لليسار تصاعدياً (مطابق لصورة A):
+                  Row 1: 400 (يمين) | 1800 (وسط) | 5000 (يسار)
+                  Row 2: 16.0K (يمين) | 53.7K (وسط) | 161.7K (يسار)
+              */}
               {isVipTab ? (
-                <div className="grid grid-cols-2 gap-2 px-3 py-3">
+                <div className="grid grid-cols-2 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
                   {currentPackages.filter(p => p.enabled).map((pkg) => (
                     <VipPackageCard
                       key={pkg.id}
@@ -671,7 +734,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-3 gap-2 px-3 py-3">
+                <div className="grid grid-cols-3 gap-2 px-3 py-3" style={{ direction: 'rtl' }}>
                   {currentPackages.filter(p => p.enabled).map((pkg) => (
                     <DiamondPackageCard
                       key={pkg.id}
@@ -691,10 +754,12 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                 </>
               )}
 
-              {/* ══════ زر "تفاصيل الماس >>" (shop_item_tail_bg.9.png) ══════ */}
+              {/* ══════ زر "تفاصيل الماس >>" (shop_item_tail_bg.9.png) ══════
+                  هذا الزر في السورس ينقل إلى صفحة تفاصيل المعاملات (go_diamonds_detail)
+                  لم تُبنَ صفحة التفاصيل بعد — الزر ساكن مؤقتاً
+              */}
               <div className="flex justify-center" style={{ marginTop: 8, marginBottom: 12 }}>
                 <button
-                  onClick={() => onRoyalClick?.()}
                   className="relative flex items-center justify-center"
                   style={{
                     width: 191,
@@ -730,9 +795,6 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-400">الحزمة المختارة:</span>
                     <span className="text-xs font-bold text-amber-300">
-                      {selectedPkg.type === 'diamond' && '💎 '}
-                      {selectedPkg.type === 'gold' && '🪙 '}
-                      {selectedPkg.type === 'vip' && '👑 '}
                       {selectedPkg.displayAmount} — {selectedPkg.priceFormat}
                     </span>
                   </div>
@@ -800,7 +862,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                           جاري المعالجة...
                         </>
                       ) : (
-                        <>💳 شحن — {selectedPkg.priceFormat}</>
+                        <>{selectedPkg.priceFormat}</>
                       )}
                     </span>
                   </button>
@@ -821,7 +883,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
         </motion.div>
       </AnimatePresence>
 
-      {/* RoyalDialog — يفتح من زر R0 تحت الصورة أو من زر تفاصيل الماس */}
+      {/* RoyalDialog — يفتح من أيقونة الرويال في أعلى يمين النافذة (rle_entranceView) */}
       <RoyalDialog
         open={royalOpen}
         onClose={() => setRoyalOpen(false)}
@@ -831,10 +893,6 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
       />
     </>
   );
-
-  function onRoyalClick() {
-    setRoyalOpen(true);
-  }
 }
 
 // ════════════════════════════════════════════════════════════════════════════

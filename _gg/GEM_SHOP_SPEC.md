@@ -379,3 +379,146 @@ interface Tab {
 - زر شراء بـ btn_shop.9.png + "USD X.XX" 14sp bold #47790c
 - زر سفلي "تفاصيل الماس >>" بـ shop_item_tail_bg.9.png 13sp #2bc895
 - shelves 3 مرات كـ CSS background-image بين الصفوف
+
+---
+
+## 13) تحديثات RTL والمصادقات الجديدة (مهمة جداً)
+
+### 13-A) تصحيح RTL لكل العناصر
+قراءة XML في سياق RTL (لغة عربية) تعني:
+- `layout_alignParentStart=true` → **RIGHT** (يمين)
+- `layout_alignParentEnd=true` → **LEFT** (يسار)
+- `layout_marginStart` → margin من اليمين
+- `layout_toEndOf=@id/X` → على يسار X
+- `layout_gravity=end` → **LEFT** (يسار)
+
+### 13-B) تصحيحات الموقع النهائية (مطابقة لصورة الأصل A)
+العنصر | الموقع الصحيح (LTR visual)
+---|---
+زر الإغلاق X | **يسار** (مطابق للسورس: `iv_close` alignParentEnd في RTL = يسار) ✓
+كبسولة الماس | **يسار-وسط** (مطابق: `rl_diamonds` with `layout_toEndOf=rl_gold` في RTL = يسار rl_gold) ✓
+كبسولة الذهب | **يمين-وسط** (مطابق: `rl_gold` بدون قيود layout_alignParentStart → يمين في RTL) ✓
+أيقونة الرويال | **أقصى اليمين** (مطابق: `rle_entranceView` alignParentStart في RTL = يمين) ✓ — **وليست صورة اللاعب!**
+شارة R0/R1/.../R5 | أسفل أيقونة الرويال بـ 4px ✓
+
+### 13-C) ترتيب التبويبات الصحيح (LTR visual من يسار ليمين)
+1. **الاشتراكات** (أيقونة تاج) — LEFT
+2. **الماس** (أيقونة ماسة سداسية) — MIDDLE (النشط افتراضياً)
+3. **القطع الذهبية** (أيقونة عملة) — RIGHT
+
+مطابقة للسورس: في `radio_group_switch` LinearLayout، ترتيب XML هو:
+- `fl_switch_gold` (أول) → يمين في RTL
+- `fl_switch_diamond` (ثاني) → وسط
+- `fl_switch_privilege` (ثالث) → يسار في RTL
+
+القراءة LTR: privilege (يسار) | diamond (وسط) | gold (يمين) ✓ مطابق لصورة A
+
+### 13-D) اكتشاف مهم: shop_item_bg.webp يحتوي على الكبسولة الداكنة والتوهج!
+تحليل PIL لـ `shop_item_bg.webp` (367×515px = 107×150dip @ xxhdpi):
+
+| المنطقة | y% | اللون | الوصف |
+|---|---|---|---|
+| الحافة العلوية (إطار) | 0-5% | #3c8fa9 (medium blue-teal) | الإطار العلوي الداكن |
+| **الكبسولة الداكنة (top capsule)** | 5-15% | #3c8fa9 → #4fa4d0 | **الكبسولة الداكنة مدمجة في shop_item_bg!** لا حاجة لإضافتها بشكل منفصل |
+| منطقة التوهج الدائري (icon glow) | 20-30% | #8fedf5 → #78f0f7 (very light cyan-white) | **التوهج الدائري الناعم خلف الأيقونة — مدمج!** |
+| منطقة الأيقونة | 40-60% | #6cebf2 → #4ed5e4 (light cyan) | خلفية الأيقونة الكبيرة |
+| أسفل البطاقة (زر الشراء) | 75-95% | #38cae4 → #12a0c1 (darker blue) | منطقة زر الشراء |
+
+**النتيجة**: `shop_item_bg.webp` مصمم بذكاء — يحوي:
+- ✓ إطار خارجي فاتح (3-5px) بحواف مدورة 10px
+- ✓ كبسولة رقم داكنة في الأعلى (5-15%)
+- ✓ توهج دائري ناعم في الوسط (20-30%)
+- ✓ تدرج لوني عمودي كامل
+- ✓ منطقة أغمق للزر في الأسفل
+
+**القرار**: لا تضف كبسولة منفصلة ولا توهج منفصل. استخدم `shop_item_bg.webp` فقط كخلفية كاملة (object-fit: fill) وضع العناصر فوقها.
+
+### 13-E) تصحيح موقع الشارات (HOT/BEST/Popular)
+السورس `item_diamonds.xml`:
+```xml
+<FrameLayout android:layout_gravity="end" android:id="@id/svg_best" ...>
+<com.yalla.games.common.view.svga.LudoSVGAView android:layout_gravity="end" android:id="@id/svg_hot" ... />
+```
+
+`layout_gravity=end` في RTL = **يسار**. إذاً:
+- شارة HOT → **أعلى يسار البطاقة** ✓ (مطابق لصورة A)
+- شارة BEST → **أعلى يسار البطاقة** ✓ (marginEnd=-3 → تبرز خارج الحافة اليسرى)
+- شارة Popular → **أعلى يسار البطاقة** ✓
+
+**ملاحظة**: الشارات لا تغطي كبسولة الرقم (الكبسولة في المنتصف، الشارات في الزاوية اليسرى العلوية).
+
+### 13-F) لون زر الشراء الصحيح
+- `btn_shop.9.png` avg = **#6ac609** (bright green) ≈ مواصفات #6CC53A ✓
+- ليس ليموني ناصع — الأخضر الفاتح مع إبراز علوي فاتح + حافة سفلية أغمق (3D bevel) مدمجة في 9-patch
+- النص 14sp bold **#47790c** (dark green) مع stroke_color=#94f534 stroke_width=2dip (8-direction text-shadow)
+
+### 13-G) جدول المطابقة (Match Table) — نسخة نهائية بعد التصحيحات
+
+| # | العنصر | الحالة | ملاحظات |
+|---|---|---|---|
+| A | الخلفية | ✅ مطابق | skin_bg.9.png + gradient #3DB57A→#2A8A5C + vignette |
+| B-1 | زر X يسار | ✅ مطابق | skin_close.webp على اليسار |
+| B-2 | كبسولة الماس يسار-وسط | ✅ مطابق | bg_add_coin + diamonds.webp 29×29 |
+| B-3 | كبسولة الذهب يمين-وسط | ✅ مطابق | bg_add_coin + coin.webp 29×29 |
+| B-4 | أيقونة الرويال يمين (لا أفاتار!) | ✅ مطابق | royal_level_N.webp في دائرة بإطار أخضر + R0/R1/.../R5 badge أسفلها |
+| C | التبويبات (Subscriptions\|Diamond\|Gold) | ✅ مطابق | 3 tabs بـ shop_switch_*_check/uncheck.webp كخلفية + icon 16-19dip + 12sp bold |
+| C-divider | خط فاصل فاتح | ✅ مطابق | shop_top_green_line.9.png (9dip) |
+| D | العنوان الأصفر | ✅ مطابق | "مكافأة عند المرة الأولى من الشراء" 17sp #fff771 shadow |
+| E-1 | صندوق الكنز الوردي يسار | ✅ مطابق | chest_firstcharge.webp (72×54dip) |
+| E-2 | فقاعة بيضاء يمين بـ 3×2 grid | ✅ مطابق | bg_firstcharge.png (150×85dip) + 6 أيقونات |
+| E-3 | رف ثلاثي الأبعاد تحت المكافأة | ✅ مطابق | shelves.webp (316×84dip) + 3D bevel |
+| E-tip | نص التنبيه | ✅ مطابق | "يمكنك أن تحصل على المكافآت بعد الشراء بأي كمية" 10sp white |
+| F-1 | رف 1 (تحت المكافأة) | ✅ مطابق | shelves.webp |
+| F-2 | رف 2 (تحت صف الباقات 1) | ✅ مطابق | shelves.webp |
+| F-3 | رف 3 (تحت صف الباقات 2) | ✅ مطابق | shelves.webp |
+| G-1 | شبكة 3×2 | ✅ مطابق | ترتيب من اليمين لليسار تصاعدياً |
+| G-2 | رقم 400/0.99 + شارة HOT | ✅ مطابق | diamonds1.webp + HOT أعلى يسار |
+| G-3 | رقم 1800/3.99 | ✅ مطابق | diamonds2.webp |
+| G-4 | رقم 5000/9.99 | ✅ مطابق | diamonds3.webp |
+| G-5 | رقم 16.0K/29.99 + Popular | ✅ مطابق | diamonds4.webp + Popular أعلى يسار |
+| G-6 | رقم 53.7K/99.99 | ✅ مطابق | diamonds5.webp |
+| G-7 | رقم 161.7K/299.99 + BEST | ✅ مطابق | diamonds6.webp + BEST أعلى يسار |
+| G-8 | إطار خارجي أبيض-سماوي 2-3px | ✅ مطابق | مدمج في shop_item_bg.webp |
+| G-9 | كبسولة الرقم الداكنة | ✅ مطابق | مدمجة في shop_item_bg.webp (المنطقة 5-15%) |
+| G-10 | توهج دائري ناعم خلف الأيقونة | ✅ مطابق | مدمج في shop_item_bg.webp (المنطقة 20-30%) |
+| G-11 | أيقونات مختلفة لكل باقة | ✅ مطابق | diamonds1-6.webp مختلفة |
+| G-12 | الشارات أعلى يسار (لا تغطي الرقم) | ✅ مطابق | label_best.webp / label_popular.webp + HOT مع flame |
+| H | زر الشراء | ✅ مطابق | btn_shop.9.png + "USD X.XX" 14sp bold #47790c + 8-direction stroke |
+| I | زر "تفاصيل الماس >>" سفلي | ✅ مطابق | shop_item_tail_bg.9.png + "تفاصيل الماس >>" 13sp #2bc895 |
+| J | RTL للنصوص العربية | ✅ مطابق | dir="rtl" للعناصر العربية |
+| J-visual | الترتيب البصري للأجزاء | ✅ مطابق | X يساراً، الرويال يميناً، الباقات تصاعدياً من اليمين |
+
+### 13-H) أصول السورس المستخدمة (نهائي)
+| الأصل | المسار | الحالة |
+|---|---|---|
+| skin_bg.9.png | /yalla-ui/full/ | ✓ مستخدم |
+| skin_close.webp | /yalla-ui/full/ | ✓ مستخدم |
+| coin.webp | /yalla-ui/full/ | ✓ مستخدم |
+| diamonds.webp | /yalla-ui/full/ | ✓ مستخدم |
+| jia.webp | /yalla-ui/full/ | ✓ مستخدم |
+| shop_switch_*_check/uncheck.webp (×9) | /yalla-ui/shop/ | ✓ مستخدم |
+| shop_top_green_line.9.png | /yalla-ui/shop/ | ✓ مستخدم |
+| shelves.webp | /yalla-ui/full/ | ✓ مستخدم |
+| shop_item_bg.webp | /yalla-ui/shop/ | ✓ مستخدم |
+| btn_shop.9.png | /yalla-ui/shop/ | ✓ مستخدم |
+| label_best.webp | /yalla-ui/full/ | ✓ مستخدم |
+| label_popular.webp | /yalla-ui/full/ | ✓ مستخدم |
+| chest_firstcharge.webp | /yalla-ui/full/ | ✓ مستخدم |
+| bg_firstcharge.png | /yalla-ui/shop/ | ✓ مستخدم |
+| recharge_room_gift.webp | /yalla-ui/full/ | ✓ مستخدم |
+| charge_reward_profile_card.webp | /yalla-ui/full/ | ✓ مستخدم |
+| charge_reward_head_decor.webp | /yalla-ui/full/ | ✓ مستخدم |
+| charge_reward_head_frame.webp | /yalla-ui/full/ | ✓ مستخدم |
+| fast_pay_first_reward_tip_ic.webp | /yalla-ui/full/ | ✓ مستخدم |
+| diamonds1-6.webp | /yalla-ui/full/ | ✓ مستخدم (كل بطاقة بأيقونة مختلفة) |
+| royal_level_0-5.webp | /yalla-ui/royal/ | ✓ مستخدم (لشارة R0/R1/.../R5 تحت أيقونة الرويال) |
+| shop_item_tail_bg.9.png | /yalla-ui/shop/ | ✓ مستخدم |
+| room_icon_member_small_flame.webp | /yalla-ui/full/ | ✓ مستخدم (لشارة HOT) |
+
+**بدائل موثّقة (لا أصل لها)**:
+| العنصر | البديل | السبب |
+|---|---|---|
+| svg_hot SVGA animation | CSS pulse + flame icon | ملف SVGA غير متوفر في /assets/ |
+| svg_best SVGA shimmer | label_best.webp (صورة ساكنة) | ملف SVGA غير متوفر في /assets/ |
+| svg_stars SVGA sparkle | CSS shimmer (اختياري) | ملف SVGA غير متوفر في /assets/ |
+| twinkle_point SVGA | CSS twinkle (اختياري) | ملف SVGA غير متوفر في /assets/ |

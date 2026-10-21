@@ -271,7 +271,6 @@ export default function SiteHeader({
         initialTab={chargeTab}
         gems={gems}
         gold={gold}
-        avatarUrl={authUser?.avatar}
         royalLevel={royalLevel}
       />
     </>
