@@ -76,6 +76,7 @@ export default function SiteHeader({
   const [chargeTab, setChargeTab] = useState<'diamond' | 'gold' | 'vip'>('diamond');
   const [gems, setGems] = useState<number | null>(null);
   const [gold, setGold] = useState<number | null>(null);
+  const [royalLevel, setRoyalLevel] = useState<number>(0);
 
   // تهيئة الصوت + تشغيل الموسيقى عند أول تفاعل (يعمل من أول فتح للموقع، ليس فقط في الألعاب)
   useEffect(() => {
@@ -115,12 +116,25 @@ export default function SiteHeader({
     return () => { cancelled = true; };
   }, [authUser]);
 
+  // جلب مستوى رويال الحالي (لعرض شارة R0/R1/.../R5 تحت الصورة في نافذة الشحن)
+  useEffect(() => {
+    if (!authUser) return;
+    let cancelled = false;
+    Promise.resolve()
+      .then(() => fetch('/api/royal/state'))
+      .then(r => r?.json?.())
+      .then(d => { if (!cancelled && d?.success) setRoyalLevel(d.level); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [authUser]);
+
   // إعادة جلب الرصيد والإطار عند عودة التركيز/الرؤية (بعد شراء أو تجهيز إطار)
   useEffect(() => {
     if (!authUser) return;
     const refresh = () => {
       fetch('/api/gems/balance').then(r => r.json()).then(d => { if (d.success) setGems(d.balance); }).catch(() => {});
       fetch('/api/gold/balance').then(r => r.json()).then(d => { if (d.success) setGold(d.balance); }).catch(() => {});
+      fetch('/api/royal/state').then(r => r.json()).then(d => { if (d?.success) setRoyalLevel(d.level); }).catch(() => {});
       fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.success && d.user) setFetchedUser(d.user); }).catch(() => {});
     };
     window.addEventListener('focus', refresh);
@@ -257,6 +271,8 @@ export default function SiteHeader({
         initialTab={chargeTab}
         gems={gems}
         gold={gold}
+        avatarUrl={authUser?.avatar}
+        royalLevel={royalLevel}
       />
     </>
   );

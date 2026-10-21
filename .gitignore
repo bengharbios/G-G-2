@@ -39,3 +39,16 @@ _gg/android/ggames-release.keystore
 _gg/android/keystore-base64.txt
 _gg/android/app/release.keystore
 
+
+# ── Build artifacts ──
+.next/
+.next
+_gg/.next/
+_gg/.next
+_gg/.tsbuildinfo
+*.tsbuildinfo
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+

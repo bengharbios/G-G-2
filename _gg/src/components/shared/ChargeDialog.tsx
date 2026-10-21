@@ -2,48 +2,73 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Crown, Sparkles } from 'lucide-react';
+import { Loader2, Crown, Sparkles, X } from 'lucide-react';
 import RoyalDialog from './RoyalDialog';
 
 // ════════════════════════════════════════════════════════════════════════════
-// ChargeDialog — نسخة طبق الأصل 100% من Yalla Ludo `fragment_shop.xml`
-// ─ RelativeLayout container (360dip wide, full_height, bg=skin_bg.9.png)
-// ─ Top bar (NO bg_rank title — fragment_shop doesn't have one):
-//   • Top-left: RoyalEntranceView (rle_entranceView) — opens RoyalDialog
-//   • Top-left (marginStart=50): RoyalCouponEnterView (iv_coupon) — coupon entry
-//   • Center (rl_money_title): rl_gold + rl_diamonds balance chips
-//   • Top-right: iv_close (skin_close.webp with padding 15/10/10/10)
-// ─ Tabs row (344x45dip, marginTop=10):
-//   • 3 FrameLayouts (gold / diamond / privilege) — each weight=1
-//     - bg=shop_switch_left_check / shop_switch_middle_uncheck / shop_switch_right_uncheck
-//     - inside: icon (16-19dip shop_switch_*_check/uncheck) + label (12sp bold)
-// ─ Content (vp_goods): view_shop_diamonds / view_shop_golds / fragment_buy_vip
+// ChargeDialog — نسخة طبق الأصل 100% من Yalla Ludo
+// المصدر: fragment_shop.xml + view_shop_diamonds.xml + item_diamonds.xml + item_shop_guild.xml
+// مطابق لـ GEM_SHOP_SPEC.md
+//
+// البنية:
+// 1. full-screen container (skin_bg.9.png + vignette) — لا إطار خارجي
+// 2. Top bar: X (يسار) + رصيد ماس + رصيد ذهب (centered) + صورة لاعب (يمين) + R0 badge
+// 3. 3 tabs: gold / diamond / vip (shop_switch_*_check/uncheck.webp)
+// 4. shop_top_green_line.9.png divider
+// 5. First-charge reward area (item_shop_guild.xml):
+//    - title (yellow #fff771, 17sp)
+//    - shelves.webp background (316×84dip, 3D beveled)
+//    - chest_firstcharge.webp (يسار)
+//    - bg_firstcharge.png bubble (يمين) مع 3×2 grid داخلها
+//    - reward_tip (white 10sp)
+// 6. Packages grid 3×2 (item_diamonds.xml) — 6 بطاقات بأيقونات diamonds1-6.webp
+// 7. shop_item_tail_bg.9.png زر "تفاصيل الماس >>"
+// 8. shelves 3 مرات كـ CSS background بين الصفوف
 // ════════════════════════════════════════════════════════════════════════════
 
 interface Package {
   id: string;
   type: 'diamond' | 'gold' | 'vip' | 'royal';
   amount: number;
+  displayAmount: string;
   bonus: number;
   price: number;
-  originalPrice?: number;
-  discountPercent?: number;
+  priceFormat: string;
   label: string;
-  labelEn: string;
-  icon: string;
   iconBg: string;
-  badge?: 'hot' | 'popular' | 'best' | 'new' | 'limited';
+  badge: 'none' | 'hot' | 'best' | 'popular';
+  order: number;
+  enabled: boolean;
   royalPoints: number;
   xpReward: number;
   days?: number;
-  validityDays?: number;
+}
+
+interface FirstChargeRewardItem {
+  id: string;
+  icon: string;
+  amount: string;
+  order: number;
 }
 
 interface FirstChargeReward {
-  gold: number;
-  diamonds: number;
-  gifts: { icon: string; name: string; amount: string }[];
-  text: string;
+  title: string;
+  tip: string;
+  items: FirstChargeRewardItem[];
+}
+
+interface Tab {
+  key: 'gold' | 'diamond' | 'vip';
+  label: string;
+  iconCheck: string;
+  iconUncheck: string;
+  bgCheck: string;
+  bgUncheck: string;
+  iconW: number;
+  iconH: number;
+  marginTop: number;
+  order: number;
+  visible: boolean;
 }
 
 interface ChargeDialogProps {
@@ -52,70 +77,168 @@ interface ChargeDialogProps {
   initialTab?: 'diamond' | 'gold' | 'vip';
   gems: number | null;
   gold: number | null;
+  avatarUrl?: string;
+  royalLevel?: number;
 }
 
-// ─── أصول Yalla Ludo الأصلية (المسارات مطابقة لـ /yalla-ui/shop/) ───
+// ─── أصول Yalla Ludo الأصلية (المسارات مطابقة لـ GEM_SHOP_SPEC.md) ───
 const A = {
-  // خلفية الحاوية
-  skinBg:           '/yalla-ui/shop/skin_bg.9.png',
-  skinClose:         '/yalla-ui/shop/skin_close.webp',
-  descriptionRule:   '/yalla-ui/shop/description_rule.webp',
+  // الخلفيات
+  skinBg:            '/yalla-ui/full/skin_bg.9.png',           // #197458 dark green
+  shopTopGreenLine:  '/yalla-ui/shop/shop_top_green_line.9.png',
+  shelves:           '/yalla-ui/full/shelves.webp',            // #3eceaa bright teal-green
+  // الأزرار
+  skinClose:         '/yalla-ui/full/skin_close.webp',
   // أيقونات الأرصدة
-  coin:              '/yalla-ui/shop/coin.webp',         // 29x29dip
-  diamonds:          '/yalla-ui/shop/diamonds.webp',     // 29x29dip
-  jia:               '/yalla-ui/shop/jia.webp',           // plus button
-  // خلفية شريط الرقم
-  bgAddCoin:         '#0c3c30',                            // solid color + 10dip radius (shape drawable)
-  // خلفيات الألسنة (tab backgrounds)
+  coin:              '/yalla-ui/full/coin.webp',               // 29×29dip
+  diamonds:          '/yalla-ui/full/diamonds.webp',            // 29×29dip
+  jia:               '/yalla-ui/full/jia.webp',
+  // كبسولة الرصيد (bg_add_coin shape)
+  bgAddCoin:         '#0c3c30',                                  // solid dark green + radius 10dip
+  // ألسنة (tab backgrounds)
   switchLeftCheck:    '/yalla-ui/shop/shop_switch_left_check.webp',
   switchMiddleUncheck:'/yalla-ui/shop/shop_switch_middle_uncheck.webp',
   switchRightUncheck: '/yalla-ui/shop/shop_switch_right_uncheck.webp',
-  // أيقونات الألسنة الصغيرة (16-19dip)
   switchGoldCheck:     '/yalla-ui/shop/shop_switch_gold_check.webp',
   switchGoldUncheck:   '/yalla-ui/shop/shop_switch_gold_uncheck.webp',
   switchDiamondCheck:  '/yalla-ui/shop/shop_switch_diamond_check.webp',
   switchDiamondUncheck:'/yalla-ui/shop/shop_switch_diamond_uncheck.webp',
   switchPrivilegeCheck:  '/yalla-ui/shop/shop_switch_privilege_check.webp',
   switchPrivilegeUncheck:'/yalla-ui/shop/shop_switch_privilege_uncheck.webp',
-  // الفواصل
-  shopTopGreenLine: '/yalla-ui/shop/shop_top_green_line.9.png',     // 9dip height
-  shopItemTailBg:   '/yalla-ui/shop/shop_item_tail_bg.9.png',       // 191x25dip detail button
-  // عناصر حزم الجواهر/الذهب
-  shopItemBg:        '/yalla-ui/shop/shop_item_bg.webp',            // 107x150dip card bg
-  btnShop:           '/yalla-ui/shop/btn_shop.9.png',               // 90x32dip buy button
-  btnShopFree:       '/yalla-ui/shop/btn_shop_free.9.png',         // free variant
-  labelBest:         '/yalla-ui/shop/label_best.webp',             // 60x21dip badge
-  labelPopular:      '/yalla-ui/shop/label_popular.webp',           // 60x21dip badge
-  diamonds1:         '/yalla-ui/shop/diamonds1.webp',              // 88x88dip large image
-  coin1:             '/yalla-ui/shop/coin1.webp',                  // 88x88dip large gold image
-  // عناصر حزم VIP
-  cartVipBuyItemBg:  '/yalla-ui/shop/cart_vip_buy_item_bg.webp',    // 157.5x195.45dip
-  btnYes:            '/yalla-ui/shop/btn_yes.9.png',                // 110x40dip buy button (bn_yes)
-  btnYesPress:       '/yalla-ui/shop/btn_yes_press.9.png',
-  privilegeKnight:  '/yalla-ui/shop/privilege_detail_knight_ic.webp', // 59x72dip (iv_days)
-  privilegeBaron:   '/yalla-ui/shop/privilege_detail_baron_ic.webp',
-  // Royal entrance
-  royalLevelValueIc: '/yalla-ui/royal/royal_level_value_ic.webp',
-  royal5ThroneIc:    '/yalla-ui/royal/royal_5_throne_ic.webp',
-  // أول شحن
-  bgFirstcharge:     '/yalla-ui/shop/bg_firstcharge.png',           // 296x162
-  fastPayFirstRewardTipIc: '/yalla-ui/shop/fast_pay_first_reward_tip_ic.webp',
+  // بطاقة الماس
+  shopItemBg:        '/yalla-ui/full/shop_item_bg.webp',       // #5acce0 light cyan
+  btnShop:           '/yalla-ui/shop/btn_shop.9.png',          // #6ecd0a bright green
+  labelBest:         '/yalla-ui/full/label_best.webp',          // #de374d red ribbon
+  labelPopular:      '/yalla-ui/full/label_popular.webp',        // #e96adf pink-magenta
+  // أيقونات الماس الكبيرة 88×88dip (مختلفة لكل حزمة!)
+  diamonds1: '/yalla-ui/full/diamonds1.webp',
+  diamonds2: '/yalla-ui/full/diamonds2.webp',
+  diamonds3: '/yalla-ui/full/diamonds3.webp',
+  diamonds4: '/yalla-ui/full/diamonds4.webp',
+  diamonds5: '/yalla-ui/full/diamonds5.webp',
+  diamonds6: '/yalla-ui/full/diamonds6.webp',
+  // أيقونات الذهب الكبيرة
+  coin1: '/yalla-ui/full/coin1.webp',
+  coin2: '/yalla-ui/full/coin2.webp',
+  coin3: '/yalla-ui/full/coin3.webp',
+  coin4: '/yalla-ui/full/coin4.webp',
+  coin5: '/yalla-ui/full/coin5.webp',
+  coin6: '/yalla-ui/full/coin6.webp',
+  // مكافأة أول شحن
+  chestFirstcharge:        '/yalla-ui/full/chest_firstcharge.webp',
+  bgFirstcharge:           '/yalla-ui/full/bg_firstcharge.png',
+  rechargeRoomGift:        '/yalla-ui/full/recharge_room_gift.webp',
+  chargeRewardProfileCard: '/yalla-ui/full/charge_reward_profile_card.webp',
+  chargeRewardHeadDecor:   '/yalla-ui/full/charge_reward_head_decor.webp',
+  chargeRewardHeadFrame:   '/yalla-ui/full/charge_reward_head_frame.webp',
+  fastPayFirstRewardTipIc: '/yalla-ui/full/fast_pay_first_reward_tip_ic.webp',
+  // VIP
+  privilegeKnight:         '/yalla-ui/full/privilege_detail_knight_ic.webp',
+  privilegeBaron:          '/yalla-ui/full/privilege_detail_baron_ic.webp',
+  royal5Throne:            '/yalla-ui/royal/royal_5_throne_ic.webp',
+  btnYes:                  '/yalla-ui/shop/btn_yes.9.png',
+  cartVipBuyItemBg:        '/yalla-ui/shop/cart_vip_buy_item_bg.webp',
+  // Royal
+  royalLevelValueIc:       '/yalla-ui/royal/royal_level_value_ic.webp',
+  royalLevel0:             '/yalla-ui/royal/royal_level_0.webp',
+  royalLevel1:             '/yalla-ui/royal/royal_level_1.webp',
+  royalLevel2:             '/yalla-ui/royal/royal_level_2.webp',
+  royalLevel3:             '/yalla-ui/royal/royal_level_3.webp',
+  royalLevel4:             '/yalla-ui/royal/royal_level_4.webp',
+  royalLevel5:             '/yalla-ui/royal/royal_level_5.webp',
+  // زر تفاصيل الماس
+  shopItemTailBg:    '/yalla-ui/shop/shop_item_tail_bg.9.png',
+  // صوت
+  defaultAvatar:     '/yalla-ui/avatar_default.png',
 };
 
-// 3 ألسنة فقط (مطابقة لـ fragment_shop.xml) — لا رويال في الألسنة
-const TABS = [
-  { key: 'gold' as const,        label: 'ذهب',      iconCheck: A.switchGoldCheck,      iconUncheck: A.switchGoldUncheck,      bgCheck: A.switchLeftCheck,    bgUncheck: A.switchMiddleUncheck, iconW: 16, iconH: 17, marginTop: 2 },
-  { key: 'diamond' as const,    label: 'ألماس',    iconCheck: A.switchDiamondCheck,   iconUncheck: A.switchDiamondUncheck,   bgCheck: A.switchMiddleUncheck, bgUncheck: A.switchMiddleUncheck, iconW: 16, iconH: 19, marginTop: 1 },
-  { key: 'vip' as const,        label: 'اشتراكات', iconCheck: A.switchPrivilegeCheck,  iconUncheck: A.switchPrivilegeUncheck, bgCheck: A.switchRightUncheck,  bgUncheck: A.switchRightUncheck,  iconW: 18.5, iconH: 16, marginTop: 3 },
-];
+const ROYAL_LEVEL_ICONS = [A.royalLevel0, A.royalLevel1, A.royalLevel2, A.royalLevel3, A.royalLevel4, A.royalLevel5];
 
-function formatAmount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-  return n.toString();
+// خريطة pkg.id → أيقونة كبيرة (مطابقة لترتيب item_diamonds.xml)
+const DIAMOND_ICONS: Record<string, string> = {
+  dia_1: A.diamonds1, dia_2: A.diamonds2, dia_3: A.diamonds3,
+  dia_4: A.diamonds4, dia_5: A.diamonds5, dia_6: A.diamonds6,
+  gold_1: A.coin1, gold_2: A.coin2, gold_3: A.coin3,
+  gold_4: A.coin4, gold_5: A.coin5, gold_6: A.coin6,
+};
+
+// ════════════════════════════════════════════════════════════════════════════
+// الشارات (HOT/BEST/Popular) — أعلى يمين (طبقاً لـ item_diamonds.xml layout_gravity=end)
+// ════════════════════════════════════════════════════════════════════════════
+function renderBadge(badge: Package['badge']): React.ReactNode {
+  if (badge === 'none') return null;
+  if (badge === 'best') {
+    return (
+      <img
+        src={A.labelBest}
+        alt="BEST"
+        className="absolute"
+        style={{
+          top: 2,
+          right: -3,            // marginEnd=-3
+          width: 60,             // 60×21dip
+          height: 21,
+          objectFit: 'contain',
+          zIndex: 10,
+          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))',
+        }}
+      />
+    );
+  }
+  if (badge === 'popular') {
+    return (
+      <img
+        src={A.labelPopular}
+        alt="POPULAR"
+        className="absolute"
+        style={{
+          top: 2,
+          right: -3,
+          width: 60,
+          height: 21,
+          objectFit: 'contain',
+          zIndex: 10,
+          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))',
+        }}
+      />
+    );
+  }
+  if (badge === 'hot') {
+    // HOT: شارة دائرية برتقالية-حمراء بشعلة
+    // بديل موثّق (SVG_hot غير متوفر) — استخدم label_best كـ red badge + flame icon فوقها
+    return (
+      <div
+        className="absolute flex items-center justify-center"
+        style={{
+          top: -2,
+          right: -8,            // marginTop=-2, marginEnd=-8 من item_diamonds.xml L28
+          width: 35,             // 35×35dip
+          height: 35,
+          zIndex: 10,
+        }}
+      >
+        {/* دائرة برتقالية-حمراء */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: 'radial-gradient(circle, #ff6b35 0%, #de374d 70%, #b02030 100%)',
+            boxShadow: '0 2px 6px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.3)',
+          }}
+        />
+        {/* شعلة */}
+        <img
+          src="/yalla-ui/full/room_icon_member_small_flame.webp"
+          alt="HOT"
+          className="relative"
+          style={{ width: 18, height: 22, objectFit: 'contain' }}
+        />
+      </div>
+    );
+  }
+  return null;
 }
 
-export default function ChargeDialog({ open, onClose, initialTab = 'diamond', gems, gold }: ChargeDialogProps) {
+export default function ChargeDialog({ open, onClose, initialTab = 'diamond', gems, gold, avatarUrl, royalLevel = 0 }: ChargeDialogProps) {
   const [activeTab, setActiveTab] = useState<'gold' | 'diamond' | 'vip'>(initialTab);
   const [packages, setPackages] = useState<{
     diamonds: Package[];
@@ -123,6 +246,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
     vip: Package[];
     royal: Package[];
     firstChargeReward: FirstChargeReward;
+    tabs: Tab[];
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<Package | null>(null);
@@ -143,6 +267,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               vip: data.vip,
               royal: data.royal,
               firstChargeReward: data.firstChargeReward,
+              tabs: data.tabs,
             });
           }
         })
@@ -196,6 +321,10 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
 
   if (!open) return null;
 
+  const tabs = packages?.tabs || [];
+  const fcr = packages?.firstChargeReward;
+  const isVipTab = activeTab === 'vip';
+
   return (
     <>
       <AnimatePresence>
@@ -207,132 +336,149 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
           style={{ background: 'rgba(0,0,0,.88)', backdropFilter: 'blur(5px)' }}
           onClick={onClose}
         >
-          {/* ══════ rl_container — RelativeLayout 360dip wide, full height, bg=skin_bg ══════ */}
+          {/* ══════ الحاوية الكاملة (rl_container) — 360dip wide, full_height, bg=skin_bg ══════ */}
           <motion.div
             initial={{ scale: 0.92, y: 24 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.92, y: 24 }}
             transition={{ type: 'spring', damping: 22 }}
-            className="relative flex flex-col overflow-hidden"
+            className="relative overflow-hidden flex flex-col"
             style={{
-              width: 'min(96vw, 360px)',
-              height: 'min(92vh, 640px)',
-              background: '#0a2e1f',
-              boxShadow: '0 20px 60px rgba(0,0,0,.6)',
-              borderRadius: '12px',
+              width: 'min(100vw, 360px)',
+              height: 'min(100vh, 800px)',
+              background: 'linear-gradient(180deg, #3DB57A 0%, #2A8A5C 100%)',  // خلفية متدرجة حسب المواصفات
+              boxShadow: '0 0 40px rgba(0,0,0,.4)',
+              borderRadius: '0',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* skin_bg.9.png — خلفية الحاوية الكاملة */}
+            {/* skin_bg.9.png — طبقة خلفية حقيقية */}
             <img
               src={A.skinBg}
               alt=""
-              className="absolute inset-0 w-full h-full object-fill"
-              style={{ opacity: 0.95, zIndex: 0 }}
+              className="absolute inset-0 w-full h-full"
+              style={{ objectFit: 'fill', opacity: 0.85, mixBlendMode: 'multiply' }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
-
-            {/* ══════ الصف العلوي: rle_entranceView + iv_coupon + rl_money_title + iv_close ══════ */}
-            {/* rle_entranceView — RoyalEntranceView (top-left, marginStart=5, marginTop=3) */}
-            <button
-              onClick={() => setRoyalOpen(true)}
-              className="absolute z-20 flex items-center justify-center"
-              style={{ top: 3, left: 5, width: 38, height: 40 }}
-              aria-label="مستوى رويال"
-              title="مستوى رويال"
-            >
-              <img
-                src={A.royalLevelValueIc}
-                alt="royal"
-                className="w-[24px] h-[24px] object-contain"
-                style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.4))' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.5'; }}
-              />
-            </button>
-
-            {/* iv_coupon — RoyalCouponEnterView (top-left, marginStart=50, marginTop=3) — placeholder */}
+            {/* Vignette — تعتيم الأطراف */}
             <div
-              className="absolute z-20"
-              style={{ top: 3, left: 50, width: 38, height: 40 }}
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,.25) 100%)',
+              }}
             />
 
-            {/* rl_money_title — مركز علوي (gold + diamonds balances) */}
-            <div className="relative z-10 flex items-center justify-center" style={{ paddingTop: 8 }}>
-              {/* rl_gold */}
-              <div className="relative flex items-center" style={{ marginRight: 10 }}>
-                {/* coin ImageView 29x29dip alignParentStart */}
-                <img src={A.coin} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
-                {/* tv_gold_num: 75x20dip, bg=bg_add_coin (solid #0c3c30 + radius 10), paddingStart=17, paddingEnd=4, marginStart=10 */}
-                <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: 75,
-                    height: 20,
-                    background: A.bgAddCoin,
-                    borderRadius: 10,
-                    marginLeft: -10,
-                    paddingLeft: 17,
-                    paddingRight: 4,
-                    color: '#fff',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    lineHeight: '20px',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {gold ?? '0'}
+            {/* ══════ الشريط العلوي (top bar) ══════ */}
+            <div className="relative z-20 flex items-center px-3 pt-3 pb-2" style={{ minHeight: 56 }}>
+              {/* زر الإغلاق X — أقصى اليسار (مطابق لـ image 2) */}
+              <button
+                onClick={onClose}
+                className="flex items-center justify-center"
+                style={{ width: 32, height: 32, borderRadius: '50%' }}
+                aria-label="إغلاق"
+              >
+                <img src={A.skinClose} alt="إغلاق" style={{ width: 24, height: 24, objectFit: 'contain' }} />
+              </button>
+
+              {/* كبسولة الماس + كبسولة الذهب — مركز */}
+              <div className="flex-1 flex items-center justify-center gap-2">
+                {/* كبسولة الماس (rl_diamonds) — bg_add_coin #0c3c30 + diamonds.webp 29×29dip على اليسار */}
+                <div className="relative flex items-center" style={{ marginRight: 8 }}>
+                  <img src={A.diamonds} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
+                  <div
+                    className="flex items-center justify-center"
+                    style={{
+                      width: 75,
+                      height: 20,
+                      background: A.bgAddCoin,
+                      borderRadius: 10,
+                      marginLeft: -10,
+                      paddingLeft: 17,
+                      paddingRight: 4,
+                      color: '#fff',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      lineHeight: '20px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      textShadow: '0 1px 2px rgba(0,0,0,.6)',
+                    }}
+                  >
+                    {gems ?? '0'}
+                  </div>
                 </div>
-                {/* jia — زر الإضافة */}
-                <img src={A.jia} alt="" style={{ width: 14, height: 14, marginLeft: -4, objectFit: 'contain' }} />
+
+                {/* كبسولة الذهب (rl_gold) — نفس البنية */}
+                <div className="relative flex items-center">
+                  <img src={A.coin} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
+                  <div
+                    className="flex items-center justify-center"
+                    style={{
+                      width: 75,
+                      height: 20,
+                      background: A.bgAddCoin,
+                      borderRadius: 10,
+                      marginLeft: -10,
+                      paddingLeft: 17,
+                      paddingRight: 4,
+                      color: '#fff',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      lineHeight: '20px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      textShadow: '0 1px 2px rgba(0,0,0,.6)',
+                    }}
+                  >
+                    {gold ?? '0'}
+                  </div>
+                </div>
               </div>
-              {/* rl_diamonds */}
-              <div className="relative flex items-center" style={{ marginRight: 10 }}>
-                <img src={A.diamonds} alt="" className="z-10" style={{ width: 29, height: 29, objectFit: 'contain' }} />
-                <div
-                  className="flex items-center justify-center"
+
+              {/* صورة اللاعب الدائرية — أقصى اليمين + شارة R0 أسفلها */}
+              <div className="relative">
+                <img
+                  src={avatarUrl || A.defaultAvatar}
+                  alt="avatar"
                   style={{
-                    width: 75,
-                    height: 20,
-                    background: A.bgAddCoin,
-                    borderRadius: 10,
-                    marginLeft: -10,
-                    paddingLeft: 17,
-                    paddingRight: 4,
-                    color: '#fff',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    lineHeight: '20px',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '2px solid #3DB57A',
+                    boxShadow: '0 0 0 1px rgba(255,255,255,.2)',
                   }}
-                >
-                  {gems ?? '0'}
-                </div>
-                <img src={A.jia} alt="" style={{ width: 14, height: 14, marginLeft: -4, objectFit: 'contain' }} />
+                />
+                {/* شارة مستوى رويال R0 تحت الصورة */}
+                {royalLevel >= 0 && royalLevel <= 5 && (
+                  <img
+                    src={ROYAL_LEVEL_ICONS[royalLevel]}
+                    alt={`R${royalLevel}`}
+                    className="absolute"
+                    style={{
+                      bottom: -8,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: 24,
+                      height: 24,
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.5))',
+                    }}
+                  />
+                )}
               </div>
             </div>
 
-            {/* iv_close — top-right with padding 15/10/10/10 (paddingStart=15, paddingEnd=10) */}
-            <button
-              onClick={onClose}
-              className="absolute z-30 flex items-center justify-center"
-              style={{ top: 0, right: 0, padding: '10px 10px 10px 15px' }}
-              aria-label="إغلاق"
-            >
-              <img src={A.skinClose} alt="إغلاق" style={{ width: 24, height: 24, objectFit: 'contain' }} />
-            </button>
-
-            {/* ══════ radio_group_switch — 344x45dip, marginTop=10, below=rl_money_title ══════ */}
-            <div className="relative z-10 flex" style={{ marginTop: 10, marginHorizontal: 8, height: 45 }}>
-              {TABS.map((tab, idx) => {
+            {/* ══════ الألسنة (radio_group_switch) — 3 ألسنة فقط (NOT 4) ══════ */}
+            <div className="relative z-10 flex px-2" style={{ height: 45 }}>
+              {tabs.map((tab, idx) => {
                 const isActive = activeTab === tab.key;
+                // من اليسار لليمين: gold (left), diamond (middle), privilege (right)
                 const isLeft = idx === 0;
                 const isMiddle = idx === 1;
-                const isRight = idx === TABS.length - 1;
-                // background: نشط → shop_switch_left_check (أو middle/right للوسط واليمين — لكن السورس يستخدم فقط *_check للنشط)
+                const isRight = idx === tabs.length - 1;
                 const bg = isActive
                   ? (isLeft ? A.switchLeftCheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck)
                   : (isLeft ? A.switchMiddleUncheck : isMiddle ? A.switchMiddleUncheck : A.switchRightUncheck);
@@ -345,15 +491,13 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     className="relative flex-1 flex flex-col items-center justify-center"
                     style={{ paddingBottom: 3, overflow: 'visible' }}
                   >
-                    {/* خلفية اللِّسان كصورة حقيقية */}
                     <img
                       src={bg}
                       alt=""
                       className="absolute inset-0 w-full h-full"
-                      style={{ objectFit: 'fill', opacity: 1 }}
+                      style={{ objectFit: 'fill' }}
                       onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
                     />
-                    {/* المحتوى: icon + label */}
                     <img
                       src={icon}
                       alt=""
@@ -377,90 +521,188 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
               })}
             </div>
 
-            {/* ══════ vp_goods — content area (below=radio_group_switch, marginTop=7) ══════ */}
-            <div className="relative z-10 flex-1 overflow-y-auto" style={{ marginTop: 7 }}>
-              {/* view_line — shop_top_green_line.9.png (9dip height) */}
-              <div className="relative" style={{ height: 9 }}>
-                <img
-                  src={A.shopTopGreenLine}
-                  alt=""
-                  className="w-full h-full"
-                  style={{ objectFit: 'fill' }}
-                  onError={(e) => {
-                    const el = e.target as HTMLImageElement;
-                    el.style.display = 'none';
-                    el.parentElement!.style.background = 'linear-gradient(90deg, transparent 0%, #2bc895 50%, transparent 100%)';
-                  }}
-                />
-              </div>
+            {/* ══════ shop_top_green_line.9.png (الخط الفاصل) ══════ */}
+            <div className="relative z-10" style={{ height: 9 }}>
+              <img
+                src={A.shopTopGreenLine}
+                alt=""
+                className="w-full h-full"
+                style={{ objectFit: 'fill' }}
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  el.style.display = 'none';
+                  el.parentElement!.style.background = 'linear-gradient(90deg, transparent 0%, #2bc895 50%, transparent 100%)';
+                }}
+              />
+            </div>
 
-              {/* RecyclerView — grid of package items (paddingStart=9, paddingEnd=9) */}
-              <div className="px-2 pb-2 pt-2">
-                {/* بانر أول شحن (اختياري — يظهر فوق الحزم) */}
-                {packages?.firstChargeReward && (
-                  <div className="relative mb-2 rounded-xl overflow-hidden">
+            {/* ══════ منطقة المحتوى (vp_goods) — قابلة للتمرير ══════ */}
+            <div className="relative z-10 flex-1 overflow-y-auto">
+              {/* ══════ منطقة مكافأة أول شحن (item_shop_guild.xml) ══════ */}
+              {fcr && activeTab !== 'vip' && (
+                <div className="relative px-2 pt-4 pb-2">
+                  {/* العنوان: "مكافأة عند المرة الأولى من الشراء" (yellow #fff771 17sp) */}
+                  <div className="text-center" style={{ marginBottom: 4 }}>
+                    <span
+                      style={{
+                        color: '#fff771',
+                        fontSize: 17,
+                        fontWeight: 700,
+                        textShadow: '0 6px 1px rgba(0,0,0,.5)',
+                      }}
+                    >
+                      {fcr.title}
+                    </span>
+                  </div>
+
+                  {/* الـ shelves + chest + bubble */}
+                  <div className="relative" style={{ height: 95 }}>
+                    {/* shelves.webp كخلفية (316×84dip) */}
                     <img
-                      src={A.bgFirstcharge}
+                      src={A.shelves}
                       alt=""
-                      className="absolute inset-0 w-full h-full"
-                      style={{ objectFit: 'fill', opacity: 0.95 }}
+                      className="absolute"
+                      style={{
+                        top: 11,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '100%',
+                        maxWidth: 316,
+                        height: 84,
+                        objectFit: 'fill',
+                        opacity: 0.95,
+                      }}
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                     />
-                    <div className="relative p-2.5">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <img src={A.fastPayFirstRewardTipIc} alt="" className="w-5 h-6 object-contain" />
-                        <span className="text-xs font-bold text-amber-300" style={{ textShadow: '0 1px 2px rgba(0,0,0,.6)' }}>مكافأة أول شحن</span>
-                        <Sparkles className="w-3 h-3 text-amber-400" />
-                      </div>
-                      <div className="grid grid-cols-6 gap-1">
-                        {packages.firstChargeReward.gifts.map((gift, i) => (
-                          <div key={i} className="flex flex-col items-center">
-                            <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center"
-                              style={{ background: 'rgba(0,0,0,.3)', border: '1px solid rgba(255,255,255,.15)' }}
-                            >
-                              <span className="text-base">{gift.icon}</span>
+
+                    {/* محتوى الـ shelves: chest يسار + bubble يمين */}
+                    <div
+                      className="absolute flex items-end justify-center"
+                      style={{ top: 11, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: 316, height: 84, gap: 0 }}
+                    >
+                      {/* صندوق الكنز (chest_firstcharge 72×54dip) — يسار (alignBottom) */}
+                      <img
+                        src={A.chestFirstcharge}
+                        alt="chest"
+                        style={{
+                          width: 72,
+                          height: 54,
+                          objectFit: 'contain',
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.4))',
+                          flexShrink: 0,
+                        }}
+                      />
+
+                      {/* الفقاعة البيضاء (bg_firstcharge 150×85dip) — يمين مع 3×2 grid داخلها */}
+                      <div
+                        className="relative"
+                        style={{
+                          width: 150,
+                          height: 85,
+                          backgroundImage: `url(${A.bgFirstcharge})`,
+                          backgroundSize: '100% 100%',
+                          backgroundRepeat: 'no-repeat',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {/* 3×2 grid داخل الفقاعة */}
+                        <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-0" style={{ padding: '6px 4px' }}>
+                          {fcr.items.map((item) => (
+                            <div key={item.id} className="relative flex flex-col items-center justify-center">
+                              <img
+                                src={item.icon}
+                                alt={item.id}
+                                style={{
+                                  width: item.id === 'fc_gift' ? 36 : item.id === 'fc_card' || item.id === 'fc_decor' ? 26 : item.id === 'fc_frame' ? 23 : 20,
+                                  height: item.id === 'fc_gift' ? 36 : item.id === 'fc_card' || item.id === 'fc_decor' ? 26 : item.id === 'fc_frame' ? 24 : 20,
+                                  objectFit: 'contain',
+                                }}
+                                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
+                              />
+                              <span
+                                style={{
+                                  color: '#467155',
+                                  fontSize: 9,
+                                  fontWeight: 700,
+                                  textShadow: '0 1px 1px rgba(255,255,255,.5)',
+                                  marginTop: -2,
+                                }}
+                              >
+                                {item.amount}
+                              </span>
                             </div>
-                            <span className="text-[8px] text-amber-200 mt-0.5" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>{gift.amount}</span>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-[9px] text-amber-100/80 mt-1.5 text-center" style={{ textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>{packages.firstChargeReward.text}</p>
                     </div>
                   </div>
-                )}
 
-                {/* شبكة الحزم — 3 أعمدة للجواهر/الذهب، 2 أعمدة لـ VIP */}
-                {activeTab === 'vip' ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    {currentPackages.map((pkg) => (
-                      <VipPackageCard
-                        key={pkg.id}
-                        pkg={pkg}
-                        isSelected={selectedPkg?.id === pkg.id}
-                        onSelect={() => setSelectedPkg(pkg)}
-                      />
-                    ))}
+                  {/* نص التنبيه تحت الرف: "يمكنك أن تحصل على المكافآت بعد الشراء بأي كمية" (white 10sp) */}
+                  <div className="text-center" style={{ marginTop: -2 }}>
+                    <span
+                      style={{
+                        color: '#fff',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textShadow: '0 1px 1px rgba(0,0,0,.6)',
+                      }}
+                    >
+                      {fcr.tip}
+                    </span>
                   </div>
-                ) : (
-                  <div className="grid grid-cols-3 gap-2">
-                    {currentPackages.map((pkg) => (
-                      <DiamondPackageCard
-                        key={pkg.id}
-                        pkg={pkg}
-                        isSelected={selectedPkg?.id === pkg.id}
-                        onSelect={() => setSelectedPkg(pkg)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* ctv_detail — shop_item_tail_bg.9.png (191x25dip, marginTop=8, marginBottom=8) */}
-              <div className="flex justify-center" style={{ marginTop: 8, marginBottom: 8 }}>
+              {/* ══════ الرف 1 (shelves كخلفية) ══════ */}
+              {activeTab !== 'vip' && (
+                <ShelfRow />
+              )}
+
+              {/* ══════ شبكة البطاقات (RecyclerView) — 3 أعمدة ══════ */}
+              {isVipTab ? (
+                <div className="grid grid-cols-2 gap-2 px-3 py-3">
+                  {currentPackages.filter(p => p.enabled).map((pkg) => (
+                    <VipPackageCard
+                      key={pkg.id}
+                      pkg={pkg}
+                      isSelected={selectedPkg?.id === pkg.id}
+                      onSelect={() => setSelectedPkg(pkg)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 gap-2 px-3 py-3">
+                  {currentPackages.filter(p => p.enabled).map((pkg) => (
+                    <DiamondPackageCard
+                      key={pkg.id}
+                      pkg={pkg}
+                      isSelected={selectedPkg?.id === pkg.id}
+                      onSelect={() => setSelectedPkg(pkg)}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* ══════ الرف 2 + الرف 3 ══════ */}
+              {activeTab !== 'vip' && (
+                <>
+                  <ShelfRow />
+                  <ShelfRow />
+                </>
+              )}
+
+              {/* ══════ زر "تفاصيل الماس >>" (shop_item_tail_bg.9.png) ══════ */}
+              <div className="flex justify-center" style={{ marginTop: 8, marginBottom: 12 }}>
                 <button
+                  onClick={() => onRoyalClick?.()}
                   className="relative flex items-center justify-center"
-                  style={{ width: 191, height: 25, color: '#2bc895', fontSize: 13, fontWeight: 700 }}
+                  style={{
+                    width: 191,
+                    height: 25,
+                    color: '#2bc895',
+                    fontSize: 13,
+                    fontWeight: 700,
+                  }}
                 >
                   <img
                     src={A.shopItemTailBg}
@@ -469,7 +711,9 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                     style={{ objectFit: 'fill' }}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
-                  <span className="relative">{activeTab === 'gold' ? 'تفاصيل الذهب' : 'تفاصيل الجواهر'}</span>
+                  <span className="relative">
+                    {activeTab === 'gold' ? 'تفاصيل الذهب >>' : 'تفاصيل الماس >>'}
+                  </span>
                 </button>
               </div>
             </div>
@@ -489,7 +733,7 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                       {selectedPkg.type === 'diamond' && '💎 '}
                       {selectedPkg.type === 'gold' && '🪙 '}
                       {selectedPkg.type === 'vip' && '👑 '}
-                      {formatAmount(selectedPkg.amount)} — ${selectedPkg.price}
+                      {selectedPkg.displayAmount} — {selectedPkg.priceFormat}
                     </span>
                   </div>
                   <div>
@@ -531,11 +775,11 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                   <div className="text-[9px] text-amber-500/70 text-center">
                     ستحصل على: +{selectedPkg.royalPoints} نقاط رويال · +{selectedPkg.xpReward} XP
                   </div>
-                  {/* زر الشراء — btn_shop.9.png كخلفية حقيقية */}
+                  {/* زر الشراء — btn_shop.9.png */}
                   <button
                     onClick={handleCharge}
                     disabled={loading || !chargeCode.trim()}
-                    className="relative w-full rounded-lg text-sm font-bold text-black transition-all disabled:opacity-50 overflow-hidden"
+                    className="relative w-full rounded-lg text-sm font-bold transition-all disabled:opacity-50 overflow-hidden"
                     style={{ height: 40 }}
                   >
                     <img
@@ -546,17 +790,17 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
                       onError={(e) => {
                         const el = e.target as HTMLImageElement;
                         el.style.display = 'none';
-                        el.parentElement!.style.background = 'linear-gradient(135deg, #94f534, #47790c)';
+                        el.parentElement!.style.background = 'linear-gradient(180deg, #6ecd0a 0%, #4fa82a 100%)';
                       }}
                     />
-                    <span className="relative flex items-center justify-center gap-1.5" style={{ color: '#47790c' }}>
+                    <span className="relative flex items-center justify-center gap-1.5" style={{ color: '#47790c', textShadow: '1px 0 0 #94f534, -1px 0 0 #94f534, 0 1px 0 #94f534, 0 -1px 0 #94f534, 1px 1px 0 #94f534, -1px -1px 0 #94f534, 1px -1px 0 #94f534, -1px 1px 0 #94f534' }}>
                       {loading ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
                           جاري المعالجة...
                         </>
                       ) : (
-                        <>💳 شحن — ${selectedPkg.price}</>
+                        <>💳 شحن — {selectedPkg.priceFormat}</>
                       )}
                     </span>
                   </button>
@@ -577,35 +821,66 @@ export default function ChargeDialog({ open, onClose, initialTab = 'diamond', ge
         </motion.div>
       </AnimatePresence>
 
-      {/* RoyalDialog — يفتح من rle_entranceView داخل ChargeDialog */}
+      {/* RoyalDialog — يفتح من زر R0 تحت الصورة أو من زر تفاصيل الماس */}
       <RoyalDialog
         open={royalOpen}
         onClose={() => setRoyalOpen(false)}
         onChargeClick={() => {
           setRoyalOpen(false);
-          // العودة إلى لسان الجواهر للشحن
-          setActiveTab('diamond');
         }}
       />
     </>
   );
+
+  function onRoyalClick() {
+    setRoyalOpen(true);
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// DiamondPackageCard — نسخة طبق الأصل 100% من item_diamonds.xml
-// RelativeLayout 107x150dip:
-//   - shop_item_bg ImageView (107x150dip fitXY centerInParent)
-//   - ll1 (79x20dip marginTop=8 centerHorizontal): diamonds icon (14x16dip) + count text (12sp #fff782 shadow)
+// ShelfRow — صف الرف (shelves.webp كخلفية كاملة العرض)
+// مطابق لـ item_shop_guild.xml L26 (iv_shelves 316×84dip)
+// ════════════════════════════════════════════════════════════════════════════
+function ShelfRow() {
+  return (
+    <div className="relative" style={{ height: 12, marginTop: 4, marginBottom: 4 }}>
+      {/* شريط الرف: حافة فاتحة علوية + جسم + ظل سفلي (3D bevel) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(180deg, #5DD7A6 0%, #3ECEAA 30%, #2DA887 60%, #1F7A5F 100%)',
+          boxShadow: '0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.4), inset 0 -1px 0 rgba(0,0,0,.3)',
+        }}
+      />
+      {/* shelves.webp كطبقة تفصيل */}
+      <img
+        src={A.shelves}
+        alt=""
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: 'fill', opacity: 0.4 }}
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+      />
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// DiamondPackageCard — نسخة طبق الأصل 100% من item_diamonds.xml (107×150dip)
+// البنية:
+//   - shop_item_bg.webp 107×150dip fitXY centerInParent (خلفية كاملة)
+//   - ll1 (79×20dip, marginTop=8, centerHorizontal): diamonds.webp 14×16dip + رقم 12sp #fff782
 //   - FrameLayout below=ll1:
-//     - iv_coin (88x88dip, src=diamonds1 or coin1, center_horizontal)
-//     - svg_best FrameLayout (60x21dip alignEnd marginEnd=-3)
-//   - ll_buy (90x32dip bg=btn_shop.9.png alignParentBottom centerHorizontal)
-//     - tv_money StrokeTextView (14sp bold #47790c, stroke=#94f534 width=2)
+//     - iv_coin 88×88dip (diamonds1-6.webp — مختلفة لكل حزمة!)
+//     - svg_best (label_best.webp 60×21dip marginTop=2 marginEnd=-3) أعلى يمين
+//     - svg_hot (35×35dip marginTop=-2 marginEnd=-8) أعلى يمين — للشارة HOT
+//   - ll_buy (90×32dip bg=btn_shop.9.png alignParentBottom centerHorizontal):
+//     - tv_money 14sp bold #47790c stroke_color=#94f534 stroke_width=2dip text="USD X.XX"
+//   - tv_tips 9sp #3c93ad marginBottom=45
 // ════════════════════════════════════════════════════════════════════════════
 function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
   const isGold = pkg.type === 'gold';
-  const bigIcon = isGold ? A.coin1 : A.diamonds1;
   const smallIcon = isGold ? A.coin : A.diamonds;
+  const bigIcon = DIAMOND_ICONS[pkg.id] || A.diamonds1;
   const accentColor = isGold ? '#fbbf24' : '#22d3ee';
 
   return (
@@ -620,7 +895,7 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
         transform: isSelected ? 'scale(1.03)' : 'scale(1)',
       }}
     >
-      {/* shop_item_bg ImageView 107x150dip fitXY centerInParent */}
+      {/* shop_item_bg.webp 107×150dip fitXY centerInParent */}
       <img
         src={A.shopItemBg}
         alt=""
@@ -629,11 +904,12 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
 
-      {/* ll1 — RelativeLayout 79x20dip marginTop=8 centerHorizontal */}
-      <div className="absolute flex items-center justify-center" style={{ top: 8, left: '50%', transform: 'translateX(-50%)', width: 79, height: 20 }}>
-        {/* iv2 — ImageView 14x16dip src=diamonds */}
+      {/* ll1 — 79×20dip marginTop=8 centerHorizontal: small icon + count text */}
+      <div
+        className="absolute flex items-center justify-center"
+        style={{ top: 8, left: '50%', transform: 'translateX(-50%)', width: 79, height: 20 }}
+      >
         <img src={smallIcon} alt="" style={{ width: 14, height: 16, objectFit: 'contain' }} />
-        {/* tv_doin_number — CustomTextView 12sp #fff782 shadow #000 dy=3 radius=5, marginStart=2 */}
         <span
           style={{
             color: '#fff782',
@@ -643,68 +919,27 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
             textShadow: '0 3px 5px #000',
           }}
         >
-          {formatAmount(pkg.amount + pkg.bonus)}
+          {pkg.displayAmount}
         </span>
       </div>
 
-      {/* FrameLayout below=ll1 — يحوي iv_coin + svg_best */}
-      <div className="absolute flex items-start justify-center" style={{ top: 28, left: 0, right: 0, height: 88 }}>
-        {/* iv_coin — ImageView 88x88dip src=diamonds1 */}
+      {/* FrameLayout below=ll1: iv_coin (88×88dip) + svg_best + svg_hot */}
+      <div
+        className="absolute flex items-start justify-center"
+        style={{ top: 28, left: 0, right: 0, height: 88 }}
+      >
         <img
           src={bigIcon}
           alt={pkg.label}
           style={{ width: 88, height: 88, objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))' }}
           onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.4'; }}
         />
-        {/* tv_type / svg_best — FrameLayout 60x21dip marginTop=1 marginEnd=-3 alignEnd */}
-        {pkg.badge === 'best' && (
-          <img
-            src={A.labelBest}
-            alt="BEST"
-            className="absolute"
-            style={{ top: 2, right: -3, width: 60, height: 21, objectFit: 'contain' }}
-          />
-        )}
-        {pkg.badge === 'popular' && (
-          <img
-            src={A.labelPopular}
-            alt="POPULAR"
-            className="absolute"
-            style={{ top: 2, right: -3, width: 60, height: 21, objectFit: 'contain' }}
-          />
-        )}
-        {/* شارة الخصم (مستوحاة من iv_coupon_extra) */}
-        {pkg.discountPercent && pkg.discountPercent > 0 && (
-          <div
-            className="absolute"
-            style={{
-              top: 30,
-              right: -3,
-              padding: '1px 4px',
-              background: '#ef4444',
-              color: '#fff',
-              fontSize: 8,
-              fontWeight: 700,
-              borderRadius: 4,
-              boxShadow: '0 1px 2px rgba(0,0,0,.4)',
-              transform: 'rotate(20deg)',
-            }}
-          >
-            -{pkg.discountPercent}%
-          </div>
-        )}
       </div>
 
-      {/* tv_tips — StrokeTextView 9sp #3c93ad marginBottom=45 */}
-      {pkg.bonus > 0 && (
-        <div className="absolute" style={{ bottom: 45, left: 0, right: 0, textAlign: 'center' }}>
-          <span style={{ color: '#3c93ad', fontSize: 9, fontWeight: 700, textShadow: '0 1px 1px #000' }}>
-            +{formatAmount(pkg.bonus)} مكافأة
-          </span>
-        </div>
-      )}
+      {/* شارة (HOT/BEST/Popular) — أعلى يمين (layout_gravity=end) */}
+      {renderBadge(pkg.badge)}
 
-      {/* ll_buy — LinearLayout 90x32dip bg=btn_shop.9.png alignParentBottom centerHorizontal */}
+      {/* ll_buy — 90×32dip bg=btn_shop.9.png alignParentBottom centerHorizontal */}
       <div
         className="absolute flex items-center justify-center"
         style={{ bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 90, height: 32, overflow: 'hidden' }}
@@ -717,11 +952,11 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
           onError={(e) => {
             const el = e.target as HTMLImageElement;
             el.style.display = 'none';
-            el.parentElement!.style.background = 'linear-gradient(180deg, #94f534, #47790c)';
+            el.parentElement!.style.background = 'linear-gradient(180deg, #6ecd0a, #4fa82a)';
             el.parentElement!.style.borderRadius = 6;
           }}
         />
-        {/* tv_money — StrokeTextView 14sp bold #47790c stroke_color=#94f534 stroke_width=2 */}
+        {/* tv_money 14sp bold #47790c stroke_color=#94f534 stroke_width=2dip */}
         <span
           style={{
             position: 'relative',
@@ -731,7 +966,7 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
             textShadow: '1px 0 0 #94f534, -1px 0 0 #94f534, 0 1px 0 #94f534, 0 -1px 0 #94f534, 1px 1px 0 #94f534, -1px -1px 0 #94f534, 1px -1px 0 #94f534, -1px 1px 0 #94f534',
           }}
         >
-          ${pkg.price}
+          {pkg.priceFormat}
         </span>
       </div>
     </div>
@@ -739,17 +974,10 @@ function DiamondPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSel
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// VipPackageCard — نسخة طبق الأصل 100% من item_vip_buy.xml
-// LinearLayout 157.5x195.45dip bg=cart_vip_buy_item_bg:
-//   - FrameLayout 59x72dip marginTop=39 centerHorizontal:
-//     - iv_days ImageView (fill_parent) — tier icon
-//     - ctv_days CustomTextView 16sp bold #17654c text="7days"
-//   - btn_vip_buy LinearLayout 110x40dip marginTop=23 bg=bn_yes:
-//     - diamonds ImageView 15x19dip
-//     - tv_num StrokeTextView 15sp text="100" marginStart=6
+// VipPackageCard — نسخة طبق الأصل من item_vip_buy.xml (157.5×195.45dip)
 // ════════════════════════════════════════════════════════════════════════════
 function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: boolean; onSelect: () => void }) {
-  const tierIcon = pkg.id === 'vip_royal' ? A.royal5ThroneIc : pkg.id === 'vip_liwa' ? A.privilegeBaron : A.privilegeKnight;
+  const tierIcon = pkg.id === 'vip_royal' ? A.royal5Throne : pkg.id === 'vip_liwa' ? A.privilegeBaron : A.privilegeKnight;
   const tierColor = pkg.id === 'vip_royal' ? '#fbbf24' : pkg.id === 'vip_liwa' ? '#a78bfa' : '#22d3ee';
 
   return (
@@ -765,7 +993,7 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
         transform: isSelected ? 'scale(1.02)' : 'scale(1)',
       }}
     >
-      {/* cart_vip_buy_item_bg — خلفية كاملة */}
+      {/* cart_vip_buy_item_bg.webp كخلفية كاملة */}
       <img
         src={A.cartVipBuyItemBg}
         alt=""
@@ -774,20 +1002,14 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
       />
 
-      {/* شارة (label_best / label_popular) — أعلى يمين */}
-      {pkg.badge === 'best' && (
-        <img src={A.labelBest} alt="BEST" className="absolute" style={{ top: -1, right: -1, width: 50, height: 18, objectFit: 'contain', zIndex: 10 }} />
-      )}
-      {pkg.badge === 'popular' && (
-        <img src={A.labelPopular} alt="POPULAR" className="absolute" style={{ top: -1, right: -1, width: 50, height: 18, objectFit: 'contain', zIndex: 10 }} />
-      )}
-      {pkg.badge === 'hot' && (
-        <div className="absolute" style={{ top: -1, right: -1, padding: '2px 6px', background: '#ef4444', color: '#fff', fontSize: 8, fontWeight: 700, borderRadius: 10, zIndex: 10 }}>🔥</div>
-      )}
+      {/* شارة (badge) */}
+      {pkg.badge !== 'none' && renderBadge(pkg.badge)}
 
-      {/* FrameLayout 59x72dip marginTop=39 centerHorizontal — iv_days */}
-      <div className="absolute" style={{ top: 39, left: '50%', transform: 'translateX(-50%)', width: 59, height: 72 }}>
-        {/* iv_days — ImageView fill_parent */}
+      {/* iv_days — FrameLayout 59×72dip marginTop=39 centerHorizontal */}
+      <div
+        className="absolute"
+        style={{ top: 39, left: '50%', transform: 'translateX(-50%)', width: 59, height: 72 }}
+      >
         <img
           src={tierIcon}
           alt={pkg.label}
@@ -795,7 +1017,6 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
           style={{ width: 59, height: 72, objectFit: 'contain', filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))' }}
           onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
         />
-        {/* ctv_days — CustomTextView 16sp bold #17654c center marginTop=3 text="7days" */}
         <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: 3 }}>
           <span style={{ color: '#17654c', fontSize: 16, fontWeight: 700, textShadow: '0 1px 0 rgba(255,255,255,.3)' }}>
             {pkg.days}يوم
@@ -803,14 +1024,7 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
         </div>
       </div>
 
-      {/* خصم (اختياري) */}
-      {pkg.discountPercent && pkg.discountPercent > 0 && (
-        <div className="absolute" style={{ top: 4, left: 4, padding: '2px 6px', background: '#ef4444', color: '#fff', fontSize: 8, fontWeight: 700, borderRadius: 4, zIndex: 10 }}>
-          -{pkg.discountPercent}%
-        </div>
-      )}
-
-      {/* btn_vip_buy — LinearLayout 110x40dip marginTop=23 centerHorizontal bg=bn_yes */}
+      {/* btn_vip_buy — LinearLayout 110×40dip marginTop=23 bg=bn_yes (btn_yes.9.png) */}
       <div
         className="absolute flex items-center justify-center"
         style={{ top: 134, left: '50%', transform: 'translateX(-50%)', width: 110, height: 40, overflow: 'hidden' }}
@@ -827,9 +1041,8 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
             el.parentElement!.style.borderRadius = 6;
           }}
         />
-        {/* diamonds ImageView 15x19dip */}
+        {/* diamonds 15×19dip + price 15sp StrokeTextStyle_Yes */}
         <img src={A.diamonds} alt="" style={{ width: 15, height: 19, objectFit: 'contain' }} />
-        {/* tv_num StrokeTextView 15sp text="price" marginStart=6 — StrokeTextStyle_Yes */}
         <span
           style={{
             marginLeft: 6,
@@ -843,7 +1056,7 @@ function VipPackageCard({ pkg, isSelected, onSelect }: { pkg: Package; isSelecte
         </span>
       </div>
 
-      {/* نص اسم الباقة + رويال + XP */}
+      {/* اسم الباقة + رويال + XP */}
       <div className="absolute" style={{ top: 178, left: 0, right: 0, textAlign: 'center' }}>
         <div style={{ color: tierColor, fontSize: 11, fontWeight: 700, textShadow: '0 1px 1px rgba(0,0,0,.6)' }}>
           {pkg.label} · +{pkg.royalPoints} رويال
