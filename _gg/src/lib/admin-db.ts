@@ -5774,6 +5774,24 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'orn_lights', kind: 'ornament', nameAr: 'أضواء البطولة', imageUrl: '/yalla-ornaments/orn_lights.png', rarity: 'epic', price: 500, isFree: false },
   { id: 'orn_sparkle', kind: 'ornament', nameAr: 'بريق ذهبي', imageUrl: '/yalla-ornaments/orn_sparkle.png', rarity: 'legendary', price: 800, isFree: false },
   { id: 'hanging_meteors', kind: 'ornament', nameAr: 'الشهباء المتساقطة', imageUrl: '/yalla-ornaments/hanging_meteors.svga', rarity: 'legendary', price: 800, isFree: false },
+  // [Batch 5] معلقات جدارية إضافية مسحوبة من سورس يللا لودو (room_ic_flag_member_*.webp)
+  // هذه الأعلام متوفرة كـ drawables في APK — 12 لوناً/نمطاً مختلفاً
+  { id: 'orn_flag_default',  kind: 'ornament', nameAr: 'علم الافتراضي', imageUrl: '/yalla-ornaments/room_ic_flag_member.webp', rarity: 'common', price: 150, isFree: false },
+  { id: 'orn_flag_blue',     kind: 'ornament', nameAr: 'العلم الأزرق', imageUrl: '/yalla-ornaments/room_ic_flag_member_blue.webp', rarity: 'common', price: 150, isFree: false },
+  { id: 'orn_flag_coffee',   kind: 'ornament', nameAr: 'علم القهوة', imageUrl: '/yalla-ornaments/room_ic_flag_member_coffee.webp', rarity: 'rare', price: 250, isFree: false },
+  { id: 'orn_flag_diamond',  kind: 'ornament', nameAr: 'علم الماس', imageUrl: '/yalla-ornaments/room_ic_flag_member_diamond.webp', rarity: 'legendary', price: 800, isFree: false },
+  { id: 'orn_flag_fame',     kind: 'ornament', nameAr: 'علم الشهرة', imageUrl: '/yalla-ornaments/room_ic_flag_member_fame.webp', rarity: 'epic', price: 500, isFree: false },
+  { id: 'orn_flag_gold',     kind: 'ornament', nameAr: 'العلم الذهبي', imageUrl: '/yalla-ornaments/room_ic_flag_member_gold.webp', rarity: 'epic', price: 500, isFree: false },
+  { id: 'orn_flag_grand',    kind: 'ornament', nameAr: 'العلم الكبير', imageUrl: '/yalla-ornaments/room_ic_flag_member_grand.webp', rarity: 'epic', price: 500, isFree: false },
+  { id: 'orn_flag_king',     kind: 'ornament', nameAr: 'علم الملك', imageUrl: '/yalla-ornaments/room_ic_flag_member_king.webp', rarity: 'legendary', price: 800, isFree: false },
+  { id: 'orn_flag_legend',   kind: 'ornament', nameAr: 'علم الأسطورة', imageUrl: '/yalla-ornaments/room_ic_flag_member_legend.webp', rarity: 'legendary', price: 800, isFree: false },
+  { id: 'orn_flag_leopard',  kind: 'ornament', nameAr: 'علم النمر', imageUrl: '/yalla-ornaments/room_ic_flag_member_leopard.webp', rarity: 'rare', price: 250, isFree: false },
+  { id: 'orn_flag_love',     kind: 'ornament', nameAr: 'علم الحب', imageUrl: '/yalla-ornaments/room_ic_flag_member_love.webp', rarity: 'rare', price: 250, isFree: false },
+  { id: 'orn_flag_purple',   kind: 'ornament', nameAr: 'العلم الأرجواني', imageUrl: '/yalla-ornaments/room_ic_flag_member_purple.webp', rarity: 'rare', price: 250, isFree: false },
+  // [Batch 5] معلقات إضافية: سحب الغيوم + رائد الفضاء (موجودة كـ PNG كبيرة)
+  { id: 'orn_clouds',         kind: 'ornament', nameAr: 'سحب عائمة', imageUrl: '/yalla-ornaments/floating-chess-clouds.png', rarity: 'epic', price: 500, isFree: false },
+  { id: 'orn_lunar_astronaut',kind: 'ornament', nameAr: 'رائد الفضاء القمري', imageUrl: '/yalla-ornaments/lunar-astronaut.png', rarity: 'legendary', price: 800, isFree: false },
+  { id: 'orn_decor_icon',     kind: 'ornament', nameAr: 'أيقونة الزينة', imageUrl: '/yalla-ornaments/orn_decor_shop_icon.webp', rarity: 'rare', price: 300, isFree: false },
   // المواضيع (أغلفة البروفايل) — المعرف = مسار الملف كما يُخزن في AppUser.cover
   { id: '/yalla-covers/bg_profile_theme_default.webp', kind: 'theme', nameAr: 'افتراضي', imageUrl: '/yalla-covers/bg_profile_theme_default.webp', rarity: 'common', price: 0, isFree: true },
   { id: '/yalla-games/mafia.png', kind: 'theme', nameAr: 'المافيا', imageUrl: '/yalla-games/mafia.png', rarity: 'rare', price: 300, isFree: false },
@@ -5796,9 +5814,20 @@ const DECOR_SEED: Array<{ id: string; kind: DecorKind; nameAr: string; imageUrl:
   { id: 'card_glow', kind: 'card', nameAr: 'هالة ضوئية', imageUrl: '/yalla-ornaments/card_glow.png', rarity: 'epic', price: 500, isFree: false },
   { id: 'room_profile_member_bg', kind: 'card', nameAr: 'بطاقة العضوية', imageUrl: '/yalla-ornaments/room_profile_member_bg.png', rarity: 'rare', price: 400, isFree: false },
   { id: 'charge_reward_profile_card', kind: 'card', nameAr: 'بطاقة الشحن', imageUrl: '/yalla-ornaments/charge_reward_profile_card.png', rarity: 'rare', price: 400, isFree: false },
+  // [Batch 5] بطاقات إضافية مسحوبة من سورس يللا لودو (celebrity_preview_bg_*.webp + face_no*.webp + head_*.webp)
+  // هذه الأصول موجودة في APK كـ drawables ضمن مجلد res/drawable و res/drawable-xxhdpi
+  { id: 'card_top1_celebrity',    kind: 'card', nameAr: 'بطاقة البطل الأول',   imageUrl: '/yalla-ornaments/card_top1_celebrity.webp',    rarity: 'legendary', price: 800, isFree: false },
+  { id: 'card_top23_celebrity',   kind: 'card', nameAr: 'بطاقة الوصيفين',     imageUrl: '/yalla-ornaments/card_top23_celebrity.webp',   rarity: 'epic',     price: 600, isFree: false },
+  { id: 'card_top410_celebrity',  kind: 'card', nameAr: 'بطاقة العشرة الأوائل', imageUrl: '/yalla-ornaments/card_top410_celebrity.webp',  rarity: 'epic',     price: 600, isFree: false },
+  { id: 'card_common_celebrity',  kind: 'card', nameAr: 'بطاقة المشاهير العادية', imageUrl: '/yalla-ornaments/card_common_celebrity.webp',  rarity: 'rare',     price: 400, isFree: false },
+  { id: 'card_head_decor',        kind: 'card', nameAr: 'بطاقة زينة الرأس',    imageUrl: '/yalla-ornaments/card_head_decor.webp',        rarity: 'epic',     price: 500, isFree: false },
+  { id: 'card_head_flag',         kind: 'card', nameAr: 'بطاقة العلم',         imageUrl: '/yalla-ornaments/card_head_flag.webp',         rarity: 'rare',     price: 400, isFree: false },
+  { id: 'card_face_no1',          kind: 'card', nameAr: 'وجه البطل رقم 1',     imageUrl: '/yalla-ornaments/card_face_no1.webp',          rarity: 'legendary', price: 800, isFree: false },
+  { id: 'card_face_no2',          kind: 'card', nameAr: 'وجه البطل رقم 2',     imageUrl: '/yalla-ornaments/card_face_no2.webp',          rarity: 'epic',     price: 600, isFree: false },
+  { id: 'card_face_no3',          kind: 'card', nameAr: 'وجه البطل رقم 3',     imageUrl: '/yalla-ornaments/card_face_no3.webp',          rarity: 'rare',     price: 400, isFree: false },
 ];
 
-const DECOR_SEED_VERSION = 8;
+const DECOR_SEED_VERSION = 9;
 
 export async function seedDefaultDecor(): Promise<void> {
   await ensureAdminTables();
