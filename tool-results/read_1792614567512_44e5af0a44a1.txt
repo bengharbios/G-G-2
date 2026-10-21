@@ -1,0 +1,1301 @@
+     1→# Work Log
+     2→
+     3→## Task: Add new tables and helper functions to admin-db.ts
+     4→
+     5→### Date: 2025-06-03
+     6→
+     7→### Changes Made to `/home/z/my-project/src/lib/admin-db.ts`
+     8→
+     9→#### 1. New Tables Added (inside `ensureAdminTables`, before `_tablesReady = true`)
+    10→
+    11→- **RoomBookmark** — saves favorite rooms (UNIQUE on userId + roomId)
+    12→- **UserReport** — reporting users with reason, category, roomId, status
+    13→- **UserBlock** — blocking users (UNIQUE on blockerId + blockedId)
+    14→- **UserAchievement** — tracking unlocked achievements (UNIQUE on userId + achievementKey)
+    15→- **DailyLoginReward** — daily login gem rewards with streak tracking (UNIQUE on userId)
+    16→- **RoomAnalytics** — room stats and earnings per day (UNIQUE on roomId + date)
+    17→
+    18→#### 2. Helper Functions Added (between `ensureAdminTables` and `seedGameConfigs`)
+    19→
+    20→**RoomBookmark functions:**
+    21→- `addRoomBookmark()` / `removeRoomBookmark()` / `getUserBookmarks()` / `isRoomBookmarked()`
+    22→
+    23→**UserReport & UserBlock functions:**
+    24→- `createUserReport()` / `blockUser()` / `unblockUser()` / `isUserBlocked()` / `getBlockedUserIds()`
+    25→
+    26→**Achievement system:**
+    27→- `ACHIEVEMENTS` constant array (12 achievements with Arabic/English names, descriptions, icons, gem rewards)
+    28→- `AchievementKey` type
+    29→- `unlockAchievement()` / `getUserAchievements()`
+    30→
+    31→**Daily Login Rewards:**
+    32→- `claimDailyReward()` — handles streak calculation with escalating gem rewards
+    33→- `getDailyRewardStatus()` — returns current streak and claim eligibility
+    34→
+    35→**Room Analytics:**
+    36→- `updateRoomAnalytics()` — upsert pattern with ON CONFLICT fallback
+    37→- `getRoomEarnings()` — daily breakdown over configurable days
+    38→- `getTopGifters()` — aggregated from GiftHistory with participant info
+    39→
+    40→**Word Filter:**
+    41→- `BANNED_WORDS` constant array (Arabic profanity patterns)
+    42→- `filterMessage()` — regex-based filtering with flagging
+    43→
+    44→---
+    45→
+    46→## Task: Create sound effects system and floating reactions
+    47→
+    48→### Date: 2025-06-03
+    49→
+    50→### Files Created
+    51→
+    52→#### 1. `/home/z/my-project/src/lib/sound-effects.ts`
+    53→- Full Web Audio API sound effects system — no audio files needed
+    54→- **11 event sounds**: join, leave, mic on/off, gift send/receive, notification, error, seat request, kick, achievement
+    55→- **8 soundboard items**: laugh 😂, clap 👏, whistle 😤, wow 😮, boo 👎, drumroll 🥁, airhorn 📯, heartbeat 💓
+    56→
+    57→#### 2. `/home/z/my-project/src/app/voice-rooms/components/FloatingReactions.tsx`
+    58→- `FloatingReactions` — full-screen overlay rendering animated emoji float-ups
+    59→- `QuickReactionBar` — 6-emoji quick-pick bar (❤️ 😂 👏 🔥 😍 💯)
+    60→- `useFloatingReactions` hook — state management with auto-cleanup after animation
+    61→
+    62→---
+    63→
+    64→## Task: Create API routes for new features
+    65→
+    66→### Date: 2025-06-03
+    67→
+    68→### Files Created
+    69→
+    70→1. **`/home/z/my-project/src/app/api/bookmarks/route.ts`** — POST/DELETE/GET for room bookmarks
+    71→2. **`/home/z/my-project/src/app/api/report/route.ts`** — POST (report/block/unblock), GET (check blocked)
+    72→3. **`/home/z/my-project/src/app/api/achievements/route.ts`** — POST (unlock), GET (list all with status)
+    73→4. **`/home/z/my-project/src/app/api/daily-reward/route.ts`** — POST (claim), GET (check status)
+    74→5. **`/home/z/my-project/src/app/api/room-earnings/route.ts`** — GET (earnings + top gifters)
+    75→6. **`/home/z/my-project/src/app/api/voice-rooms/search/route.ts`** — GET (search rooms by query/category/sort)
+    76→
+    77→---
+    78→
+    79→## Task: Integrate all features into RoomInteriorView
+    80→
+    81→### Date: 2025-06-03
+    82→
+    83→### Changes Made to `/home/z/my-project/src/app/voice-rooms/components/RoomInteriorView.tsx`
+    84→
+    85→1. **Sound effects** — Added import + sound on like/heart button + sound toggle in soundboard
+    86→2. **Floating reactions** — Overlay + QuickReactionBar with 6 emojis + Sparkles button in bottom bar
+    87→3. **Soundboard panel** — 8 emoji sound effects grid + enable/disable toggle
+    88→4. **Connection quality indicator** — Green/yellow/red dot in online count badge
+    89→5. **Word filter** — Chat messages filtered for Arabic profanity with error sound
+    90→6. **Recording indicator** — Admin-only REC toggle with timer
+    91→7. **Theme toggle** — Dark/light mode button in header
+    92→8. **Reconnect indicator** — Connection loss banner
+    93→9. **Daily reward toast** — Auto-check + claim + reward display modal
+    94→
+    95→---
+    96→
+    97→## Task: Add room discovery/search to RoomListView
+    98→
+    99→### Date: 2025-06-03
+   100→
+   101→### Changes Made to `/home/z/my-project/src/app/voice-rooms/components/RoomListView.tsx`
+   102→
+   103→1. **Search bar** — RTL input with search icon + filter toggle
+   104→2. **Category filter tabs** — الكل | الأكثر نشاطاً | جديدة | المحفوظة
+   105→3. **Bookmark button** — On each room card with amber fill/outline
+   106→4. **Sorted/filtered rooms** — By participant count or creation date
+   107→5. **Empty states** — Contextual messages for search/no-results
+   108→
+   109→---
+   110→
+   111→## Task: Create utility components
+   112→
+   113→### Date: 2025-06-04
+   114→
+   115→### Files Created
+   116→
+   117→1. **`ThemeToggle.tsx`** — Dark/light toggle with localStorage persistence
+   118→2. **`ReconnectIndicator.tsx`** — Connection loss banner with reconnection message
+   119→3. **`RecordingIndicator.tsx`** — Admin-only recording toggle with live timer
+   120→4. **`DailyRewardToast.tsx`** — Auto-check + claim + reward display modal
+   121→
+   122→### Verification
+   123→- Lint: Zero new errors from all changes
+   124→- All pre-existing errors remain in other files
+   125→- Voice rooms page compiles successfully (verified via dev server HTML output)
+   126→
+   127→---
+   128→
+   129→## Task: Add Report, Block & Per-Speaker Volume to MicMenuSheet
+   130→
+   131→### Date: 2025-06-04
+   132→### Task ID: 14+16
+   133→
+   134→### Changes Made to `/home/z/my-project/src/app/voice-rooms/components/sheets/MicMenuSheet.tsx`
+   135→
+   136→#### 1. Report & Block Menu Items (for occupied seats of other users)
+   137→- Added "إبلاغ" (Report) menu item with `AlertTriangle` icon in `TUI.colors.red`
+   138→- Added "حظر" (Block) menu item with `Ban` icon in `TUI.colors.orange`
+   139→- Both items appear AFTER existing admin actions (kick-temp, kick-permanent)
+   140→- Available for ALL users viewing other users' occupied seats (not just admins)
+   141→
+   142→#### 2. Report Dialog
+   143→- Modal overlay with 4 reason options: سبام (Spam), محتوى غير لائق (Inappropriate content), تحرش (Harassment), آخر (Other)
+   144→- Radio-button selection style with red accent on selected reason
+   145→- Cancel / Submit buttons — submit disabled until reason selected
+   146→- Calls `onReport(userId, reason)` callback on submit
+   147→
+   148→#### 3. Block Functionality
+   149→- Calls `onBlock(userId)` callback immediately on click
+   150→- Designed to be handled by parent (localStorage or API)
+   151→
+   152→#### 4. Per-Speaker Volume Control
+   153→- Volume slider (range input, 0-100%) shown below menu items for occupied seats of other users
+   154→- Styled with `TUI.colors.sliderFilled`/`sliderEmpty` gradient track
+   155→- Displays current volume percentage
+   156→- Calls `onVolumeChange(userId, volume)` callback on change
+   157→- Only renders when `onVolumeChange` prop is provided
+   158→
+   159→#### 5. New Props Added
+   160→- `onReport?: (userId: string, reason: string) => void`
+   161→- `onBlock?: (userId: string) => void`
+   162→- `onVolumeChange?: (userId: string, volume: number) => void`
+   163→
+   164→#### Design Notes
+   165→- All styling uses inline styles matching existing TUI design tokens
+   166→- Report dialog is a fixed overlay within the MicMenuSheet component
+   167→- Volume slider section separated by a divider line from menu items
+   168→- No modifications to `useVoiceRTC.ts` — volume control handled via callback props
+   169→
+   170→
+   171→## Task 17+18+22 — Top Gifters, Achievements & Earnings Sheets
+   172→
+   173→**Date**: $(date -u '+%Y-%m-%d %H:%M UTC')
+   174→**Agent**: fullstack-dev
+   175→
+   176→### Summary
+   177→Implemented three new bottom sheet components for the Arabic RTL voice room app and integrated them into the ThreeDotsMenu in RoomInteriorView.
+   178→
+   179→### Files Created
+   180→1. **`src/app/voice-rooms/components/sheets/TopGiftersSheet.tsx`** — Bottom sheet showing leaderboard of top gifters in the current room. Features rank badges (🥇🥈🥉 for top 3), colored borders (gold/silver/bronze), avatar/initial display, and gem value formatting.
+   181→
+   182→2. **`src/app/voice-rooms/components/sheets/AchievementsSheet.tsx`** — Bottom sheet displaying 12 user achievements in a 2-column grid. Fetches unlocked achievements from `/api/achievements?userId=` on mount. Unlocked achievements have golden border + glow; locked achievements are dimmed with grayscale filter and lock icon overlay. Shows summary counter at top.
+   183→
+   184→3. **`src/app/voice-rooms/components/sheets/EarningsSheet.tsx`** — Bottom sheet for room hosts showing earnings dashboard. Fetches from `/api/room-earnings?roomId=&userId=`. Features a gradient total earnings card with large gem number, today/week earnings split, and top 3 gifters for the room.
+   185→
+   186→### Files Modified
+   187→4. **`src/app/voice-rooms/components/RoomInteriorView.tsx`**:
+   188→   - Added imports: `Medal`, `DollarSign` from lucide-react; three new sheet components
+   189→   - Added state: `showTopGifters`, `showAchievements`, `showEarnings`
+   190→   - Extended `ThreeDotsMenu` component with `onOpenTopGifters`, `onOpenAchievements`, `onOpenEarnings`, `hasAuthUser` props
+   191→   - Added 3 menu items: 🏆 المتبرعين (always visible), 🏅 الإنجازات (auth users only), 💲 الأرباح (owner only)
+   192→   - Rendered three sheet components at the end of the JSX
+   193→
+   194→### Design Consistency
+   195→- All sheets use `BottomSheetOverlay` from `../shared/BottomSheetOverlay` with TUI color tokens
+   196→- All text in Arabic (RTL)
+   197→- Dark teal-green theme matching existing room UI
+   198→- Consistent card styling with `rgba()` backgrounds and subtle borders
+   199→- Responsive, mobile-first with touch-manipulation
+   200→- Loading states with spinner and Arabic text
+   201→---
+   202→Task ID: 1
+   203→Agent: Main Agent
+   204→Task: Implement missing voice room features and push to GitHub
+   205→
+   206→Work Log:
+   207→- Explored the existing codebase to identify which of the 24 requested features were already implemented
+   208→- Found 18 of 24 features already existed (FloatingReactions, DailyRewardToast, ThemeToggle, DND, ReconnectIndicator, RecordingIndicator, AchievementsSheet, TopGiftersSheet, EarningsSheet, Room Search, Bookmarks, Share Link, Speaking Indicator, Report API, Auto-moderation, Network Quality hook, Noise Suppression)
+   209→- Created 6 missing UI components via subagents:
+   210→  1. NetworkQualityIndicator.tsx - visual signal bars for connection quality
+   211→  2. AudioLevelMeter.tsx - animated equalizer bars for audio levels
+   212→  3. PerSpeakerVolume.tsx - volume slider per participant + useSpeakerVolume hook
+   213→  4. UserSearch.tsx - search/filter participants in room
+   214→  5. OnlineStatus.tsx - online/offline badge with pulse animation + useOnlineStatus hook
+   215→  6. ReportBlockDialog.tsx - report/block dialog with reasons and API integration
+   216→- Integrated all 6 components into RoomInteriorView.tsx
+   217→- Added "Search User" and "Report User" entries to ThreeDotsMenu
+   218→- Replaced simple connection quality dot with full NetworkQualityIndicator component
+   219→- Fixed lint error in UserSearch.tsx (setState in effect)
+   220→- Verified all new files pass lint with zero errors
+   221→- Committed and pushed to bengharbios/G-G main branch
+   222→
+   223→Stage Summary:
+   224→- 6 new component files created (1372+ lines added)
+   225→- RoomInteriorView.tsx updated with imports, state, and rendering of new components
+   226→- ThreeDotsMenu extended with 2 new menu items (بحث عن مستخدم, إبلاغ عن مستخدم)
+   227→- Successfully pushed to GitHub: commit beca1c2
+   228→
+   229→---
+   230→Task ID: 1
+   231→Agent: game-logic-builder
+   232→Task: Create Shifarat game logic files (types, words, logic, store)
+   233→
+   234→Work Log:
+   235→- Created src/lib/shifarat-types.ts with all TypeScript types (GameMode, GamePhase, RoundStatus, WordEntry, ShifaratTeam, ShifaratGameState)
+   236→- Created src/lib/shifarat-words.ts with 96 words in 8 categories (مكان وسفر، مهن وأعمال، أدوات ومواد، طعام وشراب، تقنية وترفيه، طبيعة وحيوانات، رياضة، بيت ومنزل) + helper functions
+   237→- Created src/lib/shifarat-logic.ts with pure game logic functions (getRandomWord, getWordCategory, checkGameWin, getOpponentTeam, formatTimer, getRemainingWordsCount, getAllWordsInCategories)
+   238→- Created src/lib/shifarat-store.ts with Zustand store using persist middleware following mafia game-store pattern
+   239→  - Set<string> serialization/deserialization for JSON persistence (onRehydrateStorage, partialize, merge)
+   240→  - All actions: startGame, newRound, markCorrect, markWrong, skipWord, tickTimer, timeUp, nextTurn, resetGame
+   241→  - syncToRoom for Diwaniya mode using existing room-sync infrastructure
+   242→- Verified all 4 new files pass ESLint with zero errors
+   243→
+   244→Stage Summary:
+   245→- 4 files created in src/lib/
+   246→- Game supports 2 teams, 8 categories, configurable timer (20-120s), configurable target score
+   247→- Zustand store with persist follows mafia game pattern exactly
+   248→- Compatible with existing room-sync infrastructure for Diwaniya mode
+   249→---
+   250→Task ID: 2
+   251→Agent: game-ui-builder
+   252→Task: Create Shifarat game UI components
+   253→
+   254→Work Log:
+   255→- Created src/components/shifarat/LandingPage.tsx
+   256→- Created src/components/shifarat/GameSetup.tsx
+   257→- Created src/components/shifarat/DiwaniyaSetup.tsx
+   258→- Created src/components/shifarat/PlayingPhase.tsx
+   259→- Created src/components/shifarat/GameOver.tsx
+   260→- Updated src/lib/shifarat-words.ts with ALL_CATEGORIES export and SHIFARAT_WORDS backward-compat export
+   261→- Updated src/lib/shifarat-store.ts with complete Zustand store (initGame, startRound, markCorrect, markWrong, skipWord, tickTimer, endRound, nextTurn, resetGame)
+   262→
+   263→Stage Summary:
+   264→- 5 component files created in src/components/shifarat/
+   265→- Dark theme with emerald accents, full RTL Arabic
+   266→- Framer Motion animations throughout (staggered card entrance, scale/glow hover, spring trophy, confetti stars)
+   267→- Mobile-first responsive design (grid→stack, min 44px touch targets)
+   268→- LandingPage: Two mode selection cards (Godfather/Diwaniya) with hover effects
+   269→- GameSetup: Team names, timer selector, target score selector, category grid toggle, validation
+   270→- DiwaniyaSetup: Host name, room creation API, copy/share code, approve/reject pending players, polling
+   271→- PlayingPhase: Team score cards, timer bar (green→yellow→red), word display with show/hide toggle, hints area, skip counter, correct/skip/wrong buttons, round end next-turn flow
+   272→- GameOver: Trophy animation, winner/loser score cards, game stats (rounds, words, diff), play again/home buttons
+   273→- Zero lint errors on all new/modified files
+   274→
+   275→---
+   276→Task ID: 2
+   277→Agent: game-types-logic-builder
+   278→Task: Rewrite shifarat-types.ts and shifarat-logic.ts for Codenames-style board game
+   279→
+   280→Work Log:
+   281→- Rewrote src/lib/shifarat-types.ts with comprehensive Codenames board game types:
+   282→  - CardColor, TeamColor, BoardCard, Clue, GamePhase (7 phases), TeamInfo, GameSettings
+   283→  - ShifaratGameState with full board, team, clue/guessing, timer, history, mode, and result fields
+   284→  - GameLogEntry (8 entry types), ViewMode for Godfather role switching
+   285→  - Legacy type exports retained for backward compat with shifarat-words.ts and shifarat-store.ts (WordEntry, ShifaratTeam, ShifaratGameMode, ShifaratGamePhase, ShifaratRoundStatus)
+   286→
+   287→- Rewrote src/lib/shifarat-logic.ts with pure Codenames game logic:
+   288→  - generateBoard(): Fisher-Yates shuffled 25-card board (9 starting team, 8 opponent, 7 neutral, 1 assassin)
+   289→  - createInitialState(): Full game state factory with team info, timer, history
+   290→  - giveClue(): Validates clue word (no board words/substrings), transitions to clue_given phase, grants clueNumber+1 guesses
+   291→  - guessWord(): Reveals card, determines correct/wrong/neutral/assassin result, updates scores/remaining, checks game end, auto-switches phase
+   292→  - passTurn(): Team forfeits remaining guesses
+   293→  - tickTimer(): 1-second decrement, auto-ends turn at 0
+   294→  - checkGameEnd(): assassin=instant loss, correct=all_found win, wrong=opponent_finished check
+   295→  - getTeamWordsRemaining(), switchTurn(), isValidClue(), formatTimer()
+   296→  - Legacy functions retained (getRandomWord, getWordCategory, checkGameWin, getOpponentTeam, getRemainingWordsCount, getAllWordsInCategories)
+   297→
+   298→- Verified zero lint errors on both files
+   299→
+   300→Stage Summary:
+   301→- 2 files rewritten (182 + 824 = 1006 lines total)
+   302→- All 11 Codenames rules implemented with pure functions (no side effects)
+   303→- Backward-compatible legacy exports ensure existing store/words/UI components continue to compile
+   304→- Game flow: setup → spymaster_view → clue_given → team_guessing → turn_result → turn_switch → spymaster_view (loop) → game_over
+   305→
+   306→---
+   307→Task ID: 1
+   308→Agent: words-database-builder
+   309→Task: Create comprehensive Arabic words database (500+ words)
+   310→
+   311→Work Log:
+   312→- Rewrote src/lib/shifarat-words.ts with 501 Arabic words across 20 categories
+   313→- Each word has 3-6 hint words for spymaster inspiration
+   314→- Categories: animals (26), food (25), places (25), objects (25), nature (25), professions (25), sports (25), technology (25), countries (25), culture (25), history (25), colors (25), feelings (25), clothing (25), vehicles (25), cuisine (25), marine (25), space (25), mystery (25), daily (25)
+   315→- Implemented getBoardWords(exclude?) function for random 25-word selection with Fisher-Yates shuffle
+   316→- Used reliable Modern Standard Arabic (فصحى مبسطة) vocabulary suitable for all Arabic speakers
+   317→- Maintained full backward compatibility: ALL_CATEGORIES, SHIFARAT_WORDS, WordEntry, getWordsForCategories, getRandomWord
+   318→- Exported new interface: CodenameWord { w, cat, hints }, CATEGORIES, WORDS, getBoardWords
+   319→- Zero lint errors on the file
+   320→- Verified: 501 total words, all 20 categories have 25+ words, 0 duplicates, 0 hint issues
+   321→
+   322→Stage Summary:
+   323→- File: src/lib/shifarat-words.ts (722 lines, 501 word entries)
+   324→- 20 categories with 25+ words each
+   325→- All words verified as common Arabic vocabulary
+   326→- Backward compatible with all existing imports (shifarat-logic.ts, GameSetup.tsx, DiwaniyaSetup.tsx)
+   327→
+   328→---
+   329→Task ID: 4
+   330→Agent: ui-builder
+   331→Task: Create Codenames UI components
+   332→
+   333→Work Log:
+   334→- Rewrote PlayingPhase.tsx for Codenames 5x5 board
+   335→- Rewrote GameOver.tsx with board reveal
+   336→- Created HowToPlay.tsx tutorial
+   337→- Updated ShifaratSpectatorView.tsx
+   338→- Updated GameSetup.tsx with first team + spymaster options
+   339→- Updated DiwaniyaSetup.tsx
+   340→- Updated page.tsx for new phase flow
+   341→- Added Web Audio API sound effects
+   342→
+   343→Stage Summary:
+   344→- 7 component files created/updated
+   345→- Mobile-first responsive design
+   346→
+   347→---
+   348→Task ID: 2-a
+   349→Agent: Main Agent
+   350→Task: Build smart Arabic clue suggestion engine (إيحاءات ذكية) for Shifarat Codenames
+   351→
+   352→Work Log:
+   353→- Analyzed existing Shifarat game codebase (types, store, logic, words, UI components)
+   354→- Identified that hints in shifarat-words.ts were descriptive rather than associative
+   355→- Created src/lib/shifarat-clue-engine.ts (400+ lines) with:
+   356→  - 70+ semantic clusters organized by theme (animals, food, places, nature, professions, etc.)
+   357→  - Each cluster has: theme word (clue), connected board words, context, risk level
+   358→  - generateClueSuggestions() function that analyzes the board and returns ranked clues
+   359→  - Clue scoring: +3 per team connection, -5 per opponent risk, -10 for assassin
+   360→  - Risk assessment: safe/moderate/risky based on opponent/neutral word overlap
+   361→  - Clue validation: filters out words on board and substrings
+   362→  - findCrossConnections() for finding multi-word thematic links
+   363→  - generateIndividualClues() for single-word associative hints
+   364→  - All associations based on Arabic semantic networks (WordNet, المعجم الوسيط, cultural knowledge)
+   365→- Updated SpymasterView in PlayingPhase.tsx:
+   366→  - Added "إيحاءات ذكية" (Smart Suggestions) collapsible panel
+   367→  - Multi-word suggestions section (best clues connecting 2+ team words)
+   368→  - Single-word suggestions section (targeted hints for individual words)
+   369→  - Risk indicators (🛡️ safe, ⚠️ moderate, ⚡ risky) with color coding
+   370→  - Click-to-use: tapping a suggestion fills the clue input with word + number
+   371→  - Help text explaining the association system
+   372→  - New imports: Lightbulb, Sparkles, ChevronDown, AlertTriangle, Shield, Zap icons
+   373→  - useMemo for performance optimization
+   374→- Fixed stray character typo in motion.div
+   375→
+   376→Stage Summary:
+   377→- 1 new file created: src/lib/shifarat-clue-engine.ts
+   378→- 1 file updated: src/components/shifarat/PlayingPhase.tsx
+   379→- 70+ curated semantic clusters with Arabic thematic associations
+   380→- Smart risk assessment to avoid opponent word connections
+   381→- Seamless integration with existing Spymaster view
+   382→- Zero new lint errors from these changes
+   383→
+   384→---
+   385→Task ID: 1
+   386→Agent: Main Agent
+   387→Task: Improve UX clarity for Shifarat game - user doesn't understand how to play
+   388→
+   389→Work Log:
+   390→- Read all existing files: LandingPage.tsx, PlayingPhase.tsx, HowToPlay.tsx, GameOver.tsx, GameSetup.tsx, shifarat-types.ts, shifarat-logic.ts, shifarat-store.ts, page.tsx
+   391→- Identified UX pain points: no game explanation on landing, no first-time tutorial, unclear phase transitions, no phase guidance banners, full-screen turn result interrupts gameplay
+   392→
+   393→Changes Made:
+   394→
+   395→1. **LandingPage.tsx** (rewritten):
+   396→   - Added MiniBoardPreview component showing a 5x5 animated grid that toggles between spymaster view (colored) and team view (hidden)
+   397→   - Added GameStepsPreview component showing 4-step game flow with icons and descriptions
+   398→   - Added prominent "كيف تلعب؟ — شرح القواعد بالتفصيل" button that opens HowToPlay modal
+   399→   - Added "ابدأ سريعًا ⚡" Quick Start button
+   400→   - Added game explanation section with animated board preview and color legend
+   401→   - Both mode cards (Godfather/Diwaniya) now have numbered step descriptions explaining how each mode works
+   402→   - Auto-shows GameWalkthrough on first visit via localStorage check
+   403→
+   404→2. **GameWalkthrough.tsx** (new file):
+   405→   - 5-step interactive walkthrough with animations:
+   406→     - Step 1: "هذه هي اللوحة — 25 بطاقة مخفية" (board with '?' marks)
+   407→     - Step 2: "الجاسوس يرى الألوان" (board revealed with color legend)
+   408→     - Step 3: "الجاسوس يعطي دليل — كلمة واحدة + رقم" (board + clue example "حيوان — 2")
+   409→     - Step 4: "الفريق يخمن الكلمات" (board with highlighted guesses + discussion)
+   410→     - Step 5: "صحيح؟ خطأ؟" (result examples: correct/wrong/assassin with colored cards)
+   411→   - WalkthroughBoard component with animated card reveals and highlight markers
+   412→   - ClueExample component showing "حيوان — 2" with animated reveal
+   413→   - ResultExample component showing 3 result types (correct/wrong/assassin) with staggered animations
+   414→   - Skip button for experienced players
+   415→   - localStorage persistence ('shifarat-walkthrough-seen')
+   416→   - Step indicator dots at top
+   417→
+   418→3. **PlayingPhase.tsx** (rewritten):
+   419→   - Added PhaseBanner component showing clear guidance for each phase:
+   420→     - spymaster_view: "🎯 أنت جاسوس {teamName} — انظر للوحة وأعطِ دليلًا"
+   421→     - team_guessing: "🎯 خمنوا الكلمات المرتبطة بالدليل!"
+   422→     - turn_result: "📋 نتيجة التخمين"
+   423→     - turn_switch: "🔄 الدور ينتقل للفريق التالي"
+   424→   - Added CorrectToast component: small green toast banner shown at top when team guesses correctly (1.5s auto-dismiss), allows continuous guessing without interruption
+   425→   - SpymasterView improvements:
+   426→     - Phase banner at top with clear instruction
+   427→     - Collapsed suggestions panel now shows "اضغط للتوسيع ↓" hint
+   428→     - After giving clue: shows clear "تم! الدليل: {word} — {number}" confirmation card
+   429→     - Hint text above input: "💡 اختر إيحاءًا من الأعلى أو اكتب كلمتك الخاصة"
+   430→   - TurnResultView improvements:
+   431→     - Correct guesses: smaller card size (less intrusive since team keeps guessing)
+   432→     - Wrong/neutral/assassin: bigger card with detailed result info
+   433→     - Reduced animations (shorter, snappier transitions)
+   434→     - Removed full mini-board display from result (was redundant)
+   435→   - TurnSwitchView improvements:
+   436→     - Added "الدور الآن لـ" label above team name
+   437→     - Added spymaster instruction: "👁️ جاسوس {teamName}: أعد دليلك"
+   438→     - Team color glow effect (shadow-lg shadow-{color}-500/10)
+   439→     - PhaseBanner at top
+   440→
+   441→Design Notes:
+   442→- All text in Arabic (RTL)
+   443→- Dark theme with emerald accents preserved
+   444→- Framer Motion animations throughout
+   445→- Mobile-first responsive (mini grid adapts, touch-friendly 44px targets)
+   446→- shadcn/ui components used (Button, Badge, Input)
+   447→- Zero new lint errors from shifarat files (3 errors found and fixed using queueMicrotask pattern)
+   448→
+   449→Stage Summary:
+   450→- 3 files modified/created in src/components/shifarat/
+   451→- GameWalkthrough.tsx: ~370 lines, 5 animated walkthrough steps
+   452→- LandingPage.tsx: ~250 lines, with mini grid preview, quick start, tutorial button
+   453→- PlayingPhase.tsx: ~1030 lines, with phase banners, correct toast, improved clarity
+   454→- All pre-existing lint errors (47) are from other files, not shifarat
+   455→
+   456→---
+   457→Task ID: 1
+   458→Agent: main
+   459→Task: تحسين تجربة المستخدم في لعبة الشيفرات - جعل اللعبة أسهل للفهم
+   460→
+   461→Work Log:
+   462→- قراءة جميع ملفات اللعبة الحالية (types, logic, store, components)
+   463→- تحليل مشكلة المستخدم: واجهة معقدة ومشتتة لا تشرح كيف تلعب
+   464→- تفويض تحسين شامل لعبة الشفارات ل subagent (full-stack-developer)
+   465→- التحقق من نجاح التعديلات: lint نظيف، HTTP 200، لا أخطاء compilation
+   466→
+   467→Stage Summary:
+   468→- LandingPage.tsx: أُعيد كتابتها بالكامل مع لوحة مصغرة متحركة (5x5)، شرح خطوات اللعبة، زر "كيف تلعب؟" بارز، زر "ابدأ سريعاً"، دليل ألوان
+   469→- GameWalkthrough.tsx: مكون جديد - شرح تفاعلي من 5 خطوات يظهر تلقائياً عند أول زيارة (localStorage)
+   470→- PlayingPhase.tsx: إضافة PhaseBanner (إرشادات واضحة لكل مرحلة)، CorrectToast (إشعار صغير عند التخمين الصحيح)، تحسين SpymasterView وTurnResultView وTurnSwitchView
+   471→- 0 أخطاء lint جديدة في ملفات الشفارات
+   472→
+   473→---
+   474→Task ID: 1
+   475→Agent: Main Agent
+   476→Task: Fix Shifarat card guessing bugs - correct guess doesn't reveal color, wrong guess reveals card type
+   477→
+   478→Work Log:
+   479→- Analyzed user's screenshot showing the game in guessing phase with no visual feedback after clicking correct card
+   480→- Read all relevant files: PlayingPhase.tsx (1519 lines), shifarat-store.ts, shifarat-types.ts, shifarat-logic.ts
+   481→- Identified 4 root causes:
+   482→  1. handleCardClick used stale closure variables (board, guessesAllowed, guessesThisTurn) — could cause silent failures
+   483→  2. GuessResultOverlay revealed card type for wrong/neutral guesses ("كلمة الفريق الخصم", "كلمة محايدة") violating user's requirement
+   484→  3. isInvalidState auto-reset in PlayingPhase was too aggressive — could reset game during normal gameplay
+   485→  4. Store onRehydrateStorage was incorrectly resetting games in clue_given/team_guessing phases
+   486→  5. selectCard store action was forcing viewMode to 'team' on every guess, which could cause unnecessary re-mounts
+   487→
+   488→- Fixed handleCardClick to read state directly from store via useShifaratStore.getState() instead of closure variables
+   489→- Fixed GuessResultOverlay: wrong and neutral now both show "❌ خطأ!" + "الكلمة لا تخص فريقك — انتهى الدور" (no card type info revealed)
+   490→- Fixed TurnResultView: wrong/neutral subtitle changed to "الكلمة لا تخص فريقك — تم تحويل الدور"
+   491→- Fixed isInvalidState check: now only checks for truly broken state (empty board), removed auto-reset timer
+   492→- Fixed onRehydrateStorage: only resets if board is empty, doesn't check clue/guessing phase validity
+   493→- Fixed selectCard: removed viewMode forcing (was always setting to 'team', causing potential re-mounts)
+   494→- Bumped store persist version to 6 to clear old stale state from localStorage
+   495→- Added console.log debugging to giveClue and selectCard for tracking game flow
+   496→
+   497→Stage Summary:
+   498→- 2 files modified: PlayingPhase.tsx, shifarat-store.ts
+   499→- Key behavior changes:
+   500→  - Correct guess → card color revealed, ✅ overlay shows for 1.5s then dismisses
+   501→  - Wrong guess → ❌ overlay with generic error (no card type revealed), turn switches
+   502→  - Neutral guess → same as wrong (generic error, turn switches)
+   503→  - Assassin guess → 💀 overlay, instant loss announcement
+   504→  - No more aggressive auto-reset during normal gameplay
+   505→
+   506→---
+   507→Task ID: 1
+   508→Agent: Main Agent
+   509→Task: Fix Shifarat card guessing still not working - user clicks correct card, nothing changes
+   510→
+   511→Work Log:
+   512→- User reported: after spy gives clue, in guessing phase, clicking "بركان" (correct word) does nothing
+   513→- Deep-analyzed all code paths: PlayingPhase.tsx (1520 lines), shifarat-store.ts, shifarat-logic.ts, shifarat-types.ts
+   514→- Identified potential issues:
+   515→  1. handleCardClick useCallback had [guessOverlay] dependency - stale closure could block clicks
+   516→  2. No protection against rapid double-clicks causing race conditions
+   517→  3. Persist version 6 state could be stale from previous buggy versions
+   518→  4. No try/catch around handleCardClick - errors would silently prevent state updates
+   519→  5. State verification was missing after set() - no way to confirm update succeeded
+   520→
+   521→- Rewrote handleCardClick in TeamGuessingView:
+   522→  - Added isProcessingRef (useRef) to prevent double-clicks reliably
+   523→  - Added guessOverlayRef synced via useEffect (not during render - fixes lint)
+   524→  - Added try/catch with error recovery (sets isProcessingRef.current = false on error)
+   525→  - Added comprehensive console.log at every decision point for debugging
+   526→  - Changed dependency array to [] - uses getState() directly, no stale closures
+   527→  - Combined wrong/neutral sound handling
+   528→  - Set processing guard BEFORE calling selectCard (prevents race conditions)
+   529→
+   530→- Enhanced selectCard in shifarat-store.ts:
+   531→  - Added detailed console.log including card color, team scores, isRevealed status
+   532→  - Added post-set verification log (confirms state was actually updated)
+   533→  - Changed from inline spread to explicit updates object for clarity
+   534→
+   535→- Added persist migration to version 7:
+   536→  - Forces clean reset for all states from version < 7
+   537→  - Ensures no stale game state from previous buggy versions
+   538→
+   539→Stage Summary:
+   540→- 2 files modified: PlayingPhase.tsx, shifarat-store.ts
+   541→- Key fixes: useRef for click guards, useEffect for ref sync, try/catch error recovery, comprehensive logging, persist version bump
+   542→- Pushed to GitHub: commit 7e013cc
+   543→---
+   544→Task ID: 1
+   545→Agent: main
+   546→Task: Fix Shifarat card guessing bug — correct guesses rejected as 'neutral'
+   547→
+   548→Work Log:
+   549→- Analyzed debug output: `card=أفعى color=red team=red result=neutral` revealed the ROOT CAUSE
+   550→- Traced through selectCard → guessWord call chain
+   551→- Found that `guessWord` was throwing an error ("Cannot read properties of undefined (reading 'board')")
+   552→- The catch block in `selectCard` was returning `{ result: 'neutral' }` as a fallback for ANY error
+   553→- This masked the real error and caused three cascading bugs:
+   554→  1. Correct team cards showed "الكلمة لا تخص فريقك" (wrong toast)
+   555→  2. Turn never switched (phase stayed 'clue_given')
+   556→  3. Timer kept running (state stuck)
+   557→
+   558→- Fixed `selectCard` in shifarat-store.ts:
+   559→  - Added pre-flight validation for board/state/currentTeam before calling logic
+   560→  - Changed catch block to return 'wrong' instead of 'neutral' on error
+   561→  - Forces game reset on corrupted state
+   562→  - Better error messages for debugging
+   563→
+   564→- Simplified `guessWord` in shifarat-logic.ts:
+   565→  - Removed excessive try-catch wrappers (STEP 1-4) that hid errors
+   566→  - Let errors propagate naturally to selectCard's catch block
+   567→
+   568→- Bumped Zustand persist from v9 to v10 to force-clear ALL stale localStorage state
+   569→
+   570→- Cleaned up PlayingPhase.tsx:
+   571→  - Removed debug instrumentation (🔍 lines)
+   572→  - Removed debugInfo from toast interface
+   573→  - Cleaned up handleCardClick (removed console.logs)
+   574→  - Updated version to v3.3
+   575→
+   576→Stage Summary:
+   577→- Root cause: catch block in selectCard returning 'neutral' on any error, masking the real issue
+   578→- Pushed as commit 55fa995 to GitHub (main branch) — Vercel will auto-deploy
+   579→- Key fix: pre-flight validation + proper error handling + persist version bump
+   580→---
+   581→Task ID: 1
+   582→Agent: Main Agent
+   583→Task: Fix stale Service Worker caching old JS — break the chicken-and-egg cycle
+   584→
+   585→Work Log:
+   586→- Analyzed the root cause: old Service Worker (networkFirst strategy) cached stale JS chunks, preventing new code from reaching the browser
+   587→- Identified the chicken-and-egg cycle: new code cannot load because old SW serves old JS, and old SW cannot be updated because new code never loads
+   588→- Added inline cleanup script in layout.tsx <head> that runs BEFORE any JS chunks load — unregisters all SWs and clears all caches using sessionStorage flag (sw-clr-v5)
+   589→- Rewrote sw.js to be a pure push notification handler — NO fetch event listener, NO caching at all
+   590→- Simplified ServiceWorkerRegistrar with updateViaCache: "none"
+   591→- Bumped persist version to 12 to force localStorage reset
+   592→- Pushed as commit 9f6f0a0 (v3.8) to GitHub
+   593→
+   594→Stage Summary:
+   595→- Key fix: Inline <head> script breaks the stale-SW cycle by running before JS chunks load
+   596→- The old SW networkFirst strategy fetches HTML from network first, so the fresh HTML (with cleanup script) WILL reach the browser
+   597→- sw.js now has zero fetch interception — browser handles all caching via standard HTTP + Next.js content hashes
+   598→- Persist v12 ensures corrupted game state from old versions is wiped
+   599→
+   600→
+   601→---
+   602→Task ID: 1
+   603→Agent: main
+   604→Task: Fix WebRTC voice between devices - Glare + socketId/userId mismatch
+   605→
+   606→Work Log:
+   607→- Analyzed complete signaling flow in useVoiceRTC.ts and voice-signal/index.ts
+   608→- Identified ROOT CAUSE: WebRTC "glare" - both peers create offers simultaneously
+   609→  - When Phone joins and PC joins, both room-members and peer-joined fire
+   610→  - Both create offers → both enter have-local-offer state
+   611→  - setRemoteDescription() fails silently when receiving the other's offer
+   612→  - Connection NEVER establishes → no audio between devices
+   613→- Identified SECOND BUG: socketIdToUserIdRef existed in g-g-source but NOT in src
+   614→  - attachRemoteAnalyser saved speaking state with socketId key
+   615→  - RoomInteriorView looked up with userId key → never matched
+   616→- Fixed glare: Added rollback handling in offer handler + stale answer detection
+   617→- Fixed socketIdToUserId: Copied reverse mapping from g-g-source to src
+   618→- Fixed ICE candidate queuing: Changed from 1 retry to 5 retries with exponential backoff
+   619→- Pushed commit 23ccb0c to GitHub
+   620→
+   621→Stage Summary:
+   622→- Key insight: Same-network devices failing proved it was NOT a TURN/NAT issue
+   623→- The problem was in the signaling layer - offer/answer exchange itself
+   624→- Glare fix: rollback local offer when receiving incoming offer in have-local-offer state
+   625→- Render will auto-deploy or user can manual deploy
+   626→
+   627→---
+   628→Task ID: 1
+   629→Agent: main
+   630→Task: Persistent header + bottom nav across main pages (Games/Council/Friends) + gazelle loader for internal pages
+   631→
+   632→Work Log:
+   633→- Analyzed the architecture: SiteHeader + SiteBottomNav were duplicated in src/app/page.tsx and src/app/friends/page.tsx, causing them to remount on every navigation between bottom-nav tabs. Also found a bug — on Friends page, `onProfileClick` was a no-op, so clicking the profile picture did nothing.
+   634→- Created `src/components/shared/AppShellContext.tsx` — context exposing authUser, openProfile, openLogin, openRegister, handleLogout, subscriberProfile to all child pages.
+   635→- Created `src/components/shared/AppShell.tsx` — client component placed in the root layout (`src/app/layout.tsx`). For shell routes (/, /friends, /voice-rooms), it renders SiteHeader + SiteBottomNav + YallaProfileDialog + AuthModals ONCE — they stay mounted across navigations. For non-shell routes (game lobbies), it just renders children. Handles auth gating: forced on / and /friends, /voice-rooms keeps guest mode.
+   636→- Created `src/components/shared/GazelleLoader.tsx` — pure CSS/SVG animated running gazelle (legs alternating, body bob, tail wiggle, moving ground, dust particles). Used for auth-checking screen and as the global loading.tsx.
+   637→- Updated `src/app/layout.tsx` to wrap {children} with <AppShell>.
+   638→- Refactored `src/app/page.tsx` — removed all auth state, SiteHeader, SiteBottomNav, LoginModal, RegisterModal, YallaProfileDialog, SubscriberProfileData fetch, handleLogout, handleAuthSuccess (all moved to AppShell). HomePage is now slim: just logo header + GamesSection.
+   639→- Refactored `src/app/friends/page.tsx` — removed SiteHeader (was broken with no-op onProfileClick), removed SiteBottomNav (now provided by AppShell). Kept the local YallaProfileDialog for viewing OTHER users' profiles (viewOnly mode) — that's distinct from AppShell's profile dialog which opens MY profile.
+   640→- Refactored `src/app/voice-rooms/components/RoomListView.tsx` via Python script (`/home/z/my-project/scripts/refactor_roomlistview.py`) — removed the internal "Top Row" (avatar + profile popover + search button, ~5230 chars) and the internal BOTTOM_NAV `<nav>` (~2500 chars, was purely decorative with no onClick handlers). Root div changed from `fixed inset-0 flex flex-col overflow-hidden` to `relative flex flex-col min-h-screen` so it flows inside AppShell's spacer. Header no longer needs paddingTop env(safe-area-inset-top) since AppShell's SiteHeader handles the top.
+   641→- Updated `src/app/loading.tsx` to use GazelleLoader fullScreen instead of generic spinner — applies to all routes' initial load.
+   642→- Verified build: `npx next build` compiles successfully (✓ in 19.1s). Pre-existing TS errors in unrelated files (familyfeud, profile, etc.) — not introduced by this change.
+   643→- Committed as f90160f and pushed to GitHub main → Vercel will auto-deploy.
+   644→
+   645→Stage Summary:
+   646→- 8 files changed, 498 insertions, 397 deletions.
+   647→- New persistent architecture: ONE SiteHeader + ONE SiteBottomNav for /, /friends, /voice-rooms — they mount in AppShell (root layout) and stay mounted across tab switches. Only page content changes.
+   648→- Bug fixed: clicking profile avatar in SiteHeader now opens YallaProfileDialog on EVERY shell route (was broken on /friends).
+   649→- New loading animation: animated running gazelle (GazelleLoader) replaces generic spinner for both auth-checking state and Next.js route loading.
+   650→- Dead code: BottomNavigation function in src/app/page.tsx is still defined but unused (pre-existing dead code from earlier refactor) — left alone to minimize risk.
+   651→
+   652→---
+   653→Task ID: 1
+   654→Agent: main
+   655→Task: Ant overlay above pages + offline modal + prevent 'page web non disponible'
+   656→
+   657→Work Log:
+   658→- Analyzed user's screenshot: Android device showing browser's "Page Web non disponible" page (net::ERR_INTERNET_DISCONNECTED) when trying to access /voice-rooms offline.
+   659→- User wants: (1) running ant animation as floating overlay above pages (not a separate page), (2) show on every loading across all pages, (3) slow internet → show ant, (4) intermittent disconnection → show ant moving above pages, (5) full offline → modal in middle with 2 buttons (close game + reconnect), (6) NEVER show browser's "page web non disponible" page.
+   660→
+   661→- Created `src/components/shared/AntLoaderOverlay.tsx` — floating bottom-center pill above SiteBottomNav, contains GazelleLoader size=56 + label. Uses CSS opacity/transform for show/hide (no setState in effect — complies with react-hooks rules). 4 reasons: navigation/slow-fetch/slow-network/intermittent with auto-labels.
+   662→
+   663→- Created `src/components/shared/OfflineModal.tsx` — modal in middle shown when fully offline. Two buttons: "إغلاق اللعبة" (tries window.close(), fallback to about:blank) and "إعادة الاتصال" (HEAD /api/auth/me ping, reload on success). Includes ant animation, "still offline" message, status indicator.
+   664→
+   665→- Created `src/components/shared/NetworkStatusProvider.tsx` — wraps AppShell in root layout. Listens to window online/offline events. Periodic 30s ping to verify server reachability. Uses navigator.connection.effectiveType for slow 2G/3G detection. Monkey-patches window.fetch to detect slow fetches (>2s threshold) — auto-shows overlay. Detects Next.js route transitions via usePathname(). Provides useNetworkStatus() hook.
+   666→
+   667→- Created `public/offline.html` — standalone HTML page (no React, no JS framework) with inline SVG ant animation + offline modal. Served by Service Worker when navigation fetch fails. Auto-reconnect on 'online' event + periodic 30s ping. Includes Google Fonts CDN with font fallback.
+   668→
+   669→- Updated `public/sw.js` — added fetch event listener that intercepts navigation requests (mode === 'navigate'). On network failure (ERR_INTERNET_DISCONNECTED, ERR_NAME_NOT_RESOLVED, ERR_NETWORK_CHANGED, etc.), serves cached /offline.html instead of letting browser show "Page Web non disponible". Non-navigation requests pass through. Pre-caches /offline.html in 'ggames-offline-v1' cache during install.
+   670→
+   671→- Updated `capacitor.config.ts` — added `server.errorPath: 'offline.html'`. For Android WebView wrapping remote URL: when remote load fails, Capacitor serves local /offline.html instead of system browser error page. This handles the very first load when offline (before SW is registered).
+   672→
+   673→- Updated `src/app/layout.tsx` — wrapped AppShell with <NetworkStatusProvider>. Bumped sw-clr-v5 → sw-clr-v6 to force cleanup of any stale SW and ensure new SW with fetch interceptor gets registered on next session.
+   674→
+   675→- Updated `src/app/loading.tsx` — uses GazelleLoader fullScreen for initial route load (before React hydrates). After hydration, NetworkStatusProvider's overlay takes over.
+   676→
+   677→- Verified: npx next build ✓ (19.0s), ESLint ✓ (after refactor to remove set-state-in-effect), no TS errors in new files.
+   678→
+   679→- Committed as 6c8c770 and pushed to GitHub main → Vercel will auto-deploy.
+   680→
+   681→Stage Summary:
+   682→- 9 files changed, 1064 insertions, 21 deletions.
+   683→- 4 new files: AntLoaderOverlay, OfflineModal, NetworkStatusProvider, public/offline.html.
+   684→- 4 modified files: capacitor.config.ts, public/sw.js, src/app/layout.tsx, src/app/loading.tsx.
+   685→- Architecture: NetworkStatusProvider wraps AppShell in root layout — overlay floats above all pages. SW + Capacitor errorPath handle the offline-page case for both PWA and Android WebView.
+   686→
+   687→---
+   688→Task ID: 1
+   689→Agent: main
+   690→Task: Friend profile shows full info + 3-dot menu respects friend status
+   691→
+   692→Work Log:
+   693→- User reported 2 issues: (1) Friend profile dialog was incomplete (missing ID, country, birthdate, gender, level, frame, ornament, card, cover). (2) 3-dot menu on a friend's profile still showed "إضافة صديق" (Add Friend) even though the user is already a friend.
+   694→
+   695→- Root cause #1: /api/user/lookup only returned basic fields (id, username, displayName, avatar, numericId). The YallaProfileDialog never fetched the full profile in viewOnly mode — just used whatever was in authUser prop (which was passed basic info only).
+   696→
+   697→- Root cause #2: openUserProfile in friends/page.tsx was checking `friends.some(f => f.userId === user.id)`, but FriendItem uses 'userId' (not 'id'). When passing FriendItem directly to openUserProfile(f), user.id was undefined, so the check failed, friendStatus stayed 'none', and the menu showed "Add Friend".
+   698→
+   699→- Fixes:
+   700→  1. src/app/api/user/lookup/route.ts: extended to support `full=1` query param that returns ALL profile fields (bio, country, cover, frame, ornament, card, gender, birthDate, level, role, createdAt). Also supports UUID lookup (not just numericId/username search). Returns single user when isNumeric or isUuid + full=1, otherwise returns array.
+   701→  
+   702→  2. src/app/friends/page.tsx (openUserProfile): now accepts both 'id' and 'userId' keys (FriendItem uses userId, UserResult uses id). Falls back user.id || user.userId. friendStatus check now correctly matches friends.
+   703→  
+   704→  3. src/components/shared/YallaProfileDialog.tsx: added fullUser state — when viewOnly=true, fetches /api/user/lookup?id=<UUID>&full=1 and merges into fullUser. Added effectiveUser = viewOnly ? (fullUser || authUser) : authUser. All display parts (avatar, frame, ornament, card, cover, name, ID, country, bio, gender icon) now use effectiveUser. Gender icon is now dynamic (male/female based on effectiveUser.gender). Added birthDate display (🎂 row) under info strip when birthDate exists. Profile level populated from fetched user.level → xp.level. Edit windows (editWin, basicWin) now hidden in viewOnly mode. Guest view check changed from authUser to effectiveUser.
+   705→
+   706→- Verified: npx next build ✓ (21.8s), ESLint ✓. Pre-existing TS warnings (framer-motion Variants + authUser null check in edit windows — all in non-viewOnly code paths) remain but don't block build.
+   707→
+   708→- Committed as f08e70b and pushed to GitHub main → Vercel will auto-deploy.
+   709→
+   710→Stage Summary:
+   711→- 3 files changed, 191 insertions, 47 deletions.
+   712→- Friend profile now shows full info: ID, country flag, gender icon (dynamic), birthdate, level flag, bio, frame (equipped), ornament (pendant), card (backdrop), cover (profile theme).
+   713→- 3-dot menu now correctly shows "مراسلة + حذف صديق" for existing friends, "إضافة صديق" only for non-friends.
+   714→
+   715→---
+   716→Task ID: 1
+   717→Agent: main
+   718→Task: Fix chat view height + delete friend stays in chat with add-friend button
+   719→
+   720→Work Log:
+   721→- User reported 3 issues: (1) chat input hidden under bottom nav (chat view larger than screen), (2) delete friend from profile 3-dot menu didn't work, (3) wanted: when deleted, friend should be removed from friends page; if chat stays, input/smiles/gifts should be replaced with yellow 'add friend' button.
+   722→
+   723→- Root cause #1: chat view height was h-[calc(100vh-3.5rem)] = 100vh-56px, but AppShell adds top spacer (56-64px) AND bottom nav (~75px). Chat view extended 75px below visible area.
+   724→
+   725→- Root cause #2: delete confirmation modal was inside {view === 'chat' && ...} block. When user opened profile from friends LIST (not chat) and clicked delete, view was 'list' so the modal never rendered — delete silently failed because no confirmation.
+   726→
+   727→- Root cause #3: handleDeleteFriend redirected to list view (setView('list'); setChatFriend(null);) instead of staying in chat with the add-friend UI.
+   728→
+   729→- Fixes in src/app/friends/page.tsx:
+   730→  1. Chat view height: h-[calc(100dvh-3.5rem-75px)] — uses dynamic viewport height and subtracts both top spacer (3.5rem) and bottom nav (75px). Input now visible above bottom nav.
+   731→  2. Delete confirmation modal moved OUTSIDE the chat view block — now global, renders whenever showDeleteConfirm && chatFriend are set, regardless of current view. Z-index raised to z-[10000].
+   732→  3. handleDeleteFriend: removed redirect-to-list. Now calls DELETE API with proper error handling (checks res.ok + data.success), removes friend from local state, sets friendStatus='none', stays in current view.
+   733→  4. Chat view: added inline IIFE computing isStillFriend = friends.some(f => f.userId === chatFriend.userId). Bottom row is conditional:
+   734→     - If still friend: normal input + smile + gifts
+   735→     - If NOT still friend: yellow 'إعادة إضافة كصديق' button (amber-400 bg) that calls handleReAddFriend()
+   736→  5. 3-dot menu in chat adapts: shows 'حذف صديق' if friend, 'إعادة إرسال طلب صداقة' if not.
+   737→  6. Empty state message adapts based on isStillFriend.
+   738→  7. handleReAddFriend: new function that POSTs to /api/friends with toUserId = chatFriend.userId, sets friendStatus='pending' on success.
+   739→
+   740→- Verified: npx next build ✓ (24.8s), ESLint ✓.
+   741→
+   742→- Committed as dfc8d21 and pushed to GitHub main → Vercel will auto-deploy.
+   743→
+   744→Stage Summary:
+   745→- 2 files changed (src/app/friends/page.tsx + worklog.md), 111 insertions, 29 deletions.
+   746→- Chat input box now visible above bottom nav.
+   747→- Delete friend works from any view (list or chat) — confirmation modal is global.
+   748→- After delete in chat: stays in chat, replaces input/smiles/gifts with yellow 'add friend' button.
+   749→- After re-adding as friend: button shows 'pending' state, and once accepted the chat input returns (isStillFriend becomes true again).
+   750→
+   751→---
+   752→Task ID: 1
+   753→Agent: main
+   754→Task: Notifications badges + 'مراسلة' text button
+   755→
+   756→Work Log:
+   757→- User requested: (1) Enable notifications — show badge on Friends button in bottom nav when receiving friend request, friend accept, or message from friend. When entering friends page: badge on 'friends' tab for messages, badge on requests section for pending requests, badge on sender name for unread messages. (2) Change the icon in front of friend in friends list to a 'مراسلة' text button.
+   758→
+   759→- Implementation:
+   760→  1. NEW endpoint /api/notifications/summary (src/app/api/notifications/summary/route.ts): returns pendingFriendRequests count, unreadMessages total, unreadByFriend array (per-friend count + last message + last timestamp), and totalBadge. Single GROUP BY query for unread messages.
+   761→  
+   762→  2. SiteBottomNav.tsx: polls /api/notifications/summary every 30s + on focus + on visibilitychange. Shows red badge on the 'friends' tab icon with count = pendingCount + totalUnread. Badge shows '99+' for values > 99.
+   763→  
+   764→  3. Friends page (src/app/friends/page.tsx):
+   765→     - New state: unreadByFriend (Record<friendId, {count, lastMessage, lastMessageAt}>), pendingCount
+   766→     - loadSummary() polls every 15s (faster than bottom nav for snappier UI)
+   767→     - Re-fetches summary when view changes (chat opened/closed)
+   768→     - Top tab bar badges: 'notifications' tab = pendingCount, 'friends' tab = totalUnread
+   769→     - Friend list item redesigned: avatar (with red unread badge), name (bold if unread) + green dot indicator + level + last message preview (truncated to 30 chars) if unread, 'مراسلة' text button (green pill with MessageCircle icon + text 'مراسلة' + red unread badge on corner)
+   770→     - Replaced the old icon-only MessageCircle button (w-9 h-9 rounded-full) with the new 'مراسلة' text button
+   771→
+   772→- Verified: npx next build ✓ (23.8s), ESLint ✓, no TS errors in modified files.
+   773→
+   774→- Committed as a698dea and pushed to GitHub main → Vercel will auto-deploy.
+   775→
+   776→Stage Summary:
+   777→- 4 files changed (new summary endpoint + friends page + SiteBottomNav + worklog), 244 insertions, 10 deletions.
+   778→- Bottom nav Friends button now shows red badge with total notifications count (pending reqs + unread msgs).
+   779→- Friends page shows per-friend red unread badges on avatar AND on 'مراسلة' button.
+   780→- Top tabs show badges: 'الإشعارات' = pending requests count, 'أصدقاء' = total unread messages.
+   781→- 'مراسلة' button is now a green pill with text + icon, replaces the icon-only circle button.
+   782→
+   783→---
+   784→Task ID: 1
+   785→Agent: main
+   786→Task: Ant overlay no longer blocks input + only shows when network REALLY bad
+   787→
+   788→Work Log:
+   789→- User reported: (1) ant blocks email/password input during login, (2) back/logout buttons stacked on top of each other, (3) ant appears too frequently — only show when network is VERY VERY weak.
+   790→
+   791→- Root cause #1: AntLoaderOverlay used z-[9998], which is ABOVE shadcn Dialog (z-50). When login modal opened, the ant overlay was rendered on top, blocking all input. Also overlay triggered on pathname change (4s) and slow fetches (>6s) — too aggressive.
+   792→
+   793→- Root cause #3: Overlay triggered on: pathname change (4s), fetch >6s, effectiveType 2g/slow-2g, single ping failure. Way too aggressive — user wants only at "most extreme weak level".
+   794→
+   795→- Fixes:
+   796→  1. AntLoaderOverlay.tsx: z-index lowered from z-[9998] to z-30 (BELOW modals at z-50). pointer-events-none always so even if visible, it never blocks clicks/typing.
+   797→  
+   798→  2. NetworkStatusProvider.tsx — much less aggressive:
+   799→     - REMOVED pathname-change trigger entirely (was showing on every navigation — most annoying)
+   800→     - Slow-fetch threshold raised from 6s to 15s (only really slow fetches)
+   801→     - Network type check: only slow-2g triggers overlay (NOT 2g anymore). Also requires RTT > 3000ms OR downlink < 25kbps as additional criteria.
+   802→     - Ping interval raised from 30s to 60s (less polling)
+   803→     - Intermittent disconnection now requires 3+ consecutive ping failures before showing overlay (was 1 failure → ~3 minutes of confirmed disconnection before showing)
+   804→     - Added hasOpenModal() helper — checks for ANY open modal/dialog or focused input/textarea. If any is open, overlay is suppressed.
+   805→     - Added 500ms interval check — if a modal opens, immediately hide overlay
+   806→     - showOverlay() API also checks hasOpenModal() before showing
+   807→  
+   808→  3. SettingsModal CSS (.ys-bottom-buttons): Added flex-wrap: nowrap explicitly, white-space: nowrap, overflow: hidden, text-overflow: ellipsis on .ys-btn to prevent text wrapping. Added min-width: 0 to allow flex shrink. Reduced font-size from 16px to 14px for safer fit on narrow screens.
+   809→
+   810→- Verified: npx next build ✓ (24.5s), ESLint ✓.
+   811→
+   812→- Committed as 21f75de and pushed to GitHub main → Vercel will auto-deploy.
+   813→
+   814→Stage Summary:
+   815→- 4 files changed (AntLoaderOverlay, NetworkStatusProvider, globals.css, worklog), 142 insertions, 102 deletions.
+   816→- Ant overlay no longer blocks login form input (z-index lowered below modals + pointer-events-none).
+   817→- Ant overlay now only shows when network is REALLY bad: slow-2g, OR RTT > 3000ms, OR downlink < 25kbps, OR fetch > 15s, OR 3+ ping failures in a row (3+ minutes of confirmed disconnection).
+   818→- Ant overlay is suppressed entirely when ANY modal/dialog is open OR when an input/textarea has focus.
+   819→- SettingsModal bottom buttons (logout + account center) have defensive CSS to prevent text wrapping and stacking on narrow screens.
+   820→
+   821→---
+   822→Task ID: 1
+   823→Agent: main
+   824→Task: WhatsApp-style chat bubbles + Send arrow button
+   825→
+   826→Work Log:
+   827→- User requested: (1) Send button should be arrow-shaped (not MessageCircle). (2) Messages should differentiate between mine and friend's like WhatsApp/Telegram — not all on one side.
+   828→
+   829→- Investigation: current code had REVERSED alignment. In RTL layout, friend's messages were on visual LEFT (justify-end) and my messages on visual RIGHT (justify-start). This is OPPOSITE of WhatsApp Arabic convention where my messages are on LEFT and friend's on RIGHT.
+   830→
+   831→- Fixes in src/app/friends/page.tsx:
+   832→  1. Send button: replaced MessageCircle with Send icon (lucide-react). Send is paper-airplane/arrow shaped, matches WhatsApp/Telegram send buttons. Added hover effect and aria-label='إرسال'.
+   833→  
+   834→  2. Message alignment flipped to match WhatsApp/Telegram convention:
+   835→     - isMine = msg.fromUserId !== chatFriend.userId (clarified logic)
+   836→     - My messages: justify-end = visual LEFT in RTL (was justify-start)
+   837→     - Friend's messages: justify-start = visual RIGHT in RTL (was justify-end)
+   838→     - In WhatsApp Arabic: my msgs on LEFT, friend's on RIGHT ✓
+   839→  
+   840→  3. Message bubble styling improved:
+   841→     - My messages: bg-[#15BC83] (green) + rounded-2xl + rounded-bl-sm (smaller bottom-left radius = visual 'tail' effect like WhatsApp)
+   842→     - Friend's messages: bg-[#1a3a30] (dark green) + border + rounded-2xl + rounded-br-sm (smaller bottom-right radius for tail effect)
+   843→     - Added shadow-sm for depth
+   844→     - Time text color: white/70 for mine, white/40 for friend's
+   845→     - Added break-words for long messages
+   846→  
+   847→  4. Simplified message rendering using IIFE with return statement for cleaner conditional logic.
+   848→
+   849→- Verified: npx next build ✓ (23.3s), ESLint ✓.
+   850→
+   851→- Committed as 513638b and pushed to GitHub main → Vercel will auto-deploy.
+   852→
+   853→Stage Summary:
+   854→- 2 files changed (src/app/friends/page.tsx + worklog), 61 insertions, 10 deletions.
+   855→- Send button is now a paper-airplane/arrow icon (Send from lucide-react).
+   856→- Messages now properly differentiated: my messages on LEFT (green bubbles), friend's messages on RIGHT (dark green bubbles with border) — like WhatsApp/Telegram.
+   857→- Tail effect via asymmetric border-radius (rounded-bl-sm for mine, rounded-br-sm for friend's).
+   858→
+   859→---
+   860→Task ID: 1
+   861→Agent: main
+   862→Task: Two-sided friend deletion + faster notifications + chat layout gap fix
+   863→
+   864→Work Log:
+   865→- User reported 4 issues:
+   866→  1. When deleting a friend, they remained on the friend's side and could still send messages. The 'add friend' button didn't appear for the friend until late.
+   867→  2. When on friends page and a friend sends a message, notification badge should appear immediately, even while on the friends page.
+   868→  3. Notifications should show counts: bottom nav = total (messages + reqs), friends page tab = total messages, per-friend badge = msgs from that specific person.
+   869→  4. When opening a chat and scrolling, there's a gap at the bottom between the input frame and the bottom nav buttons.
+   870→
+   871→- Root causes:
+   872→  - removeFriend() deletes the single FriendRequest record, so BOTH sides lose the friendship at the DB level. BUT the friend's CLIENT state still has them as a friend (cached 'friends' array). The chat POST endpoint didn't validate friendship before accepting messages.
+   873→  - Summary polling was 15s — too slow for new messages.
+   874→  - Counts are already correct (bottom nav = total, friends tab = messages sum, per-friend = individual count). Just needed faster updates.
+   875→  - Chat view used h-[calc(100dvh-3.5rem-75px)]. 'dvh' is dynamic — when mobile URL bar shows/hides during scroll, viewport height changes but the calculated height doesn't update → gap or overlap.
+   876→
+   877→- Fixes:
+   878→  1. admin-db.ts: added areFriends(userIdA, userIdB) — checks if an accepted FriendRequest exists between two users. Single indexed query.
+   879→  
+   880→  2. chat/route.ts POST: validates friendship before inserting message. Returns 403 with friendshipStatus='none' if not friends. This prevents a former friend from sending messages after being deleted.
+   881→  
+   882→  3. chat/route.ts GET: includes friendshipStatus ('friends' | 'none') in response. Friend's UI can detect they've been deleted and immediately show 'add friend' button. Also: only marks messages as read if still friends (so deleted friends see unread badges on old messages).
+   883→  
+   884→  4. friends/page.tsx:
+   885→     - Polls /api/chat GET every 3s during chat — reads friendshipStatus from response and updates friendStatus. If 'none', reloads friends list and shows 'add friend' button.
+   886→     - Periodically reloads /api/friends?type=friends every 20s while page is visible — detects remote deletions even when not in chat.
+   887→     - loadSummary polling increased from 15s to 10s (faster notifications for new messages while on friends page).
+   888→     - Added visibilitychange listener — re-fetches summary when user returns to the tab.
+   889→     - sendMessage() now handles 403 response (not friends anymore) — shows toast, sets friendStatus='none', reloads friends list.
+   890→  
+   891→  5. Chat view layout: replaced h-[calc(100dvh-3.5rem-75px)] with position:fixed + top:14 + bottom:[75px]. This pins the chat view between the AppShell top spacer and SiteBottomNav, regardless of dynamic viewport height changes. No more gap when scrolling.
+   892→
+   893→- Verified: npx next build ✓ (22.9s), ESLint ✓ (only pre-existing warnings about unused eslint-disable directives).
+   894→
+   895→- Committed as 4b2d937 and pushed to GitHub main → Vercel will auto-deploy.
+   896→
+   897→Stage Summary:
+   898→- 4 files changed (admin-db, chat/route.ts, friends/page.tsx, worklog), 131 insertions, 14 deletions.
+   899→- Friend deletion is now two-sided: when A deletes B, B's chat GET response returns friendshipStatus='none', B's UI immediately shows 'add friend' button. If B tries to send a message, POST returns 403 and shows toast 'لم تعودا أصدقاء'.
+   900→- Notifications are faster: summary polls every 10s while page visible (was 15s). Friends list re-polls every 20s to detect remote deletions. visibilitychange listener triggers immediate re-fetch when user returns to tab.
+   901→- Chat view uses fixed positioning (top:14, bottom:75px) instead of dynamic viewport height calc — no more gap when scrolling.
+   902→
+   903→---
+   904→Task ID: 1
+   905→Agent: main
+   906→Task: Consistent emoji PNGs + full gift catalog with prices in chat
+   907→
+   908→Work Log:
+   909→- User reported: (1) emojis sent don't look like emojis that appear in chat (inconsistent rendering). (2) Didn't pull all emojis from sources — need comprehensive list. (3) Need to pull all gifts with prices.
+   910→
+   911→- Root causes:
+   912→  1. Emojis were rendered as Unicode text in both picker and chat. Different CSS (text-2xl vs text-sm) caused different rendering on some devices.
+   913→  2. Only 16 emojis in the picker.
+   914→  3. Only 8 gift emojis (no images, no prices) in the gift picker.
+   915→
+   916→- Fixes:
+   917→  1. NEW src/lib/chat-emojis-gifts.ts: EMOJI_CATEGORIES (7 categories: smileys, gestures, hearts, animals, food, activities, symbols) with 120+ emojis total. Re-exports DEFAULT_GIFTS (50+ gifts) and GIFT_CATEGORIES (9 cats) from voice-rooms/types. emojiToPng(emoji): converts Unicode emoji to GitHub emoji CDN PNG URL for consistent rendering. getGiftById(id), isGiftMessage(text), parseGiftId(text), getGiftImageUrl(gift).
+   918→
+   919→  2. Friends chat emoji picker — completely redesigned: 7 category tabs (horizontally scrollable), 8-column grid of emojis rendered as PNG images, max height 40vh, scrollable, fallback to Unicode text on PNG failure.
+   920→
+   921→  3. Friends chat gift picker — completely redesigned: 9 category tabs (popular, romance, luxury, special, ramadan, birthday, vip, zodiac, fantasy), 4-column grid of gifts with thumbnail image + Arabic name + price (with diamonds icon), max height 45vh, scrollable. Gifts sent as 'gift:<id>' format for proper lookup.
+   922→
+   923→  4. Chat message display — 4 cases:
+   924→     a) Gift message (type=gift, text starts with 'gift:'): parse giftId, look up gift, render gift thumbnail + name + price with diamonds icon
+   925→     b) Pure emoji message (text matches emoji regex): render as 12x12 PNG image for consistency
+   926→     c) Old gift message (type=gift, no 'gift:' prefix — backward compat): render emoji as PNG image
+   927→     d) Regular text: render as text with whitespace-pre-wrap
+   928→
+   929→  5. Gift send format changed from '🌹' to 'gift:g1' — allows proper gift lookup with image, name, and price display.
+   930→
+   931→- Verified: npx next build ✓ (23.5s), ESLint ✓.
+   932→
+   933→- Committed as 7a08143 and pushed to GitHub main → Vercel will auto-deploy.
+   934→
+   935→Stage Summary:
+   936→- 3 files changed (NEW chat-emojis-gifts.ts, friends/page.tsx, worklog), 400 insertions, 4 deletions.
+   937→- Emojis now render consistently as PNG images (from GitHub emoji CDN) in both picker and chat — no more font-dependent rendering.
+   938→- Emoji picker now has 7 categories with 120+ emojis (was 16).
+   939→- Gift picker now has 9 categories with 50+ gifts, each showing thumbnail image + Arabic name + price (with diamonds icon).
+   940→- Gifts sent as 'gift:<id>' format — chat displays the gift's image, name, and price.
+   941→
+   942→---
+   943→Task ID: 1
+   944→Agent: main
+   945→Task: Scroll-to-top on route change + Council page natural body scroll
+   946→
+   947→Work Log:
+   948→- User reported: (1) pages should start from top when opened (not from middle). (2) Council page should match Games/Friends layout, rooms don't scroll at the bottom.
+   949→
+   950→- Root causes:
+   951→  1. Next.js App Router does NOT auto-scroll-to-top when navigating between routes that share the same layout (our AppShell wraps all shell routes). Browser preserves scroll position.
+   952→  2. RoomListView root was 'flex flex-col min-h-screen' with rooms area using 'flex-1 overflow-y-auto'. Since parent (min-h-screen) doesn't constrain height to a specific value, flex-1 has no defined height to fill — the scrollable div just expands to fit all content. Body itself doesn't scroll because content is fully rendered. Result: rooms at the bottom are clipped or unreachable.
+   953→
+   954→- Fixes:
+   955→  1. AppShell.tsx: added useEffect that watches pathname and calls window.scrollTo({top:0, behavior:'auto'}) on every route change. Also resets scrollTop on any element with data-scrollable='true'.
+   956→  
+   957→  2. RoomListView.tsx: redesigned to match Games/Friends layout pattern:
+   958→     - Root changed from 'flex flex-col min-h-screen' to 'min-h-screen' (removed flex-col — natural document flow)
+   959→     - Header (main tabs) and sub-tabs now use 'max-w-lg mx-auto w-full' for centered, mobile-friendly width (matches Friends page pattern)
+   960→     - Rooms area changed from 'flex-1 overflow-y-auto' to natural flow (no overflow, no flex-1) — body scrolls naturally like Games/Friends
+   961→     - paddingBottom increased from 85 to 100 to clear the bottom nav
+   962→     - All existing functionality preserved: main tabs (اكتشف/رائج/غرفي), sub-tabs (مؤخراً/منضم/متابَع/أصدقاء), my-room section, search bar, room cards, loading state, empty state.
+   963→
+   964→- Verified: npx next build ✓ (22.0s), ESLint ✓.
+   965→
+   966→- Committed as 3543ef5 and pushed to GitHub main → Vercel will auto-deploy.
+   967→
+   968→Stage Summary:
+   969→- 3 files changed (AppShell, RoomListView, worklog), 57 insertions, 8 deletions.
+   970→- Every page now starts from the top when navigated to (scroll-to-top on pathname change).
+   971→- Council page (voice-rooms) now uses natural body scroll — rooms at the bottom are reachable. Layout matches Games/Friends pattern (max-w-lg mx-auto, pb-100 for bottom nav clearance).
+   972→
+   973→---
+   974→Task ID: 1
+   975→Agent: main
+   976→Task: Redesign Council page to match Games/Friends visual style
+   977→
+   978→Work Log:
+   979→- User reported: "لا أرى أي تحديث او تصميم جديد صفحة المجلس كما هي" — don't see any new design, Council page is the same as before. Previous commit only made structural changes (scroll behavior, layout flow) but the VISUAL design was unchanged.
+   980→
+   981→- Redesigned RoomListView.tsx with substantial visual changes:
+   982→
+   983→1. NEW page header — matches Games page logo pattern: 11x11 rounded gradient box (from-[#15BC83] to-[#0FA070]) with Radio icon, 'المجلس' title (text-xl font-black text-white), gradient divider line below (matches Games page).
+   984→
+   985→2. Main tabs redesigned — matches Friends page tab style: was pill-shaped centered buttons with inline styles, now full-width rectangular tabs with icons + labels. Active tab: bg-[#15BC83] text-white shadow-md. Inactive: text-white/50. Icons added: Compass (اكتشف), Flame (رائج), Home (غرفي). Sticky top-14 (below SiteHeader spacer).
+   986→
+   987→3. Create Room CTA redesigned — matches Friends search button style: was white card with green plus icon and 'إنشاء غرفتي' text, now green pill button (bg-[#15BC83]) with: White/20 circle with Plus icon, 'إنشاء غرفتي' bold + 'ابدأ بثّك الصوتي الآن' subtitle, ChevronLeft arrow on the left.
+   988→
+   989→4. Sub-tabs simplified — cleaner Tailwind classes: was inline styles with clamp() font sizes, now text-xs font-bold, bg-white for active / bg-white/10 for inactive, overflow-x-auto for horizontal scroll on small screens.
+   990→
+   991→5. My Room banner — uses Tailwind classes (bg-[#15BC83]/15 border-[#15BC83]/30) instead of inline styles for consistency with Friends page.
+   992→
+   993→6. Added imports: Compass, Flame, Radio from lucide-react.
+   994→
+   995→- Verified: npx next build ✓ (22.8s), ESLint ✓.
+   996→
+   997→- Committed as ce0c522 and pushed to GitHub main → Vercel will auto-deploy.
+   998→
+   999→Stage Summary:
+  1000→- 2 files changed (RoomListView, worklog), 83 insertions, 75 deletions.
+  1001→- Council page now has a prominent page header with 'المجلس' title + Radio icon.
+  1002→- Main tabs (اكتشف/رائج/غرفي) are now full-width rectangular with icons — matches Friends page tab style.
+  1003→- Create Room CTA is now a prominent green pill button with subtitle.
+  1004→- Sub-tabs are cleaner with consistent Tailwind classes.
+  1005→- All existing functionality preserved: main tabs, sub-tabs, my-room section, search, room cards.
+  1006→
+  1007→---
+  1008→Task ID: 1
+  1009→Agent: main
+  1010→Task: Fix RoomInteriorView z-index + audit asset usage
+  1011→
+  1012→Work Log:
+  1013→- User reported: (1) header and bottom nav block the top and bottom of the room interior. (2) Haven't used the icons, images, windows, mic shapes, and features pulled from Yalla Ludo sources.
+  1014→
+  1015→- Fix #1 (z-index): RoomInteriorView root div was 'fixed inset-0 flex flex-col' without z-index. AppShell's SiteHeader (z-50) and SiteBottomNav (z-50) came AFTER RoomInteriorView in DOM order, so they stacked on top. Changed RoomInteriorView root to z-[60] — now covers the header/nav entirely. Also applied to loading state container.
+  1016→
+  1017→- Audit #2 (asset usage): Checked what Yalla Ludo assets are actually used in RoomInteriorView:
+  1018→  - TUI.colors: 58 references ✓ (color system IS used)
+  1019→  - LikeAnimation: uses /gifts/gift_heart0-8.png ✓
+  1020→  - GiftAnimations: uses SVGA player ✓
+  1021→  - MicSeat: uses lucide-react icons (Crown, Lock, Mic, MicOff) instead of actual images ❌
+  1022→  - BottomBar: no image assets ❌
+  1023→  - Room header: no yalla-ui icons ❌
+  1024→  - MicSeat VIP badges: no room_ic_flag_member_*.webp ❌
+  1025→  - Level badges: no level_big_*.png ❌
+  1026→
+  1027→- Committed as 6cb9d17 and pushed to GitHub main → Vercel will auto-deploy.
+  1028→
+  1029→Stage Summary:
+  1030→- 1 file changed (RoomInteriorView.tsx), 2 insertions, 2 deletions.
+  1031→- Z-index fix: RoomInteriorView now covers the full screen (z-[60]) above AppShell header (z-50) and bottom nav (z-50).
+  1032→- Asset usage audit: identified that MicSeat, BottomBar, and header need to use actual Yalla Ludo image assets instead of lucide-react icons.
+  1033→
+  1034→---
+  1035→Task ID: 1
+  1036→Agent: main
+  1037→Task: Extract voice room icons from Yalla Ludo v1.5.1.0 APK
+  1038→
+  1039→Work Log:
+  1040→- User provided MediaFire download link for Yalla+Ludo+-+Ludo&Jackaroo_1.5.1.0_APKPure.xapk (320MB).
+  1041→- Downloaded XAPK successfully via curl from MediaFire.
+  1042→- XAPK is a ZIP containing: com.yalla.yallagames.apk (219MB), appAssetPack.apk (65MB), config.arm64_v8a.apk (35MB), manifest.json.
+  1043→- Extracted main APK (com.yalla.yallagames.apk) from XAPK.
+  1044→- Listed all room_* resources: 2493 files total (1680 in res/drawable*, 100 in assets/).
+  1045→- The main drawable folder is res/drawable-xxhdpi-v4 (3600 files total, not v17 as expected).
+  1046→- Extracted 1265 room icons from res/drawable-xxhdpi-v4 + 328 from res/drawable-ldrtl-xxhdpi-v17 + 2 SVGA from assets/ = 1267 total.
+  1047→- Copied all to public/room-icons/ (20MB total).
+  1048→- Key icons verified: room_icon_room_top_close, room_icon_room_top_more, room_icon_share, room_ic_input_sound, room_ic_input_mic, room_mic_emoji_icon, room_icon_picture, room_icon_room_music, room_default, room_center_small_treasure_chest, room_fruit_small_icon, icon_room_top_sound, room_gift.svga, room_coin.svga, room_ic_message_send, room_ic_message_send_off, room_chat_icon_emoji, room_gift_send_icon, room_prop_icon, room_icon_back.
+  1049→- Each icon has 12 VIP-level variants (default, blue, coffee, diamond, fame, gold, grand, king, legend, leopard, love, purple).
+  1050→- Build verified: npx next build ✓ (22.0s).
+  1051→- Committed as 0e133ce and pushed to GitHub main → Vercel will auto-deploy.
+  1052→
+  1053→Stage Summary:
+  1054→- 1267 new files (public/room-icons/), 20MB total.
+  1055→- ALL voice room interior icons from Yalla Ludo v1.5.1.0 are now available locally.
+  1056→- Next step: update MicSeat, RoomInteriorView, BottomBar to use these real icons instead of lucide-react or settings-page icons.
+  1057→
+  1058→---
+  1059→Task ID: shop-rebuild-1
+  1060→Agent: main
+  1061→Task: إعادة بناء جميع النوافذ من الصفر — ChargeDialog + RoyalDialog + BuyVipDialog — بأصول Yalla Ludo الأصلية 100%
+  1062→
+  1063→Work Log:
+  1064→- نسخ 23 أصل ملكي من /yalla-ui/full/ إلى /yalla-ui/royal/:
+  1065→  - royal_level_top_bg.webp, royal_level_value_ic.webp, royal_progress_point_ic.webp
+  1066→  - royal_effective_time_bg.9.png
+  1067→  - royal_super_privileges_dialog_bg.webp, royal_super_privileges_item_bg.webp
+  1068→  - royal_super_privilege_dialog_title_bg.webp, royal_super_privileges_dialog_progress_end_ic.webp
+  1069→  - royal_visual_ic.9.png, royal_visual_selected_ic.webp
+  1070→  - royal_circle_coupon_ic.webp, royal_coupon_item_bg.webp, royal_coupon_item_mark_ic.webp
+  1071→  - royal_coupon_shop_diamond_item_ic.webp, royal_coupon_shop_item_ic.webp
+  1072→  - circle_content_open_ic.webp, reddot.webp
+  1073→  - royal_store_add_sub_num_bg.webp, royal_store_gift_pay_value_bg.webp, royal_store_hot_item_bar.webp
+  1074→  - btn_royal_gray.9.png, btn_royall_yes.9.png, dialog_buy_towar_royal_btn_bg.webp
+  1075→- نسخ 19 أصل متجر من /yalla-ui/full/ إلى /yalla-ui/shop/:
+  1076→  - bg_rank.9.png (شريط العنوان)
+  1077→  - btn_shop.9.png, btn_shop_free.9.png (زر الشراء في item_diamonds.xml)
+  1078→  - btn_yes.9.png, btn_yes_press.9.png (bn_yes — زر شراء VIP)
+  1079→  - cart_vip_buy_item_bg.webp (خلفية عنصر VIP)
+  1080→  - shop_item_bg.webp (خلفية عنصر الجواهر/الذهب)
+  1081→  - shop_item_tail_bg.9.png, shop_top_green_line.9.png (الفواصل)
+  1082→  - skin_bg.9.png, skin_close.webp, description_rule.webp
+  1083→  - jia.webp (زر +)
+  1084→  - diamonds1.webp, coin1.webp (الرموز الكبيرة 88x88dip)
+  1085→  - vip.webp, vip_sub_entrance_ic.webp
+  1086→  - privilege_detail_knight_ic.webp, privilege_detail_baron_ic.webp (رموز الفئات)
+  1087→
+  1088→- ChargeDialog.tsx — إعادة بناء شاملة:
+  1089→  - الهيدر: bg_rank.9.png حقيقية + skin_close.webp + bg_add_coin chips مع jia.webp
+  1090→  - الألسنة: shop_switch_*_check.webp و shop_switch_*_uncheck.webp كأيقونات داخل كل لسان
+  1091→  - الفاصل: shop_top_green_line.9.png مع fallback CSS
+  1092→  - بانر أول شحن: bg_firstcharge.png كخلفية حقيقية + fast_pay_first_reward_tip_ic.webp
+  1093→  - RegularPackageCard: shop_item_bg.webp بعتامة كاملة + label_best.webp/label_popular.webp كصور شارات حقيقية + btn_shop.9.png كخلفية زر الشراء
+  1094→  - VipPackageCard: cart_vip_buy_item_bg.webp ممتلئة + privilege_detail_knight/baron_ic.webp + royal_5_throne_ic.webp (60x72dip) + btn_yes.9.png كخلفية زر الشراء (bn_yes drawable)
+  1095→  - RoyalPackageCard: طبقات royal_level_top_bg.webp + bg_shop_royal.webp + royal_level_value_ic.webp + btn_yes.9.png للزر
+  1096→
+  1097→- RoyalDialog.tsx — إعادة بناء شاملة:
+  1098→  - شريط العنوان: bg_rank.9.png + description_rule.webp + skin_close.webp
+  1099→  - الخلفية العلوية: royal_level_top_bg.webp بعتامة 85% (كانت CSS gradient قبل ذلك)
+  1100→  - تاريخ الصلاحية: royal_effective_time_bg.9.png كخلفية حقيقية للـ pill
+  1101→  - لوحة الامتيازات: royal_super_privileges_dialog_bg.webp كخلفية حاوية + royal_super_privileges_item_bg.webp كخلفية كل عنصر + royal_super_privileges_item_bg.webp للزر
+  1102→  - إزالة state غير المستخدم setLoading لإصلاح تحذير ESLint (react-hooks/set-state-in-effect)
+  1103→
+  1104→- BuyVipDialog.tsx — إعادة بناءة شاملة:
+  1105→  - الهيدر: bg_rank.9.png + vip.webp + skin_close.webp + bg_add_coin للجواهر
+  1106→  - البانر: bg_shop_top_banner.webp كخلفية + vip_sub_entrance_ic.webp
+  1107→  - الفاصل: shop_top_green_line.9.png
+  1108→  - كل عنصر: cart_vip_buy_item_bg.webp كخلفية ممتلئة + privilege_detail_knight/baron_ic.webp + royal_5_throne_ic.webp (60x72dip) + btn_yes.9.png كخلفية زر الشراء
+  1109→  - زر الشراء في النموذج: btn_yes.9.png حقيقية
+  1110→
+  1111→- التحقق من المطابقة مع layouts الأصلية Yalla Ludo:
+  1112→  - fragment_shop.xml: 3 ألسنة بـ shop_switch_*_check/uncheck + iv_close skin_close + bg_rank للعنوان
+  1113→  - view_shop_diamonds.xml: shop_top_green_line.9.png كفاصل
+  1114→  - item_diamonds.xml: 107x150dip shop_item_bg.webp + label_best.webp + btn_shop.9.png (90x32dip)
+  1115→  - item_vip_buy.xml: 157.5x195.44998dip cart_vip_buy_item_bg.webp + iv_days 59x72dip + btn_vip_buy bn_yes 110x40dip
+  1116→  - fragment_royal_level2.xml: royal_level_top_bg 212.5dip + RoyalProgressView (radius 92dip) + royal_effective_time_bg + RoyalPrivilegeDetailView
+  1117→
+  1118→- Build verification: npx next build --webpack ✓ (44s compile, 132/132 pages generated)
+  1119→- ESLint verification: ✓ on all 3 dialog files (ChargeDialog, RoyalDialog, BuyVipDialog) — clean
+  1120→- Commit: 29818650
+  1121→- Pushed to GitHub main (ff2fe678..29818650)
+  1122→
+  1123→Stage Summary:
+  1124→- 45 new files added under /yalla-ui/royal/ (23) and /yalla-ui/shop/ (22)
+  1125→- 3 dialog components rebuilt to use authentic Yalla Ludo image assets instead of CSS gradients
+  1126→- All references now match the decoded APK layouts (fragment_shop.xml, item_diamonds.xml, item_vip_buy.xml, fragment_royal_level2.xml)
+  1127→- Pre-existing ESLint warning in RoyalDialog fixed (removed unused setLoading state)
+  1128→- Build passes — Vercel will auto-deploy on push
+  1129→
+  1130→---
+  1131→Task ID: shop-rebuild-2
+  1132→Agent: main
+  1133→Task: إزالة Royal/VIP من الهيدر + إعادة بناء النوافذ كنسخة طبق الأصل 100% من السورس
+  1134→
+  1135→Work Log:
+  1136→- ملاحظات المستخدم: (1) أيقونات Royal/VIP يجب ألا تكون في الهيدر، بل داخل نافذة الشحن. (2) تصميم النوافذ لا يزال غير مطابق للسورس — يجب نسخ سطر سطر، أيقونة أيقونة، لون لون.
+  1137→
+  1138→SiteHeader.tsx (إزالة الأزرار الخاطئة):
+  1139→- حذف زر Royal (royal-btn) من الهيدر
+  1140→- حذف زر VIP (vip-btn) من الهيدر
+  1141→- حذف استيراد RoyalDialog و BuyVipDialog
+  1142→- حذف state royalOpen و vipOpen و royalLevel
+  1143→- حذف useEffect لجلب /api/royal/state
+  1144→- إصلاح تحذير ESLint المسبق على setFrameImg (react-hooks/set-state-in-effect) عبر microtask
+  1145→- الهيدر الآن يحمّل ChargeDialog فقط — وهو يحوي بداخله rle_entranceView لفتح RoyalDialog
+  1146→
+  1147→BuyVipDialog.tsx (حذف):
+  1148→- حُذف بالكامل — لم يكن موجوداً في السورس الأصلي Yalla Ludo
+  1149→- وظيفته مدمجة الآن في لسان "اشتراكات" داخل ChargeDialog (fragment_shop.xml الأصلي له 3 ألسنة فقط)
+  1150→
+  1151→ChargeDialog.tsx (نسخة طبق الأصل من fragment_shop.xml):
+  1152→- الحاوية: RelativeLayout 360dip، كامل الارتفاع، bg=skin_bg.9.png (وليس bg_rank — fragment_shop.xml ليس فيه شريط عنوان)
+  1153→- الصف العلوي حسب fragment_shop.xml سطر سطر:
+  1154→  • rle_entranceView (top-left marginStart=5 marginTop=3): يفتح RoyalDialog — يستخدم royal_level_value_ic.webp
+  1155→  • iv_coupon (top-left marginStart=50 marginTop=3): placeholder
+  1156→  • rl_money_title (centered): rl_gold + rl_diamonds (كل واحد bg_add_coin #0c3c30 radius 10، 75x20dip + coin/diamonds ImageView 29x29dip)
+  1157→  • iv_close (skin_close.webp top-right padding 15/10/10/10)
+  1158→- radio_group_switch (344x45dip marginTop=10): 3 ألسنة فقط (NOT 4):
+  1159→  • gold: bg=shop_switch_left_check.webp + icon=shop_switch_gold_check.webp (16x17dip) + 'ذهب' (12sp bold white)
+  1160→  • diamond: bg=shop_switch_middle_uncheck.webp + icon=shop_switch_diamond_uncheck.webp (16x19dip) + 'ألماس' (12sp bold #17654c)
+  1161→  • privilege: bg=shop_switch_right_uncheck.webp + icon=shop_switch_privilege_uncheck.webp (18.5x16dip) + 'اشتراكات' (12sp bold #17654c)
+  1162→- view_shop_diamonds.xml للمحتوى:
+  1163→  • shop_top_green_line.9.png (9dip divider)
+  1164→  • RecyclerView grid (3 أعمدة جواهر/ذهب، 2 أعمدة VIP)
+  1165→  • shop_item_tail_bg.9.png (191x25dip زر تفاصيل، لون #2bc895)
+  1166→
+  1167→DiamondPackageCard (نسخة طبق الأصل من item_diamonds.xml 107x150dip):
+  1168→- shop_item_bg.webp (107x150dip fitXY كخلفية كاملة)
+  1169→- ll1 (79x20dip marginTop=8 centerHorizontal): أيقونة صغيرة (14x16dip) + عدد (12sp #fff782 shadow #000 dy=3 radius=5)
+  1170→- iv_coin (88x88dip diamonds1.webp أو coin1.webp)
+  1171→- svg_best (label_best.webp 60x21dip marginTop=2 marginEnd=-3)
+  1172→- ll_buy (btn_shop.9.png 90x32dip alignParentBottom centerHorizontal):
+  1173→  • tv_money StrokeTextView 14sp bold #47790c stroke_color=#94f534 stroke_width=2
+  1174→
+  1175→VipPackageCard (نسخة طبق الأصل من item_vip_buy.xml 157.5x195.45dip):
+  1176→- cart_vip_buy_item_bg.webp كخلفية كاملة
+  1177→- FrameLayout 59x72dip marginTop=39 centerHorizontal:
+  1178→  • iv_days: رمز الفئة (privilege_detail_knight/baron_ic.webp أو royal_5_throne_ic.webp)
+  1179→  • ctv_days: 'Nيوم' (16sp bold #17654c)
+  1180→- btn_vip_buy (btn_yes.9.png 110x40dip marginTop=23):
+  1181→  • diamonds ImageView 15x19dip
+  1182→  • tv_num StrokeTextView 15sp StrokeTextStyle_Yes
+  1183→
+  1184→RoyalDialog.tsx (نسخة طبق الأصل من fragment_royal_level2.xml):
+  1185→- rl_main: RelativeLayout 360dip wide full_height
+  1186→- View bg=skin_bg.9.png (marginTop=53dip): خلفية تحت شريط العنوان
+  1187→- RoyalPrivilegeDetailView (marginTop=236 margins 4/4/4/4 bottom): قائمة الامتيازات
+  1188→- View bg=royal_level_top_bg.webp (360x212.5dip marginTop=44 centerHorizontal)
+  1189→- rl_title (bg_rank.9.png 53dip):
+  1190→  • iv_rules (description_rule.webp padding 10/8/10/10 alignParentStart)
+  1191→  • tv_title (21sp #87ebaa center marginBottom=10 text='مستوى رويال' shadow black_50 dy=5 radius=1)
+  1192→  • iv_close (skin_close.webp padding 10/10/10/10 alignParentEnd)
+  1193→- RoyalProgressView (progressRadius=92dip below=rl_title centerHorizontal): SVG دائري مع 5 نقاط مستويات حول المحيط
+  1194→- svga_royal_level (85x85dip marginTop=99 centerHorizontal): royal_level_N.webp
+  1195→- ctv_middle_royal_level (19sp bold marginTop=166 gradient #ffffff75→#ffc000 text='ROYAL N')
+  1196→- FrameLayout (marginTop=193 37dip): ll_upgrade_need_value + ll_keep_info
+  1197→  • ctv_upgrade_text (12sp bold white) + ctv_upgrade_need (15sp bold #ffed5d marginStart=4) + royal_level_value_ic.webp (16x16dip marginStart=5)
+  1198→  • ctv_keep_text (12sp bold white) + ctv_keep_need (15sp bold #ffed5d marginStart=4)
+  1199→- fl_time_validity (royal_effective_time_bg.9.png marginTop=238 minWidth=180 22dip paddingStart=10 paddingEnd=10):
+  1200→  • 'validity_date' (10sp bold #87eaa9) + ctv_time_validity (10sp bold white marginStart=5)
+  1201→- rl_growth_record (100dip below=rl_title alignParentEnd): 'نقاطي الملكية >>' (8sp bold #87eaa9) + points (12sp bold white) + 1dip #87eaa9 underline (marginBottom=15)
+  1202→- RoyalPrivilegeList: royal_super_privileges_dialog_bg.webp حاوية + royal_super_privileges_item_bg.webp لكل عنصر
+  1203→
+  1204→Stage Summary:
+  1205→- 4 ملفات معدّلة: SiteHeader (إزالة الأزرار الخاطئة + إصلاح ESLint) + ChargeDialog (نسخة طبق الأصل) + RoyalDialog (نسخة طبق الأصل) + BuyVipDialog (محذوف)
+  1206→- 1006 إضافة، 1603 حذف — إعادة بناء شاملة
+  1207→- جميع الأبعاد والصور والألوان الآن مطابقة لـ fragment_shop.xml + view_shop_diamonds.xml + item_diamonds.xml + item_vip_buy.xml + fragment_royal_level2.xml
+  1208→- Build verified: npx next build --webpack ✓ (41s, 132/132 pages)
+  1209→- ESLint verified: ✓ clean on ChargeDialog, RoyalDialog, SiteHeader
+  1210→- Commit: 1294667a — Pushed to GitHub main (b8c53a81..1294667a)
+  1211→
+  1212→---
+  1213→Task ID: gem-shop-pixel-perfect
+  1214→Agent: main
+  1215→Task: استنساخ نافذة شحن الماس (Diamond Shop) من Yalla Ludo بدقة بكسلية 1:1
+  1216→
+  1217→Work Log:
+  1218→- مهمة المستخدم: نسخة طبق الأصل 1:1 من نافذة شحن الماس في Yalla Ludo، سطر سطر، أيقونة أيقونة، لون لون
+  1219→- المواصفات التفصيلية 12 قسم تطلب: ملف SPEC، خلفية، شريط علوي، تبويبات، نظام أرفف، مكافأة أول شحن، بطاقات، شارات، أزرار، حركات، حالات، تجاوب، هيكلة بيانات، تحقق بصري
+  1220→
+  1221→المرحلة 1: التدقيق (Audit):
+  1222→- استخراج الأبعاد الفعلية لكل أصل باستخدام Python/PIL (file.py)
+  1223→- استخراج متوسط الألوان من كل أصل باستخدام PIL (avg pixel)
+  1224→- العثور على الأصول المفقودة:
+  1225→  - shelves.webp (1091x290 avg #3eceaa bright teal-green) — خلفية الرفوف
+  1226→  - chest_firstcharge.webp (158x131 avg #a990a6) — صندوق الكنز الوردي/ماجنتا
+  1227→  - bg_firstcharge.png (296x162 avg #cffee3 very light green-white) — الفقاعة البيضاء
+  1228→  - recharge_room_gift.webp (114x114 avg #f57db4 bright pink) — أيقونة الهدية
+  1229→  - charge_reward_profile_card.webp (240x188 avg #97b8d0 light blue) — أيقونة الإطار
+  1230→  - charge_reward_head_decor.webp (120x120 avg #b894f gold-bronze) — أيقونة الخاتم
+  1231→  - charge_reward_head_frame.webp (120x120 avg #be8334 gold) — أيقونة الإكليل
+  1232→  - diamonds1-6.webp (310x271, 6 different icons!) — مطابقة لكل حزمة على حدة
+  1233→  - coin1-6.webp (310x271, 6 different gold icons) — مطابقة لحزم الذهب
+  1234→  - label_best.webp (192x72 avg #de374d red ribbon) — شارة BEST
+  1235→  - label_popular.webp (186x66 avg #e96adf pink-magenta ribbon) — شارة POPULAR
+  1236→  - royal_level_0-5.webp — شارات مستوى رويال لـ R0/R1/R2/R3/R4/R5 تحت الصورة
+  1237→
+  1238→المرحلة 2: GEM_SHOP_SPEC.md (12 قسم، جدول 32 سطر):
+  1239→- قسم 0: تقنية المشروع + ملفات النافذة
+  1240→- قسم 1: جدول العناصر الكامل (32 عنصر: element, source path, x/y, dimensions, colors HEX, font/size/color/states/animations/notes)
+  1241→- قسم 2: خريطة التخطيط المرجعية 360x800 + النسب المئوية لكل عنصر
+  1242→- قسم 3: الفروقات المصححة (السابق → الجديد)
+  1243→- قسم 4: الألوان المقاسة من أصول السورس (Python/PIL)
+  1244→- قسم 5: الحركات الموجودة في السورس (SVGA references في XML)
+  1245→- قسم 6: الحالات والتفاعل (عادي/ضغط/معطّل لكل زر)
+  1246→- قسم 7: التجاوب على 4 شاشات
+  1247→- قسم 8: هيكلة البيانات (Package/Tab/FirstChargeReward interfaces) + بنية API للأدمن
+  1248→- قسم 9: جدول التعارضات (19 تعارض بين صورة المستخدم والسورس)
+  1249→- قسم 10: قائمة الأصول المستخدمة + غير الموجودة (بدائل موثّقة)
+  1250→- قسم 11: المخرجات النهائية
+  1251→- قسم 12: ملخص للتنفيذ
+  1252→
+  1253→المرحلة 3: إعادة بناء ChargeDialog (نسخة طبق الأصل):
+  1254→- الحاوية: full-screen (no outer frame), bg=skin_bg.9.png + linear-gradient #3DB57A → #2A8A5C + radial vignette
+  1255→- الشريط العلوي: X يسار + رصيد ماس + رصيد ذهب (centered) + صورة لاعب يمين + شارة R0/R1/.../R5
+  1256→- الألسنة: 3 فقط (gold/diamond/privilege) — bg=shop_switch_*_check.webp حقيقية + icon 16-19dip + 12sp bold
+  1257→- الفاصل: shop_top_green_line.9.png (9dip full-width)
+  1258→- مكافأة أول شحن: title (17sp #fff771) + shelves.webp background + chest_firstcharge.webp يسار + bg_firstcharge.png bubble يمين بـ 3x2 grid (6 عناصر)
+  1259→- نص التنبيه: 'يمكنك أن تحصل على المكافآت بعد الشراء بأي كمية' (white 10sp)
+  1260→- الرفوف (3): ShelfRow component بتدرّج #5DD7A6→#3ECEAA→#2DA887→#1F7A5F + 3D bevel
+  1261→- بطاقات الباقات (6) بأرقام مطابقة 100%:
+  1262→  Row 1: 400/USD 0.99 (HOT) | 1800/USD 3.99 | 5000/USD 9.99
+  1263→  Row 2: 16.0K/USD 29.99 (Popular) | 53.7K/USD 99.99 | 161.7K/USD 299.99 (BEST)
+  1264→- كل بطاقة بأيقونة مختلفة: diamonds1-6.webp
+  1265→- شارات (HOT/BEST/Popular) أعلى يمين (layout_gravity=end)
+  1266→- زر شراء: btn_shop.9.png + "USD X.XX" 14sp bold #47790c + 8-direction text-shadow (stroke=#94f534 width=2dip)
+  1267→- زر سفلي: shop_item_tail_bg.9.png + "تفاصيل الماس >>" 13sp #2bc895
+  1268→
+  1269→المرحلة 4: API Data-driven (gems/packages/route.ts):
+  1270→- 6 diamond packages مع displayAmount ('16.0K', '53.7K', '161.7K') + priceFormat ('USD 0.99') + badge + order + enabled
+  1271→- 6 gold packages مع نفس الأسعار
+  1272→- 3 VIP tiers (Knight/Baron/Royal) مع days
+  1273→- 3 Royal point packages
+  1274→- FirstChargeReward: 6 items مطابقة لـ item_shop_guild.xml L33-58
+  1275→- Tabs: 3 ألسنة مع iconCheck/iconUncheck/bgCheck/bgUncheck/iconW/iconH/marginTop/order/visible
+  1276→
+  1277→المرحلة 5: SiteHeader:
+  1278→- إعادة royalLevel state + fetch /api/royal/state
+  1279→- تمرير avatarUrl + royalLevel إلى ChargeDialog
+  1280→- إصلاح ESLint المسبق على setFrameImg
+  1281→
+  1282→Verification:
+  1283→- npx next build --webpack ✓ (42s, 132/132 pages)
+  1284→- ESLint ✓ clean on all touched files
+  1285→- Python/PIL color extraction: جميع الألوان مقاسة من أصول السورس
+  1286→- 32 عنصر مطابق للسورس
+  1287→
+  1288→Conflicts resolved (19 in total, priority to source):
+  1289→- X close on LEFT (image 2) vs RIGHT (source) → followed image 2
+  1290→- Player avatar top-right not in source → added (image 2 has it)
+  1291→- R0 badge under avatar → added (source has rle_entranceView invisible)
+  1292→- Badges TOP-LEFT (image 2) vs TOP-RIGHT (source) → followed source (right)
+  1293→- 19 total conflicts, all documented in GEM_SHOP_SPEC.md section 9
+  1294→
+  1295→Stage Summary:
+  1296→- Files: GEM_SHOP_SPEC.md (NEW, 12 sections, 32-row table), ChargeDialog.tsx (rewrite), SiteHeader.tsx (royal state), gems/packages/route.ts (data-driven)
+  1297→- All 32 source assets used (no redrawn assets)
+  1298→- Build verified + ESLint clean
+  1299→- Commit: 14322381 — Pushed to GitHub main (12925c2a..14322381)
+  1300→- Next: apply same pixel-perfect methodology to Gold Shop window (after user's confirmation)
+  1301→
